@@ -1,12 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { authCalls } from "../../api/authCalls";
 import { AUTH_ACTIONS } from "../../redux/actions/auth.action";
 import { pathNames } from "../../routes/pathNames";
 
 interface Props {}
 
-const Login = (props: Props) => {
+const Login: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Login = (props: Props) => {
     navigate(pathNames.DASHBOARD, { replace: true });
   };
 
-  return <div onClick={() => login()}>Login Me in to React</div>;
+  return <div onClick={() => authCalls.login()}>Login Me in to React</div>;
 };
 
 export default Login;
