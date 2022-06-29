@@ -11,7 +11,7 @@ const Login = (props: Props) => {
 
   const navigate = useNavigate();
   const login = () => {
-    dispatch(AUTH_ACTIONS.login({ role: ["ISSUER"] }));
+    dispatch(AUTH_ACTIONS.login({ role: ["BHI"] }));
     navigate(pathNames.DASHBOARD, { replace: true });
   };
 
