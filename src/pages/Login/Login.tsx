@@ -77,8 +77,13 @@ const Login: React.FC<Props> = (props: Props) => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              color="success"
+              sx={{
+                mt: 3,
+                mb: 2,
+                color: "primary.light",
+                textTransform: "none",
+              }}
+              color="primary"
             >
               Sign In
             </Button>

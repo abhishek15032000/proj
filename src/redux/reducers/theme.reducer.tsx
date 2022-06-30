@@ -1,4 +1,5 @@
 import { ThemeOptions } from "@mui/material";
+import { Colors } from "../../theme";
 import { TYPES } from "../constants";
 
 const initThemeOptions: ThemeOptions = {
@@ -7,8 +8,8 @@ const initThemeOptions: ThemeOptions = {
   },
   palette: {
     primary: {
-      light: "#fff",
-      main: "#3f51b5",
+      light: Colors.white,
+      main: Colors.dullOrange,
     },
     secondary: {
       main: "#f50057",
