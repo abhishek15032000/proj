@@ -16,7 +16,11 @@ const Login: React.FC<Props> = (props: Props) => {
     navigate(pathNames.DASHBOARD, { replace: true });
   };
 
-  return <div onClick={() => authCalls.login()}>Login Me in to React</div>;
+  return (
+    <div data-testid={"loginBtn"} onClick={() => login()}>
+      Login Me in to React
+    </div>
+  );
 };
 
 export default Login;
