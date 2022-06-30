@@ -1,30 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { store } from "./redux/store";
 import { Provider } from "react-redux";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
-// import reportWebVitals from './reportWebVitals';
+import "./index.css";
+import Main from "./Main";
+import { store } from "./redux/store";
 
-const theme = createTheme({
-  typography: {
-    fontFamily: ['"Poppins"'].join(","),
-  },
-});
+// import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <Main />
+    </Provider>
   </React.StrictMode>
 );
 

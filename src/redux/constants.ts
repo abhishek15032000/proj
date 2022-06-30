@@ -1,5 +1,8 @@
-export const TYPES={
-    AUTH:{
-       LOGIN:"LOGIN" 
+export const TYPES = {
+    AUTH: {
+        LOGIN: "LOGIN"
+    },
+    THEME: {
+        PALLETTE: "PALLETTE"
     }
 }

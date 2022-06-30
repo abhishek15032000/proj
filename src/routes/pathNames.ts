@@ -1,4 +1,5 @@
-export const pathNames ={
+export const pathNames = {
     DASHBOARD: "/",
     LOGIN: "/login",
+
 }

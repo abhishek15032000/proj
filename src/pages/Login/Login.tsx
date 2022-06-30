@@ -43,11 +43,8 @@ const Login: React.FC<Props> = (props: Props) => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Carbo Credit Sign in
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
@@ -81,6 +78,7 @@ const Login: React.FC<Props> = (props: Props) => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              color="success"
             >
               Sign In
             </Button>
