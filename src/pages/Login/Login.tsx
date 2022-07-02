@@ -1,46 +1,42 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { authCalls } from "../../api/authCalls";
-import { AUTH_ACTIONS } from "../../redux/actions/auth.action";
-import { pathNames } from "../../routes/pathNames";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Grid from '@mui/material/Grid'
+import Link from '@mui/material/Link'
+import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { AUTH_ACTIONS } from '../../redux/actions/auth.action'
+import { pathNames } from '../../routes/pathNames'
 
 interface Props {}
 
 const Login: React.FC<Props> = (props: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const login = () => {
-    dispatch(AUTH_ACTIONS.login({ roles: ["ISSUER"] }));
-    navigate(pathNames.DASHBOARD, { replace: true });
-  };
+    dispatch(AUTH_ACTIONS.login({ roles: ['ISSUER'] }))
+    navigate(pathNames.DASHBOARD, { replace: true })
+  }
 
   return (
     // <div data-testid={"loginBtn"} onClick={() => login()}>
     //   Login Me in to React
     // </div>
-    <Grid container component="main" sx={{ height: "100vh" }}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
       <Grid item xs={12} component={Paper} elevation={6} square>
         <Box
           sx={{
             my: 8,
             mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
           <Typography component="h1" variant="h5">
@@ -72,7 +68,7 @@ const Login: React.FC<Props> = (props: Props) => {
               label="Remember me"
             />
             <Button
-              data-testid={"loginBtn"}
+              data-testid={'loginBtn'}
               onClick={() => login()}
               type="submit"
               fullWidth
@@ -80,8 +76,8 @@ const Login: React.FC<Props> = (props: Props) => {
               sx={{
                 mt: 3,
                 mb: 2,
-                color: "primary.light",
-                textTransform: "none",
+                color: 'primary.light',
+                textTransform: 'none',
               }}
               color="primary"
             >
@@ -104,7 +100,7 @@ const Login: React.FC<Props> = (props: Props) => {
         </Box>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
