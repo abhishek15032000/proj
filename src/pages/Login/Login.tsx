@@ -96,12 +96,12 @@ const Login: React.FC<Props> = (props: Props) => {
                             }}
                             color="primary"
                         >
-                            Sign In
+                            Sign In to Carbon Credit
                         </Button>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
-                                    Forgot password?
+                                    Oops Forgot password?
                                 </Link>
                             </Grid>
                             <Grid item>

@@ -10,7 +10,7 @@ export const AxiosHelper = async (url: string, method: string) => {
         return req;
     });
 
-    let call = () => {
+    const call = () => {
         switch (method) {
             case "GET":
                 return axios.get(url);
