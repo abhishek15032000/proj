@@ -1,20 +1,22 @@
 import { omit } from 'lodash'
 import React, { useState } from 'react'
 
-interface Props {
-    callback: any
+// type Props = {
+//     callback: any
+// }
+
+type IValues = {
+    [key: string]: any
+}
+
+//Errors
+type IErrors = {
+    [key: string]: any
 }
 
 const useForm = (callback: any) => {
     //Form values
-    interface IValues {
-        [key: string]: any
-    }
     const [values, setValues] = useState<IValues>({})
-    //Errors
-    interface IErrors {
-        [key: string]: any
-    }
     const [errors, setErrors] = useState<IErrors>({})
 
     //A method to handle form inputs

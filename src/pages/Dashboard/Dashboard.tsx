@@ -1,14 +1,12 @@
 import React from 'react'
 import Welcome from '../../components/Dashboard/Welcome/Welcome'
 
-interface Props {
-    
-}
+interface Props {}
 
 const Dashboard = (props: Props) => {
     return (
         <div>
-           <Welcome/>
+            <Welcome />
         </div>
     )
 }

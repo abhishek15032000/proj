@@ -1,11 +1,11 @@
-import React, { FC } from "react";
-import "./App.css";
-import RouteController from "./routes/RouteController";
-interface AppProps {
-  appName?: string;
+import React, { FC } from 'react'
+import './App.css'
+import RouteController from './routes/RouteController'
+type AppProps = {
+    appName?: string
 }
 const App: FC<AppProps> = () => {
-  return <RouteController />;
-};
+    return <RouteController />
+}
 
-export default App;
+export default App

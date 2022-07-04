@@ -8,68 +8,70 @@ import AccessDenied from '../pages/AccessDenied/AccessDenied'
 import _ from 'lodash'
 
 const RouteController = () => {
-  const userData = useSelector((state: any) => state.auth.data)
-  console.log(
-    '🚀 ~ file: RouteController.tsx ~ line 11 ~ RouteController ~ userData',
-    userData
-  )
+    const userData = useSelector((state: any) => state.auth.data)
+    console.log(
+        '🚀 ~ file: RouteController.tsx ~ line 11 ~ RouteController ~ userData',
+        userData
+    )
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        {privateRouteComponents.map((route: any) => (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={
-              <PrivateRoute
-                roles={route.roles}
-                component={route.component}
-                authenticated={userData}
-                userData={userData}
-              />
-            }
-          />
-        ))}
-        <Route path={pathNames.LOGIN} element={<Login />} />
-      </Routes>
-    </BrowserRouter>
-  )
+    return (
+        <BrowserRouter>
+            <Routes>
+                {privateRouteComponents.map((route: any) => (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        element={
+                            <PrivateRoute
+                                roles={route.roles}
+                                component={route.component}
+                                authenticated={userData}
+                                userData={userData}
+                            />
+                        }
+                    />
+                ))}
+                <Route path={pathNames.LOGIN} element={<Login />} />
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
-interface Props {
-  component: React.ComponentType
-  path?: string
-  roles: any[]
-  authenticated: boolean
-  userData: any
+//* PRIVATE ComponentType
+
+type Props = {
+    component: React.ComponentType
+    path?: string
+    roles: string[]
+    authenticated: boolean
+    userData: any
 }
 
-const PrivateRoute: React.FC<Props> = ({
-  component: RouteComponent,
-  authenticated,
-  roles,
-  userData,
-}) => {
-  const isAuthenticated = authenticated
-  const userRoles = userData?.roles
+const PrivateRoute = ({
+    component: RouteComponent,
+    authenticated,
+    roles,
+    userData,
+}: Props) => {
+    const isAuthenticated = authenticated
+    const userRoles = userData?.roles
 
-  const userHasRequiredRole =
-    _.intersectionWith(userRoles, roles, _.isEqual).length > 0
-  console.log(
-    '🚀 ~ file: RouteController.tsx ~ line 27 ~ RouteController ~ userHasRequiredRole',
-    userHasRequiredRole
-  )
+    const userHasRequiredRole =
+        _.intersectionWith(userRoles, roles, _.isEqual).length > 0
+    console.log(
+        '🚀 ~ file: RouteController.tsx ~ line 27 ~ RouteController ~ userHasRequiredRole',
+        userHasRequiredRole
+    )
 
-  if (isAuthenticated && userHasRequiredRole) {
-    return <RouteComponent />
-  }
+    if (isAuthenticated && userHasRequiredRole) {
+        return <RouteComponent />
+    }
 
-  if (isAuthenticated && !userHasRequiredRole) {
-    return <AccessDenied />
-  }
+    if (isAuthenticated && !userHasRequiredRole) {
+        return <AccessDenied />
+    }
 
-  return <Navigate to={pathNames.LOGIN} />
+    return <Navigate to={pathNames.LOGIN} />
 }
 
 export default RouteController

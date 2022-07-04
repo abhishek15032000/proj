@@ -16,7 +16,7 @@ import useForm from '../../hooks/useForm'
 
 interface Props {}
 
-const Login: React.FC<Props> = (props: Props) => {
+const Login = (props: Props) => {
     const login = () => {
         dispatch(AUTH_ACTIONS.login({ roles: ['ISSUER'] }))
         navigate(pathNames.DASHBOARD, { replace: true })
@@ -41,7 +41,7 @@ const Login: React.FC<Props> = (props: Props) => {
                     }}
                 >
                     <Typography component="h1" variant="h5">
-                        Carbon Credit Sign in
+                        Sign in to Carbon Credit
                     </Typography>
                     <Box
                         component="form"
@@ -96,12 +96,12 @@ const Login: React.FC<Props> = (props: Props) => {
                             }}
                             color="primary"
                         >
-                            Sign In to Carbon Credit
+                            Sign In
                         </Button>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
-                                    Oops Forgot password?
+                                    Forgot password?
                                 </Link>
                             </Grid>
                             <Grid item>
