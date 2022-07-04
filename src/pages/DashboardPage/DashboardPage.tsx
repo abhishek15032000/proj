@@ -1,9 +1,8 @@
 import React from 'react'
 import Welcome from '../../components/Dashboard/Welcome/Welcome'
+import { DashboardPageProps } from './DashboardPage.interface'
 
-interface Props {}
-
-const Dashboard = (props: Props) => {
+const DashboardPage = (props: DashboardPageProps) => {
     return (
         <div>
             <Welcome />
@@ -11,4 +10,4 @@ const Dashboard = (props: Props) => {
     )
 }
 
-export default Dashboard
+export default DashboardPage

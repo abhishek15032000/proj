@@ -1,13 +1,13 @@
 
 import { ROLES } from "../config/roles.config";
-import Dashboard from "../pages/Dashboard/Dashboard";
+import DashboardPage from "../pages/DashboardPage/DashboardPage";
 
 import { pathNames } from "./pathNames";
 
 export const privateRouteComponents = [
   {
     path: pathNames.DASHBOARD,
-    component: Dashboard,
+    component: DashboardPage,
 
     // sidebarName: linkLabels.DASHBOARD,
     roles: [

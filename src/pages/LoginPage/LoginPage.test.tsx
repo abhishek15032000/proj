@@ -5,7 +5,7 @@ import {
     render,
     screen,
 } from '@testing-library/react'
-import Login from './Login'
+import Login from './LoginPage'
 import * as router from 'react-router'
 import * as ReactRedux from 'react-redux'
 import { Provider } from 'react-redux'

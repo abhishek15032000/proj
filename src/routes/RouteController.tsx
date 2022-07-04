@@ -1,14 +1,14 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Login from '../pages/Login/Login'
+import LoginPage from '../pages/LoginPage/LoginPage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
-import { useSelector } from 'react-redux'
-import AccessDenied from '../pages/AccessDenied/AccessDenied'
+import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import _ from 'lodash'
+import { useAppSelector } from '../hooks/reduxHooks'
 
 const RouteController = () => {
-    const userData = useSelector((state: any) => state.auth.data)
+    const userData = useAppSelector((state: any) => state.auth.data)
     console.log(
         '🚀 ~ file: RouteController.tsx ~ line 11 ~ RouteController ~ userData',
         userData
@@ -31,7 +31,7 @@ const RouteController = () => {
                         }
                     />
                 ))}
-                <Route path={pathNames.LOGIN} element={<Login />} />
+                <Route path={pathNames.LOGIN} element={<LoginPage />} />
             </Routes>
         </BrowserRouter>
     )
@@ -68,7 +68,7 @@ const PrivateRoute = ({
     }
 
     if (isAuthenticated && !userHasRequiredRole) {
-        return <AccessDenied />
+        return <AccessDeniedPage />
     }
 
     return <Navigate to={pathNames.LOGIN} />

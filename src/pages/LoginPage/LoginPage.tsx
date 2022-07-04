@@ -10,23 +10,24 @@ import Typography from '@mui/material/Typography'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { AUTH_ACTIONS } from '../../redux/actions/auth.action'
 import { pathNames } from '../../routes/pathNames'
 import useForm from '../../hooks/useForm'
+import { LoginPageInterface } from './LoginPage.interface'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { loginAction } from '../../redux/Slices/authSlice'
 
-interface Props {}
+const Login = (props: LoginPageInterface) => {
+    const dispatch = useAppDispatch()
 
-const Login = (props: Props) => {
+    const navigate = useNavigate()
+
     const login = () => {
-        dispatch(AUTH_ACTIONS.login({ roles: ['ISSUER'] }))
+        dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
+
         navigate(pathNames.DASHBOARD, { replace: true })
     }
 
     const { handleChange, values, errors, handleSubmit } = useForm(login)
-
-    const dispatch = useDispatch()
-
-    const navigate = useNavigate()
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>

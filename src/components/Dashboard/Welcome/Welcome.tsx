@@ -1,9 +1,8 @@
 import { Box, Button, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
+import { WelcomeProps } from './Welcome.interface'
 
-interface Props {}
-
-const Welcome = (props: Props) => {
+const Welcome = (props: WelcomeProps) => {
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
             <Grid
