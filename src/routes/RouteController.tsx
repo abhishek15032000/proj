@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import _ from 'lodash'
-import { useAppSelector } from '../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
+import NotFoundPage from '../pages/404Page/NotFoundPage'
+import { getLocalItem } from '../utils/Storage'
+import { loginAction } from '../redux/Slices/authSlice'
+import RegisterPage from '../pages/RegisterPage /RegisterPage'
 
-const RouteController = () => {
+const RouteController = ({ localLoggedIn }: any) => {
     const userData = useAppSelector((state: any) => state.auth.data)
-    console.log(
-        '🚀 ~ file: RouteController.tsx ~ line 11 ~ RouteController ~ userData',
-        userData
-    )
 
     return (
         <BrowserRouter>
@@ -31,7 +31,29 @@ const RouteController = () => {
                         }
                     />
                 ))}
-                <Route path={pathNames.LOGIN} element={<LoginPage />} />
+                <Route
+                    path={pathNames.LOGIN}
+                    element={
+                        <PublicRoute
+                            roles={[]}
+                            component={LoginPage}
+                            authenticated={userData}
+                            userData={userData}
+                        />
+                    }
+                />
+                <Route
+                    path={pathNames.REGISTER}
+                    element={
+                        <PublicRoute
+                            roles={[]}
+                            component={RegisterPage}
+                            authenticated={userData}
+                            userData={userData}
+                        />
+                    }
+                />
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>
     )
@@ -72,6 +94,35 @@ const PrivateRoute = ({
     }
 
     return <Navigate to={pathNames.LOGIN} />
+}
+
+//* PRIVATE ComponentType
+
+type PublicRouteProps = {
+    component: React.ComponentType
+    path?: string
+    roles: string[]
+    authenticated: boolean
+    userData: any
+}
+
+const PublicRoute = ({
+    component: RouteComponent,
+    authenticated,
+    roles,
+    userData,
+}: Props) => {
+    const isAuthenticated = authenticated
+    const userRoles = userData?.roles
+
+    const userHasRequiredRole =
+        _.intersectionWith(userRoles, roles, _.isEqual).length > 0
+
+    if (!isAuthenticated) {
+        return <RouteComponent />
+    }
+
+    return <Navigate to={pathNames.DASHBOARD} />
 }
 
 export default RouteController
