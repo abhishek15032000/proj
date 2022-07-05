@@ -16,7 +16,7 @@ const initialState: ThemeOptions = {
             main: "#f50057",
         },
         background: {
-            default: "#30c77e",
+            default: "#fff",
         },
         success: {
             main: "#2a0d2b",
