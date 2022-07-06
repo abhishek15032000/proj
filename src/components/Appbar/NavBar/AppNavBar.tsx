@@ -15,6 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
+import SelectDropdown from '../../../atoms/SelectDropdown/SelectDropdown'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -186,15 +187,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                 </Search>
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <IconButton
-                        size="large"
-                        aria-label="show 4 new mails"
-                        color="inherit"
-                    >
-                        <Badge badgeContent={4} color="error">
-                            <MailIcon />
-                        </Badge>
-                    </IconButton>
+                    <SelectDropdown />
                     <IconButton
                         size="large"
                         aria-label="show 17 new notifications"

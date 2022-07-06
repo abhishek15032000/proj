@@ -33,10 +33,13 @@ export default function ResponsiveDrawer(props: Props) {
     }
 
     const drawer = (
-        <div>
+        <Box
+            component={'div'}
+            // sx={{ justifyContent: 'center', alignItems: 'center' }}
+        >
             <Toolbar />
-            <Divider />
-            <List>
+
+            <List sx={{ mt: 1 }}>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
                     (text, index) => (
                         <ListItem key={text} disablePadding>
@@ -54,20 +57,7 @@ export default function ResponsiveDrawer(props: Props) {
                     )
                 )}
             </List>
-            <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </div>
+        </Box>
     )
 
     const container =

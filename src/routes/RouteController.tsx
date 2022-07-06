@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import _ from 'lodash'
+import React from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useAppSelector } from '../hooks/reduxHooks'
+import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
+import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
+import RegisterPage from '../pages/RegisterPage /RegisterPage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
-import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
-import _ from 'lodash'
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
-import NotFoundPage from '../pages/404Page/NotFoundPage'
-import { getLocalItem } from '../utils/Storage'
-import { loginAction } from '../redux/Slices/authSlice'
-import RegisterPage from '../pages/RegisterPage /RegisterPage'
 
 const RouteController = ({ localLoggedIn }: any) => {
     const userData = useAppSelector((state: any) => state.auth.data)
