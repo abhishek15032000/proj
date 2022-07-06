@@ -36,7 +36,8 @@
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "precommit": "npm run lint && npm test",
-    "prepush": "npm run lint"
+    "prepush": "npm run lint",
+    "gc": "node .generate_component $1 $2"
   },
   "eslintConfig": {
     "extends": [
