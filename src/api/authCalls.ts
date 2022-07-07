@@ -3,7 +3,7 @@ import { AxiosHelper } from "./configs/AxiosHelper";
 
 
 export const authCalls = {
-    login: () => {
+    loginCall: () => {
         //!!Example Code below
 
         // return AxiosHelper("https://jsonplaceholder.typicode.com/posts", "GET").then((res: any) => {

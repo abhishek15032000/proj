@@ -16,8 +16,10 @@ if (type === 'page') {
     dir = `./src/pages/${name}/`
 } else if (type === 'component') {
     dir = `./src/components/${name}/`
+} else if (type === 'atom') {
+    dir = `./src/atoms/${name}/`
 } else {
-    dir = `./`
+    throw new Error('Please define a type. Type = page | component | atom')
 }
 
 // throw an error if the file already exists

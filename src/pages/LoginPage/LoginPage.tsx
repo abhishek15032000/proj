@@ -16,6 +16,7 @@ import { LoginPageInterface } from './LoginPage.interface'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { loginAction } from '../../redux/Slices/authSlice'
 import { getLocalItem } from '../../utils/Storage'
+import { authCalls } from '../../api/authCalls'
 
 const Login = (props: LoginPageInterface) => {
     const dispatch = useAppDispatch()
@@ -24,7 +25,7 @@ const Login = (props: LoginPageInterface) => {
 
     const login = () => {
         dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
-
+        authCalls.loginCall()
         navigate(pathNames.DASHBOARD, { replace: true })
     }
 
