@@ -13,47 +13,45 @@ const RouteController = ({ localLoggedIn }: any) => {
     const userData = useAppSelector((state: any) => state.auth.data)
 
     return (
-        <BrowserRouter>
-            <Routes>
-                {privateRouteComponents.map((route: any) => (
-                    <Route
-                        key={route.path}
-                        path={route.path}
-                        element={
-                            <PrivateRoute
-                                roles={route.roles}
-                                component={route.component}
-                                authenticated={userData}
-                                userData={userData}
-                            />
-                        }
+        <Routes>
+            {privateRouteComponents.map((route: any) => (
+                <Route
+                    key={route.path}
+                    path={route.path}
+                    element={
+                        <PrivateRoute
+                            roles={route.roles}
+                            component={route.component}
+                            authenticated={userData}
+                            userData={userData}
+                        />
+                    }
+                />
+            ))}
+            <Route
+                path={pathNames.LOGIN}
+                element={
+                    <PublicRoute
+                        roles={[]}
+                        component={LoginPage}
+                        authenticated={userData}
+                        userData={userData}
                     />
-                ))}
-                <Route
-                    path={pathNames.LOGIN}
-                    element={
-                        <PublicRoute
-                            roles={[]}
-                            component={LoginPage}
-                            authenticated={userData}
-                            userData={userData}
-                        />
-                    }
-                />
-                <Route
-                    path={pathNames.REGISTER}
-                    element={
-                        <PublicRoute
-                            roles={[]}
-                            component={RegisterPage}
-                            authenticated={userData}
-                            userData={userData}
-                        />
-                    }
-                />
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-        </BrowserRouter>
+                }
+            />
+            <Route
+                path={pathNames.REGISTER}
+                element={
+                    <PublicRoute
+                        roles={[]}
+                        component={RegisterPage}
+                        authenticated={userData}
+                        userData={userData}
+                    />
+                }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+        </Routes>
     )
 }
 

@@ -1,5 +1,6 @@
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
+import { Typography } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -11,25 +12,124 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Toolbar from '@mui/material/Toolbar'
+import _ from 'lodash'
 import * as React from 'react'
+import { shallowEqual } from 'react-redux'
+import { NavLink, useLocation } from 'react-router-dom'
+import { ROLES } from '../../../config/roles.config'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { linkLabels } from '../../../routes/pathNames'
+import { privateRouteComponents } from '../../../routes/routeComponents'
+import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
+import MENUS from './MenuList'
 
 const drawerWidth = 240
 
-interface Props {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window?: () => Window
-}
+export default function ResponsiveDrawer() {
+    const location = useLocation()
 
-export default function ResponsiveDrawer(props: Props) {
-    const { window } = props
+    const userDataRoles = useAppSelector(
+        (state) => state.auth.data.roles,
+        shallowEqual
+    )
+
     const [mobileOpen, setMobileOpen] = React.useState(false)
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen)
+    }
+
+    const linkRenderer = (text: string) => {
+        const item = privateRouteComponents.find((i) => i.sidebarName === text)
+        if (item) {
+            return item.path
+        } else {
+            return ''
+        }
+    }
+
+    const activeRoute = (path: string, location: any) => {
+        const routeName =
+            privateRouteComponents.find((i) => i.sidebarName === path)?.path ||
+            ''
+        return location?.pathname === routeName ? true : false
+    }
+
+    const iconRenderer = (text: string, location: string) => {
+        let IconComponent
+        switch (text) {
+            case linkLabels.Projects:
+                IconComponent = InboxIcon
+                break
+
+            default:
+                IconComponent = InboxIcon
+        }
+        if (IconComponent) {
+            return (
+                <IconComponent
+                    style={{
+                        color: Colors.black,
+                        opacity: activeRoute(text, location) ? 1 : 0.5,
+                    }}
+                />
+            )
+        }
+    }
+
+    const midMenu = React.useCallback(() => {
+        console.log(
+            '🚀 ~ file: AppDrawer.tsx ~ line 37 ~ ResponsiveDrawer ~ userDataRoles',
+            userDataRoles
+        )
+        if (
+            _.intersectionWith(userDataRoles, [ROLES.ISSUER], _.isEqual)
+                .length > 0
+        ) {
+            return MENUS.issuer_menus
+        } else {
+            return []
+        }
+    }, [userDataRoles])
+
+    const NavListItem = ({
+        linkLabels,
+        active,
+        location,
+    }: {
+        linkLabels: string
+        active: boolean
+        location: any
+    }) => {
+        return (
+            <ListItemButton>
+                {iconRenderer(linkLabels, location) ? (
+                    <ListItemIcon style={{ minWidth: 30 }}>
+                        {iconRenderer(linkLabels, location)}
+                    </ListItemIcon>
+                ) : (
+                    <div className="pb-2"></div>
+                )}
+                <ListItemText
+                    primary={
+                        <Typography
+                            style={{
+                                fontWeight: active ? '500' : '400',
+                                opacity: active ? 1 : 0.5,
+                                fontSize: 14,
+                                paddingLeft: !iconRenderer(linkLabels, location)
+                                    ? 55
+                                    : 5,
+                            }}
+                        >
+                            {linkLabels}
+                        </Typography>
+                    }
+                    disableTypography
+                />
+            </ListItemButton>
+        )
     }
 
     const drawer = (
@@ -40,28 +140,31 @@ export default function ResponsiveDrawer(props: Props) {
             <Toolbar />
 
             <List sx={{ mt: 1 }}>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-                    (text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
+                {midMenu().map((text, index) => (
+                    <NavLink
+                        key={index.toString()}
+                        to={linkRenderer(text)}
+                        style={{
+                            textDecoration: 'none',
+                            color: Colors.black,
+                            fontWeight: activeRoute(text, location)
+                                ? '700'
+                                : '500',
+                            padding: '10px 0',
+                        }}
+                    >
+                        <ListItem key={linkLabels.Projects}>
+                            <NavListItem
+                                linkLabels={text}
+                                active={activeRoute(text, location)}
+                                location={location}
+                            />
                         </ListItem>
-                    )
-                )}
+                    </NavLink>
+                ))}
             </List>
         </Box>
     )
-
-    const container =
-        window !== undefined ? () => window().document.body : undefined
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -82,7 +185,6 @@ export default function ResponsiveDrawer(props: Props) {
             >
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Drawer
-                    container={container}
                     variant="temporary"
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
@@ -113,39 +215,6 @@ export default function ResponsiveDrawer(props: Props) {
                     {drawer}
                 </Drawer>
             </Box>
-            {/* <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
-        <Toolbar />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Box> */}
         </Box>
     )
 }
