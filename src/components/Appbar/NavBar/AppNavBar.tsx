@@ -16,7 +16,9 @@ import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import SelectDropdown from '../../../atoms/SelectDropdown/SelectDropdown'
-
+import SettingsIcon from '@mui/icons-material/Settings'
+import { Button, Grid } from '@mui/material'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -176,7 +178,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                     <MenuIcon />
                 </IconButton>
 
-                <Search>
+                {/* <Search>
                     <SearchIconWrapper>
                         <SearchIcon />
                     </SearchIconWrapper>
@@ -184,10 +186,43 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                         placeholder="Search…"
                         inputProps={{ 'aria-label': 'search' }}
                     />
-                </Search>
+                </Search> */}
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <SelectDropdown />
+                    {/* <SelectDropdown /> */}
+
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            mx: 5,
+                            display: { xs: 'none', md: 'flex' },
+                        }}
+                    >
+                        <Button
+                            sx={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+
+                                display: 'flex',
+                                color: 'black',
+                                textTransform: 'none',
+                            }}
+                        >
+                            <AccountBalanceWalletIcon />
+                            <Typography sx={{ mx: 1 }}>Wallet</Typography>
+                        </Button>
+                    </Box>
+
+                    <IconButton
+                        size="large"
+                        aria-label="show 17 new notifications"
+                        color="inherit"
+                    >
+                        <Badge color="error">
+                            <SettingsIcon />
+                        </Badge>
+                    </IconButton>
+
                     <IconButton
                         size="large"
                         aria-label="show 17 new notifications"
@@ -197,6 +232,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
+
                     <IconButton
                         size="large"
                         edge="end"
