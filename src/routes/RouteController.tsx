@@ -5,7 +5,7 @@ import { useAppSelector } from '../hooks/reduxHooks'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
-import RegisterPage from '../pages/RegisterPage /RegisterPage'
+import RegisterPage from '../pages/RegisterPage/RegisterPage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
