@@ -2,7 +2,7 @@ export const pathNames = {
     DASHBOARD: "/",
     LOGIN: "/login",
     REGISTER: "/register",
-
+    ONBOARDING:"/onboarding",
 }
 
 export const linkLabels = {
@@ -11,3 +11,4 @@ export const linkLabels = {
     "My_Portfolio": "My Portfolio"
 
 };
+    
