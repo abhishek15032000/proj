@@ -35,18 +35,24 @@ const App: FC<AppProps> = () => {
         <div>loading</div>
     ) : (
         <>
-            {getloginStatusFromLocalStorage && <AppDrawer />}
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    // p: 3,
-                    // width: { sm: `calc(100% - ${240}px)` },
-                }}
-            >
-                {getloginStatusFromLocalStorage && <Toolbar />}
-                <RouteController />
-            </Box>
+            {getloginStatusFromLocalStorage && (
+                <AppDrawer>
+                    <RouteController />
+                </AppDrawer>
+            )}
+            {!getloginStatusFromLocalStorage && (
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        // p: 3,
+                        // width: { sm: `calc(100% - ${240}px)` },
+                    }}
+                >
+                    {getloginStatusFromLocalStorage && <Toolbar />}
+                    <RouteController />
+                </Box>
+            )}
         </>
     )
 }

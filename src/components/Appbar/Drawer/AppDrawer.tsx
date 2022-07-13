@@ -20,13 +20,14 @@ import { ROLES } from '../../../config/roles.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { linkLabels } from '../../../routes/pathNames'
 import { privateRouteComponents } from '../../../routes/routeComponents'
+import RouteController from '../../../routes/RouteController'
 import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
 
 const drawerWidth = 240
 
-export default function ResponsiveDrawer() {
+export default function ResponsiveDrawer(props: any) {
     const location = useLocation()
 
     const userDataRoles = useAppSelector(
@@ -79,10 +80,6 @@ export default function ResponsiveDrawer() {
     }
 
     const midMenu = React.useCallback(() => {
-        console.log(
-            '🚀 ~ file: AppDrawer.tsx ~ line 37 ~ ResponsiveDrawer ~ userDataRoles',
-            userDataRoles
-        )
         if (
             _.intersectionWith(userDataRoles, [ROLES.ISSUER], _.isEqual)
                 .length > 0
@@ -214,6 +211,17 @@ export default function ResponsiveDrawer() {
                 >
                     {drawer}
                 </Drawer>
+            </Box>
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                }}
+            >
+                <Toolbar />
+                {props.children}
             </Box>
         </Box>
     )
