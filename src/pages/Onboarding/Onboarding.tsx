@@ -1,8 +1,12 @@
 import React from 'react'
-import { OnboardingProps } from './Onboarding.interface'
+import OnboardingComp from '../../components/Onboarding'
 
-const Onboarding = (props: OnboardingProps) => {
-    return <div>Onboarding component.</div>
+const Onboarding = () => {
+  return (
+    <div>
+      <OnboardingComp />
+    </div>
+  )
 }
 
 export default Onboarding
