@@ -1,122 +1,142 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
-import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { pathNames } from '../../routes/pathNames'
-import useForm from '../../hooks/useForm'
+// React Imports
+import React, { useState } from 'react'
+
+// MUI Components
+import {
+    Box,
+    Button,
+    Container,
+    InputAdornment,
+    TextField,
+    Typography,
+} from '@mui/material'
+
+// Local Imports
 import { LoginPageInterface } from './LoginPage.interface'
-import { useAppDispatch } from '../../hooks/reduxHooks'
-import { loginAction } from '../../redux/Slices/authSlice'
-import { getLocalItem } from '../../utils/Storage'
-import { authCalls } from '../../api/authCalls'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
 const Login = (props: LoginPageInterface) => {
-    const dispatch = useAppDispatch()
-
-    const navigate = useNavigate()
-
-    const login = () => {
-        dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
-        authCalls.loginCall()
-        navigate(pathNames.DASHBOARD, { replace: true })
-    }
-
-    const { handleChange, values, errors, handleSubmit } = useForm(login)
+    const [showPassword, setShowPassword] = useState(false)
 
     return (
-        <Grid container component="main" sx={{ height: '100vh' }}>
-            <Grid item xs={12} component={Paper} elevation={6} square>
-                <Box
-                    sx={{
-                        my: 8,
-                        mx: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography component="h1" variant="h5">
-                        Sign in to Carbon Credit
+        <Container maxWidth="xl" sx={{ display: 'flex' }}>
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                sx={{
+                    flex: 2,
+                    // border: '2px solid red',
+                    height: window.innerHeight,
+                }}
+            >
+                <Box>
+                    <Typography sx={{ fontSize: 40, marginBottom: '32px' }}>
+                        Login
                     </Typography>
-                    <Box
-                        component="form"
-                        noValidate
-                        sx={{ mt: 1 }}
-                        onSubmit={handleSubmit}
-                    >
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            defaultValue={values?.email}
-                            autoComplete="email"
-                            autoFocus
-                            onChange={handleChange}
-                            error={errors?.email}
-                        />
 
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            defaultValue={values?.password}
-                            autoComplete="current-password"
-                            onChange={handleChange}
-                            error={errors?.password}
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary" />
-                            }
-                            label="Remember me"
-                        />
-                        <Button
-                            data-testid={'loginBtn'}
-                            // onClick={handleSubmit}
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{
-                                mt: 3,
-                                mb: 2,
-                                color: 'primary.light',
-                                textTransform: 'none',
-                            }}
-                            color="primary"
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
+                    <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
+                        Email ID
+                    </Typography>
+
+                    <TextField
+                        sx={{
+                            marginBottom: '40px',
+                            width: '400px',
+                            height: '50px',
+                            borderRadius: '6px',
+                        }}
+                        id="outlined-basic"
+                        // label="Outlined"
+                        variant="outlined"
+                    />
+                    
+                    <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
+                        Password
+                    </Typography>
+
+                    <TextField
+                        sx={{
+                            marginBottom: '16px',
+                            width: '400px',
+                            height: '50px',
+                            borderRadius: '6px',
+                        }}
+                        id="outlined-basic"
+                        // label="Outlined"
+                        variant="outlined"
+                        type="password"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="start">
+                                    {!showPassword ? (
+                                        <VisibilityOffIcon
+                                            onClick={() =>
+                                                setShowPassword(!showPassword)
+                                            }
+                                        />
+                                    ) : (
+                                        <VisibilityIcon
+                                            onClick={() =>
+                                                setShowPassword(!showPassword)
+                                            }
+                                        />
+                                    )}
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                        }}
+                    >
+                        <Typography>Forgot password?</Typography>
                     </Box>
+                    <Button
+                        sx={{
+                            width: '400px',
+                            height: '50px',
+                            borderRadius: '6px',
+                            marginTop: '64px',
+                        }}
+                        variant="contained"
+                    >
+                        Login
+                    </Button>
+
+                    <Typography
+                        sx={{ marginTop: '40px', marginBottom: '15px' }}
+                    >
+                        Don’t have an account yet?
+                    </Typography>
+                    <Button
+                        sx={{
+                            width: '400px',
+                            height: '50px',
+                            borderRadius: '6px',
+                        }}
+                        variant="outlined"
+                    >
+                        Register
+                    </Button>
                 </Box>
-            </Grid>
-        </Grid>
+            </Box>
+            <Box
+                component="img"
+                src="https://wiki.dave.eu/images/4/47/Placeholder.png"
+                sx={{
+                    flex: 3,
+                    // border: '2px solid red',
+                    height: window.innerHeight,
+                }}
+            ></Box>
+        </Container>
     )
 }
 
