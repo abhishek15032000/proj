@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material'
+import { Box, Button, Grid, Typography } from '@mui/material'
 import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import { Colors } from '../../theme'
@@ -29,7 +29,7 @@ const StepFour: React.FC<StepFourProps> = ({ step, setStep }) => {
         Documents to be uploaded for occasional transaction.after end of the
         customer relationship/completion of an{' '}
       </div>
-      <div>Customer Information</div>
+      <Box sx={{ mt: 2 }}>Customer Information</Box>
       <Grid
         container
         sx={{ mt: 1 }}

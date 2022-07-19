@@ -260,7 +260,7 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
           />
         </Grid>
       </Grid>
-      <div>Identity Verification</div>
+      <Box sx={{ marginTop: 2 }}>Identity Verification</Box>
       <Grid
         container
         justifyContent="center"
