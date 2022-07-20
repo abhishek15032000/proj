@@ -26,7 +26,6 @@ import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
 
 const drawerWidth = 240
-const navBarHeight = 64
 
 export default function ResponsiveDrawer(props: any) {
   const location = useLocation()
@@ -132,6 +131,7 @@ export default function ResponsiveDrawer(props: any) {
       // sx={{ justifyContent: 'center', alignItems: 'center' }}
     >
       <Toolbar />
+      <div style={{ height: '25%' }}></div>
 
       <List sx={{ mt: 1 }}>
         {midMenu().map((text, index) => (
@@ -154,12 +154,34 @@ export default function ResponsiveDrawer(props: any) {
             </ListItem>
           </NavLink>
         ))}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+
+            marginTop: screen.height / 3 - midMenu().length + 'px',
+          }}
+        >
+          <NavLink
+            to={'/logout'}
+            style={{ textDecoration: 'none', color: Colors.black }}
+          >
+            {' '}
+            <ListItem key={linkLabels.Projects}>
+              <NavListItem
+                linkLabels={'Logout'}
+                active={false}
+                location={location}
+              />
+            </ListItem>
+          </NavLink>
+        </div>
       </List>
     </Box>
   )
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -211,8 +233,8 @@ export default function ResponsiveDrawer(props: any) {
         component="main"
         sx={{
           flexGrow: 1,
+          p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          height: { sm: `calc(100% - ${navBarHeight}px)` },
         }}
       >
         <Toolbar />
