@@ -4,39 +4,95 @@ import { Colors } from "../../theme";
 
 
 const initialState: ThemeOptions = {
-    typography: {
-        fontFamily: ['"Poppins"'].join(","),
-    },
-    palette: {
-        primary: {
-            light: Colors.white,
-            main: Colors.dullOrange,
-        },
-        secondary: {
-            main: "#f50057",
-        },
-        background: {
-            default: "#fff",
-        },
-        success: {
-            main: "#2a0d2b",
-        },
-    },
+	typography: {
+		fontFamily: ['"Poppins"'].join(","),
+	},
+	palette: {
+		primary: {
+			light: Colors.white,
+			main: Colors.dullOrange,
+			lightPrimary: "#4caf50",
+		},
+		secondary: { main: "#f50057", },
+		background: { default: "#F6F9F7", },
+		success: { main: "#0EAE71", },
+		error: { main: "#DD3730", },
+		neutral: { main: "#ffeb3b", },
+		surface: { main: "#FFFFFF" },
+		accent: { main: "#F3BA4D" },
+		lightPrimary1: { main: "#388E81" },
+		darkPrimary1: { main: "#1D4B44" },
+		lightPrimary2: { main: "#E1EEE8" },
+		darkPrimary2: { main: "#BCE2D2" },
+		container1: { main: "#E9EEEC" },
+		container2: { main: "#1D4B44" },
+		containerText: { main: "#919392" },
+		defaultIcon: { main: "#919392" },
+		box: { main: "#FBFDFE" },
+		disable: { main: "#929292" },
+		textButtonColor: { main: "#1D4844" },
+		checkbox: { main: "#2B2B2B" },
+		tick: { main: "#FFFFFF" },
+		link: { main: "#09A0E0" },
+	},
 };
 
+declare module '@mui/material/styles' {
+	interface SimplePaletteColorOptions {
+		lightPrimary?: string
+	}
+	interface Palette {
+		neutral?: Palette['primary'];
+		surface?: Palette['primary'];
+		accent?: Palette['primary'];
+		lightPrimary1?: Palette['primary'];
+		darkPrimary1?: Palette['primary'];
+		lightPrimary2?: Palette['primary'];
+		darkPrimary2?: Palette['primary'];
+		container1?: Palette['primary'];
+		container2?: Palette['primary'];
+		containerText?: Palette['primary'];
+		defaultIcon?: Palette['primary'];
+		box?: Palette['primary'];
+		disable?: Palette['primary'];
+		textButtonColor?: Palette['primary'];
+		checkbox?: Palette['primary'];
+		tick?: Palette['primary'];
+		link?: Palette['primary'];
+	}
+
+	// allow configuration using `createTheme`
+	interface PaletteOptions {
+		neutral?: PaletteOptions['primary'];
+		surface?: PaletteOptions['primary'];
+		accent?: PaletteOptions['primary'];
+		lightPrimary1?: PaletteOptions['primary'];
+		darkPrimary1?: PaletteOptions['primary'];
+		lightPrimary2?: PaletteOptions['primary'];
+		darkPrimary2?: PaletteOptions['primary'];
+		container1?: PaletteOptions['primary'];
+		container2?: PaletteOptions['primary'];
+		containerText?: PaletteOptions['primary'];
+		defaultIcon?: PaletteOptions['primary'];
+		box?: PaletteOptions['primary'];
+		disable?: PaletteOptions['primary'];
+		textButtonColor?: PaletteOptions['primary'];
+		checkbox?: PaletteOptions['primary'];
+		tick?: PaletteOptions['primary'];
+		link?: PaletteOptions['primary'];
+	}
+}
+
 const theme = createSlice({
-    name: 'theme',
-    initialState,
-    reducers: {
-        changePallete: (state, action: PayloadAction<any>) => {
-            state.palette = action.payload
-        },
-    },
+	name: 'theme',
+	initialState,
+	reducers: {
+		changePalette: (state, action: PayloadAction<any>) => {
+			state.palette = action.payload
+		},
+	},
 })
 
-export const { changePallete } = theme.actions
-
-
-
+export const { changePalette } = theme.actions
 
 export default theme.reducer;
