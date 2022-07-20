@@ -3,7 +3,8 @@ export const pathNames = {
     LOGIN: "/login",
     REGISTER: "/register",
     ONBOARDING: "/onboarding",
-    MAINTENANCE_PAGE: "/maintenance-page"
+    MAINTENANCE_PAGE: "/maintenance-page",
+    ISSUANCE_DATA_COLLECTION: "/issuance-data-collection",
 }
 
 export const linkLabels = {
