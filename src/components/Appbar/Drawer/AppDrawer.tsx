@@ -63,7 +63,7 @@ export default function ResponsiveDrawer(props: any) {
         break
 
       default:
-        IconComponent = InboxIcon
+        IconComponent = null
     }
     if (IconComponent) {
       return (
@@ -74,6 +74,8 @@ export default function ResponsiveDrawer(props: any) {
           }}
         />
       )
+    } else {
+      return null
     }
   }
 
@@ -112,7 +114,8 @@ export default function ResponsiveDrawer(props: any) {
                 fontWeight: active ? '500' : '400',
                 opacity: active ? 1 : 0.5,
                 fontSize: 14,
-                paddingLeft: !iconRenderer(linkLabels, location) ? 55 : 5,
+                // paddingLeft: !iconRenderer(linkLabels, location) ? 5 : 5,
+                paddingLeft: 5,
               }}
             >
               {linkLabels}
@@ -153,28 +156,21 @@ export default function ResponsiveDrawer(props: any) {
             </ListItem>
           </NavLink>
         ))}
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-
-            marginTop: screen.height / 3 - midMenu().length + 'px',
-          }}
+      </List>
+      <List sx={{ marginTop: screen.height / 3 - midMenu().length + 'px' }}>
+        <NavLink
+          to={pathNames.LOGOUT}
+          style={{ textDecoration: 'none', color: Colors.secondary }}
         >
-          <NavLink
-            to={pathNames.LOGOUT}
-            style={{ textDecoration: 'none', color: Colors.black }}
-          >
-            {' '}
-            <ListItem key={linkLabels.Projects}>
-              <NavListItem
-                linkLabels={'Logout'}
-                active={false}
-                location={location}
-              />
-            </ListItem>
-          </NavLink>
-        </div>
+          {' '}
+          <ListItem key={linkLabels.Projects}>
+            <NavListItem
+              linkLabels={'Logout'}
+              active={true}
+              location={location}
+            />
+          </ListItem>
+        </NavLink>
       </List>
     </Box>
   )
