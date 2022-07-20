@@ -16,40 +16,10 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 const RegisterPage = (props: RegisterPageProps) => {
     const [showPassword, setShowPassword] = useState(true)
     return (
-        <Container maxWidth="xl" sx={{ display: 'flex' }}>
-            <Grid item xl={5} lg={5} md={6} sm={12} xs={12}>
-                <Box sx={{ marginRight: '20px' }}>
+        <Grid container flexDirection="row" xs={12} height={'100vh'}>
+            <Grid item xl={5} lg={5} md={5} sm={12} xs={12}>
+                <Box sx={{ padding: '0 50px' }}>
                     <Typography sx={{ fontSize: 40 }}>Register</Typography>
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        sx={{
-                            flex: 1,
-                            // border: '2px solid red',
-                        }}
-                    >
-                        <Typography
-                            sx={{
-                                fontSize: 14,
-                                marginBottom: '4px',
-                                width: '190px',
-                            }}
-                        >
-                            First Name
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: 14,
-                                marginBottom: '4px',
-                                width: '190px',
-                                marginRight: '5px',
-                            }}
-                        >
-                            Last Name
-                        </Typography>
-                    </Box>
                     <Box
                         display="flex"
                         flexDirection="row"
@@ -58,6 +28,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                         sx={{
                             flex: 1,
                             // border: '2px solid red',
+                            marginTop: '10px',
                         }}
                     >
                         <TextField
@@ -68,7 +39,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                                 borderRadius: '6px',
                             }}
                             id="outlined-basic"
-                            // label="Outlined"
+                            label=" First Name"
                             variant="outlined"
                         />
 
@@ -81,54 +52,24 @@ const RegisterPage = (props: RegisterPageProps) => {
                                 marginLeft: '20px',
                             }}
                             id="outlined-basic"
-                            // label="Outlined"
+                            label="Last Name"
                             variant="outlined"
                         />
                     </Box>
-                    <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
-                        Work Email ID
-                    </Typography>
+
                     <TextField
                         sx={{
                             marginBottom: '20px',
                             width: '100%',
                             height: '50px',
                             borderRadius: '6px',
+                            marginTop: '10px',
                         }}
                         id="outlined-basic"
                         variant="outlined"
+                        label={'  Work Email ID'}
                     />
                     <Box>
-                        <Box
-                            display="flex"
-                            flexDirection="row"
-                            alignItems="center"
-                            justifyContent="space-between"
-                            sx={{
-                                flex: 1,
-                                // border: '2px solid red',
-                            }}
-                        >
-                            <Typography
-                                sx={{
-                                    fontSize: 14,
-                                    marginBottom: '4px',
-                                    width: '100px',
-                                }}
-                            >
-                                Country Code
-                            </Typography>
-                            <Typography
-                                sx={{
-                                    fontSize: 14,
-                                    marginBottom: '4px',
-                                    width: '280px',
-                                    marginLeft: '40px',
-                                }}
-                            >
-                                Phone Number
-                            </Typography>
-                        </Box>
                         <Box
                             display="flex"
                             flexDirection="row"
@@ -136,6 +77,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                             justifyContent="flex-start"
                             sx={{
                                 flex: 1,
+                                marginTop: '10px',
                                 // border: '2px solid red',
                             }}
                         >
@@ -147,7 +89,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                                     borderRadius: '6px',
                                 }}
                                 id="outlined-basic"
-                                // label="Outlined"
+                                label="Country Code"
                                 variant="outlined"
                             />
                             <TextField
@@ -159,24 +101,22 @@ const RegisterPage = (props: RegisterPageProps) => {
                                     marginLeft: '20px',
                                 }}
                                 id="outlined-basic"
-                                // label="Outlined"
+                                label="Phone Number"
                                 variant="outlined"
                             />
                         </Box>
                     </Box>
 
-                    <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
-                        Password
-                    </Typography>
                     <TextField
                         sx={{
                             marginBottom: '20px',
                             width: '100%',
                             height: '50px',
                             borderRadius: '6px',
+                            marginTop: '10px',
                         }}
                         id="outlined-basic"
-                        // label="Outlined"
+                        label="Password"
                         variant="outlined"
                         type="password"
                         InputProps={{
@@ -237,7 +177,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                 item
                 xl={7}
                 lg={7}
-                md={6}
+                md={7}
                 display={{
                     sm: 'none',
                     lg: 'block',
@@ -246,7 +186,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                     xs: 'none',
                 }}
             />
-        </Container>
+        </Grid>
     )
 }
 
