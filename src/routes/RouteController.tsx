@@ -63,17 +63,6 @@ const RouteController = ({ localLoggedIn }: any) => {
                     />
                 }
             />
-            {/*<Route
-                path={pathNames.ACCOUNTCREATEDPAGE}
-                element={
-                    <PublicRoute
-                        roles={[]}
-                        component={AccountCreatedPage}
-                        authenticated={userData}
-                        userData={userData}
-                    />
-                }
-            />*/}
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     )

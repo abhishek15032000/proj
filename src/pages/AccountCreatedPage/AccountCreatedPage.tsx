@@ -8,10 +8,10 @@ import AccountCreatedImage from '../../assets/Images/AccountCreatedImage.png'
 const AccountCreatedPage = (props: AccountCreatedPageInterface) => {
     return (
         <Grid container sx={{ height: '100vh' }}>
-            <Grid item sx={{ width: '45%' }}>
+            <Grid item xl={5} lg={5} md={5} sm={12} xs={12}>
                 <Box
                     sx={{
-                        mt: 16,
+                        mt: 14,
                         display: 'flex',
                         flexDirection: 'column',
                         height: '60vh',
@@ -27,7 +27,7 @@ const AccountCreatedPage = (props: AccountCreatedPageInterface) => {
                     >
                         Account Verified!
                     </Typography>
-                    <Grid sx={{ pt: 2 }}>
+                    <Grid sx={{ pt: 1 }}>
                         <img
                             src={AccountCreatedImage}
                             width={200}
@@ -44,7 +44,20 @@ const AccountCreatedPage = (props: AccountCreatedPageInterface) => {
                     </Typography>
                 </Box>
             </Grid>
-            <Grid item sx={{ width: '55%' }}>
+            <Grid
+                item
+                xl={7}
+                lg={7}
+                md={7}
+                display={{
+                    sm: 'none',
+                    lg: 'block',
+                    md: 'block',
+                    xl: 'block',
+                    xs: 'none',
+                }}
+                sx={{ background: 'black' }}
+            >
                 Account created image
             </Grid>
         </Grid>
