@@ -135,6 +135,7 @@ export default function ResponsiveDrawer(props: any) {
             // sx={{ justifyContent: 'center', alignItems: 'center' }}
         >
             <Toolbar />
+            <div style={{ height: '25%' }}></div>
 
             <List sx={{ mt: 1 }}>
                 {midMenu().map((text, index) => (
@@ -159,6 +160,28 @@ export default function ResponsiveDrawer(props: any) {
                         </ListItem>
                     </NavLink>
                 ))}
+                <div
+                    style={{
+                        flex: 1,
+                        display: 'flex',
+
+                        marginTop: screen.height / 3 - midMenu().length + 'px',
+                    }}
+                >
+                    <NavLink
+                        to={'/logout'}
+                        style={{ textDecoration: 'none', color: Colors.black }}
+                    >
+                        {' '}
+                        <ListItem key={linkLabels.Projects}>
+                            <NavListItem
+                                linkLabels={'Logout'}
+                                active={false}
+                                location={location}
+                            />
+                        </ListItem>
+                    </NavLink>
+                </div>
             </List>
         </Box>
     )
