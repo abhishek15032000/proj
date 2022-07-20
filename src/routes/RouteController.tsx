@@ -3,9 +3,12 @@ import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useAppSelector } from '../hooks/reduxHooks'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
+import AccountCreatedPage from '../pages/AccountCreatedPage/AccountCreatedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
+import MaintenancePage from '../pages/MaintenancePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
+import TwoFaPage from '../pages/TwoFa/TwoFaPage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
@@ -45,6 +48,28 @@ const RouteController = ({ localLoggedIn }: any) => {
                     <PublicRoute
                         roles={[]}
                         component={RegisterPage}
+                        authenticated={userData}
+                        userData={userData}
+                    />
+                }
+            />
+            <Route
+                path={pathNames.MAINTENANCE_PAGE}
+                element={
+                    <PublicRoute
+                        roles={[]}
+                        component={MaintenancePage}
+                        authenticated={userData}
+                        userData={userData}
+                    />
+                }
+            />
+            <Route
+                path={pathNames.TWOFA}
+                element={
+                    <PublicRoute
+                        roles={[]}
+                        component={TwoFaPage}
                         authenticated={userData}
                         userData={userData}
                     />

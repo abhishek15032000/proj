@@ -1,4 +1,4 @@
-import { Box, Grid, Paper } from '@mui/material'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
 import CCButton from '../../atoms/CCButton'
 import LinearProgressBar from '../../atoms/LinearProgressBar'
@@ -6,22 +6,16 @@ import Welcome from '../../components/Dashboard/Welcome/Welcome'
 import { DashboardPageProps } from './DashboardPage.interface'
 import SendIcon from '@mui/icons-material/Send'
 
+import IssuerProjectWelcomePage from '../IssuerProjectWelcomePage'
 const DashboardPage = (props: DashboardPageProps) => {
-    return (
-        <Grid container component="main" sx={{ height: '100vh' }}>
-            <Grid item xs={4} sx={{ background: 'primary.background' }}>
-                <LinearProgressBar />
-                <CCButton text="Hello" variant="contained" rounded />
-                <CCButton text="Hello" variant="contained" />
-                <CCButton
-                    rounded
-                    text="Hello"
-                    variant="contained"
-                    endIcon={<SendIcon />}
-                />
-            </Grid>
-        </Grid>
-    )
+  return (
+    <Grid container padding={4}>
+      <Typography variant="h5" sx={{ paddingY: 3 }}>
+        Projects
+      </Typography>
+      <IssuerProjectWelcomePage />
+    </Grid>
+  )
 }
 
 export default DashboardPage
