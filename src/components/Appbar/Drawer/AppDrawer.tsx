@@ -157,7 +157,7 @@ export default function ResponsiveDrawer(props: any) {
           </NavLink>
         ))}
       </List>
-      <List sx={{ marginTop: screen.height / 3 - midMenu().length + 'px' }}>
+      <List sx={{ marginTop: screen.height / 3.5 - midMenu().length + 'px' }}>
         <NavLink
           to={pathNames.LOGOUT}
           style={{ textDecoration: 'none', color: Colors.secondary }}

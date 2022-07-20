@@ -7,10 +7,15 @@ const CCButton: React.FC<CCButtonProps> = (props) => {
       <Button
         {...props}
         sx={{
+          height: '48px',
           borderRadius: props.rounded ? 10 : 2,
           textTransform: 'none',
           backgroundColor: 'darkPrimary1.main',
           color: 'primary.light',
+          fontSize: '16px',
+          paddingY: '13px',
+          paddingX: '24px',
+          minWidth: '168px',
           '&hover': {
             color: 'primary.main',
             border: '2px solid',

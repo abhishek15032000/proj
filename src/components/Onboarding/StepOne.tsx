@@ -20,10 +20,10 @@ declare module '@mui/material/TextField' {
 
 interface StepOneProps {
   step: number
-  setStep: React.Dispatch<React.SetStateAction<any>>
+  setStep: (arg: any) => void
 }
 
-const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
+const StepOne = ({ step, setStep }: StepOneProps) => {
   const navigate = useNavigate()
   const handleNext = () => {
     setStep(step + 1)
@@ -42,7 +42,9 @@ const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
       >
         KYC/KYB
       </Typography>
-      <div style={{ color: Colors.darkPrimary1 }}>Company Identification</div>
+      <Typography style={{ color: Colors.darkPrimary1 }}>
+        Company Identification
+      </Typography>
       <Grid
         container
         sx={{
@@ -203,8 +205,16 @@ const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
       <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
         <Grid item>
           <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
-            variant="contained"
+            sx={{
+              // width: '100%',
+              // height: '50px',
+              borderRadius: '6px',
+              backgroundColor: 'white',
+              color: 'darkPrimary1.main',
+              border: '2px solid',
+              borderColor: 'darkPrimary1.main',
+            }}
+            variant="outlined"
             onClick={handleBack}
           >
             Back

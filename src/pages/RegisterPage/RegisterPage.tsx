@@ -226,7 +226,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             onClick={() => navigate(pathNames.LOGIN)}
             sx={{
               width: '100%',
-              height: '50px',
+              // height: '50px',
               borderRadius: '6px',
               backgroundColor: 'white',
               color: 'darkPrimary1.main',

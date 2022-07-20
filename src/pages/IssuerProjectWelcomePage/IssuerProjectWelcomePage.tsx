@@ -51,6 +51,7 @@ const IssuerProjectWelcomePage = (props: IssuerProjectWelcomePageProps) => {
             my: 8,
             mx: 4,
             display: 'flex',
+            flexWrap: 'wrap',
           }}
         >
           <PaperLabelAndButton
@@ -85,16 +86,41 @@ const PaperLabelAndButton = (props: PaperLabelAndButtonProps) => {
         sx={{
           py: 3,
           px: 2,
-          background: '#f3f3f3',
+          backgroundColor: 'container1.main',
           mr: 3,
+          mb: 1,
           minHeight: 150,
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'space-between',
           display: 'flex',
           flexDirection: 'column',
+          overflow: 'hidden',
+          position: 'relative',
         }}
         elevation={0}
       >
+        <Grid
+          container
+          position={'absolute'}
+          sx={{
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '10px',
+            backgroundColor: 'accent.main',
+          }}
+        >
+          <Grid
+            item
+            display={'flex'}
+            sx={{
+              background: 'accent.main',
+              height: '20px',
+              width: '100%',
+            }}
+            xs={12}
+          />
+        </Grid>
         <Typography component="div" variant="body1">
           {props.label}
         </Typography>
