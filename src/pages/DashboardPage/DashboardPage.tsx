@@ -1,22 +1,15 @@
-import { Box, Grid, Paper } from '@mui/material'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
-import LinearProgressBar from '../../atoms/LinearProgressBar'
-import Welcome from '../../components/Dashboard/Welcome/Welcome'
-import { DashboardPageProps } from './DashboardPage.interface'
 
+import { DashboardPageProps } from './DashboardPage.interface'
+import IssuerProjectWelcomePage from '../IssuerProjectWelcomePage'
 const DashboardPage = (props: DashboardPageProps) => {
     return (
-        <Grid container component="main" sx={{ height: '100vh' }}>
-            <Grid
-                item
-                xs={12}
-                component={Paper}
-                elevation={6}
-                square
-                sx={{ background: 'primary.background' }}
-            >
-                <LinearProgressBar />
-            </Grid>
+        <Grid>
+            <Typography variant="h5" sx={{ paddingY: 3 }}>
+                Projects
+            </Typography>
+            <IssuerProjectWelcomePage />
         </Grid>
     )
 }

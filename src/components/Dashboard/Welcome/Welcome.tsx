@@ -7,14 +7,15 @@ import { WelcomeProps } from './Welcome.interface'
 const Welcome = (props: WelcomeProps) => {
     const navigate = useNavigate()
     return (
-        <Grid container component="main" sx={{ height: '100vh' }}>
+        <Grid container component="main">
             <Grid
                 item
                 xs={12}
+                md={9}
+                lg={9}
                 component={Paper}
-                elevation={6}
                 square
-                sx={{ background: 'primary.background' }}
+                sx={{ background: 'primary.background', border: '1px solid' }}
             >
                 <Box
                     sx={{
