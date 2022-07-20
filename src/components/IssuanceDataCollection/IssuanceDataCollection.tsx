@@ -15,6 +15,7 @@ import SectionA2 from './SectionA2'
 import SectionA3 from './SectionA3'
 import SectionA4 from './SectionA4'
 import SectionA5 from './SectionA5'
+import CCButton from '../../atoms/CCButton'
 
 const sections = [
   { name: 'Section A: Description of Project Activity' },
@@ -75,13 +76,13 @@ const IssuanceDataCollection = () => {
         </Grid>
         <Grid item xs={6}>
           <Box display="flex" justifyContent="flex-end">
-            <Button
-              sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            <CCButton
+              sx={{ color: '#fff' }}
               variant="contained"
               onClick={handleSaveAndNext}
             >
               Save & Next
-            </Button>
+            </CCButton>
           </Box>
         </Grid>
       </Grid>

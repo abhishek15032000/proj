@@ -11,9 +11,13 @@ import {
 } from '@mui/material'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import CCButton from '../../atoms/CCButton'
+import { pathNames } from '../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterPage = (props: RegisterPageProps) => {
   const [showPassword, setShowPassword] = useState(true)
+  const navigate = useNavigate()
   return (
     <Grid
       container
@@ -24,7 +28,21 @@ const RegisterPage = (props: RegisterPageProps) => {
       alignItems="center"
     >
       <Grid item xl={5} lg={5} md={5} sm={12} xs={12}>
-        <Box sx={{ padding: '0 50px' }}>
+        <Box
+          component="form"
+          // onSubmit={handleSubmit}
+          noValidate
+          sx={{
+            marginLeft: {
+              sm: 0,
+              lg: 11,
+            },
+            marginRight: {
+              sm: 0,
+              lg: 18,
+            },
+          }}
+        >
           <Typography sx={{ fontSize: 40 }}>Register</Typography>
           <Box
             display="flex"
@@ -141,7 +159,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             }}
           />
 
-          <Button
+          <CCButton
             sx={{
               width: '100%',
               height: '50px',
@@ -151,7 +169,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             variant="contained"
           >
             Register
-          </Button>
+          </CCButton>
           <Typography
             sx={{
               marginTop: '20px',
@@ -162,16 +180,21 @@ const RegisterPage = (props: RegisterPageProps) => {
           >
             Already have an account?
           </Typography>
-          <Button
+          <CCButton
+            onClick={() => navigate(pathNames.LOGIN)}
             sx={{
               width: '100%',
               height: '50px',
               borderRadius: '6px',
+              backgroundColor: 'white',
+              color: 'darkPrimary1.main',
+              border: '2px solid',
+              borderColor: 'darkPrimary1.main',
             }}
             variant="outlined"
           >
             Login
-          </Button>
+          </CCButton>
         </Box>
       </Grid>
       <Grid
@@ -179,12 +202,17 @@ const RegisterPage = (props: RegisterPageProps) => {
         xl={7}
         lg={7}
         md={7}
-        display={{
-          sm: 'none',
-          lg: 'block',
-          md: 'block',
-          xl: 'block',
-          xs: 'none',
+        sx={{
+          display: {
+            sm: 'none',
+            lg: 'flex',
+            md: 'flex',
+            xl: 'flex',
+            xs: 'none',
+          },
+          height: '100%',
+          background: 'black',
+          flex: 1,
         }}
       />
     </Grid>

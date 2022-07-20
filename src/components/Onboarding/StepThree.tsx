@@ -18,6 +18,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import { Colors } from '../../theme'
 import { Box } from '@mui/system'
 import { DatePicker } from '@mui/x-date-pickers'
+import CCButton from '../../atoms/CCButton'
 
 declare module '@mui/material/FormLabel' {
   interface FormLabelPropsColorOverrides {
@@ -303,22 +304,22 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
       </Grid>
       <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
         <Grid item>
-          <Button
+          <CCButton
             sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             onClick={handleBack}
           >
             Back
-          </Button>
+          </CCButton>
         </Grid>
         <Grid item>
-          <Button
+          <CCButton
             sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             onClick={handleNext}
           >
             Next
-          </Button>
+          </CCButton>
         </Grid>
       </Grid>
     </>

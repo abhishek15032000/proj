@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import useForm from '../../hooks/useForm'
+import CCButton from '../../atoms/CCButton'
 
 const Login = (props: LoginPageInterface) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -38,7 +39,14 @@ const Login = (props: LoginPageInterface) => {
   const { handleChange, values, errors, handleSubmit } = useForm(login)
 
   return (
-    <Grid container>
+    <Grid
+      container
+      flexDirection="row"
+      xs={12}
+      height={'100vh'}
+      justifyContent="center"
+      alignItems="center"
+    >
       <Grid
         item
         xl={5}
@@ -46,13 +54,13 @@ const Login = (props: LoginPageInterface) => {
         md={5}
         sm={12}
         xs={12}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        sx={{
-          padding: 1,
-          height: window.innerHeight,
-        }}
+        // display="flex"
+        // flexDirection="column"
+        // justifyContent="center"
+        // sx={{
+        //   padding: 1,
+        //   height: window.innerHeight,
+        // }}
       >
         <Box
           component="form"
@@ -139,7 +147,7 @@ const Login = (props: LoginPageInterface) => {
           >
             <Typography>Forgot password?</Typography>
           </Box>
-          <Button
+          <CCButton
             type="submit"
             fullWidth
             sx={{
@@ -150,21 +158,26 @@ const Login = (props: LoginPageInterface) => {
             variant="contained"
           >
             Login
-          </Button>
+          </CCButton>
 
           <Typography sx={{ marginTop: '40px', marginBottom: '15px' }}>
             Don’t have an account yet?
           </Typography>
-          <Button
+          <CCButton
+            onClick={() => navigate(pathNames.REGISTER)}
             fullWidth
             sx={{
               height: '50px',
               borderRadius: '6px',
+              backgroundColor: 'white',
+              color: 'darkPrimary1.main',
+              border: '2px solid',
+              borderColor: 'darkPrimary1.main',
             }}
             variant="outlined"
           >
             Register
-          </Button>
+          </CCButton>
         </Box>
       </Grid>
       <Grid

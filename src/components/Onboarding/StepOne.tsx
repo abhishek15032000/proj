@@ -8,6 +8,9 @@ import {
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import React from 'react'
 import { Colors } from '../../theme'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import CCButton from '../../atoms/CCButton'
 
 declare module '@mui/material/TextField' {
   interface TextFieldPropsColorOverrides {
@@ -21,12 +24,13 @@ interface StepOneProps {
 }
 
 const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
+  const navigate = useNavigate()
   const handleNext = () => {
     setStep(step + 1)
   }
 
   const handleBack = () => {
-    setStep(step - 1)
+    navigate(pathNames.DASHBOARD, { replace: true })
   }
 
   return (
@@ -198,22 +202,22 @@ const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
       </Grid>
       <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
         <Grid item>
-          <Button
+          <CCButton
             sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             onClick={handleBack}
           >
             Back
-          </Button>
+          </CCButton>
         </Grid>
         <Grid item>
-          <Button
+          <CCButton
             sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             onClick={handleNext}
           >
             Next
-          </Button>
+          </CCButton>
         </Grid>
       </Grid>
     </>
