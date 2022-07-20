@@ -10,7 +10,7 @@ const initialState: ThemeOptions = {
 	palette: {
 		primary: {
 			light: Colors.white,
-			main: Colors.dullOrange,
+			main: "#4caf50",
 			lightPrimary: "#4caf50",
 		},
 		secondary: { main: "#f50057", },

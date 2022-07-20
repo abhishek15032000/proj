@@ -8,14 +8,14 @@ import SendIcon from '@mui/icons-material/Send'
 
 import IssuerProjectWelcomePage from '../IssuerProjectWelcomePage'
 const DashboardPage = (props: DashboardPageProps) => {
-    return (
-        <Grid>
-            <Typography variant="h5" sx={{ paddingY: 3 }}>
-                Projects
-            </Typography>
-            <IssuerProjectWelcomePage />
-        </Grid>
-    )
+  return (
+    <Grid container padding={4}>
+      <Typography variant="h5" sx={{ paddingY: 3 }}>
+        Projects
+      </Typography>
+      <IssuerProjectWelcomePage />
+    </Grid>
+  )
 }
 
 export default DashboardPage

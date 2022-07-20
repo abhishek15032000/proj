@@ -16,9 +16,26 @@ import {
 import { LoginPageInterface } from './LoginPage.interface'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import { loginAction } from '../../redux/Slices/authSlice'
+import { authCalls } from '../../api/authCalls'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { pathNames } from '../../routes/pathNames'
+import useForm from '../../hooks/useForm'
 
 const Login = (props: LoginPageInterface) => {
   const [showPassword, setShowPassword] = useState(false)
+  const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
+
+  const login = () => {
+    dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
+    authCalls.loginCall()
+    navigate(pathNames.DASHBOARD, { replace: true })
+  }
+
+  const { handleChange, values, errors, handleSubmit } = useForm(login)
 
   return (
     <Grid container>
@@ -38,14 +55,17 @@ const Login = (props: LoginPageInterface) => {
         }}
       >
         <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
           sx={{
             marginLeft: {
-              sm: 0, 
-              lg: 11
+              sm: 0,
+              lg: 11,
             },
             marginRight: {
-              sm: 0, 
-              lg: 18
+              sm: 0,
+              lg: 18,
             },
           }}
         >
@@ -59,6 +79,7 @@ const Login = (props: LoginPageInterface) => {
 
           <TextField
             fullWidth
+            name="email"
             sx={{
               marginBottom: '40px',
               height: '50px',
@@ -66,6 +87,10 @@ const Login = (props: LoginPageInterface) => {
             }}
             id="outlined-basic"
             variant="outlined"
+            onChange={handleChange}
+            error={errors?.email}
+            defaultValue={values?.email}
+            required
           />
 
           <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
@@ -83,7 +108,11 @@ const Login = (props: LoginPageInterface) => {
             id="outlined-basic"
             // label="Outlined"
             variant="outlined"
+            defaultValue={values?.password}
+            required
             type="password"
+            error={errors?.password}
+            onChange={handleChange}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -111,6 +140,7 @@ const Login = (props: LoginPageInterface) => {
             <Typography>Forgot password?</Typography>
           </Box>
           <Button
+            type="submit"
             fullWidth
             sx={{
               height: '50px',
