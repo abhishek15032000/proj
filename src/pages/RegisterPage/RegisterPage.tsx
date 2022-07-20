@@ -14,10 +14,20 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import CCButton from '../../atoms/CCButton'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
+import useForm from '../../hooks/useForm'
 
 const RegisterPage = (props: RegisterPageProps) => {
-  const [showPassword, setShowPassword] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
+  const register = () => {
+    alert(JSON.stringify(values))
+    // dispatch(registerAction({ roles: ['ISSUER'] })) //calling action from redux
+    // authCalls.registerCall()
+    navigate(pathNames.LOGIN, { replace: true })
+  }
+
+  const { handleChange, values, errors, handleSubmit } = useForm(register)
+
   return (
     <Grid
       container
@@ -27,18 +37,32 @@ const RegisterPage = (props: RegisterPageProps) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Grid item xl={5} lg={5} md={5} sm={12} xs={12}>
+      <Grid
+        item
+        xl={5}
+        lg={5}
+        md={5}
+        sm={12}
+        xs={12}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        sx={{
+          padding: 1,
+          height: window.innerHeight,
+        }}
+      >
         <Box
           component="form"
-          // onSubmit={handleSubmit}
-          noValidate
+          onSubmit={handleSubmit}
+          // noValidate
           sx={{
             marginLeft: {
-              sm: 0,
+              sm: 8,
               lg: 11,
             },
             marginRight: {
-              sm: 0,
+              sm: 9,
               lg: 18,
             },
           }}
@@ -65,6 +89,9 @@ const RegisterPage = (props: RegisterPageProps) => {
               id="outlined-basic"
               label=" First Name"
               variant="outlined"
+              name="firstName"
+              onChange={handleChange}
+              defaultValue={values?.firstName}
             />
 
             <TextField
@@ -78,6 +105,9 @@ const RegisterPage = (props: RegisterPageProps) => {
               id="outlined-basic"
               label="Last Name"
               variant="outlined"
+              name="lastName"
+              onChange={handleChange}
+              defaultValue={values?.lastName}
             />
           </Box>
 
@@ -91,7 +121,10 @@ const RegisterPage = (props: RegisterPageProps) => {
             }}
             id="outlined-basic"
             variant="outlined"
-            label={'  Work Email ID'}
+            label={'Work Email ID'}
+            name="email"
+            onChange={handleChange}
+            defaultValue={values?.email}
           />
 
           <Box
@@ -115,6 +148,9 @@ const RegisterPage = (props: RegisterPageProps) => {
               id="outlined-basic"
               label="Country Code"
               variant="outlined"
+              name={'countryCode'}
+              onChange={handleChange}
+              defaultValue={values?.countryCode}
             />
             <TextField
               sx={{
@@ -127,6 +163,8 @@ const RegisterPage = (props: RegisterPageProps) => {
               id="outlined-basic"
               label="Phone Number"
               variant="outlined"
+              onChange={handleChange}
+              defaultValue={values?.phoneNumber}
             />
           </Box>
 
@@ -141,7 +179,10 @@ const RegisterPage = (props: RegisterPageProps) => {
             id="outlined-basic"
             label="Password"
             variant="outlined"
-            type="password"
+            name="password"
+            onChange={handleChange}
+            defaultValue={values?.password}
+            type={showPassword ? 'text' : 'password'}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -160,6 +201,7 @@ const RegisterPage = (props: RegisterPageProps) => {
           />
 
           <CCButton
+            type="submit"
             sx={{
               width: '100%',
               height: '50px',
@@ -211,7 +253,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             xs: 'none',
           },
           height: '100%',
-          background: 'black',
+          backgroundColor: 'disable.main',
           flex: 1,
         }}
       />

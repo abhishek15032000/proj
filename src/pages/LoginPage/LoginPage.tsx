@@ -54,25 +54,25 @@ const Login = (props: LoginPageInterface) => {
         md={5}
         sm={12}
         xs={12}
-        // display="flex"
-        // flexDirection="column"
-        // justifyContent="center"
-        // sx={{
-        //   padding: 1,
-        //   height: window.innerHeight,
-        // }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        sx={{
+          padding: 1,
+          height: window.innerHeight,
+        }}
       >
         <Box
           component="form"
           onSubmit={handleSubmit}
-          noValidate
+          // noValidate
           sx={{
             marginLeft: {
-              sm: 0,
+              sm: 8,
               lg: 11,
             },
             marginRight: {
-              sm: 0,
+              sm: 9,
               lg: 18,
             },
           }}
@@ -118,7 +118,8 @@ const Login = (props: LoginPageInterface) => {
             variant="outlined"
             defaultValue={values?.password}
             required
-            type="password"
+            type={showPassword ? 'text' : 'password'}
+            name="password"
             error={errors?.password}
             onChange={handleChange}
             InputProps={{
@@ -156,6 +157,7 @@ const Login = (props: LoginPageInterface) => {
               marginTop: '64px',
             }}
             variant="contained"
+            disabled={Object.values(errors).length > 0}
           >
             Login
           </CCButton>
@@ -188,14 +190,17 @@ const Login = (props: LoginPageInterface) => {
         sm={12}
         xs={12}
         component="img"
-        src="https://wiki.dave.eu/images/4/47/Placeholder.png"
+        // src="https://wiki.dave.eu/images/4/47/Placeholder.png"
         sx={{
           display: {
             xs: 'none',
             sm: 'none',
             md: 'flex',
           },
-          height: window.innerHeight,
+          // height: window.innerHeight,
+          backgroundColor: 'disable.main',
+          flex: 1,
+          height: '100%',
         }}
       ></Grid>
     </Grid>
