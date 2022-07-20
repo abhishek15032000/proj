@@ -1,7 +1,7 @@
 ---
 image: docker:19.03.11
 variables:
-  CI_PROJECT_NAME: 'nse-gold-webapp'
+  CI_PROJECT_NAME: 'carbon-credit-webapp'
   HELM_PATH: 'deployment/charts/${CI_PROJECT_NAME}'
   PROJECT_NAME: '${CI_PROJECT_NAME}'
   DOCKER_BUILD_ARG: ""
@@ -9,7 +9,7 @@ variables:
   K8_CONTEXT: "kubernetes-admin@kubernetes"
   K8_CLUSTER_REGION: ""
   # BM_K8_NAMESPACE: "shine-dev"
-  KUBECONFIG: "/builds/shine-traceability/front-end/nse-gold-webapp.tmp/KUBECONFIG"
+  KUBECONFIG: "/builds/shinex-tech/carbon-credit/carbon-credit-webapp.tmp/KUBECONFIG"
   HELM_RELEASE_NAME: "${CI_PROJECT_NAME}"
   HELM_OPTS: --set-string image.pullSecret.registry=${CI_REGISTRY}
     --set-string image.pullSecret.username=${DEPLOY_TOKEN}
@@ -264,5 +264,5 @@ destroy_production:
     - deploy_production
   when: manual
 
-  # testing pipeline
+  ## testing pipeline
   
