@@ -1,6 +1,7 @@
 export const pathNames = {
     DASHBOARD: '/',
     LOGIN: '/login',
+    LOGOUT: '/logout',
     REGISTER: '/register',
     TWOFA: '/TwoFa',
     ACCOUNTCREATEDPAGE: '/account-created',

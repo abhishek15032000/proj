@@ -18,13 +18,12 @@ import { shallowEqual } from 'react-redux'
 import { NavLink, useLocation } from 'react-router-dom'
 import { ROLES } from '../../../config/roles.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { linkLabels } from '../../../routes/pathNames'
+import { linkLabels, pathNames } from '../../../routes/pathNames'
 import { privateRouteComponents } from '../../../routes/routeComponents'
 import RouteController from '../../../routes/RouteController'
 import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
-
 const drawerWidth = 240
 
 export default function ResponsiveDrawer(props: any) {
@@ -163,7 +162,7 @@ export default function ResponsiveDrawer(props: any) {
           }}
         >
           <NavLink
-            to={'/logout'}
+            to={pathNames.LOGOUT}
             style={{ textDecoration: 'none', color: Colors.black }}
           >
             {' '}
