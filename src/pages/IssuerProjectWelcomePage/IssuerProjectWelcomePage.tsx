@@ -53,11 +53,13 @@ const IssuerProjectWelcomePage = (props: IssuerProjectWelcomePageProps) => {
                         label="Please complete wallet creation/ linking process"
                         endIcon={<ArrowForwardIcon />}
                         onClick={() => alert('HI')}
+                        buttonLabel={'Create/link Wallet'}
                     />
                     <PaperLabelAndButton
-                        label="Please complete wallet creation/ linking process"
+                        label="Please complete KYB/KYC process"
                         endIcon={<ArrowForwardIcon />}
                         onClick={() => alert('HI')}
+                        buttonLabel={'Do KYB / KYC'}
                     />
                 </Box>
             </Grid>
@@ -70,12 +72,23 @@ interface PaperLabelAndButtonProps {
     label?: string
     endIcon?: any
     onClick?: () => void
+    buttonLabel: string
 }
 const PaperLabelAndButton = (props: PaperLabelAndButtonProps) => {
     return (
         <Grid item sm={12} md={4}>
             <Paper
-                sx={{ py: 3, px: 2, background: '#f3f3f3', mr: 3 }}
+                sx={{
+                    py: 3,
+                    px: 2,
+                    background: '#f3f3f3',
+                    mr: 3,
+                    minHeight: 150,
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
                 elevation={0}
             >
                 <Typography component="div" variant="body1">
@@ -85,7 +98,7 @@ const PaperLabelAndButton = (props: PaperLabelAndButtonProps) => {
                 <CCButton
                     onClick={props.onClick}
                     variant="contained"
-                    text="Create/link Wallet"
+                    text={props.buttonLabel}
                     sx={{
                         color: 'white',
                         background: 'grey',
