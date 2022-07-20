@@ -11,7 +11,7 @@ function LinearProgressWithLabel(
 ) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ width: '100%', mr: 1 }}>
+            <Box sx={{ width: 148, mr: 1 }}>
                 <LinearProgress variant="determinate" {...props} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
@@ -27,16 +27,16 @@ function LinearProgressWithLabel(
 const LinearProgressBar = (props: LinearProgressBarProps) => {
     const [progress, setProgress] = React.useState(10)
 
-    React.useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) =>
-                prevProgress >= 100 ? 10 : prevProgress + 10
-            )
-        }, 800)
-        return () => {
-            clearInterval(timer)
-        }
-    }, [])
+    // React.useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         setProgress((prevProgress) =>
+    //             prevProgress >= 100 ? 10 : prevProgress + 10
+    //         )
+    //     }, 800)
+    //     return () => {
+    //         clearInterval(timer)
+    //     }
+    // }, [])
 
     return (
         <Box sx={{ width: '100%' }}>
