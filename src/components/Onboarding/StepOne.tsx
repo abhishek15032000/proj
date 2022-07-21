@@ -8,6 +8,9 @@ import {
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import React from 'react'
 import { Colors } from '../../theme'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import CCButton from '../../atoms/CCButton'
 
 declare module '@mui/material/TextField' {
   interface TextFieldPropsColorOverrides {
@@ -17,16 +20,17 @@ declare module '@mui/material/TextField' {
 
 interface StepOneProps {
   step: number
-  setStep: React.Dispatch<React.SetStateAction<any>>
+  setStep: (arg: any) => void
 }
 
-const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
+const StepOne = ({ step, setStep }: StepOneProps) => {
+  const navigate = useNavigate()
   const handleNext = () => {
     setStep(step + 1)
   }
 
   const handleBack = () => {
-    setStep(step - 1)
+    navigate(pathNames.DASHBOARD, { replace: true })
   }
 
   return (
@@ -38,7 +42,9 @@ const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
       >
         KYC/KYB
       </Typography>
-      <div style={{ color: Colors.darkPrimary1 }}>Company Identification</div>
+      <Typography style={{ color: Colors.darkPrimary1 }}>
+        Company Identification
+      </Typography>
       <Grid
         container
         sx={{
@@ -198,22 +204,30 @@ const StepOne: React.FC<StepOneProps> = ({ step, setStep }) => {
       </Grid>
       <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
         <Grid item>
-          <Button
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
-            variant="contained"
+          <CCButton
+            sx={{
+              // width: '100%',
+              // height: '50px',
+              borderRadius: '6px',
+              backgroundColor: 'white',
+              color: 'darkPrimary1.main',
+              border: '2px solid',
+              borderColor: 'darkPrimary1.main',
+            }}
+            variant="outlined"
             onClick={handleBack}
           >
             Back
-          </Button>
+          </CCButton>
         </Grid>
         <Grid item>
-          <Button
+          <CCButton
             sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             onClick={handleNext}
           >
             Next
-          </Button>
+          </CCButton>
         </Grid>
       </Grid>
     </>

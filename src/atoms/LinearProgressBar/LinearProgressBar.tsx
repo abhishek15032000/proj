@@ -10,15 +10,26 @@ function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
 ) {
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ width: 148, mr: 1 }}>
-                <LinearProgress variant="determinate" {...props} />
-            </Box>
+        <Box
+            sx={{
+                display: 'flex',
+                // alignItems: 'center',
+                flexDirection: 'column',
+            }}
+        >
             <Box sx={{ minWidth: 35 }}>
                 <Typography
+                    sx={{ fontSize: 20, marginBottom: 1 }}
                     variant="body2"
                     color="text.secondary"
                 >{`${Math.round(props.value)}%`}</Typography>
+            </Box>
+            <Box sx={{ width: '100%', mr: 1 }}>
+                <LinearProgress
+                    variant="determinate"
+                    sx={{ borderRadius: 8, height: 8 }}
+                    {...props}
+                />
             </Box>
         </Box>
     )

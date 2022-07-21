@@ -18,15 +18,13 @@ import { shallowEqual } from 'react-redux'
 import { NavLink, useLocation } from 'react-router-dom'
 import { ROLES } from '../../../config/roles.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { linkLabels } from '../../../routes/pathNames'
+import { linkLabels, pathNames } from '../../../routes/pathNames'
 import { privateRouteComponents } from '../../../routes/routeComponents'
 import RouteController from '../../../routes/RouteController'
 import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
-
 const drawerWidth = 240
-const navBarHeight = 64
 
 export default function ResponsiveDrawer(props: any) {
   const location = useLocation()
@@ -65,7 +63,7 @@ export default function ResponsiveDrawer(props: any) {
         break
 
       default:
-        IconComponent = InboxIcon
+        IconComponent = null
     }
     if (IconComponent) {
       return (
@@ -76,6 +74,8 @@ export default function ResponsiveDrawer(props: any) {
           }}
         />
       )
+    } else {
+      return null
     }
   }
 
@@ -114,7 +114,8 @@ export default function ResponsiveDrawer(props: any) {
                 fontWeight: active ? '500' : '400',
                 opacity: active ? 1 : 0.5,
                 fontSize: 14,
-                paddingLeft: !iconRenderer(linkLabels, location) ? 55 : 5,
+                // paddingLeft: !iconRenderer(linkLabels, location) ? 5 : 5,
+                paddingLeft: 5,
               }}
             >
               {linkLabels}
@@ -132,6 +133,7 @@ export default function ResponsiveDrawer(props: any) {
       // sx={{ justifyContent: 'center', alignItems: 'center' }}
     >
       <Toolbar />
+      <div style={{ height: '25%' }}></div>
 
       <List sx={{ mt: 1 }}>
         {midMenu().map((text, index) => (
@@ -155,11 +157,26 @@ export default function ResponsiveDrawer(props: any) {
           </NavLink>
         ))}
       </List>
+      <List sx={{ marginTop: screen.height / 3.5 - midMenu().length + 'px' }}>
+        <NavLink
+          to={pathNames.LOGOUT}
+          style={{ textDecoration: 'none', color: Colors.secondary }}
+        >
+          {' '}
+          <ListItem key={linkLabels.Projects}>
+            <NavListItem
+              linkLabels={'Logout'}
+              active={true}
+              location={location}
+            />
+          </ListItem>
+        </NavLink>
+      </List>
     </Box>
   )
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -211,8 +228,8 @@ export default function ResponsiveDrawer(props: any) {
         component="main"
         sx={{
           flexGrow: 1,
+          p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          height: { sm: `calc(100% - ${navBarHeight}px)` },
         }}
       >
         <Toolbar />

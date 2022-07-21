@@ -1,123 +1,210 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
-import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+// React Imports
+import React, { useState } from 'react'
+
+// MUI Components
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material'
+
+// Local Imports
+import { LoginPageInterface } from './LoginPage.interface'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import { loginAction } from '../../redux/Slices/authSlice'
+import { authCalls } from '../../api/authCalls'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import useForm from '../../hooks/useForm'
-import { LoginPageInterface } from './LoginPage.interface'
-import { useAppDispatch } from '../../hooks/reduxHooks'
-import { loginAction } from '../../redux/Slices/authSlice'
-import { getLocalItem } from '../../utils/Storage'
-import { authCalls } from '../../api/authCalls'
+import CCButton from '../../atoms/CCButton'
 
 const Login = (props: LoginPageInterface) => {
-    const dispatch = useAppDispatch()
+  const [showPassword, setShowPassword] = useState(false)
+  const dispatch = useAppDispatch()
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    const login = () => {
-        dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
-        authCalls.loginCall()
-        navigate(pathNames.DASHBOARD, { replace: true })
-    }
+  const login = () => {
+    dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
+    authCalls.loginCall()
+    navigate(pathNames.DASHBOARD, { replace: true })
+  }
 
-    const { handleChange, values, errors, handleSubmit } = useForm(login)
+  const { handleChange, values, errors, handleSubmit } = useForm(login)
 
-    return (
-        <Grid container component="main" sx={{ height: '100vh' }}>
-            <Grid item xs={12} component={Paper} elevation={6} square>
-                <Box
-                    sx={{
-                        my: 8,
-                        mx: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography component="h1" variant="h5">
-                        Sign in to Carbon Credit
-                    </Typography>
-                    <Box
-                        component="form"
-                        noValidate
-                        sx={{ mt: 1 }}
-                        onSubmit={handleSubmit}
-                    >
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            defaultValue={values?.email}
-                            autoComplete="email"
-                            autoFocus
-                            onChange={handleChange}
-                            error={errors?.email}
-                        />
+  return (
+    <Grid
+      container
+      flexDirection="row"
+      xs={12}
+      height={'100vh'}
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid
+        item
+        xl={5}
+        lg={5}
+        md={5}
+        sm={12}
+        xs={12}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        sx={{
+          padding: 1,
+          height: window.innerHeight,
+        }}
+      >
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          // noValidate
+          sx={{
+            marginLeft: {
+              sm: 8,
+              lg: 11,
+            },
+            marginRight: {
+              sm: 9,
+              lg: 18,
+            },
+          }}
+        >
+          <Typography sx={{ fontSize: 40, marginBottom: '32px' }}>
+            Login
+          </Typography>
 
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            defaultValue={values?.password}
-                            autoComplete="current-password"
-                            onChange={handleChange}
-                            error={errors?.password}
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary" />
-                            }
-                            label="Remember me"
-                        />
-                        <Button
-                            data-testid={'loginBtn'}
-                            // onClick={handleSubmit}
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{
-                                mt: 3,
-                                mb: 2,
-                                color: 'primary.light',
-                                textTransform: 'none',
-                            }}
-                            color="primary"
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Box>
-            </Grid>
-        </Grid>
-    )
+          <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
+            Email ID
+          </Typography>
+
+          <TextField
+            fullWidth
+            name="email"
+            sx={{
+              marginBottom: '40px',
+              height: '50px',
+              borderRadius: '6px',
+            }}
+            id="outlined-basic"
+            variant="outlined"
+            onChange={handleChange}
+            error={errors?.email}
+            defaultValue={values?.email}
+            required
+          />
+
+          <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
+            Password
+          </Typography>
+
+          <TextField
+            fullWidth
+            sx={{
+              marginBottom: '16px',
+              // width: '90%',
+              height: '50px',
+              borderRadius: '6px',
+            }}
+            id="outlined-basic"
+            // label="Outlined"
+            variant="outlined"
+            defaultValue={values?.password}
+            required
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            error={errors?.password}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  {!showPassword ? (
+                    <VisibilityOffIcon
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  ) : (
+                    <VisibilityIcon
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  )}
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Typography>Forgot password?</Typography>
+          </Box>
+          <CCButton
+            type="submit"
+            fullWidth
+            sx={{
+              height: '50px',
+              borderRadius: '6px',
+              marginTop: '64px',
+            }}
+            variant="contained"
+            disabled={Object.values(errors).length > 0}
+          >
+            Login
+          </CCButton>
+
+          <Typography sx={{ marginTop: '40px', marginBottom: '15px' }}>
+            Don’t have an account yet?
+          </Typography>
+          <CCButton
+            onClick={() => navigate(pathNames.REGISTER)}
+            fullWidth
+            sx={{
+              height: '50px',
+              borderRadius: '6px',
+              backgroundColor: 'white',
+              color: 'darkPrimary1.main',
+              border: '2px solid',
+              borderColor: 'darkPrimary1.main',
+            }}
+            variant="outlined"
+          >
+            Register
+          </CCButton>
+        </Box>
+      </Grid>
+      <Grid
+        item
+        xl={7}
+        lg={7}
+        md={7}
+        sm={12}
+        xs={12}
+        component="img"
+        // src="https://wiki.dave.eu/images/4/47/Placeholder.png"
+        sx={{
+          display: {
+            xs: 'none',
+            sm: 'none',
+            md: 'flex',
+          },
+          // height: window.innerHeight,
+          backgroundColor: 'disable.main',
+          flex: 1,
+          height: '100%',
+        }}
+      ></Grid>
+    </Grid>
+  )
 }
 
 export default Login

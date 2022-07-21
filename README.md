@@ -66,6 +66,8 @@ npm -v8
 
 In the project directory, you can run:
 
+### `npm i --force`
+
 ### `npm start`
 
 Runs the app in the development mode.\
