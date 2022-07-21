@@ -16,6 +16,7 @@ import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import useForm from '../../hooks/useForm'
 import CCInputField from '../../atoms/CCInputField'
+import CCSelectBox from '../../atoms/CCSelectBox'
 
 const RegisterPage = (props: RegisterPageProps) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -101,62 +102,97 @@ const RegisterPage = (props: RegisterPageProps) => {
             </Grid>
           </Grid>
 
-          <CCInputField
-            variant="outlined"
-            label={'Work Email ID'}
-            name="email"
-            onChange={handleChange}
-            defaultValue={values?.email}
-          />
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="flex-start"
+          <Grid
+            container
             sx={{
-              flex: 1,
-              marginTop: '10px',
-              // border: '2px solid red',
+              mt: '4px',
             }}
+            xs={12}
+            // md={8}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
           >
-            <CCInputField
-              variant="outlined"
-              name={'countryCode'}
-              onChange={handleChange}
-              defaultValue={values?.countryCode}
-            />
-            <CCInputField
-              label="Phone Number"
-              variant="outlined"
-              onChange={handleChange}
-              defaultValue={values?.phoneNumber}
-            />
-          </Box>
+            <Grid item xs={12}>
+              <CCInputField
+                variant="outlined"
+                label={'Work Email ID'}
+                name="email"
+                onChange={handleChange}
+                defaultValue={values?.email}
+              />
+            </Grid>
+          </Grid>
 
-          <CCInputField
-            label="Password"
-            variant="outlined"
-            name="password"
-            onChange={handleChange}
-            defaultValue={values?.password}
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  {!showPassword ? (
-                    <VisibilityOffIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <VisibilityIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                </InputAdornment>
-              ),
+          <Grid
+            container
+            sx={{
+              mt: '4px',
             }}
-          />
+            xs={12}
+            // md={8}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
+          >
+            <Grid item xs={12} lg={6}>
+              <CCSelectBox
+                sx={{ width: '100%' }}
+                // label="Country Code"
+                name="country_code"
+                onChange={handleChange}
+                value={'+91'}
+                autoWidth={false}
+                items={[{ label: '+91', value: '+91' }]}
+              />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <CCInputField
+                label="Phone Number"
+                variant="outlined"
+                onChange={handleChange}
+                defaultValue={values?.phoneNumber}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            sx={{
+              mt: '4px',
+            }}
+            xs={12}
+            // md={8}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
+          >
+            <Grid item xs={12}>
+              <CCInputField
+                label="Password"
+                variant="outlined"
+                name="password"
+                onChange={handleChange}
+                defaultValue={values?.password}
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      {!showPassword ? (
+                        <VisibilityOffIcon
+                          onClick={() => setShowPassword(!showPassword)}
+                        />
+                      ) : (
+                        <VisibilityIcon
+                          onClick={() => setShowPassword(!showPassword)}
+                        />
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+          </Grid>
 
           <CCButton
             type="submit"
