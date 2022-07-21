@@ -50,11 +50,12 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
         sx={{
           mt: '4px',
         }}
-        xs={8}
-        rowSpacing={1}
-        columnSpacing={2}
+        xs={12}
+        md={8}
+        rowSpacing={3}
+        columnSpacing={3}
       >
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Company Name"
@@ -75,7 +76,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             variant="filled"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Registration Number"
@@ -96,7 +97,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             variant="filled"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Registered Office"
@@ -117,7 +118,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             variant="filled"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Principal Place of Business"
@@ -202,7 +203,14 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
           />
         </Grid>
       </Grid>
-      <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
+      <Grid
+        container
+        justifyContent="end"
+        sx={{ mt: 2 }}
+        xs={12}
+        md={8}
+        spacing={2}
+      >
         <Grid item>
           <CCButton
             sx={{

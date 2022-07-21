@@ -126,8 +126,8 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
           mt: '4px',
         }}
         xs={8}
-        rowSpacing={1}
-        columnSpacing={2}
+        rowSpacing={3}
+        columnSpacing={3}
       >
         <Grid item xs={6}>
           <TextField
