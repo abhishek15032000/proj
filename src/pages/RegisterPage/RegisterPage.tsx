@@ -15,6 +15,7 @@ import CCButton from '../../atoms/CCButton'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import useForm from '../../hooks/useForm'
+import CCInputField from '../../atoms/CCInputField'
 
 const RegisterPage = (props: RegisterPageProps) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -51,6 +52,7 @@ const RegisterPage = (props: RegisterPageProps) => {
           padding: 1,
           height: window.innerHeight,
         }}
+        spacing={3}
       >
         <Box
           component="form"
@@ -68,58 +70,38 @@ const RegisterPage = (props: RegisterPageProps) => {
           }}
         >
           <Typography sx={{ fontSize: 40 }}>Register</Typography>
-          <Box
-            display="flex"
+          <Grid
+            container
+            sx={{
+              mt: '4px',
+            }}
+            xs={12}
+            // md={8}
+            rowSpacing={3}
+            columnSpacing={3}
             flexDirection="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{
-              flex: 1,
-              // border: '2px solid red',
-              marginTop: '30px',
-            }}
           >
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '50%',
-                height: '50px',
-                borderRadius: '6px',
-              }}
-              id="outlined-basic"
-              label=" First Name"
-              variant="outlined"
-              name="firstName"
-              onChange={handleChange}
-              defaultValue={values?.firstName}
-            />
+            <Grid item xs={12} lg={6}>
+              <CCInputField
+                label=" First Name"
+                variant="outlined"
+                name="firstName"
+                onChange={handleChange}
+                defaultValue={values?.firstName}
+              />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <CCInputField
+                label="Last Name"
+                variant="outlined"
+                name="lastName"
+                onChange={handleChange}
+                defaultValue={values?.lastName}
+              />
+            </Grid>
+          </Grid>
 
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '50%',
-                height: '50px',
-                borderRadius: '6px',
-                marginLeft: '20px',
-              }}
-              id="outlined-basic"
-              label="Last Name"
-              variant="outlined"
-              name="lastName"
-              onChange={handleChange}
-              defaultValue={values?.lastName}
-            />
-          </Box>
-
-          <TextField
-            sx={{
-              marginBottom: '20px',
-              width: '100%',
-              height: '50px',
-              borderRadius: '6px',
-              marginTop: '10px',
-            }}
-            id="outlined-basic"
+          <CCInputField
             variant="outlined"
             label={'Work Email ID'}
             name="email"
@@ -138,29 +120,13 @@ const RegisterPage = (props: RegisterPageProps) => {
               // border: '2px solid red',
             }}
           >
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '30%',
-                height: '50px',
-                borderRadius: '6px',
-              }}
-              id="outlined-basic"
-              label="Country Code"
+            <CCInputField
               variant="outlined"
               name={'countryCode'}
               onChange={handleChange}
               defaultValue={values?.countryCode}
             />
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '70%',
-                height: '50px',
-                borderRadius: '6px',
-                marginLeft: '20px',
-              }}
-              id="outlined-basic"
+            <CCInputField
               label="Phone Number"
               variant="outlined"
               onChange={handleChange}
@@ -168,15 +134,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             />
           </Box>
 
-          <TextField
-            sx={{
-              marginBottom: '20px',
-              width: '100%',
-              height: '50px',
-              borderRadius: '6px',
-              marginTop: '10px',
-            }}
-            id="outlined-basic"
+          <CCInputField
             label="Password"
             variant="outlined"
             name="password"

@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 
 // Local Imports
 import { LoginPageInterface } from './LoginPage.interface'
@@ -23,6 +24,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import useForm from '../../hooks/useForm'
 import CCButton from '../../atoms/CCButton'
+import CCInputField from '../../atoms/CCInputField'
 
 const Login = (props: LoginPageInterface) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -81,63 +83,35 @@ const Login = (props: LoginPageInterface) => {
             Login
           </Typography>
 
-          <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
+          {/* <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
             Email ID
-          </Typography>
+          </Typography> */}
 
-          <TextField
-            fullWidth
-            name="email"
-            sx={{
-              marginBottom: '40px',
-              height: '50px',
-              borderRadius: '6px',
-            }}
-            id="outlined-basic"
-            variant="outlined"
-            onChange={handleChange}
-            error={errors?.email}
-            defaultValue={values?.email}
-            required
-          />
-
-          <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
-            Password
-          </Typography>
-
-          <TextField
-            fullWidth
-            sx={{
-              marginBottom: '16px',
-              // width: '90%',
-              height: '50px',
-              borderRadius: '6px',
-            }}
-            id="outlined-basic"
-            // label="Outlined"
-            variant="outlined"
-            defaultValue={values?.password}
-            required
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            error={errors?.password}
-            onChange={handleChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  {!showPassword ? (
-                    <VisibilityOffIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <VisibilityIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Grid container sx={{}} rowSpacing={3} columnSpacing={3}>
+            <Grid item xs={12}>
+              <CCInputField
+                label="Email ID"
+                variant="outlined"
+                type="email"
+                name="email"
+                onChange={handleChange}
+                error={errors?.email}
+                defaultValue={values?.email}
+                clearFn={() => handleChange({ target: { value: '' } })}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CCInputField
+                type="password"
+                label="Password"
+                variant="outlined"
+                defaultValue={values?.password}
+                name="password"
+                error={errors?.password}
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
 
           <Box
             sx={{
