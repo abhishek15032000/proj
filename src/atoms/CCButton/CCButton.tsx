@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '@mui/material/Button'
 import { CCButtonProps } from './CCButton.interface'
+
 const CCButton: React.FC<CCButtonProps> = (props) => {
   return (
     <>
@@ -10,16 +11,17 @@ const CCButton: React.FC<CCButtonProps> = (props) => {
           height: '48px',
           borderRadius: props.rounded ? 10 : 2,
           textTransform: 'none',
-          backgroundColor: 'darkPrimary1.main',
-          color: 'primary.light',
-          fontSize: '16px',
-          paddingY: '13px',
-          paddingX: '24px',
+          backgroundColor: 'accent.main',
+          color: 'darkPrimary1.main',
+          fontSize: 18,
+          fontWeight: '500',
+          py: 2,
+          px: 3,
           minWidth: '168px',
-          '&hover': {
-            color: 'primary.main',
-            border: '2px solid',
-            borderColor: 'darkPrimary1.main',
+          boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.15)`,
+          '&:hover': {
+            backgroundColor: 'accent.main',
+            boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
           },
           ...props.sx,
         }}

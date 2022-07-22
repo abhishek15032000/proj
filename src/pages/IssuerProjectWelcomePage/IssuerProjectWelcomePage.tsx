@@ -130,7 +130,8 @@ const PaperLabelAndButton = (props: PaperLabelAndButtonProps) => {
           variant="contained"
           text={props.buttonLabel}
           sx={{
-            color: 'white',
+            // color: 'white',
+            fontSize: 14,
             // background: 'grey',
             marginTop: 2,
             width: '100%',
