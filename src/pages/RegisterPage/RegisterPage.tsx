@@ -17,6 +17,8 @@ import { useNavigate } from 'react-router-dom'
 import useForm from '../../hooks/useForm'
 import CCInputField from '../../atoms/CCInputField'
 import CCSelectBox from '../../atoms/CCSelectBox'
+import Logo from '../../atoms/Logo'
+import { Images } from '../../theme'
 
 const RegisterPage = (props: RegisterPageProps) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -35,42 +37,44 @@ const RegisterPage = (props: RegisterPageProps) => {
       container
       flexDirection="row"
       xs={12}
-      height={'100vh'}
-      justifyContent="center"
-      alignItems="center"
+      sx={{ flex: 1 }}
+      // justifyContent="stretch"
+      // alignItems="center"
     >
       <Grid
         item
-        xl={5}
-        lg={5}
-        md={5}
-        sm={12}
+        md={6}
         xs={12}
         display="flex"
         flexDirection="column"
-        justifyContent="center"
         sx={{
-          padding: 1,
-          height: window.innerHeight,
+          marginTop: 18,
+          width: '100%',
+          px: 20,
+          // pb: 8,
+          flex: 1,
+          // padding: 4,
+          // height: window.innerHeight,
         }}
-        spacing={3}
+        // spacing={3}
       >
         <Box
           component="form"
           onSubmit={handleSubmit}
           // noValidate
           sx={{
-            marginLeft: {
-              sm: 8,
-              lg: 11,
-            },
-            marginRight: {
-              sm: 9,
-              lg: 18,
-            },
+            width: '100%',
           }}
         >
-          <Typography sx={{ fontSize: 40 }}>Register</Typography>
+          <Logo />
+          <Typography
+            sx={{ fontWeight: '700', fontSize: 32, mt: 8, color: '#1C4A43' }}
+          >
+            Register
+          </Typography>
+          <Typography sx={{ fontWeight: '500', fontSize: 16, mt: 1, mb: 5 }}>
+            Register by providing the information below
+          </Typography>
           <Grid
             container
             sx={{
@@ -85,7 +89,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <Grid item xs={12} lg={6}>
               <CCInputField
                 label=" First Name"
-                variant="outlined"
+                variant="filled"
                 name="firstName"
                 onChange={handleChange}
                 defaultValue={values?.firstName}
@@ -94,7 +98,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <Grid item xs={12} lg={6}>
               <CCInputField
                 label="Last Name"
-                variant="outlined"
+                variant="filled"
                 name="lastName"
                 onChange={handleChange}
                 defaultValue={values?.lastName}
@@ -115,7 +119,7 @@ const RegisterPage = (props: RegisterPageProps) => {
           >
             <Grid item xs={12}>
               <CCInputField
-                variant="outlined"
+                variant="filled"
                 label={'Work Email ID'}
                 name="email"
                 onChange={handleChange}
@@ -137,6 +141,7 @@ const RegisterPage = (props: RegisterPageProps) => {
           >
             <Grid item xs={12} lg={6}>
               <CCSelectBox
+                variant="filled"
                 sx={{ width: '100%' }}
                 // label="Country Code"
                 name="country_code"
@@ -149,7 +154,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <Grid item xs={12} lg={6}>
               <CCInputField
                 label="Phone Number"
-                variant="outlined"
+                variant="filled"
                 onChange={handleChange}
                 defaultValue={values?.phoneNumber}
               />
@@ -170,7 +175,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <Grid item xs={12}>
               <CCInputField
                 label="Password"
-                variant="outlined"
+                variant="filled"
                 name="password"
                 onChange={handleChange}
                 defaultValue={values?.password}
@@ -200,57 +205,73 @@ const RegisterPage = (props: RegisterPageProps) => {
               width: '100%',
               height: '50px',
               borderRadius: '6px',
-              marginTop: '30px',
+              marginTop: 7,
             }}
             variant="contained"
           >
             Register
           </CCButton>
-          <Typography
-            sx={{
-              marginTop: '20px',
-              marginBottom: '15px',
-              textAlign: 'center',
-              fontWeight: '700px',
-            }}
-          >
-            Already have an account?
-          </Typography>
-          <CCButton
-            onClick={() => navigate(pathNames.LOGIN)}
-            sx={{
-              width: '100%',
-              // height: '50px',
-              borderRadius: '6px',
-              backgroundColor: 'white',
-              color: 'darkPrimary1.main',
-              border: '2px solid',
-              borderColor: 'darkPrimary1.main',
-            }}
-            variant="outlined"
-          >
-            Login
-          </CCButton>
+          <Grid container justifyContent={'center'} alignItems={'center'}>
+            <Typography
+              sx={{
+                marginTop: '20px',
+                marginBottom: '15px',
+                textAlign: 'center',
+                fontWeight: '400',
+                fontSize: 16,
+              }}
+            >
+              {`Already have an account?`}
+            </Typography>
+            <Typography
+              onClick={() => navigate(pathNames.LOGIN)}
+              sx={{
+                fontWeight: '500',
+                fontSize: 20,
+                px: 1,
+                pt: 0.5,
+                cursor: 'pointer',
+              }}
+            >
+              {' '}
+              Login{' '}
+            </Typography>
+            <Typography
+              sx={{
+                marginTop: '20px',
+                marginBottom: '15px',
+                textAlign: 'center',
+                fontWeight: '400',
+                fontSize: 16,
+              }}
+            >
+              {`here`}
+            </Typography>
+          </Grid>
         </Box>
       </Grid>
       <Grid
         item
-        xl={7}
-        lg={7}
-        md={7}
+        md={6}
+        flexDirection="column"
         sx={{
           display: {
             sm: 'none',
-            lg: 'flex',
             md: 'flex',
-            xl: 'flex',
             xs: 'none',
           },
           height: '100%',
-          backgroundColor: 'disable.main',
+          backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
         }}
-      />
+      >
+        <img
+          src={Images.illustration1}
+          alt="bg iamges"
+          width="auto"
+          style={{ height: '100%' }}
+        />
+      </Grid>
     </Grid>
   )
 }
