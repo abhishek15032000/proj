@@ -16,6 +16,8 @@ import SectionA3 from './SectionA3'
 import SectionA4 from './SectionA4'
 import SectionA5 from './SectionA5'
 import CCButton from '../../atoms/CCButton'
+import SectionB2 from './SectionB2'
+import SectionB1 from './SectionB1'
 
 const sections = [
   { name: 'Section A: Description of Project Activity' },
@@ -30,16 +32,27 @@ const sectionATabs = [
   { name: 'A5: Crediting Period', component: SectionA5 },
 ]
 
+const sectionBTabs = [
+  {
+    name: 'B1: Description of implemented registered project activityn',
+    component: SectionB1,
+  },
+  { name: 'B2: Post registration changes', component: SectionB2 },
+]
+
 const IssuanceDataCollection = () => {
   const [progress, setProgress] = React.useState(10)
   const [sectionATabIndex, setSectionATabIndex] = React.useState(1)
+  const [selectedSection, setSelectedSection] = React.useState(0)
 
   const getSectionName = () => {
-    return sections[0]?.name
+    //return sections[1]?.name
+    return sections[selectedSection]?.name
   }
 
   const handleSaveAndNext = () => {
     console.log('handleSaveAndNext clicked')
+    selectedSection <= 5 && setSelectedSection(selectedSection + 1)
   }
 
   return (
@@ -77,6 +90,13 @@ const IssuanceDataCollection = () => {
         <Grid item xs={6}>
           <Box display="flex" justifyContent="flex-end">
             <CCButton
+              sx={{ color: '#fff', mr: 2 }}
+              variant="contained"
+              onClick={handleSaveAndNext}
+            >
+              Previous Section
+            </CCButton>
+            <CCButton
               sx={{ color: '#fff' }}
               variant="contained"
               onClick={handleSaveAndNext}
@@ -92,7 +112,7 @@ const IssuanceDataCollection = () => {
           indicatorColor="secondary"
           aria-label="secondary tabs example"
         >
-          {sectionATabs.map((tab, index) => (
+          {sectionBTabs.map((tab, index) => (
             <Tab
               key={index}
               value={index + 1}
@@ -103,11 +123,11 @@ const IssuanceDataCollection = () => {
         </Tabs>
       </Box>
       <Box>
-        {sectionATabIndex === 1 && <SectionA1 />}
-        {sectionATabIndex === 2 && <SectionA2 />}
-        {sectionATabIndex === 3 && <SectionA3 />}
+        {sectionATabIndex === 1 && <SectionB1 />}
+        {sectionATabIndex === 2 && <SectionB2 />}
+        {/*{sectionATabIndex === 3 && <SectionA3 />}
         {sectionATabIndex === 4 && <SectionA4 />}
-        {sectionATabIndex === 5 && <SectionA5 />}
+        {sectionATabIndex === 5 && <SectionA5 />}*/}
       </Box>
     </Box>
   )
