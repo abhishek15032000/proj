@@ -13,7 +13,7 @@ const CCButton: React.FC<CCButtonProps> = (props) => {
           textTransform: 'none',
           backgroundColor: 'accent.main',
           color: 'darkPrimary1.main',
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: '500',
           py: 2,
           px: 3,

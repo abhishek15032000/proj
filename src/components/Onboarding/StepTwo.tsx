@@ -91,7 +91,7 @@ const StepTwo: React.FC<StepTwoProps> = ({ step, setStep }) => {
         </Grid>
         <Grid item>
           <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            // sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             onClick={handleNext}
           >

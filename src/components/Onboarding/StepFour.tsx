@@ -124,7 +124,7 @@ const StepFour: React.FC<StepFourProps> = ({ step, setStep }) => {
         </Grid>
         <Grid item>
           <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            // sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             // onClick={handleSave}
           >
