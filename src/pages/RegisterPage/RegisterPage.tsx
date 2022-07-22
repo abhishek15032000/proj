@@ -33,14 +33,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   const { handleChange, values, errors, handleSubmit } = useForm(register)
 
   return (
-    <Grid
-      container
-      flexDirection="row"
-      xs={12}
-      sx={{ flex: 1 }}
-      // justifyContent="stretch"
-      // alignItems="center"
-    >
+    <Grid container flexDirection="row" xs={12} sx={{ flex: 1 }}>
       <Grid
         item
         md={6}
@@ -51,12 +44,8 @@ const RegisterPage = (props: RegisterPageProps) => {
           marginTop: 18,
           width: '100%',
           px: 20,
-          // pb: 8,
           flex: 1,
-          // padding: 4,
-          // height: window.innerHeight,
         }}
-        // spacing={3}
       >
         <Box
           component="form"
@@ -81,7 +70,6 @@ const RegisterPage = (props: RegisterPageProps) => {
               mt: '4px',
             }}
             xs={12}
-            // md={8}
             rowSpacing={3}
             columnSpacing={3}
             flexDirection="row"
@@ -112,7 +100,6 @@ const RegisterPage = (props: RegisterPageProps) => {
               mt: '4px',
             }}
             xs={12}
-            // md={8}
             rowSpacing={3}
             columnSpacing={3}
             flexDirection="row"
@@ -134,7 +121,6 @@ const RegisterPage = (props: RegisterPageProps) => {
               mt: '4px',
             }}
             xs={12}
-            // md={8}
             rowSpacing={3}
             columnSpacing={3}
             flexDirection="row"
@@ -167,7 +153,6 @@ const RegisterPage = (props: RegisterPageProps) => {
               mt: '4px',
             }}
             xs={12}
-            // md={8}
             rowSpacing={3}
             columnSpacing={3}
             flexDirection="row"

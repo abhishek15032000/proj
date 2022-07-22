@@ -55,15 +55,10 @@ const Login = (props: LoginPageInterface) => {
         md={6}
         xs={12}
         display="flex"
-        // flexDirection="column"
-        // justifyContent="center"
         sx={{
           marginTop: 18,
           width: '100%',
           px: 20,
-
-          // padding: 4,
-          // height: window.innerHeight,
         }}
       >
         <Box
@@ -83,10 +78,6 @@ const Login = (props: LoginPageInterface) => {
           <Typography sx={{ fontWeight: '500', fontSize: 16, mt: 1, mb: 5 }}>
             Login by providing the information below
           </Typography>
-
-          {/* <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
-            Email ID
-          </Typography> */}
 
           <Grid container sx={{}} rowSpacing={3} columnSpacing={3}>
             <Grid item xs={12}>
