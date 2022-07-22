@@ -6,6 +6,7 @@ import { Button, Typography } from '@mui/material'
 import OtpInput from 'react-otp-input'
 import { Container } from '@mui/system'
 import CCButton from '../../atoms/CCButton'
+import { Images } from '../../theme'
 
 const TwoFa = (props: TwoFaInterface) => {
   const [otp, setOtp] = useState<any>()
@@ -20,8 +21,13 @@ const TwoFa = (props: TwoFaInterface) => {
 
   return (
     <Box>
-      <Grid container sx={{ height: '100vh' }}>
-        <Grid item xl={5} lg={5} md={5} sm={12} xs={12}>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        sx={{ height: '100vh' }}
+      >
+        <Grid item md={6} xs={12}>
           <Grid
             container
             direction="column"
@@ -32,8 +38,8 @@ const TwoFa = (props: TwoFaInterface) => {
               <Typography
                 sx={{
                   fontWeight: 500,
-                  fontSize: 40,
-                  pb: 0,
+                  fontSize: 28,
+                  pb: 2,
                 }}
               >
                 Verify Account
@@ -43,66 +49,75 @@ const TwoFa = (props: TwoFaInterface) => {
                   fontWeight: 400,
                   fontSize: 14,
                   pb: 3,
+                  lineHeight: '24px',
                 }}
               >
-                Please enter the 5-digit code sent to your registered email &
-                phone number
+                Please enter the verification code sent to your registered email
+                id below. This code is valid for 90 secs.
               </Typography>
               <OtpInput
                 value={otp}
                 onChange={handleChange}
                 numInputs={5}
                 containerStyle={{
-                  justifyContent: 'center',
+                  justifyContent: 'flex-start',
                 }}
                 inputStyle={{
-                  width: '44px',
-                  height: 60,
+                  width: 64,
+                  height: 56,
                   color: '#000',
                   fontSize: 20,
-                  borderRadius: 6,
-                  border: '1px solid #000',
+                  border: 'none',
+                  borderRadius: 8,
+                  background: 'container1',
                   marginRight: 25,
                 }}
               />
               <Typography
                 align="right"
-                sx={{ py: 3, fontWeight: 700, fontSize: 18 }}
+                sx={{ py: 3, fontWeight: 500, fontSize: 14 }}
               >
-                Resend Code
+                Didn’t receive code yet?{' '}
+                <Typography display={'inline'} color={'lightPrimary1'}>
+                  Resend
+                </Typography>
               </Typography>
               <CCButton
                 variant="contained"
-                disableRipple
                 sx={{
                   height: 45,
-                  fontSize: 16,
-                  fontWeight: 700,
+                  fontSize: 18,
                 }}
                 onClick={handleVerify}
                 fullWidth
               >
-                Verify Account
+                Verify & Create Account
               </CCButton>
             </Grid>
           </Grid>
         </Grid>
         <Grid
           item
-          xl={7}
-          lg={7}
-          md={7}
-          sm={12}
-          xs={12}
-          display={{
-            sm: 'none',
-            xs: 'none',
-            md: 'flex',
-            lg: 'flex',
-            xl: 'flex',
+          md={6}
+          flexDirection="column"
+          sx={{
+            display: {
+              sm: 'none',
+              md: 'flex',
+              xs: 'none',
+            },
+            height: '100%',
+            backgroundImage: `url(${Images.illustration2})`,
+            flex: 1,
           }}
-          sx={{ background: 'black' }}
-        ></Grid>
+        >
+          <img
+            src={Images.illustration2}
+            alt="bg iamges"
+            width="auto"
+            style={{ height: '100%' }}
+          />
+        </Grid>
       </Grid>
     </Box>
   )

@@ -11,6 +11,7 @@ import { Colors } from '../../theme'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCButton from '../../atoms/CCButton'
+import BackButton from '../BackButton'
 
 declare module '@mui/material/TextField' {
   interface TextFieldPropsColorOverrides {
@@ -50,11 +51,12 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
         sx={{
           mt: '4px',
         }}
-        xs={8}
-        rowSpacing={1}
-        columnSpacing={2}
+        xs={12}
+        md={8}
+        rowSpacing={3}
+        columnSpacing={3}
       >
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Company Name"
@@ -65,7 +67,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
                 </InputAdornment>
               ),
@@ -75,7 +77,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             variant="filled"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Registration Number"
@@ -86,7 +88,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
                 </InputAdornment>
               ),
@@ -96,7 +98,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             variant="filled"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Registered Office"
@@ -107,7 +109,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
                 </InputAdornment>
               ),
@@ -117,7 +119,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             variant="filled"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={6}>
           <TextField
             fullWidth
             label="Principal Place of Business"
@@ -128,7 +130,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
                 </InputAdornment>
               ),
@@ -149,7 +151,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
                 </InputAdornment>
               ),
@@ -170,7 +172,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
                 </InputAdornment>
               ),
@@ -191,7 +193,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
                 </InputAdornment>
               ),
@@ -202,27 +204,20 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
           />
         </Grid>
       </Grid>
-      <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
+      <Grid
+        container
+        justifyContent="end"
+        sx={{ mt: 2 }}
+        xs={12}
+        md={8}
+        spacing={2}
+      >
         <Grid item>
-          <CCButton
-            sx={{
-              // width: '100%',
-              // height: '50px',
-              borderRadius: '6px',
-              backgroundColor: 'white',
-              color: 'darkPrimary1.main',
-              border: '2px solid',
-              borderColor: 'darkPrimary1.main',
-            }}
-            variant="outlined"
-            onClick={handleBack}
-          >
-            Back
-          </CCButton>
+          <BackButton onClick={handleBack}>Back</BackButton>
         </Grid>
         <Grid item>
           <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            // sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             onClick={handleNext}
           >

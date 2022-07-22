@@ -11,7 +11,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
+import Logo from '../../atoms/Logo'
 // Local Imports
 import { LoginPageInterface } from './LoginPage.interface'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
@@ -23,6 +24,8 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import useForm from '../../hooks/useForm'
 import CCButton from '../../atoms/CCButton'
+import CCInputField from '../../atoms/CCInputField'
+import { Images } from '../../theme'
 
 const Login = (props: LoginPageInterface) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -45,21 +48,17 @@ const Login = (props: LoginPageInterface) => {
       xs={12}
       height={'100vh'}
       justifyContent="center"
-      alignItems="center"
+      // alignItems="center"
     >
       <Grid
         item
-        xl={5}
-        lg={5}
-        md={5}
-        sm={12}
+        md={6}
         xs={12}
         display="flex"
-        flexDirection="column"
-        justifyContent="center"
         sx={{
-          padding: 1,
-          height: window.innerHeight,
+          marginTop: 18,
+          width: '100%',
+          px: 20,
         }}
       >
         <Box
@@ -67,86 +66,57 @@ const Login = (props: LoginPageInterface) => {
           onSubmit={handleSubmit}
           // noValidate
           sx={{
-            marginLeft: {
-              sm: 8,
-              lg: 11,
-            },
-            marginRight: {
-              sm: 9,
-              lg: 18,
-            },
+            width: '100%',
           }}
         >
-          <Typography sx={{ fontSize: 40, marginBottom: '32px' }}>
+          <Logo />
+          <Typography
+            sx={{ fontWeight: '700', fontSize: 32, mt: 8, color: '#1C4A43' }}
+          >
             Login
           </Typography>
-
-          <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
-            Email ID
+          <Typography sx={{ fontWeight: '500', fontSize: 16, mt: 1, mb: 5 }}>
+            Login by providing the information below
           </Typography>
 
-          <TextField
-            fullWidth
-            name="email"
-            sx={{
-              marginBottom: '40px',
-              height: '50px',
-              borderRadius: '6px',
-            }}
-            id="outlined-basic"
-            variant="outlined"
-            onChange={handleChange}
-            error={errors?.email}
-            defaultValue={values?.email}
-            required
-          />
-
-          <Typography sx={{ fontSize: 14, marginBottom: '4px' }}>
-            Password
-          </Typography>
-
-          <TextField
-            fullWidth
-            sx={{
-              marginBottom: '16px',
-              // width: '90%',
-              height: '50px',
-              borderRadius: '6px',
-            }}
-            id="outlined-basic"
-            // label="Outlined"
-            variant="outlined"
-            defaultValue={values?.password}
-            required
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            error={errors?.password}
-            onChange={handleChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  {!showPassword ? (
-                    <VisibilityOffIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <VisibilityIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Grid container sx={{}} rowSpacing={3} columnSpacing={3}>
+            <Grid item xs={12}>
+              <CCInputField
+                label="Email ID"
+                variant="filled"
+                type="email"
+                name="email"
+                onChange={handleChange}
+                error={errors?.email}
+                defaultValue={values?.email}
+                clearFn={() => handleChange({ target: { value: '' } })}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CCInputField
+                type="password"
+                label="Password"
+                variant="filled"
+                defaultValue={values?.password}
+                name="password"
+                error={errors?.password}
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
 
           <Box
             sx={{
               width: '100%',
               display: 'flex',
               justifyContent: 'flex-end',
+              fontSize: 14,
+              pt: 1,
             }}
           >
-            <Typography>Forgot password?</Typography>
+            <Typography sx={{ fontWeight: '500', color: '#335844' }}>
+              Forgot password?
+            </Typography>
           </Box>
           <CCButton
             type="submit"
@@ -154,7 +124,7 @@ const Login = (props: LoginPageInterface) => {
             sx={{
               height: '50px',
               borderRadius: '6px',
-              marginTop: '64px',
+              marginTop: 7,
             }}
             variant="contained"
             disabled={Object.values(errors).length > 0}
@@ -162,47 +132,67 @@ const Login = (props: LoginPageInterface) => {
             Login
           </CCButton>
 
-          <Typography sx={{ marginTop: '40px', marginBottom: '15px' }}>
-            Don’t have an account yet?
-          </Typography>
-          <CCButton
-            onClick={() => navigate(pathNames.REGISTER)}
-            fullWidth
-            sx={{
-              height: '50px',
-              borderRadius: '6px',
-              backgroundColor: 'white',
-              color: 'darkPrimary1.main',
-              border: '2px solid',
-              borderColor: 'darkPrimary1.main',
-            }}
-            variant="outlined"
-          >
-            Register
-          </CCButton>
+          <Grid container justifyContent={'center'} alignItems={'center'}>
+            <Typography
+              sx={{
+                marginTop: '20px',
+                marginBottom: '15px',
+                textAlign: 'center',
+                fontWeight: '400',
+                fontSize: 16,
+              }}
+            >
+              {`Don't have an account?`}
+            </Typography>
+            <Typography
+              onClick={() => navigate(pathNames.REGISTER)}
+              sx={{
+                fontWeight: '500',
+                fontSize: 20,
+                px: 1,
+                pt: 0.5,
+                cursor: 'pointer',
+              }}
+            >
+              {' '}
+              Register{' '}
+            </Typography>
+            <Typography
+              sx={{
+                marginTop: '20px',
+                marginBottom: '15px',
+                textAlign: 'center',
+                fontWeight: '400',
+                fontSize: 16,
+              }}
+            >
+              {`here`}
+            </Typography>
+          </Grid>
         </Box>
       </Grid>
       <Grid
         item
-        xl={7}
-        lg={7}
-        md={7}
-        sm={12}
-        xs={12}
-        component="img"
-        // src="https://wiki.dave.eu/images/4/47/Placeholder.png"
+        md={6}
+        flexDirection="column"
         sx={{
           display: {
-            xs: 'none',
             sm: 'none',
             md: 'flex',
+            xs: 'none',
           },
-          // height: window.innerHeight,
-          backgroundColor: 'disable.main',
-          flex: 1,
           height: '100%',
+          backgroundImage: `url(${Images.illustration1})`,
+          flex: 1,
         }}
-      ></Grid>
+      >
+        <img
+          src={Images.illustration1}
+          alt="bg iamges"
+          width="auto"
+          style={{ height: '100%' }}
+        />
+      </Grid>
     </Grid>
   )
 }

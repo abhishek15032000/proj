@@ -69,7 +69,7 @@ export default function ResponsiveDrawer(props: any) {
       return (
         <IconComponent
           style={{
-            color: Colors.black,
+            color: Colors.white,
             opacity: activeRoute(text, location) ? 1 : 0.5,
           }}
         />
@@ -128,10 +128,7 @@ export default function ResponsiveDrawer(props: any) {
   }
 
   const drawer = (
-    <Box
-      component={'div'}
-      // sx={{ justifyContent: 'center', alignItems: 'center' }}
-    >
+    <Box component={'div'} sx={{ backgroundColor: 'darkPrimary1.main' }}>
       <Toolbar />
       <div style={{ height: '25%' }}></div>
 
@@ -142,8 +139,8 @@ export default function ResponsiveDrawer(props: any) {
             to={linkRenderer(text)}
             style={{
               textDecoration: 'none',
-              color: Colors.black,
-              fontWeight: activeRoute(text, location) ? '700' : '500',
+              color: Colors.white,
+              fontWeight: activeRoute(text, location) ? '700' : '700',
               padding: '10px 0',
             }}
           >
@@ -157,7 +154,12 @@ export default function ResponsiveDrawer(props: any) {
           </NavLink>
         ))}
       </List>
-      <List sx={{ marginTop: screen.height / 3.5 - midMenu().length + 'px' }}>
+      <List
+        sx={{
+          paddingTop: screen.height / 3.5 - midMenu().length + 'px',
+          backgroundColor: 'darkPrimary1.main',
+        }}
+      >
         <NavLink
           to={pathNames.LOGOUT}
           style={{ textDecoration: 'none', color: Colors.secondary }}
@@ -183,13 +185,17 @@ export default function ResponsiveDrawer(props: any) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          background: 'background',
         }}
       >
         <AppNavBar handleDrawerToggle={handleDrawerToggle} />
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{
+          width: { sm: drawerWidth },
+          flexShrink: { sm: 0 },
+        }}
         aria-label="mailbox folders"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -205,6 +211,7 @@ export default function ResponsiveDrawer(props: any) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              backgroundColor: 'darkPrimary1.main',
             },
           }}
         >
@@ -217,6 +224,7 @@ export default function ResponsiveDrawer(props: any) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              backgroundColor: 'darkPrimary1.main',
             },
           }}
           open
