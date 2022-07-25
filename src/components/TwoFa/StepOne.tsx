@@ -6,7 +6,7 @@ import { Button, Typography } from '@mui/material'
 import OtpInput from 'react-otp-input'
 import { Container } from '@mui/system'
 import CCButton from '../../atoms/CCButton'
-import { Images } from '../../theme'
+import { Colors, Images } from '../../theme'
 
 const StepOneTwoFa = (props: TwoFaProps) => {
   const [otp, setOtp] = useState<any>()
@@ -28,7 +28,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
         alignItems="center"
         sx={{ height: '100vh' }}
       >
-        <Grid item md={6} xs={12}>
+        <Grid item md={5} xs={12}>
           <Grid
             container
             direction="column"
@@ -70,7 +70,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
                   fontSize: 20,
                   border: 'none',
                   borderRadius: 8,
-                  background: 'container1',
+                  backgroundColor: '#E9EEEC',
                   marginRight: 25,
                 }}
               />
@@ -99,7 +99,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
         </Grid>
         <Grid
           item
-          md={6}
+          md={7}
           flexDirection="column"
           sx={{
             display: {
@@ -109,6 +109,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
             },
             height: '100%',
             backgroundImage: `url(${Images.illustration2})`,
+            backgroundSize: 'cover',
             flex: 1,
           }}
         >
