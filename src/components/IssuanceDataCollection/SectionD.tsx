@@ -1,21 +1,12 @@
 import React, { FC, useState } from 'react'
 import {
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Grid,
-  Modal,
   TextareaAutosize,
-  TextField,
   Typography,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import SampleModal from '../../atoms/SampleModal/SampleModal'
 
 const SectionD: FC = () => {
   const [showModal, setShowModal] = useState(false)
@@ -36,12 +27,6 @@ const SectionD: FC = () => {
           marginBottom: '16px',
         }}
       />
-      {/* <Typography>Sample data table for reference</Typography>
-      <Box
-        sx={{ height: '400px', marginTop: '4px', marginBottom: '16px' }}
-        component={'img'}
-        src={require('../../assets/Images/sample-d.png')}
-      /> */}
 
       <Box
         sx={{
@@ -95,74 +80,5 @@ const SectionD: FC = () => {
   )
 }
 
-interface SampleModalProps {
-  mediaArray: Array<any>
-  stringArray: Array<string>
-  modalVisibility: boolean
-  setModalVisibility: any
-}
-
-const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
-  const [index, setIndex] = useState(0)
-
-  const counterUp = () => {
-    if (index < props.mediaArray.length - 1) {
-      setIndex(index + 1)
-    }
-  }
-
-  const counterDown = () => {
-    if (index > 0) {
-      setIndex(index - 1)
-    }
-  }
-
-  return (
-    <Dialog
-      open={props.modalVisibility}
-      onClose={() => props.setModalVisibility(false)}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">
-        {props.stringArray[index]}
-      </DialogTitle>
-      <DialogContent sx={{ width: '600px' }}>
-        <Box
-          sx={{ height: '400px', marginTop: '4px', marginBottom: '16px' }}
-          component={'img'}
-          src={props.mediaArray[index]}
-        />
-      </DialogContent>
-      <DialogActions sx={{ justifyContent: 'center', alignItems: 'center' }}>
-        <ChevronLeftIcon onClick={counterDown} />
-        <Typography
-          sx={{
-            display: 'flex',
-            height: '30px',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            sx={{
-              height: '30px',
-              width: '30px',
-              backgroundColor: '#E8E8E8',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: '5px',
-            }}
-          >
-            {index + 1}
-          </Typography>
-          {' ' + '/ ' + props.mediaArray.length}
-        </Typography>
-        <ChevronRightIcon onClick={counterUp} />
-      </DialogActions>
-    </Dialog>
-  )
-}
 
 export default SectionD

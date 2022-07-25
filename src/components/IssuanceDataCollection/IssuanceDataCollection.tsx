@@ -104,7 +104,7 @@ const IssuanceDataCollection = () => {
         </Tabs>
       </Box>
       <Box>
-        {sectionATabIndex === 1 && <SectionA1 />}
+        {sectionATabIndex === 1 && <SectionD />}
         {sectionATabIndex === 2 && <SectionA2 />}
         {sectionATabIndex === 3 && <SectionA3 />}
         {sectionATabIndex === 4 && <SectionA4 />}
