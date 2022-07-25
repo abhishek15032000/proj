@@ -184,15 +184,10 @@ const Login = (props: LoginPageInterface) => {
           height: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
         }}
-      >
-        <img
-          src={Images.illustration1}
-          alt="bg iamges"
-          width="auto"
-          style={{ height: '100%' }}
-        />
-      </Grid>
+      />
     </Grid>
   )
 }

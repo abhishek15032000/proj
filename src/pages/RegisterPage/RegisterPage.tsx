@@ -33,7 +33,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   const { handleChange, values, errors, handleSubmit } = useForm(register)
 
   return (
-    <Grid container flexDirection="row" xs={12} sx={{ flex: 1 }}>
+    <Grid container flexDirection="row" xs={12} height={'100vh'}>
       <Grid
         item
         md={6}
@@ -183,19 +183,32 @@ const RegisterPage = (props: RegisterPageProps) => {
               />
             </Grid>
           </Grid>
-
-          <CCButton
-            type="submit"
+          <Grid
+            container
             sx={{
-              width: '100%',
-              height: '50px',
-              borderRadius: '6px',
-              marginTop: 7,
+              mt: '4px',
             }}
-            variant="contained"
+            xs={12}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
           >
-            Register
-          </CCButton>
+            <Grid item xs={12}>
+              <CCButton
+                fullWidth
+                type="submit"
+                sx={{
+                  height: '50px',
+                  borderRadius: '6px',
+                  marginTop: 7,
+                }}
+                variant="contained"
+              >
+                Register
+              </CCButton>
+            </Grid>
+          </Grid>
+
           <Grid container justifyContent={'center'} alignItems={'center'}>
             <Typography
               sx={{
@@ -248,15 +261,10 @@ const RegisterPage = (props: RegisterPageProps) => {
           height: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
         }}
-      >
-        <img
-          src={Images.illustration1}
-          alt="bg iamges"
-          width="auto"
-          style={{ height: '100%' }}
-        />
-      </Grid>
+      />
     </Grid>
   )
 }
