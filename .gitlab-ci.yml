@@ -88,7 +88,7 @@ build-cache:
   stage: build-cache
   image: mhart/alpine-node:12.14.1
   script:
-    - npm ci --no-audit
+    - npm install
   artifacts:
     paths:
       - node_modules
