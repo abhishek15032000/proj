@@ -88,6 +88,7 @@ build-cache:
   stage: build-cache
   image: mhart/alpine-node:12.14.1
   script:
+    - apk update && apk add git
     - npm install
   artifacts:
     paths:
