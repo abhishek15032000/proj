@@ -52,7 +52,7 @@ const Login = (props: LoginPageInterface) => {
     >
       <Grid
         item
-        md={6}
+        lg={6}
         xs={12}
         display="flex"
         sx={{
@@ -177,8 +177,8 @@ const Login = (props: LoginPageInterface) => {
         flexDirection="column"
         sx={{
           display: {
-            sm: 'none',
-            md: 'flex',
+            // sm: 'none',
+            lg: 'flex',
             xs: 'none',
           },
           height: '100%',

@@ -36,7 +36,7 @@ const RegisterPage = (props: RegisterPageProps) => {
     <Grid container flexDirection="row" xs={12} height={'100vh'}>
       <Grid
         item
-        md={6}
+        lg={6}
         xs={12}
         display="flex"
         flexDirection="column"
@@ -254,15 +254,14 @@ const RegisterPage = (props: RegisterPageProps) => {
         flexDirection="column"
         sx={{
           display: {
-            sm: 'none',
-            md: 'flex',
+            lg: 'flex',
             xs: 'none',
           },
           height: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
           backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
+          backgroundRepeat: 'repeat-y',
         }}
       />
     </Grid>
