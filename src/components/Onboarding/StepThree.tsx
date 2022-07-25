@@ -150,7 +150,9 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
             }}
-            renderInput={(params) => <CCInputField {...params} />}
+            renderInput={(params) => (
+              <CCInputField variant="filled" {...params} />
+            )}
           />
         </Grid>
         <Grid item xs={6}>
