@@ -217,7 +217,7 @@ const StepOne = ({ step, setStep }: StepOneProps) => {
         </Grid>
         <Grid item>
           <CCButton
-            // sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            sx={{ fontSize: 16 }}
             variant="contained"
             onClick={handleNext}
           >

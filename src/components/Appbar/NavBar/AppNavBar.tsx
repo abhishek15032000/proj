@@ -194,12 +194,13 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             }}
           >
             <Button
+              color="primary"
               sx={{
                 flexDirection: 'row',
                 alignItems: 'center',
 
                 display: 'flex',
-                color: 'black',
+
                 textTransform: 'none',
               }}
             >
@@ -211,7 +212,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           <IconButton
             size="large"
             aria-label="show 17 new notifications"
-            color="inherit"
+            color="primary"
           >
             <Badge color="error">
               <SettingsIcon />
@@ -221,7 +222,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           <IconButton
             size="large"
             aria-label="show 17 new notifications"
-            color="inherit"
+            color="primary"
           >
             <Badge badgeContent={17} color="error">
               <NotificationsIcon />
@@ -235,7 +236,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             aria-controls={menuId}
             aria-haspopup="true"
             onClick={handleProfileMenuOpen}
-            color="inherit"
+            color="primary"
           >
             <AccountCircle />
           </IconButton>
@@ -247,7 +248,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             aria-controls={mobileMenuId}
             aria-haspopup="true"
             onClick={handleMobileMenuOpen}
-            color="inherit"
+            color="primary"
           >
             <MoreIcon />
           </IconButton>

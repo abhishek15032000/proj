@@ -22,7 +22,7 @@ export const initialState: ThemeOptions = {
 	palette: {
 		primary: {
 			light: Colors.white,
-			main: "#4caf50",
+			main: "#1d4b44",
 			lightPrimary: "#4caf50",
 		},
 		secondary: { main: "#f50057", },

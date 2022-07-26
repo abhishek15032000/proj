@@ -4,7 +4,7 @@ export const pathNames = {
     LOGOUT: '/logout',
     REGISTER: '/register',
     TWOFA: '/TwoFa',
-    ACCOUNTCREATEDPAGE: '/account-created',
+    ACCOUNTCREATEDPAGE: '/account_created',
     ONBOARDING: "/onboarding",
     MAINTENANCE_PAGE: "/maintenance-page",
     ISSUANCE_DATA_COLLECTION: "/issuance-data-collection",
