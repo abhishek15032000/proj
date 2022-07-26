@@ -18,7 +18,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              borderColor: '#1D4B44',
+              border: '2px solid #1D4B44',
             }}
           />
         </Grid>
@@ -34,7 +34,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              borderColor: '#1D4B44',
+              border: '2px solid #1D4B44',
             }}
           />
         </Grid>
@@ -51,7 +51,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              borderColor: '#1D4B44',
+              border: '2px solid #1D4B44',
             }}
           />
         </Grid>
@@ -67,7 +67,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              borderColor: '#1D4B44',
+              border: '2px solid #1D4B44',
             }}
           />
         </Grid>
@@ -83,7 +83,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              borderColor: '#1D4B44',
+              border: '2px solid #1D4B44',
             }}
           />
         </Grid>
@@ -100,7 +100,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              borderColor: '#1D4B44',
+              border: '2px solid #1D4B44',
             }}
           />
         </Grid>

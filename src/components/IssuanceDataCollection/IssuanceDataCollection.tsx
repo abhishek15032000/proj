@@ -18,6 +18,7 @@ import SectionA5 from './SectionA5'
 import CCButton from '../../atoms/CCButton'
 import SectionB2 from './SectionB2'
 import SectionB1 from './SectionB1'
+import SectionC1 from './SectionC1'
 
 const sections = [
   { name: 'Section A: Description of Project Activity' },
