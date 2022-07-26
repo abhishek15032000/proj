@@ -121,7 +121,11 @@ const PaperLabelAndButton = (props: PaperLabelAndButtonProps) => {
             xs={12}
           />
         </Grid>
-        <Typography component="div" variant="body1">
+        <Typography
+          component="div"
+          variant="body1"
+          sx={{ fontSize: 14, lineHeight: 1 }}
+        >
           {props.label}
         </Typography>
 

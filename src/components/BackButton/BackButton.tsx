@@ -10,6 +10,7 @@ const BackButton = (props: BackButtonProps) => {
         color: 'darkPrimary1.main',
         border: '2px solid',
         borderColor: 'darkPrimary1.main',
+        fontSize: 16,
       }}
       variant="outlined"
       {...props}

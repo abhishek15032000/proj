@@ -1,5 +1,4 @@
 import { ROLES } from '../config/roles.config'
-import AccountCreatedPage from '../pages/AccountCreatedPage/AccountCreatedPage'
 import DashboardPage from '../pages/DashboardPage/DashboardPage'
 import IssuanceDataCollection from '../pages/IssuanceDataCollection'
 import LogoutPage from '../pages/LogoutPage'
@@ -16,12 +15,12 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Projects,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.ACCOUNT_CREATED_PAGE,
-    component: AccountCreatedPage,
-    //sidebarName: linkLabels.Projects,
-    //roles: [ROLES.ISSUER],
-  },
+  //{
+  //  path: pathNames.ACCOUNT_CREATED_PAGE,
+  //  component: AccountCreatedPage,
+  //  sidebarName: linkLabels.Projects,
+  //  roles: [ROLES.ISSUER],
+  //},
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,
