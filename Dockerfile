@@ -43,7 +43,7 @@ COPY package-lock.json ./
 RUN apk add --no-cache git
 RUN git --version
 RUN npm cache clean --force
-RUN npm ci --no-audit
+RUN npm install --no-audit
 # RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
 RUN npm run build
