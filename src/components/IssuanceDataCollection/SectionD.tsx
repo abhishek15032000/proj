@@ -1,12 +1,8 @@
 import React, { FC, useState } from 'react'
-import {
-  Box,
-  Grid,
-  TextareaAutosize,
-  Typography,
-} from '@mui/material'
+import { Box, Grid, TextareaAutosize, Typography, Input } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import SampleModal from '../../atoms/SampleModal/SampleModal'
+import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
 
 const SectionD: FC = () => {
   const [showModal, setShowModal] = useState(false)
@@ -37,28 +33,15 @@ const SectionD: FC = () => {
         }}
       >
         <Typography>Attach datas & parameters fixed ex-ante table</Typography>
-        <Typography onClick={() => setShowModal(true)} sx={{ textDecoration: 'underline' }}>
+        <Typography
+          onClick={() => setShowModal(true)}
+          sx={{ textDecoration: 'underline' }}
+        >
           View Sample Data
         </Typography>
       </Box>
-      <Box sx={{ display: 'flex', marginTop: '4px' }}>
-        <Box sx={{ height: '250px', width: '38%', border: '2px solid' }} />
-
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            height: '250px',
-            width: '38%',
-            border: '2px dashed',
-            marginLeft: '10px',
-          }}
-        >
-          <AddIcon />
-          <Typography sx={{ fontSize: 20 }}>Attach More</Typography>
-        </Box>
-      </Box>
+      
+      <ImageComponent />
 
       <SampleModal
         mediaArray={[
