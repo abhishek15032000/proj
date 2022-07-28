@@ -7,12 +7,37 @@
 }
 .tabs{
   display: flex;  
-	width: fit-content;
+	/* width: fit-content; */
+  overflow-x: auto;
+
+}
+.tabs::-webkit-scrollbar {
+  height: 8px;
+  border-radius: 10px;
+
+}
+
+/* Track */
+.tabs::-webkit-scrollbar-track {
+ padding-top: 5px;
+  background: #E1EEE8;
+  border-radius: 10px;
+}
+
+/* Handle */
+.tabs::-webkit-scrollbar-thumb {
+  background: #1D4B44;
+}
+
+/* Handle on hover */
+.tabs::-webkit-scrollbar-thumb:hover {
+  background: #388E81;
 }
 .tabs > div:not(:first-child) { 
 	margin-left: 6px;
 }
 .tab{
+  margin-bottom: 3px;
 	width: fit-content;
   color: #388E81;
   background-color: #BCE2D2;
