@@ -16,7 +16,10 @@ import SectionA3 from './SectionA3'
 import SectionA4 from './SectionA4'
 import SectionA5 from './SectionA5'
 import CCButton from '../../atoms/CCButton'
-import SectionD from './SectionD'
+
+import SectionD1 from './SectionD1'
+import SectionD2 from './SectionD2'
+import SectionD3 from './SectionD3'
 
 const sections = [
   { name: 'Section A: Description of Project Activity' },
@@ -104,7 +107,7 @@ const IssuanceDataCollection = () => {
         </Tabs>
       </Box>
       <Box>
-        {sectionATabIndex === 1 && <SectionD />}
+        {sectionATabIndex === 1 && <SectionA1 />}
         {sectionATabIndex === 2 && <SectionA2 />}
         {sectionATabIndex === 3 && <SectionA3 />}
         {sectionATabIndex === 4 && <SectionA4 />}

@@ -1,15 +1,14 @@
 import React, { FC, useState } from 'react'
+
 import {
   Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Typography,
   Modal,
 } from '@mui/material'
+
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import CloseIcon from '@mui/icons-material/Close';
 
 interface SampleModalProps {
   mediaArray: Array<any>
@@ -52,8 +51,28 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
         }}
         // onClick={() => props.setModalVisibility(false)}
       >
-        <Box sx={{ backgroundColor: '#FFF', borderRadius: '5px', zIndex: 100, padding: '10px', paddingRight: '5px', paddingLeft: '5px' }}>
-          <Typography>{props.stringArray[index]}</Typography>
+        <Box
+          sx={{
+            backgroundColor: '#FFF',
+            borderRadius: '5px',
+            zIndex: 100,
+            padding: '10px',
+            paddingRight: '5px',
+            paddingLeft: '5px',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingRight: '5px'
+            }}
+          >
+            <Typography>{props.stringArray[index]}</Typography>
+            <CloseIcon onClick={() => props.setModalVisibility(false)} />
+          </Box>
+
           <Box
             sx={{ height: '400px', marginTop: '4px', marginBottom: '16px' }}
             component={'img'}

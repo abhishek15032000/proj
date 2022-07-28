@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add'
 import SampleModal from '../../atoms/SampleModal/SampleModal'
 import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
 
-const SectionD: FC = () => {
+const SectionD1: FC = () => {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -15,7 +15,7 @@ const SectionD: FC = () => {
       <TextareaAutosize
         // aria-label="minimum height"
         minRows={3}
-        // placeholder="Minimum 3 rows"
+        placeholder="(If data for this project is monitored and calculated based on an ex-ante method, please explain.)"
         style={{
           width: '80%',
           height: '180px',
@@ -40,21 +40,15 @@ const SectionD: FC = () => {
           View Sample Data
         </Typography>
       </Box>
-      
+
       <ImageComponent />
 
       <SampleModal
         mediaArray={[
           require('../../assets/Images/sample-d1.png'),
-          require('../../assets/Images/sample-d2.png'),
-          require('../../assets/Images/sample-d3.png'),
-          require('../../assets/Images/sample-d4.png'),
         ]}
         stringArray={[
           'Sample Report - Baseline Emissions',
-          'Sample Report - Monitored ex - post',
-          'Sample Report - Project emissions',
-          'Sample Report - Leakage emissions',
         ]}
         modalVisibility={showModal}
         setModalVisibility={setShowModal}
@@ -63,5 +57,4 @@ const SectionD: FC = () => {
   )
 }
 
-
-export default SectionD
+export default SectionD1

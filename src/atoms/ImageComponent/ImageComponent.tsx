@@ -6,9 +6,6 @@ import SampleModal from '../../atoms/SampleModal/SampleModal'
 const ImageComponent: FC = () => {
   const [imageArray, setImageArray]: Array<any> = useState([])
 
-  console.log('imageArray')
-  console.log(JSON.stringify(imageArray, null, 4))
-
   return (
     <Grid container>
       {imageArray.map((item: any, index: any) => {
@@ -28,11 +25,7 @@ const ImageComponent: FC = () => {
       })}
 
       <Input
-        // component="input"
         type="file"
-        // display="flex"
-        // justifyContent="center"
-        // alignItems="center"
         sx={{
           height: '250px',
           width: '420px',
@@ -40,12 +33,6 @@ const ImageComponent: FC = () => {
           marginLeft: '10px',
           margin: '20px',
         }}
-        // components={
-        //   <Box>
-        //     <AddIcon />
-        //     <Typography sx={{ fontSize: 20 }}>Attach More</Typography>
-        //   </Box>
-        // }
         onChange={(event: any) => {
           if (event?.target?.files?.length) {
             const selectedFile = event.target.files[0]
@@ -58,17 +45,10 @@ const ImageComponent: FC = () => {
             }
           }
         }}
-        //   onChange={(event: any) => {
-        //     console.log(event.target.files[0])
-
-        //     setImageArray([...imageArray, event.target.files[0]])
-        //     // setSelectedImage(event.target.files[0]);
-        //   }}
+       
       />
-      {/* <AddIcon />
-          <Typography sx={{ fontSize: 20 }}>Attach More</Typography>
-        </Input> */}
-
+      
+      {/* 
       <Box
         // component="input"
         // type="file"
@@ -85,32 +65,9 @@ const ImageComponent: FC = () => {
       >
         <AddIcon />
         <Typography sx={{ fontSize: 20 }}>Attach More</Typography>
-      </Box>
+      </Box> */}
     </Grid>
   )
 }
 
 export default ImageComponent
-
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-]
