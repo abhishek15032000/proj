@@ -19,6 +19,8 @@ import { Colors } from '../../theme'
 import { Box } from '@mui/system'
 import { DatePicker } from '@mui/x-date-pickers'
 import CCButton from '../../atoms/CCButton'
+import BackButton from '../BackButton'
+import CCInputField from '../../atoms/CCInputField'
 
 declare module '@mui/material/FormLabel' {
   interface FormLabelPropsColorOverrides {
@@ -126,71 +128,17 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
           mt: '4px',
         }}
         xs={8}
-        rowSpacing={1}
-        columnSpacing={2}
+        rowSpacing={3}
+        columnSpacing={3}
       >
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            label="First Name"
-            sx={{
-              background: '#DAE5E1',
-              color: '#006B5E',
-              borderRadius: '4px 4px 0 0',
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
-                </InputAdornment>
-              ),
-            }}
-            InputLabelProps={{ style: { color: '#006B5E' } }}
-            color="darkPrimary1"
-            variant="filled"
-          />
+          <CCInputField variant="filled" label="First Name" />
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            label="Last Name"
-            sx={{
-              background: '#DAE5E1',
-              color: '#006B5E',
-              borderRadius: '4px 4px 0 0',
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
-                </InputAdornment>
-              ),
-            }}
-            InputLabelProps={{ style: { color: '#006B5E' } }}
-            color="darkPrimary1"
-            variant="filled"
-          />
+          <CCInputField variant="filled" label="Last Name" />
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            label="Middle Name"
-            sx={{
-              background: '#DAE5E1',
-              color: '#006B5E',
-              borderRadius: '4px 4px 0 0',
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
-                </InputAdornment>
-              ),
-            }}
-            InputLabelProps={{ style: { color: '#006B5E' } }}
-            color="darkPrimary1"
-            variant="filled"
-          />
+          <CCInputField variant="filled" label="Middle Name" />
         </Grid>
         <Grid item xs={6}>
           <DatePicker
@@ -203,62 +151,15 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
               OpenPickerIcon: CalendarMonthOutlinedIcon,
             }}
             renderInput={(params) => (
-              <TextField
-                fullWidth
-                InputLabelProps={{ style: { color: '#006B5E' } }}
-                sx={{
-                  background: '#DAE5E1',
-                  color: '#006B5E',
-                  borderRadius: '4px 4px 0 0',
-                }}
-                {...params}
-                variant="filled"
-                color="darkPrimary1"
-              />
+              <CCInputField variant="filled" {...params} />
             )}
           />
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            label="Contact Number"
-            sx={{
-              background: '#DAE5E1',
-              color: '#006B5E',
-              borderRadius: '4px 4px 0 0',
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
-                </InputAdornment>
-              ),
-            }}
-            InputLabelProps={{ style: { color: '#006B5E' } }}
-            color="darkPrimary1"
-            variant="filled"
-          />
+          <CCInputField variant="filled" label="Contact Number" />
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            label="Email"
-            sx={{
-              background: '#DAE5E1',
-              color: '#006B5E',
-              borderRadius: '4px 4px 0 0',
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <CancelOutlinedIcon sx={{ cursor: 'pointer' }} />
-                </InputAdornment>
-              ),
-            }}
-            InputLabelProps={{ style: { color: '#006B5E' } }}
-            color="darkPrimary1"
-            variant="filled"
-          />
+          <CCInputField variant="filled" label="Email" />
         </Grid>
       </Grid>
       <Box sx={{ marginTop: 2 }}>Identity Verification</Box>
@@ -270,16 +171,18 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
         xs={8}
       >
         <Grid item>
-          <Box
+          <CCButton
             sx={{
               padding: '8px 12px',
-              backgroundColor: Colors.darkPrimary1,
-              color: '#FFF',
+              color: 'darkPrimary1.main',
               borderRadius: 24,
+              backgroundColor: 'white',
+              border: '2px solid',
+              borderColor: 'darkPrimary1.main',
             }}
           >
             Start Verification Now
-          </Box>
+          </CCButton>
         </Grid>
         <Grid
           container
@@ -289,32 +192,40 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
           sx={{ mt: 2 }}
         >
           <Grid item>
-            <Grid container justifyContent="center" alignItems="center">
+            <CCButton
+              variant="outlined"
+              sx={{
+                borderColor: 'containerText.main',
+                color: 'containerText.main',
+                backgroundColor: 'white',
+              }}
+            >
               <EmailOutlinedIcon sx={{ cursor: 'pointer' }} />
               <span>Send link via email</span>
-            </Grid>
+            </CCButton>
           </Grid>
           <Grid item>
-            <Grid container justifyContent="center" alignItems="center">
+            <CCButton
+              variant="outlined"
+              sx={{
+                borderColor: 'containerText.main',
+                color: 'containerText.main',
+                backgroundColor: 'white',
+              }}
+            >
               <ContentCopyOutlinedIcon sx={{ cursor: 'pointer' }} />
               <span>Copy link</span>
-            </Grid>
+            </CCButton>
           </Grid>
         </Grid>
       </Grid>
       <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
         <Grid item>
-          <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
-            variant="contained"
-            onClick={handleBack}
-          >
-            Back
-          </CCButton>
+          <BackButton onClick={handleBack}>Back</BackButton>
         </Grid>
         <Grid item>
           <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            sx={{ fontSize: 16 }}
             variant="contained"
             onClick={handleNext}
           >

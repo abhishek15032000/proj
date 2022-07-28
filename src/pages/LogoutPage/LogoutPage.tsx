@@ -31,6 +31,7 @@ const LogoutPage = (props: LogoutPageProps) => {
         right: 0,
         backgroundColor: 'primary.main',
         zIndex: 100000000,
+        color: 'primary.light',
       }}
     >
       Logging out...

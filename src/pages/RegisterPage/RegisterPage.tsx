@@ -15,6 +15,10 @@ import CCButton from '../../atoms/CCButton'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import useForm from '../../hooks/useForm'
+import CCInputField from '../../atoms/CCInputField'
+import CCSelectBox from '../../atoms/CCSelectBox'
+import Logo from '../../atoms/Logo'
+import { Images } from '../../theme'
 
 const RegisterPage = (props: RegisterPageProps) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -29,27 +33,18 @@ const RegisterPage = (props: RegisterPageProps) => {
   const { handleChange, values, errors, handleSubmit } = useForm(register)
 
   return (
-    <Grid
-      container
-      flexDirection="row"
-      xs={12}
-      height={'100vh'}
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Grid container flexDirection="row" xs={12} height={'100vh'}>
       <Grid
         item
-        xl={5}
-        lg={5}
-        md={5}
-        sm={12}
+        lg={6}
         xs={12}
         display="flex"
         flexDirection="column"
-        justifyContent="center"
         sx={{
-          padding: 1,
-          height: window.innerHeight,
+          marginTop: 18,
+          width: '100%',
+          px: 20,
+          flex: 1,
         }}
       >
         <Box
@@ -57,204 +52,216 @@ const RegisterPage = (props: RegisterPageProps) => {
           onSubmit={handleSubmit}
           // noValidate
           sx={{
-            marginLeft: {
-              sm: 8,
-              lg: 11,
-            },
-            marginRight: {
-              sm: 9,
-              lg: 18,
-            },
+            width: '100%',
           }}
         >
-          <Typography sx={{ fontSize: 40 }}>Register</Typography>
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{
-              flex: 1,
-              // border: '2px solid red',
-              marginTop: '30px',
-            }}
-          >
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '50%',
-                height: '50px',
-                borderRadius: '6px',
-              }}
-              id="outlined-basic"
-              label=" First Name"
-              variant="outlined"
-              name="firstName"
-              onChange={handleChange}
-              defaultValue={values?.firstName}
-            />
-
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '50%',
-                height: '50px',
-                borderRadius: '6px',
-                marginLeft: '20px',
-              }}
-              id="outlined-basic"
-              label="Last Name"
-              variant="outlined"
-              name="lastName"
-              onChange={handleChange}
-              defaultValue={values?.lastName}
-            />
-          </Box>
-
-          <TextField
-            sx={{
-              marginBottom: '20px',
-              width: '100%',
-              height: '50px',
-              borderRadius: '6px',
-              marginTop: '10px',
-            }}
-            id="outlined-basic"
-            variant="outlined"
-            label={'Work Email ID'}
-            name="email"
-            onChange={handleChange}
-            defaultValue={values?.email}
-          />
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{
-              flex: 1,
-              marginTop: '10px',
-              // border: '2px solid red',
-            }}
-          >
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '30%',
-                height: '50px',
-                borderRadius: '6px',
-              }}
-              id="outlined-basic"
-              label="Country Code"
-              variant="outlined"
-              name={'countryCode'}
-              onChange={handleChange}
-              defaultValue={values?.countryCode}
-            />
-            <TextField
-              sx={{
-                marginBottom: '20px',
-                width: '70%',
-                height: '50px',
-                borderRadius: '6px',
-                marginLeft: '20px',
-              }}
-              id="outlined-basic"
-              label="Phone Number"
-              variant="outlined"
-              onChange={handleChange}
-              defaultValue={values?.phoneNumber}
-            />
-          </Box>
-
-          <TextField
-            sx={{
-              marginBottom: '20px',
-              width: '100%',
-              height: '50px',
-              borderRadius: '6px',
-              marginTop: '10px',
-            }}
-            id="outlined-basic"
-            label="Password"
-            variant="outlined"
-            name="password"
-            onChange={handleChange}
-            defaultValue={values?.password}
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  {!showPassword ? (
-                    <VisibilityOffIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <VisibilityIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <CCButton
-            type="submit"
-            sx={{
-              width: '100%',
-              height: '50px',
-              borderRadius: '6px',
-              marginTop: '30px',
-            }}
-            variant="contained"
+          <Logo />
+          <Typography
+            sx={{ fontWeight: '700', fontSize: 32, mt: 8, color: '#1C4A43' }}
           >
             Register
-          </CCButton>
-          <Typography
-            sx={{
-              marginTop: '20px',
-              marginBottom: '15px',
-              textAlign: 'center',
-              fontWeight: '700px',
-            }}
-          >
-            Already have an account?
           </Typography>
-          <CCButton
-            onClick={() => navigate(pathNames.LOGIN)}
+          <Typography sx={{ fontWeight: '500', fontSize: 16, mt: 1, mb: 5 }}>
+            Register by providing the information below
+          </Typography>
+          <Grid
+            container
             sx={{
-              width: '100%',
-              // height: '50px',
-              borderRadius: '6px',
-              backgroundColor: 'white',
-              color: 'darkPrimary1.main',
-              border: '2px solid',
-              borderColor: 'darkPrimary1.main',
+              mt: '4px',
             }}
-            variant="outlined"
+            xs={12}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
           >
-            Login
-          </CCButton>
+            <Grid item xs={12} lg={6}>
+              <CCInputField
+                label=" First Name"
+                variant="filled"
+                name="firstName"
+                onChange={handleChange}
+                defaultValue={values?.firstName}
+              />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <CCInputField
+                label="Last Name"
+                variant="filled"
+                name="lastName"
+                onChange={handleChange}
+                defaultValue={values?.lastName}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            sx={{
+              mt: '4px',
+            }}
+            xs={12}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
+          >
+            <Grid item xs={12}>
+              <CCInputField
+                variant="filled"
+                label={'Work Email ID'}
+                name="email"
+                onChange={handleChange}
+                defaultValue={values?.email}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            sx={{
+              mt: '4px',
+            }}
+            xs={12}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
+          >
+            <Grid item xs={12} lg={6}>
+              <CCSelectBox
+                variant="filled"
+                sx={{ width: '100%' }}
+                // label="Country Code"
+                name="country_code"
+                onChange={handleChange}
+                value={'+91'}
+                autoWidth={false}
+                items={[{ label: '+91', value: '+91' }]}
+              />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <CCInputField
+                label="Phone Number"
+                variant="filled"
+                onChange={handleChange}
+                defaultValue={values?.phoneNumber}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            sx={{
+              mt: '4px',
+            }}
+            xs={12}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
+          >
+            <Grid item xs={12}>
+              <CCInputField
+                label="Password"
+                variant="filled"
+                name="password"
+                onChange={handleChange}
+                defaultValue={values?.password}
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      {!showPassword ? (
+                        <VisibilityOffIcon
+                          onClick={() => setShowPassword(!showPassword)}
+                        />
+                      ) : (
+                        <VisibilityIcon
+                          onClick={() => setShowPassword(!showPassword)}
+                        />
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            sx={{
+              mt: '4px',
+            }}
+            xs={12}
+            rowSpacing={3}
+            columnSpacing={3}
+            flexDirection="row"
+          >
+            <Grid item xs={12}>
+              <CCButton
+                fullWidth
+                type="submit"
+                sx={{
+                  height: '50px',
+                  borderRadius: '6px',
+                  marginTop: 7,
+                }}
+                variant="contained"
+              >
+                Register
+              </CCButton>
+            </Grid>
+          </Grid>
+
+          <Grid container justifyContent={'center'} alignItems={'center'}>
+            <Typography
+              sx={{
+                marginTop: '20px',
+                marginBottom: '15px',
+                textAlign: 'center',
+                fontWeight: '400',
+                fontSize: 16,
+              }}
+            >
+              {`Already have an account?`}
+            </Typography>
+            <Typography
+              onClick={() => navigate(pathNames.LOGIN)}
+              sx={{
+                fontWeight: '500',
+                fontSize: 20,
+                px: 1,
+                pt: 0.5,
+                cursor: 'pointer',
+              }}
+            >
+              {' '}
+              Login{' '}
+            </Typography>
+            <Typography
+              sx={{
+                marginTop: '20px',
+                marginBottom: '15px',
+                textAlign: 'center',
+                fontWeight: '400',
+                fontSize: 16,
+              }}
+            >
+              {`here`}
+            </Typography>
+          </Grid>
         </Box>
       </Grid>
       <Grid
         item
-        xl={7}
-        lg={7}
-        md={7}
+        md={6}
+        flexDirection="column"
         sx={{
           display: {
-            sm: 'none',
             lg: 'flex',
-            md: 'flex',
-            xl: 'flex',
             xs: 'none',
           },
           height: '100%',
-          backgroundColor: 'disable.main',
+          backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'repeat-y',
         }}
       />
     </Grid>

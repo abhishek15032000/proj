@@ -3,14 +3,26 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Colors } from "../../theme";
 
 
-const initialState: ThemeOptions = {
+declare module "@mui/material/Button" {
+	interface ButtonPropsColorOverrides {
+		secondary: true;
+		error: true;
+		surface: true;
+		lightPrimary1: true;
+		darkPrimary1: true;
+		lightPrimary2: true;
+	}
+}
+
+
+export const initialState: ThemeOptions = {
 	typography: {
 		fontFamily: ['"Poppins"'].join(","),
 	},
 	palette: {
 		primary: {
 			light: Colors.white,
-			main: "#4caf50",
+			main: "#1d4b44",
 			lightPrimary: "#4caf50",
 		},
 		secondary: { main: "#f50057", },

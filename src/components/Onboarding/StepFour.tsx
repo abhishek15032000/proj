@@ -3,6 +3,7 @@ import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import { Colors } from '../../theme'
 import CCButton from '../../atoms/CCButton'
+import BackButton from '../BackButton'
 
 interface StepFourProps {
   step: number
@@ -119,17 +120,11 @@ const StepFour: React.FC<StepFourProps> = ({ step, setStep }) => {
       </Grid>
       <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
         <Grid item>
-          <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
-            variant="contained"
-            onClick={handleBack}
-          >
-            Back
-          </CCButton>
+          <BackButton onClick={handleBack}>Back</BackButton>
         </Grid>
         <Grid item>
           <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            // sx={{ background: Colors.darkPrimary1, color: '#fff' }}
             variant="contained"
             // onClick={handleSave}
           >

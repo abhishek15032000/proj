@@ -121,7 +121,11 @@ const PaperLabelAndButton = (props: PaperLabelAndButtonProps) => {
             xs={12}
           />
         </Grid>
-        <Typography component="div" variant="body1">
+        <Typography
+          component="div"
+          variant="body1"
+          sx={{ fontSize: 14, lineHeight: 1 }}
+        >
           {props.label}
         </Typography>
 
@@ -130,7 +134,8 @@ const PaperLabelAndButton = (props: PaperLabelAndButtonProps) => {
           variant="contained"
           text={props.buttonLabel}
           sx={{
-            color: 'white',
+            // color: 'white',
+            fontSize: 14,
             // background: 'grey',
             marginTop: 2,
             width: '100%',

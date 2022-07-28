@@ -3,6 +3,7 @@ import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import { Colors } from '../../theme'
 import CCButton from '../../atoms/CCButton'
+import BackButton from '../BackButton'
 
 interface StepTwoProps {
   step: number
@@ -27,13 +28,13 @@ const StepTwo: React.FC<StepTwoProps> = ({ step, setStep }) => {
       >
         KYC/KYB
       </Typography>
-      <div>Upload Company Documents</div>
+      <Typography>Upload Company Documents</Typography>
       <Grid
         container
         sx={{ mt: 1 }}
         justifyContent="space-between"
         xs={8}
-        spacing={2}
+        spacing={3}
       >
         <Grid item xs={6}>
           <div>Articles of Association or other Governing Documents</div>
@@ -47,7 +48,7 @@ const StepTwo: React.FC<StepTwoProps> = ({ step, setStep }) => {
         sx={{ mt: 1 }}
         justifyContent="space-between"
         xs={8}
-        spacing={2}
+        spacing={3}
       >
         <Grid item xs={6}>
           <div>Proof of Legal Existence</div>
@@ -61,7 +62,7 @@ const StepTwo: React.FC<StepTwoProps> = ({ step, setStep }) => {
         sx={{ mt: 1 }}
         justifyContent="space-between"
         xs={8}
-        spacing={2}
+        spacing={3}
       >
         <Grid item xs={6}>
           <div>Documents Disclosing Beneficial Ownership Structure</div>
@@ -75,7 +76,7 @@ const StepTwo: React.FC<StepTwoProps> = ({ step, setStep }) => {
         sx={{ mt: 1 }}
         justifyContent="space-between"
         xs={8}
-        spacing={2}
+        spacing={3}
       >
         <Grid item xs={6}>
           <div>Proof of Registered & Physical Address</div>
@@ -86,17 +87,11 @@ const StepTwo: React.FC<StepTwoProps> = ({ step, setStep }) => {
       </Grid>
       <Grid container justifyContent="end" sx={{ mt: 2 }} xs={8} spacing={2}>
         <Grid item>
-          <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
-            variant="contained"
-            onClick={handleBack}
-          >
-            Back
-          </CCButton>
+          <BackButton onClick={handleBack}>Back</BackButton>
         </Grid>
         <Grid item>
           <CCButton
-            sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            sx={{ fontSize: 16 }}
             variant="contained"
             onClick={handleNext}
           >
