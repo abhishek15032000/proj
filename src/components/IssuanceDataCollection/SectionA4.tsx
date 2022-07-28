@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import CCButton from '../../atoms/CCButton'
-import CCTextField from '../../atoms/CCTextField'
+import CCInputField from '../../atoms/CCInputField'
 
 interface methodologiesInterface {
   approvedMethodologies: string
@@ -40,6 +40,19 @@ const SectionA4 = () => {
     })
     setMethodologies(methodologiesCopy)
   }
+
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+    type: string
+  ) => {
+    const methodologiesCopy = [...methodologies]
+    let objectToChange = methodologiesCopy[index]
+    objectToChange = { ...objectToChange, [type]: e.target.value }
+    methodologiesCopy[index] = objectToChange
+    setMethodologies(methodologiesCopy)
+  }
+
   return (
     <>
       <Typography sx={{ mt: 3 }}>
@@ -97,21 +110,24 @@ const SectionA4 = () => {
             </FormControl>
           </Grid>
           <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
-            <CCTextField
-              label="Category *"
+            <CCInputField
+              label="Category"
               placeholder="Enter Category of Project Type"
+              onChange={(e) => handleTextChange(e, index, 'category')}
             />
           </Grid>
           <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
-            <CCTextField
-              label="Version *"
+            <CCInputField
+              label="Version"
               placeholder="Enter version of the baseline and monitoring methodology"
+              onChange={(e) => handleTextChange(e, index, 'version')}
             />
           </Grid>
           <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
-            <CCTextField
-              label="Tools referred *"
+            <CCInputField
+              label="Tools referred"
               placeholder="Enter tools to calculate or determine the baseline and monitoring methodology"
+              onChange={(e) => handleTextChange(e, index, 'toolsReferred')}
             />
           </Grid>
           {index + 1 === methodologies.length && (

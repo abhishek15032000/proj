@@ -1,9 +1,9 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import CCTextField from './CCTextField';
+import CCTextarea from './CCTextarea';
 
-test("renders CCTextField", () => {
+test("renders CCTextarea", () => {
   // render(<App />);
-  // const linkElement = screen.getByText(/CCTextField/i);
+  // const linkElement = screen.getByText(/CCTextarea/i);
   // expect(linkElement).toBeInTheDocument();
 });

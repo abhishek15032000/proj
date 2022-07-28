@@ -6,13 +6,15 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
   Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
+import AddIcon from '@mui/icons-material/Add'
 import CCButton from '../../atoms/CCButton'
-import CCTextField from '../../atoms/CCTextField'
+import CCInputField from '../../atoms/CCInputField'
 
-interface abc {
+interface coordinatesInterface {
   latitude: string
   longitude: string
 }
@@ -22,7 +24,8 @@ const SectionA2 = () => {
   const [state, setState] = React.useState('')
   const [pincodes, setPincodes] = React.useState([''])
 
-  const [coordinates, setCoordinates] = useState<abc[]>([
+  const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const [coordinates, setCoordinates] = useState<coordinatesInterface[]>([
     { latitude: '', longitude: '' },
   ])
 
@@ -73,7 +76,7 @@ const SectionA2 = () => {
     <>
       <Grid
         container
-        sx={{ width: '100%', mt: 2 }}
+        sx={{ width: '100%', mt: 3 }}
         columnSpacing={{ xs: 0, md: 1 }}
         rowSpacing={1}
         xs={12}
@@ -94,9 +97,7 @@ const SectionA2 = () => {
               label="Country"
               onChange={handleCountryChange}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={'india'}>India</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -122,17 +123,16 @@ const SectionA2 = () => {
               label="State"
               onChange={handleStateChange}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={'maharashtra'}>Maharashtra</MenuItem>
+              <MenuItem value={'karnataka'}>Karnataka</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6} lg={5}>
-          <CCTextField label="City/Town/District *" />
+          <CCInputField label="City/Town/District" />
         </Grid>
         <Grid item xs={12} md={6} lg={5}>
-          <CCTextField label="Village *" />
+          <CCInputField label="Village" />
         </Grid>
       </Grid>
       {pincodes.map((pincode, index) => (
@@ -145,8 +145,8 @@ const SectionA2 = () => {
           lg={10}
         >
           <Grid item xs={12} md={6} lg={5}>
-            <CCTextField
-              label="Pincode *"
+            <CCInputField
+              label="Pincode"
               value={pincode}
               onChange={(e) => handlePincodeChange(e, index)}
             />
@@ -172,7 +172,7 @@ const SectionA2 = () => {
       {coordinates.map((coordinate, index) => (
         <Grid key={index} container spacing={1} lg={10}>
           <Grid item xs={12} md={6} lg={5}>
-            <CCTextField
+            <CCInputField
               label="Latitude"
               name="latitude"
               value={coordinate.latitude}
@@ -180,7 +180,7 @@ const SectionA2 = () => {
             />
           </Grid>
           <Grid item xs={12} md={6} lg={5}>
-            <CCTextField
+            <CCInputField
               label="Longitude"
               name="longitude"
               value={coordinate.longitude}
@@ -192,12 +192,64 @@ const SectionA2 = () => {
       <Grid container sx={{ mt: 1 }} spacing={1} lg={10}>
         <Grid item xs={12} md={6} lg={5}>
           <CCButton
-            sx={{ color: '#fff', padding: '2px 2px', borderRadius: '14px' }}
+            sx={{ color: '#fff', padding: '2px 10px', borderRadius: '14px' }}
             variant="contained"
             onClick={addCoordinates}
           >
             + Add Coordinates
           </CCButton>
+        </Grid>
+      </Grid>
+      <Grid container sx={{ mt: 1 }} spacing={1} xs={12} lg={10}>
+        <Typography>Attach Data Tables for Technical Description</Typography>
+        <Grid container rowSpacing={2} columnSpacing={2} alignItems={'center'}>
+          {selectedImages &&
+            selectedImages.length > 0 &&
+            selectedImages.map((image, index) => (
+              <Grid item key={index} xs={12} md={6} lg={5}>
+                <Box sx={{ height: '200px', border: '2px solid black' }}>
+                  {<img src={image} width={'100%'} height="100%" />}
+                </Box>
+              </Grid>
+            ))}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            lg={5}
+            justifyContent="center"
+            alignItems={'center'}
+            direction="column"
+          >
+            <Stack
+              direction="column"
+              alignItems="center"
+              justifyContent="space-evenly"
+              sx={{
+                border: '2px solid black',
+                borderStyle: 'dashed',
+                height: 190,
+              }}
+            >
+              <AddIcon fontSize="large" />
+              <input
+                type="file"
+                name="myImage"
+                onChange={(event) => {
+                  if (event?.target?.files?.length) {
+                    const selectedFile = event.target.files[0]
+                    console.log('selectedFile', selectedFile)
+                    const objectUrl = URL.createObjectURL(selectedFile)
+                    if (objectUrl) {
+                      const selectedImagesCopy = [...selectedImages]
+                      selectedImagesCopy.push(objectUrl)
+                      setSelectedImages(selectedImagesCopy)
+                    }
+                  }
+                }}
+              />
+            </Stack>
+          </Grid>
         </Grid>
       </Grid>
     </>
