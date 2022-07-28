@@ -35,14 +35,15 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # Set env variable
 ARG REACT_APP_ENDPOINT
-ENV REACT_APP_ENDPOINT=$REACT_APP_ENDPOINT
+ENV REACT_APP_ENDPOINT=${REACT_APP_ENDPOINT}
 RUN echo "Api endpoint = " $REACT_APP_ENDPOINT
 
 COPY package.json ./
 COPY package-lock.json ./
 RUN apk add --no-cache git
 RUN git --version
-RUN npm install
+RUN npm cache clean --force
+RUN npm install --no-audit
 # RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
 RUN npm run build
