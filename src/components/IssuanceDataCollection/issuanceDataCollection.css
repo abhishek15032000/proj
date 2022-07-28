@@ -1,0 +1,47 @@
+.tabs-container{
+  width: 100%;
+  overflow: overlay;
+}
+.tabs-container::-webkit-scrollbar {
+  display:none;
+}
+.tabs{
+  display: flex;  
+	width: fit-content;
+}
+.tabs > div:not(:first-child) { 
+	margin-left: 6px;
+}
+.tab{
+	width: fit-content;
+  color: #388E81;
+  background-color: #BCE2D2;
+  border-radius: 6px 6px 0 0;
+  padding: 8px 16px;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+.selected-tab{
+  white-space: nowrap;
+  background-color: #388E81;
+  color: #fff;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 3px solid #1D4B44;
+  padding: 8px 16px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* src/components/IssuanceDataCollection/SectionA3.tsx */
+.table-with-div-heading{
+  border: 1px solid #1D4B44;
+  border-radius: 6px 6px 0 0;
+  padding: 5px 10px;
+  background-color: #BCE2D2;
+}
+.table-with-div-td{
+  border: 1px solid #1D4B44;
+  border-radius: 6px 6px 0 0;
+  background-color: #E1EEE8;
+}

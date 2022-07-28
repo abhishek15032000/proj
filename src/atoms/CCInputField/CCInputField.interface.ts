@@ -3,4 +3,5 @@ import { MuiTextFieldProps } from "@mui/x-date-pickers/internals";
 
 export type CCInputFieldProps = TextFieldProps & {
     clearFn?: any
+    onChange?: (arg: any) => void
 }
