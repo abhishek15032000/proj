@@ -132,13 +132,13 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
         columnSpacing={3}
       >
         <Grid item xs={6}>
-          <CCInputField label="First Name" />
+          <CCInputField variant="filled" label="First Name" />
         </Grid>
         <Grid item xs={6}>
-          <CCInputField label="Last Name" />
+          <CCInputField variant="filled" label="Last Name" />
         </Grid>
         <Grid item xs={6}>
-          <CCInputField label="Middle Name" />
+          <CCInputField variant="filled" label="Middle Name" />
         </Grid>
         <Grid item xs={6}>
           <DatePicker
@@ -150,14 +150,16 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
             }}
-            renderInput={(params) => <CCInputField {...params} />}
+            renderInput={(params) => (
+              <CCInputField variant="filled" {...params} />
+            )}
           />
         </Grid>
         <Grid item xs={6}>
-          <CCInputField label="Contact Number" />
+          <CCInputField variant="filled" label="Contact Number" />
         </Grid>
         <Grid item xs={6}>
-          <CCInputField label="Email" />
+          <CCInputField variant="filled" label="Email" />
         </Grid>
       </Grid>
       <Box sx={{ marginTop: 2 }}>Identity Verification</Box>
@@ -223,7 +225,7 @@ const StepThree: React.FC<StepThreeProps> = ({ step, setStep }) => {
         </Grid>
         <Grid item>
           <CCButton
-            // sx={{ background: Colors.darkPrimary1, color: '#fff' }}
+            sx={{ fontSize: 16 }}
             variant="contained"
             onClick={handleNext}
           >
