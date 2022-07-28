@@ -9,6 +9,13 @@ import SectionA2 from './SectionA2'
 import SectionA3 from './SectionA3'
 import SectionA4 from './SectionA4'
 import SectionA5 from './SectionA5'
+import SectionE1 from './SectionE1'
+import SectionE2 from './SectionE2'
+import SectionE3 from './SectionE3'
+import SectionE4 from './SectionE4'
+import SectionE5 from './SectionE5'
+import SectionE6 from './SectionE6'
+import SectionE7 from './SectionE7'
 import SectionD1 from './SectionD1'
 import SectionD2 from './SectionD2'
 import SectionD3 from './SectionD3'
@@ -53,23 +60,33 @@ const sectionATabs = [
     { name: 'D2: Data & parameters monitored', component: SectionD2 },
     { name: 'D3: Implementation of Sampling Plan', component: SectionD3 },
   ],
-  // [
-  //   { name: 'E1: Calculation of baseline emissions or  net GHG removals', component:  SectionE1},
-  //   { name: 'E2: Calculation of project emissions or actual net GHG removals', component: SectionE2 },
-  //   { name: 'E3: Calculation of leakage', component: SectionE3 },
-  //   { name: 'E4: Calculation summary of emission reductions or net anthropogenic GHG removals', component: SectionE4 },
-  //   { name: 'E5: Comparison of actual emission reductions or net anthropogenic GHG removals', component: SectionE5 },
-  //   { name: 'E6: Remarks on difference from estimated value', component:SectionE6  },
-  //   { name: 'E7: Actual emission reductions or net anthropogenic GHG removals during 1st commitment period', component: SectionE7 },
-  // ],
-]
-
-const sectionBTabs = [
-  {
-    name: 'B1: Description of implemented registered project activityn',
-    component: SectionB1,
-  },
-  { name: 'B2: Post registration changes', component: SectionB2 },
+  [
+    {
+      name: 'E1: Calculation of baseline emissions or  net GHG removals',
+      component: SectionE1,
+    },
+    {
+      name: 'E2: Calculation of project emissions or actual net GHG removals',
+      component: SectionE2,
+    },
+    { name: 'E3: Calculation of leakage', component: SectionE3 },
+    {
+      name: 'E4: Calculation summary of emission reductions or net anthropogenic GHG removals',
+      component: SectionE4,
+    },
+    {
+      name: 'E5: Comparison of actual emission reductions or net anthropogenic GHG removals',
+      component: SectionE5,
+    },
+    {
+      name: 'E6: Remarks on difference from estimated value',
+      component: SectionE6,
+    },
+    {
+      name: 'E7: Actual emission reductions or net anthropogenic GHG removals during 1st commitment period',
+      component: SectionE7,
+    },
+  ],
 ]
 
 const IssuanceDataCollection = () => {
@@ -90,7 +107,7 @@ const IssuanceDataCollection = () => {
     }
   }
   const handlePrevious = () => {
-    if (sectionIndex < 0) {
+    if (sectionIndex > 0) {
       setSectionIndex(sectionIndex - 1)
       setSubsectionIndex(0)
     }
