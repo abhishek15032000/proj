@@ -11,6 +11,10 @@ import SectionA5 from './SectionA5'
 import CCButton from '../../atoms/CCButton'
 import './issuanceDataCollection.css'
 
+import SectionD1 from './SectionD1'
+import SectionD2 from './SectionD2'
+import SectionD3 from './SectionD3'
+
 const sections = [
   { name: 'Section A: Description of Project Activity' },
   { name: 'Section B: Implementation of the project activity' },
