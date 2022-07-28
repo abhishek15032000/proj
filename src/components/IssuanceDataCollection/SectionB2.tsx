@@ -3,10 +3,10 @@ import React from 'react'
 
 const SectionB2 = () => {
   return (
-    <Box sx={{ mt: 4, mb: 3 }}>
-      <Grid container spacing={1}>
+    <Box>
+      <Grid container spacing={1} sx={{ mt: 4 }}>
         <Grid item xl={9} lg={8} md={8}>
-          <Typography sx={{ fontWeight: 500, fontSize: 14 }}>
+          <Typography sx={{ fontWeight: 500, fontSize: 14, color: '#006B5E' }}>
             B.2.1. Temporary deviations from registered monitoring plan or
             applied methodology
           </Typography>
@@ -18,12 +18,12 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={12} xs={12}>
-          <Typography sx={{ fontWeight: 500, fontSize: 14 }}>
+          <Typography sx={{ fontWeight: 500, fontSize: 14, color: '#006B5E' }}>
             B.2.2. Corrections
           </Typography>
           <TextareaAutosize
@@ -34,12 +34,12 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8}>
-          <Typography sx={{ fontWeight: 500, fontSize: 14 }}>
+          <Typography sx={{ fontWeight: 500, fontSize: 14, color: '#006B5E' }}>
             B.2.3. Permanent changes from registered monitoring plan or applied
             methodology
           </Typography>
@@ -51,12 +51,12 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8}>
-          <Typography sx={{ fontWeight: 500, fontSize: 14 }}>
+          <Typography sx={{ fontWeight: 500, fontSize: 14, color: '#006B5E' }}>
             B.2.4. Changes to project design of registered project activity
           </Typography>
           <TextareaAutosize
@@ -67,12 +67,12 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} xs={12}>
-          <Typography sx={{ fontWeight: 500, fontSize: 14 }}>
+          <Typography sx={{ fontWeight: 500, fontSize: 14, color: '#006B5E' }}>
             B.2.5. Changes to start date of crediting period
           </Typography>
           <TextareaAutosize
@@ -83,7 +83,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>
@@ -100,7 +100,7 @@ const SectionB2 = () => {
               maxHeight: '18vh',
               minHeight: '18vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>

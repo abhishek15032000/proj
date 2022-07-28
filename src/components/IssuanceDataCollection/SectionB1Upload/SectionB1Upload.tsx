@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { Grid, Stack, Typography, Modal, Button, Paper } from '@mui/material'
+import {
+  Grid,
+  Stack,
+  Typography,
+  Modal,
+  Button,
+  Paper,
+  Dialog,
+} from '@mui/material'
 import { Box } from '@mui/system'
 import DataIssuanceAdd from '../../../assets/Images/Icons/DataIssuanceAdd.png'
 import { sectionB1UploadInterface } from './SectionB1Upload.interface'
@@ -26,6 +34,8 @@ const SectionB1UploadImages = (props: sectionB1UploadInterface) => {
               fontWeight: 400,
               textDecoration: 'underline',
               cursor: 'pointer',
+              color: '#006B5E',
+              textDecorationColor: '#006B5E',
             }}
             onClick={() => setOpen(true)}
           >
@@ -36,7 +46,7 @@ const SectionB1UploadImages = (props: sectionB1UploadInterface) => {
             alignItems="center"
             justifyContent="end"
             sx={{
-              border: '2px solid black',
+              border: '2px solid #006B5E',
               borderStyle: 'dashed',
               height: 190,
             }}
@@ -62,7 +72,9 @@ const SectionB1UploadImages = (props: sectionB1UploadInterface) => {
                 }}
               />
             </Button>
-            <Typography sx={{ fontWeight: 500, fontSize: 20, mb: 2 }}>
+            <Typography
+              sx={{ fontWeight: 500, fontSize: 20, mb: 2, color: '#006B5E' }}
+            >
               Attach More
             </Typography>
           </Stack>
@@ -73,9 +85,52 @@ const SectionB1UploadImages = (props: sectionB1UploadInterface) => {
         onClose={() => setOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        sx={{
+          //my: 4,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          //minWidth: '70%',
+          //maxWidth: '70%',
+          ////minHeight: '80%',
+          //maxHeight: '100%',
+          //mx: 30,
+        }}
       >
-        <Paper
+        <Grid
+          container
+          //justifyContent={'start'}
+          sx={{
+            background: '#fff',
+            minHeight: '80%',
+            maxheight: '80%',
+            minWidth: '80%',
+            maxWidth: '80%',
+          }}
+        >
+          <Grid item xl={12} lg={12} sx={{ height: 30 }}>
+            <Typography sx={{ fontWeight: 600, fontSize: 20, pt: 1, pl: 1 }}>
+              {props?.title}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            //alignItems={'center'}
+            xl={12}
+            lg={12}
+            sx={{ maxHeight: '400' }}
+          >
+            <img src={props?.image} width="100%" height="50%" />
+          </Grid>
+        </Grid>
+      </Modal>
+    </>
+  )
+}
+
+export default SectionB1UploadImages
+{
+  /*<Paper
           className=""
           sx={{
             //mx: 13,
@@ -96,10 +151,5 @@ const SectionB1UploadImages = (props: sectionB1UploadInterface) => {
               <img src={props.image} width="100%" />
             </Grid>
           </Grid>
-        </Paper>
-      </Modal>
-    </>
-  )
+        </Paper>*/
 }
-
-export default SectionB1UploadImages

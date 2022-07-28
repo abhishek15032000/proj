@@ -11,20 +11,8 @@ const SectionB1 = () => {
   return (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
-        <Grid
-          item
-          xl={9}
-          lg={8}
-          md={8}
-          sm={8}
-          xs={12}
-          sx={
-            {
-              //backgroundColor: 'aqua'
-            }
-          }
-        >
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+        <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
+          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}>
             Brief on purpose and general description of project activity *
           </Typography>
           <TextareaAutosize
@@ -40,7 +28,7 @@ const SectionB1 = () => {
           ></TextareaAutosize>
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}>
             Technical Description
           </Typography>
           <TextareaAutosize
@@ -56,7 +44,7 @@ const SectionB1 = () => {
           ></TextareaAutosize>
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}>
             Attach Data Tables for Technical Description
           </Typography>
           <SectionB1UploadImages
@@ -65,7 +53,7 @@ const SectionB1 = () => {
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}>
             Operational Description
           </Typography>
           <TextareaAutosize
@@ -81,17 +69,19 @@ const SectionB1 = () => {
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}>
             Attach Data Tables for Major shut down details
           </Typography>
           <SectionB1UploadImages
-            title="Attach Data Tables for  Major shut down details"
+            title="Sample Report - Shut Down Details"
             image={SectionB1ShutDownDetails}
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
           <Grid item lg={6}>
-            <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}
+            >
               Attach Data Tables for implementation of milestones
             </Typography>
           </Grid>
@@ -101,7 +91,7 @@ const SectionB1 = () => {
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}>
             Attach Data Tables for Project timeline event description
           </Typography>
           <SectionB1UploadImages

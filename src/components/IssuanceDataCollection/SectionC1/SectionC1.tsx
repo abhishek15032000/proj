@@ -19,7 +19,7 @@ const SectionC1 = () => {
     <>
       <Grid container spacing={1} sx={{ mt: 4 }}>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#006B5E' }}>
             Description of monitoring system *
           </Typography>
 
@@ -32,12 +32,12 @@ the team, their roles & responsibilities, Training and Maintenance)"
               minHeight: '20vh',
               maxHeight: '20vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
-          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#006B5E' }}>
             Monitoring Plan *
           </Typography>
           <TextareaAutosize
@@ -48,13 +48,15 @@ the team, their roles & responsibilities, Training and Maintenance)"
               minHeight: '20vh',
               maxHeight: '20vh',
               borderRadius: 4,
-              border: '2px solid #1D4B44',
+              border: '2px solid #006B5E',
             }}
           />
         </Grid>
         <Grid item xl={9} lg={8} md={8} sm={8} xs={12}>
           <Grid item lg={6}>
-            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E' }}
+            >
               Attach Organizational Structure & Responsibilities Chart
             </Typography>
           </Grid>
@@ -78,7 +80,9 @@ the team, their roles & responsibilities, Training and Maintenance)"
                   fontSize: 14,
                   fontWeight: 400,
                   textDecoration: 'underline',
+                  textDecorationColor: '#006B5E',
                   cursor: 'pointer',
+                  color: '#006B5E',
                 }}
                 onClick={() => setOpen(true)}
               >
@@ -89,7 +93,7 @@ the team, their roles & responsibilities, Training and Maintenance)"
                 alignItems="center"
                 justifyContent="end"
                 sx={{
-                  border: '2px solid black',
+                  border: '2px solid #006B5E',
                   borderStyle: 'dashed',
                   height: 190,
                 }}
@@ -141,13 +145,13 @@ the team, their roles & responsibilities, Training and Maintenance)"
           <Grid container direction="column">
             <Grid item>
               <Typography
-                sx={{ fontWeight: 600, fontSize: 20, pl: 1, pt: 1, pb: 2 }}
+                sx={{ fontWeight: 600, fontSize: 20, pl: 1, pt: 1, pb: 1 }}
               >
                 Sample Report - Organizational Structure & Responsibilities
                 Chart
               </Typography>
             </Grid>
-            <Stack alignItems="center" sx={{ pt: 7 }}>
+            <Stack alignItems="center">
               <img
                 src={SectionCOrganisationalStructure}
                 width="70%"
