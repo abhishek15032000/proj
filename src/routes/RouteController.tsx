@@ -7,6 +7,7 @@ import LoginPage from '../pages/LoginPage/LoginPage'
 import MaintenancePage from '../pages/MaintenancePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
+import TwoFa from '../pages/TwoFa/TwoFaPage'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
@@ -63,18 +64,6 @@ const RouteController = ({ localLoggedIn }: any) => {
           />
         }
       />
-      <Route
-        path={pathNames.TWOFA}
-        element={
-          <PublicRoute
-            roles={[]}
-            component={TwoFaPage}
-            authenticated={userData}
-            userData={userData}
-          />
-        }
-      />
-
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

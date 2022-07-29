@@ -16,6 +16,12 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Projects,
     roles: [ROLES.ISSUER],
   },
+  //{
+  //  path: pathNames.ACCOUNT_CREATED_PAGE,
+  //  component: AccountCreatedPage,
+  //  sidebarName: linkLabels.Projects,
+  //  roles: [ROLES.ISSUER],
+  //},
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,
@@ -26,10 +32,6 @@ export const privateRouteComponents = [
     component: IssuanceDataCollection,
     roles: [ROLES.ISSUER],
   },
-  // {
-  //   path: pathNames.ACCOUNTCREATEDPAGE,
-  //   component: AccountCreatedPage,
-  // },
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
     component: ProfileDetailsIssuanceInfo,

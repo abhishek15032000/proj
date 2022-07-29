@@ -1,3 +1,3 @@
-export interface LogoProps{
-
+export interface LogoProps {
+    width?: any
 }

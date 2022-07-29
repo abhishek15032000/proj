@@ -1,14 +1,8 @@
 import React, { FC, useState } from 'react'
-
-import {
-  Box,
-  Typography,
-  Modal,
-} from '@mui/material'
-
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
+import { Box, Typography, Modal } from '@mui/material'
 
 interface SampleModalProps {
   mediaArray: Array<any>
@@ -66,7 +60,7 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              paddingRight: '5px'
+              paddingRight: '5px',
             }}
           >
             <Typography>{props.stringArray[index]}</Typography>

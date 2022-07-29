@@ -8,7 +8,7 @@ const CCButton: React.FC<CCButtonProps> = (props) => {
       <Button
         {...props}
         sx={{
-          height: '48px',
+          // height: '48px',
           borderRadius: props.rounded ? 10 : 2,
           textTransform: 'none',
           backgroundColor: 'accent.main',
