@@ -101,7 +101,10 @@ const IssuanceDataCollection = () => {
   }
 
   const handleSaveAndNext = () => {
-    if (sectionIndex < 5) {
+    console.log(sectionIndex)
+    console.log(subsectionIndex)
+    console.log(sectionATabs[sectionIndex][subsectionIndex])
+    if (sectionIndex < sectionATabs.length - 1) {
       setSectionIndex(sectionIndex + 1)
       setSubsectionIndex(0)
     }
@@ -184,7 +187,7 @@ const IssuanceDataCollection = () => {
       <Grid container xs={11}>
         <Box sx={{ mt: 3 }} className="tabs-container">
           <Box className="tabs">
-            {sectionATabs[sectionIndex].map((tab, index) => (
+            {sectionATabs[sectionIndex]?.map((tab, index) => (
               <Box
                 key={index}
                 className={`${

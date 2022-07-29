@@ -1,6 +1,6 @@
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -16,6 +16,7 @@ import _ from 'lodash'
 import * as React from 'react'
 import { shallowEqual } from 'react-redux'
 import { NavLink, useLocation } from 'react-router-dom'
+import Logo from '../../../atoms/Logo'
 import { ROLES } from '../../../config/roles.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { linkLabels, pathNames } from '../../../routes/pathNames'
@@ -130,7 +131,14 @@ export default function ResponsiveDrawer(props: any) {
   const drawer = (
     <Box component={'div'} sx={{ backgroundColor: 'darkPrimary1.main' }}>
       <Toolbar />
-      <div style={{ height: '25%' }}></div>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="start"
+        style={{ height: '25%' }}
+      >
+        <Logo width="50%" />
+      </Grid>
 
       <List sx={{ mt: 1 }}>
         {midMenu().map((text, index) => (
