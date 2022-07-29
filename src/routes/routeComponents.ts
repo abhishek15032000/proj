@@ -1,6 +1,7 @@
 import { ROLES } from '../config/roles.config'
 import DashboardPage from '../pages/DashboardPage/DashboardPage'
 import IssuanceDataCollection from '../pages/IssuanceDataCollection'
+import ProjectsPage from '../pages/Issuer/ProjectsPage/ProjectsPage'
 import LogoutPage from '../pages/LogoutPage'
 import MaintenancePage from '../pages/MaintenancePage'
 import Onboarding from '../pages/Onboarding'
@@ -29,6 +30,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUANCE_DATA_COLLECTION,
     component: IssuanceDataCollection,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.Projects,
+    component: ProjectsPage,
     roles: [ROLES.ISSUER],
   },
   {
