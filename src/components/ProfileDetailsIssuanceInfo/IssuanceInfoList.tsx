@@ -1,12 +1,11 @@
 // React Imports
-import { Box, Grid, List, ListItem, Typography } from '@mui/material'
 import React, { FC } from 'react'
 
 // MUI Imports
-
-import IssuanceInfoListItem from './IssuanceInfoListItem'
+import { Box, Grid, List, ListItem, Typography } from '@mui/material'
 
 // Local Imports
+import IssuanceInfoListItem from './IssuanceInfoListItem'
 
 interface IssuanceInfoListProps {
   data?: Array<any>
