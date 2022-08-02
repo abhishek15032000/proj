@@ -8,6 +8,7 @@ export const pathNames = {
   ONBOARDING: '/onboarding',
   MAINTENANCE_PAGE: '/maintenance-page',
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
+  SELECT_VERIFIER: '/select-verifier',
 }
 
 export const linkLabels = {

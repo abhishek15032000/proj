@@ -21,6 +21,8 @@ import Logo from '../../atoms/Logo'
 import { Images } from '../../theme'
 
 const RegisterPage = (props: RegisterPageProps) => {
+  const [number, setNumber] = useState<number>()
+
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
   const register = () => {

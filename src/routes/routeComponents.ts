@@ -1,6 +1,7 @@
 import { ROLES } from '../config/roles.config'
 import DashboardPage from '../pages/DashboardPage/DashboardPage'
 import IssuanceDataCollection from '../pages/IssuanceDataCollection'
+import SelectVerifier from '../pages/Issuer/SelectVerifierPage/SelectVerifier'
 import LogoutPage from '../pages/LogoutPage'
 import MaintenancePage from '../pages/MaintenancePage'
 import Onboarding from '../pages/Onboarding'
@@ -34,6 +35,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.SELECT_VERIFIER,
+    component: SelectVerifier,
     roles: [ROLES.ISSUER],
   },
 ]
