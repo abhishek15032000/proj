@@ -14,6 +14,8 @@ export const AxiosHelper = async (url: string, method: string) => {
         switch (method) {
             case "GET":
                 return axios.get(url);
+            case "GET_IMAGE":
+                return axios.get(url, { responseType: 'blob' });
             case "POST":
                 return axios.post(url);
             default:
