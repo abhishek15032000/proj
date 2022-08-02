@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
 
-import { Box, Typography } from '@mui/material'
+import { Box, formLabelClasses, Typography } from '@mui/material'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 interface BackHeaderProps {
-  title: string,
-  onClick?: object,
+  title: string
+  onClick?: object
+  iconDisable?: boolean
 }
 
 const BackHeader: FC<BackHeaderProps> = (props) => {
@@ -14,7 +15,7 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
     <Box
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      <ArrowBackIcon />
+      {!props.iconDisable && <ArrowBackIcon />}
       <Typography sx={{ fontSize: 20, marginLeft: '10px', fontWeight: 500 }}>
         {props.title}
       </Typography>
@@ -23,3 +24,7 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
 }
 
 export default BackHeader
+
+BackHeader.defaultProps = {
+  iconDisable: false
+};

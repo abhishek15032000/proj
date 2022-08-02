@@ -22,7 +22,7 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
         width: '100%',
         paddingLeft: 3,
         borderBottom: '1px solid',
-        height: '90px',
+        minHeight: '90px',
       }}
     >
       <List sx={{ listStyleType: 'disc' }}>

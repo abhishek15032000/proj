@@ -3,6 +3,7 @@ import DashboardPage from '../pages/DashboardPage/DashboardPage'
 import IssuanceDataCollection from '../pages/IssuanceDataCollection'
 import LogoutPage from '../pages/LogoutPage'
 import MaintenancePage from '../pages/MaintenancePage'
+import MarketplaceHome from '../pages/MarketplaceHome'
 import Onboarding from '../pages/Onboarding'
 import ProfileDetailsIssuanceInfo from '../pages/ProfileDetailsIssuanceInfo'
 
@@ -35,6 +36,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
     component: ProfileDetailsIssuanceInfo,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.MARKETPLACE,
+    component: MarketplaceHome,
     roles: [ROLES.ISSUER],
   },
 
