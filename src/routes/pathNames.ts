@@ -9,7 +9,10 @@ export const pathNames = {
   MAINTENANCE_PAGE: '/maintenance-page',
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
   PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
-  MARKETPLACE: '/marketplace'
+  MARKETPLACE: '/marketplace',
+  PROJECTS: '/projects',
+  PROJECTS_LIST: "/projects-list",
+  LIST_NEW_PROJECT: '/list-new-project'
 }
 
 export const linkLabels = {
