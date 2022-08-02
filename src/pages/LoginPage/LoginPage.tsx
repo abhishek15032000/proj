@@ -1,37 +1,25 @@
-// React Imports
 import React, { useState } from 'react'
-
-// MUI Components
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@mui/material'
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
+import { Box, Grid, Typography } from '@mui/material'
+import { v4 as uuidv4 } from 'uuid'
+import { useNavigate } from 'react-router-dom'
 import Logo from '../../atoms/Logo'
-// Local Imports
-import { LoginPageInterface } from './LoginPage.interface'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import { loginAction } from '../../redux/Slices/authSlice'
 import { authCalls } from '../../api/authCalls'
-import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import useForm from '../../hooks/useForm'
 import CCButton from '../../atoms/CCButton'
 import CCInputField from '../../atoms/CCInputField'
 import { Images } from '../../theme'
+import Captcha from '../../components/Captcha/Captcha'
 
-const Login = (props: LoginPageInterface) => {
-  const [showPassword, setShowPassword] = useState(false)
+const Login = () => {
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
+
+  const [captchaInput, setCaptchaInput] = useState('')
+  const [captchaToken, setCaptchaToken] = useState(uuidv4())
 
   const login = () => {
     dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
@@ -48,7 +36,6 @@ const Login = (props: LoginPageInterface) => {
       xs={12}
       height={'100vh'}
       justifyContent="center"
-      // alignItems="center"
     >
       <Grid
         item
@@ -78,7 +65,6 @@ const Login = (props: LoginPageInterface) => {
           <Typography sx={{ fontWeight: '500', fontSize: 16, mt: 1, mb: 5 }}>
             Login by providing the information below
           </Typography>
-
           <Grid container sx={{}} rowSpacing={3} columnSpacing={3}>
             <Grid item xs={12}>
               <CCInputField
@@ -104,7 +90,6 @@ const Login = (props: LoginPageInterface) => {
               />
             </Grid>
           </Grid>
-
           <Box
             sx={{
               width: '100%',
@@ -118,20 +103,25 @@ const Login = (props: LoginPageInterface) => {
               Forgot password?
             </Typography>
           </Box>
+          <Captcha
+            token={captchaToken}
+            captchaInput={captchaInput}
+            setCaptchaInput={setCaptchaInput}
+            setCaptchaToken={setCaptchaToken}
+          />
           <CCButton
             type="submit"
             fullWidth
             sx={{
               height: '50px',
               borderRadius: '6px',
-              marginTop: 7,
+              marginTop: 4,
             }}
             variant="contained"
             disabled={Object.values(errors).length > 0}
           >
             Login
           </CCButton>
-
           <Grid container justifyContent={'center'} alignItems={'center'}>
             <Typography
               sx={{
@@ -177,7 +167,6 @@ const Login = (props: LoginPageInterface) => {
         flexDirection="column"
         sx={{
           display: {
-            // sm: 'none',
             lg: 'flex',
             xs: 'none',
           },

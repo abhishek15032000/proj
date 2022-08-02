@@ -1,0 +1,28 @@
+.stats-row{
+	display: flex;
+}
+.stats-container{  
+	padding: 30px;
+	background-color: #388E81;
+	display: flex;
+	align-items: center;
+	border-radius: 16px;
+	color: #E9EEEC;
+	width: 320px;
+	margin-right: 24px;
+}
+.stats-img{
+	width: 80px;
+	height: 80px;
+	border-radius: 8px;
+	background-color: #BCE2D2;
+	margin-right: 20px;
+}
+.stats-value{
+	font-size: 20px;
+	font-weight: 500;
+}
+.stats-title{
+	font-size: 14px;
+	font-weight: 500;
+}
