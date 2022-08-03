@@ -2,11 +2,12 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 
 // Local Imports
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
+import BuySellComponent from './BuySellComponent'
 
 interface MarketplaceHomeProps {}
 
@@ -29,19 +30,7 @@ const MarketplaceHome: FC<MarketplaceHomeProps> = (props) => {
           setTabIndex={setTabIndex}
         />
 
-        <Box
-          sx={{
-            height: '300px',
-            width: '900px',
-            borderRadius: '6px',
-            border: '2px solid',
-            marginTop: 2,
-          }}
-        >
-          <Box
-            sx={{ borderRight: '2px solid', height: '100%', width: '50%' }}
-          ></Box>
-        </Box>
+        {tabIndex === 1 && <BuySellComponent />}
       </Grid>
     </Box>
   )
