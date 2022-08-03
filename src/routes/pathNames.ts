@@ -9,8 +9,9 @@ export const pathNames = {
   MAINTENANCE_PAGE: '/maintenance-page',
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
   PROJECTS: '/projects',
-  PROJECTS_LIST: "/projects-list",
-  LIST_NEW_PROJECT: '/list-new-project'
+  PROJECTS_LIST: '/projects-list',
+  LIST_NEW_PROJECT: '/list-new-project',
+  PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
 }
 
 export const linkLabels = {

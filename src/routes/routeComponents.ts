@@ -4,8 +4,12 @@ import IssuanceDataCollection from '../pages/IssuanceDataCollection'
 import ProjectsPage from '../pages/Issuer/ProjectsPage/ProjectsPage'
 import ProjectList from '../pages/ProjectList'
 import ListNewProject from '../pages/ListNewProject'
-import Onboarding from '../pages/Onboarding'
+
 import LogoutPage from '../pages/LogoutPage'
+import MaintenancePage from '../pages/MaintenancePage'
+import Onboarding from '../pages/Onboarding'
+import ProfileDetailsIssuanceInfo from '../pages/ProfileDetailsIssuanceInfo'
+
 import { linkLabels, pathNames } from './pathNames'
 
 export const privateRouteComponents = [
@@ -47,6 +51,12 @@ export const privateRouteComponents = [
     component: ListNewProject,
     roles: [ROLES.ISSUER],
   },
+  {
+    path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+    component: ProfileDetailsIssuanceInfo,
+    roles: [ROLES.ISSUER],
+  },
+
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
