@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { removeAllItem, setLocalItem } from '../../utils/Storage'
-import { TYPES } from '../constants'
 
 interface AuthReducerInterface {
     loggedIn: boolean
@@ -16,8 +15,9 @@ const auth = createSlice({
     reducers: {
         loginAction: (state, action: PayloadAction<any>) => {
             state.loggedIn = true
-            state.data = action.payload
-            setLocalItem("loggedIn", action.payload)
+            state.data = { roles: [action.payload?.type] }
+            setLocalItem("loggedIn", { roles: [action.payload?.type] })
+            setLocalItem("userDetails", action.payload)
         },
         logoutAction: (state, action: PayloadAction<any>) => {
             removeAllItem()
