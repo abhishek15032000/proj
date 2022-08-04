@@ -8,6 +8,8 @@ import { Box, Grid, Typography } from '@mui/material'
 import PurchaseComp from './PurchaseComp'
 import SellOrders from './SellOrders'
 import MarketDepth from './MarketDepth'
+import CancelModal from './CancelModal'
+import ModifyOrderModal from './ModifyOrderModal'
 
 interface BuySellComponentProps {}
 
@@ -28,12 +30,16 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
           padding: 1,
           display: {
             xs: 'none',
-            lg: 'block'
+            lg: 'block',
           },
         }}
       >
         <MarketDepth />
       </Grid>
+
+      {/* <CancelModal /> */}
+
+      {/* <ModifyOrderModal /> */}
     </Grid>
   )
 }

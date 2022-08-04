@@ -8,6 +8,10 @@ import { Box, Grid, Typography } from '@mui/material'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import BuySellComponent from './BuySellComponent'
+import ProjectList from '../ProjectList'
+import ProjectsList from './ProjectsList'
+import CancelModal from './CancelModal'
+import ModifyOrderModal from './ModifyOrderModal'
 
 interface MarketplaceHomeProps {}
 
@@ -31,6 +35,7 @@ const MarketplaceHome: FC<MarketplaceHomeProps> = (props) => {
         />
 
         {tabIndex === 1 && <BuySellComponent />}
+        {tabIndex === 2 && <ProjectsList />}
       </Grid>
     </Box>
   )
