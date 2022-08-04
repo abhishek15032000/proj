@@ -3,10 +3,10 @@ import { AxiosHelper } from "./configs/AxiosHelper";
 
 
 export const authCalls = {
-	loginCall: () => {
+	loginCall: (payload: any) => {
 		//!!Example Code below
 
-		return AxiosHelper("https://jsonplaceholder.typicode.com/posts", "GET").then((res: any) => {
+		return AxiosHelper("https://carbon-dev-api.shinetrace.space/auth/api/v1/auth/login", "POST", payload).then((res: any) => {
 			return res.data
 		})
 	},

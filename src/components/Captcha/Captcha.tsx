@@ -17,7 +17,9 @@ export default function Captcha({
   const [captchaImg, setCaptchaImg] = useState<any>()
 
   useEffect(() => {
-    getCaptcha(token)
+    if (token) {
+      getCaptcha(token)
+    }
   }, [token])
 
   const getCaptcha = async (token: string) => {

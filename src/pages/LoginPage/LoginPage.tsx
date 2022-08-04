@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
+import CryptoJS from 'crypto-js'
 import Logo from '../../atoms/Logo'
 import { loginAction } from '../../redux/Slices/authSlice'
 import { authCalls } from '../../api/authCalls'
@@ -19,15 +20,49 @@ const Login = () => {
   const navigate = useNavigate()
 
   const [captchaInput, setCaptchaInput] = useState('')
-  const [captchaToken, setCaptchaToken] = useState(uuidv4())
+  const [captchaToken, setCaptchaToken] = useState('')
 
-  const login = () => {
-    dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
-    authCalls.loginCall()
-    navigate(pathNames.DASHBOARD, { replace: true })
+  useEffect(() => {
+    setCaptchaTokenFromUUID()
+  }, [])
+
+  const setCaptchaTokenFromUUID = () => {
+    setCaptchaToken(uuidv4())
+  }
+
+  const login = async () => {
+    const payload = { email: '', id: '', password: '', captcha: '' }
+    payload.email = values?.email
+    payload.password = CryptoJS.MD5(values?.password).toString()
+
+    // const payload = {
+    //   email: 'sangram@chainflux.com',
+    //   password: '827ccb0eea8a706c4c34a16891f84e7b',
+    //   id: '',
+    //   captcha: '',
+    // }
+    payload.id = captchaToken
+    payload.captcha = captchaInput
+    // console.log('payload', payload)
+    // const res = await authCalls.loginCall(payload)
+    // console.log('res', res)
+    // if (res?.success && res?.data) {
+    //   if (res?.data?.captchaVerify) {
+    //     console.log('User successfully signed in')
+    //     // dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
+    //     // navigate(pathNames.DASHBOARD, { replace: true })
+    //   }
+    // } else if (res?.error) {
+    //   alert(res?.error)
+    //   setCaptchaTokenFromUUID()
+    //   setCaptchaInput('')
+    //   alert(res?.error?.length > 0 && res?.error?.map((err: string) => err))
+    // }
   }
 
   const { handleChange, values, errors, handleSubmit } = useForm(login)
+
+  console.log('values', values)
 
   return (
     <Grid
@@ -85,7 +120,7 @@ const Login = () => {
                 variant="filled"
                 defaultValue={values?.password}
                 name="password"
-                error={errors?.password}
+                // error={errors?.password}
                 onChange={handleChange}
               />
             </Grid>
@@ -118,7 +153,7 @@ const Login = () => {
               marginTop: 4,
             }}
             variant="contained"
-            disabled={Object.values(errors).length > 0}
+            // disabled={Object.values(errors).length > 0}
           >
             Login
           </CCButton>
