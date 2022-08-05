@@ -11,6 +11,7 @@ import ListNewProject from '../pages/ListNewProject'
 import Onboarding from '../pages/Onboarding'
 import LogoutPage from '../pages/LogoutPage'
 import { linkLabels, pathNames } from './pathNames'
+import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 
 export const privateRouteComponents = [
   {
@@ -44,6 +45,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.MARKETPLACE,
     component: MarketplaceHome,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.MARKETPLACE_PROJECT_DETAILS,
+    component: MarketplaceProjectDetails,
     roles: [ROLES.ISSUER],
   },
   {

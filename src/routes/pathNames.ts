@@ -10,9 +10,10 @@ export const pathNames = {
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
   PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
   MARKETPLACE: '/marketplace',
+  MARKETPLACE_PROJECT_DETAILS: '/marketplace-project-details',
   PROJECTS: '/projects',
-  PROJECTS_LIST: "/projects-list",
-  LIST_NEW_PROJECT: '/list-new-project'
+  PROJECTS_LIST: '/projects-list',
+  LIST_NEW_PROJECT: '/list-new-project',
 }
 
 export const linkLabels = {

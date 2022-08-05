@@ -8,12 +8,18 @@ interface BackHeaderProps {
   title: string
   onClick?: object
   iconDisable?: boolean
+  sx?: any
 }
 
 const BackHeader: FC<BackHeaderProps> = (props) => {
   return (
     <Box
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...props.sx,
+      }}
     >
       {!props.iconDisable && <ArrowBackIcon />}
       <Typography sx={{ fontSize: 20, marginLeft: '10px', fontWeight: 500 }}>
@@ -26,5 +32,5 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
 export default BackHeader
 
 BackHeader.defaultProps = {
-  iconDisable: false
-};
+  iconDisable: false,
+}

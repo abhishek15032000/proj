@@ -2,7 +2,7 @@
 import React, { FC } from 'react'
 
 // MUI Imports
-import { Box, Divider, Grid, Typography } from '@mui/material'
+import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
 
 // Local Imports
 
@@ -11,12 +11,10 @@ interface ProjectTileProps {}
 const ProjectTile: FC<ProjectTileProps> = () => {
   return (
     <Grid item sm={12} md={6} lg={4}>
-      <Box
+      <Paper
         sx={{
           height: '240px',
           width: '320px',
-          border: '2px solid',
-          // backgroundColor: '#666',
           margin: 2,
           borderRadius: '12px',
         }}
@@ -29,16 +27,15 @@ const ProjectTile: FC<ProjectTileProps> = () => {
           sx={{
             width: '100%',
             height: '130px',
-            // borderBottom: '2px solid',
+            borderTopLeftRadius: '12px',
+            borderTopRightRadius: '12px',
           }}
         ></Box>
         <Box
           sx={{
             width: '100%',
             height: '65px',
-            // borderBottom: '2px solid',
             display: 'grid',
-            // justifyContent: 'center',
             alignItems: 'center',
             paddingLeft: 1,
           }}
@@ -68,7 +65,7 @@ const ProjectTile: FC<ProjectTileProps> = () => {
             Mumbai, India
           </Typography>
         </Box>
-      </Box>
+      </Paper>
     </Grid>
   )
 }
