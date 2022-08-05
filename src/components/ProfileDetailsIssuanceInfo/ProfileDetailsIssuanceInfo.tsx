@@ -8,7 +8,6 @@ import { Box, Grid, List, ListItem, Tab, Tabs, Typography } from '@mui/material'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import TopInfo from '../../atoms/TopInfo/TopInfo'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
-
 import IssuanceInfoList from './IssuanceInfoList'
 import VerifierReport from './VerifierReport'
 
