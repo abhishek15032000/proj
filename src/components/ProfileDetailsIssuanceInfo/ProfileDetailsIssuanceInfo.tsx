@@ -2,7 +2,7 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Tab, Tabs, Typography } from '@mui/material'
+import { Box, Grid, List, ListItem, Tab, Tabs, Typography } from '@mui/material'
 
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
@@ -66,8 +66,8 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     <Box sx={{ p: 1 }}>
       <Grid
         container
-        xs={11}
-        sx={{ p: 1, border: '1px solid' }}
+        xs={12}
+        // sx={{ p: 1, border: '1px solid' }}
         justifyContent={'space-between'}
       >
         <BackHeader title="Project Details" />

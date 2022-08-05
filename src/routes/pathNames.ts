@@ -4,14 +4,15 @@ export const pathNames = {
   LOGOUT: '/logout',
   REGISTER: '/register',
   TWOFA: '/TwoFa',
-  ACCOUNT_CREATED_PAGE: '/account-created',
+  ACCOUNTCREATEDPAGE: '/account_created',
   ONBOARDING: '/onboarding',
   MAINTENANCE_PAGE: '/maintenance-page',
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
+  PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
+  MARKETPLACE: '/marketplace',
   PROJECTS: '/projects',
   PROJECTS_LIST: '/projects-list',
   LIST_NEW_PROJECT: '/list-new-project',
-  PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
 }
 
 export const linkLabels = {
