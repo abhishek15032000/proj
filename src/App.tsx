@@ -13,9 +13,8 @@ type AppProps = {
 }
 const App: FC<AppProps> = () => {
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
-  const userData = useAppSelector((state) => state.auth.loggedIn)
   const dispatch = useAppDispatch()
-  const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
+  const getloginStatusFromLocalStorage = getLocalItem('userDetails')
 
   useEffect(() => {
     try {
@@ -28,10 +27,6 @@ const App: FC<AppProps> = () => {
       setWatingAccessCheck(false)
     }
   }, [])
-
-  // useEffect(() => {
-  //     console.log('hello')
-  // }, [userData])
 
   return waitingAccessCheck ? (
     <div>loading</div>

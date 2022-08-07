@@ -5,10 +5,7 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 
 const CCInputField = (props: CCInputFieldProps) => {
   const inputRef = useRef<any>(null)
-  console.log(
-    '🚀 ~ file: CCInputField.tsx ~ line 8 ~ CCInputField ~ inputRef',
-    inputRef
-  )
+
   return (
     <TextField
       inputRef={inputRef}
