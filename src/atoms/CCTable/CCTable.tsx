@@ -30,8 +30,14 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 const CCTable = (props: CCTableProps) => {
   return (
-    <TableContainer component={Paper} sx={{ mt: 1 }}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+    <TableContainer
+      component={Paper}
+      sx={{ mt: 1, minWidth: 700, maxWidth: props.maxWidth }}
+    >
+      <Table
+        sx={{ minWidth: 700, maxWidth: props.maxWidth }}
+        aria-label="customized table"
+      >
         <TableHead>
           <TableRow>
             {props?.headings &&

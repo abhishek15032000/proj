@@ -1,100 +1,63 @@
-import { Grid, Paper, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import CCButton from '../../atoms/CCButton'
+import {
+  Grid,
+  Box,
+  Typography,
+  IconButton,
+  Chip,
+  LinearProgress,
+  Button,
+  Container,
+} from '@mui/material'
+import React, { useState } from 'react'
 import ProjectsStats from './ProjectsStats'
-import RegisteredProjects from './RegisteredProjects'
-import ProjectsUnderRegistration from './ProjectUnderRegistration'
 import './Projects.css'
+import ProjectsTab from './ProjectsTab'
+import LinearProgressBar from '../../atoms/LinearProgressBar'
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+import CheckIcon from '@mui/icons-material/Check'
+import ProfileCompletion from './ProfileCompletion'
+import AddIcon from '@mui/icons-material/Add'
 
-const table = [
-  {
-    comp: RegisteredProjects,
-  },
-  {
-    comp: ProjectsUnderRegistration,
-  },
-]
 const Projects = () => {
-  const [selectedTab, setSelectedTab] = useState<number>(0)
-  const [selectedTabColor, setSelectedTabColor] = useState<string>()
-
-  useEffect(() => {
-    //selectedTab
-    renderComp()
-  }, [selectedTab])
-
-  //const renderColor = () => {
-  //  return selectedTab === 0 ? '#1D4B44' : '7B9690'
-  //}
-  //console.log(renderColor)
-  const renderComp = () => {
-    return selectedTab ? <RegisteredProjects /> : <ProjectsUnderRegistration />
-  }
-
   const listNewProject = () => {
     console.log('New Project')
   }
 
   return (
     <>
-      <Paper elevation={2} sx={{ pt: 2, px: 3, pb: 1, width: '80%' }}>
-        <Grid container rowSpacing={3}>
-          <Grid
-            container
-            item
-            justifyContent={'space-between'}
-            alignItems={'center'}
+      <Typography sx={{ color: '#F15D5F', fontSize: 28, fontWeight: 400 }}>
+        Dashboard
+      </Typography>
+
+      <Grid container>
+        <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
+          <ProjectsStats />
+
+          <ProjectsTab />
+        </Grid>
+        <Grid item lg={3} sx={{ paddingLeft: 1 }}>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#F3BA4D',
+              textTransform: 'none',
+              width: '260px',
+              borderRadius: '100px',
+              marginBottom: 4,
+              marginTop: 3,
+            }}
+            startIcon={<AddIcon style={{ color: '#005046' }} />}
           >
-            <Grid item>
-              <Typography
-                sx={{ color: '#F15D5F', fontSize: 22, fontWeight: 400 }}
-              >
-                Projects
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography
-                sx={{ fontSize: 14, fontWeight: 400, color: '#F3BA4D' }}
-              >
-                See All
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid container item columnSpacing={3} xs={12}>
-            <Grid item>
-              <Typography
-                onClick={() => setSelectedTab(0)}
-                sx={{
-                  fontSize: 16,
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  color: `${!selectedTab ? '#1D4B44' : '#7B9690'}`,
-                  //borderBottom: `1px solid ${renderColor()}`,
-                }}
-              >
-                New
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography
-                onClick={() => setSelectedTab(1)}
-                sx={{
-                  fontSize: 16,
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  color: `${selectedTab ? '#1D4B44' : '#7B9690'}`,
-                  //borderBottom: `1px solid ${renderColor()}`,
-                }}
-              >
-                Registered
-              </Typography>
-            </Grid>
-          </Grid>
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 500, color: '#005046' }}
+            >
+              List New Project
+            </Typography>
+          </Button>
+
+          <ProfileCompletion />
         </Grid>
-        <Grid item sm={12}>
-          {renderComp()}
-        </Grid>
-      </Paper>
+      </Grid>
     </>
   )
 }
