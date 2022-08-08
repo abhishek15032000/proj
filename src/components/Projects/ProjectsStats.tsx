@@ -10,21 +10,21 @@ const stats = [
     title: 'Ongoing registration of projects',
     value: 3,
   },
-  {
-    title: 'Total verified',
-    value: 3,
-  },
+  // {
+  //   title: 'Total verified',
+  //   value: 3,
+  // },
 ]
 const ProjectsStats = () => {
   return (
     <Box sx={{ mt: 3 }} className="stats-row">
       {stats?.map((stat, index) => (
         <Box key={index} className="stats-container">
-          <Box className="stats-img"></Box>
           <Box className="content-container">
-            <Box className="stats-value">{stat?.value}</Box>
             <Box className="stats-title">{stat?.title}</Box>
+            <Box className="stats-value">{stat?.value}</Box>
           </Box>
+          <Box className="stats-img"></Box>
         </Box>
       ))}
     </Box>

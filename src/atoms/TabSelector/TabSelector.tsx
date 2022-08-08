@@ -10,11 +10,12 @@ interface TabSelectorProps {
   tabArray?: Array<any>
   tabIndex?: number
   setTabIndex?: any
+  sx?: any
 }
 
 const TabSelector: FC<TabSelectorProps> = (props) => {
   return (
-    <Box sx={{ width: '100%', marginTop: 3 }}>
+    <Box sx={{ width: '100%', marginTop: 3, ...props.sx }}>
       <Tabs
         value={props.tabIndex}
         indicatorColor="secondary"

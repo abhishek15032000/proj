@@ -115,7 +115,7 @@ const Login = () => {
                 variant="filled"
                 defaultValue={values?.password}
                 name="password"
-                error={errors?.password}
+                // error={errors?.password}
                 onChange={handleChange}
               />
             </Grid>
@@ -148,7 +148,7 @@ const Login = () => {
               marginTop: 4,
             }}
             variant="contained"
-            disabled={Object.values(errors).length > 0}
+            // disabled={Object.values(errors).length > 0}
           >
             Login
           </CCButton>

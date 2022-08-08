@@ -1,10 +1,22 @@
-import { Grid, Typography } from '@mui/material'
-import React from 'react'
-import CCButton from '../../atoms/CCButton'
+import {
+  Grid,
+  Box,
+  Typography,
+  IconButton,
+  Chip,
+  LinearProgress,
+  Button,
+  Container,
+} from '@mui/material'
+import React, { useState } from 'react'
 import ProjectsStats from './ProjectsStats'
-import RegisteredProjects from './RegisteredProjects'
-import ProjectsUnderRegistration from './ProjectUnderRegistration'
 import './Projects.css'
+import ProjectsTab from './ProjectsTab'
+import LinearProgressBar from '../../atoms/LinearProgressBar'
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+import CheckIcon from '@mui/icons-material/Check'
+import ProfileCompletion from './ProfileCompletion'
+import AddIcon from '@mui/icons-material/Add'
 
 const Projects = () => {
   const listNewProject = () => {
@@ -13,28 +25,39 @@ const Projects = () => {
 
   return (
     <>
-      <Grid container justifyContent={'space-between'} alignItems={'center'}>
-        <Grid item>
-          <Typography sx={{ color: '#F15D5F', fontSize: 20, fontWeight: 500 }}>
-            Project
-          </Typography>
+      <Typography sx={{ color: '#F15D5F', fontSize: 28, fontWeight: 400 }}>
+        Dashboard
+      </Typography>
+
+      <Grid container>
+        <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
+          <ProjectsStats />
+
+          <ProjectsTab />
         </Grid>
-        <Grid item>
-          <CCButton
-            sx={{
-              color: '#fff',
-              padding: '8px 15px',
-            }}
+        <Grid item lg={3} sx={{ paddingLeft: 1 }} >
+          <Button
             variant="contained"
-            onClick={listNewProject}
+            sx={{
+              backgroundColor: '#F3BA4D',
+              textTransform: 'none',
+              width: '260px',
+              borderRadius: '100px',
+              marginBottom: 4,
+              marginTop: 3
+            }}
+            startIcon={<AddIcon style={{ color: '#005046' }} />}
           >
-            List New Project
-          </CCButton>
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 500, color: '#005046' }}
+            >
+              List New Project
+            </Typography>
+          </Button>
+
+          <ProfileCompletion />
         </Grid>
       </Grid>
-      <ProjectsStats />
-      <RegisteredProjects />
-      <ProjectsUnderRegistration />
     </>
   )
 }
