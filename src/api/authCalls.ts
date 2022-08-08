@@ -20,9 +20,9 @@ export const authCalls = {
       return res.data
     })
   },
-  onBoardingUser: (payload: { key: any }) => {
+  verifyOtp: (payload: any) => {
     return AxiosHelper(
-      `https://carbon-dev-api.shinetrace.space/user/api/v1/`,
+      `https://carbon-dev-api.shinetrace.space/auth/api/v1/auth/verifyNewUser`,
       'POST',
       payload
     ).then((res: any) => {
