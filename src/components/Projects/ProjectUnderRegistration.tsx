@@ -1,29 +1,61 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import React from 'react'
 import CCTable from '../../atoms/CCTable'
-
+import CreateIcon from '@mui/icons-material/Create'
+import { ForkLeft } from '@mui/icons-material'
 const rows = [
-  ['07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India', 'Accepted'],
-  ['07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India', 'Pending'],
-  ['07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India', 'Pending'],
-  ['07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India', 'Pending'],
+  [
+    4337,
+    '12/04/21',
+    'Trueno River Hydroelectric Power Plant',
+    'Vilcum, Chile',
+    '+Finalised',
+    'Climate Finance',
+    <CreateIcon key={1} />,
+  ],
 ]
 const headings = [
-  'Created At',
+  'Reference ID',
+  'Created Dt',
   'Project Name',
-  'Project Type',
   'Location',
-  'Verification Status',
+  'Verifier Status',
+  'Verifier',
+  'Action',
 ]
 
 const ProjectsUnderRegistration = () => {
   return (
-    <Box sx={{ mt: 4 }}>
-      <Typography sx={{ color: '#F15D5F', fontWeight: 500 }}>
-        Projects Under Registration
-      </Typography>
-      <CCTable headings={headings} rows={rows} />
-    </Box>
+    <Grid container sx={{ background: 'red' }}>
+      <Grid item md={2}>
+        Reference ID
+      </Grid>
+      <Grid item md={10} sx={{ overflow: 'auto' }}>
+        <Grid container>
+          <Grid item md={2}>
+            Created Dt
+          </Grid>
+          <Grid item md={2}>
+            Project Name
+          </Grid>
+          <Grid item md={2}>
+            Location
+          </Grid>
+          <Grid item md={2}>
+            Verifier Status
+          </Grid>
+          <Grid item md={2}>
+            Verifier
+          </Grid>
+          <Grid item md={2}>
+            Action
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+    //<Box>
+    //  <CCTable headings={headings} rows={rows} />
+    //</Box>
   )
 }
 
