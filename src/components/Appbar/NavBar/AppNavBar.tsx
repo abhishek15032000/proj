@@ -18,6 +18,9 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Button, Grid } from '@mui/material'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import { pathNames } from '../../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -68,6 +71,8 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
+  const navigate = useNavigate()
+
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -79,6 +84,12 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
+  }
+
+  const logout = () => {
+    setAnchorEl(null)
+    handleMobileMenuClose()
+    navigate(pathNames.LOGOUT, { replace: true })
   }
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -103,7 +114,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   )
 
