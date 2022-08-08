@@ -23,7 +23,8 @@ export const authCalls = {
   onBoardingUser: (payload: { key: any }) => {
     return AxiosHelper(
       `https://carbon-dev-api.shinetrace.space/user/api/v1/`,
-      'POST'
+      'POST',
+      payload
     ).then((res: any) => {
       return res.data
     })
