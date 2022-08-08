@@ -38,13 +38,11 @@ const useForm = (callback: any) => {
 
   const handleSubmit = (event: any) => {
     if (event) event.preventDefault()
-    // console.log('errors', errors)
-    // console.log('values', values)
-    // if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
-    callback()
-    // } else {
-    //   alert('There is an Error!')
-    // }
+    if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
+      callback()
+    } else {
+      alert('There is an Error!')
+    }
   }
 
   const validate = (event: any, name: any, value: any) => {

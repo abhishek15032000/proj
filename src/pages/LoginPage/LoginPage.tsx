@@ -32,37 +32,32 @@ const Login = () => {
 
   const login = async () => {
     const payload = { email: '', id: '', password: '', captcha: '' }
+
     payload.email = values?.email
     payload.password = CryptoJS.MD5(values?.password).toString()
-
-    // const payload = {
-    //   email: 'sangram@chainflux.com',
-    //   password: '827ccb0eea8a706c4c34a16891f84e7b',
-    //   id: '',
-    //   captcha: '',
-    // }
     payload.id = captchaToken
     payload.captcha = captchaInput
-    // console.log('payload', payload)
-    // const res = await authCalls.loginCall(payload)
-    // console.log('res', res)
-    // if (res?.success && res?.data) {
-    //   if (res?.data?.captchaVerify) {
-    //     console.log('User successfully signed in')
-    //     // dispatch(loginAction({ roles: ['ISSUER'] })) //calling action from redux
-    //     // navigate(pathNames.DASHBOARD, { replace: true })
-    //   }
-    // } else if (res?.error) {
-    //   alert(res?.error)
-    //   setCaptchaTokenFromUUID()
-    //   setCaptchaInput('')
-    //   alert(res?.error?.length > 0 && res?.error?.map((err: string) => err))
-    // }
+
+    try {
+      const res = await authCalls.loginCall(payload)
+      if (res?.success && res?.data) {
+        if (res?.data?.captchaVerify) {
+          dispatch(loginAction(res?.data)) //calling action from redux
+          navigate(pathNames.DASHBOARD, { replace: true })
+        } else {
+          alert(res?.data)
+        }
+      } else if (res?.error) {
+        alert(res?.error)
+        setCaptchaTokenFromUUID()
+        setCaptchaInput('')
+      }
+    } catch (e: any) {
+      console.log('Error in authCalls.loginCall api', e)
+    }
   }
 
   const { handleChange, values, errors, handleSubmit } = useForm(login)
-
-  console.log('values', values)
 
   return (
     <Grid
@@ -120,7 +115,7 @@ const Login = () => {
                 variant="filled"
                 defaultValue={values?.password}
                 name="password"
-                // error={errors?.password}
+                error={errors?.password}
                 onChange={handleChange}
               />
             </Grid>
@@ -153,8 +148,7 @@ const Login = () => {
               marginTop: 4,
             }}
             variant="contained"
-            //onClick={() => console.log('33232')}
-            // disabled={Object.values(errors).length > 0}
+            disabled={Object.values(errors).length > 0}
           >
             Login
           </CCButton>
