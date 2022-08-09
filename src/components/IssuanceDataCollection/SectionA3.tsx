@@ -46,7 +46,16 @@ const SectionA3 = () => {
   return (
     <Box sx={{ mt: 3 }}>
       <Typography>Parties & project participants involved</Typography>
-      <Grid container sx={{ mt: 1 }} lg={12} className="table-with-div-heading">
+      <Grid
+        container
+        sx={{ mt: 1 }}
+        xs={12}
+        md={12}
+        lg={12}
+        xl={12}
+        spacing={1}
+        className="table-with-div-heading"
+      >
         <Grid item xs={4}>
           Party involved ((host) indicates a host Party)
         </Grid>
@@ -63,19 +72,23 @@ const SectionA3 = () => {
           key={index}
           className="table-with-div-td"
           container
+          xs={12}
+          md={12}
           lg={12}
+          xl={12}
           sx={{ mt: 1 }}
+          spacing={1}
         >
           <Grid item xs={4}>
             <textarea
-              style={{ height: '100%', width: '95%', border: '0px' }}
+              style={{ height: '100%', width: '100%', border: '0px' }}
               placeholder="Enter host party name"
               onChange={(e) => handleTextChange(e, index, 'partyInvolved')}
             />
           </Grid>
           <Grid item xs={4}>
             <textarea
-              style={{ height: '100%', width: '95%', border: '0px' }}
+              style={{ height: '100%', width: '100%', border: '0px' }}
               placeholder="Enter private/public entity name"
               onChange={(e) => handleTextChange(e, index, 'participantType')}
             />

@@ -34,14 +34,21 @@ const MenuProps = {
 }
 
 const projectTypes = [
-  'AFOLU (Agriculture and Forestry Projects) projects',
-  'Afforestation, Reforestation and Revegetation (ARR)',
-  'Renewable energy- Biomass/Biogas',
-  'Reduced Emissions from Deforestation and Degradation (REDD)',
+  'Methane Destruction- Landfill gas',
+  'Methane Destruction- Livestock',
+  'Methane Destruction- Coal mine methane',
+  'Methane Avoidance',
+  'Methane capture',
+  'Industrial gases- ODS',
+  'Industrial gases- ODS',
+  'Forestry- Avoided conversion/ deforestation',
+  'Forestry- Improved forest management',
+  'Forestry- Wetland restoration',
+  'Afforestation and reforestation',
+  'Regenerative agriculture',
 ]
 
 const ListNewProject = () => {
-  const [progress, setProgress] = useState(10)
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [projectType, setProjectType] = useState<string[]>([])
   const [companyName, setCompanyName] = useState('')
@@ -58,6 +65,7 @@ const ListNewProject = () => {
       typeof value === 'string' ? value.split(',') : value
     )
   }
+  console.log('projectType', projectType)
 
   const handleSaveAndNext = () => {
     console.log('Handle Save And Next button clicked')
@@ -80,69 +88,7 @@ const ListNewProject = () => {
 
   return (
     <>
-      <Grid
-        container
-        md={12}
-        lg={10}
-        justifyContent={'space-between'}
-        alignItems={'center'}
-      >
-        <Grid item container alignItems={'center'} xs={6}>
-          <ArrowBackIcon />
-          <Typography sx={{ fontSize: 20, fontWeight: 500, color: '#F15D5F' }}>
-            List Project
-          </Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Grid
-            container
-            justifyContent={'space-between'}
-            sx={{ width: '100%', mr: 1, color: Colors.darkPrimary1 }}
-          >
-            <Grid item xs={12} md={6}>
-              <Typography>Progress</Typography>
-            </Grid>
-            <Grid item xs={12} md={6} alignSelf={'end'}>
-              <Typography sx={{ textAlign: 'right' }}>{progress}%</Typography>
-            </Grid>
-          </Grid>
-          <LinearProgress
-            sx={{ marginTop: '4px' }}
-            color="inherit"
-            variant="determinate"
-            value={progress}
-          />
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        md={12}
-        lg={10}
-        justifyContent={'space-between'}
-        sx={{ mt: 2 }}
-        alignItems={'center'}
-      >
-        <Grid item xs={6}>
-          <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}>
-            Project Introduction
-          </Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <CCButton
-            sx={{
-              color: '#fff',
-              padding: '8px 15px',
-              width: '100%',
-              minWidth: 0,
-            }}
-            variant="contained"
-            onClick={handleSaveAndNext}
-          >
-            Save & Next
-          </CCButton>
-        </Grid>
-      </Grid>
-      <Grid container md={12} lg={10} spacing={2} sx={{ mt: 2 }}>
+      <Grid container xs={12} spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={12}>
           <CCInputField
             label="Company Name/ Project Name"
@@ -162,7 +108,6 @@ const ListNewProject = () => {
               onChange={handleChange}
               input={<OutlinedInput label="Tag" />}
               sx={{
-                background: '#DAE5E1',
                 color: '#006B5E',
                 borderRadius: '4px 4px 0 0',
               }}
@@ -189,10 +134,10 @@ const ListNewProject = () => {
               )}
               MenuProps={MenuProps}
             >
-              {projectTypes.map((projectType) => (
-                <MenuItem key={projectType} value={projectType}>
-                  <Checkbox checked={projectType.indexOf(projectType) > -1} />
-                  <ListItemText primary={projectType} />
+              {projectTypes.map((item) => (
+                <MenuItem key={item} value={item}>
+                  <Checkbox checked={projectType.includes(item)} />
+                  <ListItemText primary={item} />
                 </MenuItem>
               ))}
             </Select>
@@ -206,7 +151,7 @@ const ListNewProject = () => {
             onChange={(e) => handleTextChange(e, 'projectLocation')}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <DatePicker
             label="Start Date"
             value={startDate}
@@ -219,7 +164,7 @@ const ListNewProject = () => {
             renderInput={(params) => <CCInputField {...params} />}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <CCInputField
             label="Duration of the Project"
             placeholder="Enter Project Duration"
@@ -227,7 +172,7 @@ const ListNewProject = () => {
             onChange={(e) => handleTextChange(e, 'projectDuration')}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <CCInputField
             label="Project Area"
             placeholder="Enter Project Area"

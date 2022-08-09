@@ -43,7 +43,7 @@ const SectionA1 = () => {
   }
 
   return (
-    <Grid container sx={{ mt: 3 }} spacing={1} xs={12} md={11} lg={10}>
+    <Grid container sx={{ mt: 3 }} spacing={1} xs={12} md={12} lg={12} xl={12}>
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCMultilineTextArea
           label=" Brief on purpose and general description of project activity "

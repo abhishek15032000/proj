@@ -8,10 +8,11 @@ const CCInputField = (props: CCInputFieldProps) => {
 
   return (
     <TextField
+      variant="outlined"
       inputRef={inputRef}
       fullWidth
       sx={{
-        background: '#FFFFFF',
+        // background: '#DAE5E1',
         color: '#006B5E',
         borderRadius: '4px 4px 0 0',
       }}

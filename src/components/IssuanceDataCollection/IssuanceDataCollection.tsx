@@ -1,9 +1,10 @@
-import { Grid, LinearProgress, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Grid, Paper, Typography } from '@mui/material'
+import React from 'react'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { KeyboardArrowLeft } from '@mui/icons-material'
 import { Colors } from '../../theme'
 import { Box } from '@mui/system'
-import CCButton from '../../atoms/CCButton'
 import SectionA1 from './SectionA1'
 import SectionA2 from './SectionA2'
 import SectionA3 from './SectionA3'
@@ -22,9 +23,12 @@ import SectionD3 from './SectionD3'
 import SectionB2 from './SectionB2'
 import SectionB1 from './SectionB1'
 import SectionC1 from './SectionC1/SectionC1'
+import ProjectCompletionProgress from './ProjectCompletionProgress'
+import ListNewProject from '../ListNewProject'
 import './issuanceDataCollection.css'
 
 const sections = [
+  { name: 'Project Introduction' },
   { name: 'Section A: Description of Project Activity' },
   { name: 'Section B: Implementation of the project activity' },
   { name: 'Section C: Description of Monitoring Activity' },
@@ -35,6 +39,7 @@ const sections = [
 ]
 
 const sectionATabs = [
+  [{ name: 'Project Introduction', component: ListNewProject }],
   [
     { name: 'A1: Purpose & General description', component: SectionA1 },
     { name: 'A2: Location', component: SectionA2 },
@@ -90,9 +95,6 @@ const sectionATabs = [
 ]
 
 const IssuanceDataCollection = () => {
-  const [progress, setProgress] = React.useState(10)
-  // const [selectedSection, setSelectedSection] = React.useState(0)
-
   const [sectionIndex, setSectionIndex] = React.useState(0)
   const [subsectionIndex, setSubsectionIndex] = React.useState(0)
 
@@ -101,9 +103,6 @@ const IssuanceDataCollection = () => {
   }
 
   const handleSaveAndNext = () => {
-    console.log(sectionIndex)
-    console.log(subsectionIndex)
-    console.log(sectionATabs[sectionIndex][subsectionIndex])
     if (sectionIndex < sectionATabs.length - 1) {
       setSectionIndex(sectionIndex + 1)
       setSubsectionIndex(0)
@@ -123,86 +122,117 @@ const IssuanceDataCollection = () => {
   }
 
   return (
-    <Box sx={{ p: 1 }}>
-      <Grid
-        container
-        xs={11}
-        justifyContent={'space-between'}
-        alignItems={'center'}
-      >
-        <Grid item container xs={6}>
-          <ArrowBackIcon />
-          <Typography>Issuance Data</Typography>
-        </Grid>
-        <Grid item xs={4}>
+    <Grid container>
+      <Grid item xs={9}>
+        <Paper sx={{ p: 3 }}>
           <Grid
             container
+            xs={12}
             justifyContent={'space-between'}
-            sx={{ width: '100%', mr: 1, color: Colors.darkPrimary1 }}
+            alignItems={'center'}
           >
-            <Grid item xs={6}>
-              <Typography>Progress</Typography>
+            <Grid item container xs={6} alignItems={'center'}>
+              <KeyboardArrowLeft />
+              <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
+                List New Project
+              </Typography>
             </Grid>
-            <Grid item xs={6} alignSelf={'end'}>
-              <Typography sx={{ textAlign: 'right' }}>{progress}%</Typography>
+            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'end' }}>
+              {sectionIndex !== 0 && (
+                <Box
+                  sx={{
+                    backgroundColor: '#F6F9F7',
+                    borderRadius: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    p: 1,
+                    mr: 1,
+                    cursor: 'pointer',
+                  }}
+                  onClick={handlePrevious}
+                >
+                  <ArrowBackIcon
+                    sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                  />
+                  <Typography
+                    sx={{
+                      color: '#006B5E',
+                      fontWeight: 500,
+                    }}
+                  >
+                    Previous
+                  </Typography>
+                </Box>
+              )}
+              <Box
+                sx={{
+                  backgroundColor: '#F6F9F7',
+                  borderRadius: 4,
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 1,
+                  cursor: 'pointer',
+                }}
+                onClick={handleSaveAndNext}
+              >
+                <Typography
+                  sx={{
+                    color: '#006B5E',
+                    fontWeight: 500,
+                    mr: 1,
+                  }}
+                >
+                  Next
+                </Typography>
+                <ArrowForwardIcon sx={{ color: '#006B5E', fontSize: 18 }} />
+              </Box>
             </Grid>
           </Grid>
-          <LinearProgress
-            sx={{ marginTop: '4px' }}
-            color="inherit"
-            variant="determinate"
-            value={progress}
-          />
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        xs={11}
-        sx={{ mt: 3 }}
-        justifyContent={'space-between'}
-        alignItems={'center'}
-      >
-        <Grid item xs={6}>
-          {getSectionName()}
-        </Grid>
-        <Grid item xs={6}>
-          <Box display="flex" justifyContent="flex-end">
-            <CCButton
-              sx={{ color: '#fff', mr: 2 }}
-              variant="contained"
-              onClick={handlePrevious}
+          <Grid
+            container
+            xs={12}
+            sx={{ mt: 3 }}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+          >
+            <Grid
+              item
+              sx={{
+                p: 1,
+                backgroundColor: '#DAF7F0',
+                borderBottom: '2px solid #005046',
+                borderRadius: '6px 6px 0 0',
+              }}
             >
-              Previous Section
-            </CCButton>
-            <CCButton
-              sx={{ color: '#fff' }}
-              variant="contained"
-              onClick={handleSaveAndNext}
-            >
-              Save & Next
-            </CCButton>
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid container xs={11}>
-        <Box sx={{ mt: 3 }} className="tabs-container">
-          <Box className="tabs">
-            {sectionATabs[sectionIndex]?.map((tab, index) => (
-              <Box
-                key={index}
-                className={`${
-                  subsectionIndex === index ? 'selected-tab' : 'tab'
-                }`}
-                onClick={() => setSubsectionIndex(index)}
-              >
-                <Box className="tab-title">{tab.name}</Box>
+              {getSectionName()}
+            </Grid>
+          </Grid>
+          <Grid container xs={12}>
+            {sectionIndex !== 0 && (
+              <Box sx={{ mt: 3 }} className="tabs-container">
+                <Box className="tabs">
+                  {sectionATabs[sectionIndex]?.map((tab, index) => (
+                    <Box
+                      key={index}
+                      className={`${
+                        subsectionIndex === index ? 'selected-tab' : 'tab'
+                      }`}
+                      onClick={() => setSubsectionIndex(index)}
+                    >
+                      <Box className="tab-title">{tab.name}</Box>
+                    </Box>
+                  ))}
+                </Box>
               </Box>
-            ))}
-          </Box>
-        </Box>
-        <Box sx={{ width: '100%' }}>{renderTab()}</Box>
+            )}
+            <Box sx={{ width: '100%' }}>{renderTab()}</Box>
+          </Grid>
+        </Paper>
       </Grid>
-    </Box>
+      <Grid item container xs={3}>
+        <ProjectCompletionProgress sectionIndex={sectionIndex} />
+      </Grid>
+    </Grid>
   )
 }
 

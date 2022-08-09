@@ -14,7 +14,7 @@ const SectionA5 = () => {
     <>
       <Typography sx={{ mt: 3 }}> Renewable crediting period:</Typography>
       <Grid container sx={{ mt: 2 }} spacing={1}>
-        <Grid item xs={12} lg={5}>
+        <Grid item xs={12} md={12} lg={12} xl={12}>
           <DatePicker
             label="Start date of 1st crediting period "
             value={startDate}
@@ -27,7 +27,7 @@ const SectionA5 = () => {
             renderInput={(params) => <CCInputField {...params} />}
           />
         </Grid>
-        <Grid item xs={6} lg={3}>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
           <DatePicker
             label="Crediting from "
             value={fromDate}
@@ -40,7 +40,7 @@ const SectionA5 = () => {
             renderInput={(params) => <CCInputField {...params} />}
           />
         </Grid>
-        <Grid item xs={6} lg={3}>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
           <DatePicker
             label="Crediting end "
             value={toDate}
@@ -53,7 +53,7 @@ const SectionA5 = () => {
             renderInput={(params) => <CCInputField {...params} />}
           />
         </Grid>
-        <Grid item xs={12} sx={{ mt: 3 }}>
+        <Grid item xs={12} md={12} lg={12} xl={12} sx={{ mt: 3 }}>
           <CCMultilineTextArea
             label="Brief on crediting period"
             placeholder="Write a brief on commencement of crediting period"

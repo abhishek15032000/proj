@@ -72,12 +72,14 @@ const SectionA2 = () => {
         columnSpacing={{ xs: 0, md: 1 }}
         rowSpacing={1}
         xs={12}
-        lg={10}
+        md={12}
+        lg={12}
+        xl={12}
       >
-        <Grid item sx={{ mt: 1 }} xs={12}>
+        <Grid item sx={{ mt: 1 }} xs={12} md={12} lg={12} xl={12}>
           <Typography>Location of the project activity</Typography>
         </Grid>
-        <Grid item xs={12} md={6} lg={5}>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Country</InputLabel>
             <Select
@@ -96,7 +98,7 @@ const SectionA2 = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={6} lg={5}>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">
               Region/ State/ Province
@@ -125,7 +127,7 @@ const SectionA2 = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={6} lg={5}>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label="City/Town/District"
             sx={{ backgroundColor: ' #FFFFFF' }}
@@ -133,7 +135,7 @@ const SectionA2 = () => {
             onChange={(value) => setCity(value)}
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={5}>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label="Landmark"
             sx={{ backgroundColor: ' #FFFFFF' }}
@@ -143,8 +145,17 @@ const SectionA2 = () => {
         </Grid>
       </Grid>
 
-      <Grid sx={{ mt: 1 }} container alignItems={'center'} spacing={1} lg={10}>
-        <Grid item xs={12} md={6} lg={5}>
+      <Grid
+        sx={{ mt: 1 }}
+        container
+        alignItems={'center'}
+        spacing={1}
+        xs={12}
+        md={12}
+        lg={12}
+        xl={12}
+      >
+        <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label="Pincode"
             value={pincodes}
@@ -154,13 +165,21 @@ const SectionA2 = () => {
         </Grid>
       </Grid>
 
-      <Grid container sx={{ mt: 1 }} spacing={1} xs={12} lg={10}>
+      <Grid
+        container
+        sx={{ mt: 1 }}
+        spacing={1}
+        xs={12}
+        md={12}
+        lg={12}
+        xl={12}
+      >
         <Typography>Upload location map images</Typography>
         <Grid container rowSpacing={2} columnSpacing={2} alignItems={'center'}>
           {selectedImages &&
             selectedImages.length > 0 &&
             selectedImages.map((image, index) => (
-              <Grid item key={index} xs={12} md={6} lg={5}>
+              <Grid item key={index} xs={12} md={12} lg={12} xl={12}>
                 <Box sx={{ height: '200px', border: '2px solid black' }}>
                   {<img src={image} width={'100%'} height="100%" />}
                 </Box>
@@ -169,8 +188,9 @@ const SectionA2 = () => {
           <Grid
             item
             xs={12}
-            md={6}
-            lg={10}
+            md={12}
+            lg={12}
+            xl={12}
             justifyContent="center"
             alignItems={'center'}
             direction="column"
@@ -204,7 +224,7 @@ const SectionA2 = () => {
               />
             </Stack>
           </Grid>
-          <Grid item spacing={1} xs={12} lg={10}>
+          <Grid item spacing={1} xs={12} md={12} lg={12} xl={12}>
             <CCButton
               sx={{
                 padding: '8px 15px',
