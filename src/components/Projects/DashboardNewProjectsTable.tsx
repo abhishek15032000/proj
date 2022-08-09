@@ -13,13 +13,13 @@ import React from 'react'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 
 const headingItems = [
-  'Reference ID',
-  'Creation Dt',
-  'Project Name',
-  'Location',
-  'Verifier Status',
-  'Verifier',
-  'Action',
+  { name: 'referenceId', label: 'Reference ID', minWidth: 150 },
+  { name: 'createdDt', label: 'Creation Dt', minWidth: 150 },
+  { name: 'projectName', label: 'Project Name', minWidth: 150 },
+  { name: 'location', label: 'Location', minWidth: 150 },
+  { name: 'VerifierStatus', label: 'Verifier Status', minWidth: 150 },
+  { name: 'verifier', label: 'Verifier', minWidth: 150 },
+  { name: 'action', label: 'Action', minWidth: 150 },
 ]
 const rows = [
   '4337',
@@ -29,29 +29,26 @@ const rows = [
   'Finalised',
   'Climate Finance',
   <CreateOutlinedIcon key={1} />,
-
-  //[
-  //  '4337',
-  //  '12/04/21',
-  //  'Trueno River Hydroelectric Power Plant',
-  //  'Vilcum, Chile',
-  //  'Finalised',
-  //  'Climate Finance',
-  //  <CreateOutlinedIcon key={1} />,
-  //],
 ]
 
 const DashboardNewProjectsTable = () => {
   return (
     <>
       <TableContainer
-        sx={{ minHeight: 140, width: '100%', overflow: 'hidden' }}
+        sx={{ minHeight: 140, maxWidth: '100%', overflowX: 'scroll' }}
       >
-        <Table stickyHeader aria-label="sticky table">
+        <Table>
           <TableHead>
             <TableRow>
               {headingItems.map((i, index) => (
-                <TableCell key={index}>{i}</TableCell>
+                <TableCell
+                  key={index}
+                  sx={{
+                    minWidth: i?.minWidth,
+                  }}
+                >
+                  {i?.label}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

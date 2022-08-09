@@ -83,7 +83,6 @@ const RegisterPage = (props: RegisterPageProps) => {
       email: email,
       phone: Number(number),
       country_code: '91',
-      //departmentId: '62c58299a3bc6ba32590f94a',
       departmentId: departmentId[0]?.label,
       password: CryptoJS.MD5(password).toString(),
       captcha_id: captchaToken,
@@ -91,17 +90,14 @@ const RegisterPage = (props: RegisterPageProps) => {
     }
     USER.onBoardingUser(payload)
       .then((res: any) => {
-        console.log('onboarding: ', res)
         if (res?.data?.success && res?.data?.data) {
           setLocalItem('uuid', res?.data?.data?.uuid)
-          console.log('uuid')
           navigate(pathNames.TWOFA)
         } else if (!res?.data?.success) {
           alert(res?.data?.error)
         }
       })
       .catch((e) => console.log(e))
-    //console.log('payload', payload)
   }
 
   const register = () => {
