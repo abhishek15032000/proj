@@ -9,6 +9,11 @@ import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
+import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory'
+import SquareIcon from '@mui/icons-material/Square'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PentagonIcon from '@mui/icons-material/Pentagon'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Toolbar from '@mui/material/Toolbar'
@@ -21,7 +26,7 @@ import { ROLES } from '../../../config/roles.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { linkLabels, pathNames } from '../../../routes/pathNames'
 import { privateRouteComponents } from '../../../routes/routeComponents'
-import RouteController from '../../../routes/RouteController'
+// import RouteController from '../../../routes/RouteController'
 import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
@@ -60,7 +65,18 @@ export default function ResponsiveDrawer(props: any) {
     let IconComponent
     switch (text) {
       case linkLabels.Projects:
-        IconComponent = InboxIcon
+        IconComponent = FiberManualRecordIcon
+        break
+      case linkLabels.Token_Contract:
+        // PlayArrowIcon
+        IconComponent = ChangeHistoryIcon
+        break
+      case linkLabels.My_Portfolio:
+        IconComponent = SquareIcon
+        break
+      case linkLabels.Marketplace:
+        IconComponent = PentagonIcon
+
         break
 
       default:
