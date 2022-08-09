@@ -171,50 +171,55 @@ export default function ResponsiveDrawer(props: any) {
         <Logo width="50%" />
       </Grid>
 
-      <List sx={{ mt: 1 }}>
-        {midMenu().map((text, index) => (
+      <Grid container sx={{ height: '100%', width: '100%' }}>
+        <List sx={{ mt: 1 }}>
+          {midMenu().map((text, index) => (
+            <NavLink
+              key={index.toString()}
+              to={linkRenderer(text)}
+              style={{
+                textDecoration: 'none',
+                color: Colors.white,
+                fontWeight: activeRoute(text, location) ? '700' : '700',
+                padding: '10px 0',
+              }}
+            >
+              <ListItem key={linkLabels.Projects}>
+                <NavListItem
+                  linkLabels={text}
+                  active={activeRoute(text, location)}
+                  location={location}
+                />
+              </ListItem>
+            </NavLink>
+          ))}
+        </List>
+        <List
+          sx={{
+            // paddingTop: screen.height / 4 - midMenu().length + 'px',
+            // paddingTop: screen.height / midMenu().length / 3 + '%',
+            backgroundColor: 'darkPrimary1.main',
+            position: 'absolute',
+            bottom: '0',
+            width: '100%',
+          }}
+        >
           <NavLink
-            key={index.toString()}
-            to={linkRenderer(text)}
-            style={{
-              textDecoration: 'none',
-              color: Colors.white,
-              fontWeight: activeRoute(text, location) ? '700' : '700',
-              padding: '10px 0',
-            }}
+            to={pathNames.LOGOUT}
+            style={{ textDecoration: 'none', color: Colors.secondary }}
           >
+            {' '}
             <ListItem key={linkLabels.Projects}>
               <NavListItem
-                linkLabels={text}
-                active={activeRoute(text, location)}
+                noBg
+                linkLabels={'Logout'}
+                active={true}
                 location={location}
               />
             </ListItem>
           </NavLink>
-        ))}
-      </List>
-      <List
-        sx={{
-          // paddingTop: screen.height / 4 - midMenu().length + 'px',
-          paddingTop: screen.height / midMenu().length / 3 + '%',
-          backgroundColor: 'darkPrimary1.main',
-        }}
-      >
-        <NavLink
-          to={pathNames.LOGOUT}
-          style={{ textDecoration: 'none', color: Colors.secondary }}
-        >
-          {' '}
-          <ListItem key={linkLabels.Projects}>
-            <NavListItem
-              noBg
-              linkLabels={'Logout'}
-              active={true}
-              location={location}
-            />
-          </ListItem>
-        </NavLink>
-      </List>
+        </List>
+      </Grid>
     </Box>
   )
 
