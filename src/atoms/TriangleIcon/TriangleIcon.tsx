@@ -1,0 +1,21 @@
+import React from 'react'
+import { TriangleIconProps } from './TriangleIcon.interface'
+const TriangleIcon = (props: TriangleIconProps) => {
+  return (
+    <svg
+      width="22"
+      height="16"
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7 0L14 12H0L7 0Z"
+        fill="#FCFCFC"
+      />
+    </svg>
+  )
+}
+export default TriangleIcon

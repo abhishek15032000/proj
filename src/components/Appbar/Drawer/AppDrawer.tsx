@@ -1,6 +1,8 @@
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Grid, Typography } from '@mui/material'
+// import TriangleIcon from '../../../assets/Images/Icons/TriangleIcon.svg'
+import TriangleIcon from '../../../atoms/TriangleIcon'
+import { Grid, Icon, SvgIcon, Typography } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -9,6 +11,11 @@ import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
+import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory'
+import SquareIcon from '@mui/icons-material/Square'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PentagonIcon from '@mui/icons-material/Pentagon'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Toolbar from '@mui/material/Toolbar'
@@ -21,7 +28,7 @@ import { ROLES } from '../../../config/roles.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { linkLabels, pathNames } from '../../../routes/pathNames'
 import { privateRouteComponents } from '../../../routes/routeComponents'
-import RouteController from '../../../routes/RouteController'
+// import RouteController from '../../../routes/RouteController'
 import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
@@ -60,7 +67,23 @@ export default function ResponsiveDrawer(props: any) {
     let IconComponent
     switch (text) {
       case linkLabels.Projects:
-        IconComponent = InboxIcon
+        IconComponent = FiberManualRecordIcon
+        break
+      case linkLabels.Token_Contract:
+        // PlayArrowIcon
+        // eslint-disable-next-line react/display-name
+        IconComponent = (props: any) => (
+          <SvgIcon {...props}>
+            <TriangleIcon />
+          </SvgIcon>
+        )
+        break
+      case linkLabels.My_Portfolio:
+        IconComponent = SquareIcon
+        break
+      case linkLabels.Marketplace:
+        IconComponent = PentagonIcon
+
         break
 
       default:
@@ -72,6 +95,7 @@ export default function ResponsiveDrawer(props: any) {
           style={{
             color: Colors.white,
             opacity: activeRoute(text, location) ? 1 : 0.5,
+            // background: Colors.white,
           }}
         />
       )
@@ -94,13 +118,20 @@ export default function ResponsiveDrawer(props: any) {
     linkLabels,
     active,
     location,
+    noBg,
   }: {
     linkLabels: string
     active: boolean
     location: any
+    noBg?: boolean
   }) => {
     return (
-      <ListItemButton>
+      <ListItemButton
+        sx={{
+          backgroundColor: active && !noBg ? Colors.secondary : 'transparent',
+          borderRadius: 100,
+        }}
+      >
         {iconRenderer(linkLabels, location) ? (
           <ListItemIcon style={{ minWidth: 30 }}>
             {iconRenderer(linkLabels, location)}
@@ -175,6 +206,7 @@ export default function ResponsiveDrawer(props: any) {
           {' '}
           <ListItem key={linkLabels.Projects}>
             <NavListItem
+              noBg
               linkLabels={'Logout'}
               active={true}
               location={location}
@@ -190,6 +222,7 @@ export default function ResponsiveDrawer(props: any) {
       <CssBaseline />
       <AppBar
         position="fixed"
+        elevation={0}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },

@@ -5,6 +5,7 @@ const MENUS = {
         linkLabels.Projects,
         linkLabels.Token_Contract,
         linkLabels.My_Portfolio,
+        linkLabels.Marketplace,
 
     ],
 

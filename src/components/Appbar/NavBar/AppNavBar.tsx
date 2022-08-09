@@ -11,13 +11,21 @@ import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
-import AccountCircle from '@mui/icons-material/AccountCircle'
+// import AccountCircle from '@mui/icons-material/AccountCircle'
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import MailIcon from '@mui/icons-material/Mail'
-import NotificationsIcon from '@mui/icons-material/Notifications'
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
+// import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
-import SettingsIcon from '@mui/icons-material/Settings'
+// import SettingsIcon from '@mui/icons-material/Settings'
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import { Button, Grid } from '@mui/material'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+// import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
+import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded'
+// import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import { pathNames } from '../../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -138,8 +146,11 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+          <Badge
+            // badgeContent={17}
+            color="error"
+          >
+            <NotificationsOutlinedIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
@@ -152,7 +163,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <PersonOutlineOutlinedIcon />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -189,7 +200,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           <Box
             sx={{
               flexGrow: 1,
-              mx: 5,
+              // mx: ,
               display: { xs: 'none', md: 'flex' },
             }}
           >
@@ -204,7 +215,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                 textTransform: 'none',
               }}
             >
-              <AccountBalanceWalletIcon />
+              <CreditCardRoundedIcon />
               <Typography sx={{ mx: 1 }}>Wallet</Typography>
             </Button>
           </Box>
@@ -215,7 +226,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             color="primary"
           >
             <Badge color="error">
-              <SettingsIcon />
+              <SettingsOutlinedIcon />
             </Badge>
           </IconButton>
 
@@ -225,7 +236,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             color="primary"
           >
             <Badge badgeContent={17} color="error">
-              <NotificationsIcon />
+              <NotificationsOutlinedIcon />
             </Badge>
           </IconButton>
 
@@ -238,7 +249,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             onClick={handleProfileMenuOpen}
             color="primary"
           >
-            <AccountCircle />
+            <PersonOutlineOutlinedIcon />
           </IconButton>
         </Box>
         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
