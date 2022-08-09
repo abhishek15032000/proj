@@ -1,26 +1,17 @@
-import {
-  Grid,
-  Box,
-  Typography,
-  IconButton,
-  Chip,
-  LinearProgress,
-  Button,
-  Container,
-} from '@mui/material'
-import React, { useState } from 'react'
+import { Grid, Typography, Button } from '@mui/material'
+import React from 'react'
 import ProjectsStats from './ProjectsStats'
 import './Projects.css'
 import ProjectsTab from './ProjectsTab'
-import LinearProgressBar from '../../atoms/LinearProgressBar'
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
-import CheckIcon from '@mui/icons-material/Check'
 import ProfileCompletion from './ProfileCompletion'
 import AddIcon from '@mui/icons-material/Add'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const Projects = () => {
+  const navigate = useNavigate()
   const listNewProject = () => {
-    console.log('New Project')
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION, { replace: true })
   }
 
   return (
@@ -47,6 +38,7 @@ const Projects = () => {
               marginTop: 3,
             }}
             startIcon={<AddIcon style={{ color: '#005046' }} />}
+            onClick={listNewProject}
           >
             <Typography
               sx={{ fontSize: 14, fontWeight: 500, color: '#005046' }}

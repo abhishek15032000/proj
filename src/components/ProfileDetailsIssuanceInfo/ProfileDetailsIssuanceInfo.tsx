@@ -9,6 +9,7 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import TopInfo from '../../atoms/TopInfo/TopInfo'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import IssuanceInfoList from './IssuanceInfoList'
+import VerifierReport from './VerifierReport'
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const [tabIndex, setTabIndex] = useState(1)
@@ -39,13 +40,33 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       status: true,
     },
   ])
+  const [VerifierReports, setVerifierReports] = useState([
+    {
+      title: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
+      place: 'Hixson, USA',
+      status: true,
+      verfierOption: 'Finalise Verifier',
+    },
+    {
+      title: 'DILLON CONSULTING LIMITED',
+      place: 'Toronto, Ontario',
+      status: true,
+      verfierOption: 'Finalise Verifier',
+    },
+    {
+      title: ' ASTER GLOBAL ENVIRONMENTAL SOLUTIONS, INC.',
+      place: 'Ohio, USA',
+      status: false,
+      verfierOption: '2 days left',
+    },
+  ])
 
   return (
     <Box sx={{ p: 1 }}>
       <Grid
         container
         xs={12}
-        sx={{ p: 1, border: '0px solid' }}
+        // sx={{ p: 1, border: '1px solid' }}
         justifyContent={'space-between'}
       >
         <BackHeader title="Project Details" />
@@ -63,6 +84,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         />
 
         {tabIndex === 1 && <IssuanceInfoList data={issuanceInfo} />}
+        {tabIndex === 2 && <VerifierReport data={VerifierReports} />}
       </Grid>
     </Box>
   )
