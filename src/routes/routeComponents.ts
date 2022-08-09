@@ -8,8 +8,11 @@ import ProfileDetailsIssuanceInfo from '../pages/ProfileDetailsIssuanceInfo'
 import ProjectsPage from '../pages/Issuer/ProjectsPage/ProjectsPage'
 import ProjectList from '../pages/ProjectList'
 import ListNewProject from '../pages/ListNewProject'
-import Onboarding from '../pages/Onboarding'
+
 import LogoutPage from '../pages/LogoutPage'
+
+import Onboarding from '../pages/Onboarding'
+
 import { linkLabels, pathNames } from './pathNames'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 
@@ -67,6 +70,12 @@ export const privateRouteComponents = [
     component: ListNewProject,
     roles: [ROLES.ISSUER],
   },
+  {
+    path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+    component: ProfileDetailsIssuanceInfo,
+    roles: [ROLES.ISSUER],
+  },
+
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,

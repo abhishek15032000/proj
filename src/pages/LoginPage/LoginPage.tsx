@@ -44,6 +44,7 @@ const Login = () => {
         if (res?.data?.captchaVerify) {
           dispatch(loginAction(res?.data)) //calling action from redux
           navigate(pathNames.DASHBOARD, { replace: true })
+          window.location.reload()
         } else {
           alert(res?.data)
         }
@@ -66,6 +67,7 @@ const Login = () => {
       xs={12}
       height={'100vh'}
       justifyContent="center"
+      alignItems={'center'}
     >
       <Grid
         item
@@ -73,7 +75,6 @@ const Login = () => {
         xs={12}
         display="flex"
         sx={{
-          marginTop: 18,
           width: '100%',
           px: 20,
         }}

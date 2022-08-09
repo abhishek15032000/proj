@@ -26,4 +26,5 @@ export const AllColors = {
 	checkbox: "#2B2B2B",
 	tick: "#FFFFFF",
 	link: "#09A0E0",
+	tertiary: "#F15D5F",
 }

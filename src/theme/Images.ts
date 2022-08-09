@@ -3,6 +3,7 @@ import illustration1 from "../assets/Images/illustrations/illustration1.svg"
 import illustration2 from "../assets/Images/illustrations/illustration2.svg"
 import illustration3 from "../assets/Images/illustrations/illustration3.svg"
 import check1 from "../assets/Images/illustrations/check1.svg"
+import ProjectCompletion from "../assets/Images/Icons/project-completion.svg"
 
 
 export const Images = {
@@ -10,5 +11,6 @@ export const Images = {
     illustration1,
     illustration2,
     illustration3,
-    check1
+    check1,
+    ProjectCompletion
 }
