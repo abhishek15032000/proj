@@ -17,4 +17,5 @@ export const linkLabels = {
   Projects: 'Projects',
   Token_Contract: 'Token & Contract',
   My_Portfolio: 'My Portfolio',
+  Marketplace: "Marketplace"
 }
