@@ -195,7 +195,8 @@ export default function ResponsiveDrawer(props: any) {
       </List>
       <List
         sx={{
-          paddingTop: screen.height / 3.5 - midMenu().length + 'px',
+          // paddingTop: screen.height / 4 - midMenu().length + 'px',
+          paddingTop: screen.height / midMenu().length / 3 + '%',
           backgroundColor: 'darkPrimary1.main',
         }}
       >
