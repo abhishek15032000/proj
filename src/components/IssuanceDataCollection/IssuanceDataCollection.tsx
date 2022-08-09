@@ -26,6 +26,13 @@ import SectionC1 from './SectionC1/SectionC1'
 import ProjectCompletionProgress from './ProjectCompletionProgress'
 import ListNewProject from '../ListNewProject'
 import './issuanceDataCollection.css'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import {
+  setSectionIndex,
+  setSubSectionIndex,
+} from '../../redux/Slices/issuanceDataCollection'
+import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -95,29 +102,34 @@ const sectionATabs = [
 ]
 
 const IssuanceDataCollection = () => {
-  const [sectionIndex, setSectionIndex] = React.useState(0)
-  const [subsectionIndex, setSubsectionIndex] = React.useState(0)
+  const dispatch = useAppDispatch()
+
+  const sectionIndex = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.sectionIndex,
+    shallowEqual
+  )
+  const subSectionIndex = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.subSectionIndex,
+    shallowEqual
+  )
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
   }
 
   const handleSaveAndNext = () => {
-    if (sectionIndex < sectionATabs.length - 1) {
-      setSectionIndex(sectionIndex + 1)
-      setSubsectionIndex(0)
-    }
+    moveToNextSection(sectionIndex, subSectionIndex)
   }
   const handlePrevious = () => {
     if (sectionIndex > 0) {
-      setSectionIndex(sectionIndex - 1)
-      setSubsectionIndex(0)
+      dispatch(setSectionIndex(sectionIndex - 1))
+      dispatch(setSubSectionIndex(0))
     }
   }
 
   const renderTab = () => {
     const SelectedSubSectionComp =
-      sectionATabs[sectionIndex][subsectionIndex]?.component
+      sectionATabs[sectionIndex][subSectionIndex]?.component
     return <SelectedSubSectionComp />
   }
 
@@ -215,9 +227,9 @@ const IssuanceDataCollection = () => {
                     <Box
                       key={index}
                       className={`${
-                        subsectionIndex === index ? 'selected-tab' : 'tab'
+                        subSectionIndex === index ? 'selected-tab' : 'tab'
                       }`}
-                      onClick={() => setSubsectionIndex(index)}
+                      onClick={() => dispatch(setSubSectionIndex(index))}
                     >
                       <Box className="tab-title">{tab.name}</Box>
                     </Box>
