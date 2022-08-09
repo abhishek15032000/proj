@@ -1,6 +1,8 @@
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Grid, Typography } from '@mui/material'
+// import TriangleIcon from '../../../assets/Images/Icons/TriangleIcon.svg'
+import TriangleIcon from '../../../atoms/TriangleIcon'
+import { Grid, Icon, SvgIcon, Typography } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -69,7 +71,12 @@ export default function ResponsiveDrawer(props: any) {
         break
       case linkLabels.Token_Contract:
         // PlayArrowIcon
-        IconComponent = ChangeHistoryIcon
+        // eslint-disable-next-line react/display-name
+        IconComponent = (props: any) => (
+          <SvgIcon {...props}>
+            <TriangleIcon />
+          </SvgIcon>
+        )
         break
       case linkLabels.My_Portfolio:
         IconComponent = SquareIcon
@@ -88,6 +95,7 @@ export default function ResponsiveDrawer(props: any) {
           style={{
             color: Colors.white,
             opacity: activeRoute(text, location) ? 1 : 0.5,
+            // background: Colors.white,
           }}
         />
       )
@@ -110,13 +118,20 @@ export default function ResponsiveDrawer(props: any) {
     linkLabels,
     active,
     location,
+    noBg,
   }: {
     linkLabels: string
     active: boolean
     location: any
+    noBg?: boolean
   }) => {
     return (
-      <ListItemButton>
+      <ListItemButton
+        sx={{
+          backgroundColor: active && !noBg ? Colors.secondary : 'transparent',
+          borderRadius: 100,
+        }}
+      >
         {iconRenderer(linkLabels, location) ? (
           <ListItemIcon style={{ minWidth: 30 }}>
             {iconRenderer(linkLabels, location)}
@@ -191,6 +206,7 @@ export default function ResponsiveDrawer(props: any) {
           {' '}
           <ListItem key={linkLabels.Projects}>
             <NavListItem
+              noBg
               linkLabels={'Logout'}
               active={true}
               location={location}
