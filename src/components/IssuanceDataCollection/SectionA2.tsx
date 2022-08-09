@@ -13,6 +13,7 @@ import React, { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import CCButton from '../../atoms/CCButton'
 import CCInputField from '../../atoms/CCInputField'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 
 interface coordinatesInterface {
   latitude: string
@@ -22,8 +23,9 @@ interface coordinatesInterface {
 const SectionA2 = () => {
   const [country, setCountry] = React.useState('')
   const [state, setState] = React.useState('')
-  const [pincodes, setPincodes] = React.useState([''])
-
+  const [pincodes, setPincodes] = React.useState<string>('')
+  const [city, setCity] = React.useState<string>('')
+  const [landmark, setLandmark] = React.useState<string>('')
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [coordinates, setCoordinates] = useState<coordinatesInterface[]>([
     { latitude: '', longitude: '' },
@@ -36,40 +38,30 @@ const SectionA2 = () => {
     setState(event.target.value)
   }
 
-  const addPincode = () => {
-    const pincodesCopy = [...pincodes]
-    pincodesCopy.push('')
-    setPincodes(pincodesCopy)
-  }
-
-  const handlePincodeChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const pincodesCopy = [...pincodes]
-    pincodesCopy[index] = e.target.value
-    setPincodes(pincodesCopy)
-  }
-
-  const addCoordinates = () => {
-    const coordinatesCopy = [...coordinates]
-    coordinatesCopy.push({ latitude: '', longitude: '' })
-    setCoordinates(coordinatesCopy)
-  }
-
-  const handleCoordinatesChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-    coordinateType: string
-  ) => {
-    const coordinatesCopy = [...coordinates]
-    const temp = coordinatesCopy[index]
-    if (coordinateType === 'latitude') {
-      temp.latitude = e.target.value
-    } else {
-      temp.longitude = e.target.value
+  const onSubmitSectionA = async () => {
+    const payload = { _id: '', uuid: '', project_id: '', step2: {} }
+    payload._id = 'step2'
+    payload.uuid = 'b04782d3-2d4a-4f8d-9854-0deac633b1e4'
+    payload.project_id = 'step12355'
+    payload.step2 = {
+      country: country,
+      state: state,
+      city: city,
+      pincode: pincodes,
+      landmark: landmark,
+      file_attach: [''],
     }
-    setCoordinates(coordinatesCopy)
+
+    try {
+      const res = await dataCollectionCalls.updateProjectSectionACall(payload)
+      if (res?.success && res?.data) {
+        console.log('res', res)
+      } else if (res?.error) {
+        alert(res?.error)
+      }
+    } catch (e: any) {
+      console.log('Error in authCalls.loginCall api', e)
+    }
   }
 
   return (
@@ -82,12 +74,15 @@ const SectionA2 = () => {
         xs={12}
         lg={10}
       >
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <Typography>Location of the project activity</Typography>
+        </Grid>
         <Grid item xs={12} md={6} lg={5}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Country</InputLabel>
             <Select
               sx={{
-                background: '#DAE5E1',
+                background: ' #FFFFFF',
                 color: '#006B5E',
                 borderRadius: '4px 4px 0 0',
               }}
@@ -103,7 +98,9 @@ const SectionA2 = () => {
         </Grid>
         <Grid item xs={12} md={6} lg={5}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              Region/ State/ Province
+            </InputLabel>
             <Select
               // MenuProps={{
               //   sx: {
@@ -113,14 +110,14 @@ const SectionA2 = () => {
               //   },
               // }}
               sx={{
-                background: '#DAE5E1',
+                background: ' #FFFFFF',
                 color: '#006B5E',
                 borderRadius: '4px 4px 0 0',
               }}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={state}
-              label="State"
+              label=" Region/ State/ Province"
               onChange={handleStateChange}
             >
               <MenuItem value={'maharashtra'}>Maharashtra</MenuItem>
@@ -129,79 +126,36 @@ const SectionA2 = () => {
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6} lg={5}>
-          <CCInputField label="City/Town/District" />
+          <CCInputField
+            label="City/Town/District"
+            sx={{ backgroundColor: ' #FFFFFF' }}
+            value={city}
+            onChange={(value) => setCity(value)}
+          />
         </Grid>
         <Grid item xs={12} md={6} lg={5}>
-          <CCInputField label="Village" />
+          <CCInputField
+            label="Landmark"
+            sx={{ backgroundColor: ' #FFFFFF' }}
+            value={landmark}
+            onChange={(e) => setLandmark(e)}
+          />
         </Grid>
       </Grid>
-      {pincodes.map((pincode, index) => (
-        <Grid
-          key={index}
-          sx={{ mt: 1 }}
-          container
-          alignItems={'center'}
-          spacing={1}
-          lg={10}
-        >
-          <Grid item xs={12} md={6} lg={5}>
-            <CCInputField
-              label="Pincode"
-              value={pincode}
-              onChange={(e) => handlePincodeChange(e, index)}
-            />
-          </Grid>
-          {index + 1 === pincodes.length && (
-            <Grid item xs={12} md={6} lg={5}>
-              <CCButton
-                sx={{
-                  color: '#fff',
-                  padding: '2px 2px',
-                  borderRadius: '14px',
-                }}
-                variant="contained"
-                onClick={addPincode}
-              >
-                + Add Pincode
-              </CCButton>
-            </Grid>
-          )}
-        </Grid>
-      ))}
-      <Typography sx={{ mt: 2 }}>GPS Coordinates</Typography>
-      {coordinates.map((coordinate, index) => (
-        <Grid key={index} container spacing={1} lg={10}>
-          <Grid item xs={12} md={6} lg={5}>
-            <CCInputField
-              label="Latitude"
-              name="latitude"
-              value={coordinate.latitude}
-              onChange={(e) => handleCoordinatesChange(e, index, 'latitude')}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={5}>
-            <CCInputField
-              label="Longitude"
-              name="longitude"
-              value={coordinate.longitude}
-              onChange={(e) => handleCoordinatesChange(e, index, 'longitude')}
-            />
-          </Grid>
-        </Grid>
-      ))}
-      <Grid container sx={{ mt: 1 }} spacing={1} lg={10}>
+
+      <Grid sx={{ mt: 1 }} container alignItems={'center'} spacing={1} lg={10}>
         <Grid item xs={12} md={6} lg={5}>
-          <CCButton
-            sx={{ color: '#fff', padding: '2px 10px', borderRadius: '14px' }}
-            variant="contained"
-            onClick={addCoordinates}
-          >
-            + Add Coordinates
-          </CCButton>
+          <CCInputField
+            label="Pincode"
+            value={pincodes}
+            sx={{ backgroundColor: ' #FFFFFF' }}
+            onChange={(e) => setPincodes(e)}
+          />
         </Grid>
       </Grid>
+
       <Grid container sx={{ mt: 1 }} spacing={1} xs={12} lg={10}>
-        <Typography>Attach Data Tables for Technical Description</Typography>
+        <Typography>Upload location map images</Typography>
         <Grid container rowSpacing={2} columnSpacing={2} alignItems={'center'}>
           {selectedImages &&
             selectedImages.length > 0 &&
@@ -216,7 +170,7 @@ const SectionA2 = () => {
             item
             xs={12}
             md={6}
-            lg={5}
+            lg={10}
             justifyContent="center"
             alignItems={'center'}
             direction="column"
@@ -231,7 +185,7 @@ const SectionA2 = () => {
                 height: 190,
               }}
             >
-              <AddIcon fontSize="large" />
+              {/* <AddIcon fontSize="large" /> */}
               <input
                 type="file"
                 name="myImage"
@@ -249,6 +203,18 @@ const SectionA2 = () => {
                 }}
               />
             </Stack>
+          </Grid>
+          <Grid item spacing={1} xs={12} lg={10}>
+            <CCButton
+              sx={{
+                padding: '8px 15px',
+                width: '100%',
+                minWidth: 0,
+              }}
+              variant="contained"
+            >
+              Upload
+            </CCButton>
           </Grid>
         </Grid>
       </Grid>

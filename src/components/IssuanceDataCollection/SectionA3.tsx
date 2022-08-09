@@ -45,48 +45,55 @@ const SectionA3 = () => {
 
   return (
     <Box sx={{ mt: 3 }}>
-      <Typography>Parties and project participants *</Typography>
-      <Grid container sx={{ mt: 1 }} lg={10}>
-        <Grid item className="table-with-div-heading" xs={4}>
+      <Typography>Parties & project participants involved</Typography>
+      <Grid container sx={{ mt: 1 }} lg={12} className="table-with-div-heading">
+        <Grid item xs={4}>
           Party involved ((host) indicates a host Party)
         </Grid>
-        <Grid item className="table-with-div-heading" xs={4}>
+        <Grid item xs={4}>
           Private and/or public entity(ies) project participants (as applicable)
         </Grid>
-        <Grid item className="table-with-div-heading" xs={4}>
+        <Grid item xs={4}>
           Indicate if the Party involved wishes to be considered as project
           participant{' '}
         </Grid>
       </Grid>
       {data?.map((item, index) => (
-        <Grid key={index} container lg={10}>
-          <Grid item className="table-with-div-td" xs={4}>
+        <Grid
+          key={index}
+          className="table-with-div-td"
+          container
+          lg={12}
+          sx={{ mt: 1 }}
+        >
+          <Grid item xs={4}>
             <textarea
-              style={{ height: '100%', width: '100%' }}
-              placeholder="Private and/or public entity(ies) project participants (as applicable)"
+              style={{ height: '100%', width: '95%', border: '0px' }}
+              placeholder="Enter host party name"
               onChange={(e) => handleTextChange(e, index, 'partyInvolved')}
             />
           </Grid>
-          <Grid item className="table-with-div-td" xs={4}>
+          <Grid item xs={4}>
             <textarea
-              style={{ height: '100%', width: '100%' }}
-              placeholder="Indicate if the Party involved wishes to be considered as project
-              participant"
+              style={{ height: '100%', width: '95%', border: '0px' }}
+              placeholder="Enter private/public entity name"
               onChange={(e) => handleTextChange(e, index, 'participantType')}
             />
           </Grid>
-          <Grid item className="table-with-div-td" xs={4}>
+          <Grid item xs={4}>
             <FormControl fullWidth>
               <Select
                 sx={{
-                  background: '#DAE5E1',
+                  background: 'white',
                   color: '#006B5E',
-                  borderRadius: '4px 4px 0 0',
+                  borderWidth: '0px',
+                  borderColor: 'white',
                 }}
+                label="Select from dropdown"
+                placeholder="Select from dropdown"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={item?.isProjectParticipant}
-                label="Country"
                 onChange={(e) => handleSelectChange(e, index)}
               >
                 <MenuItem value={'no'}>No</MenuItem>
@@ -98,11 +105,17 @@ const SectionA3 = () => {
         </Grid>
       ))}
       <CCButton
-        sx={{ mt: 2, color: '#fff', padding: '5px 15px', borderRadius: '14px' }}
+        sx={{
+          mt: 2,
+          color: '#006B5E;',
+          padding: '5px 15px',
+          borderRadius: '14px',
+          backgroundColor: '#F6F9F7',
+        }}
         variant="contained"
         onClick={addRow}
       >
-        + Add Row
+        + Add more participants
       </CCButton>
     </Box>
   )

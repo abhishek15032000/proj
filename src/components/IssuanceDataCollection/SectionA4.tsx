@@ -59,8 +59,14 @@ const SectionA4 = () => {
         The methodologies applied for the project activity under consideration
         are-
       </Typography>
+
       {methodologies.map((methodology, index) => (
         <Grid key={index} container>
+          <Typography
+            sx={{ width: '100%', marginY: '10px', marginLeft: '-10pn' }}
+          >
+            Methodology {index + 1}
+          </Typography>
           <Grid item sx={{ mt: 2 }} xs={12} lg={10} rowSpacing={1}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
@@ -69,7 +75,7 @@ const SectionA4 = () => {
               <Select
                 placeholder="Select Approved Methodologies"
                 sx={{
-                  background: '#DAE5E1',
+                  background: 'white',
                   color: '#006B5E',
                   borderRadius: '4px 4px 0 0',
                 }}
@@ -93,7 +99,7 @@ const SectionA4 = () => {
               <Select
                 placeholder="Select Project Types"
                 sx={{
-                  background: '#DAE5E1',
+                  background: 'white',
                   color: '#006B5E',
                   borderRadius: '4px 4px 0 0',
                 }}
@@ -114,6 +120,7 @@ const SectionA4 = () => {
               label="Category"
               placeholder="Enter Category of Project Type"
               onChange={(e) => handleTextChange(e, index, 'category')}
+              sx={{ background: 'white' }}
             />
           </Grid>
           <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
@@ -121,6 +128,7 @@ const SectionA4 = () => {
               label="Version"
               placeholder="Enter version of the baseline and monitoring methodology"
               onChange={(e) => handleTextChange(e, index, 'version')}
+              sx={{ background: 'white' }}
             />
           </Grid>
           <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
@@ -128,15 +136,17 @@ const SectionA4 = () => {
               label="Tools referred"
               placeholder="Enter tools to calculate or determine the baseline and monitoring methodology"
               onChange={(e) => handleTextChange(e, index, 'toolsReferred')}
+              sx={{ background: 'white' }}
             />
           </Grid>
           {index + 1 === methodologies.length && (
             <Grid item sx={{ mt: 2 }} xs={12} lg={10} rowSpacing={1}>
               <CCButton
                 sx={{
-                  color: '#fff',
+                  backgroundColor: '#fff',
                   padding: '8px 15px',
                   borderRadius: '20px',
+                  color: '#006B5E',
                 }}
                 variant="contained"
                 onClick={addMethodology}

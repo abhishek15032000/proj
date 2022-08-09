@@ -3,6 +3,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import React, { useState } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CCInputField from '../../atoms/CCInputField'
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 
 const SectionA5 = () => {
   const [startDate, setStartDate] = useState<Date | null>(null)
@@ -11,11 +12,11 @@ const SectionA5 = () => {
 
   return (
     <>
-      <Typography sx={{ mt: 3 }}>Type: Renewable crediting period</Typography>
+      <Typography sx={{ mt: 3 }}> Renewable crediting period:</Typography>
       <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item xs={12} lg={5}>
           <DatePicker
-            label="Potential Start date of first crediting period"
+            label="Start date of 1st crediting period "
             value={startDate}
             onChange={(newValue) => {
               setStartDate(newValue)
@@ -28,7 +29,7 @@ const SectionA5 = () => {
         </Grid>
         <Grid item xs={6} lg={3}>
           <DatePicker
-            label="Crediting period From"
+            label="Crediting from "
             value={fromDate}
             onChange={(newValue) => {
               setFromDate(newValue)
@@ -41,7 +42,7 @@ const SectionA5 = () => {
         </Grid>
         <Grid item xs={6} lg={3}>
           <DatePicker
-            label="Crediting period To"
+            label="Crediting end "
             value={toDate}
             onChange={(newValue) => {
               setToDate(newValue)
@@ -50,6 +51,12 @@ const SectionA5 = () => {
               OpenPickerIcon: CalendarMonthOutlinedIcon,
             }}
             renderInput={(params) => <CCInputField {...params} />}
+          />
+        </Grid>
+        <Grid item xs={12} sx={{ mt: 3 }}>
+          <CCMultilineTextArea
+            label="Brief on crediting period"
+            placeholder="Write a brief on commencement of crediting period"
           />
         </Grid>
       </Grid>
