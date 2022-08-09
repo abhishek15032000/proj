@@ -26,36 +26,9 @@ const headings = [
 
 const ProjectsUnderRegistration = () => {
   return (
-    <Grid container sx={{ background: 'red' }}>
-      <Grid item md={2}>
-        Reference ID
-      </Grid>
-      <Grid item md={10} sx={{ overflow: 'auto' }}>
-        <Grid container>
-          <Grid item md={2}>
-            Created Dt
-          </Grid>
-          <Grid item md={2}>
-            Project Name
-          </Grid>
-          <Grid item md={2}>
-            Location
-          </Grid>
-          <Grid item md={2}>
-            Verifier Status
-          </Grid>
-          <Grid item md={2}>
-            Verifier
-          </Grid>
-          <Grid item md={2}>
-            Action
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
-    //<Box>
-    //  <CCTable headings={headings} rows={rows} />
-    //</Box>
+    <Box>
+      <CCTable headings={headings} rows={rows} />
+    </Box>
   )
 }
 

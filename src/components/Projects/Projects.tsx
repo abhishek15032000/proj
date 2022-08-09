@@ -30,7 +30,7 @@ const Projects = () => {
       </Typography>
 
       <Grid container>
-        <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
+        <Grid item md={12} sm={12} lg={9} sx={{ pr: 2 }}>
           <ProjectsStats />
 
           <ProjectsTab />

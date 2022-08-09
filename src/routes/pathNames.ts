@@ -15,6 +15,7 @@ export const pathNames = {
   PROJECTS_LIST: '/projects-list',
   LIST_NEW_PROJECT: '/list-new-project',
   SELECT_VERIFIER: '/select-verifier',
+  SEE_ALL_PROJECTS: '/see-all-projects',
 }
 
 export const linkLabels = {

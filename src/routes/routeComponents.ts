@@ -12,6 +12,7 @@ import Onboarding from '../pages/Onboarding'
 import { linkLabels, pathNames } from './pathNames'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 import LogoutPage from '../pages/LogoutPage/LogoutPage'
+import SeeAllProject from '../pages/SeeAllProjects/SeeAllProjects'
 
 export const privateRouteComponents = [
   {
@@ -21,12 +22,6 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Projects,
     roles: [ROLES.ISSUER],
   },
-  //{
-  //  path: pathNames.ACCOUNT_CREATED_PAGE,
-  //  component: AccountCreatedPage,
-  //  sidebarName: linkLabels.Projects,
-  //  roles: [ROLES.ISSUER],
-  //},
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,
@@ -65,6 +60,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.LIST_NEW_PROJECT,
     component: ListNewProject,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.SEE_ALL_PROJECTS,
+    component: SeeAllProject,
     roles: [ROLES.ISSUER],
   },
   {
