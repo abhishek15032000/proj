@@ -1,6 +1,6 @@
 import { Grid, TextareaAutosize, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import SectionB1TechnicalDescription from '../../assets/Images/SampleData/SectionB1TechnicalDescription.png'
 import SectionB1ShutDownDetails from '../../assets/Images/SampleData/SectionB1ShutDownDetails.png'
 import SectionB1ImplementationOfMilestones from '../../assets/Images/SampleData/SectionB1ImplementationOfMilestones.png'
@@ -10,8 +10,11 @@ import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 
 const SectionB1 = () => {
+  const [img, setImg] = useState([])
+  const [img2, setImg2] = useState([])
+
   return (
-    <Box>
+    <Box> 
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
@@ -34,6 +37,8 @@ const SectionB1 = () => {
             mediaTitle="Sample Report - Technical Details"
             mediaItem={SectionB1TechnicalDescription}
             title="Attach Data Tables for Technical Description"
+            imageArray={img}
+            setImageArray={setImg}
           />
         </Grid>
 
@@ -51,18 +56,24 @@ const SectionB1 = () => {
             mediaTitle="Sample Report - Shut Down Details"
             title="Attach Data Tables for  Major shut down details"
             mediaItem={SectionB1ShutDownDetails}
+            imageArray={img}
+            setImageArray={setImg}
           />
 
           <CCDropAndUpload
             mediaTitle="Sample Report - Implementation of Milestones"
             title="Attach Data Tables for  implementation of milestones"
             mediaItem={SectionB1ImplementationOfMilestones}
+            imageArray={img}
+            setImageArray={setImg}
           />
 
           <CCDropAndUpload
             mediaTitle="Sample Report - Project Timeline Event Description"
             title="Attach Data Tables for  Project timeline event description"
             mediaItem={SectionB1EventDescription}
+            imageArray={img2}
+            setImageArray={setImg2}
           />
         </Grid>
       </Grid>

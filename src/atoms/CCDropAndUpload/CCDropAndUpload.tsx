@@ -14,10 +14,31 @@ interface CCDropAndUploadProps {
   sx?: any
   mediaItem?: any
   mediaTitle: string
+  imageArray?: any
+  setImageArray?: any
 }
 
 const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
   const [showModal, setShowModal] = useState(false)
+
+  const addMoreImageUpload = (event: any) => {
+    if (event?.target?.files?.length) {
+      const selectedFile = event.target.files[0]
+      const objectUrl = URL.createObjectURL(selectedFile)
+      props.setImageArray([
+        ...props.imageArray,
+        { fileName: selectedFile.name, fileLocation: objectUrl },
+      ])
+    }
+  }
+
+  const deleteImage = (index: number) => {
+    const newImageArray = props.imageArray.filter(
+      (item: any, i: number) => i !== index
+    )
+
+    props.setImageArray(newImageArray)
+  }
 
   return (
     <Box sx={{ ...props.sx }}>
@@ -60,11 +81,9 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#141D1B' }}>
           Drop files or upload manually
         </Typography>
-        <input hidden accept="image/*" multiple type="file" />
       </Box>
 
       <Button
-        variant="contained"
         sx={{
           backgroundColor: '#F3BA4D',
           textTransform: 'none',
@@ -72,14 +91,31 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
           borderRadius: '8px',
           mt: 2,
           mb: 1,
+          color: '#005046',
         }}
+        variant="contained"
+        component="label"
       >
-        <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#005046' }}>
-          Upload
-        </Typography>
+        Upload
+        <input
+          hidden
+          accept="image/*"
+          multiple
+          type="file"
+          onChange={(event: any) => {
+            addMoreImageUpload(event)
+          }}
+        />
       </Button>
 
-      {/* <FileTab /> */}
+      {props.imageArray.map((item: any, index: number) => (
+        <FileTab
+          key={index}
+          title={item.fileName}
+          index={index}
+          deleteImage={deleteImage}
+        />
+      ))}
 
       <SampleModal
         mediaArray={[props.mediaItem]}
@@ -91,9 +127,13 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
   )
 }
 
-interface FileTabProps {}
+interface FileTabProps {
+  title?: string | number
+  index?: number
+  deleteImage?: any
+}
 
-const FileTab: FC<FileTabProps> = () => {
+const FileTab: FC<FileTabProps> = (props) => {
   return (
     <Box
       sx={{
@@ -124,14 +164,17 @@ const FileTab: FC<FileTabProps> = () => {
           }}
         >
           <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-            Organizational Structure...pdf
+            {props.title}
           </Typography>
 
           <Typography sx={{ fontSize: 12, fontWeight: 500 }}>0.5 MB</Typography>
         </Box>
       </Box>
 
-      <CloseIcon style={{ color: '#388E81' }} />
+      <CloseIcon
+        onClick={() => props.deleteImage(props.index)}
+        style={{ color: '#388E81' }}
+      />
     </Box>
   )
 }
