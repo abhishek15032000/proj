@@ -8,15 +8,27 @@ import { loginAction } from './redux/Slices/authSlice'
 import RouteController from './routes/RouteController'
 import { getLocalItem } from './utils/Storage'
 import { LocalizationProvider } from '@mui/x-date-pickers'
+import { Toaster } from 'react-hot-toast'
+import { Colors } from './theme'
+import { shallowEqual } from 'react-redux'
 type AppProps = {
   appName?: string
 }
 const App: FC<AppProps> = () => {
+  console.log('APP.js ******', Date.now())
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
   const dispatch = useAppDispatch()
   const getloginStatusFromLocalStorage = getLocalItem('userDetails')
+  console.log(
+    '🚀 ~ file: App.tsx ~ line 20 ~ waitingAccessCheck',
+    waitingAccessCheck
+  )
+  const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
+  console.log('🚀 ~ file: App.tsx ~ line 21 ~ userData', userData)
+  //const dispatch = useAppDispatch()
 
   useEffect(() => {
+    //const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
     try {
       if (getloginStatusFromLocalStorage) {
         dispatch(loginAction(getloginStatusFromLocalStorage))
@@ -34,12 +46,12 @@ const App: FC<AppProps> = () => {
     <>
       {/* For using mui DatePicker */}
       <LocalizationProvider dateAdapter={AdapterMoment}>
-        {getloginStatusFromLocalStorage && (
+        {userData && (
           <AppDrawer>
             <RouteController />
           </AppDrawer>
         )}
-        {!getloginStatusFromLocalStorage && (
+        {!userData && (
           <Box
             component="main"
             sx={{
@@ -48,7 +60,7 @@ const App: FC<AppProps> = () => {
               // width: { sm: `calc(100% - ${240}px)` },
             }}
           >
-            {getloginStatusFromLocalStorage && <Toolbar />}
+            {userData && <Toolbar />}
             <RouteController />
           </Box>
         )}
