@@ -97,7 +97,7 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
                   {item.value}% Complete
                 </Typography>
               </Box>
-              {index !== sideMenuList?.length - 1 && (
+              {(index !== sideMenuList?.length - 1 || index !== 0) && (
                 <Box
                   className="trace-line position-absolute"
                   sx={{

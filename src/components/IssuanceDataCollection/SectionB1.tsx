@@ -1,4 +1,4 @@
-import { Grid, TextareaAutosize, Typography } from '@mui/material'
+import { Button, Grid, TextareaAutosize, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import SectionB1TechnicalDescription from '../../assets/Images/SampleData/SectionB1TechnicalDescription.png'
@@ -10,16 +10,30 @@ import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 
 const SectionB1 = () => {
-  const [img, setImg] = useState([])
-  const [img2, setImg2] = useState([])
+  const [briefOnPurpuse, setBriefOnPurpuse] = useState('')
+
+  const [technicalDescription, setTechnicalDescription] = useState('')
+
+  const [technicalDescriptionImage, setTechnicalDescriptionImage] = useState([])
+
+  const [operationalDetails, setOperationalDetails] = useState('')
+
+  const [majorShutDownImage, setMajorShutDownImage] = useState([])
+
+  const [implementationMilestoneImage, setImplementationMilestoneImage] =
+    useState([])
+
+  const [projectTimelineImage, setProjectTimelineImage] = useState([])
 
   return (
-    <Box> 
+    <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label=" Brief on purpose and general description of project activity "
+            label="Brief on purpose and general description of project activity "
             placeholder="Write a brief of the implemented registered project activity"
+            value={briefOnPurpuse}
+            onChange={(event) => setBriefOnPurpuse(event.target.value)}
           />
         </Grid>
 
@@ -31,14 +45,16 @@ const SectionB1 = () => {
           <CCMultilineTextArea
             label="Technical Description"
             placeholder="Write the technical description of the equipment, its specification, supplier name, installed by the project activity"
+            value={technicalDescription}
+            onChange={(event) => setTechnicalDescription(event.target.value)}
           />
 
           <CCDropAndUpload
             mediaTitle="Sample Report - Technical Details"
             mediaItem={SectionB1TechnicalDescription}
             title="Attach Data Tables for Technical Description"
-            imageArray={img}
-            setImageArray={setImg}
+            imageArray={technicalDescriptionImage}
+            setImageArray={setTechnicalDescriptionImage}
           />
         </Grid>
 
@@ -50,30 +66,32 @@ const SectionB1 = () => {
           <CCMultilineTextArea
             label="Operational Details"
             placeholder="Write a brief about the events during the monitoring period,logs, major shut down details, timings, reasons"
+            value={operationalDetails}
+            onChange={(event) => setOperationalDetails(event.target.value)}
           />
 
           <CCDropAndUpload
             mediaTitle="Sample Report - Shut Down Details"
             title="Attach Data Tables for  Major shut down details"
             mediaItem={SectionB1ShutDownDetails}
-            imageArray={img}
-            setImageArray={setImg}
+            imageArray={majorShutDownImage}
+            setImageArray={setMajorShutDownImage}
           />
 
           <CCDropAndUpload
             mediaTitle="Sample Report - Implementation of Milestones"
             title="Attach Data Tables for  implementation of milestones"
             mediaItem={SectionB1ImplementationOfMilestones}
-            imageArray={img}
-            setImageArray={setImg}
+            imageArray={implementationMilestoneImage}
+            setImageArray={setImplementationMilestoneImage}
           />
 
           <CCDropAndUpload
             mediaTitle="Sample Report - Project Timeline Event Description"
             title="Attach Data Tables for  Project timeline event description"
             mediaItem={SectionB1EventDescription}
-            imageArray={img2}
-            setImageArray={setImg2}
+            imageArray={projectTimelineImage}
+            setImageArray={setProjectTimelineImage}
           />
         </Grid>
       </Grid>
