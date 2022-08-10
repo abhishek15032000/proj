@@ -4,7 +4,7 @@ import IssuanceDataCollection from '../pages/IssuanceDataCollection'
 import MaintenancePage from '../pages/MaintenancePage'
 import MarketplaceHome from '../pages/MarketplaceHome'
 import ProfileDetailsIssuanceInfo from '../pages/ProfileDetailsIssuanceInfo'
-
+import SelectVerifier from '../pages/Issuer/SelectVerifierPage/SelectVerifier'
 import ProjectsPage from '../pages/Issuer/ProjectsPage/ProjectsPage'
 import ProjectList from '../pages/ProjectList'
 import ListNewProject from '../pages/ListNewProject'
@@ -15,6 +15,7 @@ import Onboarding from '../pages/Onboarding'
 
 import { linkLabels, pathNames } from './pathNames'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
+import SeeAllProject from '../pages/SeeAllProjects/SeeAllProjects'
 
 export const privateRouteComponents = [
   {
@@ -24,12 +25,6 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Projects,
     roles: [ROLES.ISSUER],
   },
-  //{
-  //  path: pathNames.ACCOUNT_CREATED_PAGE,
-  //  component: AccountCreatedPage,
-  //  sidebarName: linkLabels.Projects,
-  //  roles: [ROLES.ISSUER],
-  //},
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,
@@ -71,6 +66,11 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
+    path: pathNames.SEE_ALL_PROJECTS,
+    component: SeeAllProject,
+    roles: [ROLES.ISSUER],
+  },
+  {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
     component: ProfileDetailsIssuanceInfo,
     roles: [ROLES.ISSUER],
@@ -79,6 +79,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.SELECT_VERIFIER,
+    component: SelectVerifier,
     roles: [ROLES.ISSUER],
   },
 ]

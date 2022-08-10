@@ -2,7 +2,7 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Grid, Box, Typography, IconButton, Chip } from '@mui/material'
+import { Grid, Box, Typography, IconButton, Chip, Paper } from '@mui/material'
 
 // Local Imports
 import TabSelector from '../../atoms/TabSelector/TabSelector'
@@ -10,20 +10,27 @@ import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline'
 import CircleIcon from '@mui/icons-material/Circle'
+import DashboardNewProjectsTable from './DashboardNewProjectsTable'
+import DashboardRegisteredProjectsTable from './DashboardRegisteredProjectsTable'
+//import ProjectsUnderRegistration from './ProjectUnderRegistration'
+//import RegisteredProjects from './RegisteredProjects'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 interface ProjectsTabProps {}
 
 const ProjectsTab: FC<ProjectsTabProps> = (props) => {
+  const navigate = useNavigate()
+
   const [tabIndex, setTabIndex] = useState(1)
 
   return (
-    <Box
+    <Paper
+      elevation={2}
       sx={{
-        backgroundColor: '#FFF',
-        padding: 2,
+        p: 2,
         borderRadius: '8px',
-        boxShadow: '1px 1px 2px 2px #CCC',
-        marginTop: 4,
+        mt: 4,
       }}
     >
       <Box
@@ -34,7 +41,15 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         }}
       >
         <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
-        <Typography sx={{ color: '#F3BA4D', fontSize: 14, fontWeight: 400 }}>
+        <Typography
+          sx={{
+            color: '#F3BA4D',
+            fontSize: 14,
+            fontWeight: 400,
+            cursor: 'pointer',
+          }}
+          onClick={() => navigate(pathNames.SEE_ALL_PROJECTS)}
+        >
           See All
         </Typography>
       </Box>
@@ -45,8 +60,12 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         setTabIndex={setTabIndex}
         sx={{ marginBottom: 2 }}
       />
-      <CCTable headings={headings} rows={rows} maxWidth={900} />
-    </Box>
+      {tabIndex === 1 ? (
+        <DashboardNewProjectsTable />
+      ) : (
+        tabIndex === 2 && <DashboardRegisteredProjectsTable />
+      )}
+    </Paper>
   )
 }
 
@@ -87,15 +106,11 @@ const rowItem = [
   />,
 ]
 
-const rows = [
-    rowItem,
-    rowItem,
-    rowItem,
-    rowItem,
-]
+const rows = [rowItem, rowItem, rowItem, rowItem]
 
 const headings = [
   'Reference ID',
+  'Created Dt',
   'Location',
   'Verifier',
   'Report Status',

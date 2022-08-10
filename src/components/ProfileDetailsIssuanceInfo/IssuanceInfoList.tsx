@@ -2,7 +2,7 @@
 import React, { FC } from 'react'
 
 // MUI Imports
-import { Box, Grid, List, ListItem, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 
 // Local Imports
 import IssuanceInfoListItem from './IssuanceInfoListItem'
@@ -13,13 +13,9 @@ interface IssuanceInfoListProps {
 
 const IssuanceInfoList: FC<IssuanceInfoListProps> = (props) => {
   return (
-    <Grid container>
+    <Grid container sx={{ mt: 1 }}>
       {props.data?.map((item, index) => (
-        <IssuanceInfoListItem
-          title={item.title}
-          status={item.status}
-          key={index}
-        />
+        <IssuanceInfoListItem data={item} key={index} />
       ))}
     </Grid>
   )

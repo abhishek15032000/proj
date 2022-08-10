@@ -4,42 +4,49 @@ import React, { FC } from 'react'
 // MUI Imports
 import { Box, Grid, List, ListItem, Typography } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CircleIcon from '@mui/icons-material/Circle'
 
 // Local Imports
 
 interface IssuanceInfoListItemProps {
-  title?: string
-  status?: boolean
+  // title?: string
+  // status?: boolean
+  data: any
 }
 
 const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
   return (
-    <Box
+    <Grid
+      container
       sx={{
         display: 'flex',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        paddingLeft: 3,
-        borderBottom: '1px solid',
-        minHeight: '90px',
+        backgroundColor: '#E8F3EF',
+        mt: 1,
+        p: 2,
       }}
     >
-      <List sx={{ listStyleType: 'disc' }}>
-        <ListItem sx={{ display: 'list-item', paddingLeft: 0 }}>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {props.title}
-          </Typography>
-        </ListItem>
-      </List>
-
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <Grid item xs={7} sx={{ px: 2, display: 'flex', alignItems: 'center' }}>
+        <CircleIcon sx={{ fontSize: 10, mr: 1 }} />
+        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+          {props.data.title}
+        </Typography>
+      </Grid>
+      <Grid item xs={2}>
+        <Typography
+          sx={{
+            fontSize: 14,
+            color:
+              props?.data?.completionPercent === 100 ? '#006B5E' : '#BA1B1B',
+          }}
+        >
+          {props?.data?.completionPercent}% Complete
+        </Typography>
+      </Grid>
+      <Grid item xs={2}>
         <Box
           sx={{
             display: 'flex',
@@ -48,24 +55,22 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
             marginRight: 10,
           }}
         >
-          <Box
-            sx={{
-              height: '20px',
-              width: '20px',
-              backgroundColor: '#7ACB9F',
-              borderRadius: '10px',
-              marginRight: 1,
-            }}
-          />
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {props.status ? 'Complete' : 'Incomplete'}
+          {props?.data?.completionPercent === 100 ? (
+            <CheckCircleIcon sx={{ color: '#7ACB9F', mr: 1 }} />
+          ) : (
+            <CircleIcon sx={{ color: '#F7CA56', mr: 1 }} />
+          )}
+          <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+            {props?.data?.completionPercent === 100 ? 'Complete' : 'Incomplete'}
           </Typography>
         </Box>
-        <Box sx={{ marginRight: 5 }}>
-          <ChevronRightIcon />
+      </Grid>
+      <Grid item container xs={1} justifyContent="flex-end">
+        <Box sx={{ marginRight: 5, display: 'flex', alignItems: 'end' }}>
+          <ChevronRightIcon sx={{ color: '#388E81' }} />
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   )
 }
 

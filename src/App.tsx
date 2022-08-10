@@ -25,9 +25,10 @@ const App: FC<AppProps> = () => {
   )
   const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
   console.log('🚀 ~ file: App.tsx ~ line 21 ~ userData', userData)
+  //const dispatch = useAppDispatch()
 
   useEffect(() => {
-    // const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
+    //const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
     try {
       if (getloginStatusFromLocalStorage) {
         dispatch(loginAction(getloginStatusFromLocalStorage))
