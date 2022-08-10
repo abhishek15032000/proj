@@ -189,7 +189,7 @@ const ListNewProject = () => {
           label="Start Date"
           value={startDate}
           onChange={(newValue) => {
-            dispatch(setStartDate(newValue))
+            dispatch(setStartDate(newValue?.toISOString()))
           }}
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,

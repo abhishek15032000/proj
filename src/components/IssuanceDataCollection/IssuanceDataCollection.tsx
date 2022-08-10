@@ -104,6 +104,31 @@ const sectionATabs = [
 const IssuanceDataCollection = () => {
   const dispatch = useAppDispatch()
 
+  const projectName = useAppSelector(
+    ({ newProject }) => newProject.projectName,
+    shallowEqual
+  )
+  const projectType = useAppSelector(
+    ({ newProject }) => newProject.projectType,
+    shallowEqual
+  )
+  const projectLocation = useAppSelector(
+    ({ newProject }) => newProject.projectLocation,
+    shallowEqual
+  )
+  const startDate = useAppSelector(
+    ({ newProject }) => newProject.startDate,
+    shallowEqual
+  )
+  const projectDuration = useAppSelector(
+    ({ newProject }) => newProject.projectDuration,
+    shallowEqual
+  )
+  const projectArea = useAppSelector(
+    ({ newProject }) => newProject.projectArea,
+    shallowEqual
+  )
+
   const sectionIndex = useAppSelector(
     ({ issuanceDataCollection }) => issuanceDataCollection.sectionIndex,
     shallowEqual
@@ -118,7 +143,19 @@ const IssuanceDataCollection = () => {
   }
 
   const handleSaveAndNext = () => {
-    moveToNextSection(sectionIndex, subSectionIndex)
+    if (
+      projectName &&
+      projectType &&
+      projectLocation &&
+      startDate &&
+      projectDuration &&
+      projectArea
+    ) {
+      moveToNextSection(sectionIndex, subSectionIndex)
+    } else {
+      dispatch(setSectionIndex(sectionIndex + 1))
+      dispatch(setSubSectionIndex(0))
+    }
   }
   const handlePrevious = () => {
     if (sectionIndex > 0) {
