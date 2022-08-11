@@ -68,37 +68,40 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
           </Box>
 
           <Box
-            sx={{ height: '400px', marginTop: '4px', marginBottom: '16px' }}
+            sx={{ maxWidth: '800px', marginTop: '4px', marginBottom: '16px' }}
             component={'img'}
             src={props.mediaArray[index]}
           />
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <ChevronLeftIcon onClick={counterDown} />
-            <Typography
-              sx={{
-                display: 'flex',
-                height: '30px',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+
+          {props.mediaArray.length > 1 && (
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <ChevronLeftIcon onClick={counterDown} />
               <Typography
                 sx={{
-                  height: '30px',
-                  width: '30px',
-                  backgroundColor: '#E8E8E8',
                   display: 'flex',
+                  height: '30px',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  borderRadius: '5px',
                 }}
               >
-                {index + 1}
+                <Typography
+                  sx={{
+                    height: '30px',
+                    width: '30px',
+                    backgroundColor: '#E8E8E8',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '5px',
+                  }}
+                >
+                  {index + 1}
+                </Typography>
+                {' ' + '/ ' + props.mediaArray.length}
               </Typography>
-              {' ' + '/ ' + props.mediaArray.length}
-            </Typography>
-            <ChevronRightIcon onClick={counterUp} />
-          </Box>
+              <ChevronRightIcon onClick={counterUp} />
+            </Box>
+          )}
         </Box>
       </Box>
     </Modal>
@@ -106,3 +109,7 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
 }
 
 export default SampleModal
+
+SampleModal.defaultProps = {
+  stringArray: ['']
+}

@@ -8,16 +8,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { CCTableProps } from './CCTable.interface'
-import {
-  PaginationItem,
-  TableFooter,
-  TablePagination,
-  Typography,
-} from '@mui/material'
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-//import { Box } from '@mui/system'
-//import ChevronDownIcon from '@mui/icons-material/ChevronDownIcon'
+import { TablePagination, Typography } from '@mui/material'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,19 +30,14 @@ const StyledTableRow = styled(TableRow)(() => ({
 }))
 
 const CCTable = (props: CCTableProps) => {
-  const [rowsPerPage, setRowsPerPage] = useState<any>(10)
-  const [page, setPage] = useState<any>(1)
-  const [paginationData, setPaginationData] = useState<any>()
-
-  useEffect(() => {
-    //setLength(props?.rows?.length)
-    console.log(typeof props?.rows)
-  }, [props?.rows])
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10)
+  const [page, setPage] = useState<number>(0)
+  const [tableRowData, setTableRowData] = useState<any>()
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
-  //console.log('page:', props?.rows)
+
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -62,9 +48,9 @@ const CCTable = (props: CCTableProps) => {
   useEffect(() => {
     if (props?.rows && props?.rows?.length) {
       if (!props?.pagination) {
-        setPaginationData(props?.rows)
+        setTableRowData(props?.rows)
       } else if (props?.pagination) {
-        setPaginationData(
+        setTableRowData(
           props?.rows.slice(
             page * rowsPerPage,
             page * rowsPerPage + rowsPerPage
@@ -96,9 +82,9 @@ const CCTable = (props: CCTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginationData &&
-              paginationData?.length > 0 &&
-              paginationData.map((row: any, index: number) => (
+            {tableRowData &&
+              tableRowData?.length > 0 &&
+              tableRowData.map((row: any, index: number) => (
                 <StyledTableRow key={index}>
                   {row?.length > 0 &&
                     row.map((tdValue: any, tdIndex: number) => (
@@ -138,18 +124,6 @@ const CCTable = (props: CCTableProps) => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            //SelectProps={{
-            //  IconComponent: () => (
-            //    <span>
-            //      <Box>
-            //        <KeyboardArrowUpIcon />
-            //      </Box>
-            //      <Box>
-            //        <KeyboardArrowDownIcon />
-            //      </Box>
-            //    </span>
-            //  ),
-            //}}
           />
         )}
       </TableContainer>
