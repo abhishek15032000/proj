@@ -1,19 +1,49 @@
 import { Box, Grid, TextareaAutosize, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { shallowEqual } from 'react-redux'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import {
+  setBriefOnPurpuseB2,
+  setChangesToProject,
+  setChangesToStart,
+  setCorrections,
+  setPermanentChanges,
+  setTemporaryDeviations,
+} from '../../redux/Slices/sectionBSlice'
 
 const SectionB2 = () => {
-  const [temporaryDeviations, setTemporaryDeviations] = useState('')
+  const dispatch = useAppDispatch()
 
-  const [corrections, setCorrections] = useState('')
+  const temporaryDeviations = useAppSelector(
+    ({ sectionB }) => sectionB.temporaryDeviations,
+    shallowEqual
+  )
 
-  const [permanentChanges, setPermanentChanges] = useState('')
+  const corrections = useAppSelector(
+    ({ sectionB }) => sectionB.corrections,
+    shallowEqual
+  )
 
-  const [briefOnPurpuse, setBriefOnPurpuse] = useState('')
+  const permanentChanges = useAppSelector(
+    ({ sectionB }) => sectionB.permanentChanges,
+    shallowEqual
+  )
 
-  const [changesToProject, setChangesToProject] = useState('')
+  const briefOnPurpuseB2 = useAppSelector(
+    ({ sectionB }) => sectionB.briefOnPurpuseB2,
+    shallowEqual
+  )
 
-  const [changesToStart, setChangesToStart] = useState('')
+  const changesToProject = useAppSelector(
+    ({ sectionB }) => sectionB.changesToProject,
+    shallowEqual
+  )
+
+  const changesToStart = useAppSelector(
+    ({ sectionB }) => sectionB.changesToStart,
+    shallowEqual
+  )
 
   return (
     <Box>
@@ -23,7 +53,9 @@ const SectionB2 = () => {
             label="Temporary deviations from registered monitoring plan or applied methodology"
             placeholder="Write down the deviations from registered monitoring plan or applied methodology, if any"
             value={temporaryDeviations}
-            onChange={(event) => setTemporaryDeviations(event.target.value)}
+            onChange={(event) =>
+              dispatch(setTemporaryDeviations(event.target.value))
+            }
           />
         </Grid>
 
@@ -32,7 +64,7 @@ const SectionB2 = () => {
             label="Corrections"
             placeholder="Write Corrections from registered monitoring plan or applied methodology, if any"
             value={corrections}
-            onChange={(event) => setCorrections(event.target.value)}
+            onChange={(event) => dispatch(setCorrections(event.target.value))}
           />
         </Grid>
 
@@ -41,7 +73,9 @@ const SectionB2 = () => {
             label="Permanent changes from registered monitoring plan or applied methodology"
             placeholder="Write the technical description of the equipment, its specification, supplier name, installed by the project activity"
             value={permanentChanges}
-            onChange={(event) => setPermanentChanges(event.target.value)}
+            onChange={(event) =>
+              dispatch(setPermanentChanges(event.target.value))
+            }
           />
         </Grid>
 
@@ -49,8 +83,10 @@ const SectionB2 = () => {
           <CCMultilineTextArea
             label="Brief on purpose and general description of project activity "
             placeholder="Write a brief of the implemented registered project activity"
-            value={briefOnPurpuse}
-            onChange={(event) => setBriefOnPurpuse(event.target.value)}
+            value={briefOnPurpuseB2}
+            onChange={(event) =>
+              dispatch(setBriefOnPurpuseB2(event.target.value))
+            }
           />
         </Grid>
 
@@ -59,7 +95,9 @@ const SectionB2 = () => {
             label="Changes to project design of registered project activity"
             placeholder="Write the technical description of the equipment, its specification, supplier name, installed by the project activity"
             value={changesToProject}
-            onChange={(event) => setChangesToProject(event.target.value)}
+            onChange={(event) =>
+              dispatch(setChangesToProject(event.target.value))
+            }
           />
         </Grid>
 
@@ -68,7 +106,9 @@ const SectionB2 = () => {
             label="Changes to start date of crediting period"
             placeholder="Changes introduced to start date of crediting period, if any."
             value={changesToStart}
-            onChange={(event) => setChangesToStart(event.target.value)}
+            onChange={(event) =>
+              dispatch(setChangesToStart(event.target.value))
+            }
           />
         </Grid>
       </Grid>

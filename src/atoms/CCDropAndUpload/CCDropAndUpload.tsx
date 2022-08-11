@@ -15,7 +15,8 @@ interface CCDropAndUploadProps {
   mediaItem?: any
   mediaTitle: string
   imageArray?: any
-  setImageArray?: any
+  onImageUpload?: any
+  onDeleteImage?: any
 }
 
 const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
@@ -25,19 +26,19 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
     if (event?.target?.files?.length) {
       const selectedFile = event.target.files[0]
       const objectUrl = URL.createObjectURL(selectedFile)
-      props.setImageArray([
-        ...props.imageArray,
-        { fileName: selectedFile.name, fileLocation: objectUrl },
-      ])
+      props.onImageUpload({
+        fileName: selectedFile.name,
+        fileLocation: objectUrl,
+      })
     }
   }
 
   const deleteImage = (index: number) => {
-    const newImageArray = props.imageArray.filter(
-      (item: any, i: number) => i !== index
-    )
-
-    props.setImageArray(newImageArray)
+    // const newImageArray = props.imageArray.filter(
+    //   (item: any, i: number) => i !== index
+    // )
+    props.onDeleteImage(index)
+    // props.(newImageArray)
   }
 
   return (
