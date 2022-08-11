@@ -122,9 +122,9 @@ const DashboardNewProjectsTable = () => {
   }, [])
 
   const getAllProjects = () => {
-    dataCollectionCalls
-      .getAllProjects(uuid)
-      .then((res: any) => console.log('res:', res))
+    //dataCollectionCalls
+    //  .getAllProjects(uuid)
+    //  .then((res: any) => console.log('res:', res))
   }
 
   return (

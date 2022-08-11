@@ -5,7 +5,7 @@ interface IssuanceDataCollectionReducerInterface {
   subSectionIndex: number
 }
 const initialState: IssuanceDataCollectionReducerInterface = {
-  sectionIndex: 0,
+  sectionIndex: 4,
   subSectionIndex: 0,
 }
 const issuanceDataCollection = createSlice({
@@ -21,6 +21,7 @@ const issuanceDataCollection = createSlice({
   },
 })
 
-export const { setSectionIndex, setSubSectionIndex } = issuanceDataCollection.actions
+export const { setSectionIndex, setSubSectionIndex } =
+  issuanceDataCollection.actions
 
 export default issuanceDataCollection.reducer
