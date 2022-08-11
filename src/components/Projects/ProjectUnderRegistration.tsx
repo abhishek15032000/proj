@@ -11,42 +11,6 @@ import { getLocalItem } from '../../utils/Storage'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import moment from 'moment'
 
-const rowItem = [
-  '4337',
-  'Vilcrum, Chile',
-  <Box
-    key="1"
-    sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-  >
-    <IconButton color="primary" aria-label="upload picture" component="label">
-      <WorkOutlineIcon />
-    </IconButton>
-    Climate Finance
-  </Box>,
-  <Chip
-    sx={{ backgroundColor: '#75F8E4' }}
-    key="1"
-    icon={<CircleIcon style={{ color: '#00A392' }} />}
-    label="Verified"
-  />,
-  '12/05/21',
-  <TextButton
-    key="1"
-    sx={{
-      width: '180px',
-      height: '40px',
-      borderRadius: '100px',
-      backgroundColor: '#006B5E',
-    }}
-    title="Add Monthly Data"
-  />,
-]
-
-const rows = [rowItem, rowItem, rowItem, rowItem]
 const headings = [
   'Reference ID',
   'Created Dt',
@@ -67,7 +31,6 @@ const ProjectsUnderRegistration = () => {
   }, [])
 
   const getAllProjects = () => {
-    const g = []
     dataCollectionCalls.getAllProjects(uuid).then((res: any) => {
       if (res?.data?.success) {
         const rows = res?.data?.data.map((i: any, index: number) => {
@@ -82,7 +45,8 @@ const ProjectsUnderRegistration = () => {
               icon={
                 <CircleIcon fontSize="small" style={{ color: '#00A392' }} />
               }
-              label={i?.verifierStatus}
+              label={'Finalised'}
+              //label={i?.verifierStatus}
             />,
 
             i?.verifier,
