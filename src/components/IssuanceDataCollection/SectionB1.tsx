@@ -8,9 +8,13 @@ import SectionB1EventDescription from '../../assets/Images/SampleData/SectionB1E
 import SectionB1UploadImages from './SectionB1Upload/SectionB1Upload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import { setBriefOnPurpuse } from '../../redux/Slices/sectionBSlice'
 
 const SectionB1 = () => {
-  const [briefOnPurpuse, setBriefOnPurpuse] = useState('')
+  // const [briefOnPurpuse, setBriefOnPurpuse] = useState('')
+  const dispatch = useAppDispatch()
 
   const [technicalDescription, setTechnicalDescription] = useState('')
 
@@ -25,6 +29,11 @@ const SectionB1 = () => {
 
   const [projectTimelineImage, setProjectTimelineImage] = useState([])
 
+  const briefOnPurpuse = useAppSelector(
+    ({ sectionB }) => sectionB.briefOnPurpuse,
+    shallowEqual
+  )
+
   return (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
@@ -33,7 +42,7 @@ const SectionB1 = () => {
             label="Brief on purpose and general description of project activity "
             placeholder="Write a brief of the implemented registered project activity"
             value={briefOnPurpuse}
-            onChange={(event) => setBriefOnPurpuse(event.target.value)}
+            onChange={(event) =>  dispatch(setBriefOnPurpuse(event.target.value))}
           />
         </Grid>
 
