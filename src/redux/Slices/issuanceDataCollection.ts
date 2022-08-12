@@ -5,7 +5,7 @@ interface IssuanceDataCollectionReducerInterface {
   subSectionIndex: number
 }
 const initialState: IssuanceDataCollectionReducerInterface = {
-  sectionIndex: 2,
+  sectionIndex: 3,
   subSectionIndex: 0,
 }
 const issuanceDataCollection = createSlice({

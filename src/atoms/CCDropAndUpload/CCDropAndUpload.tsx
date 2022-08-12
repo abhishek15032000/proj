@@ -12,8 +12,8 @@ import SampleModal from '../SampleModal/SampleModal'
 interface CCDropAndUploadProps {
   title?: string | number
   sx?: any
-  mediaItem?: any
-  mediaTitle: string
+  mediaItem: Array<any>
+  mediaTitle: Array<any>
   imageArray?: any
   onImageUpload?: any
   onDeleteImage?: any
@@ -119,8 +119,8 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
       ))}
 
       <SampleModal
-        mediaArray={[props.mediaItem]}
-        stringArray={[props.mediaTitle]}
+        mediaArray={[...props.mediaItem]}
+        stringArray={[...props.mediaTitle]}
         modalVisibility={showModal}
         setModalVisibility={setShowModal}
       />

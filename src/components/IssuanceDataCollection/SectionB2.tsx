@@ -1,7 +1,11 @@
-import { Box, Grid, TextareaAutosize, Typography } from '@mui/material'
+// React Imports
 import React, { useState } from 'react'
+
+// MUI Imports
+import { Box, Grid, TextareaAutosize, Typography } from '@mui/material'
+
+// Redux Imports
 import { shallowEqual } from 'react-redux'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
   setBriefOnPurpuseB2,
@@ -11,6 +15,9 @@ import {
   setPermanentChanges,
   setTemporaryDeviations,
 } from '../../redux/Slices/sectionBSlice'
+
+// Local Components
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 
 const SectionB2 = () => {
   const dispatch = useAppDispatch()

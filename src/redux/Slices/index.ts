@@ -6,6 +6,7 @@ import theme from "./themeSlice";
 import issuanceDataCollection from "./issuanceDataCollection";
 import newProject from "./newProjectSlice";
 import sectionB from './sectionBSlice'
+import sectionC from "./sectionCSlice";
 
 // TODO: rename names
 export default {
@@ -13,5 +14,6 @@ export default {
     theme,
     issuanceDataCollection,
     newProject,
-    sectionB
+    sectionB,
+    sectionC
 } 

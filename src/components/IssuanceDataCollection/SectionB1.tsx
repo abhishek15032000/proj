@@ -100,8 +100,8 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle="Sample Report - Technical Details"
-            mediaItem={SectionB1TechnicalDescription}
+            mediaTitle={["Sample Report - Technical Details"]}
+            mediaItem={[SectionB1TechnicalDescription]}
             title="Attach Data Tables for Technical Description"
             imageArray={technicalDescriptionImage}
             onImageUpload={(item: any) => {
@@ -137,9 +137,9 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle="Sample Report - Shut Down Details"
+            mediaTitle={["Sample Report - Shut Down Details"]}
             title="Attach Data Tables for  Major shut down details"
-            mediaItem={SectionB1ShutDownDetails}
+            mediaItem={[SectionB1ShutDownDetails]}
             imageArray={majorShutDownImage}
             onImageUpload={(item: any) => {
               dispatch(setMajorShutDownImage([...majorShutDownImage, item]))
@@ -154,9 +154,9 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle="Sample Report - Implementation of Milestones"
+            mediaTitle={["Sample Report - Implementation of Milestones"]}
             title="Attach Data Tables for  implementation of milestones"
-            mediaItem={SectionB1ImplementationOfMilestones}
+            mediaItem={[SectionB1ImplementationOfMilestones]}
             imageArray={implementationMilestoneImage}
             onImageUpload={(item: any) => {
               dispatch(
@@ -176,9 +176,9 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle="Sample Report - Project Timeline Event Description"
+            mediaTitle={["Sample Report - Project Timeline Event Description"]}
             title="Attach Data Tables for  Project timeline event description"
-            mediaItem={SectionB1EventDescription}
+            mediaItem={[SectionB1EventDescription]}
             imageArray={projectTimelineImage}
             onImageUpload={(item: any) => {
               dispatch(setProjectTimelineImage([...projectTimelineImage, item]))
