@@ -117,6 +117,7 @@ const DashboardNewProjectsTable = () => {
   }, [])
 
   const getAllProjects = () => {
+    //Api integrated but should make some more changes after api is modified
     //dataCollectionCalls
     //  .getAllProjects(uuid)
     //  .then((res: any) => console.log('res:', res))
@@ -169,7 +170,7 @@ const DashboardNewProjectsTable = () => {
                     left: 0,
                     zIndex: 100,
                     //background: 'white',
-                    //background: `${index % 2 === 0 ? '#FFFFFF' : '#E1EEE8'}`,
+                    background: `${index % 2 === 0 ? '#FFFFFF' : '#E1EEE8'}`,
                     boxShadow: '0 0 0 15px rgba(0,0,0,19)',
                   }}
                 >

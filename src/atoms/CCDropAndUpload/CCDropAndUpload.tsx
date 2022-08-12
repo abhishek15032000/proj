@@ -40,6 +40,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
             fontWeight: 500,
             color: '#2B2B2B',
             textDecoration: 'underline',
+            cursor: 'pointer',
           }}
         >
           Check Sample Data

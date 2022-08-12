@@ -3,12 +3,33 @@ import { Box, Grid, TextareaAutosize, Typography, Input } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import SampleModal from '../../atoms/SampleModal/SampleModal'
 import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 
 const SectionD2: FC = () => {
   const [showModal, setShowModal] = useState(false)
 
   return (
-    <Grid>
+    <Grid container sx={{ mt: 3 }}>
+      <Grid item xs={12}>
+        <CCMultilineTextArea
+          label="Data and parameters monitored ex-post (actuals)"
+          placeholder="If data for this project is monitored and calculated based on an ex-post method, please explain."
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <CCDropAndUpload
+          title={'Attach relevant datas & docs'}
+          mediaTitle="Sample Report -Monitored ex-post"
+        />
+      </Grid>
+    </Grid>
+  )
+}
+
+export default SectionD2
+{
+  /*<Grid>
       <Typography sx={{ marginTop: '64px' }}>
       Data and parameters monitored ex-post (actuals)
       </Typography>
@@ -57,8 +78,5 @@ const SectionD2: FC = () => {
         modalVisibility={showModal}
         setModalVisibility={setShowModal}
       />
-    </Grid>
-  )
+    </Grid>*/
 }
-
-export default SectionD2
