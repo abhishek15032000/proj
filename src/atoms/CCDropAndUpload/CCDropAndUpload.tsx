@@ -62,6 +62,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
             fontWeight: 500,
             color: '#2B2B2B',
             textDecoration: 'underline',
+            cursor: 'pointer'
           }}
         >
           Check Sample Data
@@ -174,7 +175,7 @@ const FileTab: FC<FileTabProps> = (props) => {
 
       <CloseIcon
         onClick={() => props.deleteImage(props.index)}
-        style={{ color: '#388E81' }}
+        style={{ color: '#388E81', cursor: 'pointer' }}
       />
     </Box>
   )
