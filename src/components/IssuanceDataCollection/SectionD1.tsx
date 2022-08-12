@@ -23,7 +23,10 @@ const SectionD1: FC = () => {
         <CCDropAndUpload
           mediaTitle="Sample Report - Data and parameters at ex-ante"
           title={'Attach relevant datas & docs'}
-          mediaItem={sectionD1SampleUploadDataAndParameters}
+          mediaItem={[
+            sectionD1SampleUploadDataAndParameters,
+            sectionD1SampleUploadDataAndParameters,
+          ]}
         />
       </Grid>
     </Grid>
