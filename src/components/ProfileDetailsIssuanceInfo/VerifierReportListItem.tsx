@@ -2,150 +2,143 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Box, Button, Grid, List, ListItem, Typography } from '@mui/material'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { Box, Grid, Menu, Typography } from '@mui/material'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CircleIcon from '@mui/icons-material/Circle'
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
+import LanguageIcon from '@mui/icons-material/Language'
+import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
+import MailOutlineIcon from '@mui/icons-material/MailOutline'
+import CCButton from '../../atoms/CCButton'
 import FinaliseSelectedVerifiersModal from '../../atoms/FinaliseSelectedVerifiers/FinaliseSelectedVerifiersModal'
 
 // Local Imports
 
 interface VerifierReportListItemListItemProps {
-  title?: string
-  status?: boolean
-  place?: string
-  verfierOption?: string
+  data: any
 }
 
 const VerifierReportListItemListItem: FC<
   VerifierReportListItemListItemProps
 > = (props) => {
   const [showModal, setShowModal] = useState(false)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
+  const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        minWidth: '100%',
-        paddingLeft: 3,
-        backgroundColor: '#DDD',
-        bordeRadius: '12px',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginY: '10px',
-        paddingRight: '10px',
-        paddingY: '10px',
-
-        // flex: 1,
-      }}
-    >
-      <List sx={{ listStyleType: 'disc', width: '40%' }}>
-        <ListItem sx={{ display: 'list-item', paddingLeft: 0 }}>
-          <Typography
-            sx={{
-              fontFamily: 'Poppins',
-              fontStyle: 'normal',
-              fontWeight: '500',
-              fontSize: '16px',
-              color: '#2B2B2B',
-            }}
-          >
-            {props.title}
-          </Typography>
-        </ListItem>
-      </List>
-
-      <Typography
+    <>
+      <Grid
+        container
         sx={{
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '500',
-          fontSize: '16px',
-          color: '#2B2B2B',
-          width: '10%',
-        }}
-      >
-        {props.place}
-      </Typography>
-
-      <Box
-        sx={{
-          width: '25%',
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
           alignItems: 'center',
+          width: '100%',
+          backgroundColor: '#E8F3EF',
+          mt: 1,
+          p: 2,
         }}
       >
-        <Box
-          sx={{
-            width: '20px',
-            height: '20px',
-            backgroundColor: props.status ? '#7ACB9F' : '#F6CA56',
-            borderRadius: '10px',
-            marginRight: 1,
-          }}
-        />
-        <Typography
-          sx={{
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '16px',
-            color: '#2B2B2B',
-            width: '80%',
-          }}
-        >
-          {props.status
-            ? 'Verifier Confirmed'
-            : 'Waiting for Verifier’s Confirmation'}
-        </Typography>
-      </Box>
-      {props.status ? (
-        <Button
-          onClick={() => setShowModal(true)}
-          sx={{
-            width: '15%',
-            backgroundColor: '#667080',
-            borderRadius: '24px',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingY: '10px',
-          }}
-        >
+        <Grid item xs={6} sx={{ px: 2, display: 'flex', alignItems: 'center' }}>
           <Typography
-            sx={{
-              fontFamily: 'Inter',
-              fontStyle: 'normal',
-              fontWeight: '700',
-              fontSize: '12px',
-              color: '#FFFFFF',
-              textAlign: 'center',
+            sx={{ fontSize: 16, fontWeight: 500, cursor: 'pointer' }}
+            onClick={handleClickListItem}
+          >
+            {props.data.title}
+          </Typography>
+          <Menu
+            id="lock-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'lock-button',
+              role: 'listbox',
             }}
           >
-            {props.verfierOption}
-          </Typography>
-        </Button>
-      ) : (
-        <Typography
-          sx={{
-            width: '15%',
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '14px',
-            color: '#667080',
-            textAlign: 'center',
-          }}
-        >
-          {props.verfierOption}
-        </Typography>
-      )}
+            <Box sx={{ p: 1 }}>
+              <Box sx={{ display: 'flex' }}>
+                <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
+                <Typography>{props.data?.location || '-'}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', mt: 1 }}>
+                <LanguageIcon sx={{ color: '#006B5E', mr: 1 }} />
+                <Typography>{props.data?.website || '-'}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', mt: 1 }}>
+                <PermIdentityOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
+                <Typography>{props.data?.director || '-'}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', mt: 1 }}>
+                <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
+                <Typography>{props.data?.contact || '-'}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', mt: 1 }}>
+                <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
+                <Typography>{props.data?.mail || '-'}</Typography>
+              </Box>
+            </Box>
+          </Menu>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography>{props?.data?.place}</Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 10,
+            }}
+          >
+            {props?.data?.status ? (
+              <CheckCircleIcon sx={{ color: '#7ACB9F', mr: 1 }} />
+            ) : (
+              <CircleIcon sx={{ color: '#F7CA56', mr: 1 }} />
+            )}
+            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+              {props?.data?.status
+                ? 'Verifier Confirmed'
+                : 'Waiting for Verifier’s Confirmation'}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item container xs={2} justifyContent="center">
+          <Box sx={{ marginRight: 5, display: 'flex', alignItems: 'end' }}>
+            {props?.data?.status ? (
+              <CCButton
+                sx={{
+                  backgroundColor: '#006B5E',
+                  color: '#fff',
+                  padding: '5px 10px',
+                  borderRadius: 10,
+                  fontSize: 14,
+                }}
+                onClick={() => setShowModal(true)}
+              >
+                Finalise Verifier
+              </CCButton>
+            ) : (
+              <Typography>2 days left</Typography>
+            )}
+          </Box>
+        </Grid>
+      </Grid>
       <FinaliseSelectedVerifiersModal
         title="Finalise selected Verifiers?"
         modalVisibility={showModal}
         setModalVisibility={setShowModal}
       />
-    </Box>
+    </>
   )
 }
 

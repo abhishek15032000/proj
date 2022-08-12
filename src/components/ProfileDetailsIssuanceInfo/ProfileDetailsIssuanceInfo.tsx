@@ -2,27 +2,14 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import {
-  Box,
-  Grid,
-  List,
-  ListItem,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
-} from '@mui/material'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 import TodayIcon from '@mui/icons-material/Today'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 // Local Imports
-import BackHeader from '../../atoms/BackHeader/BackHeader'
-import TopInfo from '../../atoms/TopInfo/TopInfo'
-import TabSelector from '../../atoms/TabSelector/TabSelector'
 import IssuanceInfoList from './IssuanceInfoList'
 import VerifierReport from './VerifierReport'
 import { Colors } from '../../theme'
 import { KeyboardArrowLeft } from '@mui/icons-material'
-import { borderBottom } from '@mui/system'
 
 const projectDetails = {
   company_name:
