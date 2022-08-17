@@ -5,6 +5,7 @@ import auth from "./authSlice";
 import theme from "./themeSlice";
 import issuanceDataCollection from "./issuanceDataCollection";
 import newProject from "./newProjectSlice";
+import wallet from './walletSlice'
 import sectionB from './sectionBSlice'
 import sectionC from "./sectionCSlice";
 
@@ -15,5 +16,5 @@ export default {
     issuanceDataCollection,
     newProject,
     sectionB,
-    sectionC
+    sectionC, wallet
 } 
