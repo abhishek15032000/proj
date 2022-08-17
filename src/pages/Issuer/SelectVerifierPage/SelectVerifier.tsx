@@ -1,9 +1,14 @@
 import React from 'react'
+import SelectVerifier from '../../../components/SelectVerifier/SelectVerifier'
 
-interface Props {}
+//interface Props {}
 
-const SelectVerifier = (props: Props) => {
-    return <div></div>
+const SelectVerifierPage = () => {
+  return (
+    <div>
+      <SelectVerifier />
+    </div>
+  )
 }
 
-export default SelectVerifier
+export default SelectVerifierPage

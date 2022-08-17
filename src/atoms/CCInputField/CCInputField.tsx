@@ -5,16 +5,14 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 
 const CCInputField = (props: CCInputFieldProps) => {
   const inputRef = useRef<any>(null)
-  console.log(
-    '🚀 ~ file: CCInputField.tsx ~ line 8 ~ CCInputField ~ inputRef',
-    inputRef
-  )
+
   return (
     <TextField
+      variant="outlined"
       inputRef={inputRef}
       fullWidth
       sx={{
-        background: '#DAE5E1',
+        // background: '#DAE5E1',
         color: '#006B5E',
         borderRadius: '4px 4px 0 0',
       }}

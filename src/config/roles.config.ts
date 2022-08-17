@@ -1,3 +1,4 @@
 export const ROLES = {
-    ISSUER:"ISSUER"
+    ISSUER: "ISSUER",
+    VERIFIER: "VERIFIER"
 }

@@ -66,7 +66,7 @@ export default function ResponsiveDrawer(props: any) {
   const iconRenderer = (text: string, location: string) => {
     let IconComponent
     switch (text) {
-      case linkLabels.Projects:
+      case linkLabels.Dashboard:
         IconComponent = FiberManualRecordIcon
         break
       case linkLabels.Token_Contract:
@@ -184,7 +184,7 @@ export default function ResponsiveDrawer(props: any) {
                 padding: '10px 0',
               }}
             >
-              <ListItem key={linkLabels.Projects}>
+              <ListItem key={linkLabels.Dashboard}>
                 <NavListItem
                   linkLabels={text}
                   active={activeRoute(text, location)}
@@ -209,7 +209,7 @@ export default function ResponsiveDrawer(props: any) {
             style={{ textDecoration: 'none', color: Colors.secondary }}
           >
             {' '}
-            <ListItem key={linkLabels.Projects}>
+            <ListItem key={linkLabels.Dashboard}>
               <NavListItem
                 noBg
                 linkLabels={'Logout'}

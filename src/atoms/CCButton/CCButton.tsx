@@ -11,8 +11,10 @@ const CCButton: React.FC<CCButtonProps> = (props) => {
           // height: '48px',
           borderRadius: props.rounded ? 10 : 2,
           textTransform: 'none',
-          backgroundColor: 'accent.main',
-          color: 'darkPrimary1.main',
+          backgroundColor: props?.buttonBackgroundColor
+            ? props.buttonBackgroundColor
+            : 'accent.main',
+          color: props?.buttonColor ? props.buttonColor : 'darkPrimary1.main',
           fontSize: 18,
           fontWeight: '500',
           py: 2,

@@ -17,16 +17,18 @@ type AppProps = {
 const App: FC<AppProps> = () => {
   console.log('APP.js ******', Date.now())
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
+  const dispatch = useAppDispatch()
+  const getloginStatusFromLocalStorage = getLocalItem('userDetails')
   console.log(
     '🚀 ~ file: App.tsx ~ line 20 ~ waitingAccessCheck',
     waitingAccessCheck
   )
   const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
   console.log('🚀 ~ file: App.tsx ~ line 21 ~ userData', userData)
-  const dispatch = useAppDispatch()
+  //const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
+    //const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
     try {
       if (getloginStatusFromLocalStorage) {
         dispatch(loginAction(getloginStatusFromLocalStorage))
@@ -37,10 +39,6 @@ const App: FC<AppProps> = () => {
       setWatingAccessCheck(false)
     }
   }, [])
-
-  // useEffect(() => {
-  //     console.log('hello')
-  // }, [userData])
 
   return waitingAccessCheck ? (
     <div>loading</div>

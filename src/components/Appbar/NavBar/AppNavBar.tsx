@@ -20,6 +20,7 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 // import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import { Button, Grid } from '@mui/material'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 // import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded'
 // import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
@@ -76,6 +77,8 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
+  const navigate = useNavigate()
+
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -87,6 +90,12 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
+  }
+
+  const logout = () => {
+    setAnchorEl(null)
+    handleMobileMenuClose()
+    navigate(pathNames.LOGOUT, { replace: true })
   }
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -111,7 +120,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   )
 

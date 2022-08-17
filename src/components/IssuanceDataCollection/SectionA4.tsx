@@ -59,9 +59,23 @@ const SectionA4 = () => {
         The methodologies applied for the project activity under consideration
         are-
       </Typography>
+
       {methodologies.map((methodology, index) => (
         <Grid key={index} container>
-          <Grid item sx={{ mt: 2 }} xs={12} lg={10} rowSpacing={1}>
+          <Typography
+            sx={{ width: '100%', marginY: '10px', marginLeft: '-10pn' }}
+          >
+            Methodology {index + 1}
+          </Typography>
+          <Grid
+            item
+            sx={{ mt: 2 }}
+            xs={12}
+            md={12}
+            lg={12}
+            xl={12}
+            rowSpacing={1}
+          >
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
                 Select Methodology *
@@ -69,7 +83,7 @@ const SectionA4 = () => {
               <Select
                 placeholder="Select Approved Methodologies"
                 sx={{
-                  background: '#DAE5E1',
+                  background: 'white',
                   color: '#006B5E',
                   borderRadius: '4px 4px 0 0',
                 }}
@@ -85,7 +99,15 @@ const SectionA4 = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
+          <Grid
+            item
+            sx={{ mt: 1 }}
+            xs={12}
+            md={12}
+            lg={12}
+            xl={12}
+            rowSpacing={1}
+          >
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
                 Project Type *
@@ -93,7 +115,7 @@ const SectionA4 = () => {
               <Select
                 placeholder="Select Project Types"
                 sx={{
-                  background: '#DAE5E1',
+                  background: 'white',
                   color: '#006B5E',
                   borderRadius: '4px 4px 0 0',
                 }}
@@ -101,42 +123,94 @@ const SectionA4 = () => {
                 id="demo-simple-select"
                 // value={country}
                 label="Project Type *"
+
                 // onChange={handleCountryChange}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem
+                  value={'AMS-I.A'}
+                  sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                >
+                  AMS-I.A
+                </MenuItem>
+                <MenuItem
+                  value={'AMS-I.B'}
+                  sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                >
+                  AMS-I.B
+                </MenuItem>
+                <MenuItem
+                  value={'AMS-I.C'}
+                  sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                >
+                  AMS-I.C
+                </MenuItem>
               </Select>
             </FormControl>
           </Grid>
-          <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
+          <Grid
+            item
+            sx={{ mt: 1 }}
+            xs={12}
+            md={12}
+            lg={12}
+            xl={12}
+            rowSpacing={1}
+          >
             <CCInputField
               label="Category"
               placeholder="Enter Category of Project Type"
               onChange={(e) => handleTextChange(e, index, 'category')}
+              sx={{ background: 'white' }}
             />
           </Grid>
-          <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
+          <Grid
+            item
+            sx={{ mt: 1 }}
+            xs={12}
+            md={12}
+            lg={12}
+            xl={12}
+            rowSpacing={1}
+          >
             <CCInputField
               label="Version"
               placeholder="Enter version of the baseline and monitoring methodology"
               onChange={(e) => handleTextChange(e, index, 'version')}
+              sx={{ background: 'white' }}
             />
           </Grid>
-          <Grid item sx={{ mt: 1 }} xs={12} lg={10} rowSpacing={1}>
+          <Grid
+            item
+            sx={{ mt: 1 }}
+            xs={12}
+            md={12}
+            lg={12}
+            xl={12}
+            rowSpacing={1}
+          >
             <CCInputField
               label="Tools referred"
               placeholder="Enter tools to calculate or determine the baseline and monitoring methodology"
               onChange={(e) => handleTextChange(e, index, 'toolsReferred')}
+              sx={{ background: 'white' }}
             />
           </Grid>
           {index + 1 === methodologies.length && (
-            <Grid item sx={{ mt: 2 }} xs={12} lg={10} rowSpacing={1}>
+            <Grid
+              item
+              sx={{ mt: 2 }}
+              xs={12}
+              md={12}
+              lg={12}
+              xl={12}
+              rowSpacing={1}
+            >
               <CCButton
                 sx={{
-                  color: '#fff',
+                  backgroundColor: '#fff',
                   padding: '8px 15px',
                   borderRadius: '20px',
+                  color: '#006B5E',
                 }}
                 variant="contained"
                 onClick={addMethodology}
