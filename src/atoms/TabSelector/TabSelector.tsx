@@ -20,11 +20,9 @@ const TabSelector: FC<TabSelectorProps> = (props) => {
         value={props.tabIndex}
         indicatorColor="secondary"
         aria-label="secondary tabs example"
-        sx={{ color: '#1D4B44' }}
       >
         {props.tabArray?.map((tab, index) => (
           <Tab
-            sx={{ color: '#1D4B44' }}
             key={index}
             value={index + 1}
             label={tab}

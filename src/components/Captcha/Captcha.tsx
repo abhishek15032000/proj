@@ -35,7 +35,7 @@ export default function Captcha({
   return (
     <Box
       sx={{
-        mt: 1,
+        mt: 2,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
