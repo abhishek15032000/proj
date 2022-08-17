@@ -100,15 +100,15 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle={["Sample Report - Technical Details"]}
+            mediaTitle={['Sample Report - Technical Details']}
             mediaItem={[SectionB1TechnicalDescription]}
             title="Attach Data Tables for Technical Description"
             imageArray={technicalDescriptionImage}
             onImageUpload={(item: any) => {
               dispatch(
                 setTechnicalDescriptionImage([
-                  ...technicalDescriptionImage,
                   item,
+                  ...technicalDescriptionImage
                 ])
               )
             }}
@@ -137,12 +137,12 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle={["Sample Report - Shut Down Details"]}
+            mediaTitle={['Sample Report - Shut Down Details']}
             title="Attach Data Tables for  Major shut down details"
             mediaItem={[SectionB1ShutDownDetails]}
             imageArray={majorShutDownImage}
             onImageUpload={(item: any) => {
-              dispatch(setMajorShutDownImage([...majorShutDownImage, item]))
+              dispatch(setMajorShutDownImage([item, ...majorShutDownImage]))
             }}
             onDeleteImage={(index: number) => {
               dispatch(
@@ -154,15 +154,15 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle={["Sample Report - Implementation of Milestones"]}
+            mediaTitle={['Sample Report - Implementation of Milestones']}
             title="Attach Data Tables for  implementation of milestones"
             mediaItem={[SectionB1ImplementationOfMilestones]}
             imageArray={implementationMilestoneImage}
             onImageUpload={(item: any) => {
               dispatch(
                 setImplementationMilestoneImage([
-                  ...implementationMilestoneImage,
                   item,
+                  ...implementationMilestoneImage,
                 ])
               )
             }}
@@ -176,12 +176,12 @@ const SectionB1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle={["Sample Report - Project Timeline Event Description"]}
+            mediaTitle={['Sample Report - Project Timeline Event Description']}
             title="Attach Data Tables for  Project timeline event description"
             mediaItem={[SectionB1EventDescription]}
             imageArray={projectTimelineImage}
             onImageUpload={(item: any) => {
-              dispatch(setProjectTimelineImage([...projectTimelineImage, item]))
+              dispatch(setProjectTimelineImage([item, ...projectTimelineImage]))
             }}
             onDeleteImage={(index: number) => {
               dispatch(

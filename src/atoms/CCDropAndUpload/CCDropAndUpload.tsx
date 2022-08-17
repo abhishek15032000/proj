@@ -6,6 +6,8 @@ import { Grid, Box, Typography, Button } from '@mui/material'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import CloseIcon from '@mui/icons-material/Close'
 import SampleModal from '../SampleModal/SampleModal'
+import { ImageUpload } from './ImageHandle'
+import { ENDPOINTS } from '../../api/configs/Endpoints'
 
 // Local Imports
 
@@ -21,24 +23,30 @@ interface CCDropAndUploadProps {
 
 const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
   const [showModal, setShowModal] = useState(false)
+  const [uploading, setUploading] = useState(false)
 
   const addMoreImageUpload = (event: any) => {
     if (event?.target?.files?.length) {
       const selectedFile = event.target.files[0]
       const objectUrl = URL.createObjectURL(selectedFile)
-      props.onImageUpload({
-        fileName: selectedFile.name,
-        fileLocation: objectUrl,
-      })
+      const sizeTemp = selectedFile.size / 1000000
+      setUploading(true)
+      ImageUpload(selectedFile, selectedFile.name)
+        .then((result) => {
+          props.onImageUpload({
+            fileName: result.data[0].ipfs_hash,
+            fileSize: Math.round(sizeTemp * 100) / 100,
+          })
+          setUploading(false)
+        })
+        .catch((error) => {
+          setUploading(false)
+        })
     }
   }
 
   const deleteImage = (index: number) => {
-    // const newImageArray = props.imageArray.filter(
-    //   (item: any, i: number) => i !== index
-    // )
     props.onDeleteImage(index)
-    // props.(newImageArray)
   }
 
   return (
@@ -62,7 +70,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
             fontWeight: 500,
             color: '#2B2B2B',
             textDecoration: 'underline',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Check Sample Data
@@ -110,12 +118,22 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         />
       </Button>
 
+      {uploading && (
+        <FileTab
+          key={-1}
+          title={'Uploading...'}
+          index={-1}
+          fileSize={0}
+        />
+      )}
+
       {props.imageArray.map((item: any, index: number) => (
         <FileTab
           key={index}
           title={item.fileName}
           index={index}
           deleteImage={deleteImage}
+          fileSize={item.fileSize}
         />
       ))}
 
@@ -133,6 +151,7 @@ interface FileTabProps {
   title?: string | number
   index?: number
   deleteImage?: any
+  fileSize: number | string
 }
 
 const FileTab: FC<FileTabProps> = (props) => {
@@ -168,8 +187,11 @@ const FileTab: FC<FileTabProps> = (props) => {
           <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
             {props.title}
           </Typography>
-
-          <Typography sx={{ fontSize: 12, fontWeight: 500 }}>0.5 MB</Typography>
+          {props.fileSize > 0 && (
+            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+              {props.fileSize} MB
+            </Typography>
+          )}
         </Box>
       </Box>
 
