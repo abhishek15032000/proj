@@ -10,7 +10,7 @@ import CCTable from '../../atoms/CCTable'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined'
 interface VerifierReportListProps {
-  data?: Array<any>
+  data?: any
 }
 
 const VerifierReport: FC<VerifierReportListProps> = (props) => {
@@ -347,42 +347,25 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
 
   return (
     <Grid container>
-      {props.data?.map((item, index) => (
-        <VerifierReportListItem
-          title={item.title}
-          status={item.status}
-          key={index}
-          place={item.place}
-          verfierOption={item.verfierOption}
-        />
+      {props.data?.map((item: any, index: number) => (
+        <VerifierReportListItem key={index} data={item} />
       ))}
-      {/* <Box
+      <Box
         sx={{
+          mt: 2,
           width: '100%',
-          height: '30%',
+          height: '200px',
           display: 'flex',
-          flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: '20px',
-          backgroundColor: '#EEF1F4',
-          marginBottom: '50px',
+          backgroundColor: '#E8F3EF',
         }}
       >
-        <Typography
-          sx={{
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '14px',
-            color: '#667080',
-            textAlign: 'center',
-          }}
-        >
-          {'Your project’s review report will show up here'}
-        </Typography>
-      </Box> */}
-      <CCTable headings={headings} rows={rows} />
+        <Typography>Your project’s review report will show up here</Typography>
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <CCTable headings={headings} rows={rows} />
+      </Box>
     </Grid>
   )
 }

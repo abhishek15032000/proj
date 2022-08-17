@@ -1,8 +1,7 @@
-import React, { FC, useState } from 'react'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import CloseIcon from '@mui/icons-material/Close'
-import { Box, Typography, Modal, Button } from '@mui/material'
+import React, { FC } from 'react'
+import { Box, Typography, Modal, Paper, Stack } from '@mui/material'
+import CCButtonOutlined from '../CCButtonOutlined'
+import CCButton from '../CCButton'
 
 interface FinaliseSelectedVerifiersModalProps {
   title: string
@@ -19,110 +18,61 @@ const FinaliseSelectedVerifiersModal: FC<
       onClose={() => props.setModalVisibility(false)}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
-      // sx={{ width:  '1000px' }}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'rgba(56, 142, 129, 0.4)',
+      }}
     >
-      <Box
+      <Paper
         sx={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
+          px: 10,
+          py: 6,
           display: 'flex',
-          zIndex: 0,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 3,
         }}
-        // onClick={() => props.setModalVisibility(false)}
       >
-        <Box
-          sx={{
-            backgroundColor: '#FFF',
-            borderRadius: '5px',
-            zIndex: 100,
-            padding: '10px',
-            paddingRight: '5px',
-            paddingLeft: '5px',
-            width: '30%',
-            height: '20%',
-            flexDireaction: 'row',
-          }}
-        >
+        <Box>
           <Typography
-            sx={{
-              fontFamily: 'Poppins',
-              fontStyle: 'normal',
-              fontWeight: '700',
-              fontSize: '16px',
-              color: '#667080',
-              textAlign: 'center',
-              marginY: '10px',
-            }}
+            textAlign="center"
+            sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}
           >
-            {props.title}
+            Finalize selected Verifier?
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginY: '30px',
-            }}
-          >
-            <Button
-              onClick={() => props.setModalVisibility(false)}
-              sx={{
-                backgroundColor: '#EEF1F4',
-                borderRadius: '5px',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingY: '10px',
-                paddingX: '20px',
-                width: '30%',
-              }}
+          <Box>
+            <Stack
+              sx={{ mt: 5 }}
+              direction="row"
+              justifyContent={'space-between'}
             >
-              <Typography
+              <CCButtonOutlined
                 sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '12px',
-                  color: '#667080',
-                  textAlign: 'center',
+                  minWidth: 0,
+                  padding: '6px 34px',
+                  borderRadius: 10,
+                  mr: 3,
+                }}
+                onClick={() => {
+                  props.setModalVisibility(false)
                 }}
               >
-                {'Cancel'}
-              </Typography>
-            </Button>
-            <Button
-              onClick={() => props.setModalVisibility(false)}
-              sx={{
-                backgroundColor: '#667080',
-                borderRadius: '5px',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingY: '10px',
-                marginLeft: '10px',
-                paddingX: '20px',
-                width: '30%',
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '12px',
-                  color: '#FFFFFF',
-                  textAlign: 'center',
+                Cancel
+              </CCButtonOutlined>
+              <CCButton
+                sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
+                onClick={() => {
+                  props.setModalVisibility(false)
                 }}
               >
-                {'Yes'}
-              </Typography>
-            </Button>
+                Yes
+              </CCButton>
+            </Stack>
           </Box>
         </Box>
-      </Box>
+      </Paper>
     </Modal>
   )
 }

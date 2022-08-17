@@ -33,6 +33,7 @@ import {
   setSubSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
 import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
+import CCButton from '../../atoms/CCButton'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -104,6 +105,31 @@ const sectionATabs = [
 const IssuanceDataCollection = () => {
   const dispatch = useAppDispatch()
 
+  const projectName = useAppSelector(
+    ({ newProject }) => newProject.projectName,
+    shallowEqual
+  )
+  const projectType = useAppSelector(
+    ({ newProject }) => newProject.projectType,
+    shallowEqual
+  )
+  const projectLocation = useAppSelector(
+    ({ newProject }) => newProject.projectLocation,
+    shallowEqual
+  )
+  const startDate = useAppSelector(
+    ({ newProject }) => newProject.startDate,
+    shallowEqual
+  )
+  const projectDuration = useAppSelector(
+    ({ newProject }) => newProject.projectDuration,
+    shallowEqual
+  )
+  const projectArea = useAppSelector(
+    ({ newProject }) => newProject.projectArea,
+    shallowEqual
+  )
+
   const sectionIndex = useAppSelector(
     ({ issuanceDataCollection }) => issuanceDataCollection.sectionIndex,
     shallowEqual
@@ -117,14 +143,30 @@ const IssuanceDataCollection = () => {
     return sections[sectionIndex]?.name
   }
 
-  const handleSaveAndNext = () => {
-    moveToNextSection(sectionIndex, subSectionIndex)
+  const handleSave = () => {
+    if (
+      projectName &&
+      projectType &&
+      projectLocation &&
+      startDate &&
+      projectDuration &&
+      projectArea
+    ) {
+      moveToNextSection(sectionIndex, subSectionIndex)
+    } else {
+      dispatch(setSectionIndex(sectionIndex + 1))
+      dispatch(setSubSectionIndex(0))
+    }
   }
   const handlePrevious = () => {
     if (sectionIndex > 0) {
       dispatch(setSectionIndex(sectionIndex - 1))
       dispatch(setSubSectionIndex(0))
     }
+  }
+  const handleNext = () => {
+    dispatch(setSectionIndex(sectionIndex + 1))
+    dispatch(setSubSectionIndex(0))
   }
 
   const renderTab = () => {
@@ -149,7 +191,21 @@ const IssuanceDataCollection = () => {
                 List New Project
               </Typography>
             </Grid>
-            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'end' }}>
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end' }}>
+              <CCButton
+                sx={{
+                  backgroundColor: Colors.darkPrimary1,
+                  padding: '8px 24px',
+                  minWidth: '50px',
+                  color: '#fff',
+                  borderRadius: 10,
+                  fontSize: 14,
+                  mr: 1,
+                }}
+                onClick={handleSave}
+              >
+                Save
+              </CCButton>
               {sectionIndex !== 0 && (
                 <Box
                   sx={{
@@ -185,7 +241,7 @@ const IssuanceDataCollection = () => {
                   p: 1,
                   cursor: 'pointer',
                 }}
-                onClick={handleSaveAndNext}
+                onClick={handleNext}
               >
                 <Typography
                   sx={{
