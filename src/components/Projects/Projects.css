@@ -1,6 +1,16 @@
 .stats-row{
 	display: flex;
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.stats-row::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.stats-row {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}
 .stats-container{  
 	padding: 30px;
 	background-color: #FFFFFF;

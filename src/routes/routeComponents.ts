@@ -19,9 +19,10 @@ import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 export const privateRouteComponents = [
   {
     path: pathNames.DASHBOARD,
-    component: DashboardPage,
+    // component: DashboardPage,
+    component: ProjectsPage,
 
-    sidebarName: linkLabels.Projects,
+    sidebarName: linkLabels.Dashboard,
     roles: [ROLES.ISSUER],
   },
   //{
