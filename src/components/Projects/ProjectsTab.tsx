@@ -22,8 +22,8 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         backgroundColor: '#FFF',
         padding: 2,
         borderRadius: '8px',
-        boxShadow: '1px 1px 2px 2px #CCC',
-        marginTop: 4,
+        boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+        marginTop: 3,
       }}
     >
       <Box
@@ -45,7 +45,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         setTabIndex={setTabIndex}
         sx={{ marginBottom: 2 }}
       />
-      <CCTable headings={headings} rows={rows} maxWidth={900} />
+      <CCTable headings={headings} rows={rows} maxWidth={'100%'} />
     </Box>
   )
 }
@@ -87,12 +87,7 @@ const rowItem = [
   />,
 ]
 
-const rows = [
-    rowItem,
-    rowItem,
-    rowItem,
-    rowItem,
-]
+const rows = [rowItem, rowItem, rowItem, rowItem]
 
 const headings = [
   'Reference ID',

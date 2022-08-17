@@ -33,6 +33,7 @@ const CCTable = (props: CCTableProps) => {
     <TableContainer
       component={Paper}
       sx={{ mt: 1, minWidth: 700, maxWidth: props.maxWidth }}
+      style={{ border: 'none' }}
     >
       <Table
         sx={{ minWidth: 700, maxWidth: props.maxWidth }}
