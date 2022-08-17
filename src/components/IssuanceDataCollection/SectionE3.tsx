@@ -1,108 +1,59 @@
+import { Grid } from '@mui/material'
+import React from 'react'
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import SectionE4CalculationSummaryOfEmissionReductions from '../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks'
 import {
-  Button,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-} from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../atoms/AttachMore/AttachMore'
-const SectionE3 = () => {
-  const [imagedata, addMoreImages] = useState<
-    Array<{ key: number; imageUrl: string }>
-  >([])
+  setCalculationOfLeakage,
+  setCalculationOfLeakageImages,
+} from '../../redux/Slices/sectionESlice'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 
-  const [index, setindex] = useState(-1)
-  const [showModal, setShowModal] = useState(false)
-  const addMoreImageUpload = (event: any) => {
-    if (event?.target?.files?.length) {
-      const selectedFile = event.target.files[0]
-      console.log('selectedFile', selectedFile)
-      const objectUrl = URL.createObjectURL(selectedFile)
-      console.log('selectedFile', selectedFile)
-      if (objectUrl) {
-        const imageTempobj = {
-          key: index + 1,
-          imageUrl: objectUrl,
-        }
-        const arr = [...imagedata]
-        arr.push(imageTempobj)
-        addMoreImages(arr)
-        setindex(index + 1)
-      }
-    }
-  }
+const SectionE3 = () => {
+  const dispatch = useAppDispatch()
+
+  const calculationOfLeakage = useAppSelector(
+    ({ sectionE }) => sectionE.calculationOfLeakage
+  )
+  const calculationOfleakageimages = useAppSelector(
+    ({ sectionE }) => sectionE.calculationOfLeakageImages
+  )
   return (
-    <Grid container flexDirection="column" xs={12} height={'100vh'}>
-      <Typography
-        sx={{
-          fontSize: '16px',
-          color: ' #667080',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '500',
-          marginTop: '30px',
-          marginBottom: '5px',
-          width: '79%',
-        }}
-      >
-        Calculation of leakage
-      </Typography>
-      <TextareaAutosize
-        placeholder="(Calculation of leakage emissions, if any)"
-        style={{
-          height: '150px',
-          width: '79%',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '400',
-          fontSize: '14px',
-          color: '#667080;',
-        }}
-      />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '79%',
-          marginTop: '20px',
-        }}
-      >
-        <Typography
-          style={{
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '14px',
-            color: '#667080',
+    <Grid container sx={{ mt: 3 }}>
+      <Grid item sm={12}>
+        <CCMultilineTextArea
+          label="Calculation of leakage"
+          placeholder="Calculation of leakage emissions, if any"
+          value={calculationOfLeakage}
+          onChange={(e) => dispatch(setCalculationOfLeakage(e.target.value))}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <CCDropAndUpload
+          title="Attach relevant datas & docs"
+          mediaTitle={[
+            'Sample Report - Calculation summary of emission reductions',
+          ]}
+          mediaItem={[SectionE4CalculationSummaryOfEmissionReductions]}
+          imageArray={calculationOfleakageimages}
+          onImageUpload={(item: any) => {
+            dispatch(
+              setCalculationOfLeakageImages([
+                ...calculationOfleakageimages,
+                item,
+              ])
+            )
           }}
-        >
-          Attach relevant datas & docs
-        </Typography>
-        <Typography
-          onClick={() => setShowModal(true)}
-          sx={{
-            textDecoration: 'underline',
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '600',
-            fontSize: '14px',
-            color: '#667080',
+          onDeleteImage={(index: number) => {
+            dispatch(
+              setCalculationOfLeakageImages(
+                deleteIndexInArray(calculationOfleakageimages, index)
+              )
+            )
           }}
-        >
-          View Sample Data
-        </Typography>
-      </Box>
-      <AttachMore
-        imagedata={imagedata}
-        addMoreImageUpload={(event: any) => {
-          addMoreImageUpload(event)
-        }}
-      />
+        />
+      </Grid>
     </Grid>
   )
 }

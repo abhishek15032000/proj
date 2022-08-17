@@ -32,8 +32,10 @@ const SectionC1 = () => {
           />
 
           <CCDropAndUpload
-            mediaTitle="Sample Report - Organizational Structure & Responsibilities Chart"
-            mediaItem={SectionCOrganisationalStructure}
+            mediaTitle={[
+              'Sample Report - Organizational Structure & Responsibilities Chart',
+            ]}
+            mediaItem={[SectionCOrganisationalStructure]}
             title="Attach organizational structure & responsibilities chart"
           />
         </Grid>

@@ -94,18 +94,6 @@ const CCTable = (props: CCTableProps) => {
                     ))}
                 </StyledTableRow>
               ))}
-            {/*{props?.rows && props?.rows?.length > 0 && !props?.pagination
-              ? props?.rows
-              : paginationData.map((row: any, index: number) => (
-                  <StyledTableRow key={index}>
-                    {row?.length > 0 &&
-                      row.map((tdValue: any, tdIndex: number) => (
-                        <StyledTableCell key={tdIndex} align="center">
-                          {tdValue}
-                        </StyledTableCell>
-                      ))}
-                  </StyledTableRow>
-                ))}*/}
           </TableBody>
         </Table>
         {props?.pagination && props?.rows && (

@@ -5,8 +5,7 @@ import SampleModal from '../../atoms/SampleModal/SampleModal'
 import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-//../../assets/Images/sample-d1.png
-import sectionD1SampleUploadDataAndParameters from '../../assets/Images/SampleData/sectionD1SampleUploadDataAndParameters.png'
+//import sectionD1SampleUploadDataAndParameters from '../../assets/Images/SampleData/sectionD1SampleUploadDataAndParameters.png'
 
 const SectionD1: FC = () => {
   //const [showModal, setShowModal] = useState(false)
@@ -21,12 +20,14 @@ const SectionD1: FC = () => {
       </Grid>
       <Grid item xs={12}>
         <CCDropAndUpload
-          mediaTitle="Sample Report - Data and parameters at ex-ante"
+          mediaTitle={['Sample Report - Data and parameters at ex-ante']}
           title={'Attach relevant datas & docs'}
-          mediaItem={[
-            sectionD1SampleUploadDataAndParameters,
-            sectionD1SampleUploadDataAndParameters,
-          ]}
+          mediaItem={
+            [
+              //sectionD1SampleUploadDataAndParameters,
+              //sectionD1SampleUploadDataAndParameters,
+            ]
+          }
         />
       </Grid>
     </Grid>

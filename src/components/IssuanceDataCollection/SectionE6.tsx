@@ -1,108 +1,61 @@
+import { Grid } from '@mui/material'
+import React from 'react'
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import {
-  Button,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-} from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../atoms/AttachMore/AttachMore'
+  setRemarksOnDifferenceFromEstimatedValue,
+  setRemarksOnDifferenceFromEstimatedValueImages,
+} from '../../redux/Slices/sectionESlice'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 const SectionE6 = () => {
-  const [imagedata, addMoreImages] = useState<
-    Array<{ key: number; imageUrl: string }>
-  >([])
+  const dispatch = useAppDispatch()
 
-  const [index, setindex] = useState(-1)
-  const [showModal, setShowModal] = useState(false)
-  const addMoreImageUpload = (event: any) => {
-    if (event?.target?.files?.length) {
-      const selectedFile = event.target.files[0]
-      console.log('selectedFile', selectedFile)
-      const objectUrl = URL.createObjectURL(selectedFile)
-      console.log('selectedFile', selectedFile)
-      if (objectUrl) {
-        const imageTempobj = {
-          key: index + 1,
-          imageUrl: objectUrl,
-        }
-        const arr = [...imagedata]
-        arr.push(imageTempobj)
-        addMoreImages(arr)
-        setindex(index + 1)
-      }
-    }
-  }
+  const remarksOnDifferenceFromEstimatedValue = useAppSelector(
+    ({ sectionE }) => sectionE.remarksOnDifferenceFromEstimatedValue
+  )
+  const remarksOnDifferenceFromEstimatedValueImages = useAppSelector(
+    ({ sectionE }) => sectionE.remarksOnDifferenceFromEstimatedValueImages
+  )
+
   return (
-    <Grid container flexDirection="column" xs={12} height={'100vh'}>
-      <Typography
-        sx={{
-          fontSize: '16px',
-          color: ' #667080',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '500',
-          marginTop: '30px',
-          marginBottom: '5px',
-          width: '79%',
-        }}
-      >
-        Remarks on difference from estimated value
-      </Typography>
-      <TextareaAutosize
-        placeholder="(Remarks on difference from estimated value, if any)"
-        style={{
-          height: '150px',
-          width: '79%',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '400',
-          fontSize: '14px',
-          color: '#667080;',
-        }}
-      />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '79%',
-          marginTop: '20px',
-        }}
-      >
-        <Typography
-          style={{
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '14px',
-            color: '#667080',
+    <Grid container sx={{ mt: 3 }}>
+      <Grid item xs={12}>
+        <CCMultilineTextArea
+          label="Remarks on difference from estimated value"
+          placeholder="Remarks on difference from estimated value, if any"
+          value={remarksOnDifferenceFromEstimatedValue}
+          onChange={(e) =>
+            dispatch(setRemarksOnDifferenceFromEstimatedValue(e.target.value))
+          }
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <CCDropAndUpload
+          title="Attach relevant datas & docs"
+          mediaItem={[]}
+          mediaTitle={[]}
+          imageArray={remarksOnDifferenceFromEstimatedValueImages}
+          onImageUpload={(item: any) => {
+            dispatch(
+              setRemarksOnDifferenceFromEstimatedValueImages([
+                ...remarksOnDifferenceFromEstimatedValueImages,
+                item,
+              ])
+            )
           }}
-        >
-          Attach relevant datas & docs
-        </Typography>
-        <Typography
-          onClick={() => setShowModal(true)}
-          sx={{
-            textDecoration: 'underline',
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '600',
-            fontSize: '14px',
-            color: '#667080',
+          onDeleteImage={(index: number) => {
+            dispatch(
+              setRemarksOnDifferenceFromEstimatedValueImages(
+                deleteIndexInArray(
+                  remarksOnDifferenceFromEstimatedValueImages,
+                  index
+                )
+              )
+            )
           }}
-        >
-          View Sample Data
-        </Typography>
-      </Box>
-      <AttachMore
-        imagedata={imagedata}
-        addMoreImageUpload={(event: any) => {
-          addMoreImageUpload(event)
-        }}
-      />
+        />
+      </Grid>
     </Grid>
   )
 }

@@ -20,7 +20,8 @@ const SectionD2: FC = () => {
       <Grid item xs={12}>
         <CCDropAndUpload
           title={'Attach relevant datas & docs'}
-          mediaTitle="Sample Report -Monitored ex-post"
+          mediaTitle={['Sample Report -Monitored ex-post']}
+          mediaItem={[]}
         />
       </Grid>
     </Grid>
