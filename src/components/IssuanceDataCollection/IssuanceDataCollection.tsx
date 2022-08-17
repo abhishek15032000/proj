@@ -33,6 +33,7 @@ import {
   setSubSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
 import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
+import CCButton from '../../atoms/CCButton'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -142,7 +143,7 @@ const IssuanceDataCollection = () => {
     return sections[sectionIndex]?.name
   }
 
-  const handleSaveAndNext = () => {
+  const handleSave = () => {
     if (
       projectName &&
       projectType &&
@@ -162,6 +163,10 @@ const IssuanceDataCollection = () => {
       dispatch(setSectionIndex(sectionIndex - 1))
       dispatch(setSubSectionIndex(0))
     }
+  }
+  const handleNext = () => {
+    dispatch(setSectionIndex(sectionIndex + 1))
+    dispatch(setSubSectionIndex(0))
   }
 
   const renderTab = () => {
@@ -186,7 +191,21 @@ const IssuanceDataCollection = () => {
                 List New Project
               </Typography>
             </Grid>
-            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'end' }}>
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end' }}>
+              <CCButton
+                sx={{
+                  backgroundColor: Colors.darkPrimary1,
+                  padding: '8px 24px',
+                  minWidth: '50px',
+                  color: '#fff',
+                  borderRadius: 10,
+                  fontSize: 14,
+                  mr: 1,
+                }}
+                onClick={handleSave}
+              >
+                Save
+              </CCButton>
               {sectionIndex !== 0 && (
                 <Box
                   sx={{
@@ -222,7 +241,7 @@ const IssuanceDataCollection = () => {
                   p: 1,
                   cursor: 'pointer',
                 }}
-                onClick={handleSaveAndNext}
+                onClick={handleNext}
               >
                 <Typography
                   sx={{
