@@ -34,6 +34,8 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -104,29 +106,10 @@ const sectionATabs = [
 
 const IssuanceDataCollection = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const projectName = useAppSelector(
-    ({ newProject }) => newProject.projectName,
-    shallowEqual
-  )
-  const projectType = useAppSelector(
-    ({ newProject }) => newProject.projectType,
-    shallowEqual
-  )
-  const projectLocation = useAppSelector(
-    ({ newProject }) => newProject.projectLocation,
-    shallowEqual
-  )
-  const startDate = useAppSelector(
-    ({ newProject }) => newProject.startDate,
-    shallowEqual
-  )
-  const projectDuration = useAppSelector(
-    ({ newProject }) => newProject.projectDuration,
-    shallowEqual
-  )
-  const projectArea = useAppSelector(
-    ({ newProject }) => newProject.projectArea,
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
     shallowEqual
   )
 
@@ -138,25 +121,18 @@ const IssuanceDataCollection = () => {
     ({ issuanceDataCollection }) => issuanceDataCollection.subSectionIndex,
     shallowEqual
   )
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
   }
 
   const handleSave = () => {
-    if (
-      projectName &&
-      projectType &&
-      projectLocation &&
-      startDate &&
-      projectDuration &&
-      projectArea
-    ) {
-      moveToNextSection(sectionIndex, subSectionIndex)
-    } else {
-      dispatch(setSectionIndex(sectionIndex + 1))
-      dispatch(setSubSectionIndex(0))
-    }
+    moveToNextSection(sectionIndex, subSectionIndex)
   }
   const handlePrevious = () => {
     if (sectionIndex > 0) {
@@ -186,7 +162,12 @@ const IssuanceDataCollection = () => {
             alignItems={'center'}
           >
             <Grid item container xs={6} alignItems={'center'}>
-              <KeyboardArrowLeft />
+              <KeyboardArrowLeft
+                sx={{ cursor: 'pointer' }}
+                onClick={() => {
+                  navigate(pathNames.DASHBOARD, { replace: true })
+                }}
+              />
               <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
                 List New Project
               </Typography>
@@ -204,7 +185,7 @@ const IssuanceDataCollection = () => {
                 }}
                 onClick={handleSave}
               >
-                Save
+                {loading ? 'Saving ...' : 'Save'}
               </CCButton>
               {sectionIndex !== 0 && (
                 <Box

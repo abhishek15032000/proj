@@ -1,6 +1,6 @@
 import { dataCollectionCalls } from '../api/dataCollectionCalls';
-import { setSectionIndex, setSubSectionIndex } from '../redux/Slices/issuanceDataCollection';
-import { setNewProjectUUID } from '../redux/Slices/newProjectSlice';
+import { setCurrentProjectDetails, setSectionIndex, setSubSectionIndex } from '../redux/Slices/issuanceDataCollection';
+import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice';
 import { store } from '../redux/store'
 
 const dispatch = store.dispatch;
@@ -18,27 +18,54 @@ export const moveToNextSection = async (sectionIndex: number, subSectionIndex: n
 		const projectDuration = newProjectData?.projectDuration;
 		const projectArea = newProjectData?.projectArea;
 
-		const payload = {
-			company_name: projectName,
-			type: projectType[0],
-			location: projectLocation,
-			start_date: startDate,
-			duration: Number(projectDuration),
-			area: projectArea
-		}
-		try {
-			const res = await dataCollectionCalls.createNewProject(payload);
-			if (res?.success && res?.data?.uuid) {
-				dispatch(setNewProjectUUID(res?.data?.uuid))
-				dispatch(setSectionIndex(sectionIndex + 1))
-				dispatch(setSubSectionIndex(0))
+		if (
+			projectName &&
+			projectType &&
+			projectLocation &&
+			startDate &&
+			projectDuration &&
+			projectArea
+		) {
+
+			const payload = {
+				company_name: projectName,
+				type: projectType,
+				location: projectLocation,
+				start_date: startDate,
+				duration: Number(projectDuration),
+				area: projectArea
 			}
-			if (!res?.success && res?.error) {
-				alert(res?.error)
+			try {
+				dispatch(setLoading(true));
+				const res = await dataCollectionCalls.createNewProject(payload);
+				if (res?.success && res?.data?.uuid) {
+					getProjectDetails(res?.data?.uuid)
+				}
+				if (!res?.success && res?.error) {
+					alert(res?.error)
+				}
 			}
+			catch (e) {
+				console.log("Error in dataCollectionCalls.createNewProject api ~ ", e)
+			}
+			finally {
+				dispatch(setLoading(false));
+			}
+		} else { alert('Please fill all fields!') }
+	}
+}
+
+const getProjectDetails = async (projectID: string) => {
+	try {
+		const res = await dataCollectionCalls.getProjectById(projectID);
+		if (res?.success && res?.data) {
+			dispatch(setCurrentProjectDetails(res?.data))
 		}
-		catch (e) {
-			console.log("Error in dataCollectionCalls.createNewProject api ~ ", e)
+		if (!res?.success && res?.error) {
+			alert(res?.error)
 		}
+	}
+	catch (e) {
+		console.log("Error in dataCollectionCalls.getProjectById api ~ ", e)
 	}
 }
