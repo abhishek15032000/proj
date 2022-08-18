@@ -36,12 +36,13 @@ const ProjectsStats = () => {
       ref={scrollRef}
       sx={{
         mt: 3,
-        overflowX: 'auto',
-        maxWidth: '100%',
+        // overflowX: 'auto',
+        // maxWidth: '100%',
         paddingBottom: 2,
       }}
-      style={{ marginLeft: -10 }}
+      style={{ marginLeft: -10, marginRight: -10 }}
       className="stats-row"
+      id="stats-row"
     >
       {stats?.map((stat, index) => (
         <Box key={index} className="stats-container">
