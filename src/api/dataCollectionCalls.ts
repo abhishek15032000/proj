@@ -17,6 +17,14 @@ export const dataCollectionCalls = {
       'GET'
     )
   },
+  getProjectById: (projectID: string) => {
+    return AxiosHelper(
+      `https://carbon-dev-api.shinetrace.space/carbon/api/v1/project/getProjectById?id=${projectID}`,
+      'GET'
+    ).then((res: any) => {
+      return res.data
+    })
+  },
   updateProjectSectionACall: (payload: any) => {
     //!!Example Code below
 
