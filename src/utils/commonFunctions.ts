@@ -3,3 +3,9 @@ export const deleteIndexInArray = (array: Array<any>, index: number) => {
 
   return modifiedArray
 }
+
+export const stringExtractor = (array: any[], fieldName: string) => {
+  const modifiedArray = array.map(item => item[fieldName])
+
+  return modifiedArray
+}
