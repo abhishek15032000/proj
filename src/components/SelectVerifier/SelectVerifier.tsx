@@ -107,7 +107,7 @@ const SelectVerifier = () => {
   }, [])
 
   useEffect(() => {
-    // functionality of save button enabled or disabled
+    // functionality for save button enabling and disabling
     if (selectedVerifiers.length === 0) {
       setButtonDisabled(true)
     } else {

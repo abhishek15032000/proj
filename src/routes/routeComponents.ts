@@ -62,6 +62,11 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
+    path: pathNames.SEE_ALL_PROJECTS,
+    component: SeeAllProject,
+    roles: [ROLES.ISSUER],
+  },
+  {
     path: pathNames.LIST_NEW_PROJECT,
     component: ListNewProject,
     roles: [ROLES.ISSUER],

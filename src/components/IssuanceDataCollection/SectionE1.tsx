@@ -56,8 +56,8 @@ const SectionE1 = () => {
           onImageUpload={(item: any) => {
             dispatch(
               setCalculationOfBaselineEmissionsImages([
-                ...calculationOfBaselineEmissionsImages,
                 item,
+                ...calculationOfBaselineEmissionsImages,
               ])
             )
           }}

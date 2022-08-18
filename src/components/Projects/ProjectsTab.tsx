@@ -30,7 +30,8 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
       sx={{
         p: 2,
         borderRadius: '8px',
-        mt: 4,
+        boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+        marginTop: 3,
       }}
     >
       <Box

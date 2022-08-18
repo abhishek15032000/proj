@@ -107,8 +107,8 @@ const SectionB1 = () => {
             onImageUpload={(item: any) => {
               dispatch(
                 setTechnicalDescriptionImage([
-                  ...technicalDescriptionImage,
                   item,
+                  ...technicalDescriptionImage
                 ])
               )
             }}
@@ -142,7 +142,7 @@ const SectionB1 = () => {
             mediaItem={[SectionB1ShutDownDetails]}
             imageArray={majorShutDownImage}
             onImageUpload={(item: any) => {
-              dispatch(setMajorShutDownImage([...majorShutDownImage, item]))
+              dispatch(setMajorShutDownImage([item, ...majorShutDownImage]))
             }}
             onDeleteImage={(index: number) => {
               dispatch(
@@ -161,8 +161,8 @@ const SectionB1 = () => {
             onImageUpload={(item: any) => {
               dispatch(
                 setImplementationMilestoneImage([
-                  ...implementationMilestoneImage,
                   item,
+                  ...implementationMilestoneImage,
                 ])
               )
             }}
@@ -181,7 +181,7 @@ const SectionB1 = () => {
             mediaItem={[SectionB1EventDescription]}
             imageArray={projectTimelineImage}
             onImageUpload={(item: any) => {
-              dispatch(setProjectTimelineImage([...projectTimelineImage, item]))
+              dispatch(setProjectTimelineImage([item, ...projectTimelineImage]))
             }}
             onDeleteImage={(index: number) => {
               dispatch(

@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import {
   SHINE_CONTRACTS_ABI,
   SHINE_CONTRACT_ADDRESS,
-} from '../config/blockchian.configs'
+} from '../config/blockchain.config'
 
 declare let window: any
 
