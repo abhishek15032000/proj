@@ -9,19 +9,19 @@ const SeeAllProjects = () => {
 
   return (
     <>
-      {/*<Paper elevation={2} sx={{ pt: 1, px: 2 }}>*/}
-      <TabSelector
-        tabArray={['New', 'Registered']}
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-        sx={{ marginBottom: 2 }}
-      />
-      {tabIndex === 1 ? (
-        <ProjectsUnderRegistration />
-      ) : (
-        tabIndex === 2 && <RegisteredProjects />
-      )}
-      {/*</Paper>*/}
+      <Paper elevation={2} sx={{ pt: 1, px: 2 }}>
+        <TabSelector
+          tabArray={['New', 'Registered']}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          sx={{ marginBottom: 2 }}
+        />
+        {tabIndex === 1 ? (
+          <ProjectsUnderRegistration />
+        ) : (
+          tabIndex === 2 && <RegisteredProjects />
+        )}
+      </Paper>
     </>
   )
 }

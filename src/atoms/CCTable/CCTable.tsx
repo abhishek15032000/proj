@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { CCTableProps } from './CCTable.interface'
 import { TablePagination, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -96,6 +97,7 @@ const CCTable = (props: CCTableProps) => {
               ))}
           </TableBody>
         </Table>
+        <Box sx={{ borderBottom: '1px solid rgba(0, 0, 2, 0.3)' }}></Box>
         {props?.pagination && props?.rows && (
           <TablePagination
             rowsPerPageOptions={[10, 20]}

@@ -21,6 +21,8 @@ import { ROLES } from '../../config/roles.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
+import { useLocation } from 'react-router-dom'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 const selectVerifierOptions = [
   {
@@ -89,17 +91,29 @@ const selectVerifierOptions = [
 ]
 
 const SelectVerifier = () => {
+  const location: any = useLocation()
+
   const [open, setOpen] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
   const [verifiers, setVerifiers] = useState<any[]>([])
-  const [selectedVerifiers, setSelectedVerifiers] = useState<string[]>([])
+  const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
 
   const handleClick = () => {
     setOpen(true)
   }
+
   useEffect(() => {
     getAllVerifiers()
   }, [])
+
+  useEffect(() => {
+    // functionality of save button enabled or disabled
+    if (selectedVerifiers.length === 0) {
+      setButtonDisabled(true)
+    } else {
+      setButtonDisabled(false)
+    }
+  }, [selectedVerifiers])
 
   const getAllVerifiers = async () => {
     try {
@@ -112,12 +126,44 @@ const SelectVerifier = () => {
     }
   }
 
-  const selectVerifiers = (verifierId: string) => {
-    if (selectedVerifiers.length && selectedVerifiers.includes(verifierId)) {
-      const newVerifierList = selectedVerifiers.filter((v) => v !== verifierId)
+  const createVerifier = async () => {
+    const payload = selectedVerifiers.map((verifierDetials: any) => {
+      if (
+        location.state.projectDetails &&
+        selectedVerifiers &&
+        selectedVerifiers?.length
+      ) {
+        return {
+          project_id: location?.state?.projectDetails._id,
+          project_status: 'awaiting verifier confirmation',
+          accepted_by_verifier: false,
+          accepted_by_issuer: false,
+          verifier_id: verifierDetials._id,
+          verifier_name: verifierDetials.fullName,
+          verifier_address: verifierDetials.location,
+          verifier_number: verifierDetials.contact,
+        }
+      }
+    })
+    try {
+      const res = await verifierCalls.createVerifier(payload)
+      if (res?.data?.success) {
+        alert('verifier selected successfully')
+      }
+      setOpen(false)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const selectVerifiers = (verifier: any) => {
+    if (selectedVerifiers.length && selectedVerifiers.includes(verifier)) {
+      const newVerifierList = selectedVerifiers.filter(
+        (v: any) => v !== verifier
+      )
       setSelectedVerifiers(newVerifierList)
     } else {
-      setSelectedVerifiers([...selectedVerifiers, verifierId])
+      setSelectedVerifiers([...selectedVerifiers, verifier])
     }
   }
 
@@ -145,17 +191,18 @@ const SelectVerifier = () => {
             variant="contained"
             sx={{ padding: '10px 80px', fontSize: 16, borderRadius: 20 }}
             onClick={handleClick}
-            disabled={false}
+            disabled={buttonDisabled}
           >
             Save
           </CCButton>
         </Grid>
       </Grid>
       <Grid container sx={{ mt: 2 }} spacing={3} xs={12}>
-        {/* {verifiers?.map((verifier, index) => ( */}
+        {/*{verifiers?.map((verifier: any, index: number) => (*/}
         {selectVerifierOptions?.map((verifier, index) => (
           <Grid key={index} item container xs={12} lg={6}>
             <Paper
+              elevation={4}
               sx={{
                 width: '100%',
                 display: 'flex',
@@ -176,7 +223,7 @@ const SelectVerifier = () => {
                         color: '#006B5E',
                       },
                     }}
-                    onChange={() => selectVerifiers(verifier?._id)}
+                    onChange={() => selectVerifiers(verifier)}
                   />
                   <Typography sx={{ fontSize: 18, textTransform: 'uppercase' }}>
                     {verifier?.fullName}
@@ -273,7 +320,7 @@ const SelectVerifier = () => {
                 <CCButton
                   sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
                   onClick={() => {
-                    setOpen(false)
+                    createVerifier()
                   }}
                 >
                   Yes

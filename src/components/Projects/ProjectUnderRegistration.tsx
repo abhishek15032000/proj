@@ -1,15 +1,15 @@
-import { Box, Chip, Grid, Typography, IconButton } from '@mui/material'
+import { Box, Chip, Typography, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CCTable from '../../atoms/CCTable'
-import CreateIcon from '@mui/icons-material/Create'
-import { ForkLeft } from '@mui/icons-material'
-import TextButton from '../../atoms/TextButton/TextButton'
 import CircleIcon from '@mui/icons-material/Circle'
-import WorkOutlineIcon from '@mui/icons-material/WorkOutline'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
-import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
+import { limitTitle } from '../../utils/commonFunctions'
 
 const headings = [
   'Reference ID',
@@ -22,6 +22,7 @@ const headings = [
 ]
 
 const ProjectsUnderRegistration = () => {
+  const navigate = useNavigate()
   const uuid: string = getLocalItem('uuid')
 
   const [allProjects, setAllProjects] = useState<any>()
@@ -30,27 +31,73 @@ const ProjectsUnderRegistration = () => {
     getAllProjects()
   }, [])
 
+  const handleProjectDetails = (selectedProjectDetails: any) => {
+    navigate(pathNames.SELECT_VERIFIER, {
+      state: { projectDetails: selectedProjectDetails },
+    })
+  }
+
   const getAllProjects = () => {
     dataCollectionCalls.getAllProjects(uuid).then((res: any) => {
       if (res?.data?.success) {
         const rows = res?.data?.data.map((i: any, index: number) => {
           return [
-            i?.uuid,
-            moment(i?.createdAt).format('DD/MM/YY'),
-            i?.company_name,
-            i?.location,
+            <Typography
+              key={index}
+              textAlign="start"
+              sx={{ fontSize: 15, fontWeight: 500 }}
+            >
+              {limitTitle(i?.uuid, 10)}
+            </Typography>,
+            <Typography
+              key={index}
+              textAlign="start"
+              sx={{ fontSize: 15, fontWeight: 500 }}
+            >
+              {moment(i?.createdAt).format(`DD/MM/YY`)}
+            </Typography>,
+            <Typography
+              key={index}
+              textAlign="start"
+              sx={{ fontSize: 15, fontWeight: 500 }}
+            >
+              {i?.company_name}
+            </Typography>,
+            <Typography
+              key={index}
+              textAlign="start"
+              sx={{ fontSize: 15, fontWeight: 500 }}
+            >
+              {i?.location}
+            </Typography>,
             <Chip
               sx={{ backgroundColor: '#75F8E4' }}
-              key="1"
+              key={index}
               icon={
-                <CircleIcon fontSize="small" style={{ color: '#00A392' }} />
+                <CircleIcon
+                  style={{ color: '#00A392', fontSize: 10, paddingLeft: 1 }}
+                />
               }
               label={'Finalised'}
-              //label={i?.verifierStatus}
             />,
-
-            i?.verifier,
-            <CreateOutlinedIcon key={index} />,
+            <Stack
+              key={index}
+              direction={'row'}
+              alignItems="center"
+              justifyContent={'flex-end'}
+            >
+              <img src={DataTablesBriefCase} width="35px" height="35px" />
+              <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
+                Climate Finance
+              </Typography>
+            </Stack>,
+            <Box
+              key={index}
+              sx={{ cursor: 'pointer' }}
+              onClick={() => handleProjectDetails(i)}
+            >
+              <ArrowRightIcon />
+            </Box>,
           ]
         })
         setAllProjects(rows)

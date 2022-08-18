@@ -8,126 +8,98 @@ import {
   TableCell,
   TableContainer,
   Chip,
+  Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
 import { CircleNotifications } from '@mui/icons-material'
+import moment from 'moment'
+import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
+import { limitTitle } from '../../utils/commonFunctions'
 
-const Styles = {
-  staticScroll: {
-    position: 'sticky',
-    top: 0,
-    left: 0,
-  },
-}
 const headingItems = [
   {
     index: 'referenceId',
     label: 'Reference ID',
-    minWidth: 150,
-    rowData: [4337, 4337, 4337],
-    //Styles: { background: 'red', minWidth: 150 },
+    style: {
+      minWidth: 150,
+      position: 'sticky',
+      top: 0,
+      left: 0,
+      background: '#CCE8E1',
+    },
   },
   {
     index: 'createdDt',
     label: 'Creation Dt',
-    minWidth: 150,
-    rowData: ['12/04/21', '12/04/21'],
-  },
-  { index: 'projectName', label: 'Project Name', minWidth: 150 },
-  { index: 'location', label: 'Location', minWidth: 150 },
-  { index: 'VerifierStatus', label: 'Verifier Status', minWidth: 150 },
-  { index: 'verifier', label: 'Verifier', minWidth: 150 },
-  { index: 'action', label: 'Action', minWidth: 150 },
-]
-const rows = [
-  {
-    ref: '4337',
-    createdDt: '12/04/21',
-    projectName: 'Trueno River Hydroelectric Power Plant',
-    location: 'Vilcum, Chile',
-    verifierStatus: 'Finalised',
-    verifier: 'Climate Finance',
-    action: <CreateOutlinedIcon key={1} />,
+    style: {
+      minWidth: 150,
+    },
   },
   {
-    ref: '4337',
-    createdDt: '12/04/21',
-    projectName: 'Trueno River Hydroelectric Power Plant',
-    location: 'Vilcum, Chile',
-    verifierStatus: 'Finalised',
-    verifier: 'Climate Finance',
-    action: <CreateOutlinedIcon key={1} />,
+    index: 'projectName',
+    label: 'Project Name',
+    style: {
+      minWidth: 150,
+    },
   },
   {
-    ref: '4337',
-    createdDt: '12/04/21',
-    projectName: 'Trueno River Hydroelectric Power Plant',
-    location: 'Vilcum, Chile',
-    verifierStatus: 'Finalised',
-    verifier: 'Climate Finance',
-    action: <CreateOutlinedIcon key={1} />,
+    index: 'location',
+    label: 'Location',
+    style: {
+      minWidth: 150,
+    },
   },
   {
-    ref: '4337',
-    createdDt: '12/04/21',
-    projectName: 'Trueno River Hydroelectric Power Plant',
-    location: 'Vilcum, Chile',
-    verifierStatus: 'Finalised',
-    verifier: 'Climate Finance',
-    action: <CreateOutlinedIcon key={1} />,
+    index: 'VerifierStatus',
+    label: 'Verifier Status',
+    style: {
+      minWidth: 150,
+    },
   },
   {
-    ref: '4337',
-    createdDt: '12/04/21',
-    projectName: 'Trueno River Hydroelectric Power Plant',
-    location: 'Vilcum, Chile',
-    verifierStatus: 'Finalised',
-    verifier: 'Climate Finance',
-    action: <CreateOutlinedIcon key={1} />,
+    index: 'verifier',
+    label: 'Verifier',
+    style: {
+      minWidth: 150,
+    },
   },
   {
-    ref: '4337',
-    createdDt: '12/04/21',
-    projectName: 'Trueno River Hydroelectric Power Plant',
-    location: 'Vilcum, Chile',
-    verifierStatus: 'Finalised',
-    verifier: 'Climate Finance',
-    action: <CreateOutlinedIcon key={1} />,
-  },
-  {
-    ref: '4337',
-    createdDt: '12/04/21',
-    projectName: 'Trueno River Hydroelectric Power Plant',
-    location: 'Vilcum, Chile',
-    verifierStatus: 'Finalised',
-    verifier: 'Climate Finance',
-    action: <CreateOutlinedIcon key={1} />,
+    index: 'action',
+    label: 'Action',
+    style: {
+      minWidth: 150,
+    },
   },
 ]
 
 const DashboardNewProjectsTable = () => {
-  //const uuid: string = getLocalItem('uuid')
+  const uuid: string = getLocalItem('uuid')
+
+  const [tableRows, setTableRows] = useState<any>()
 
   useEffect(() => {
     getAllProjects()
   }, [])
 
   const getAllProjects = () => {
-    //Api integrated but should make some more changes after api is modified
-    //dataCollectionCalls
-    //  .getAllProjects(uuid)
-    //  .then((res: any) => console.log('res:', res))
+    dataCollectionCalls
+      .getAllProjects(uuid)
+      .then((res: any) => {
+        if (res?.data?.success) {
+          setTableRows(res?.data?.data.slice(0, 7))
+        }
+      })
+      .catch((e: any) => console.log(e))
   }
-
   return (
     <>
       <TableContainer
         sx={{
-          //minHeight: 140,
           maxWidth: '100%',
           overflowX: 'scroll',
         }}
@@ -139,13 +111,8 @@ const DashboardNewProjectsTable = () => {
                 <TableCell
                   key={i?.index}
                   sx={{
-                    minWidth: i?.minWidth,
-                    position: `${i?.index === 'referenceId' && 'sticky'}`,
-                    top: `${i?.index === 'referenceId' && '0'}`,
-                    left: `${i?.index === 'referenceId' && '0'}`,
-                    //background: `${i?.index === 'referenceId' && 'white'}`,
+                    ...i?.style,
                     background: '#CCE8E1',
-                    color: '#000000',
                   }}
                 >
                   {i?.label}
@@ -154,50 +121,80 @@ const DashboardNewProjectsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(0, 4).map((i, index) => (
-              <TableRow
-                key={index}
-                sx={{
-                  background: `${index % 2 === 0 ? '#FFFFFF' : '#E1EEE8'}`,
-                  fontSize: 14,
-                  fontWeight: 400,
-                }}
-              >
-                <TableCell
-                  sx={{
-                    position: 'sticky',
-                    top: 0,
-                    left: 0,
-                    zIndex: 100,
-                    //background: 'white',
-                    background: `${index % 2 === 0 ? '#FFFFFF' : '#E1EEE8'}`,
-                    boxShadow: '0 0 0 15px rgba(0,0,0,19)',
-                  }}
+            {tableRows &&
+              tableRows?.length &&
+              tableRows.map((data: any, index: number) => (
+                <TableRow
+                  key={index}
+                  sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
                 >
-                  {i?.ref}
-                </TableCell>
-                <TableCell>{i?.createdDt}</TableCell>
-                <TableCell>{i?.projectName}</TableCell>
-                <TableCell>{i?.location}</TableCell>
-                <TableCell>
-                  <Chip
-                    sx={{ backgroundColor: '#75F8E4' }}
-                    key="1"
-                    icon={
-                      <CircleNotifications
-                        fontSize="small"
-                        style={{ color: '#00A392' }}
+                  <TableCell
+                    sx={{
+                      position: 'sticky',
+                      top: 0,
+                      left: 0,
+                      background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                    }}
+                  >
+                    <Typography
+                      textAlign="start"
+                      sx={{ fontSize: 15, fontWeight: 500 }}
+                    >
+                      {limitTitle(data?.uuid, 10)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                      {moment(data?.createdAt).format(`DD/MM/YY`)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                      {data?.company_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                      {data?.location}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      sx={{ backgroundColor: '#75F8E4' }}
+                      key="1"
+                      icon={
+                        <CircleNotifications
+                          fontSize="small"
+                          style={{ color: '#00A392' }}
+                        />
+                      }
+                      label={'Finalised'}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Stack
+                      key={index}
+                      direction={'row'}
+                      alignItems="center"
+                      justifyContent={'flex-end'}
+                    >
+                      <img
+                        src={DataTablesBriefCase}
+                        width="35px"
+                        height="35px"
                       />
-                    }
-                    label={'Finalised'}
-                    //label={i?.verifierStatus}
-                  />
-                  {/*{i?.verifierStatus}*/}
-                </TableCell>
-                <TableCell>{i?.verifier}</TableCell>
-                <TableCell>{i?.action}</TableCell>
-              </TableRow>
-            ))}
+                      <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
+                        Climate Finance
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell>
+                    <Box key={index} sx={{ cursor: 'pointer' }}>
+                      <ArrowRightIcon />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
