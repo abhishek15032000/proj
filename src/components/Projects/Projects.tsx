@@ -7,11 +7,12 @@ import ProfileCompletion from './ProfileCompletion'
 import AddIcon from '@mui/icons-material/Add'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import CCButton from '../../atoms/CCButton'
 
 const Projects = () => {
   const navigate = useNavigate()
   const listNewProject = () => {
-    navigate(pathNames.ISSUANCE_DATA_COLLECTION, { replace: true })
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
   }
 
   return (
@@ -27,7 +28,7 @@ const Projects = () => {
           <ProjectsTab />
         </Grid>
         <Grid item lg={3} sx={{ paddingLeft: 1 }}>
-          <Button
+          <CCButton
             variant="contained"
             sx={{
               backgroundColor: '#F3BA4D',
@@ -36,6 +37,7 @@ const Projects = () => {
               borderRadius: '100px',
               marginBottom: 4,
               marginTop: 3,
+              padding: '10px 24px 10px 16px',
             }}
             startIcon={<AddIcon style={{ color: '#005046' }} />}
             onClick={listNewProject}
@@ -45,7 +47,7 @@ const Projects = () => {
             >
               List New Project
             </Typography>
-          </Button>
+          </CCButton>
 
           <ProfileCompletion />
         </Grid>

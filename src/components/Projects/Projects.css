@@ -44,12 +44,12 @@
 }
 .stats-value{
 	font-size: 24px;
-	font-weight: 500;
+	font-weight: 400;
 	color: #C12902
 }
 .stats-title{
 	font-size: 14px;
-	font-weight: 500;
+	font-weight: 400;
 }
 .content-container {
 	justify-content: space-between;
