@@ -23,6 +23,7 @@ const TabSelector: FC<TabSelectorProps> = (props) => {
       >
         {props.tabArray?.map((tab, index) => (
           <Tab
+            sx={{ textTransform: 'unset' }}
             key={index}
             value={index + 1}
             label={tab}
