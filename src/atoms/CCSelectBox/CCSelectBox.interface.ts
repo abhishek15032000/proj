@@ -1,6 +1,5 @@
-import { SelectProps } from "@mui/material";
-
+import { SelectProps } from '@mui/material'
 
 export type CCSelectBoxProps = SelectProps & {
-    items: any[]
+  items: any[]
 }

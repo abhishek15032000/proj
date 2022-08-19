@@ -119,12 +119,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
       </Button>
 
       {uploading && (
-        <FileTab
-          key={-1}
-          title={'Uploading...'}
-          index={-1}
-          fileSize={0}
-        />
+        <FileTab key={-1} title={'Uploading...'} index={-1} fileSize={0} />
       )}
 
       {props.imageArray.map((item: any, index: number) => (
@@ -197,7 +192,7 @@ const FileTab: FC<FileTabProps> = (props) => {
 
       <CloseIcon
         onClick={() => props.deleteImage(props.index)}
-        style={{ color: '#388E81', cursor: 'pointer' }}
+        style={{ color: '#388E81' }}
       />
     </Box>
   )

@@ -11,7 +11,8 @@ export const department = {
   },
   getUsersByOrgType: (userType: string) => {
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/user/api/v1/department/getUsersByOrgType?type=' + userType,
+      'https://carbon-dev-api.shinetrace.space/user/api/v1/department/getUsersByOrgType?type=' +
+        userType,
       'GET'
     ).then((res: any) => {
       return res.data

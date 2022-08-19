@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 import { TwoFaProps } from './TwoFa.interface'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
-import { Button, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import OtpInput from 'react-otp-input'
-import { Container } from '@mui/system'
 import CCButton from '../../atoms/CCButton'
-import { Colors, Images } from '../../theme'
+import { Images } from '../../theme'
+import { getLocalItem } from '../../utils/Storage'
+import { authCalls } from '../../api/authCalls'
 
 const StepOneTwoFa = (props: TwoFaProps) => {
+  const uuid = getLocalItem('uuid')
+
   const [otp, setOtp] = useState<any>()
 
   const handleChange = (event: React.ChangeEvent<HTMLButtonElement>) => {
@@ -16,8 +19,17 @@ const StepOneTwoFa = (props: TwoFaProps) => {
   }
 
   const handleVerify = () => {
-    setOtp('')
-    props.setStep(2)
+    const payload = {
+      uuid: uuid,
+      otp: '12121',
+    }
+    authCalls.verifyOtp(payload).then((res: any) => {
+      if (res?.success && res?.data === 'verified') {
+        props.setStep(2)
+      } else {
+        alert('Please enter valid OTP')
+      }
+    })
   }
 
   return (

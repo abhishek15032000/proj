@@ -9,7 +9,7 @@ const SeeAllProjects = () => {
 
   return (
     <>
-      <Paper elevation={2} sx={{ py: 1, px: 2 }}>
+      <Paper elevation={2} sx={{ pt: 1, px: 2 }}>
         <TabSelector
           tabArray={['New', 'Registered']}
           tabIndex={tabIndex}

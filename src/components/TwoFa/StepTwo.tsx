@@ -6,8 +6,11 @@ import { Typography } from '@mui/material'
 import AccountCreatedImage from '../../assets/Images/AccountCreatedImage.png'
 import { Images } from '../../theme'
 import CCButton from '../../atoms/CCButton'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const StepTwoTwoFa = (props: TwoFaProps) => {
+  const navigate = useNavigate()
   return (
     <Grid
       container
@@ -46,7 +49,10 @@ const StepTwoTwoFa = (props: TwoFaProps) => {
             Your account has been successfully created
           </Typography>
 
-          <CCButton sx={{ mt: 2 }}> Proceed </CCButton>
+          <CCButton sx={{ mt: 2 }} onClick={() => navigate(pathNames.LOGIN)}>
+            {' '}
+            Proceed{' '}
+          </CCButton>
         </Box>
       </Grid>
       <Grid

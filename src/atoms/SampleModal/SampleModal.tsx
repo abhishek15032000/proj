@@ -64,7 +64,10 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
             }}
           >
             <Typography>{props.stringArray[index]}</Typography>
-            <CloseIcon onClick={() => props.setModalVisibility(false)} />
+            <CloseIcon
+              onClick={() => props.setModalVisibility(false)}
+              style={{ color: '#388E81', cursor: 'pointer' }}
+            />
           </Box>
 
           <Box
@@ -111,5 +114,5 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
 export default SampleModal
 
 SampleModal.defaultProps = {
-  stringArray: ['']
+  stringArray: [''],
 }

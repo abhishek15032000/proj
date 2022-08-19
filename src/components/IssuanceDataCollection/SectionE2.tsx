@@ -10,107 +10,62 @@ import React, { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import SampleModal from '../../atoms/SampleModal/SampleModal'
 import AttachMore from '../../atoms/AttachMore/AttachMore'
-const SectionE2 = () => {
-  const [imagedata, addMoreImages] = useState<
-    Array<{ key: number; imageUrl: string }>
-  >([])
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import SectionE2CalculationOfProjectEmission from '../../assets/Images/SampleData/SectionE2CalculationOfProjectEmission.png'
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks'
+import {
+  setCalculationOfProjectEmissions,
+  setCalculationOfProjectEmissionsImages,
+} from '../../redux/Slices/sectionESlice'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 
-  const [index, setindex] = useState(-1)
-  const [showModal, setShowModal] = useState(false)
-  const addMoreImageUpload = (event: any) => {
-    if (event?.target?.files?.length) {
-      const selectedFile = event.target.files[0]
-      console.log('selectedFile', selectedFile)
-      const objectUrl = URL.createObjectURL(selectedFile)
-      console.log('selectedFile', selectedFile)
-      if (objectUrl) {
-        const imageTempobj = {
-          key: index + 1,
-          imageUrl: objectUrl,
-        }
-        const arr = [...imagedata]
-        arr.push(imageTempobj)
-        addMoreImages(arr)
-        setindex(index + 1)
-      }
-    }
-  }
+const SectionE2 = () => {
+  const dispatch = useAppDispatch()
+
+  const calculationOfProjectEmissions = useAppSelector(
+    ({ sectionE }) => sectionE.calculationOfProjectEmissions
+  )
+
+  const calculationOfProjectEmissionsImages = useAppSelector(
+    ({ sectionE }) => sectionE.calculationOfProjectEmissionsImages
+  )
+
   return (
-    <Grid container flexDirection="column" xs={12} height={'100vh'}>
-      <Typography
-        sx={{
-          fontSize: '16px',
-          color: ' #667080',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '500',
-          marginTop: '30px',
-          marginBottom: '5px',
-          width: '79%',
-        }}
-      >
-        Calculation of project emissions or actual net GHG removals by sinks
-      </Typography>
-      <TextareaAutosize
-        placeholder="(Calculation of project emissions or actual net GHG removals by sinks, if any)"
-        style={{
-          height: '150px',
-          width: '79%',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '400',
-          fontSize: '14px',
-          color: '#667080;',
-        }}
-      />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '79%',
-          marginTop: '20px',
-        }}
-      >
-        <Typography
-          style={{
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '14px',
-            color: '#667080',
+    <Grid container sx={{ mt: 3 }}>
+      <Grid item xs={12}>
+        <CCMultilineTextArea
+          label="Calculation of project emissions or actual net GHG removals by sinks"
+          placeholder="Calculation of project emissions or actual net GHG removals by sinks, if any"
+          value={calculationOfProjectEmissions}
+          onChange={(event) =>
+            dispatch(setCalculationOfProjectEmissions(event.target.value))
+          }
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <CCDropAndUpload
+          title={'Attach relevant datas & docs'}
+          mediaTitle={['Sample Report - Calculation of project emissions']}
+          mediaItem={[SectionE2CalculationOfProjectEmission]}
+          imageArray={calculationOfProjectEmissionsImages}
+          onImageUpload={(item: any) => {
+            dispatch(
+              setCalculationOfProjectEmissionsImages([
+                ...calculationOfProjectEmissionsImages,
+                item,
+              ])
+            )
           }}
-        >
-          Attach relevant datas & docs
-        </Typography>
-        <Typography
-          onClick={() => setShowModal(true)}
-          sx={{
-            textDecoration: 'underline',
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '600',
-            fontSize: '14px',
-            color: '#667080',
+          onDeleteImage={(index: number) => {
+            dispatch(
+              setCalculationOfProjectEmissionsImages(
+                deleteIndexInArray(calculationOfProjectEmissionsImages, index)
+              )
+            )
           }}
-        >
-          View Sample Data
-        </Typography>
-      </Box>
-      <AttachMore
-        imagedata={imagedata}
-        addMoreImageUpload={(event: any) => {
-          addMoreImageUpload(event)
-        }}
-      />
-      <SampleModal
-        mediaArray={[require('../../assets/Images/SectionE2.png')]}
-        stringArray={[
-          'Sample Report - Calculation of project emissions or actual net GHG removals',
-        ]}
-        modalVisibility={showModal}
-        setModalVisibility={setShowModal}
-      />
+        />
+      </Grid>
     </Grid>
   )
 }

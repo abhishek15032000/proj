@@ -1,6 +1,5 @@
 import React from 'react'
 import { LogoProps } from './Logo.interface'
-import logo from '../../assets/Images/logo/logo.svg'
 import { Images } from '../../theme'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'

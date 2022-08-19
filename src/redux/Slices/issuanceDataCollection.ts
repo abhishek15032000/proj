@@ -26,6 +26,7 @@ const issuanceDataCollection = createSlice({
   },
 })
 
-export const { setSectionIndex, setSubSectionIndex, setCurrentProjectDetails } = issuanceDataCollection.actions
+export const { setSectionIndex, setSubSectionIndex, setCurrentProjectDetails } =
+  issuanceDataCollection.actions
 
 export default issuanceDataCollection.reducer

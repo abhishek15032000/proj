@@ -1,5 +1,6 @@
 export interface CCTableProps {
-	headings: string[]
-	rows?: any[]
-	maxWidth?: any
+  headings: string[]
+  rows?: any[]
+  maxWidth?: any
+  pagination?: boolean
 }
