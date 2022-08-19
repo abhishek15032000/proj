@@ -1,5 +1,4 @@
 import {
-  Grid,
   Stack,
   Table,
   TableHead,
@@ -12,7 +11,6 @@ import {
 } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
 import { CircleNotifications } from '@mui/icons-material'
@@ -20,6 +18,10 @@ import moment from 'moment'
 import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import { limitTitle } from '../../utils/commonFunctions'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollection'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const headingItems = [
   {
@@ -78,6 +80,9 @@ const headingItems = [
 ]
 
 const DashboardNewProjectsTable = () => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   const uuid: string = getLocalItem('uuid')
 
   const [tableRows, setTableRows] = useState<any>()
@@ -96,6 +101,14 @@ const DashboardNewProjectsTable = () => {
       })
       .catch((e: any) => console.log(e))
   }
+
+  const openProjectDetails = (projectDetails: any) => {
+    if (projectDetails) {
+      dispatch(setCurrentProjectDetails(projectDetails))
+      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+    }
+  }
+
   return (
     <>
       <TableContainer
@@ -189,8 +202,11 @@ const DashboardNewProjectsTable = () => {
                     </Stack>
                   </TableCell>
                   <TableCell>
-                    <Box key={index} sx={{ cursor: 'pointer' }}>
-                      <ArrowRightIcon />
+                    <Box key={index}>
+                      <ArrowRightIcon
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => openProjectDetails(data)}
+                      />
                     </Box>
                   </TableCell>
                 </TableRow>
