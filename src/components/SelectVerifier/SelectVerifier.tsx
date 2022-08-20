@@ -33,7 +33,6 @@ const selectVerifierOptions = [
     mail: 'www.awm.net',
     location:
       '3800 Clermont Street NW North Lawrence, Ohio 44666, USA www.asterglobal.com',
-
     director:
       'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
   },

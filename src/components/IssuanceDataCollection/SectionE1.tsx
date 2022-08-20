@@ -1,15 +1,5 @@
-import {
-  Button,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-} from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../atoms/AttachMore/AttachMore'
+import { Grid } from '@mui/material'
+import React from 'react'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import SectionE1GHGEmissionBaseline from '../../assets/Images/SampleData/SectionE1GHGEmissionBaseline.png'

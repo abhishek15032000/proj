@@ -23,7 +23,7 @@ const projectDetails = {
   duration: 2,
   area: '1000',
 }
-const tabs = ['Issuance Details', 'Verifier & Report']
+const tabs = ['Issuance Details', 'Verifier & Reports']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -64,18 +64,38 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     {
       title: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
       place: 'Hixson, USA',
+      location: '6430 Hixson Pike Hixson, TN 37343 USA www.awm.net',
+      website: 'www.awm.net',
+      director:
+        'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
+      contact: '423-843-2206',
+      mail: 'www.awm.net',
       status: true,
       verfierOption: 'Finalise Verifier',
     },
     {
       title: 'DILLON CONSULTING LIMITED',
       place: 'Toronto, Ontario',
+      location:
+        '235 Yorkland Boulevard, Suite 800 Toronto, Ontario M2J 4Y8 www.dillon.ca',
+      website: 'www.awm.net',
+      director:
+        'Zachary Zehr Project Manager & Lead Verifier 1-519-571-9833 ext. 3151 zzehr@dillon.ca',
+      contact: '423-843-2206',
+      mail: 'www.awm.net',
       status: true,
       verfierOption: 'Finalise Verifier',
     },
     {
       title: ' ASTER GLOBAL ENVIRONMENTAL SOLUTIONS, INC.',
       place: 'Ohio, USA',
+      location:
+        '3800 Clermont Street NW North Lawrence, Ohio 44666, USA www.asterglobal.com',
+      website: 'www.awm.net',
+      director:
+        'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
+      contact: '423-843-2206',
+      mail: 'www.awm.net',
       status: false,
       verfierOption: '2 days left',
     },
