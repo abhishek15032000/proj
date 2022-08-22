@@ -121,11 +121,6 @@ const IssuanceDataCollection = () => {
     ({ issuanceDataCollection }) => issuanceDataCollection.subSectionIndex,
     shallowEqual
   )
-  const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
-    shallowEqual
-  )
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
@@ -165,7 +160,7 @@ const IssuanceDataCollection = () => {
               <KeyboardArrowLeft
                 sx={{ cursor: 'pointer' }}
                 onClick={() => {
-                  navigate(pathNames.DASHBOARD, { replace: true })
+                  navigate(-1)
                 }}
               />
               <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>

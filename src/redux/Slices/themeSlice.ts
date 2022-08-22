@@ -18,6 +18,7 @@ declare module "@mui/material/Button" {
 export const initialState: ThemeOptions = {
 	typography: {
 		fontFamily: ['"Poppins"'].join(","),
+		fontSize: 14,
 	},
 	palette: {
 		primary: {

@@ -18,6 +18,10 @@ import moment from 'moment'
 import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import { limitTitle } from '../../utils/commonFunctions'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollection'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const headingItems = [
   {
@@ -78,6 +82,9 @@ const headingItems = [
 ]
 
 const DashboardNewProjectsTable = () => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   const uuid: string = getLocalItem('uuid')
 
   const [tableRows, setTableRows] = useState<any>()
@@ -107,6 +114,13 @@ const DashboardNewProjectsTable = () => {
       setShowBorder(true)
     } else if (event.currentTarget.scrollLeft < 2) {
       setShowBorder(false)
+    }
+  }
+
+  const openProjectDetails = (projectDetails: any) => {
+    if (projectDetails) {
+      dispatch(setCurrentProjectDetails(projectDetails))
+      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
     }
   }
 
@@ -223,8 +237,11 @@ const DashboardNewProjectsTable = () => {
                     </Stack>
                   </TableCell>
                   <TableCell>
-                    <Box key={index} sx={{ cursor: 'pointer' }}>
-                      <ArrowRightIcon />
+                    <Box key={index}>
+                      <ArrowRightIcon
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => openProjectDetails(data)}
+                      />
                     </Box>
                   </TableCell>
                 </TableRow>

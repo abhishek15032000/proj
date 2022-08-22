@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography } from '@mui/material'
@@ -10,6 +10,11 @@ import IssuanceInfoList from './IssuanceInfoList'
 import VerifierReport from './VerifierReport'
 import { Colors } from '../../theme'
 import { KeyboardArrowLeft } from '@mui/icons-material'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import moment from 'moment'
 
 const projectDetails = {
   company_name:
@@ -26,40 +31,16 @@ const projectDetails = {
 const tabs = ['Issuance Details', 'Verifier & Reports']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
-  const [tabIndex, setTabIndex] = useState(1)
-  const [issuanceInfo, setIssuanceInfo] = useState([
-    {
-      title: 'Project Introduction',
-      status: true,
-      completionPercent: 100,
-    },
-    {
-      title: 'Sec A: Description of Project Activity',
-      status: true,
-      completionPercent: 100,
-    },
-    {
-      title: 'Sec B: Implementation of the project activity',
-      status: true,
-      completionPercent: 100,
-    },
-    {
-      title: 'Sec C: Description of Monitoring Activity',
-      status: false,
-      completionPercent: 0,
-    },
-    {
-      title: 'Sec D: Data and parameters',
-      status: true,
-      completionPercent: 100,
-    },
-    {
-      title:
-        'Sec E: Calculation of emission reductions or GHG removals by sinks',
-      status: true,
-      completionPercent: 100,
-    },
-  ])
+  const navigate = useNavigate()
+
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+
+  const [tabIndex, setTabIndex] = useState(0)
+  const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
   const [VerifierReports, setVerifierReports] = useState([
     {
       title: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
@@ -101,27 +82,83 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     },
   ])
 
+  useEffect(() => {
+    if (currentProjectDetails) {
+      const issuanceInfoTabData = [
+        {
+          title: 'Project Introduction',
+          status: true,
+          completionPercent: 100,
+        },
+        {
+          title: 'Sec A: Description of Project Activity',
+          status: currentProjectDetails?.section_a?.completionStatus,
+          completionPercent: currentProjectDetails?.section_a?.completionStatus
+            ? 100
+            : 0,
+        },
+        {
+          title: 'Sec B: Implementation of the project activity',
+          status: currentProjectDetails?.section_b?.completionStatus,
+          completionPercent: currentProjectDetails?.section_a?.completionStatus
+            ? 100
+            : 0,
+        },
+        {
+          title: 'Sec C: Description of Monitoring Activity',
+          status: currentProjectDetails?.section_b?.completionStatus,
+          completionPercent: currentProjectDetails?.section_a?.completionStatus
+            ? 100
+            : 0,
+        },
+        {
+          title: 'Sec D: Data and parameters',
+          status: currentProjectDetails?.section_d?.completionStatus,
+          completionPercent: currentProjectDetails?.section_a?.completionStatus
+            ? 100
+            : 0,
+        },
+        {
+          title:
+            'Sec E: Calculation of emission reductions or GHG removals by sinks',
+          status: currentProjectDetails?.section_e?.completionStatus,
+          completionPercent: currentProjectDetails?.section_a?.completionStatus
+            ? 100
+            : 0,
+        },
+      ]
+      setIssuanceInfo(issuanceInfoTabData)
+    }
+  }, [currentProjectDetails])
+
   return (
-    <Box sx={{ p: 1 }}>
+    <Box sx={{ p: 1, fontSize: 14 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <KeyboardArrowLeft />
+        <KeyboardArrowLeft
+          sx={{ cursor: 'pointer' }}
+          onClick={() => {
+            navigate(pathNames.DASHBOARD, { replace: true })
+          }}
+        />
         <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
-          List New Project
+          Project Details
         </Typography>
       </Box>
       <Paper sx={{ mt: 3 }}>
         <Grid container>
           <Grid item xs={10} sx={{ p: 2 }}>
             <Typography sx={{ fontSize: 24 }}>
-              {projectDetails?.company_name}
+              {currentProjectDetails?.company_name}
             </Typography>
-            <Box sx={{ display: 'flex', mt: 2 }}>
-              {projectDetails?.type?.map((type, index) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
+              {currentProjectDetails?.type?.map((type: any, index: number) => (
                 <Box
                   sx={{
+                    fontSize: 14,
                     color: '#191C1B',
                     backgroundColor: '#E8F3EF',
                     padding: '2px 4px',
+                    mt: 1,
                     mr: 1,
                   }}
                   key={index}
@@ -131,12 +168,20 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               ))}
             </Box>
             <Box sx={{ display: 'flex', mt: 2 }}>
-              <TodayIcon sx={{ color: '#006B5E', mr: 1 }} />
-              <Typography>Started on {projectDetails?.start_date}</Typography>
+              <TodayIcon sx={{ color: '#006B5E', mr: 1, fontSize: 18 }} />
+              <Box>
+                Started on{' '}
+                {currentProjectDetails?.createdAt &&
+                  moment(currentProjectDetails?.createdAt).format('L')}
+              </Box>
             </Box>
             <Box sx={{ display: 'flex', mt: 1 }}>
-              <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-              <Typography>{projectDetails?.location}</Typography>
+              <PlaceOutlinedIcon
+                sx={{ color: '#006B5E', mr: 1, fontSize: 18 }}
+              />
+              <Typography sx={{ fontSize: 14 }}>
+                {projectDetails?.location}
+              </Typography>
             </Box>
           </Grid>
           <Grid item xs={2}>
@@ -156,16 +201,16 @@ const ProfileDetailsIssuanceInfo: FC = () => {
             <Box
               key={index}
               sx={{
-                px: 2,
                 py: 1,
+                mr: 2,
                 fontSize: 16,
                 fontWeight: 500,
                 color: tabIndex === index ? Colors.darkPrimary1 : '#7B9690',
                 cursor: 'pointer',
                 borderBottom:
                   tabIndex === index
-                    ? `4px solid ${Colors.darkPrimary1}`
-                    : '2px solid #7B9690',
+                    ? `2px solid ${Colors.darkPrimary1}`
+                    : '1px solid #7B9690',
               }}
               onClick={() => setTabIndex(index)}
             >
@@ -174,7 +219,9 @@ const ProfileDetailsIssuanceInfo: FC = () => {
           ))}
         </Box>
 
-        {tabIndex === 0 && <IssuanceInfoList data={issuanceInfo} />}
+        {tabIndex === 0 && (
+          <IssuanceInfoList data={issuanceInfo && issuanceInfo} />
+        )}
         {tabIndex === 1 && <VerifierReport data={VerifierReports} />}
       </Paper>
     </Box>
