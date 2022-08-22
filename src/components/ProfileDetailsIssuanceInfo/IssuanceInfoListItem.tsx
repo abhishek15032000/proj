@@ -1,71 +1,84 @@
-// React Imports
 import React, { FC } from 'react'
-
-// MUI Imports
-import { Box, Grid, List, ListItem, Typography } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-
-// Local Imports
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CircleIcon from '@mui/icons-material/Circle'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { setSectionIndex } from '../../redux/Slices/issuanceDataCollection'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 interface IssuanceInfoListItemProps {
-  title?: string
-  status?: boolean
+  data: any
+  index: number
 }
 
 const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const moveToSection = (index: number) => {
+    dispatch(setSectionIndex(index))
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+  }
+
   return (
-    <Box
+    <Grid
+      container
       sx={{
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        paddingLeft: 3,
-        borderBottom: '1px solid',
-        minHeight: '90px',
+        backgroundColor: '#E8F3EF',
+        mt: 1,
+        p: 2,
       }}
     >
-      <List sx={{ listStyleType: 'disc' }}>
-        <ListItem sx={{ display: 'list-item', paddingLeft: 0 }}>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {props.title}
-          </Typography>
-        </ListItem>
-      </List>
-
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <Grid item xs={6} sx={{ px: 2, display: 'flex', alignItems: 'center' }}>
+        <Typography sx={{ fontSize: 16, fontWeight: 500, cursor: 'pointer' }}>
+          <CircleIcon sx={{ fontSize: 8, mr: 1 }} />
+          {props?.data?.title}
+        </Typography>
+      </Grid>
+      <Grid item xs={2}>
+        <Typography
+          sx={{
+            fontSize: 14,
+            color:
+              props?.data?.completionPercent === 100 ? '#006B5E' : '#BA1B1B',
+          }}
+        >
+          {props?.data?.completionPercent} % Complete
+        </Typography>
+      </Grid>
+      <Grid item xs={2}>
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             marginRight: 10,
           }}
         >
-          <Box
-            sx={{
-              height: '20px',
-              width: '20px',
-              backgroundColor: '#7ACB9F',
-              borderRadius: '10px',
-              marginRight: 1,
-            }}
-          />
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {props.status ? 'Complete' : 'Incomplete'}
+          {props?.data?.status ? (
+            <CheckCircleIcon sx={{ color: '#7ACB9F', mr: 1 }} />
+          ) : (
+            <CircleIcon sx={{ color: '#F7CA56', mr: 1 }} />
+          )}
+          <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+            {props?.data?.status ? 'Complete' : 'In Progress'}
           </Typography>
         </Box>
-        <Box sx={{ marginRight: 5 }}>
-          <ChevronRightIcon />
+      </Grid>
+      <Grid item container xs={2} justifyContent="center">
+        <Box sx={{ marginRight: 5, display: 'flex', alignItems: 'end' }}>
+          <ChevronRightIcon
+            sx={{ fontSize: 28, color: '#7ACB9F', cursor: 'pointer' }}
+            onClick={() => moveToSection(props?.index)}
+          />
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   )
 }
 
