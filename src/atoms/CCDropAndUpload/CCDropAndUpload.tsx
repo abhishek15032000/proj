@@ -62,19 +62,20 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}>
           {props.title}
         </Typography>
-
-        <Typography
-          onClick={() => setShowModal(true)}
-          sx={{
-            fontSize: 16,
-            fontWeight: 500,
-            color: '#2B2B2B',
-            textDecoration: 'underline',
-            cursor: 'pointer',
-          }}
-        >
-          Check Sample Data
-        </Typography>
+        {props.mediaItem.length > 0 && (
+          <Typography
+            onClick={() => setShowModal(true)}
+            sx={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: '#2B2B2B',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+            }}
+          >
+            Check Sample Data
+          </Typography>
+        )}
       </Box>
 
       <Box
@@ -119,12 +120,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
       </Button>
 
       {uploading && (
-        <FileTab
-          key={-1}
-          title={'Uploading...'}
-          index={-1}
-          fileSize={0}
-        />
+        <FileTab key={-1} title={'Uploading...'} index={-1} fileSize={0} />
       )}
 
       {props.imageArray.map((item: any, index: number) => (
