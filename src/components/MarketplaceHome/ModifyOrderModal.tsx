@@ -9,6 +9,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
 import CCTitleValue from '../../atoms/CCTitleValue/CCTitleValue'
 import TextButton from '../../atoms/TextButton/TextButton'
+import { Colors } from '../../theme'
+import styles from './styles'
 
 interface ModifyOrderModalProps {}
 
@@ -23,31 +25,33 @@ const ModifyOrderModal: FC<ModifyOrderModalProps> = () => {
       }}
     >
       <Box
-        sx={{
-          width: '600px',
-          height: '390px',
-          borderRadius: '12px',
-          // border: '2px solid',
-          position: 'relative',
-          paddingTop: 2,
-          paddingLeft: 2,
-          backgroundColor: '#FFF',
-        }}
+        sx={styles.ModifyOrderModal}
       >
-        <Typography sx={{ fontSize: 20, fontWeight: 500, marginLeft: 1 }}>
+        <Typography
+          sx={{
+            fontSize: 28,
+            fontWeight: 400,
+            // marginLeft: 1,
+            color: Colors.tertiary,
+          }}
+        >
           Modify Order
+        </Typography>
+
+        <Typography sx={{ fontSize: 14, fontWeight: 400, color: Colors.darkGreen }}>
+          Please select the dates for monthly report update
         </Typography>
 
         <LabelInput
           label="Quantity"
-          sx={{ marginTop: 2 }}
+          sx={{ marginTop: 2, marginLeft: 0 }}
           textFieldSx={{ width: '90%' }}
         />
 
-        <CCTitleValue
-          title="Unit Price"
-          value="144"
-          sx={{ marginTop: 3, width: '60%', marginLeft: 1 }}
+        <LabelInput
+          label="Unit Price"
+          sx={{ marginTop: 2, marginLeft: 0 }}
+          textFieldSx={{ width: '90%' }}
         />
 
         <CCTitleValue
@@ -61,7 +65,7 @@ const ModifyOrderModal: FC<ModifyOrderModalProps> = () => {
             position: 'absolute',
             height: '80px',
             width: '100%',
-            backgroundColor: '#B6B7B9',
+            backgroundColor: Colors.lightGray,
             bottom: 0,
             right: 0,
             borderBottomLeftRadius: '12px',
@@ -77,12 +81,14 @@ const ModifyOrderModal: FC<ModifyOrderModalProps> = () => {
               width: '120px',
               borderRadius: '24px',
               margin: 2,
+              textTransform: 'none',
+              backgroundColor: Colors.lightGray,
             }}
             variant="contained"
-            endIcon={<DeleteIcon />}
+            startIcon={<DeleteIcon style={{ color: Colors.textColorLightGreen }} />}
           >
-            <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
-              Remove
+            <Typography sx={{ fontSize: 14, fontWeight: 500, color: Colors.textColorLightGreen }}>
+              Delete
             </Typography>
           </Button>
 
@@ -95,8 +101,21 @@ const ModifyOrderModal: FC<ModifyOrderModalProps> = () => {
               margin: 2,
             }}
           >
-            <TextButton title="Cancel" sx={{ margin: 1 }} />
-            <TextButton title="Save Changes" sx={{ margin: 1 }} />
+            <TextButton
+              sx={{
+                width: '150px',
+                margin: 1,
+                border: `2px solid ${Colors.accent}`,
+                backgroundColor: Colors.lightGray,
+              }}
+              textStyle={{ color: Colors.textColorDarkGreen }}
+              title="Cancel"
+            />
+            <TextButton
+              sx={{ width: '150px', margin: 1, backgroundColor: Colors.accent }}
+              textStyle={{ color: Colors.textColorDarkGreen }}
+              title="Save Changes"
+            />
           </Box>
         </Box>
       </Box>

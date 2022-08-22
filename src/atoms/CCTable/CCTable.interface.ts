@@ -3,4 +3,6 @@ export interface CCTableProps {
   rows?: any[]
   maxWidth?: any
   pagination?: boolean
+  tableSx?: any
+  sx?: any
 }

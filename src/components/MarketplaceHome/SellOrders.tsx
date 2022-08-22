@@ -47,7 +47,7 @@ const rows = [
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <TextButton
-        title="Modify"
+        title="Verify"
         sx={{
           height: '40px',
           width: '100px',
@@ -89,7 +89,7 @@ const rows = [
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <TextButton
-        title="Modify"
+        title="Verify"
         sx={{
           height: '40px',
           width: '100px',
@@ -131,7 +131,7 @@ const rows = [
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <TextButton
-        title="Modify"
+        title="Verify"
         sx={{
           height: '40px',
           width: '100px',
@@ -172,7 +172,7 @@ const rows = [
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <TextButton
-        title="Modify"
+        title="Verify"
         sx={{
           height: '40px',
           width: '100px',

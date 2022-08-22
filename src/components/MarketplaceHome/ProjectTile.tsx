@@ -3,6 +3,8 @@ import React, { FC } from 'react'
 
 // MUI Imports
 import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Colors } from '../../theme';
 
 // Local Imports
 
@@ -13,8 +15,8 @@ const ProjectTile: FC<ProjectTileProps> = () => {
     <Grid item sm={12} md={6} lg={4}>
       <Paper
         sx={{
-          height: '240px',
-          width: '320px',
+          height: '280px',
+          width: '360px',
           margin: 2,
           borderRadius: '12px',
         }}
@@ -22,11 +24,11 @@ const ProjectTile: FC<ProjectTileProps> = () => {
         <Box
           component="img"
           src={
-            'https://images.unsplash.com/photo-1657299156653-d3c0147ba3ee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+            'https://www.firstbenefits.org/wp-content/uploads/2017/10/placeholder.png'
           }
           sx={{
             width: '100%',
-            height: '130px',
+            height: '140px',
             borderTopLeftRadius: '12px',
             borderTopRightRadius: '12px',
           }}
@@ -34,35 +36,31 @@ const ProjectTile: FC<ProjectTileProps> = () => {
         <Box
           sx={{
             width: '100%',
-            height: '65px',
+            // height: '65px',
             display: 'grid',
             alignItems: 'center',
             paddingLeft: 1,
           }}
         >
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            Project 1
-          </Typography>
-          <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
-            Dolor ut augue sociis nec viverra scelerisque.
+          <Typography sx={{ fontSize: 14, fontWeight: 500, margin: 1 }}>
+            3.66 MW poultry litter based power generation project by Raus Power
+            in India
           </Typography>
         </Box>
-        <Divider />
+        {/* <Divider /> */}
         <Box
           sx={{
             width: '100%',
-            height: '35px',
+            // height: '35px',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: 1,
           }}
         >
-          <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
-            05.09.2021
-          </Typography>
-          <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
-            Mumbai, India
+          <LocationOnIcon style={{ margin: 2, color: Colors.textColorLightGreen }} />
+          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+            6430 Hixson Pike, Hixson, TN 37343, USA | 9,900 hectares.
           </Typography>
         </Box>
       </Paper>

@@ -65,10 +65,10 @@ const CCTable = (props: CCTableProps) => {
     <>
       <TableContainer
         component={Paper}
-        sx={{ mt: 1, minWidth: 700, maxWidth: props.maxWidth }}
+        sx={{ mt: 1, minWidth: 700, maxWidth: props.maxWidth, ...props.sx }}
       >
         <Table
-          sx={{ minWidth: 700, maxWidth: props.maxWidth }}
+          sx={{ minWidth: 700, maxWidth: props.maxWidth, ...props.tableSx }}
           aria-label="customized table"
         >
           <TableHead>
