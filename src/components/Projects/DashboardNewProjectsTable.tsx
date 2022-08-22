@@ -26,9 +26,11 @@ const headingItems = [
     style: {
       minWidth: 150,
       position: 'sticky',
+      zindex: 1999,
       top: 0,
       left: 0,
       background: '#CCE8E1',
+      display: 'block',
     },
   },
   {
@@ -79,6 +81,8 @@ const DashboardNewProjectsTable = () => {
   const uuid: string = getLocalItem('uuid')
 
   const [tableRows, setTableRows] = useState<any>()
+  const [showBorder, setShowBorder] = useState<boolean>(false)
+  const [showFullReferenceId, setShowFullReferenceId] = useState<boolean>(false)
 
   useEffect(() => {
     getAllProjects()
@@ -88,16 +92,28 @@ const DashboardNewProjectsTable = () => {
     dataCollectionCalls
       .getAllProjects(uuid)
       .then((res: any) => {
-        //console.log(res)
         if (res?.data?.success) {
           setTableRows(res?.data?.data.slice(0, 7))
         }
       })
       .catch((e: any) => console.log(e))
   }
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    if (
+      event.currentTarget.scrollLeft < 474 &&
+      event.currentTarget.scrollLeft >= 2
+    ) {
+      setShowBorder(true)
+    } else if (event.currentTarget.scrollLeft < 2) {
+      setShowBorder(false)
+    }
+  }
+
   return (
     <>
       <TableContainer
+        onScroll={handleScroll}
         sx={{
           maxWidth: '100%',
           overflowX: 'scroll',
@@ -112,6 +128,15 @@ const DashboardNewProjectsTable = () => {
                   sx={{
                     ...i?.style,
                     background: '#CCE8E1',
+                    //display: i?.index === 'referenceId' && showBorder && 'inlin',
+                    boxShadow:
+                      i?.index === 'referenceId' && showBorder
+                        ? '3px 0px 2px rgba(0,0,0,0.5)'
+                        : 'none',
+                    //borderRight:
+                    //  i?.index === 'referenceId' && showBorder
+                    //    ? '2px solid rgba(0,0,0,0.5)'
+                    //    : 'none',
                   }}
                 >
                   {i?.label}
@@ -125,14 +150,19 @@ const DashboardNewProjectsTable = () => {
               tableRows.map((data: any, index: number) => (
                 <TableRow
                   key={index}
-                  sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
+                  sx={{
+                    background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                  }}
                 >
                   <TableCell
+                    onMouseEnter={() => setShowFullReferenceId(true)}
+                    onMouseLeave={() => setShowFullReferenceId(false)}
                     sx={{
                       position: 'sticky',
                       top: 0,
                       left: 0,
                       background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                      //boxShadow: 3,
                     }}
                   >
                     <Typography
@@ -140,6 +170,11 @@ const DashboardNewProjectsTable = () => {
                       sx={{ fontSize: 15, fontWeight: 500 }}
                     >
                       {limitTitle(data?.uuid, 10)}
+                      {/*{showFullReferenceId && (
+                        <Box sx={{ position: 'absolute' }}>
+                          {data[index]?.uuid}
+                        </Box>
+                      )}*/}
                     </Typography>
                   </TableCell>
                   <TableCell>

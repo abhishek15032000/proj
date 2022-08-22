@@ -21,8 +21,9 @@ import { ROLES } from '../../config/roles.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { verifierCalls } from '../../api/verifierCalls.api'
+import { pathNames } from '../../routes/pathNames'
 
 const selectVerifierOptions = [
   {
@@ -90,6 +91,7 @@ const selectVerifierOptions = [
 ]
 
 const SelectVerifier = () => {
+  const navigate = useNavigate()
   const location: any = useLocation()
 
   const [open, setOpen] = useState<boolean>(false)
@@ -147,9 +149,10 @@ const SelectVerifier = () => {
     try {
       const res = await verifierCalls.createVerifier(payload)
       if (res?.data?.success) {
+        setOpen(false)
         alert('verifier selected successfully')
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
       }
-      setOpen(false)
     } catch (err) {
       console.log(err)
     }

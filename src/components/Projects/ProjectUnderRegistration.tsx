@@ -39,6 +39,7 @@ const ProjectsUnderRegistration = () => {
 
   const getAllProjects = () => {
     dataCollectionCalls.getAllProjects(uuid).then((res: any) => {
+      console.log(res)
       if (res?.data?.success) {
         const rows = res?.data?.data.map((i: any, index: number) => {
           return [

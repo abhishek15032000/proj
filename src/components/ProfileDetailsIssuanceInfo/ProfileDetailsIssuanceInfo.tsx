@@ -26,7 +26,7 @@ const projectDetails = {
 const tabs = ['Issuance Details', 'Verifier & Reports']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(1)
   const [issuanceInfo, setIssuanceInfo] = useState([
     {
       title: 'Project Introduction',
