@@ -4,11 +4,31 @@ import React, { useState } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CCInputField from '../../atoms/CCInputField'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import {
+  setStartDate,
+  setFromDate,
+  setToDate,
+  setBriefOnCreditingPeriod,
+} from '../../redux/Slices/sectionASlice'
 const SectionA5 = () => {
-  const [startDate, setStartDate] = useState<Date | null>(null)
-  const [fromDate, setFromDate] = useState<Date | null>(null)
-  const [toDate, setToDate] = useState<Date | null>(null)
+  const dispatch = useAppDispatch()
+
+  const startDate = useAppSelector(
+    ({ sectionA }) => sectionA.startDate,
+    shallowEqual
+  )
+
+  const fromDate = useAppSelector(
+    ({ sectionA }) => sectionA.fromDate,
+    shallowEqual
+  )
+  const toDate = useAppSelector(({ sectionA }) => sectionA.toDate, shallowEqual)
+  const brief_on_crediting_period = useAppSelector(
+    ({ sectionA }) => sectionA.brief_on_crediting_period,
+    shallowEqual
+  )
 
   return (
     <>
@@ -19,7 +39,7 @@ const SectionA5 = () => {
             label="Start date of 1st crediting period "
             value={startDate}
             onChange={(newValue) => {
-              setStartDate(newValue)
+              dispatch(setStartDate(newValue))
             }}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -32,7 +52,7 @@ const SectionA5 = () => {
             label="Crediting from "
             value={fromDate}
             onChange={(newValue) => {
-              setFromDate(newValue)
+              dispatch(setFromDate(newValue))
             }}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -45,7 +65,7 @@ const SectionA5 = () => {
             label="Crediting end "
             value={toDate}
             onChange={(newValue) => {
-              setToDate(newValue)
+              dispatch(setToDate(newValue))
             }}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -57,6 +77,10 @@ const SectionA5 = () => {
           <CCMultilineTextArea
             label="Brief on crediting period"
             placeholder="Write a brief on commencement of crediting period"
+            value={brief_on_crediting_period}
+            onChange={(e) =>
+              dispatch(setBriefOnCreditingPeriod(e.target.value))
+            }
           />
         </Grid>
       </Grid>
