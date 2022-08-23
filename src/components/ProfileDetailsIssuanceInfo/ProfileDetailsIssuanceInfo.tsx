@@ -15,6 +15,7 @@ import { shallowEqual } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import moment from 'moment'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 const projectDetails = {
   company_name:
@@ -38,49 +39,51 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-
-  const [tabIndex, setTabIndex] = useState(0)
+  //console.log(currentProjectDetails)
+  const [tabIndex, setTabIndex] = useState(1)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
-  const [VerifierReports, setVerifierReports] = useState([
-    {
-      title: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
-      place: 'Hixson, USA',
-      location: '6430 Hixson Pike Hixson, TN 37343 USA www.awm.net',
-      website: 'www.awm.net',
-      director:
-        'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
-      contact: '423-843-2206',
-      mail: 'www.awm.net',
-      status: true,
-      verfierOption: 'Finalise Verifier',
-    },
-    {
-      title: 'DILLON CONSULTING LIMITED',
-      place: 'Toronto, Ontario',
-      location:
-        '235 Yorkland Boulevard, Suite 800 Toronto, Ontario M2J 4Y8 www.dillon.ca',
-      website: 'www.awm.net',
-      director:
-        'Zachary Zehr Project Manager & Lead Verifier 1-519-571-9833 ext. 3151 zzehr@dillon.ca',
-      contact: '423-843-2206',
-      mail: 'www.awm.net',
-      status: true,
-      verfierOption: 'Finalise Verifier',
-    },
-    {
-      title: ' ASTER GLOBAL ENVIRONMENTAL SOLUTIONS, INC.',
-      place: 'Ohio, USA',
-      location:
-        '3800 Clermont Street NW North Lawrence, Ohio 44666, USA www.asterglobal.com',
-      website: 'www.awm.net',
-      director:
-        'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
-      contact: '423-843-2206',
-      mail: 'www.awm.net',
-      status: false,
-      verfierOption: '2 days left',
-    },
-  ])
+  const [verifierReports, setVerifierReports] = useState<any>([])
+
+  //const [VerifierReports, setVerifierReports] = useState([
+  //  {
+  //    title: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
+  //    place: 'Hixson, USA',
+  //    location: '6430 Hixson Pike Hixson, TN 37343 USA www.awm.net',
+  //    website: 'www.awm.net',
+  //    director:
+  //      'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
+  //    contact: '423-843-2206',
+  //    mail: 'www.awm.net',
+  //    status: true,
+  //    verfierOption: 'Finalise Verifier',
+  //  },
+  //  {
+  //    title: 'DILLON CONSULTING LIMITED',
+  //    place: 'Toronto, Ontario',
+  //    location:
+  //      '235 Yorkland Boulevard, Suite 800 Toronto, Ontario M2J 4Y8 www.dillon.ca',
+  //    website: 'www.awm.net',
+  //    director:
+  //      'Zachary Zehr Project Manager & Lead Verifier 1-519-571-9833 ext. 3151 zzehr@dillon.ca',
+  //    contact: '423-843-2206',
+  //    mail: 'www.awm.net',
+  //    status: true,
+  //    verfierOption: 'Finalise Verifier',
+  //  },
+  //  {
+  //    title: ' ASTER GLOBAL ENVIRONMENTAL SOLUTIONS, INC.',
+  //    place: 'Ohio, USA',
+  //    location:
+  //      '3800 Clermont Street NW North Lawrence, Ohio 44666, USA www.asterglobal.com',
+  //    website: 'www.awm.net',
+  //    director:
+  //      'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
+  //    contact: '423-843-2206',
+  //    mail: 'www.awm.net',
+  //    status: false,
+  //    verfierOption: '2 days left',
+  //  },
+  //])
 
   useEffect(() => {
     if (currentProjectDetails) {
@@ -130,6 +133,22 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       setIssuanceInfo(issuanceInfoTabData)
     }
   }, [currentProjectDetails])
+
+  //useEffect(() => {
+  //  getVerifierByProject()
+  //}, [])
+
+  //const getVerifierByProject = () => {
+  //  verifierCalls
+  //    .getVerifierByProjectId('62fe2a4ed52b366464ec345f')
+  //    .then((res) => {
+  //      console.log(res)
+  //      if (res?.data?.success) {
+  //        setVerifierReports(res?.data?.data)
+  //      }
+  //    })
+  //    .catch((err) => console.log(err))
+  //}
 
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
@@ -222,7 +241,9 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         {tabIndex === 0 && (
           <IssuanceInfoList data={issuanceInfo && issuanceInfo} />
         )}
-        {tabIndex === 1 && <VerifierReport data={VerifierReports} />}
+        {tabIndex === 1 && (
+          <VerifierReport currentProjectId={currentProjectDetails?._id} />
+        )}
       </Paper>
     </Box>
   )

@@ -16,7 +16,7 @@ export const verifierCalls = {
       'POST',
       payload
     ).then((res) => {
-      return res
+      return res?.data
     })
   },
   getVerifierByProjectId: (token: any) => {
@@ -24,7 +24,7 @@ export const verifierCalls = {
       `https://carbon-dev-api.shinetrace.space/carbon/api/v1/verifier/getVerifierByProjectId?id=${token}`,
       'GET'
     ).then((res) => {
-      return res
+      return res?.data
     })
   },
 }

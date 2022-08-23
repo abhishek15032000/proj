@@ -7,7 +7,7 @@ interface FinaliseSelectedVerifiersModalProps {
   title: string
   modalVisibility: boolean
   setModalVisibility: any
-  setConfirmVerifier: any
+  updateVerifierAPI: any
 }
 
 const FinaliseSelectedVerifiersModal: FC<
@@ -66,7 +66,7 @@ const FinaliseSelectedVerifiersModal: FC<
                 sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
                 onClick={() => {
                   props.setModalVisibility(false)
-                  props.setConfirmVerifier(true)
+                  props.updateVerifierAPI()
                 }}
               >
                 Yes

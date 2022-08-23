@@ -117,6 +117,7 @@ const SelectVerifier = () => {
   }, [selectedVerifiers])
 
   const getAllVerifiers = async () => {
+    // will use the API for getting verifier list once the verifier flow started to get verifier's
     try {
       const res = await department.getUsersByOrgType(ROLES?.VERIFIER)
       if (res.data) {
