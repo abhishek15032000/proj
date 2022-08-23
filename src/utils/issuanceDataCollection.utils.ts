@@ -1,3 +1,4 @@
+import { jsonSchema } from 'uuidv4'
 import { dataCollectionCalls } from '../api/dataCollectionCalls'
 import {
   setCurrentProjectDetails,
@@ -59,6 +60,7 @@ export const moveToNextSection = async (
       alert('Please fill all fields!')
     }
   }
+
   if (sectionIndex === 1) {
     const sectionA: any = store.getState()?.sectionA
     const newProjectData = store.getState()?.newProject
@@ -164,15 +166,100 @@ export const moveToNextSection = async (
     }
   }
 
-  if (sectionIndex === 3) {
-    const sectionC: any = store.getState()?.sectionC
+  if (sectionIndex === 2) {
+    const sectionB: any = store.getState()?.sectionB
     const newProjectData = store.getState()?.newProject
+    const issuanceDataCollection = store.getState()?.issuanceDataCollection
+
+    const {
+      briefOnPurpuse,
+      technicalDescription,
+      technicalDescriptionImage,
+      operationalDetails,
+      majorShutDownImage,
+      implementationMilestoneImage,
+      projectTimelineImage,
+      temporaryDeviations,
+      corrections,
+      permanentChanges,
+      briefOnPurpuseB2,
+      changesToProject,
+      changesToStart,
+    } = sectionB
+
+    let params = {}
+    if (subSectionIndex === 0) {
+      params = {
+        step1: {
+          general_description: briefOnPurpuse,
+          technical_description: technicalDescription,
+          data_tables_technical_description_attach: stringExtractor(
+            technicalDescriptionImage,
+            'fileName'
+          ),
+          operational_description: operationalDetails,
+          shut_down_details_attach: stringExtractor(
+            majorShutDownImage,
+            'fileName'
+          ),
+          implementation_milestones_attach: stringExtractor(
+            implementationMilestoneImage,
+            'fileName'
+          ),
+          project_timeline_attach: stringExtractor(
+            projectTimelineImage,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 1) {
+      params = {
+        step2: {
+          temporary_deviation: temporaryDeviations,
+          corrections: corrections,
+          permanent_changes_from_registered_monitoring_plan: permanentChanges,
+          change_project_design: changesToProject,
+          change_startDate_creditPeriod: changesToStart,
+          typeOf_changes_specific: briefOnPurpuseB2,
+        },
+      }
+    }
 
     // Change 'String' to actual values
     const payload = {
-      _id: 'string',
-      uuid: newProjectData.newProjectUUID,
-      project_id: 'string',
+      _id: issuanceDataCollection?.currentProjectDetails?.section_b?._id,
+      uuid: issuanceDataCollection?.currentProjectDetails?.section_b?.uuid,
+      project_id:
+        issuanceDataCollection?.currentProjectDetails?.section_b?.project_id,
+      ...params,
+    }
+
+    try {
+      const res = await dataCollectionCalls.updateProjectSectionBCall(payload)
+      if (res?.success && res?.data?.uuid) {
+        dispatch(setNewProjectUUID(res?.data?.uuid))
+        dispatch(setSectionIndex(sectionIndex + 1))
+        dispatch(setSubSectionIndex(0))
+      }
+      if (!res?.success && res?.error) {
+        alert(res?.error)
+      }
+    } catch (e) {
+      console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    }
+  }
+
+  if (sectionIndex === 3) {
+    const sectionC: any = store.getState()?.sectionC
+    const newProjectData = store.getState()?.newProject
+    const issuanceDataCollection = store.getState()?.issuanceDataCollection
+
+    // Change 'String' to actual values
+    const payload = {
+      _id: issuanceDataCollection?.currentProjectDetails?.section_c?._id,
+      uuid: issuanceDataCollection?.currentProjectDetails?.section_c?.uuid,
+      project_id:
+        issuanceDataCollection?.currentProjectDetails?.section_c?.project_id,
       step1: {
         description: sectionC.monitoringSystem,
         monitoring_plan: sectionC.monitoringPlan,
