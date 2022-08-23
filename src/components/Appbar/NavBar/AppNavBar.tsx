@@ -20,10 +20,10 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 // import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import { Button, Grid } from '@mui/material'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 // import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded'
 // import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+
 import { pathNames } from '../../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 
@@ -244,7 +244,10 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             aria-label="show 17 new notifications"
             color="primary"
           >
-            <Badge badgeContent={17} color="error">
+            <Badge
+              // badgeContent={17}
+              color="error"
+            >
               <NotificationsOutlinedIcon />
             </Badge>
           </IconButton>

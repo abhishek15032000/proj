@@ -193,7 +193,7 @@ const FileTab: FC<FileTabProps> = (props) => {
 
       <CloseIcon
         onClick={() => props.deleteImage(props.index)}
-        style={{ color: '#388E81', cursor: 'pointer' }}
+        style={{ color: '#388E81' }}
       />
     </Box>
   )

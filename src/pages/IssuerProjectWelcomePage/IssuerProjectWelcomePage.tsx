@@ -7,9 +7,12 @@ import { IssuerProjectWelcomePageProps } from './IssuerProjectWelcomePage.interf
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { setLoadWallet } from '../../redux/Slices/walletSlice'
 
 const IssuerProjectWelcomePage = (props: IssuerProjectWelcomePageProps) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   return (
     <Grid container component="main">
       <Grid
@@ -57,7 +60,7 @@ const IssuerProjectWelcomePage = (props: IssuerProjectWelcomePageProps) => {
           <PaperLabelAndButton
             label="Please complete wallet creation/ linking process"
             endIcon={<ArrowForwardIcon />}
-            onClick={() => alert('HI')}
+            onClick={() => dispatch(setLoadWallet(true))}
             buttonLabel={'Create/link Wallet'}
           />
           <PaperLabelAndButton

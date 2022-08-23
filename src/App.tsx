@@ -8,6 +8,8 @@ import { loginAction } from './redux/Slices/authSlice'
 import RouteController from './routes/RouteController'
 import { getLocalItem } from './utils/Storage'
 import { LocalizationProvider } from '@mui/x-date-pickers'
+import { Toaster } from 'react-hot-toast'
+import { Colors } from './theme'
 import { shallowEqual } from 'react-redux'
 type AppProps = {
   appName?: string

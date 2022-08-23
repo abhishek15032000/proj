@@ -5,7 +5,6 @@ import MaintenancePage from '../pages/MaintenancePage'
 import MarketplaceHome from '../pages/MarketplaceHome'
 import ProfileDetailsIssuanceInfo from '../pages/ProfileDetailsIssuanceInfo'
 import SelectVerifier from '../pages/Issuer/SelectVerifierPage/SelectVerifier'
-
 import ProjectsPage from '../pages/Issuer/ProjectsPage/ProjectsPage'
 import ProjectList from '../pages/ProjectList'
 import ListNewProject from '../pages/ListNewProject'
@@ -27,12 +26,6 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Dashboard,
     roles: [ROLES.ISSUER],
   },
-  //{
-  //  path: pathNames.ACCOUNT_CREATED_PAGE,
-  //  component: AccountCreatedPage,
-  //  sidebarName: linkLabels.Projects,
-  //  roles: [ROLES.ISSUER],
-  //},
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,
@@ -76,6 +69,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.LIST_NEW_PROJECT,
     component: ListNewProject,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.SEE_ALL_PROJECTS,
+    component: SeeAllProject,
     roles: [ROLES.ISSUER],
   },
   {

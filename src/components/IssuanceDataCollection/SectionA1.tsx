@@ -21,6 +21,11 @@ import {
 } from '../../redux/Slices/sectionASlice'
 const SectionA1 = () => {
   const dispatch = useAppDispatch()
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
   const purpose_and_description = useAppSelector(
     ({ sectionA }) => sectionA.purpose_and_description,
@@ -59,10 +64,18 @@ const SectionA1 = () => {
   const onSubmitSectionA = async () => {
     const payload = { _id: '', uuid: '', project_id: '', step1: {} }
 
-    payload._id = 'step1'
-    payload.uuid = 'b04782d3-2d4a-4f8d-9854-0deac633b1e4'
-    payload.project_id = 'step12355'
-    payload.step1 = {}
+    payload._id = currentProjectDetails?.section_a?._id
+    payload.uuid = currentProjectDetails?.section_a?.uuid
+    payload.project_id = currentProjectDetails?.section_a?.project_id
+    payload.step1 = {
+      purpose_and_description: purpose_and_description,
+      measure_taken_for_gas_emissions: measure_taken_for_gas_emissions,
+      brief_description_installed_tech: brief_description_installed_tech,
+      project_comissioning_date: commissioning_date,
+      construction_date: construction_date,
+      operation_period: operation_period,
+      total_GHG_emission: total_GHG_emission,
+    }
 
     try {
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
@@ -76,6 +89,9 @@ const SectionA1 = () => {
     }
   }
 
+  {
+    console.log('currentProjectDetails<<<<<', currentProjectDetails)
+  }
   return (
     <Grid container sx={{ mt: 3 }} spacing={1} xs={12} md={12} lg={12} xl={12}>
       <Grid item sx={{ mt: 1 }} xs={12}>

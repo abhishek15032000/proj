@@ -1,117 +1,62 @@
+import { Grid } from '@mui/material'
+import React from 'react'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import SectionE4CalculationSummaryOfEmissionReductions from '../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
 import {
-  Button,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-} from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../atoms/AttachMore/AttachMore'
+  setCalculationSummaryOfEmission,
+  setCalculationSummaryOfEmissionImages,
+} from '../../redux/Slices/sectionESlice'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 const SectionE4 = () => {
-  const [imagedata, addMoreImages] = useState<
-    Array<{ key: number; imageUrl: string }>
-  >([])
+  const dispatch = useAppDispatch()
 
-  const [index, setindex] = useState(-1)
-  const [showModal, setShowModal] = useState(false)
-  const addMoreImageUpload = (event: any) => {
-    if (event?.target?.files?.length) {
-      const selectedFile = event.target.files[0]
-      console.log('selectedFile', selectedFile)
-      const objectUrl = URL.createObjectURL(selectedFile)
-      console.log('selectedFile', selectedFile)
-      if (objectUrl) {
-        const imageTempobj = {
-          key: index + 1,
-          imageUrl: objectUrl,
-        }
-        const arr = [...imagedata]
-        arr.push(imageTempobj)
-        addMoreImages(arr)
-        setindex(index + 1)
-      }
-    }
-  }
+  const calculationSummaryOfEmission = useAppSelector(
+    ({ sectionE }) => sectionE.calculationSummaryOfEmission
+  )
+  const calculationSummaryOfEmissionImages = useAppSelector(
+    ({ sectionE }) => sectionE.calculationSummaryOfEmissionImages
+  )
   return (
-    <Grid container flexDirection="column" xs={12} height={'100vh'}>
-      <Typography
-        sx={{
-          fontSize: '16px',
-          color: ' #667080',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '500',
-          marginTop: '30px',
-          marginBottom: '5px',
-          width: '79%',
-        }}
-      >
-        Summary of calculation of emission reductions or net anthropogenic GHG
-        removals by sinks
-      </Typography>
-      <TextareaAutosize
-        placeholder="(Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks, if any)"
-        style={{
-          height: '150px',
-          width: '79%',
-          fontFamily: 'Poppins',
-          fontStyle: 'normal',
-          fontWeight: '400',
-          fontSize: '14px',
-          color: '#667080;',
-        }}
-      />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '79%',
-          marginTop: '20px',
-        }}
-      >
-        <Typography
-          style={{
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '500',
-            fontSize: '14px',
-            color: '#667080',
+    <Grid container sx={{ mt: 3 }}>
+      <Grid item xs={12}>
+        <CCMultilineTextArea
+          label={
+            'Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks'
+          }
+          placeholder="Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks, if any"
+          value={calculationSummaryOfEmission}
+          onChange={(e) =>
+            dispatch(setCalculationSummaryOfEmission(e.target.value))
+          }
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <CCDropAndUpload
+          title={'Attach relevant datas & docs'}
+          mediaTitle={[
+            'Sample Report - Calculation summary of emission reductions',
+          ]}
+          mediaItem={[SectionE4CalculationSummaryOfEmissionReductions]}
+          imageArray={calculationSummaryOfEmissionImages}
+          onImageUpload={(item: any) => {
+            dispatch(
+              setCalculationSummaryOfEmissionImages([
+                ...calculationSummaryOfEmissionImages,
+                item,
+              ])
+            )
           }}
-        >
-          Attach relevant datas & docs
-        </Typography>
-        <Typography
-          onClick={() => setShowModal(true)}
-          sx={{
-            textDecoration: 'underline',
-            fontFamily: 'Poppins',
-            fontStyle: 'normal',
-            fontWeight: '600',
-            fontSize: '14px',
-            color: '#667080',
+          onDeleteImage={(index: number) => {
+            dispatch(
+              setCalculationSummaryOfEmissionImages(
+                deleteIndexInArray(calculationSummaryOfEmissionImages, index)
+              )
+            )
           }}
-        >
-          View Sample Data
-        </Typography>
-      </Box>
-      <AttachMore
-        imagedata={imagedata}
-        addMoreImageUpload={(event: any) => {
-          addMoreImageUpload(event)
-        }}
-      />
-      <SampleModal
-        mediaArray={[require('../../assets/Images/SectionE4.png')]}
-        stringArray={[
-          'Sample Report - Calculation summary of emission reductions or net anthropogenic GHG removals',
-        ]}
-        modalVisibility={showModal}
-        setModalVisibility={setShowModal}
-      />
+        />
+      </Grid>
     </Grid>
   )
 }

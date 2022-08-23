@@ -47,12 +47,32 @@ export const dataCollectionCalls = {
       return res.data
     })
   },
+  updateProjectSectionCCall: (payload: any) => {
+    //!!Example Code below
 
+    return AxiosHelper(
+      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionC/update',
+      'POST',
+      payload
+    ).then((res: any) => {
+      return res.data
+    })
+  },
   updateProjectSectionDCall: (payload: any) => {
     //!!Example Code below
 
     return AxiosHelper(
       'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionD/update',
+      'POST',
+      payload
+    ).then((res: any) => {
+      return res.data
+    })
+  },
+
+  updateProjectSectionECall: (payload: any) => {
+    return AxiosHelper(
+      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionE/update',
       'POST',
       payload
     ).then((res: any) => {

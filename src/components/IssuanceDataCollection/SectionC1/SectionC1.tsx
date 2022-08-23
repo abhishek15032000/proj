@@ -86,7 +86,7 @@ const SectionC1 = () => {
             imageArray={organizationalChartImage}
             onImageUpload={(item: any) => {
               dispatch(
-                setOrganizationalChartImage([...organizationalChartImage, item])
+                setOrganizationalChartImage([item, ...organizationalChartImage])
               )
             }}
             onDeleteImage={(index: number) => {

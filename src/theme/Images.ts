@@ -13,5 +13,5 @@ export const Images = {
   illustration3,
   check1,
   ProjectCompletion,
-  BriefcaseIcon
+  BriefcaseIcon,
 }

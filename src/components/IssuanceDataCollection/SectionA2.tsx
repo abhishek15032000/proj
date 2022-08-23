@@ -148,7 +148,7 @@ const SectionA2 = () => {
       </Grid>
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCDropAndUpload
-          mediaTitle={[]}
+          mediaTitle={['Sample Report - Implementation of Milestones']}
           title="Upload location map images"
           mediaItem={[]}
           imageArray={file_attach}

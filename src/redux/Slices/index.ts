@@ -10,6 +10,7 @@ import sectionC from './sectionCSlice'
 import sectionA from './sectionASlice'
 import sectionD from './sectionDSlice'
 import wallet from './walletSlice'
+import sectionE from './sectionESlice'
 // TODO: rename names
 export default {
   auth,
@@ -21,4 +22,5 @@ export default {
   wallet,
   sectionA,
   sectionD,
+  sectionE,
 }
