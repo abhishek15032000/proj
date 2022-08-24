@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import './App.css'
 import AppDrawer from './components/Appbar/Drawer/AppDrawer'
+import LoaderOverlay from './components/LoderOverlay'
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
 import { loginAction } from './redux/Slices/authSlice'
 import RouteController from './routes/RouteController'
@@ -108,7 +109,7 @@ const App: FC<AppProps> = () => {
   }, [])
 
   return waitingAccessCheck ? (
-    <div>loading</div>
+    <LoaderOverlay show />
   ) : (
     <>
       {/* For using mui DatePicker */}
