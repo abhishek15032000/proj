@@ -1,14 +1,18 @@
 import { Grid } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import SectionE4CalculationSummaryOfEmissionReductions from '../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
 import {
+  setActualEmissionReductions,
+  setActualEmissionReductionsImages,
   setCalculationSummaryOfEmission,
   setCalculationSummaryOfEmissionImages,
 } from '../../redux/Slices/sectionESlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { shallowEqual } from 'react-redux'
 const SectionE4 = () => {
   const dispatch = useAppDispatch()
 
@@ -18,6 +22,24 @@ const SectionE4 = () => {
   const calculationSummaryOfEmissionImages = useAppSelector(
     ({ sectionE }) => sectionE.calculationSummaryOfEmissionImages
   )
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectData(currentProjectDetails?.section_e?.project_id)
+      .then((res) => {
+        const { calculation_of_emissions_reduction, attach_relevant_docs } =
+          res.data.section_e.step4
+
+        dispatch(
+          setActualEmissionReductions(calculation_of_emissions_reduction)
+        )
+        dispatch(setActualEmissionReductionsImages(attach_relevant_docs))
+      })
+  }, [])
   return (
     <Grid container sx={{ mt: 3 }}>
       <Grid item xs={12}>

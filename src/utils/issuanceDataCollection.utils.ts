@@ -72,7 +72,7 @@ export const moveToNextSection = async (
         indicate_party_involved: item.isProjectParticipant,
       }
     })
-    step4data = sectionA.projectParticipants.map((item: any) => {
+    step4data = sectionA.methodologies.map((item: any) => {
       return {
         methodology: item.approvedMethodologies,
         project_type: item.projectType,
@@ -204,35 +204,153 @@ export const moveToNextSection = async (
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
 
+    let params = {}
+    if (subSectionIndex === 0) {
+      params = {
+        step1: {
+          data_and_parameter_fixed_ExAnte:
+            sectionD.data_and_parameter_fixed_ExAnte,
+          attach_ex_ante_table: stringExtractor(
+            sectionD.attach_ex_ante_table,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 1) {
+      params = {
+        step2: {
+          data_and_parameter_monitored_ExPost:
+            sectionD.data_and_parameter_monitored_ExPost,
+          attach_ex_ante_table: stringExtractor(
+            sectionD.attach_ex_post_table,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 2) {
+      params = {
+        step3: {
+          implementation_of_sampling_plan: sectionD.briefDescription,
+        },
+      }
+    }
     // Change 'String' to actual values
     const payload = {
-      _id: issuanceDataCollection?.currentProjectDetails?.section_a?._id,
-      uuid: issuanceDataCollection?.currentProjectDetails?.section_a?.uuid,
+      _id: issuanceDataCollection?.currentProjectDetails?.section_d?._id,
+      uuid: issuanceDataCollection?.currentProjectDetails?.section_d?.uuid,
       project_id:
-        issuanceDataCollection?.currentProjectDetails?.section_a?.project_id,
-      step1: {
-        data_and_parameter_fixed_ExAnte:
-          sectionD.data_and_parameter_fixed_ExAnte,
-        attach_ex_ante_table: stringExtractor(
-          sectionD.attach_ex_ante_table,
-          'fileName'
-        ),
-      },
-      step2: {
-        data_and_parameter_monitored_ExPost:
-          sectionD.data_and_parameter_monitored_ExPost,
-        attach_ex_ante_table: stringExtractor(
-          sectionD.attach_ex_post_table,
-          'fileName'
-        ),
-      },
-      step3: {
-        implementation_of_sampling_plan: sectionD.briefDescription,
-      },
+        issuanceDataCollection?.currentProjectDetails?.section_d?.project_id,
+      ...params,
     }
 
     try {
       const res = await dataCollectionCalls.updateProjectSectionDCall(payload)
+      if (res?.success && res?.data?.uuid) {
+        dispatch(setNewProjectUUID(res?.data?.uuid))
+        dispatch(setSectionIndex(sectionIndex + 1))
+        dispatch(setSubSectionIndex(0))
+      }
+      if (!res?.success && res?.error) {
+        alert(res?.error)
+      }
+    } catch (e) {
+      console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    }
+  }
+
+  if (sectionIndex === 5) {
+    const sectionE: any = store.getState()?.sectionE
+    const newProjectData = store.getState()?.newProject
+    const issuanceDataCollection = store.getState()?.issuanceDataCollection
+
+    let params = {}
+    if (subSectionIndex === 0) {
+      params = {
+        step1: {
+          calculation_of_baselineEmissions_or_net_GHG:
+            sectionE.calculationOfBaselineEmissions,
+          attach_relevant_docs: stringExtractor(
+            sectionE.calculationOfBaselineEmissionsImages,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 1) {
+      params = {
+        step2: {
+          calculation_of_projectEmissions_or_net_GHG:
+            sectionE.calculationOfProjectEmissions,
+          attach_relevant_docs: stringExtractor(
+            sectionE.calculationOfProjectEmissionsImages,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 2) {
+      params = {
+        step3: {
+          calculation_of_leakage: sectionE.calculationOfLeakage,
+          attach_relevant_docs: stringExtractor(
+            sectionE.calculationOfLeakageImages,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 3) {
+      params = {
+        step4: {
+          calculation_of_emissions_reduction:
+            sectionE.calculationSummaryOfEmission,
+          attach_relevant_docs: stringExtractor(
+            sectionE.calculationSummaryOfEmissionImages,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 4) {
+      params = {
+        step5: {
+          comparison_of_actual_emission_reduction:
+            sectionE.comparisionOfActualEmissionReductions,
+          attach_relevant_docs: stringExtractor(
+            sectionE.comparisionOfActualEmissionReductionsImages,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 5) {
+      params = {
+        step6: {
+          remark_on_difference_from_estimate_value:
+            sectionE.remarksOnDifferenceFromEstimatedValue,
+          attach_relevant_docs: stringExtractor(
+            sectionE.remarksOnDifferenceFromEstimatedValueImages,
+            'fileName'
+          ),
+        },
+      }
+    } else if (subSectionIndex === 6) {
+      params = {
+        step7: {
+          actual_emission_reductions: sectionE.actualEmissionReductions,
+          attach_relevant_docs: stringExtractor(
+            sectionE.actualEmissionReductionsImages,
+            'fileName'
+          ),
+        },
+      }
+    }
+    // Change 'String' to actual values
+    const payload = {
+      _id: issuanceDataCollection?.currentProjectDetails?.section_e?._id,
+      uuid: issuanceDataCollection?.currentProjectDetails?.section_e?.uuid,
+      project_id:
+        issuanceDataCollection?.currentProjectDetails?.section_e?.project_id,
+      ...params,
+    }
+
+    try {
+      const res = await dataCollectionCalls.updateProjectSectionECall(payload)
       if (res?.success && res?.data?.uuid) {
         dispatch(setNewProjectUUID(res?.data?.uuid))
         dispatch(setSectionIndex(sectionIndex + 1))

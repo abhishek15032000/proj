@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import CCButton from '../../atoms/CCButton'
 import CCInputField from '../../atoms/CCInputField'
@@ -30,6 +30,27 @@ import { deleteIndexInArray } from '../../utils/commonFunctions'
 
 const SectionA2 = () => {
   const dispatch = useAppDispatch()
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectData(currentProjectDetails?.section_a?.project_id)
+      .then((res) => {
+        console.log('res', res)
+        const { country, state, city, pincode, landmark, file_attach } =
+          res.data.section_a.step2
+
+        dispatch(setCity(city))
+        dispatch(setCountry(country))
+        dispatch(setState(state))
+        dispatch(setPincode(pincode))
+        dispatch(setLandmark(landmark))
+        dispatch(setFileAttach(file_attach))
+      })
+  }, [])
 
   const country = useAppSelector(
     ({ sectionA }) => sectionA.country,
@@ -49,25 +70,6 @@ const SectionA2 = () => {
     ({ sectionA }) => sectionA.file_attach,
     shallowEqual
   )
-
-  const onSubmitSectionA = async () => {
-    const payload = { _id: '', uuid: '', project_id: '', step2: {} }
-    payload._id = 'step2'
-    payload.uuid = 'b04782d3-2d4a-4f8d-9854-0deac633b1e4'
-    payload.project_id = 'step12355'
-    payload.step2 = {}
-
-    try {
-      const res = await dataCollectionCalls.updateProjectSectionACall(payload)
-      if (res?.success && res?.data) {
-        console.log('res', res)
-      } else if (res?.error) {
-        alert(res?.error)
-      }
-    } catch (e: any) {
-      console.log('Error in authCalls.loginCall api', e)
-    }
-  }
 
   return (
     <Grid

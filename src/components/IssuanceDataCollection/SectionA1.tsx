@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CCInputField from '../../atoms/CCInputField'
 import CCTextarea from '../../atoms/CCTextarea'
@@ -21,11 +21,40 @@ import {
 } from '../../redux/Slices/sectionASlice'
 const SectionA1 = () => {
   const dispatch = useAppDispatch()
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectData(currentProjectDetails?.section_a?.project_id)
+      .then((res) => {
+        const {
+          purpose_and_description,
+          measure_taken_for_gas_emissions,
+          brief_description_installed_tech,
+          project_comissioning_date,
+          construction_date,
+          operation_period,
+          total_GHG_emission,
+        } = res.data.section_a.step1
+
+        dispatch(setPurposeAndDescription(purpose_and_description))
+        dispatch(
+          setMeasureTakenForGasEmissions(measure_taken_for_gas_emissions)
+        )
+        dispatch(
+          setBriefDescriptionInstalledTech(brief_description_installed_tech)
+        )
+        dispatch(setCommissioningDate(project_comissioning_date))
+        dispatch(setConstructionDate(construction_date))
+        dispatch(setOperationPeriod(operation_period))
+        dispatch(setTotalGHGEmission(total_GHG_emission))
+      })
+  }, [])
 
   const purpose_and_description = useAppSelector(
     ({ sectionA }) => sectionA.purpose_and_description,
@@ -61,37 +90,10 @@ const SectionA1 = () => {
     shallowEqual
   )
 
-  const onSubmitSectionA = async () => {
-    const payload = { _id: '', uuid: '', project_id: '', step1: {} }
-
-    payload._id = currentProjectDetails?.section_a?._id
-    payload.uuid = currentProjectDetails?.section_a?.uuid
-    payload.project_id = currentProjectDetails?.section_a?.project_id
-    payload.step1 = {
-      purpose_and_description: purpose_and_description,
-      measure_taken_for_gas_emissions: measure_taken_for_gas_emissions,
-      brief_description_installed_tech: brief_description_installed_tech,
-      project_comissioning_date: commissioning_date,
-      construction_date: construction_date,
-      operation_period: operation_period,
-      total_GHG_emission: total_GHG_emission,
-    }
-
-    try {
-      const res = await dataCollectionCalls.updateProjectSectionACall(payload)
-      if (res?.success && res?.data) {
-        console.log('res', res)
-      } else if (res?.error) {
-        alert(res?.error)
-      }
-    } catch (e: any) {
-      console.log('Error in authCalls.loginCall api', e)
-    }
-  }
-
   {
-    console.log('currentProjectDetails<<<<<', currentProjectDetails)
+    console.log('purpose_and_description', purpose_and_description)
   }
+
   return (
     <Grid container sx={{ mt: 3 }} spacing={1} xs={12} md={12} lg={12} xl={12}>
       <Grid item sx={{ mt: 1 }} xs={12}>

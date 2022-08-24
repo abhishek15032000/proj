@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import SectionE4CalculationSummaryOfEmissionReductions from '../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
@@ -9,6 +9,8 @@ import {
   setCalculationOfLeakageImages,
 } from '../../redux/Slices/sectionESlice'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { shallowEqual } from 'react-redux'
 
 const SectionE3 = () => {
   const dispatch = useAppDispatch()
@@ -19,6 +21,24 @@ const SectionE3 = () => {
   const calculationOfleakageimages = useAppSelector(
     ({ sectionE }) => sectionE.calculationOfLeakageImages
   )
+
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectData(currentProjectDetails?.section_e?.project_id)
+      .then((res) => {
+        const { calculation_of_leakage, attach_relevant_docs } =
+          res.data.section_e.step3
+
+        dispatch(setCalculationOfLeakage(calculation_of_leakage))
+        dispatch(setCalculationOfLeakageImages(attach_relevant_docs))
+      })
+  }, [])
+
   return (
     <Grid container sx={{ mt: 3 }}>
       <Grid item sm={12}>
