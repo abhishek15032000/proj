@@ -98,7 +98,6 @@ const DashboardNewProjectsTable = () => {
     dataCollectionCalls
       .getAllProjects(uuid)
       .then((res: any) => {
-        console.log(res)
         if (res?.data?.success) {
           setTableRows(res?.data?.data.slice(0, 7))
         }

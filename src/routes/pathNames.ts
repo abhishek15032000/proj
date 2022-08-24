@@ -16,11 +16,12 @@ export const pathNames = {
   LIST_NEW_PROJECT: '/list-new-project',
   SELECT_VERIFIER: '/select-verifier',
   SEE_ALL_PROJECTS: '/see-all-projects',
+  TOKEN_CONTRACT: '/token-contract',
 }
 
 export const linkLabels = {
   Dashboard: 'Dashboard',
   Token_Contract: 'Token & Contract',
   My_Portfolio: 'My Portfolio',
-  Marketplace: "Marketplace"
+  Marketplace: 'Marketplace',
 }
