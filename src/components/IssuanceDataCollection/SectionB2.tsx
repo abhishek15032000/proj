@@ -23,9 +23,15 @@ import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 const SectionB2 = () => {
   const dispatch = useAppDispatch()
 
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+
   useEffect(() => {
     dataCollectionCalls
-      .getProjectData('80459440-9443-4617-8ba0-a01cf19ff939')
+      .getProjectData(currentProjectDetails?.section_b?.project_id)
       .then((res: any) => {
         const {
           temporary_deviation,
@@ -40,7 +46,9 @@ const SectionB2 = () => {
         dispatch(setChangesToProject(change_project_design))
         dispatch(setChangesToStart(change_startDate_creditPeriod))
         dispatch(setCorrections(corrections))
-        dispatch(setPermanentChanges(permanent_changes_from_registered_monitoring_plan))
+        dispatch(
+          setPermanentChanges(permanent_changes_from_registered_monitoring_plan)
+        )
         dispatch(setTemporaryDeviations(temporary_deviation))
       })
   }, [])

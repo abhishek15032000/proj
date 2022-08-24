@@ -37,9 +37,15 @@ const SectionB1 = () => {
   // const [briefOnPurpuse, setBriefOnPurpuse] = useState('')
   const dispatch = useAppDispatch()
 
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+
   useEffect(() => {
     dataCollectionCalls
-      .getProjectData('80459440-9443-4617-8ba0-a01cf19ff939')
+      .getProjectData(currentProjectDetails?.section_b?.project_id)
       .then((res: any) => {
         const {
           name,

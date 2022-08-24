@@ -34,9 +34,18 @@ import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 const SectionC1 = () => {
   const dispatch = useAppDispatch()
 
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+
+  console.log('currentProjectDetails?.section_c?.project_id')
+  console.log(JSON.stringify(currentProjectDetails?.section_c?.project_id, null, 4))
+
   useEffect(() => {
     dataCollectionCalls
-      .getProjectData('80459440-9443-4617-8ba0-a01cf19ff939')
+      .getProjectData(currentProjectDetails?.section_c?.project_id)
       .then((res: any) => {
         const {
           description,
