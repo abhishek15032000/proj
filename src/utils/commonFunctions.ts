@@ -5,7 +5,13 @@ export const deleteIndexInArray = (array: Array<any>, index: number) => {
 }
 
 export const stringExtractor = (array: any[], fieldName: string) => {
-  const modifiedArray = array.map(item => item[fieldName])
+  const modifiedArray = array.map((item) => {
+    if (typeof item === 'string') {
+      return item
+    } else {
+      return item[fieldName]
+    }
+  })
 
   return modifiedArray
 }
