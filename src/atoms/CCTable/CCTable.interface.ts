@@ -5,4 +5,6 @@ export interface CCTableProps {
   pagination?: boolean
   tableSx?: any
   sx?: any
+  loading?: boolean
+  data?: boolean
 }
