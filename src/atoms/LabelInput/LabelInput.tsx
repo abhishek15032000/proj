@@ -22,14 +22,15 @@ const LabelInput: FC<LabelInputProps> = (props) => {
         ...props.sx,
       }}
     >
-      <Typography sx={{ fontSize: 14, fontWeight: 400, marginBottom: 1 }}>
+      {/* <Typography sx={{ fontSize: 14, fontWeight: 400, marginBottom: 1 }}>
         {props.label}
-      </Typography>
+      </Typography> */}
       <TextField
-        size="small"
         id="outlined-basic"
+        label={props.label}
         variant="outlined"
-        sx={props.textFieldSx}
+        sx={{ ...props.textFieldSx }}
+        // {...props} 
       />
     </Box>
   )

@@ -1,10 +1,10 @@
-import { ENDPOINTS } from './configs/Endpoints'
+import { ENDPOINTS, URL_PATH } from './configs/Endpoints'
 import { AxiosHelper } from './configs/AxiosHelper'
 
 export const dataCollectionCalls = {
   createNewProject: (payload: any) => {
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/project/create',
+      URL_PATH.project.projectCreate,
       'POST',
       payload
     ).then((res: any) => {
@@ -13,23 +13,22 @@ export const dataCollectionCalls = {
   },
   getAllProjects: (token: string) => {
     return AxiosHelper(
-      `https://carbon-dev-api.shinetrace.space/carbon/api/v1/project/getAllProjects?user_id=${token}`,
+      URL_PATH.project.getAllProjects + `?user_id=${token}`,
       'GET'
     )
   },
   getProjectById: (projectID: string) => {
     return AxiosHelper(
-      `https://carbon-dev-api.shinetrace.space/carbon/api/v1/project/getProjectById?id=${projectID}`,
+      URL_PATH.project.getProjectById + `?id=${projectID}`,
       'GET'
     ).then((res: any) => {
       return res.data
     })
   },
   updateProjectSectionACall: (payload: any) => {
-    //!!Example Code below
 
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionA/update',
+      URL_PATH.projectSections.updateProjectSectionA,
       'POST',
       payload
     ).then((res: any) => {
@@ -37,10 +36,9 @@ export const dataCollectionCalls = {
     })
   },
   updateProjectSectionBCall: (payload: any) => {
-    //!!Example Code below
 
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionB/update',
+      URL_PATH.projectSections.updateProjectSectionB,
       'POST',
       payload
     ).then((res: any) => {
@@ -48,10 +46,9 @@ export const dataCollectionCalls = {
     })
   },
   updateProjectSectionCCall: (payload: any) => {
-    //!!Example Code below
 
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionC/update',
+      URL_PATH.projectSections.updateProjectSectionC,
       'POST',
       payload
     ).then((res: any) => {
@@ -59,20 +56,18 @@ export const dataCollectionCalls = {
     })
   },
   updateProjectSectionDCall: (payload: any) => {
-    //!!Example Code below
 
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionD/update',
+      URL_PATH.projectSections.updateProjectSectionD,
       'POST',
       payload
     ).then((res: any) => {
       return res.data
     })
   },
-
   updateProjectSectionECall: (payload: any) => {
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/carbon/api/v1/projectSectionE/update',
+      URL_PATH.projectSections.updateProjectSectionE,
       'POST',
       payload
     ).then((res: any) => {

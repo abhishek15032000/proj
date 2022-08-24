@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // MUI Imports
 import {
@@ -29,9 +29,32 @@ import {
   setOrganizationalChartImage,
 } from '../../../redux/Slices/sectionCSlice'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 
 const SectionC1 = () => {
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectData('80459440-9443-4617-8ba0-a01cf19ff939')
+      .then((res: any) => {
+        const {
+          description,
+          monitoring_plan,
+          attach_org_structure_and_responsibilities_chart,
+          specific_data_monitored,
+        } = res.data.section_c.step1
+
+        dispatch(setDatasMonitored(description))
+        dispatch(setMonioringSystem(specific_data_monitored))
+        dispatch(setMonitoringPlan(monitoring_plan))
+        dispatch(
+          setOrganizationalChartImage(
+            attach_org_structure_and_responsibilities_chart
+          )
+        )
+      })
+  }, [])
 
   const monitoringSystem = useAppSelector(
     ({ sectionC }) => sectionC.monitoringSystem,

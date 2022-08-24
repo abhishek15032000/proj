@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // MUI Imports
 import { Button, Grid, TextareaAutosize, Typography } from '@mui/material'
@@ -31,10 +31,38 @@ import {
 
 // Functional Imports
 import { deleteIndexInArray } from '../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 
 const SectionB1 = () => {
   // const [briefOnPurpuse, setBriefOnPurpuse] = useState('')
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectData('80459440-9443-4617-8ba0-a01cf19ff939')
+      .then((res: any) => {
+        const {
+          name,
+          general_description,
+          technical_description,
+          data_tables_technical_description_attach,
+          operational_description,
+          shut_down_details_attach,
+          implementation_milestones_attach,
+          project_timeline_attach,
+        } = res.data.section_b.step1
+
+        dispatch(setBriefOnPurpuse(general_description))
+        dispatch(setImplementationMilestoneImage(implementation_milestones_attach))
+        dispatch(
+          setMajorShutDownImage(shut_down_details_attach)
+        )
+        dispatch(setOperationalDetails(operational_description))
+        dispatch(setProjectTimelineImage(project_timeline_attach))
+        dispatch(setTechnicalDescription(technical_description))
+        dispatch(setTechnicalDescriptionImage(data_tables_technical_description_attach))
+      })
+  }, [])
 
   const briefOnPurpuse = useAppSelector(
     ({ sectionB }) => sectionB.briefOnPurpuse,
@@ -108,7 +136,7 @@ const SectionB1 = () => {
               dispatch(
                 setTechnicalDescriptionImage([
                   item,
-                  ...technicalDescriptionImage
+                  ...technicalDescriptionImage,
                 ])
               )
             }}

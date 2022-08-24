@@ -2,8 +2,10 @@
 import React, { FC } from 'react'
 
 // MUI Imports
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid, Box, Typography, Paper, Chip } from '@mui/material'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import { Colors } from '../../theme'
 
 // Local Imports
 
@@ -11,124 +13,73 @@ interface VitalProjectDetailsProps {}
 
 const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
   return (
-    <Box
+    <Paper
       sx={{
-        width: '100%',
-        margin: 1,
-        // height: '120px',
-        backgroundColor: '#EEE',
+        p: 2,
         borderRadius: '8px',
-        padding: 2,
-        marginTop: 2,
+        mb: 2,
+        ml: 1,
+        width: '100%',
+        pt: 3,
+        pb: 3,
+        display: 'flex',
       }}
     >
+      <Box>
+        <Typography sx={{ fontSize: 24, fontWeight: 400 }}>
+          3.66 MW poultry litter based power generation project by Raus Power in
+          India
+        </Typography>
+
+        <Chip
+          sx={{
+            borderRadius: '8px',
+            backgroundColor: Colors.lightGreenBackground,
+          }}
+          label="Agricultural Land Management (ALM)"
+        />
+
+        <Box sx={{ alignItems: 'center', display: 'flex', mb: 1, mt: 2 }}>
+          <CalendarMonthIcon
+            style={{
+              color: Colors.textColorLightGreen,
+              height: '18px',
+              marginRight: '5px',
+            }}
+          />
+          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+            Started on DD/MM/YYYY
+          </Typography>
+        </Box>
+
+        <Box sx={{ alignItems: 'center', display: 'flex' }}>
+          <LocationOnIcon
+            style={{
+              color: Colors.textColorLightGreen,
+              height: '18px',
+              marginRight: '5px',
+            }}
+          />
+          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+            6430 Hixson Pike, Hixson, TN 37343, USA
+          </Typography>
+        </Box>
+      </Box>
       <Box
         sx={{
-          display: 'flex',
+          width: '220px',
+          border: '2px solid',
+          // display: ;',
           justifyContent: 'center',
           alignItems: 'center',
-          marginRight: 10,
-          width: '120px',
         }}
       >
-        <Box
-          sx={{
-            height: '16px',
-            width: '16px',
-            backgroundColor: '#7ACB9F',
-            borderRadius: '10px',
-            marginRight: 1,
-          }}
-        />
-        <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-          Project Verified
-        </Typography>
-      </Box>
-
-      <Typography sx={{ fontSize: 24, fontWeight: 500, marginTop: 1 }}>
-        Project : 3.66 MW poultry litter based power generation project by Raus
-        Power in India
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          // justifyContent: 'center',
-          alignItems: 'center',
-          width: '130px',
-          marginTop: 1,
-        }}
-      >
-        <LocationOnIcon />
-
         <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-          Mumbai, India
+          206.54 SqKm
         </Typography>
+        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>Area</Typography>
       </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          margin: 1,
-          marginLeft: 3,
-        }}
-      >
-        <Typography sx={{ fontSize: 14, fontWeight: 400, width: '200px' }}>
-          Project Type :
-        </Typography>
-
-        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-          Green Energy
-        </Typography>
-      </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          margin: 1,
-          marginLeft: 3,
-        }}
-      >
-        <Typography sx={{ fontSize: 14, fontWeight: 400, width: '200px' }}>
-          Start Date :
-        </Typography>
-
-        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-          12 June 2021
-        </Typography>
-      </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          margin: 1,
-          marginLeft: 3,
-        }}
-      >
-        <Typography sx={{ fontSize: 14, fontWeight: 400, width: '200px' }}>
-          Duration of the Project :
-        </Typography>
-
-        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>1 Year</Typography>
-      </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          margin: 1,
-          marginLeft: 3,
-        }}
-      >
-        <Typography sx={{ fontSize: 14, fontWeight: 400, width: '200px' }}>
-          Project Area :
-        </Typography>
-
-        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>Mumbai</Typography>
-      </Box>
-    </Box>
+    </Paper>
   )
 }
 

@@ -123,15 +123,29 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         <FileTab key={-1} title={'Uploading...'} index={-1} fileSize={0} />
       )}
 
-      {props.imageArray.map((item: any, index: number) => (
-        <FileTab
-          key={index}
-          title={item.fileName}
-          index={index}
-          deleteImage={deleteImage}
-          fileSize={item.fileSize}
-        />
-      ))}
+      {props.imageArray.map((item: any, index: number) => {
+        if (typeof item === 'string') {
+          return (
+            <FileTab
+              key={index}
+              title={item}
+              index={index}
+              deleteImage={deleteImage}
+              fileSize={0}
+            />
+          )
+        } else {
+          return (
+            <FileTab
+              key={index}
+              title={item.fileName}
+              index={index}
+              deleteImage={deleteImage}
+              fileSize={item.fileSize}
+            />
+          )
+        }
+      })}
 
       <SampleModal
         mediaArray={[...props.mediaItem]}

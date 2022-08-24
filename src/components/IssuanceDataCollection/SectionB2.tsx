@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // MUI Imports
 import { Box, Grid, TextareaAutosize, Typography } from '@mui/material'
@@ -18,9 +18,32 @@ import {
 
 // Local Components
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 
 const SectionB2 = () => {
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectData('80459440-9443-4617-8ba0-a01cf19ff939')
+      .then((res: any) => {
+        const {
+          temporary_deviation,
+          corrections,
+          permanent_changes_from_registered_monitoring_plan,
+          change_project_design,
+          change_startDate_creditPeriod,
+          typeOf_changes_specific,
+        } = res.data.section_b.step2
+
+        dispatch(setBriefOnPurpuseB2(typeOf_changes_specific))
+        dispatch(setChangesToProject(change_project_design))
+        dispatch(setChangesToStart(change_startDate_creditPeriod))
+        dispatch(setCorrections(corrections))
+        dispatch(setPermanentChanges(permanent_changes_from_registered_monitoring_plan))
+        dispatch(setTemporaryDeviations(temporary_deviation))
+      })
+  }, [])
 
   const temporaryDeviations = useAppSelector(
     ({ sectionB }) => sectionB.temporaryDeviations,

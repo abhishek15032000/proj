@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 
 // MUI Imports
 import { Button, Typography } from '@mui/material'
+import { Colors } from '../../theme'
 
 // Local Imports
 
@@ -16,17 +17,18 @@ const TextButton: FC<TextButtonProps> = (props) => {
   return (
     <Button
       sx={{
-        height: 50,
-        width: 140,
+        height: 40,
+        width: 170,
+        borderRadius: '100px',
         textTransform: 'none',
-        backgroundColor: '#999',
+        backgroundColor: Colors.darkPrimary1,
         ...props.sx,
       }}
     >
       <Typography
         sx={{
-          fontSize: 16,
-          fontWeight: 600,
+          fontSize: 14,
+          fontWeight: 500,
           color: 'white',
           ...props.textStyle,
         }}

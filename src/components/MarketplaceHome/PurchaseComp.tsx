@@ -2,13 +2,13 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 
 // Local Imports
 import CCTitleValue from '../../atoms/CCTitleValue/CCTitleValue'
 import TextButton from '../../atoms/TextButton/TextButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
-
+import { Colors } from '../../theme'
 
 interface PurchaseCompProps {}
 
@@ -20,7 +20,6 @@ const PurchaseComp: FC<PurchaseCompProps> = (props) => {
         width: '100%',
         minWidth: '800px',
         borderRadius: '12px',
-        border: '2px solid',
         marginTop: 2,
         display: 'flex',
         // margin: 1,
@@ -28,12 +27,14 @@ const PurchaseComp: FC<PurchaseCompProps> = (props) => {
         // alignItems: 'center',
       }}
     >
-      <Box
+      <Paper
         sx={{
-          borderRight: '2px solid',
           height: '100%',
           width: '50%',
           position: 'relative',
+          borderRadius: '4px',
+          marginRight: 2,
+          paddingBottom: 10,
         }}
       >
         <CCTitleValue
@@ -41,6 +42,7 @@ const PurchaseComp: FC<PurchaseCompProps> = (props) => {
           value="04"
           fontWeight={600}
           fontSize={16}
+          titleFontColor={Colors.lightPrimary1}
           sx={{
             marginTop: 1,
             padding: 1,
@@ -58,26 +60,29 @@ const PurchaseComp: FC<PurchaseCompProps> = (props) => {
         <CCTitleValue
           title="Unit Price"
           value="144"
+          titleFontColor={Colors.darkPrimary1}
           sx={{ padding: 1, paddingLeft: 2, paddingRight: 10 }}
         />
 
         <CCTitleValue
           title="Total amount to be paid:"
           value="288"
+          titleFontColor={Colors.darkPrimary1}
           sx={{ padding: 1, paddingLeft: 2, paddingRight: 10 }}
         />
 
         <TextButton
           title="Buy"
-          sx={{ position: 'absolute', bottom: 15, right: 30 }}
+          sx={{ position: 'absolute', bottom: 25, right: 30 }}
         />
-      </Box>
+      </Paper>
 
-      <Box sx={{ height: '100%', width: '50%', position: 'relative' }}>
+      <Paper sx={{ height: '100%', width: '50%', position: 'relative', borderRadius: '4px' }}>
         <CCTitleValue
           title="Tokens Available for Sale :"
           value="04"
           fontWeight={600}
+          titleFontColor={Colors.lightPrimary1}
           fontSize={16}
           sx={{
             marginTop: 1,
@@ -101,9 +106,9 @@ const PurchaseComp: FC<PurchaseCompProps> = (props) => {
 
         <TextButton
           title="Sell"
-          sx={{ position: 'absolute', bottom: 15, right: 30 }}
+          sx={{ position: 'absolute', bottom: 25, right: 30 }}
         />
-      </Box>
+      </Paper>
     </Box>
   )
 }
