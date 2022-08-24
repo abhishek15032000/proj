@@ -31,7 +31,7 @@ const SectionB2 = () => {
 
   useEffect(() => {
     dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_b?.project_id)
+      .getProjectById(currentProjectDetails?.section_b?.project_id)
       .then((res: any) => {
         const {
           temporary_deviation,

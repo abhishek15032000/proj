@@ -40,12 +40,9 @@ const SectionC1 = () => {
     shallowEqual
   )
 
-  console.log('currentProjectDetails?.section_c?.project_id')
-  console.log(JSON.stringify(currentProjectDetails?.section_c?.project_id, null, 4))
-
   useEffect(() => {
     dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_c?.project_id)
+      .getProjectById(currentProjectDetails?.section_c?.project_id)
       .then((res: any) => {
         const {
           description,
