@@ -14,6 +14,8 @@ import CCInputField from '../../atoms/CCInputField'
 import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
 
+declare let window: any
+
 const Login = () => {
   const dispatch = useAppDispatch()
 
@@ -21,6 +23,7 @@ const Login = () => {
 
   const [captchaInput, setCaptchaInput] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
+  const [pwdCopy, setPwdCopy] = useState('')
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
@@ -34,9 +37,25 @@ const Login = () => {
     const payload = { email: '', id: '', password: '', captcha: '' }
 
     payload.email = values?.email
-    payload.password = CryptoJS.MD5(values?.password).toString()
+    payload.password = CryptoJS.MD5(pwdCopy).toString()
     payload.id = captchaToken
     payload.captcha = captchaInput
+
+    if (
+      navigator.userAgent.indexOf('Chrome') != -1 ||
+      navigator.userAgent.indexOf('Edg') != -1 ||
+      (navigator.userAgent.indexOf('Opera') ||
+        navigator.userAgent.indexOf('OPR')) != -1
+    ) {
+      const cred = new window.PasswordCredential({
+        id: payload.email,
+        password: uuidv4(),
+      })
+      //store the credentials
+      navigator.credentials.store(cred).then(function () {
+        console.log('Done Saving Creds')
+      })
+    }
 
     try {
       const res = await authCalls.loginCall(payload)
@@ -55,6 +74,8 @@ const Login = () => {
       }
     } catch (e: any) {
       console.log('Error in authCalls.loginCall api', e)
+    } finally {
+      new window.PasswordCredential({ id: payload.email, password: uuidv4() })
     }
   }
 
@@ -117,7 +138,15 @@ const Login = () => {
                 defaultValue={values?.password}
                 name="password"
                 // error={errors?.password}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e)
+                  setPwdCopy(e.target.value)
+                }}
+                onBlur={(e) => {
+                  setPwdCopy(e.target.value)
+                  e.target.value = uuidv4()
+                  handleChange(e)
+                }}
               />
             </Grid>
           </Grid>
