@@ -1,23 +1,24 @@
 // React Imports
 import React, { FC, useEffect, useState } from 'react'
 // MUI Imports
-import { Box, Grid, List, ListItem, Stack, Typography } from '@mui/material'
+import { Box, Chip, Grid, Typography } from '@mui/material'
 // Local Imports
 import VerifierReportListItem from './VerifierReportListItem'
 import CCTable from '../../atoms/CCTable'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined'
 import { verifierCalls } from '../../api/verifierCalls.api'
 //image Imports
 import illustration4 from '../../assets/Images/illustrations/illustration4.svg'
+import { CircleNotifications } from '@mui/icons-material'
 interface VerifierReportListProps {
-  data?: any
-  selectedVerifiersData?: []
+  //data?: any
+  //selectedVerifiersData?: []
   currentProjectId: 'string'
 }
 
 const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [verifierReports, setVerifierReports] = useState<any>([])
+  const [showTable, setShowTable] = useState<boolean>(true)
 
   console.log(props?.currentProjectId)
 
@@ -29,12 +30,13 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     verifierCalls
       .getVerifierByProjectId(props?.currentProjectId)
       .then((res) => {
-        console.log(res)
         if (res?.success) {
-          const g = res?.data.filter((i: any, index: number) => {
+          const finalVerifierData = res?.data.filter((i: any) => {
             return i?.accepted_by_issuer && i?.accepted_by_verifier
           })
-          g && g?.length ? setVerifierReports(g) : setVerifierReports(res?.data)
+          finalVerifierData && finalVerifierData?.length
+            ? setVerifierReports(finalVerifierData)
+            : setVerifierReports(res?.data)
         }
       })
       .catch((err) => console.log(err))
@@ -53,11 +55,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       verifier_number: confirmedVerifier?.verifier_number,
     }
 
-    //console.log('payload: ', payload)
     verifierCalls
       .updateVerifier(payload)
       .then((res) => {
-        console.log(res)
         if (res?.success) {
           if (res?.data.acknowledged) {
             alert('successfully confirmed Verifier')
@@ -89,356 +89,231 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
             ))}
         </Grid>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        sx={{
-          mt: 2,
-          height: '330px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#E8F3EF',
-        }}
-      >
-        <Typography sx={{ mb: 3, fontSize: 16, fontWeight: 500 }}>
-          Your project’s review report will show up here
-        </Typography>
-        <img src={illustration4} />
+      <Grid item xs={12} sx={{ mt: 2 }}>
+        {showTable ? (
+          <CCTable headings={headings} rows={rows} />
+        ) : (
+          <Box
+            sx={{
+              height: '330px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#E8F3EF',
+            }}
+          >
+            <Typography sx={{ mb: 3, fontSize: 16, fontWeight: 500 }}>
+              Your project’s review report will show up here
+            </Typography>
+            <img src={illustration4} />
+          </Box>
+        )}
       </Grid>
     </Grid>
   )
 }
 
 export default VerifierReport
-//const headings = [
-//  'Submitted On',
-//  'Submit By (Set by Verifier)',
-//  'Reviewed On (By Verifier)',
-//  'Report',
-//  'Report Version',
-//  'Status',
-//  'CO2e Sequestered',
-//  'Comments Received',
-//]
-//const rows = [
-//  [
-//    '28 May 2020',
-//    '28 May 2020',
-//    '28 May 2020',
-//    <Box
-//      key={'1'}
-//      sx={{
-//        display: 'flex',
-//        flexDirection: 'row',
-//        justifyContent: 'center',
-//        alignItems: 'center',
-//      }}
-//    >
-//      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'Project Issuance '}
-//      </Typography>
-//    </Box>,
-//    'V1.0',
-//    'Requested for resubmission',
-//    '423',
-//    <Box
-//      key={'1'}
-//      sx={{
-//        flexDirection: 'row',
-//        display: 'flex',
-//        justifyContent: 'space-between',
-//        alignItems: 'center',
-//        borderBottom: '2px solid black',
-//      }}
-//    >
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'View Comments'}
-//      </Typography>
-//      <ChevronRightIcon style={{ color: '#667080' }} />
-//    </Box>,
-//  ],
-//  [
-//    '28 May 2020',
-//    '28 May 2020',
-//    '28 May 2020',
-//    <Box
-//      key={'2'}
-//      sx={{
-//        display: 'flex',
-//        flexDirection: 'row',
-//        justifyContent: 'center',
-//        alignItems: 'center',
-//      }}
-//    >
-//      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'Project Issuance '}
-//      </Typography>
-//    </Box>,
-//    'V1.0',
-//    'Requested for resubmission',
-//    '423',
-//    <Box
-//      key={'2'}
-//      sx={{
-//        flexDirection: 'row',
-//        display: 'flex',
-//        justifyContent: 'space-between',
-//        alignItems: 'center',
-//        borderBottom: '2px solid black',
-//      }}
-//    >
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'View Comments'}
-//      </Typography>
-//      <ChevronRightIcon style={{ color: '#667080' }} />
-//    </Box>,
-//  ],
-//  [
-//    '28 May 2020',
-//    '-',
-//    '28 May 2020',
-//    <Box
-//      key={'3'}
-//      sx={{
-//        display: 'flex',
-//        flexDirection: 'row',
-//        justifyContent: 'center',
-//        alignItems: 'center',
-//      }}
-//    >
-//      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'Project Issuance '}
-//      </Typography>
-//    </Box>,
-//    'V1.0',
-//    'Requested for resubmission',
-//    '423',
-//    <Box
-//      key={'3'}
-//      sx={{
-//        flexDirection: 'row',
-//        display: 'flex',
-//        justifyContent: 'space-between',
-//        alignItems: 'center',
-//        borderBottom: '2px solid black',
-//      }}
-//    >
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'View Comments'}
-//      </Typography>
-//      <ChevronRightIcon style={{ color: '#667080' }} />
-//    </Box>,
-//  ],
-//  [
-//    '28 May 2020',
-//    '28 May 2020',
-//    '28 May 2020',
-//    <Box
-//      key={'4'}
-//      sx={{
-//        display: 'flex',
-//        flexDirection: 'row',
-//        justifyContent: 'center',
-//        alignItems: 'center',
-//      }}
-//    >
-//      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'Project Issuance '}
-//      </Typography>
-//    </Box>,
-//    'V1.0',
-//    'Requested for resubmission',
-//    '423',
-//    <Box
-//      key={'4'}
-//      sx={{
-//        flexDirection: 'row',
-//        display: 'flex',
-//        justifyContent: 'space-between',
-//        alignItems: 'center',
-//        borderBottom: '2px solid black',
-//      }}
-//    >
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'View Comments'}
-//      </Typography>
-//      <ChevronRightIcon style={{ color: '#667080' }} />
-//    </Box>,
-//  ],
-//  [
-//    '28 May 2020',
-//    '-',
-//    '28 May 2020',
-//    <Box
-//      key={'5'}
-//      sx={{
-//        display: 'flex',
-//        flexDirection: 'row',
-//        justifyContent: 'center',
-//        alignItems: 'center',
-//      }}
-//    >
-//      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'Project Issuance '}
-//      </Typography>
-//    </Box>,
-//    'V1.0',
-//    'Requested for resubmission',
-//    '423',
-//    <Box
-//      key={'5'}
-//      sx={{
-//        flexDirection: 'row',
-//        display: 'flex',
-//        justifyContent: 'space-between',
-//        alignItems: 'center',
-//        borderBottom: '2px solid black',
-//      }}
-//    >
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'View Comments'}
-//      </Typography>
-//      <ChevronRightIcon style={{ color: '#667080' }} />
-//    </Box>,
-//  ],
-//  [
-//    '28 May 2020',
-//    '28 May 2020',
-//    '28 May 2020',
-//    <Box
-//      key={'6'}
-//      sx={{
-//        display: 'flex',
-//        flexDirection: 'row',
-//        justifyContent: 'center',
-//        alignItems: 'center',
-//      }}
-//    >
-//      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'Project Issuance '}
-//      </Typography>
-//    </Box>,
-//    'V1.0',
-//    'Requested for resubmission',
-//    '423',
-//    <Box
-//      key={'6'}
-//      sx={{
-//        flexDirection: 'row',
-//        display: 'flex',
-//        justifyContent: 'space-between',
-//        alignItems: 'center',
-//        borderBottom: '2px solid black',
-//      }}
-//    >
-//      <Typography
-//        sx={{
-//          fontFamily: 'Poppins',
-//          fontStyle: 'normal',
-//          fontWeight: '400',
-//          fontSize: '14px',
-//          color: '#2B2B2B',
-//        }}
-//      >
-//        {'View Comments'}
-//      </Typography>
-//      <ChevronRightIcon style={{ color: '#667080' }} />
-//    </Box>,
-//  ],
-//]
+const headings = [
+  'Submitted On',
+  'Next Submission',
+  'Report',
+  'Version',
+  'Status',
+  'CO2e Sequestered',
+  'Report Received',
+  'comment Received',
+  'Action',
+]
+const rows = [
+  [
+    '28 May 2020',
+    '28 May 2020',
+    //'28 May 2020',
+    <Box
+      key={'1'}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
+      <Typography
+        sx={{
+          fontFamily: 'Poppins',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          fontSize: '14px',
+          color: '#2B2B2B',
+        }}
+      >
+        {'Project Issuance '}
+      </Typography>
+    </Box>,
+    'V1.0',
+    <Chip
+      sx={{ backgroundColor: '#75F8E4' }}
+      key="1"
+      icon={
+        <CircleNotifications fontSize="small" style={{ color: '#00A392' }} />
+      }
+      label={'Finalised'}
+    />,
+    '420',
+    <Box
+      key={'1'}
+      sx={{
+        flexDirection: 'row',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '2px solid black',
+      }}
+    >
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+    </Box>,
+    <Typography
+      key="1"
+      sx={{
+        color: '#006B5E',
+        fontSize: 16,
+        fontWeight: 600,
+        textDecoration: 'underline',
+      }}
+    >
+      View
+    </Typography>,
+    '-',
+  ],
+  [
+    '28 May 2020',
+    '28 May 2020',
+    //'28 May 2020',
+    <Box
+      key={'1'}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
+      <Typography
+        sx={{
+          fontFamily: 'Poppins',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          fontSize: '14px',
+          color: '#2B2B2B',
+        }}
+      >
+        {'Project Issuance '}
+      </Typography>
+    </Box>,
+    'V1.0',
+    <Chip
+      sx={{ backgroundColor: '#75F8E4' }}
+      key="1"
+      icon={
+        <CircleNotifications fontSize="small" style={{ color: '#00A392' }} />
+      }
+      label={'Finalised'}
+    />,
+    '420',
+    <Box
+      key={'1'}
+      sx={{
+        flexDirection: 'row',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '2px solid black',
+      }}
+    >
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+    </Box>,
+    <Typography
+      key="1"
+      sx={{
+        color: '#006B5E',
+        fontSize: 16,
+        fontWeight: 600,
+        textDecoration: 'underline',
+      }}
+    >
+      View
+    </Typography>,
+    '-',
+  ],
+  [
+    '28 May 2020',
+    '28 May 2020',
+    //'28 May 2020',
+    <Box
+      key={'1'}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
+      <Typography
+        sx={{
+          fontFamily: 'Poppins',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          fontSize: '14px',
+          color: '#2B2B2B',
+        }}
+      >
+        {'Project Issuance '}
+      </Typography>
+    </Box>,
+    'V1.0',
+    <Chip
+      sx={{ backgroundColor: '#75F8E4' }}
+      key="1"
+      icon={
+        <CircleNotifications fontSize="small" style={{ color: '#00A392' }} />
+      }
+      label={'Finalised'}
+    />,
+    '420',
+    <Box
+      key={'1'}
+      sx={{
+        flexDirection: 'row',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '2px solid black',
+      }}
+    >
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+      <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+    </Box>,
+    <Typography
+      key="1"
+      sx={{
+        color: '#006B5E',
+        fontSize: 16,
+        fontWeight: 600,
+        textDecoration: 'underline',
+      }}
+    >
+      View
+    </Typography>,
+    '-',
+  ],
+]
