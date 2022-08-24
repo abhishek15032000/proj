@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 
 // MUI Imports
 import { Box, Tab, Tabs } from '@mui/material'
+import { Colors } from '../../theme'
 
 // Local Imports
 
@@ -18,12 +19,13 @@ const TabSelector: FC<TabSelectorProps> = (props) => {
     <Box sx={{ width: '100%', marginTop: 3, ...props.sx }}>
       <Tabs
         value={props.tabIndex}
-        indicatorColor="secondary"
+        indicatorColor="primary"
         aria-label="secondary tabs example"
+        TabIndicatorProps={{style: {background: Colors.darkGreen }}}
       >
         {props.tabArray?.map((tab, index) => (
           <Tab
-            sx={{ textTransform: 'unset' }}
+            sx={{ textTransform: 'unset', height: '50px', width: '80px' }}
             key={index}
             value={index + 1}
             label={tab}

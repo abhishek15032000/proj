@@ -6,7 +6,7 @@ interface IssuanceDataCollectionReducerInterface {
   currentProjectDetails: any
 }
 const initialState: IssuanceDataCollectionReducerInterface = {
-  sectionIndex: 0,
+  sectionIndex: 2,
   subSectionIndex: 0,
   currentProjectDetails: null,
 }

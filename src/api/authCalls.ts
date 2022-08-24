@@ -1,12 +1,10 @@
-import { ENDPOINTS } from './configs/Endpoints'
+import { ENDPOINTS, URL_PATH } from './configs/Endpoints'
 import { AxiosHelper } from './configs/AxiosHelper'
 
 export const authCalls = {
   loginCall: (payload: any) => {
-    //!!Example Code below
-
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/auth/api/v1/auth/login',
+      URL_PATH.authRoutes.login,
       'POST',
       payload
     ).then((res: any) => {
@@ -15,7 +13,7 @@ export const authCalls = {
   },
   getCaptcha: (token: string) => {
     return AxiosHelper(
-      `https://carbon-dev-api.shinetrace.space/auth/api/v1/auth/getCaptcha?id=${token}`,
+      URL_PATH.authRoutes.getCaptcha + `?id=${token}`,
       'GET_IMAGE'
     ).then((res: any) => {
       return res.data
@@ -23,7 +21,7 @@ export const authCalls = {
   },
   verifyOtp: (payload: any) => {
     return AxiosHelper(
-      `https://carbon-dev-api.shinetrace.space/auth/api/v1/auth/verifyNewUser`,
+      URL_PATH.authRoutes.verifyNewUser,
       'POST',
       payload
     ).then((res: any) => {
