@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { Box, formLabelClasses, Typography } from '@mui/material'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { Colors } from '../../theme'
 
 interface BackHeaderProps {
   title: string
@@ -22,7 +23,13 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
       }}
     >
       {!props.iconDisable && <ArrowBackIcon />}
-      <Typography sx={{ fontSize: 20, marginLeft: '10px', fontWeight: 500 }}>
+      <Typography
+        sx={{
+          fontSize: 28,
+          fontWeight: 400,
+          color: Colors.tertiary,
+        }}
+      >
         {props.title}
       </Typography>
     </Box>

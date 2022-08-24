@@ -2,7 +2,7 @@
 import React, { FC } from 'react'
 
 // MUI Imports
-import { Grid, Box, Typography } from '@mui/material'
+import { Grid, Box, Typography, Paper } from '@mui/material'
 
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
@@ -28,19 +28,21 @@ const MarketplaceProjectDetails: FC<MarketplaceProjectDetailsProps> = (
         <VitalProjectDetails />
 
         <Box sx={{ width: '100%', margin: 1 }}>
-          <CCTitleValue
-            title="Total CO2C Tokens :"
-            value="981"
-            fontSize={16}
-            fontWeight={500}
-            sx={{ marginTop: 3, width: '240px', marginBottom: 1.5 }}
-          />
+          <Paper sx={{ p: 2, borderRadius: '8px', mb: 2 }}>
+            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+              Total CO2e Sequestered
+            </Typography>
 
-          <Typography sx={{ fontSize: 16, fontWeight: 500, marginBottom: 2 }}>
-            Documentation
-          </Typography>
+            <Typography sx={{ fontSize: 22, fontWeight: 400 }}>981</Typography>
+          </Paper>
 
-          <DocumentationList />
+          <Paper sx={{ p: 2, borderRadius: '8px' }}>
+            <Typography sx={{ fontSize: 16, fontWeight: 500, marginBottom: 2 }}>
+              Documentation
+            </Typography>
+
+            <DocumentationList />
+          </Paper>
         </Box>
       </Grid>
     </Box>
@@ -48,3 +50,11 @@ const MarketplaceProjectDetails: FC<MarketplaceProjectDetailsProps> = (
 }
 
 export default MarketplaceProjectDetails
+
+// <CCTitleValue
+//             title="Total CO2C Tokens :"
+//             value="981"
+//             fontSize={16}
+//             fontWeight={500}
+//             sx={{ marginTop: 3, width: '240px', marginBottom: 1.5 }}
+//           />

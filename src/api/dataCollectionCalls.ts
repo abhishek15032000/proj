@@ -65,12 +65,19 @@ export const dataCollectionCalls = {
       return res.data
     })
   },
-
   updateProjectSectionECall: (payload: any) => {
     return AxiosHelper(
       URL_PATH.projectSections.updateProjectSectionE,
       'POST',
       payload
+    ).then((res: any) => {
+      return res.data
+    })
+  },
+  getProjectData: (params: string) => {
+    return AxiosHelper(
+      `https://carbon-dev-api.shinetrace.space/carbon/api/v1/project/getProjectById?id=${params}`,
+      'GET'
     ).then((res: any) => {
       return res.data
     })

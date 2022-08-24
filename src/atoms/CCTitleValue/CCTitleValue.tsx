@@ -24,7 +24,7 @@ const CCTitleValue: FC<CCTitleValueProps> = (props) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // color: 'red'
+        color: props.titleFontColor,
         ...props.sx,
       }}
     >
