@@ -1,9 +1,10 @@
 import { AxiosHelper } from './configs/AxiosHelper'
+import { URL_PATH } from './configs/Endpoints'
 
 export const USER = {
   onBoardingUser: (payload: any) => {
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/user/api/v1/users/onboarding-user',
+      URL_PATH.userRoutes.onboardingUser,
       'POST',
       payload
     ).then((response: any) => {
