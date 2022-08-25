@@ -30,5 +30,6 @@ export const AllColors = {
   textColorLightGreen: '#006B5E',
   lightGray: '#B6B7B9',
   darkGreen: '#335844',
-  lightGreenBackground: '#E8F3EF'
+  lightGreenBackground: '#E8F3EF',
+  lightGreenBackground2: '#EDF6F2'
 }

@@ -17,7 +17,6 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
     <Box
       sx={{
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
         ...props.sx,
       }}
