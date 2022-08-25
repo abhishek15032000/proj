@@ -44,7 +44,11 @@ const SectionB1 = () => {
   )
 
   useEffect(() => {
-    dataCollectionCalls
+
+    console.log('currentProjectDetails')
+    console.log(JSON.stringify(currentProjectDetails, null, 4))
+
+    false && dataCollectionCalls
       .getProjectById(currentProjectDetails?.section_b?.project_id)
       .then((res: any) => {
         const {

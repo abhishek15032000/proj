@@ -210,6 +210,7 @@ export const moveToNextSection = async (
             projectTimelineImage,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
@@ -221,6 +222,7 @@ export const moveToNextSection = async (
           change_project_design: changesToProject,
           change_startDate_creditPeriod: changesToStart,
           typeOf_changes_specific: briefOnPurpuseB2,
+          completed: true,
         },
       }
     }
@@ -268,6 +270,7 @@ export const moveToNextSection = async (
           'fileName'
         ),
         specific_data_monitored: sectionC.datasMonitored,
+        completed: true,
       },
     }
 

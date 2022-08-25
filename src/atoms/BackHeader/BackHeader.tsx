@@ -4,6 +4,7 @@ import { Box, formLabelClasses, Typography } from '@mui/material'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Colors } from '../../theme'
+import { KeyboardArrowLeft } from '@mui/icons-material'
 
 interface BackHeaderProps {
   title: string
@@ -21,7 +22,7 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
         ...props.sx,
       }}
     >
-      {!props.iconDisable && <ArrowBackIcon />}
+      {!props.iconDisable && <KeyboardArrowLeft />}
       <Typography
         sx={{
           fontSize: 28,
