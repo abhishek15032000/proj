@@ -94,7 +94,7 @@ const DashboardNewProjectsTable = () => {
 
   const getAllProjects = () => {
     dataCollectionCalls
-      .getAllProjects(userDetails?.uuid)
+      .getAllProjects(userDetails?.email)
       .then((res: any) => {
         if (res?.data?.success) {
           setTableRows(res?.data?.data.slice(0, 7))
