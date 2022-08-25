@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { setLoadWallet } from '../../redux/Slices/walletSlice'
-import BlockchainCalls from '../../utils/Blockchain'
+import BlockchainCalls from '../../blockchain/Blockchain'
 import { LoadWalletProps } from './LoadWallet.interface'
 
 // let window: any
