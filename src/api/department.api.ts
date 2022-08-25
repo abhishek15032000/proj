@@ -1,9 +1,10 @@
 import { AxiosHelper } from './configs/AxiosHelper'
+import { URL_PATH } from './configs/Endpoints'
 
 export const department = {
   getDepartment: () => {
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/user/api/v1/department/getAllDepartment',
+      URL_PATH.department.getDepartment,
       'GET'
     ).then((res: any) => {
       return res.data
@@ -11,8 +12,8 @@ export const department = {
   },
   getUsersByOrgType: (userType: string) => {
     return AxiosHelper(
-      'https://carbon-dev-api.shinetrace.space/user/api/v1/department/getUsersByOrgType?type=' +
-        userType,
+      URL_PATH.department.getUsersByOrgType +
+      userType,
       'GET'
     ).then((res: any) => {
       return res.data
