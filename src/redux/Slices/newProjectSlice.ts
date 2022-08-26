@@ -6,7 +6,7 @@ interface NewProjectReducerInterface {
   projectName: string
   projectLocation: string
   projectDuration: string
-  projectArea: number | null
+  projectArea: string
   loading: boolean
 
   //Will get from create new project call
@@ -18,7 +18,7 @@ const initialState: NewProjectReducerInterface = {
   projectLocation: "",
   startDate: null,
   projectDuration: "",
-  projectArea: null,
+  projectArea: "",
   loading: false,
 
   //Will get from create new project call

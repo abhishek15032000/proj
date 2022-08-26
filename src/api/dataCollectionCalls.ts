@@ -11,9 +11,9 @@ export const dataCollectionCalls = {
       return res.data
     })
   },
-  getAllProjects: (token: string) => {
+  getAllProjects: (email: string) => {
     return AxiosHelper(
-      URL_PATH.project.getAllProjects + `?user_id=${token}`,
+      URL_PATH.project.getAllProjects + `?email=${email}`,
       'GET'
     )
   },

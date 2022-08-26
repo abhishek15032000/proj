@@ -103,9 +103,17 @@ const ListNewProject = () => {
     } else if (type === 'projectLocation') {
       dispatch(setProjectLocation(e?.target?.value))
     } else if (type === 'projectDuration') {
-      dispatch(setProjectDuration(e?.target?.value))
+      //Allow only no.s upto 2 decimal places
+      const regexp = /^\d+(\.\d{0,2})?$/
+      if (regexp.test(e?.target?.value) || e?.target?.value === '') {
+        dispatch(setProjectDuration(e?.target?.value))
+      }
     } else if (type === 'projectArea') {
-      dispatch(setProjectArea(e?.target?.value))
+      //Allow only no.s upto 2 decimal places
+      const regexp = /^\d+(\.\d{0,2})?$/
+      if (regexp.test(e?.target?.value) || e?.target?.value === '') {
+        dispatch(setProjectArea(e?.target?.value))
+      }
     }
   }
 
@@ -206,12 +214,21 @@ const ListNewProject = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <CCInputField
-          label="Project Area"
-          placeholder="Enter Project Area"
-          value={projectArea}
-          onChange={(e) => handleTextChange(e, 'projectArea')}
-        />
+        <Box sx={{ position: 'relative' }}>
+          <Box>
+            <CCInputField
+              label="Project Area"
+              placeholder="Enter Project Area"
+              value={projectArea}
+              onChange={(e) => handleTextChange(e, 'projectArea')}
+            />
+          </Box>
+          <Box
+            sx={{ color: '#3F4946', position: 'absolute', top: 16, right: 5 }}
+          >
+            SqKm
+          </Box>
+        </Box>
       </Grid>
     </Grid>
   )
