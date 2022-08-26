@@ -28,8 +28,14 @@ export const AllColors = {
   tertiary: '#F15D5F',
   textColorDarkGreen: '#005046',
   textColorLightGreen: '#006B5E',
+  textColorBrightRed: '#C12902',
+  textColorBrightRed2: '#FF5449',
   lightGray: '#B6B7B9',
   darkGreen: '#335844',
   lightGreenBackground: '#E8F3EF',
-  lightGreenBackground2: '#EDF6F2'
+  lightGreenBackground2: '#EDF6F2',
+  lightGreenBackground3: '#E1EEE8',
+  lightGreenBackground4: '#B9E7E0',
+  lightPinkBackground: '#FFDDD5',
+  lightOrangeBackground: '#FFF1CC'
 }
