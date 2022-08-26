@@ -44,34 +44,29 @@ const SectionB1 = () => {
   )
 
   useEffect(() => {
+    if (currentProjectDetails.section_b.step1.completed) {
+      const {
+        general_description,
+        technical_description,
+        data_tables_technical_description_attach,
+        operational_description,
+        shut_down_details_attach,
+        implementation_milestones_attach,
+        project_timeline_attach,
+      } = currentProjectDetails.section_b.step1
 
-    console.log('currentProjectDetails')
-    console.log(JSON.stringify(currentProjectDetails, null, 4))
-
-    false && dataCollectionCalls
-      .getProjectById(currentProjectDetails?.section_b?.project_id)
-      .then((res: any) => {
-        const {
-          name,
-          general_description,
-          technical_description,
-          data_tables_technical_description_attach,
-          operational_description,
-          shut_down_details_attach,
-          implementation_milestones_attach,
-          project_timeline_attach,
-        } = res.data.section_b.step1
-
-        dispatch(setBriefOnPurpuse(general_description))
-        dispatch(setImplementationMilestoneImage(implementation_milestones_attach))
-        dispatch(
-          setMajorShutDownImage(shut_down_details_attach)
-        )
-        dispatch(setOperationalDetails(operational_description))
-        dispatch(setProjectTimelineImage(project_timeline_attach))
-        dispatch(setTechnicalDescription(technical_description))
-        dispatch(setTechnicalDescriptionImage(data_tables_technical_description_attach))
-      })
+      dispatch(setBriefOnPurpuse(general_description))
+      dispatch(
+        setImplementationMilestoneImage(implementation_milestones_attach)
+      )
+      dispatch(setMajorShutDownImage(shut_down_details_attach))
+      dispatch(setOperationalDetails(operational_description))
+      dispatch(setProjectTimelineImage(project_timeline_attach))
+      dispatch(setTechnicalDescription(technical_description))
+      dispatch(
+        setTechnicalDescriptionImage(data_tables_technical_description_attach)
+      )
+    }
   }, [])
 
   const briefOnPurpuse = useAppSelector(

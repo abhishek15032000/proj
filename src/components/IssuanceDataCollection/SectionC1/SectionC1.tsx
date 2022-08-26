@@ -41,25 +41,23 @@ const SectionC1 = () => {
   )
 
   useEffect(() => {
-    false && dataCollectionCalls
-      .getProjectById(currentProjectDetails?.section_c?.project_id)
-      .then((res: any) => {
-        const {
-          description,
-          monitoring_plan,
-          attach_org_structure_and_responsibilities_chart,
-          specific_data_monitored,
-        } = res.data.section_c.step1
+    if (currentProjectDetails.section_c.step1.completed) {
+      const {
+        description,
+        monitoring_plan,
+        attach_org_structure_and_responsibilities_chart,
+        specific_data_monitored,
+      } = currentProjectDetails.section_c.step1
 
-        dispatch(setDatasMonitored(description))
-        dispatch(setMonioringSystem(specific_data_monitored))
-        dispatch(setMonitoringPlan(monitoring_plan))
-        dispatch(
-          setOrganizationalChartImage(
-            attach_org_structure_and_responsibilities_chart
-          )
+      dispatch(setDatasMonitored(description))
+      dispatch(setMonioringSystem(specific_data_monitored))
+      dispatch(setMonitoringPlan(monitoring_plan))
+      dispatch(
+        setOrganizationalChartImage(
+          attach_org_structure_and_responsibilities_chart
         )
-      })
+      )
+    }
   }, [])
 
   const monitoringSystem = useAppSelector(

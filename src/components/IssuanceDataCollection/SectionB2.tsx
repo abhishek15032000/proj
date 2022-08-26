@@ -30,27 +30,25 @@ const SectionB2 = () => {
   )
 
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectById(currentProjectDetails?.section_b?.project_id)
-      .then((res: any) => {
-        const {
-          temporary_deviation,
-          corrections,
-          permanent_changes_from_registered_monitoring_plan,
-          change_project_design,
-          change_startDate_creditPeriod,
-          typeOf_changes_specific,
-        } = res.data.section_b.step2
+    if (currentProjectDetails.section_b.step2.completed) {
+      const {
+        temporary_deviation,
+        corrections,
+        permanent_changes_from_registered_monitoring_plan,
+        change_project_design,
+        change_startDate_creditPeriod,
+        typeOf_changes_specific,
+      } = currentProjectDetails.section_b.step2
 
-        dispatch(setBriefOnPurpuseB2(typeOf_changes_specific))
-        dispatch(setChangesToProject(change_project_design))
-        dispatch(setChangesToStart(change_startDate_creditPeriod))
-        dispatch(setCorrections(corrections))
-        dispatch(
-          setPermanentChanges(permanent_changes_from_registered_monitoring_plan)
-        )
-        dispatch(setTemporaryDeviations(temporary_deviation))
-      })
+      dispatch(setBriefOnPurpuseB2(typeOf_changes_specific))
+      dispatch(setChangesToProject(change_project_design))
+      dispatch(setChangesToStart(change_startDate_creditPeriod))
+      dispatch(setCorrections(corrections))
+      dispatch(
+        setPermanentChanges(permanent_changes_from_registered_monitoring_plan)
+      )
+      dispatch(setTemporaryDeviations(temporary_deviation))
+    }
   }, [])
 
   const temporaryDeviations = useAppSelector(

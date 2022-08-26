@@ -69,6 +69,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               label="Contact Number"
               placeholder="Enter Contact Number"
               sx={{ mb: 1.5 }}
+              required={false}
             />
 
             <CCInputField
