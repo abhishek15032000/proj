@@ -84,7 +84,7 @@ const DashboardNewProjectsTable = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const uuid: string = getLocalItem('uuid')
+  const userDetails = getLocalItem('userDetails')
 
   const [tableRows, setTableRows] = useState<any>(undefined)
 
@@ -94,7 +94,7 @@ const DashboardNewProjectsTable = () => {
 
   const getAllProjects = () => {
     dataCollectionCalls
-      .getAllProjects(uuid)
+      .getAllProjects(userDetails?.email)
       .then((res: any) => {
         if (res?.data?.success) {
           setTableRows(res?.data?.data.slice(0, 7))
