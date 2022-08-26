@@ -72,37 +72,37 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         },
         {
           title: 'Sec A: Description of Project Activity',
-          status: currentProjectDetails?.section_a?.completionStatus,
-          completionPercent: currentProjectDetails?.section_a?.completionStatus
+          status: currentProjectDetails?.section_a?.stepCompleted,
+          completionPercent: currentProjectDetails?.section_a?.stepCompleted
             ? 100
             : 0,
         },
         {
           title: 'Sec B: Implementation of the project activity',
-          status: currentProjectDetails?.section_b?.completionStatus,
-          completionPercent: currentProjectDetails?.section_a?.completionStatus
+          status: currentProjectDetails?.section_b?.stepCompleted,
+          completionPercent: currentProjectDetails?.section_a?.stepCompleted
             ? 100
             : 0,
         },
         {
           title: 'Sec C: Description of Monitoring Activity',
-          status: currentProjectDetails?.section_b?.completionStatus,
-          completionPercent: currentProjectDetails?.section_a?.completionStatus
+          status: currentProjectDetails?.section_b?.stepCompleted,
+          completionPercent: currentProjectDetails?.section_a?.stepCompleted
             ? 100
             : 0,
         },
         {
           title: 'Sec D: Data and parameters',
-          status: currentProjectDetails?.section_d?.completionStatus,
-          completionPercent: currentProjectDetails?.section_a?.completionStatus
+          status: currentProjectDetails?.section_d?.stepCompleted,
+          completionPercent: currentProjectDetails?.section_a?.stepCompleted
             ? 100
             : 0,
         },
         {
           title:
             'Sec E: Calculation of emission reductions or GHG removals by sinks',
-          status: currentProjectDetails?.section_e?.completionStatus,
-          completionPercent: currentProjectDetails?.section_a?.completionStatus
+          status: currentProjectDetails?.section_e?.stepCompleted,
+          completionPercent: currentProjectDetails?.section_a?.stepCompleted
             ? 100
             : 0,
         },
