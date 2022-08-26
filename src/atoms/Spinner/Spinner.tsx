@@ -1,10 +1,10 @@
 import { Box, CircularProgress } from '@mui/material'
 import React from 'react'
 import { SpinnerProps } from './Spinner.interface'
-const Spinner = (props: SpinnerProps) => {
+const Spinner = ({ size = 50 }: SpinnerProps) => {
   return (
     <Box sx={{ display: 'flex' }}>
-      <CircularProgress disableShrink size={50} />
+      <CircularProgress disableShrink size={size} />
     </Box>
   )
 }

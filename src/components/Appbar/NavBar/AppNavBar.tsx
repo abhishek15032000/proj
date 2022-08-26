@@ -26,6 +26,8 @@ import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded'
 
 import { pathNames } from '../../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { setLoadWallet } from '../../../redux/Slices/walletSlice'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -70,6 +72,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }))
 
 export default function AppNavBar({ handleDrawerToggle }: any) {
+  const dispatch = useAppDispatch()
+  const openWallet = () => {
+    console.log('loda wallet')
+    dispatch(setLoadWallet(true))
+    console.log('done')
+  }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
@@ -214,6 +222,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             }}
           >
             <Button
+              onClick={() => openWallet()}
               color="primary"
               sx={{
                 flexDirection: 'row',
