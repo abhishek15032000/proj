@@ -60,7 +60,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   } = walletReducer
 
   useEffect(() => {
-    // checkMetamaskAvailability()
+    checkMetamaskAvailability()
   }, [])
 
   useEffect(() => {
