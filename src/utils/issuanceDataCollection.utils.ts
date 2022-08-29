@@ -194,9 +194,9 @@ export const moveToNextSection = async (
         technicalDescription === '' ||
         operationalDetails === '' ||
         technicalDescriptionImage.length === 0 ||
-        majorShutDownImage === 0 ||
-        implementationMilestoneImage === 0 ||
-        projectTimelineImage === 0
+        majorShutDownImage.length === 0 ||
+        implementationMilestoneImage.length === 0 ||
+        projectTimelineImage.length === 0
       ) {
         console.log('Code Reachable')
         return

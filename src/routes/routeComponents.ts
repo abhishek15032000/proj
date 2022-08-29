@@ -19,6 +19,8 @@ import SeeAllProject from '../pages/SeeAllProjects/SeeAllProjects'
 import VerifierDashboard from '../pages/VerifierDashboard'
 import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
+import VerifierProjectsList from '../pages/VerifierProjectsList'
+import VerifierProjectDetails from '../pages/VerifierProjectDetails'
 
 export const privateRouteComponents = [
   {
@@ -108,6 +110,16 @@ export const privateRouteComponents = [
   {
     path: pathNames.VERIFIER_PROJECTS,
     component: VerifierProjects,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.VERIFIER_PROJECTS_LIST,
+    component: VerifierProjectsList,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.VERIFIER_PROJECTS_DETAILS,
+    component: VerifierProjectDetails,
     roles: [ROLES.ISSUER],
   },
 ]

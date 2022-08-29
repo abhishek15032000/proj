@@ -18,7 +18,9 @@ export const pathNames = {
   SEE_ALL_PROJECTS: '/see-all-projects',
   VERIFIER_DASHBOARD: '/verifier-dashboard',
   VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
-  VERIFIER_PROJECTS: 'verifier-projects'
+  VERIFIER_PROJECTS: '/verifier-projects',
+  VERIFIER_PROJECTS_LIST: "/verifier-projects-list",
+  VERIFIER_PROJECTS_DETAILS: '/verifier-projects-details'
 }
 
 export const linkLabels = {
