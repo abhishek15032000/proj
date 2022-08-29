@@ -1,4 +1,13 @@
-import { Grid, Typography } from '@mui/material'
+import {
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material'
 import React, { useState } from 'react'
 //MUI imports
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
@@ -59,10 +68,44 @@ const TokenAndContractProjectList = (
         </Grid>
       </Grid>
       {showDetails && (
-        <Box sx={{ pl: 2, pt: 2 }}>
-          <Typography sx={{ fontWeight: 500, fontSize: 14 }}>
+        <Box sx={{ pt: 1 }}>
+          <Typography sx={{ pl: 2, fontWeight: 500, fontSize: 14 }}>
             Reports
           </Typography>
+          <TableContainer sx={{ pl: 2, pb: 2, pt: 2 }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ background: '#CCE8E1' }}>
+                  {headings &&
+                    headings.length &&
+                    headings.map((tdCell: any, index: number) => (
+                      <TableCell
+                        key={index}
+                        sx={{ fontSize: 14, fontWeight: 500 }}
+                      >
+                        {tdCell}
+                      </TableCell>
+                    ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows &&
+                  rows.length &&
+                  rows.map((row: any, index: number) => (
+                    <TableRow key={index} sx={{ background: '#FAFDFA' }}>
+                      {row.map((tdValue: any, index: number) => (
+                        <TableCell
+                          key={index}
+                          sx={{ border: 'none', fontSize: 14, fontWeight: 400 }}
+                        >
+                          {tdValue}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       )}
     </>
@@ -72,9 +115,85 @@ const TokenAndContractProjectList = (
 export default TokenAndContractProjectList
 
 const headings = [
-  'Date of Report Submission',
-  'No of Co2e Authorised',
+  <Typography key="1" sx={{ fontWeight: 500, fontSize: 12, minWidth: '10vw' }}>
+    Date of Report Submission
+  </Typography>,
+  <Typography key="1" sx={{ fontWeight: 500, fontSize: 12, minWidth: '10vw' }}>
+    No of Co2e Authorised
+  </Typography>,
   'Date of Verification',
   'Comments',
 ]
-const rows = [['21/11/2022 - 26/12/2022', '420', '31/12/2022', 'View']]
+const rows = [
+  [
+    <Typography key={'1'} sx={{ fontSize: 14, fontWeight: 400 }}>
+      21/11/2022 - 26/12/2022
+    </Typography>,
+    <Typography
+      key={'1'}
+      textAlign="center"
+      sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
+    >
+      420
+    </Typography>,
+    '31/12/2022',
+    <Typography
+      key={'1'}
+      sx={{
+        fontSize: 16,
+        fontWeight: 600,
+        textDecoration: 'underline',
+        textDecorationColor: '#006B5E',
+        color: '#006B5E',
+      }}
+    >
+      View
+    </Typography>,
+  ],
+  [
+    '21/11/2022 - 26/12/2022',
+    <Typography
+      key={'1'}
+      textAlign="center"
+      sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
+    >
+      420
+    </Typography>,
+    '31/12/2022',
+    <Typography
+      key={'1'}
+      sx={{
+        fontSize: 16,
+        fontWeight: 600,
+        textDecoration: 'underline',
+        textDecorationColor: '#006B5E',
+        color: '#006B5E',
+      }}
+    >
+      View
+    </Typography>,
+  ],
+  [
+    '21/11/2022 - 26/12/2022',
+    <Typography
+      key={'1'}
+      textAlign="center"
+      sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
+    >
+      420
+    </Typography>,
+    '31/12/2022',
+    <Typography
+      key={'1'}
+      sx={{
+        fontSize: 16,
+        fontWeight: 600,
+        textDecoration: 'underline',
+        textDecorationColor: '#006B5E',
+        color: '#006B5E',
+      }}
+    >
+      View
+    </Typography>,
+  ],
+]

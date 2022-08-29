@@ -9,8 +9,12 @@ import ProjectsStats from '../../atoms/ProjectStats/ProjectsStats'
 import { Box } from '@mui/system'
 import CCButton from '../../atoms/CCButton'
 import TokenAndContractProjectList from './TokenAndContractProjectList'
+import { pathNames } from '../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
 
 const TokenAndContract = () => {
+  const navigate = useNavigate()
+
   return (
     <Grid container>
       <Grid item>
@@ -33,6 +37,7 @@ const TokenAndContract = () => {
             </Typography>
             <CCButton
               rounded
+              onClick={() => navigate(pathNames.MARKETPLACE)}
               sx={{
                 minWidth: 0,
                 backgroundColor: '#F3BA4D',
@@ -76,7 +81,7 @@ const TokenAndContract = () => {
             <TokenAndContractProjectList
               data={i}
               key={index}
-              background={index % 2 ? '#CCE8E1' : '#fff'}
+              background={index % 2 ? '#edf5f2' : '#fff'}
             />
           ))}
         </Paper>
