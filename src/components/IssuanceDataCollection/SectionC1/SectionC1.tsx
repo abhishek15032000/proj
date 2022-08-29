@@ -34,26 +34,30 @@ import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 const SectionC1 = () => {
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dataCollectionCalls
-      .getProjectData('80459440-9443-4617-8ba0-a01cf19ff939')
-      .then((res: any) => {
-        const {
-          description,
-          monitoring_plan,
-          attach_org_structure_and_responsibilities_chart,
-          specific_data_monitored,
-        } = res.data.section_c.step1
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
-        dispatch(setDatasMonitored(description))
-        dispatch(setMonioringSystem(specific_data_monitored))
-        dispatch(setMonitoringPlan(monitoring_plan))
-        dispatch(
-          setOrganizationalChartImage(
-            attach_org_structure_and_responsibilities_chart
-          )
+  useEffect(() => {
+    if (currentProjectDetails.section_c.step1.completed) {
+      const {
+        description,
+        monitoring_plan,
+        attach_org_structure_and_responsibilities_chart,
+        specific_data_monitored,
+      } = currentProjectDetails.section_c.step1
+
+      dispatch(setDatasMonitored(description))
+      dispatch(setMonioringSystem(specific_data_monitored))
+      dispatch(setMonitoringPlan(monitoring_plan))
+      dispatch(
+        setOrganizationalChartImage(
+          attach_org_structure_and_responsibilities_chart
         )
-      })
+      )
+    }
   }, [])
 
   const monitoringSystem = useAppSelector(
