@@ -26,7 +26,7 @@ import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 // let window: any
 declare let window: any
 
-const provider = new ethers.providers.Web3Provider(window.ethereum)
+// const provider = new ethers.providers.Web3Provider(window.ethereum)
 
 const LoadWallet = (props: LoadWalletProps) => {
   const dispatch = useAppDispatch()
