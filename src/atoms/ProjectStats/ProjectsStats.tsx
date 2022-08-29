@@ -1,6 +1,6 @@
 import { Box } from '@mui/system'
 import React from 'react'
-import { useHorizontalScroll } from '../../hooks/useHorizontalScoll'
+import { useHorizontalScroll } from '../../hooks/useHorizontalScroll'
 
 const stats = [
   {

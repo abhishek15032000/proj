@@ -22,6 +22,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollection'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 const headingItems = [
   {
@@ -85,9 +86,9 @@ const DashboardNewProjectsTable = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const uuid: string = getLocalItem('uuid')
+  const userDetails = getLocalItem('userDetails')
 
-  const [tableRows, setTableRows] = useState<any>()
+  const [tableRows, setTableRows] = useState<any>(undefined)
   const [showBorder, setShowBorder] = useState<boolean>(false)
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const DashboardNewProjectsTable = () => {
 
   const getAllProjects = () => {
     dataCollectionCalls
-      .getAllProjects(uuid)
+      .getAllProjects(userDetails?.email)
       .then((res: any) => {
         if (res?.data?.success) {
           setTableRows(res?.data?.data.slice(0, 7))
@@ -125,116 +126,116 @@ const DashboardNewProjectsTable = () => {
 
   return (
     <>
-      <TableContainer
-        onScroll={handleScroll}
-        sx={{
-          maxWidth: '100%',
-          overflowX: 'scroll',
-        }}
-      >
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headingItems.map((i) => (
-                <TableCell
-                  key={i?.index}
-                  sx={{
-                    ...i?.style,
-                    background: '#CCE8E1',
-                    boxShadow:
-                      i?.index === 'referenceId' && showBorder
-                        ? '3px 0px 2px rgba(0,0,0,0.5)'
-                        : 'none',
-                  }}
-                >
-                  {i?.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tableRows &&
-              tableRows?.length &&
-              tableRows.map((data: any, index: number) => (
-                <TableRow
-                  key={index}
-                  sx={{
-                    background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
-                  }}
-                >
+      {!tableRows ? (
+        <CCTableSkeleton height={78} />
+      ) : (
+        <TableContainer
+          onScroll={handleScroll}
+          sx={{
+            maxWidth: '100%',
+            overflowX: 'scroll',
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                {headingItems.map((i) => (
                   <TableCell
+                    key={i?.index}
                     sx={{
-                      position: 'sticky',
-                      top: 0,
-                      left: 0,
-                      background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                      ...i?.style,
+                      background: '#CCE8E1',
                     }}
                   >
-                    <Typography
-                      textAlign="start"
-                      sx={{ fontSize: 15, fontWeight: 500 }}
+                    {i?.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {tableRows &&
+                tableRows?.length &&
+                tableRows.map((data: any, index: number) => (
+                  <TableRow
+                    key={index}
+                    sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
+                  >
+                    <TableCell
+                      sx={{
+                        position: 'sticky',
+                        top: 0,
+                        left: 0,
+                        background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                      }}
                     >
-                      {limitTitle(data?.uuid, 10)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
-                      {moment(data?.createdAt).format(`DD/MM/YY`)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
-                      {data?.company_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
-                      {data?.location}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Chip
-                      sx={{ backgroundColor: '#75F8E4' }}
-                      key="1"
-                      icon={
-                        <CircleNotifications
-                          fontSize="small"
-                          style={{ color: '#00A392' }}
-                        />
-                      }
-                      label={'Finalised'}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Stack
-                      key={index}
-                      direction={'row'}
-                      alignItems="center"
-                      justifyContent={'flex-end'}
-                    >
-                      <img
-                        src={DataTablesBriefCase}
-                        width="35px"
-                        height="35px"
-                      />
-                      <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
-                        Climate Finance
+                      <Typography
+                        textAlign="start"
+                        sx={{ fontSize: 15, fontWeight: 500 }}
+                      >
+                        {limitTitle(data?.uuid, 10)}
                       </Typography>
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-                    <Box key={index}>
-                      <ArrowRightIcon
-                        sx={{ cursor: 'pointer' }}
-                        onClick={() => openProjectDetails(data)}
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                        {moment(data?.createdAt).format(`DD/MM/YY`)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                        {data?.company_name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                        {data?.location}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        sx={{ backgroundColor: '#75F8E4' }}
+                        key="1"
+                        icon={
+                          <CircleNotifications
+                            fontSize="small"
+                            style={{ color: '#00A392' }}
+                          />
+                        }
+                        label={'Finalised'}
                       />
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    </TableCell>
+                    <TableCell>
+                      <Stack
+                        key={index}
+                        direction={'row'}
+                        alignItems="center"
+                        justifyContent={'flex-end'}
+                      >
+                        <img
+                          src={DataTablesBriefCase}
+                          width="35px"
+                          height="35px"
+                        />
+                        <Typography
+                          sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
+                        >
+                          Climate Finance
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell>
+                      <Box key={index}>
+                        <ArrowRightIcon
+                          sx={{ cursor: 'pointer' }}
+                          onClick={() => openProjectDetails(data)}
+                        />
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   )
 }

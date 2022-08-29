@@ -8,6 +8,7 @@ const CCButton: React.FC<CCButtonProps> = (props) => {
       <Button
         {...props}
         sx={{
+          display: 'flex',
           // height: '48px',
           borderRadius: props.rounded ? 10 : 2,
           textTransform: 'none',

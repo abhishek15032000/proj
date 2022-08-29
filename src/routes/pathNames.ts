@@ -17,6 +17,9 @@ export const pathNames = {
   SELECT_VERIFIER: '/select-verifier',
   SEE_ALL_PROJECTS: '/see-all-projects',
   TOKEN_CONTRACT: '/token-contract',
+  VERIFIER_DASHBOARD: '/verifier-dashboard',
+  VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
+  VERIFIER_PROJECTS: 'verifier-projects',
 }
 
 export const linkLabels = {
