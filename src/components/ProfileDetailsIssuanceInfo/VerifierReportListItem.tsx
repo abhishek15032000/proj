@@ -44,7 +44,7 @@ const VerifierReportListItemListItem: FC<
     const startdate = moment(date)
     const result: any = startdate.format('DD')
     const currentDay: any = moment().format('DD')
-    return currentDay - result
+    return 8 - (currentDay - result)
   }
 
   return (
