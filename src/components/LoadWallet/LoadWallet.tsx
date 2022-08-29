@@ -64,7 +64,9 @@ const LoadWallet = (props: LoadWalletProps) => {
   }, [])
 
   useEffect(() => {
-    getWalletBalance()
+    if (accountAddress) {
+      getWalletBalance()
+    }
   }, [accountAddress])
   const checkMetamaskAvailability = async () => {
     setLoading(true)
