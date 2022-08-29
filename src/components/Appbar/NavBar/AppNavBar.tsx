@@ -23,9 +23,12 @@ import { Button, Grid } from '@mui/material'
 // import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded'
 // import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { pathNames } from '../../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { setLoadWallet } from '../../../redux/Slices/walletSlice'
+import { Colors } from '../../../theme'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -70,13 +73,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }))
 
 export default function AppNavBar({ handleDrawerToggle }: any) {
+  const dispatch = useAppDispatch()
+  const openWallet = () => {
+    console.log('loda wallet')
+    dispatch(setLoadWallet(true))
+    console.log('done')
+  }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-
+  const walletConnected = useAppSelector((state) => state.wallet.isConnected)
   const navigate = useNavigate()
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -214,6 +223,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             }}
           >
             <Button
+              onClick={() => openWallet()}
               color="primary"
               sx={{
                 flexDirection: 'row',
@@ -225,6 +235,17 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
               }}
             >
               <CreditCardRoundedIcon />
+              {walletConnected && (
+                <CheckCircleIcon
+                  sx={{
+                    position: 'absolute',
+                    top: 24,
+                    left: 17,
+                    fontSize: 6,
+                    color: Colors.success,
+                  }}
+                />
+              )}
               <Typography sx={{ mx: 1 }}>Wallet</Typography>
             </Button>
           </Box>

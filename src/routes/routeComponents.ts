@@ -16,6 +16,9 @@ import Onboarding from '../pages/Onboarding'
 import { linkLabels, pathNames } from './pathNames'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 import SeeAllProject from '../pages/SeeAllProjects/SeeAllProjects'
+import VerifierDashboard from '../pages/VerifierDashboard'
+import VerifierProfileSetup from '../pages/VerifierProfileSetup'
+import VerifierProjects from '../pages/VerifierProjects'
 
 export const privateRouteComponents = [
   {
@@ -90,6 +93,21 @@ export const privateRouteComponents = [
   {
     path: pathNames.SELECT_VERIFIER,
     component: SelectVerifier,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.VERIFIER_DASHBOARD,
+    component: VerifierDashboard,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.VERIFIER_PROFILE_SETUP,
+    component: VerifierProfileSetup,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.VERIFIER_PROJECTS,
+    component: VerifierProjects,
     roles: [ROLES.ISSUER],
   },
 ]
