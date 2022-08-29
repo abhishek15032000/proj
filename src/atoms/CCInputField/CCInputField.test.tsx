@@ -1,9 +1,40 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import CCInputField from './CCInputField';
+import { fireEvent, render, screen } from '@testing-library/react'
+import CCInputField from './CCInputField'
 
-test("renders CCInputField", () => {
-  // render(<App />);
-  // const linkElement = screen.getByText(/CCInputField/i);
-  // expect(linkElement).toBeInTheDocument();
-});
+test('should render CCInputField', () => {
+  render(<CCInputField onChange={jest.fn()} color="primary" />)
+  const field = screen.getByTestId('cc-input-field')
+  expect(field).toBeInTheDocument()
+})
+test('should render correct placeholder', () => {
+  render(
+    <CCInputField
+      placeholder="Test placeholder"
+      aria-labelledby="Test label"
+      onChange={jest.fn()}
+      color="primary"
+    />
+  )
+  const field = screen.getByTestId('cc-input-field')
+  expect(field).toBeInTheDocument()
+  expect(field.getAttribute('placeholder')).toBe('Test placeholder')
+})
+test('CCInputField should fire onChange', () => {
+  const handleChange = jest.fn()
+  render(<CCInputField onChange={handleChange} color="primary" />)
+  const field = screen.getByTestId('cc-input-field')
+  fireEvent.change(field, { target: { value: 'google it' } })
+  expect(handleChange).toHaveBeenCalled()
+})
+test('value is getting updated in CCInputField', () => {
+  const handleChange = jest.fn()
+  render(<CCInputField onChange={handleChange} color="primary" />)
+  const field = screen.getByTestId('cc-input-field')
+  fireEvent.change(field, { target: { value: 'google it' } })
+  //Unable to test value since it is giving "value not found in HTMLElement"
+  //link : https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
+  // Solution : cast the result of getElementById()/getByTestId to HTMLInputElement
+  const val = (field as HTMLInputElement).value
+  expect(val).toBe('google it')
+})
