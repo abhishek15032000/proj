@@ -18,6 +18,7 @@ const BlockchainCalls = {
     try {
       if (!ethereum) {
         haveMetamask = false
+        throw new Error("metamask not available")
       }
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts',

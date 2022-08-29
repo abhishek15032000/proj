@@ -11,9 +11,9 @@ export const dataCollectionCalls = {
       return res.data
     })
   },
-  getAllProjects: (token: string) => {
+  getAllProjects: (email: string) => {
     return AxiosHelper(
-      URL_PATH.project.getAllProjects + `?user_id=${token}`,
+      URL_PATH.project.getAllProjects + `?email=${email}`,
       'GET'
     )
   },
@@ -70,14 +70,6 @@ export const dataCollectionCalls = {
       URL_PATH.projectSections.updateProjectSectionE,
       'POST',
       payload
-    ).then((res: any) => {
-      return res.data
-    })
-  },
-  getProjectData: (params: string) => {
-    return AxiosHelper(
-      `https://carbon-dev-api.shinetrace.space/carbon/api/v1/project/getProjectById?id=${params}`,
-      'GET'
     ).then((res: any) => {
       return res.data
     })

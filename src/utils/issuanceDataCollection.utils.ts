@@ -189,6 +189,18 @@ export const moveToNextSection = async (
 
     let params = {}
     if (subSectionIndex === 0) {
+      if (
+        briefOnPurpuse === '' ||
+        technicalDescription === '' ||
+        operationalDetails === '' ||
+        technicalDescriptionImage.length === 0 ||
+        majorShutDownImage === 0 ||
+        implementationMilestoneImage === 0 ||
+        projectTimelineImage === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step1: {
           general_description: briefOnPurpuse,
@@ -210,9 +222,21 @@ export const moveToNextSection = async (
             projectTimelineImage,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
+      if (
+        temporaryDeviations === '' ||
+        corrections === '' ||
+        permanentChanges === '' ||
+        changesToProject === '' ||
+        changesToStart === '' ||
+        briefOnPurpuseB2 === ''
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step2: {
           temporary_deviation: temporaryDeviations,
@@ -221,6 +245,7 @@ export const moveToNextSection = async (
           change_project_design: changesToProject,
           change_startDate_creditPeriod: changesToStart,
           typeOf_changes_specific: briefOnPurpuseB2,
+          completed: true,
         },
       }
     }
@@ -254,6 +279,15 @@ export const moveToNextSection = async (
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
 
+    if (
+      sectionC.monitoringSystem === '' ||
+      sectionC.monitoringPlan === '' ||
+      sectionC.organizationalChartImage.length === 0 ||
+      sectionC.datasMonitored === ''
+    ) {
+      console.log('Code Reachable')
+      return
+    }
     // Change 'String' to actual values
     const payload = {
       _id: issuanceDataCollection?.currentProjectDetails?.section_c?._id,
@@ -268,6 +302,7 @@ export const moveToNextSection = async (
           'fileName'
         ),
         specific_data_monitored: sectionC.datasMonitored,
+        completed: true,
       },
     }
 
