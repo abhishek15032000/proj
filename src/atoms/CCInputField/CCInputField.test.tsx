@@ -3,7 +3,13 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import CCInputField from './CCInputField'
 
 test('should render CCInputField', () => {
-  render(<CCInputField onChange={jest.fn()} color="primary" />)
+  render(
+    <CCInputField
+      onChange={jest.fn()}
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCInputField(TextField from MUI)
+      color="primary"
+    />
+  )
   const field = screen.getByTestId('cc-input-field')
   expect(field).toBeInTheDocument()
 })
@@ -13,6 +19,7 @@ test('should render correct placeholder', () => {
       placeholder="Test placeholder"
       aria-labelledby="Test label"
       onChange={jest.fn()}
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCInputField(TextField from MUI)
       color="primary"
     />
   )
@@ -22,14 +29,26 @@ test('should render correct placeholder', () => {
 })
 test('CCInputField should fire onChange', () => {
   const handleChange = jest.fn()
-  render(<CCInputField onChange={handleChange} color="primary" />)
+  render(
+    <CCInputField
+      onChange={handleChange}
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCInputField(TextField from MUI)
+      color="primary"
+    />
+  )
   const field = screen.getByTestId('cc-input-field')
   fireEvent.change(field, { target: { value: 'google it' } })
   expect(handleChange).toHaveBeenCalled()
 })
 test('value is getting updated in CCInputField', () => {
   const handleChange = jest.fn()
-  render(<CCInputField onChange={handleChange} color="primary" />)
+  render(
+    <CCInputField
+      onChange={handleChange}
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCInputField(TextField from MUI)
+      color="primary"
+    />
+  )
   const field = screen.getByTestId('cc-input-field')
   fireEvent.change(field, { target: { value: 'google it' } })
   //Unable to test value since it is giving "value not found in HTMLElement"

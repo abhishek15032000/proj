@@ -4,6 +4,6 @@ import BackHeader from './BackHeader'
 
 test('renders BackHeader', () => {
   render(<BackHeader title={'Test Title'}></BackHeader>)
-  const buttonElement = screen.getByText(/Test Title/i)
-  expect(buttonElement).toBeInTheDocument()
+  const backHeaderElement = screen.getByText(/Test Title/i)
+  expect(backHeaderElement).toBeInTheDocument()
 })

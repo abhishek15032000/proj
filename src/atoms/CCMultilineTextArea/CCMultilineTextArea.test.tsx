@@ -3,7 +3,12 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import CCMultilineTextArea from './CCMultilineTextArea'
 
 test('should render CCMultilineTextArea', () => {
-  render(<CCMultilineTextArea color="primary" />)
+  render(
+    <CCMultilineTextArea
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCMultilineTextArea(TextField from MUI)
+      color="primary"
+    />
+  )
   const field = screen.getByTestId('cc-input-field-multiline')
   expect(field).toBeInTheDocument()
 })
@@ -13,6 +18,7 @@ test('should render correct placeholder', () => {
       placeholder="Test placeholder"
       label="Test label"
       onChange={jest.fn()}
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCMultilineTextArea(TextField from MUI)
       color="primary"
     />
   )
@@ -22,14 +28,26 @@ test('should render correct placeholder', () => {
 })
 test('CCMultilineTextArea should fire onChange', () => {
   const handleChange = jest.fn()
-  render(<CCMultilineTextArea onChange={handleChange} color="primary" />)
+  render(
+    <CCMultilineTextArea
+      onChange={handleChange}
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCMultilineTextArea(TextField from MUI)
+      color="primary"
+    />
+  )
   const field = screen.getByTestId('cc-input-field-multiline')
   fireEvent.change(field, { target: { value: 'google it' } })
   expect(handleChange).toHaveBeenCalled()
 })
 test('value is getting updated in CCMultilineTextArea', () => {
   const handleChange = jest.fn()
-  render(<CCMultilineTextArea onChange={handleChange} color="primary" />)
+  render(
+    <CCMultilineTextArea
+      onChange={handleChange}
+      //Giving color since it's giving "TypeError : 'main' not defined" error when rendering CCMultilineTextArea(TextField from MUI)
+      color="primary"
+    />
+  )
   const field = screen.getByTestId('cc-input-field-multiline')
   fireEvent.change(field, { target: { value: 'google it' } })
   //Unable to test value since it is giving "value not found in HTMLElement"
