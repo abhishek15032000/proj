@@ -11,6 +11,7 @@ interface BackHeaderProps {
   onClick?: object
   iconDisable?: boolean
   sx?: any
+  titleSx?: any
 }
 
 const BackHeader: FC<BackHeaderProps> = (props) => {
@@ -28,6 +29,7 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
           fontSize: 28,
           fontWeight: 400,
           color: Colors.tertiary,
+          ...props.titleSx
         }}
       >
         {props.title}

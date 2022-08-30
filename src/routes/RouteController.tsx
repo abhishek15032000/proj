@@ -8,6 +8,7 @@ import MaintenancePage from '../pages/MaintenancePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
+import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
@@ -69,6 +70,17 @@ const RouteController = ({ localLoggedIn }: any) => {
           <PublicRoute
             roles={[]}
             component={MaintenancePage}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      <Route
+        path={pathNames.VERIFIER_VERIFY_REPORT}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={VerifierVerifyReport}
             authenticated={userData}
             userData={userData}
           />

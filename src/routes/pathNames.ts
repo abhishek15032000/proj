@@ -20,7 +20,8 @@ export const pathNames = {
   VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
   VERIFIER_PROJECTS: '/verifier-projects',
   VERIFIER_PROJECTS_LIST: "/verifier-projects-list",
-  VERIFIER_PROJECTS_DETAILS: '/verifier-projects-details'
+  VERIFIER_PROJECTS_DETAILS: '/verifier-projects-details',
+  VERIFIER_VERIFY_REPORT: '/verifier-verify-report'
 }
 
 export const linkLabels = {
