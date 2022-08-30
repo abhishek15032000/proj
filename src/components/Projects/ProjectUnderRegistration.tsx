@@ -23,7 +23,7 @@ const headings = [
 
 const ProjectsUnderRegistration = () => {
   const navigate = useNavigate()
-  const uuid: string = getLocalItem('uuid')
+  const userDetails = getLocalItem('userDetails')
 
   const [allProjects, setAllProjects] = useState<any>()
 
@@ -38,8 +38,8 @@ const ProjectsUnderRegistration = () => {
   }
 
   const getAllProjects = () => {
-    dataCollectionCalls.getAllProjects(uuid).then((res: any) => {
-      console.log(res)
+    dataCollectionCalls.getAllProjects(userDetails?.email).then((res: any) => {
+      //console.log(res)
       if (res?.data?.success) {
         const rows = res?.data?.data.map((i: any, index: number) => {
           return [

@@ -20,7 +20,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [verifierReports, setVerifierReports] = useState<any>([])
   const [showTable, setShowTable] = useState<boolean>(true)
 
-  console.log(props?.currentProjectId)
+  //console.log(props?.currentProjectId)
 
   useEffect(() => {
     getVerifierByProject()
@@ -78,7 +78,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       <Grid item xs={12}>
         <Grid container rowSpacing={3}>
           {verifierReports &&
-            verifierReports?.length &&
+            verifierReports?.length > 0 &&
             verifierReports?.map((verifier: any, index: number) => (
               <Grid item key={index} xs={12}>
                 <VerifierReportListItem
