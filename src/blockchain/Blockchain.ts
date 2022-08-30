@@ -75,6 +75,13 @@ const BlockchainCalls = {
     )
     return shine_Contract
   },
+
+  requestMethodCalls: async (method: string, params: any) => {
+    try { window.ethereum.request({ method, params }) } catch (e) {
+      console.log(e)
+    }
+  },
+  toHexConvert: (number: any) => ethers.utils.hexlify(number)
 }
 
 export default BlockchainCalls
