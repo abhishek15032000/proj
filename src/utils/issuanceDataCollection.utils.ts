@@ -1,5 +1,7 @@
+import { ethers } from 'ethers'
 import { jsonSchema } from 'uuidv4'
 import { dataCollectionCalls } from '../api/dataCollectionCalls'
+import BlockchainCalls from '../blockchain/Blockchain'
 import {
   setCurrentProjectDetails,
   setSectionIndex,
@@ -46,7 +48,19 @@ export const moveToNextSection = async (
         dispatch(setLoading(true))
         const res = await dataCollectionCalls.createNewProject(payload)
         if (res?.success && res?.data?.uuid) {
-          getProjectDetails(res?.data?.uuid)
+          const uuid = res?.data?.uuid
+          // const hexHash = res?.data?.hexHash
+          const hexHash = 'E807F1FCF82D132F9BB018CA6738A19F'
+          getProjectDetails(uuid)
+          try {
+            const contractRes = await BlockchainCalls.contract_caller()
+            const createProjectRes = await contractRes.createProject(
+              uuid,
+              hexHash
+            )
+          } catch (e) {
+            console.log('Error in contract_caller().createProject call ~ ', e)
+          }
         }
         if (!res?.success && res?.error) {
           alert(res?.error)

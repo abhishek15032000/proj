@@ -52,7 +52,7 @@ const BlockchainCalls = {
       return { connected: false }
     }
   },
-  contract_caller: async (address: string) => {
+  contract_caller: async (address?: string) => {
     const ethereum = (window as any).ethereum
     const accounts = await ethereum.request({
       method: 'eth_requestAccounts',
