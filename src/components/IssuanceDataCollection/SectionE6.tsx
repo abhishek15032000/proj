@@ -26,23 +26,19 @@ const SectionE6 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_e?.project_id)
-      .then((res) => {
-        const {
-          remark_on_difference_from_estimate_value,
-          attach_relevant_docs,
-        } = res.data.section_e.step6
+    if (currentProjectDetails.section_e.step6.completed) {
+      const { remark_on_difference_from_estimate_value, attach_relevant_docs } =
+        currentProjectDetails.section_e.step6
 
-        dispatch(
-          setRemarksOnDifferenceFromEstimatedValue(
-            remark_on_difference_from_estimate_value
-          )
+      dispatch(
+        setRemarksOnDifferenceFromEstimatedValue(
+          remark_on_difference_from_estimate_value
         )
-        dispatch(
-          setRemarksOnDifferenceFromEstimatedValueImages(attach_relevant_docs)
-        )
-      })
+      )
+      dispatch(
+        setRemarksOnDifferenceFromEstimatedValueImages(attach_relevant_docs)
+      )
+    }
   })
 
   return (

@@ -40,17 +40,13 @@ const SectionD1: FC = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_d?.project_id)
-      .then((res) => {
-        const { data_and_parameter_fixed_ExAnte, attach_ex_ante_table } =
-          res.data.section_d.step1
+    if (currentProjectDetails.section_d.step1.completed) {
+      const { data_and_parameter_fixed_ExAnte, attach_ex_ante_table } =
+        currentProjectDetails.section_d.step1
 
-        dispatch(
-          setDataAndParameterFixedExAnte(data_and_parameter_fixed_ExAnte)
-        )
-        dispatch(setAttachExAnteTable(attach_ex_ante_table))
-      })
+      dispatch(setDataAndParameterFixedExAnte(data_and_parameter_fixed_ExAnte))
+      dispatch(setAttachExAnteTable(attach_ex_ante_table))
+    }
   }, [])
   return (
     <Grid

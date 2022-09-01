@@ -28,15 +28,13 @@ const SectionE3 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_e?.project_id)
-      .then((res) => {
-        const { calculation_of_leakage, attach_relevant_docs } =
-          res.data.section_e.step3
+    if (currentProjectDetails.section_e.step3.completed) {
+      const { calculation_of_leakage, attach_relevant_docs } =
+        currentProjectDetails.section_e.step3
 
-        dispatch(setCalculationOfLeakage(calculation_of_leakage))
-        dispatch(setCalculationOfLeakageImages(attach_relevant_docs))
-      })
+      dispatch(setCalculationOfLeakage(calculation_of_leakage))
+      dispatch(setCalculationOfLeakageImages(attach_relevant_docs))
+    }
   }, [])
 
   return (

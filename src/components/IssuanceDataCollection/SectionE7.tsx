@@ -27,15 +27,13 @@ const SectionE7 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_e?.project_id)
-      .then((res) => {
-        const { actual_emission_reductions, attach_relevant_docs } =
-          res.data.section_e.step6
+    if (currentProjectDetails.section_e.step7.completed) {
+      const { actual_emission_reductions, attach_relevant_docs } =
+        currentProjectDetails.section_e.step7
 
-        dispatch(setActualEmissionReductions(actual_emission_reductions))
-        dispatch(setActualEmissionReductionsImages(attach_relevant_docs))
-      })
+      dispatch(setActualEmissionReductions(actual_emission_reductions))
+      dispatch(setActualEmissionReductionsImages(attach_relevant_docs))
+    }
   })
   return (
     <Grid container sx={{ mt: 3 }}>

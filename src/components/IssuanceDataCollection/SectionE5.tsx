@@ -37,23 +37,19 @@ const SectionE5 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_e?.project_id)
-      .then((res) => {
-        const {
-          comparison_of_actual_emission_reduction,
-          attach_relevant_docs,
-        } = res.data.section_e.step5
+    if (currentProjectDetails.section_e.step5.completed) {
+      const { comparison_of_actual_emission_reduction, attach_relevant_docs } =
+        currentProjectDetails.section_e.step5
 
-        dispatch(
-          setComparisionOfActualEmissionReductions(
-            comparison_of_actual_emission_reduction
-          )
+      dispatch(
+        setComparisionOfActualEmissionReductions(
+          comparison_of_actual_emission_reduction
         )
-        dispatch(
-          setComparisionOfActualEmissionReductionsImages(attach_relevant_docs)
-        )
-      })
+      )
+      dispatch(
+        setComparisionOfActualEmissionReductionsImages(attach_relevant_docs)
+      )
+    }
   })
 
   return (

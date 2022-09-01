@@ -29,31 +29,27 @@ const SectionA1 = () => {
   )
 
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_a?.project_id)
-      .then((res) => {
-        const {
-          purpose_and_description,
-          measure_taken_for_gas_emissions,
-          brief_description_installed_tech,
-          project_comissioning_date,
-          construction_date,
-          operation_period,
-          total_GHG_emission,
-        } = res.data.section_a.step1
+    if (currentProjectDetails.section_a.step1.completed) {
+      const {
+        purpose_and_description,
+        measure_taken_for_gas_emissions,
+        brief_description_installed_tech,
+        project_comissioning_date,
+        construction_date,
+        operation_period,
+        total_GHG_emission,
+      } = currentProjectDetails.section_a.step1
 
-        dispatch(setPurposeAndDescription(purpose_and_description))
-        dispatch(
-          setMeasureTakenForGasEmissions(measure_taken_for_gas_emissions)
-        )
-        dispatch(
-          setBriefDescriptionInstalledTech(brief_description_installed_tech)
-        )
-        dispatch(setCommissioningDate(project_comissioning_date))
-        dispatch(setConstructionDate(construction_date))
-        dispatch(setOperationPeriod(operation_period))
-        dispatch(setTotalGHGEmission(total_GHG_emission))
-      })
+      dispatch(setPurposeAndDescription(purpose_and_description))
+      dispatch(setMeasureTakenForGasEmissions(measure_taken_for_gas_emissions))
+      dispatch(
+        setBriefDescriptionInstalledTech(brief_description_installed_tech)
+      )
+      dispatch(setCommissioningDate(project_comissioning_date))
+      dispatch(setConstructionDate(construction_date))
+      dispatch(setOperationPeriod(operation_period))
+      dispatch(setTotalGHGEmission(total_GHG_emission))
+    }
   }, [])
 
   const purpose_and_description = useAppSelector(
@@ -91,7 +87,7 @@ const SectionA1 = () => {
   )
 
   {
-    console.log('purpose_and_description', purpose_and_description)
+    console.log('currentProjectDetails<<<', currentProjectDetails)
   }
 
   return (

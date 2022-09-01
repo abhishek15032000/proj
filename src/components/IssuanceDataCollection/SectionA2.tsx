@@ -36,20 +36,17 @@ const SectionA2 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_a?.project_id)
-      .then((res) => {
-        console.log('res', res)
-        const { country, state, city, pincode, landmark, file_attach } =
-          res.data.section_a.step2
+    if (currentProjectDetails.section_a.step1.completed) {
+      const { country, state, city, pincode, landmark, file_attach } =
+        currentProjectDetails.section_a.step2
 
-        dispatch(setCity(city))
-        dispatch(setCountry(country))
-        dispatch(setState(state))
-        dispatch(setPincode(pincode))
-        dispatch(setLandmark(landmark))
-        dispatch(setFileAttach(file_attach))
-      })
+      dispatch(setCity(city))
+      dispatch(setCountry(country))
+      dispatch(setState(state))
+      dispatch(setPincode(pincode))
+      dispatch(setLandmark(landmark))
+      dispatch(setFileAttach(file_attach))
+    }
   }, [])
 
   const country = useAppSelector(

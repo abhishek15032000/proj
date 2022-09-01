@@ -32,23 +32,21 @@ const SectionA4 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_a?.project_id)
-      .then((res) => {
-        const { methodologies } = res.data.section_a.step4
-        let step4Data = []
-        step4Data = methodologies.map((item: any) => {
-          return {
-            approvedMethodologies: item.methodology,
-            projectType: item.project_type,
-            category: item.category,
-            version: item.version,
-            toolsReferred: item.tools,
-            flag: false,
-          }
-        })
-        dispatch(setMethodologies(step4Data))
+    if (currentProjectDetails.section_a.step4.completed) {
+      const { methodologies } = currentProjectDetails.section_a.step4
+      let step4Data = []
+      step4Data = methodologies.map((item: any) => {
+        return {
+          approvedMethodologies: item.methodology,
+          projectType: item.project_type,
+          category: item.category,
+          version: item.version,
+          toolsReferred: item.tools,
+          flag: false,
+        }
       })
+      dispatch(setMethodologies(step4Data))
+    }
   }, [])
 
   const methodologies = useAppSelector(
@@ -158,9 +156,9 @@ const SectionA4 = () => {
                       handleTextChange(e, index, 'approvedMethodologies')
                     }
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={'Ten'}>Ten</MenuItem>
+                    <MenuItem value={'Twenty'}>Twenty</MenuItem>
+                    <MenuItem value={'Thirty'}>Thirty</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

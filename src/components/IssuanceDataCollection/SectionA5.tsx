@@ -22,20 +22,15 @@ const SectionA5 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_a?.project_id)
-      .then((res) => {
-        const {
-          credit_start_period,
-          credit_period,
-          credit_period_description,
-        } = res.data.section_a.step5
+    if (currentProjectDetails.section_a.step5.completed) {
+      const { credit_start_period, credit_period, credit_period_description } =
+        currentProjectDetails.section_a.step5
 
-        dispatch(setStartDate(credit_start_period))
-        dispatch(setFromDate(credit_period.start_date))
-        dispatch(setToDate(credit_period.end_date))
-        dispatch(setBriefOnCreditingPeriod(credit_period_description))
-      })
+      dispatch(setStartDate(credit_start_period))
+      dispatch(setFromDate(credit_period.start_date))
+      dispatch(setToDate(credit_period.end_date))
+      dispatch(setBriefOnCreditingPeriod(credit_period_description))
+    }
   }, [])
 
   const startDate = useAppSelector(

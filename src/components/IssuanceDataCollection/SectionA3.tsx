@@ -21,20 +21,19 @@ const SectionA3 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_a?.project_id)
-      .then((res) => {
-        const { party_and_project_participants } = res.data.section_a.step3
-        let step3Data = []
-        step3Data = party_and_project_participants.map((item: any) => {
-          return {
-            partyInvolved: item?.party_involved,
-            participantType: item?.private_or_public_project_participant,
-            isProjectParticipant: item?.indicate_party_involved,
-          }
-        })
-        dispatch(setProjectParticipants(step3Data))
+    if (currentProjectDetails.section_a.step3.completed) {
+      const { party_and_project_participants } =
+        currentProjectDetails.section_a.step3
+      let step3Data = []
+      step3Data = party_and_project_participants.map((item: any) => {
+        return {
+          partyInvolved: item?.party_involved,
+          participantType: item?.private_or_public_project_participant,
+          isProjectParticipant: item?.indicate_party_involved,
+        }
       })
+      dispatch(setProjectParticipants(step3Data))
+    }
   }, [])
 
   const projectParticipants = useAppSelector(

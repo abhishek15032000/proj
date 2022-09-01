@@ -91,8 +91,42 @@ export const moveToNextSection = async (
       issuanceDataCollection
     )
 
+    const {
+      purpose_and_description,
+      measure_taken_for_gas_emissions,
+      brief_description_installed_tech,
+      construction_date,
+      operation_period,
+      total_GHG_emission,
+      commissioning_date,
+      country,
+      state,
+      city,
+      pincode,
+      landmark,
+      file_attach,
+      projectParticipants,
+      methodologies,
+      startDate,
+      fromDate,
+      toDate,
+      brief_on_crediting_period,
+    } = sectionA
+    console.log(Object.keys(sectionA).map((item) => item))
     let params = {}
     if (subSectionIndex === 0) {
+      if (
+        purpose_and_description === '' ||
+        measure_taken_for_gas_emissions === '' ||
+        brief_description_installed_tech === '' ||
+        construction_date === '' ||
+        operation_period === '' ||
+        total_GHG_emission === '' ||
+        commissioning_date === ''
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step1: {
           purpose_and_description: sectionA.purpose_and_description,
@@ -104,33 +138,65 @@ export const moveToNextSection = async (
           construction_date: sectionA.construction_date,
           operation_period: sectionA.operation_period,
           total_GHG_emission: sectionA.total_GHG_emission,
+          completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
+      if (
+        country === '' ||
+        state === '' ||
+        city === '' ||
+        pincode === '' ||
+        landmark === '' ||
+        file_attach.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step2: {
-          country: sectionA.county,
+          country: sectionA.country,
           state: sectionA.state,
           city: sectionA.city,
-          village: sectionA.village,
+          village: 'remove',
           pincode: sectionA.pincode,
           landmark: sectionA.landmark,
           file_attach: stringExtractor(sectionA.file_attach, 'fileName'),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 2) {
+      if (projectParticipants.length === 0) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step3: {
           party_and_project_participants: step3data,
+          completed: true,
         },
       }
     } else if (subSectionIndex === 3) {
+      if (methodologies.length === 0) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step4: {
           methodologies: step4data,
+          completed: true,
         },
       }
     } else if (subSectionIndex === 4) {
+      if (
+        startDate === '' ||
+        fromDate === '' ||
+        toDate === '' ||
+        brief_on_crediting_period === ''
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step5: {
           credit_start_period: sectionA.startDate,
@@ -139,6 +205,7 @@ export const moveToNextSection = async (
             end_date: sectionA.toDate,
           },
           credit_period_description: sectionA.brief_on_crediting_period,
+          completed: true,
         },
       }
     }
@@ -328,6 +395,13 @@ export const moveToNextSection = async (
 
     let params = {}
     if (subSectionIndex === 0) {
+      if (
+        sectionD.data_and_parameter_fixed_ExAnte === '' ||
+        sectionD.attach_ex_ante_table.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step1: {
           data_and_parameter_fixed_ExAnte:
@@ -336,9 +410,17 @@ export const moveToNextSection = async (
             sectionD.attach_ex_ante_table,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
+      if (
+        sectionD.data_and_parameter_monitored_ExPost === '' ||
+        sectionD.attach_ex_post_table.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step2: {
           data_and_parameter_monitored_ExPost:
@@ -347,12 +429,18 @@ export const moveToNextSection = async (
             sectionD.attach_ex_post_table,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 2) {
+      if (sectionD.briefDescription === '') {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step3: {
           implementation_of_sampling_plan: sectionD.briefDescription,
+          completed: true,
         },
       }
     }
@@ -384,9 +472,19 @@ export const moveToNextSection = async (
     const sectionE: any = store.getState()?.sectionE
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
-
+    console.log(
+      ' sectionE.calculationOfProjectEmissionsImages',
+      sectionE.calculationOfProjectEmissionsImages
+    )
     let params = {}
     if (subSectionIndex === 0) {
+      if (
+        sectionE.calculationOfBaselineEmissions === '' ||
+        sectionE.calculationOfBaselineEmissionsImages.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step1: {
           calculation_of_baselineEmissions_or_net_GHG:
@@ -395,9 +493,17 @@ export const moveToNextSection = async (
             sectionE.calculationOfBaselineEmissionsImages,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
+      if (
+        sectionE.calculationOfProjectEmissions === '' ||
+        sectionE.calculationOfProjectEmissionsImages.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step2: {
           calculation_of_projectEmissions_or_net_GHG:
@@ -406,9 +512,17 @@ export const moveToNextSection = async (
             sectionE.calculationOfProjectEmissionsImages,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 2) {
+      if (
+        sectionE.calculationOfLeakage === '' ||
+        sectionE.calculationOfLeakageImages.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step3: {
           calculation_of_leakage: sectionE.calculationOfLeakage,
@@ -416,9 +530,17 @@ export const moveToNextSection = async (
             sectionE.calculationOfLeakageImages,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 3) {
+      if (
+        sectionE.calculationSummaryOfEmission === '' ||
+        sectionE.calculationSummaryOfEmissionImages.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step4: {
           calculation_of_emissions_reduction:
@@ -427,9 +549,17 @@ export const moveToNextSection = async (
             sectionE.calculationSummaryOfEmissionImages,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 4) {
+      if (
+        sectionE.comparisionOfActualEmissionReductions === '' ||
+        sectionE.comparisionOfActualEmissionReductionsImages.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step5: {
           comparison_of_actual_emission_reduction:
@@ -438,9 +568,17 @@ export const moveToNextSection = async (
             sectionE.comparisionOfActualEmissionReductionsImages,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 5) {
+      if (
+        sectionE.remarksOnDifferenceFromEstimatedValue === '' ||
+        sectionE.remarksOnDifferenceFromEstimatedValueImages.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step6: {
           remark_on_difference_from_estimate_value:
@@ -449,9 +587,17 @@ export const moveToNextSection = async (
             sectionE.remarksOnDifferenceFromEstimatedValueImages,
             'fileName'
           ),
+          completed: true,
         },
       }
     } else if (subSectionIndex === 6) {
+      if (
+        sectionE.actualEmissionReductions === '' ||
+        sectionE.actualEmissionReductionsImages.length === 0
+      ) {
+        console.log('Code Reachable')
+        return
+      }
       params = {
         step7: {
           actual_emission_reductions: sectionE.actualEmissionReductions,
@@ -459,6 +605,7 @@ export const moveToNextSection = async (
             sectionE.actualEmissionReductionsImages,
             'fileName'
           ),
+          completed: true,
         },
       }
     }

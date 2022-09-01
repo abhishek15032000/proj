@@ -42,17 +42,15 @@ const SectionD2: FC = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_d?.project_id)
-      .then((res) => {
-        const { data_and_parameter_monitored_ExPost, attach_ex_ante_table } =
-          res.data.section_d.step2
+    if (currentProjectDetails.section_d.step2.completed) {
+      const { data_and_parameter_monitored_ExPost, attach_ex_ante_table } =
+        currentProjectDetails.section_d.step2
 
-        dispatch(
-          setDataAndParameterFixedExAnte(data_and_parameter_monitored_ExPost)
-        )
-        dispatch(setAttachExPostTable(attach_ex_ante_table))
-      })
+      dispatch(
+        setDataAndParameterMonitoredExPost(data_and_parameter_monitored_ExPost)
+      )
+      dispatch(setAttachExPostTable(attach_ex_ante_table))
+    }
   }, [])
 
   return (

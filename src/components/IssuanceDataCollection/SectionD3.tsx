@@ -11,25 +11,28 @@ import { setBriefDescription } from '../../redux/Slices/sectionDSlice'
 
 const SectionD3: FC = () => {
   const [showModal, setShowModal] = useState(false)
+  const dispatch = useAppDispatch()
   const briefDescription = useAppSelector(
     ({ sectionD }) => sectionD.briefDescription,
     shallowEqual
   )
-  const dispatch = useAppDispatch()
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_d?.project_id)
-      .then((res) => {
-        const { implementation_of_sampling_plan } = res.data.section_d.step3
+    if (currentProjectDetails.section_d.step3.completed) {
+      const { implementation_of_sampling_plan } =
+        currentProjectDetails.section_d.step3
 
-        dispatch(setBriefDescription(implementation_of_sampling_plan))
-      })
+      dispatch(setBriefDescription(implementation_of_sampling_plan))
+    }
   }, [])
+  {
+    console.log('briefDescription', briefDescription)
+  }
   return (
     <Grid>
       <Typography sx={{ marginTop: '64px' }}></Typography>

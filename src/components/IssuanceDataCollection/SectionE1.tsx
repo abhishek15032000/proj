@@ -39,21 +39,19 @@ const SectionE1 = () => {
     shallowEqual
   )
   useEffect(() => {
-    dataCollectionCalls
-      .getProjectData(currentProjectDetails?.section_e?.project_id)
-      .then((res) => {
-        const {
-          calculation_of_baselineEmissions_or_net_GHG,
-          attach_relevant_docs,
-        } = res.data.section_e.step1
+    if (currentProjectDetails.section_e.step1.completed) {
+      const {
+        calculation_of_baselineEmissions_or_net_GHG,
+        attach_relevant_docs,
+      } = currentProjectDetails.section_e.step1
 
-        dispatch(
-          setCalculationOfBaselineEmissions(
-            calculation_of_baselineEmissions_or_net_GHG
-          )
+      dispatch(
+        setCalculationOfBaselineEmissions(
+          calculation_of_baselineEmissions_or_net_GHG
         )
-        dispatch(setCalculationOfBaselineEmissionsImages(attach_relevant_docs))
-      })
+      )
+      dispatch(setCalculationOfBaselineEmissionsImages(attach_relevant_docs))
+    }
   }, [])
 
   return (
