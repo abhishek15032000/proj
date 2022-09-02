@@ -41,8 +41,7 @@ const VerifierReportListItemListItem: FC<
 
   const daysLeft = (date?: any) => {
     //function for couting days for verifier to accept
-    const startdate = moment(date)
-    const result: any = startdate.format('DD')
+    const result: any = moment(date).format('DD')
     const currentDay: any = moment().format('DD')
     return 8 - (currentDay - result)
   }

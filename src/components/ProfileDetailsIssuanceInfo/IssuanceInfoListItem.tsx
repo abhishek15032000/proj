@@ -18,6 +18,8 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
   const navigate = useNavigate()
 
   const moveToSection = (index: number) => {
+    if (props?.data?.project_status > 0) return
+
     dispatch(setSectionIndex(index))
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)
   }

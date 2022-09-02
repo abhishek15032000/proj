@@ -72,14 +72,31 @@ const ProjectsUnderRegistration = () => {
               {i?.location}
             </Typography>,
             <Chip
-              sx={{ backgroundColor: '#75F8E4' }}
-              key={index}
+              sx={{
+                pl: 1,
+                backgroundColor:
+                  i?.project_status === 2 ? '#75F8E4' : '#E1E3E1',
+              }}
+              key="1"
               icon={
                 <CircleIcon
-                  style={{ color: '#00A392', fontSize: 10, paddingLeft: 1 }}
+                  //fontSize="small"
+                  sx={{
+                    fontSize: 10,
+                    //pl: 1,
+                    color: i?.project_status === 2 ? '#00A392' : '#96B1AB',
+                  }}
                 />
               }
-              label={'Finalised'}
+              label={
+                i?.project_status === 0
+                  ? 'Yet to select'
+                  : i?.project_status === 1
+                  ? 'Selected'
+                  : i?.project_status === 3
+                  ? 'Finalised'
+                  : '--'
+              }
             />,
             <Stack
               key={index}
@@ -89,7 +106,9 @@ const ProjectsUnderRegistration = () => {
             >
               <img src={DataTablesBriefCase} width="35px" height="35px" />
               <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
-                Climate Finance
+                {i?.verifier_details_id
+                  ? i?.verifier_details_id?.verifier_name
+                  : '--'}
               </Typography>
             </Stack>,
             <Box

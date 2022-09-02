@@ -13,7 +13,6 @@ import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
-import { CircleNotifications } from '@mui/icons-material'
 import moment from 'moment'
 import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
@@ -23,6 +22,8 @@ import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollect
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import CircleIcon from '@mui/icons-material/Circle'
+import { addSectionPercentages } from '../../utils/newProject.utils'
 
 const headingItems = [
   {
@@ -99,9 +100,11 @@ const DashboardNewProjectsTable = () => {
     dataCollectionCalls
       .getAllProjects(userDetails?.email)
       .then((res: any) => {
-        console.log(res)
         if (res?.data?.success) {
-          setTableRows(res?.data?.data.slice(0, 7))
+          const modifiedRows = res?.data?.data
+            ?.slice(0, 7)
+            .map((i: any) => addSectionPercentages(i))
+          setTableRows(modifiedRows)
         }
       })
       .catch((e: any) => console.log(e))
@@ -155,7 +158,7 @@ const DashboardNewProjectsTable = () => {
             </TableHead>
             <TableBody>
               {tableRows &&
-                tableRows?.length &&
+                tableRows?.length > 0 &&
                 tableRows.map((data: any, index: number) => (
                   <TableRow
                     key={index}
@@ -193,15 +196,32 @@ const DashboardNewProjectsTable = () => {
                     </TableCell>
                     <TableCell>
                       <Chip
-                        sx={{ backgroundColor: '#75F8E4' }}
+                        sx={{
+                          pl: 1,
+                          backgroundColor:
+                            data?.project_status === 3 ? '#75F8E4' : '#E1E3E1',
+                        }}
                         key="1"
                         icon={
-                          <CircleNotifications
-                            fontSize="small"
-                            style={{ color: '#00A392' }}
+                          <CircleIcon
+                            //fontSize="small"
+                            sx={{
+                              fontSize: 10,
+                              //pl: 1,
+                              color:
+                                data?.project_status === 3
+                                  ? '#00A392'
+                                  : '#96B1AB',
+                            }}
                           />
                         }
-                        label={'Finalised'}
+                        label={
+                          data?.project_status === 0
+                            ? 'Yet to select'
+                            : data?.project_status === 1
+                            ? 'Selected'
+                            : data?.project_status === 3 && 'Finalised'
+                        }
                       />
                     </TableCell>
                     <TableCell>
@@ -211,25 +231,31 @@ const DashboardNewProjectsTable = () => {
                         alignItems="center"
                         justifyContent={'flex-end'}
                       >
-                        <img
-                          src={DataTablesBriefCase}
-                          width="35px"
-                          height="35px"
-                        />
+                        {data?.verifier_details_id && (
+                          <img
+                            src={DataTablesBriefCase}
+                            width="35px"
+                            height="35px"
+                          />
+                        )}
                         <Typography
                           sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
                         >
-                          Climate Finance
+                          {data?.verifier_details_id
+                            ? data?.verifier_details_id?.verifier_name
+                            : '-'}
                         </Typography>
                       </Stack>
                     </TableCell>
                     <TableCell>
-                      <Box key={index}>
-                        <ArrowRightIcon
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => openProjectDetails(data)}
-                        />
-                      </Box>
+                      {data?.project_status !== 3 && (
+                        <Box key={index}>
+                          <ArrowRightIcon
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => openProjectDetails(data)}
+                          />
+                        </Box>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
