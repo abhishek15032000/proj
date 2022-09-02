@@ -22,6 +22,12 @@ const App: FC<AppProps> = () => {
   const navigate = useNavigate()
   const localloggedIn = getLocalItem('loggedIn')
 
+  useEffect(() => {
+    // Use this to access JWT Token
+    console.log('getLocalItem')
+    console.log(JSON.stringify(getLocalItem('userDetails'), null, 4))
+  }, [])
+
   const onPrompt = () => {
     // Fire a Modal Prompt
   }

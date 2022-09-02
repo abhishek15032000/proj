@@ -8,7 +8,8 @@ export const ENDPOINTS = {
 
 export const URL_PATH = {
   userRoutes: {
-    onboardingUser: ENDPOINTS.userServiceURL + "/users/onboarding-user"
+    onboardingUser: ENDPOINTS.userServiceURL + "/users/onboarding-user",
+    updateUserInfo: ENDPOINTS.userServiceURL + "/users/updateUserInfo",
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + "/auth/login",

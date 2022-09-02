@@ -14,6 +14,7 @@ import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { DatePicker } from '@mui/x-date-pickers'
 import CCInputField from '../../atoms/CCInputField'
+import PDFViewer from './PDFViewer'
 
 const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   return (
@@ -25,7 +26,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       }}
     >
       <Grid container>
-        <Grid item xs={12}>
+        <Grid item xs={12} >
           <BackHeader
             title="Back"
             sx={{ ml: 4, mt: 3, mb: 2 }}
@@ -94,6 +95,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               <DatePicker
                 label="Select Month"
                 views={['month']}
+                inputFormat="MMMM"
                 value={new Date()}
                 components={{
                   OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -135,8 +137,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
           <Box sx={{ width: '90%', ml: 4 }}>
             <DatePicker
-              label="Select Month"
-              views={['month']}
+              label="Next submission date"
+              // views={['month']}
               value={new Date()}
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -171,7 +173,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             width: '20px',
           }}
         />
-        <Paper sx={{ height: 'auto', flex: 1 }}></Paper>
+        <Paper sx={{ height: '100vh', flex: 1 }}>
+          <PDFViewer />
+        </Paper>
       </Grid>
     </Box>
   )
