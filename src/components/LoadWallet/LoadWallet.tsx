@@ -1,9 +1,6 @@
-import { Button, Grid, Typography } from '@mui/material'
+import { Alert, Button, Grid, Typography } from '@mui/material'
 import Modal from '@mui/material/Modal'
-import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
-import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
   setAccountAddress,
@@ -22,6 +19,8 @@ import CCButton from '../../atoms/CCButton'
 import Spinner from '../../atoms/Spinner'
 import InfoIcon from '@mui/icons-material/Info'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
+import { USER } from '../../api/user.api'
+import { getLocalItem } from '../../utils/Storage'
 
 // let window: any
 declare let window: any
@@ -39,6 +38,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   // const [accountAddress, setAccountAddress] = useState('')
   // const [accountBalance, setAccountBalance] = useState('')
   const [open, setOpen] = useState(false)
+  const [error, setError] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   // const handleOpen = () => setOpen(loadWallet)
   const handleClose = () => closeModal()
@@ -60,7 +60,13 @@ const LoadWallet = (props: LoadWalletProps) => {
   } = walletReducer
 
   useEffect(() => {
-    checkMetamaskAvailability()
+    onManualConnectClick()
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e: any) => {
+        setError(e)
+      })
   }, [])
 
   useEffect(() => {
@@ -68,14 +74,47 @@ const LoadWallet = (props: LoadWalletProps) => {
       getWalletBalance()
     }
   }, [accountAddress])
+
   const checkMetamaskAvailability = async () => {
-    setLoading(true)
-    if (!ethereum) {
-      dispatch(setMetamask(false))
-    }
-    // sethaveMetamask(true)
-    dispatch(setMetamask(true))
-    await connectWallet()
+    return new Promise<boolean>((resolve, reject) => {
+      try {
+        setLoading(true)
+        if (!ethereum) {
+          dispatch(setMetamask(false))
+          reject(new Error('Metamask not available'))
+        }
+        // sethaveMetamask(true)
+        dispatch(setMetamask(true))
+        connectWallet().then((res: any) => {
+          resolve(res)
+        })
+      } catch (e: any) {
+        reject(new Error(e.toString()))
+      }
+    })
+  }
+  const onManualConnectClick = async () => {
+    checkMetamaskAvailability().then((res) => {
+      if (res) {
+        //call userUpdateApi
+        const user_data = getLocalItem('userDetails')
+        return USER.updateUserInfo(user_data)
+          .then((res: any) => {
+            console.log(
+              '🚀 ~ file: LoadWallet.tsx ~ line 105 ~ USER.updateUserInfo ~ res',
+              res
+            )
+            if (res?.data?.success && res?.data?.data) {
+              // setLocalItem('uuid', res?.data?.data?.uuid)
+              // navigate(pathNames.TWOFA)
+              return res
+            } else if (!res?.data?.success) {
+              alert(res?.data?.error)
+            }
+          })
+          .catch((e) => console.log(e))
+      }
+    })
   }
 
   const connectWallet = async () => {
@@ -83,9 +122,11 @@ const LoadWallet = (props: LoadWalletProps) => {
       BlockchainCalls.connectWallet().then((res: any) => {
         dispatch(setAccountAddress(res.accountAddress))
         dispatch(setConnected(res.isConnected))
+        return true
       })
-    } catch (error) {
+    } catch (error: any) {
       dispatch(setConnected(false))
+      setError(error.toString())
     }
   }
 
@@ -288,7 +329,12 @@ const LoadWallet = (props: LoadWalletProps) => {
                   display="flex"
                   xs={4}
                 >
-                  <CCButton onClick={() => checkMetamaskAvailability()}>
+                  {error ? (
+                    <Alert sx={{ m: 1 }} severity="info">
+                      {error.toString()}
+                    </Alert>
+                  ) : null}
+                  <CCButton onClick={() => onManualConnectClick()}>
                     Connect
                   </CCButton>
                   <CCButtonOutlined

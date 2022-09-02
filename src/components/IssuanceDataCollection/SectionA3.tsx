@@ -1,7 +1,7 @@
 import { SelectChangeEvent } from '@mui/material'
 import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import CCButton from '../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
@@ -15,25 +15,27 @@ interface dataInterface {
 
 const SectionA3 = () => {
   const dispatch = useAppDispatch()
-  const onSubmitSectionA = async () => {
-    const payload = { _id: '', uuid: '', project_id: '', step3: {} }
-
-    payload._id = 'step'
-    payload.uuid = 'b04782d3-2d4a-4f8d-9854-0deac633b1e4'
-    payload.project_id = 'step12355'
-    payload.step3 = {}
-
-    try {
-      const res = await dataCollectionCalls.updateProjectSectionACall(payload)
-      if (res?.success && res?.data) {
-        console.log('res', res)
-      } else if (res?.error) {
-        alert(res?.error)
-      }
-    } catch (e: any) {
-      console.log('Error in authCalls.loginCall api', e)
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    if (currentProjectDetails.section_a.step3.completed) {
+      const { party_and_project_participants } =
+        currentProjectDetails.section_a.step3
+      let step3Data = []
+      step3Data = party_and_project_participants.map((item: any) => {
+        return {
+          partyInvolved: item?.party_involved,
+          participantType: item?.private_or_public_project_participant,
+          isProjectParticipant: item?.indicate_party_involved,
+        }
+      })
+      dispatch(setProjectParticipants(step3Data))
     }
-  }
+  }, [])
+
   const projectParticipants = useAppSelector(
     ({ sectionA }) => sectionA.projectParticipants,
     shallowEqual

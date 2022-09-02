@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import {
   Box,
   Grid,
@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setAttachExPostTable,
+  setDataAndParameterFixedExAnte,
   setDataAndParameterMonitoredExPost,
 } from '../../redux/Slices/sectionDSlice'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
@@ -35,30 +36,22 @@ const SectionD2: FC = () => {
     shallowEqual
   )
 
-  const onSubmitSectionA = async () => {
-    const payload = {
-      _id: '',
-      uuid: '',
-      project_id: '',
-      step2: {},
-    }
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    if (currentProjectDetails.section_d.step2.completed) {
+      const { data_and_parameter_monitored_ExPost, attach_ex_ante_table } =
+        currentProjectDetails.section_d.step2
 
-    payload._id = 'step2'
-    payload.uuid = 'b04782d3-2d4a-4f8d-9854-0deac633b1e4'
-    payload.project_id = 'step12355'
-    payload.step2 = {}
-
-    try {
-      const res = await dataCollectionCalls.updateProjectSectionDCall(payload)
-      if (res?.success && res?.data) {
-        console.log('res', res)
-      } else if (res?.error) {
-        alert(res?.error)
-      }
-    } catch (e: any) {
-      console.log('Error in authCalls.loginCall api', e)
+      dispatch(
+        setDataAndParameterMonitoredExPost(data_and_parameter_monitored_ExPost)
+      )
+      dispatch(setAttachExPostTable(attach_ex_ante_table))
     }
-  }
+  }, [])
 
   return (
     <Grid

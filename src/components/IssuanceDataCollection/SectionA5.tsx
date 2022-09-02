@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CCInputField from '../../atoms/CCInputField'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
@@ -12,8 +12,26 @@ import {
   setToDate,
   setBriefOnCreditingPeriod,
 } from '../../redux/Slices/sectionASlice'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 const SectionA5 = () => {
   const dispatch = useAppDispatch()
+
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    if (currentProjectDetails.section_a.step5.completed) {
+      const { credit_start_period, credit_period, credit_period_description } =
+        currentProjectDetails.section_a.step5
+
+      dispatch(setStartDate(credit_start_period))
+      dispatch(setFromDate(credit_period.start_date))
+      dispatch(setToDate(credit_period.end_date))
+      dispatch(setBriefOnCreditingPeriod(credit_period_description))
+    }
+  }, [])
 
   const startDate = useAppSelector(
     ({ sectionA }) => sectionA.startDate,
