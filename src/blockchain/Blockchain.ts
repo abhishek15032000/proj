@@ -6,7 +6,8 @@ import {
 
 declare let window: any
 
-const provider = new ethers.providers.Web3Provider(window.ethereum)
+// const provider = new ethers.providers.Web3Provider(window.ethereum)
+const provider = ((window.ethereum != null) ? new ethers.providers.Web3Provider(window.ethereum) : ethers.getDefaultProvider());
 
 const { ethereum } = window
 
@@ -18,6 +19,7 @@ const BlockchainCalls = {
     try {
       if (!ethereum) {
         haveMetamask = false
+        throw new Error("metamask not available")
       }
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts',
@@ -70,6 +72,13 @@ const BlockchainCalls = {
     )
     return shine_Contract
   },
+
+  requestMethodCalls: async (method: string, params: any) => {
+    try { window.ethereum.request({ method, params }) } catch (e) {
+      console.log(e)
+    }
+  },
+  toHexConvert: (number: any) => ethers.utils.hexlify(number)
 }
 
 export default BlockchainCalls

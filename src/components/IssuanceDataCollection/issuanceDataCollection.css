@@ -111,4 +111,5 @@
 .select_option_border_contain {
   background: 'white';
   color: '#006B5E';
+  border: '0px solid white';
 }
