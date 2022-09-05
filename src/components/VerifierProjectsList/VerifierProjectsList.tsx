@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography } from '@mui/material'
@@ -10,8 +10,19 @@ import { Colors } from '../../theme'
 import ListOfProjects from './ListOfProjects'
 
 import { VerifierProjectsListProps } from './VerifierProjectsList.interface'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 const VerifierProjectsList = (props: VerifierProjectsListProps) => {
+  const [tableData, setTableData] = useState([])
+
+  useEffect(() => {
+    verifierCalls
+      .getAllVerifiers('62c5829aa3bc6ba32590f950')
+      .then((response) => {
+        setTableData(response.data.data)
+      })
+  }, [])
+
   return (
     <Box sx={{ p: 0 }}>
       <Grid
@@ -25,7 +36,7 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ListOfProjects />
+          <ListOfProjects data={tableData} />
         </Grid>
       </Grid>
     </Box>
