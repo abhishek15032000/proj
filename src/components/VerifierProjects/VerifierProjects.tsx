@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography } from '@mui/material'
@@ -12,6 +12,7 @@ import DashboardStatistics from './DashboardStatistics'
 import TabSelectorVerifier from './TabSelectorVerifier'
 import CCTable from '../../atoms/CCTable'
 import ListOfProjects from './ListOfProjects'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 const VerifierProjects = (props: VerifierProjectsProps) => {
   const [dashboardStatistics, setDashboardStatistics] = useState([
@@ -36,6 +37,15 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
       color: Colors.lightOrangeBackground,
     },
   ])
+  const [tableData, setTableData] = useState([])
+
+  useEffect(() => {
+    verifierCalls
+      .getAllVerifiers('62c5829aa3bc6ba32590f950')
+      .then((response) => {
+        setTableData(response.data.data)
+      })
+  }, [])
 
   return (
     <Box sx={{ p: 0 }}>
@@ -52,7 +62,9 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
         <DashboardStatistics data={dashboardStatistics} />
 
         <Grid item xs={12}>
-          <ListOfProjects />
+          <ListOfProjects
+            data={tableData}
+          />
         </Grid>
       </Grid>
     </Box>
@@ -60,4 +72,3 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
 }
 
 export default VerifierProjects
-

@@ -8,13 +8,13 @@ export const ENDPOINTS = {
 
 export const URL_PATH = {
   userRoutes: {
-    onboardingUser: ENDPOINTS.userServiceURL + "/users/onboarding-user",
-    updateUserInfo: ENDPOINTS.userServiceURL + "/users/updateUserInfo",
+    onboardingUser: ENDPOINTS.userServiceURL + '/users/onboarding-user',
+    updateUserInfo: ENDPOINTS.userServiceURL + '/users/updateUserInfo',
   },
   authRoutes: {
-    login: ENDPOINTS.authServiceURL + "/auth/login",
-    getCaptcha: ENDPOINTS.authServiceURL + "/auth/getCaptcha",
-    verifyNewUser: ENDPOINTS.authServiceURL + "/auth/verifyNewUser"
+    login: ENDPOINTS.authServiceURL + '/auth/login',
+    getCaptcha: ENDPOINTS.authServiceURL + '/auth/getCaptcha',
+    verifyNewUser: ENDPOINTS.authServiceURL + '/auth/verifyNewUser',
   },
   project: {
     projectCreate: ENDPOINTS.carbonServiceURL + '/project/create',
@@ -22,17 +22,24 @@ export const URL_PATH = {
     getProjectById: ENDPOINTS.carbonServiceURL + '/project/getProjectById',
   },
   projectSections: {
-    updateProjectSectionA: ENDPOINTS.carbonServiceURL + '/projectSectionA/update',
-    updateProjectSectionB: ENDPOINTS.carbonServiceURL + '/projectSectionB/update',
-    updateProjectSectionC: ENDPOINTS.carbonServiceURL + '/projectSectionC/update',
-    updateProjectSectionD: ENDPOINTS.carbonServiceURL + '/projectSectionD/update',
-    updateProjectSectionE: ENDPOINTS.carbonServiceURL + '/projectSectionE/update',
+    updateProjectSectionA:
+      ENDPOINTS.carbonServiceURL + '/projectSectionA/update',
+    updateProjectSectionB:
+      ENDPOINTS.carbonServiceURL + '/projectSectionB/update',
+    updateProjectSectionC:
+      ENDPOINTS.carbonServiceURL + '/projectSectionC/update',
+    updateProjectSectionD:
+      ENDPOINTS.carbonServiceURL + '/projectSectionD/update',
+    updateProjectSectionE:
+      ENDPOINTS.carbonServiceURL + '/projectSectionE/update',
   },
   verifier: {
-    create: ENDPOINTS.carbonServiceURL + "/verifier/create"
+    create: ENDPOINTS.carbonServiceURL + '/verifier/create',
+    getAllVerifier: ENDPOINTS.carbonServiceURL + '/verifier/getAllVerifiers',
   },
   department: {
-    getDepartment: ENDPOINTS.userServiceURL + "/department/getAllDepartment",
-    getUsersByOrgType: ENDPOINTS.userServiceURL + "/department/getUsersByOrgType?type="
-  }
+    getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',
+    getUsersByOrgType:
+      ENDPOINTS.userServiceURL + '/department/getUsersByOrgType?type=',
+  },
 }

@@ -11,4 +11,13 @@ export const verifierCalls = {
       return res
     })
   },
+  getAllVerifiers: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.getAllVerifier + '?verifier_id=' + payload,
+      'GET',
+      payload
+    ).then((res) => {
+      return res
+    })
+  },
 }
