@@ -149,8 +149,6 @@ const SelectVerifier = () => {
         return {
           project_id: currentProjectDetails?._id,
           project_status: currentProjectDetails?.project_status,
-          accepted_by_verifier: false,
-          accepted_by_issuer: false,
           verifier_id: verifierDetials._id,
           verifier_name: verifierDetials.fullName,
           verifier_address: verifierDetials.location,

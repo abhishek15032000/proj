@@ -45,8 +45,6 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
       project_status: confirmedVerifier?.project_status,
-      accepted_by_verifier: true,
-      accepted_by_issuer: true,
       verifier_id: confirmedVerifier?.verifier_id,
       verifier_name: confirmedVerifier?.verifier_name,
       verifier_address: confirmedVerifier?.verifier_address,
