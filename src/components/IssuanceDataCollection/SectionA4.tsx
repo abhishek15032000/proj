@@ -5,6 +5,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
@@ -16,6 +17,8 @@ import { setMethodologies } from '../../redux/Slices/sectionASlice'
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import Spinner from '../../atoms/Spinner'
+
 interface methodologiesInterface {
   approvedMethodologies: string
   projectType: string
@@ -53,6 +56,12 @@ const SectionA4 = () => {
     ({ sectionA }) => sectionA.methodologies,
     shallowEqual
   )
+
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   const addMethodology = () => {
     const methodologiesCopy = [...methodologies]
     methodologiesCopy.push({
@@ -82,7 +91,11 @@ const SectionA4 = () => {
     dispatch(setMethodologies(methodologiesCopy))
   }
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <>
       <Typography sx={{ mt: 3 }}>
         The methodologies applied for the project activity under consideration
@@ -108,6 +121,7 @@ const SectionA4 = () => {
               alignItems: 'center',
               width: '100%',
               paddingX: '5px',
+              cursor: 'pointer',
             }}
           >
             <Typography

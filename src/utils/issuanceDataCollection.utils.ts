@@ -6,6 +6,7 @@ import BlockchainCalls from '../blockchain/Blockchain'
 import { useAppSelector } from '../hooks/reduxHooks'
 import {
   setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
   setSectionIndex,
   setSubSectionIndex,
 } from '../redux/Slices/issuanceDataCollection'
@@ -13,6 +14,7 @@ import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice'
 import { store } from '../redux/store'
 import { stringExtractor } from './commonFunctions'
 import { getLocalItem } from './Storage'
+import { addSectionPercentages } from './newProject.utils'
 
 const dispatch = store.dispatch
 
@@ -58,7 +60,7 @@ export const moveToNextSection = async (
           const uuid = res?.data?.uuid
           // const hexHash = res?.data?.hexHash
           const hexHash = 'E807F1FCF82D132F9BB018CA6738A19F'
-          getProjectDetails(uuid)
+          // getProjectDetails(uuid)
           // try {
           // const contractRes = await BlockchainCalls.contract_caller()
           // await contractRes.estimateGas.createProject(uuid, hexHash)
@@ -86,6 +88,8 @@ export const moveToNextSection = async (
           // } catch (e) {
           //   console.log('Error in contract_caller().createProject call ~ ', e)
           // }
+          getProjectDetails(res?.data?.uuid)
+          dispatch(setCurrentProjectDetailsUUID(res?.data?.uuid))
         }
         if (!res?.success && res?.error) {
           alert(res?.error)
@@ -104,6 +108,7 @@ export const moveToNextSection = async (
     const sectionA: any = store.getState()?.sectionA
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
+    const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
     let step3data = [],
       step4data = []
     step3data = sectionA.projectParticipants.map((item: any) => {
@@ -122,13 +127,6 @@ export const moveToNextSection = async (
         tools: item.toolsReferred,
       }
     })
-    console.log(
-      'step3data',
-      step3data,
-      step4data,
-      newProjectData,
-      issuanceDataCollection
-    )
 
     const {
       purpose_and_description,
@@ -151,7 +149,6 @@ export const moveToNextSection = async (
       toDate,
       brief_on_crediting_period,
     } = sectionA
-    console.log(Object.keys(sectionA).map((item) => item))
     let params = {}
     if (subSectionIndex === 0) {
       if (
@@ -248,6 +245,7 @@ export const moveToNextSection = async (
         },
       }
     }
+    dispatch(setLoading(true))
     // Change 'String' to actual values
     const payload = {
       _id: issuanceDataCollection?.currentProjectDetails?.section_a?._id,
@@ -256,19 +254,18 @@ export const moveToNextSection = async (
         issuanceDataCollection?.currentProjectDetails?.section_a?.project_id,
       ...params,
     }
-    console.log('params<<<<', payload)
     try {
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
-      if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+      if (res?.success) {
+        getProjectDetails(currentProjectUUID)
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
@@ -276,7 +273,7 @@ export const moveToNextSection = async (
     const sectionB: any = store.getState()?.sectionB
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
-
+    const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
     const {
       briefOnPurpuse,
       technicalDescription,
@@ -364,19 +361,19 @@ export const moveToNextSection = async (
         issuanceDataCollection?.currentProjectDetails?.section_b?.project_id,
       ...params,
     }
-
+    dispatch(setLoading(true))
     try {
       const res = await dataCollectionCalls.updateProjectSectionBCall(payload)
-      if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+      if (res?.success) {
+        getProjectDetails(currentProjectUUID)
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
@@ -384,6 +381,7 @@ export const moveToNextSection = async (
     const sectionC: any = store.getState()?.sectionC
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
+    const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
 
     if (
       sectionC.monitoringSystem === '' ||
@@ -413,7 +411,11 @@ export const moveToNextSection = async (
     }
 
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionCCall(payload)
+      if (res?.success) {
+        getProjectDetails(currentProjectUUID)
+      }
       if (res?.success && res?.data?.uuid) {
         dispatch(setNewProjectUUID(res?.data?.uuid))
         dispatch(setSectionIndex(sectionIndex + 1))
@@ -424,6 +426,8 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
@@ -431,6 +435,7 @@ export const moveToNextSection = async (
     const sectionD: any = store.getState()?.sectionD
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
+    const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
 
     let params = {}
     if (subSectionIndex === 0) {
@@ -493,17 +498,18 @@ export const moveToNextSection = async (
     }
 
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionDCall(payload)
-      if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+      if (res?.success) {
+        getProjectDetails(currentProjectUUID)
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
@@ -511,10 +517,7 @@ export const moveToNextSection = async (
     const sectionE: any = store.getState()?.sectionE
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
-    console.log(
-      ' sectionE.calculationOfProjectEmissionsImages',
-      sectionE.calculationOfProjectEmissionsImages
-    )
+    const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
     let params = {}
     if (subSectionIndex === 0) {
       if (
@@ -658,31 +661,36 @@ export const moveToNextSection = async (
     }
 
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionECall(payload)
-      if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+      if (res?.success) {
+        getProjectDetails(currentProjectUUID)
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 }
 
 const getProjectDetails = async (projectID: string) => {
   try {
+    dispatch(setLoading(true))
     const res = await dataCollectionCalls.getProjectById(projectID)
     if (res?.success && res?.data) {
-      dispatch(setCurrentProjectDetails(res?.data))
+      const modifiedRows = addSectionPercentages(res?.data)
+      if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
     }
     if (!res?.success && res?.error) {
       alert(res?.error)
     }
   } catch (e) {
     console.log('Error in dataCollectionCalls.getProjectById api ~ ', e)
+  } finally {
+    dispatch(setLoading(false))
   }
 }
