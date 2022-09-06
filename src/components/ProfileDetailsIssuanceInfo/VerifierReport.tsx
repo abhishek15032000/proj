@@ -1,12 +1,13 @@
 // React Imports
 import React, { FC, useEffect, useState } from 'react'
 // MUI Imports
-import { Box, Chip, Grid, Typography } from '@mui/material'
+import { Box, Chip, Grid, Stack, Typography } from '@mui/material'
 // Local Imports
 import VerifierReportListItem from './VerifierReportListItem'
 import CCTable from '../../atoms/CCTable'
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined'
 import { verifierCalls } from '../../api/verifierCalls.api'
+import Spinner from '../../atoms/Spinner'
 //image Imports
 import illustration4 from '../../assets/Images/illustrations/illustration4.svg'
 import { CircleNotifications } from '@mui/icons-material'
@@ -19,12 +20,14 @@ interface VerifierReportListProps {
 const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [verifierReports, setVerifierReports] = useState<any>([])
   const [showTable, setShowTable] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     getVerifierByProject()
   }, [])
 
   const getVerifierByProject = () => {
+    setLoading(true)
     verifierCalls
       .getVerifierByProjectId(props?.currentProjectId)
       .then((res) => {
@@ -38,6 +41,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         }
       })
       .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const updateVerifier = (confirmedVerifier: any) => {
@@ -72,18 +78,28 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Grid container rowSpacing={3}>
-          {verifierReports &&
-            verifierReports?.length > 0 &&
-            verifierReports?.map((verifier: any, index: number) => (
-              <Grid item key={index} xs={12}>
-                <VerifierReportListItem
-                  data={verifier}
-                  updateVerifierAPI={updateVerifier}
-                />
-              </Grid>
-            ))}
-        </Grid>
+        {loading === true ? (
+          <Stack
+            alignItems="center"
+            justifyContent="center"
+            sx={{ minHeight: 250 }}
+          >
+            <Spinner />
+          </Stack>
+        ) : (
+          <Grid container rowSpacing={3}>
+            {verifierReports &&
+              verifierReports?.length > 0 &&
+              verifierReports?.map((verifier: any, index: number) => (
+                <Grid item key={index} xs={12}>
+                  <VerifierReportListItem
+                    data={verifier}
+                    updateVerifierAPI={updateVerifier}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+        )}
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
         {showTable ? (
