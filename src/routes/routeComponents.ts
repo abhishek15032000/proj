@@ -95,7 +95,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER],
   },
   {
     path: pathNames.SELECT_VERIFIER,
