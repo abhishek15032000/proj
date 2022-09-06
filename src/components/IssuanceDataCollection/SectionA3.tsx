@@ -1,4 +1,4 @@
-import { SelectChangeEvent } from '@mui/material'
+import { SelectChangeEvent, Stack } from '@mui/material'
 import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
@@ -7,6 +7,7 @@ import CCButton from '../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setProjectParticipants } from '../../redux/Slices/sectionASlice'
+import Spinner from '../../atoms/Spinner'
 interface dataInterface {
   partyInvolved: string
   participantType: string
@@ -15,13 +16,28 @@ interface dataInterface {
 
 const SectionA3 = () => {
   const dispatch = useAppDispatch()
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const projectParticipants = useAppSelector(
+    ({ sectionA }) => sectionA.projectParticipants,
+    shallowEqual
+  )
+
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_a.step3.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_a.step3.completed
+    ) {
       const { party_and_project_participants } =
         currentProjectDetails.section_a.step3
       let step3Data = []
@@ -34,12 +50,7 @@ const SectionA3 = () => {
       })
       dispatch(setProjectParticipants(step3Data))
     }
-  }, [])
-
-  const projectParticipants = useAppSelector(
-    ({ sectionA }) => sectionA.projectParticipants,
-    shallowEqual
-  )
+  }, [currentProjectDetails])
 
   const addRow = () => {
     const dataCopy = [...projectParticipants]
@@ -65,7 +76,11 @@ const SectionA3 = () => {
     dispatch(setProjectParticipants(dataCopy))
   }
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Box sx={{ mt: 3 }}>
       <Typography>Parties & project participants involved</Typography>
 

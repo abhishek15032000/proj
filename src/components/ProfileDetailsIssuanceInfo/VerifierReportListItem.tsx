@@ -32,10 +32,10 @@ const VerifierReportListItemListItem: FC<
   useEffect(() => {
     //filtering the verifier to show verifier details when hovered, will be later modified to api
     if (props?.data?.verifier_name) {
-      const g = verifiersList.filter(
+      const filteringVerifierDetails = verifiersList.filter(
         (verifier: any) => verifier?._id === props?.data?.verifier_id
       )
-      setVerifierDetails(g)
+      setVerifierDetails(filteringVerifierDetails)
     }
   }, [verifiersList])
 
@@ -43,6 +43,7 @@ const VerifierReportListItemListItem: FC<
     //function for couting days for verifier to accept
     const result: any = moment(date).format('DD')
     const currentDay: any = moment().format('DD')
+    //const currentDay: any = moment().subtract(result, 'days')
     return 8 - (currentDay - result)
   }
 
@@ -158,7 +159,14 @@ const VerifierReportListItemListItem: FC<
               </>
             )}
           </Grid>
-          <Grid item xs={3} sx={{ display: 'flex' }}>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             {
               //props?.data?.accepted_by_verifier &&
               props?.data?.accepted_by_issuer ? (

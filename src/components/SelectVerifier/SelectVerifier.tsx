@@ -24,6 +24,9 @@ import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import Spinner from '../../atoms/Spinner'
 
 const selectVerifierOptions = [
   {
@@ -94,10 +97,17 @@ const SelectVerifier = () => {
   const navigate = useNavigate()
   const location: any = useLocation()
 
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+
   const [open, setOpen] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
   const [verifiers, setVerifiers] = useState<any[]>([])
   const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleClick = () => {
     setOpen(true)
@@ -129,15 +139,16 @@ const SelectVerifier = () => {
   }
 
   const createVerifier = async () => {
+    setLoading(true)
     const payload = selectedVerifiers.map((verifierDetials: any) => {
       if (
-        location.state.projectDetails &&
+        currentProjectDetails &&
         selectedVerifiers &&
         selectedVerifiers?.length
       ) {
         return {
-          project_id: location?.state?.projectDetails._id,
-          project_status: 'awaiting verifier confirmation',
+          project_id: currentProjectDetails?._id,
+          project_status: currentProjectDetails?.project_status,
           accepted_by_verifier: false,
           accepted_by_issuer: false,
           verifier_id: verifierDetials._id,
@@ -156,6 +167,8 @@ const SelectVerifier = () => {
       }
     } catch (err) {
       console.log(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -170,7 +183,11 @@ const SelectVerifier = () => {
     }
   }
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <>
       <Grid
         container

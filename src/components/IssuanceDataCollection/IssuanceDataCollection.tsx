@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { KeyboardArrowLeft } from '@mui/icons-material'
@@ -36,6 +36,7 @@ import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import Spinner from '../../atoms/Spinner'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -112,7 +113,12 @@ const IssuanceDataCollection = () => {
     ({ newProject }) => newProject.loading,
     shallowEqual
   )
-
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  console.log(currentProjectDetails)
   const sectionIndex = useAppSelector(
     ({ issuanceDataCollection }) => issuanceDataCollection.sectionIndex,
     shallowEqual
@@ -121,6 +127,17 @@ const IssuanceDataCollection = () => {
     ({ issuanceDataCollection }) => issuanceDataCollection.subSectionIndex,
     shallowEqual
   )
+
+  const [nextBtn, setNextBtn] = useState(true)
+
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails?.projectCompleted &&
+      sectionIndex === 5
+    )
+      setNextBtn(false)
+  }, [currentProjectDetails, sectionIndex])
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
@@ -135,9 +152,22 @@ const IssuanceDataCollection = () => {
       dispatch(setSubSectionIndex(0))
     }
   }
+
   const handleNext = () => {
     dispatch(setSectionIndex(sectionIndex + 1))
     dispatch(setSubSectionIndex(0))
+    //handling next btn as per section data collection percentage
+    if (sectionIndex === 5) {
+      dispatch(setSectionIndex(1))
+      dispatch(setSubSectionIndex(0))
+      if (nextBtn) {
+        navigate(pathNames.DASHBOARD)
+      } else if (!nextBtn) {
+        if (currentProjectDetails?.project_status === 0) {
+          navigate(pathNames.SELECT_VERIFIER)
+        } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      }
+    }
   }
 
   const renderTab = () => {
@@ -180,7 +210,7 @@ const IssuanceDataCollection = () => {
                 }}
                 onClick={handleSave}
               >
-                {loading ? 'Saving ...' : 'Save'}
+                Save
               </CCButton>
               {sectionIndex !== 0 && (
                 <Box
@@ -226,7 +256,7 @@ const IssuanceDataCollection = () => {
                     mr: 1,
                   }}
                 >
-                  Next
+                  {nextBtn ? 'Next' : 'Complete'}
                 </Typography>
                 <ArrowForwardIcon sx={{ color: '#006B5E', fontSize: 18 }} />
               </Box>

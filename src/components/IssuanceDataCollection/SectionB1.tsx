@@ -2,13 +2,20 @@
 import React, { useState, useEffect } from 'react'
 
 // MUI Imports
-import { Button, Grid, TextareaAutosize, Typography } from '@mui/material'
+import {
+  Button,
+  Grid,
+  TextareaAutosize,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { Box } from '@mui/system'
 
 // Local Imports
 import SectionB1UploadImages from './SectionB1Upload/SectionB1Upload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import Spinner from '../../atoms/Spinner'
 
 // Asset Imports
 import SectionB1TechnicalDescription from '../../assets/Images/SampleData/SectionB1TechnicalDescription.png'
@@ -43,8 +50,16 @@ const SectionB1 = () => {
     shallowEqual
   )
 
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_b.step1.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_b.step1.completed
+    ) {
       const {
         general_description,
         technical_description,
@@ -67,7 +82,7 @@ const SectionB1 = () => {
         setTechnicalDescriptionImage(data_tables_technical_description_attach)
       )
     }
-  }, [])
+  }, [currentProjectDetails])
 
   const briefOnPurpuse = useAppSelector(
     ({ sectionB }) => sectionB.briefOnPurpuse,
@@ -104,7 +119,11 @@ const SectionB1 = () => {
     shallowEqual
   )
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>

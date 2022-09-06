@@ -18,9 +18,7 @@ interface VerifierReportListProps {
 
 const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [verifierReports, setVerifierReports] = useState<any>([])
-  const [showTable, setShowTable] = useState<boolean>(true)
-
-  //console.log(props?.currentProjectId)
+  const [showTable, setShowTable] = useState<boolean>(false)
 
   useEffect(() => {
     getVerifierByProject()
@@ -46,7 +44,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     const payload = {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
-      project_status: 'string',
+      project_status: confirmedVerifier?.project_status,
       accepted_by_verifier: true,
       accepted_by_issuer: true,
       verifier_id: confirmedVerifier?.verifier_id,

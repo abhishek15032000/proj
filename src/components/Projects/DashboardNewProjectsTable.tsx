@@ -8,6 +8,7 @@ import {
   TableContainer,
   Chip,
   Typography,
+  Grid,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
@@ -18,12 +19,16 @@ import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.p
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import { limitTitle } from '../../utils/commonFunctions'
 import { useAppDispatch } from '../../hooks/reduxHooks'
-import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollection'
+import {
+  setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
+} from '../../redux/Slices/issuanceDataCollection'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import CircleIcon from '@mui/icons-material/Circle'
 import { addSectionPercentages } from '../../utils/newProject.utils'
+import DashboardPencil from '../../assets/Images/Icons/DashboardPencil.png'
 
 const headingItems = [
   {
@@ -50,7 +55,7 @@ const headingItems = [
     index: 'projectName',
     label: 'Project Name',
     style: {
-      minWidth: 150,
+      minWidth: 270,
     },
   },
   {
@@ -71,44 +76,26 @@ const headingItems = [
     index: 'verifier',
     label: 'Verifier',
     style: {
-      minWidth: 150,
+      minWidth: 180,
     },
   },
   {
     index: 'action',
     label: 'Action',
     style: {
-      minWidth: 150,
+      minWidth: 130,
     },
   },
 ]
+interface DashboardNewProjectsTableProps {
+  tableRows: any
+}
 
-const DashboardNewProjectsTable = () => {
+const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const userDetails = getLocalItem('userDetails')
-
-  const [tableRows, setTableRows] = useState<any>(undefined)
   const [showBorder, setShowBorder] = useState<boolean>(false)
-
-  useEffect(() => {
-    getAllProjects()
-  }, [])
-
-  const getAllProjects = () => {
-    dataCollectionCalls
-      .getAllProjects(userDetails?.email)
-      .then((res: any) => {
-        if (res?.data?.success) {
-          const modifiedRows = res?.data?.data
-            ?.slice(0, 7)
-            .map((i: any) => addSectionPercentages(i))
-          setTableRows(modifiedRows)
-        }
-      })
-      .catch((e: any) => console.log(e))
-  }
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
     if (
@@ -123,14 +110,22 @@ const DashboardNewProjectsTable = () => {
 
   const openProjectDetails = (projectDetails: any) => {
     if (projectDetails) {
+      dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(projectDetails))
-      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      if (
+        !projectDetails?.projectCompleted ||
+        projectDetails?.project_status === 1
+      ) {
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      } else if (projectDetails?.projectCompleted) {
+        navigate(pathNames.SELECT_VERIFIER)
+      }
     }
   }
 
   return (
     <>
-      {!tableRows ? (
+      {!props?.tableRows ? (
         <CCTableSkeleton height={78} />
       ) : (
         <TableContainer
@@ -157,9 +152,9 @@ const DashboardNewProjectsTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableRows &&
-                tableRows?.length > 0 &&
-                tableRows.map((data: any, index: number) => (
+              {props?.tableRows &&
+                props?.tableRows?.length > 0 &&
+                props?.tableRows.map((data: any, index: number) => (
                   <TableRow
                     key={index}
                     sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
@@ -199,15 +194,13 @@ const DashboardNewProjectsTable = () => {
                         sx={{
                           pl: 1,
                           backgroundColor:
-                            data?.project_status === 3 ? '#75F8E4' : '#E1E3E1',
+                            data?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
                         }}
                         key="1"
                         icon={
                           <CircleIcon
-                            //fontSize="small"
                             sx={{
                               fontSize: 10,
-                              //pl: 1,
                               color:
                                 data?.project_status === 3
                                   ? '#00A392'
@@ -229,7 +222,7 @@ const DashboardNewProjectsTable = () => {
                         key={index}
                         direction={'row'}
                         alignItems="center"
-                        justifyContent={'flex-end'}
+                        justifyContent={'flex-start'}
                       >
                         {data?.verifier_details_id && (
                           <img
@@ -239,6 +232,7 @@ const DashboardNewProjectsTable = () => {
                           />
                         )}
                         <Typography
+                          textAlign={'start'}
                           sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
                         >
                           {data?.verifier_details_id
@@ -248,14 +242,24 @@ const DashboardNewProjectsTable = () => {
                       </Stack>
                     </TableCell>
                     <TableCell>
-                      {data?.project_status !== 3 && (
-                        <Box key={index}>
-                          <ArrowRightIcon
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() => openProjectDetails(data)}
-                          />
-                        </Box>
-                      )}
+                      <Grid container flexDirection="row" alignItems={'center'}>
+                        <Grid item xs={9} sx={{ pl: 2 }}>
+                          {!data?.verifier_details_id &&
+                            data?.project_status !== 3 && (
+                              <img src={DashboardPencil} />
+                            )}
+                        </Grid>
+                        <Grid item xs={3}>
+                          {/*{data?.project_status !== 3 && (*/}
+                          <Box key={index}>
+                            <ArrowRightIcon
+                              sx={{ cursor: 'pointer' }}
+                              onClick={() => openProjectDetails(data)}
+                            />
+                          </Box>
+                          {/*)}*/}
+                        </Grid>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 ))}

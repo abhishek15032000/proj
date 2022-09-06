@@ -15,7 +15,6 @@ import { shallowEqual } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import moment from 'moment'
-import { verifierCalls } from '../../api/verifierCalls.api'
 
 const projectDetails = {
   company_name:
@@ -39,116 +38,67 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-  //console.log(currentProjectDetails)
   const [tabIndex, setTabIndex] = useState(1)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
-  const [verifierReports, setVerifierReports] = useState<any>([])
-
-  //const [VerifierReports, setVerifierReports] = useState([
-  //  {
-  //    title: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
-  //    place: 'Hixson, USA',
-  //    location: '6430 Hixson Pike Hixson, TN 37343 USA www.awm.net',
-  //    website: 'www.awm.net',
-  //    director:
-  //      'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
-  //    contact: '423-843-2206',
-  //    mail: 'www.awm.net',
-  //    status: true,
-  //    verfierOption: 'Finalise Verifier',
-  //  },
-  //  {
-  //    title: 'DILLON CONSULTING LIMITED',
-  //    place: 'Toronto, Ontario',
-  //    location:
-  //      '235 Yorkland Boulevard, Suite 800 Toronto, Ontario M2J 4Y8 www.dillon.ca',
-  //    website: 'www.awm.net',
-  //    director:
-  //      'Zachary Zehr Project Manager & Lead Verifier 1-519-571-9833 ext. 3151 zzehr@dillon.ca',
-  //    contact: '423-843-2206',
-  //    mail: 'www.awm.net',
-  //    status: true,
-  //    verfierOption: 'Finalise Verifier',
-  //  },
-  //  {
-  //    title: ' ASTER GLOBAL ENVIRONMENTAL SOLUTIONS, INC.',
-  //    place: 'Ohio, USA',
-  //    location:
-  //      '3800 Clermont Street NW North Lawrence, Ohio 44666, USA www.asterglobal.com',
-  //    website: 'www.awm.net',
-  //    director:
-  //      'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
-  //    contact: '423-843-2206',
-  //    mail: 'www.awm.net',
-  //    status: false,
-  //    verfierOption: '2 days left',
-  //  },
-  //])
-
   useEffect(() => {
     if (currentProjectDetails) {
       const issuanceInfoTabData = [
         {
           title: 'Project Introduction',
-          status: true,
+          status: 'Complete',
           completionPercent: 100,
         },
         {
           title: 'Sec A: Description of Project Activity',
-          status: currentProjectDetails?.section_a?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_a?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_a?.completionPercentage,
+          projectStatus: currentProjectDetails?.project_status,
         },
         {
           title: 'Sec B: Implementation of the project activity',
-          status: currentProjectDetails?.section_b?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_b?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_b?.completionPercentage,
         },
         {
           title: 'Sec C: Description of Monitoring Activity',
-          status: currentProjectDetails?.section_b?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_c?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_c?.completionPercentage,
         },
         {
           title: 'Sec D: Data and parameters',
-          status: currentProjectDetails?.section_d?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_d?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_d?.completionPercentage,
         },
         {
           title:
             'Sec E: Calculation of emission reductions or GHG removals by sinks',
-          status: currentProjectDetails?.section_e?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_e?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_e?.completionPercentage,
         },
       ]
       setIssuanceInfo(issuanceInfoTabData)
     }
   }, [currentProjectDetails])
-
-  //useEffect(() => {
-  //  getVerifierByProject()
-  //}, [])
-
-  //const getVerifierByProject = () => {
-  //  verifierCalls
-  //    .getVerifierByProjectId('62fe2a4ed52b366464ec345f')
-  //    .then((res) => {
-  //      console.log(res)
-  //      if (res?.data?.success) {
-  //        setVerifierReports(res?.data?.data)
-  //      }
-  //    })
-  //    .catch((err) => console.log(err))
-  //}
 
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
