@@ -27,27 +27,16 @@ import {
 } from '../../redux/Slices/sectionASlice'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
+import Spinner from '../../atoms/Spinner'
 
 const SectionA2 = () => {
   const dispatch = useAppDispatch()
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-  useEffect(() => {
-    if (currentProjectDetails.section_a.step1.completed) {
-      const { country, state, city, pincode, landmark, file_attach } =
-        currentProjectDetails.section_a.step2
-
-      dispatch(setCity(city))
-      dispatch(setCountry(country))
-      dispatch(setState(state))
-      dispatch(setPincode(pincode))
-      dispatch(setLandmark(landmark))
-      dispatch(setFileAttach(file_attach))
-    }
-  }, [])
 
   const country = useAppSelector(
     ({ sectionA }) => sectionA.country,
@@ -68,7 +57,33 @@ const SectionA2 = () => {
     shallowEqual
   )
 
-  return (
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_a.step1.completed
+    ) {
+      const { country, state, city, pincode, landmark, file_attach } =
+        currentProjectDetails.section_a.step2
+
+      dispatch(setCity(city))
+      dispatch(setCountry(country))
+      dispatch(setState(state))
+      dispatch(setPincode(pincode))
+      dispatch(setLandmark(landmark))
+      dispatch(setFileAttach(file_attach))
+    }
+  }, [currentProjectDetails])
+
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid
       container
       sx={{ width: '100%' }}

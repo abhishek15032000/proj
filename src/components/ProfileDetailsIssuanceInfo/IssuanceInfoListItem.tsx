@@ -16,8 +16,9 @@ interface IssuanceInfoListItemProps {
 const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-
   const moveToSection = (index: number) => {
+    if (props?.data?.project_status > 0) return
+
     dispatch(setSectionIndex(index))
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)
   }
@@ -60,13 +61,13 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
             marginRight: 10,
           }}
         >
-          {props?.data?.status ? (
+          {props?.data?.completionPercent === 100 ? (
             <CheckCircleIcon sx={{ color: '#7ACB9F', mr: 1 }} />
           ) : (
             <CircleIcon sx={{ color: '#F7CA56', mr: 1 }} />
           )}
           <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-            {props?.data?.status ? 'Complete' : 'In Progress'}
+            {props?.data?.status}
           </Typography>
         </Box>
       </Grid>

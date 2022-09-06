@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
+  Stack,
   Typography,
 } from '@mui/material'
 import React from 'react'
@@ -26,6 +27,7 @@ import {
   setProjectType,
   setStartDate,
 } from '../../redux/Slices/newProjectSlice'
+import Spinner from '../../atoms/Spinner'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -81,6 +83,10 @@ const ListNewProject = () => {
     ({ newProject }) => newProject.projectArea,
     shallowEqual
   )
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
 
   const handleChange = (event: SelectChangeEvent<typeof projectType>) => {
     const {
@@ -117,7 +123,11 @@ const ListNewProject = () => {
     }
   }
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />{' '}
+    </Stack>
+  ) : (
     <Grid container xs={12} spacing={2} sx={{ mt: 2 }}>
       <Grid item xs={12}>
         <CCInputField

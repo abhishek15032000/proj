@@ -16,6 +16,7 @@ import Onboarding from '../pages/Onboarding'
 import { linkLabels, pathNames } from './pathNames'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 import SeeAllProject from '../pages/SeeAllProjects/SeeAllProjects'
+import TokenAndContractPage from '../pages/TokenAndContractPage/TokenAndContractPage'
 import VerifierDashboard from '../pages/VerifierDashboard'
 import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
@@ -27,6 +28,12 @@ export const privateRouteComponents = [
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.TOKEN_CONTRACT,
+    component: TokenAndContractPage,
+    sidebarName: linkLabels.Token_Contract,
     roles: [ROLES.ISSUER],
   },
   {

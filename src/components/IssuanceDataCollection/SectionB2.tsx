@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 
 // MUI Imports
-import { Box, Grid, TextareaAutosize, Typography } from '@mui/material'
+import { Box, Grid, Stack, TextareaAutosize, Typography } from '@mui/material'
 
 // Redux Imports
 import { shallowEqual } from 'react-redux'
@@ -19,6 +19,7 @@ import {
 // Local Components
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import Spinner from '../../atoms/Spinner'
 
 const SectionB2 = () => {
   const dispatch = useAppDispatch()
@@ -28,28 +29,6 @@ const SectionB2 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-
-  useEffect(() => {
-    if (currentProjectDetails.section_b.step2.completed) {
-      const {
-        temporary_deviation,
-        corrections,
-        permanent_changes_from_registered_monitoring_plan,
-        change_project_design,
-        change_startDate_creditPeriod,
-        typeOf_changes_specific,
-      } = currentProjectDetails.section_b.step2
-
-      dispatch(setBriefOnPurpuseB2(typeOf_changes_specific))
-      dispatch(setChangesToProject(change_project_design))
-      dispatch(setChangesToStart(change_startDate_creditPeriod))
-      dispatch(setCorrections(corrections))
-      dispatch(
-        setPermanentChanges(permanent_changes_from_registered_monitoring_plan)
-      )
-      dispatch(setTemporaryDeviations(temporary_deviation))
-    }
-  }, [])
 
   const temporaryDeviations = useAppSelector(
     ({ sectionB }) => sectionB.temporaryDeviations,
@@ -81,7 +60,41 @@ const SectionB2 = () => {
     shallowEqual
   )
 
-  return (
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_b.step2.completed
+    ) {
+      const {
+        temporary_deviation,
+        corrections,
+        permanent_changes_from_registered_monitoring_plan,
+        change_project_design,
+        change_startDate_creditPeriod,
+        typeOf_changes_specific,
+      } = currentProjectDetails.section_b.step2
+
+      dispatch(setBriefOnPurpuseB2(typeOf_changes_specific))
+      dispatch(setChangesToProject(change_project_design))
+      dispatch(setChangesToStart(change_startDate_creditPeriod))
+      dispatch(setCorrections(corrections))
+      dispatch(
+        setPermanentChanges(permanent_changes_from_registered_monitoring_plan)
+      )
+      dispatch(setTemporaryDeviations(temporary_deviation))
+    }
+  }, [currentProjectDetails])
+
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>

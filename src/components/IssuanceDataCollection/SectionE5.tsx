@@ -4,6 +4,7 @@ import {
   TextareaAutosize,
   Typography,
   Input,
+  Stack,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
@@ -21,6 +22,8 @@ import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import Spinner from '../../atoms/Spinner'
+
 const SectionE5 = () => {
   const dispatch = useAppDispatch()
 
@@ -36,8 +39,16 @@ const SectionE5 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_e.step5.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_e.step5.completed
+    ) {
       const { comparison_of_actual_emission_reduction, attach_relevant_docs } =
         currentProjectDetails.section_e.step5
 
@@ -50,9 +61,13 @@ const SectionE5 = () => {
         setComparisionOfActualEmissionReductionsImages(attach_relevant_docs)
       )
     }
-  })
+  }, [currentProjectDetails])
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }}>
       <Grid item xs={12}>
         <CCMultilineTextArea

@@ -8,21 +8,27 @@ import {
   TableContainer,
   Chip,
   Typography,
+  Grid,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
-import { CircleNotifications } from '@mui/icons-material'
 import moment from 'moment'
 import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import { limitTitle } from '../../utils/commonFunctions'
 import { useAppDispatch } from '../../hooks/reduxHooks'
-import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollection'
+import {
+  setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
+} from '../../redux/Slices/issuanceDataCollection'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import CircleIcon from '@mui/icons-material/Circle'
+import { addSectionPercentages } from '../../utils/newProject.utils'
+import DashboardPencil from '../../assets/Images/Icons/DashboardPencil.png'
 
 const headingItems = [
   {
@@ -31,9 +37,11 @@ const headingItems = [
     style: {
       minWidth: 150,
       position: 'sticky',
+      zindex: 1999,
       top: 0,
       left: 0,
       background: '#CCE8E1',
+      display: 'block',
     },
   },
   {
@@ -47,7 +55,7 @@ const headingItems = [
     index: 'projectName',
     label: 'Project Name',
     style: {
-      minWidth: 150,
+      minWidth: 270,
     },
   },
   {
@@ -68,54 +76,62 @@ const headingItems = [
     index: 'verifier',
     label: 'Verifier',
     style: {
-      minWidth: 150,
+      minWidth: 180,
     },
   },
   {
     index: 'action',
     label: 'Action',
     style: {
-      minWidth: 150,
+      minWidth: 130,
     },
   },
 ]
+interface DashboardNewProjectsTableProps {
+  tableRows: any
+}
 
-const DashboardNewProjectsTable = () => {
+const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const userDetails = getLocalItem('userDetails')
+  const [showBorder, setShowBorder] = useState<boolean>(false)
 
-  const [tableRows, setTableRows] = useState<any>(undefined)
-
-  useEffect(() => {
-    getAllProjects()
-  }, [])
-
-  const getAllProjects = () => {
-    dataCollectionCalls
-      .getAllProjects(userDetails?.email)
-      .then((res: any) => {
-        if (res?.data?.success) {
-          setTableRows(res?.data?.data.slice(0, 7))
-        }
-      })
-      .catch((e: any) => console.log(e))
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    if (
+      event.currentTarget.scrollLeft < 474 &&
+      event.currentTarget.scrollLeft >= 2
+    ) {
+      setShowBorder(true)
+    } else if (event.currentTarget.scrollLeft < 2) {
+      setShowBorder(false)
+    }
   }
 
   const openProjectDetails = (projectDetails: any) => {
     if (projectDetails) {
+      dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(projectDetails))
-      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      if (
+        !projectDetails?.projectCompleted ||
+        projectDetails?.project_status === 1
+      ) {
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      } else if (projectDetails?.projectCompleted) {
+        if (projectDetails?.project_status === 3) {
+          navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        } else navigate(pathNames.SELECT_VERIFIER)
+      }
     }
   }
 
   return (
     <>
-      {!tableRows ? (
+      {!props?.tableRows ? (
         <CCTableSkeleton height={78} />
       ) : (
         <TableContainer
+          onScroll={handleScroll}
           sx={{
             maxWidth: '100%',
             overflowX: 'scroll',
@@ -138,9 +154,9 @@ const DashboardNewProjectsTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableRows &&
-                tableRows?.length &&
-                tableRows.map((data: any, index: number) => (
+              {props?.tableRows &&
+                props?.tableRows?.length > 0 &&
+                props?.tableRows.map((data: any, index: number) => (
                   <TableRow
                     key={index}
                     sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
@@ -177,15 +193,30 @@ const DashboardNewProjectsTable = () => {
                     </TableCell>
                     <TableCell>
                       <Chip
-                        sx={{ backgroundColor: '#75F8E4' }}
+                        sx={{
+                          pl: 1,
+                          backgroundColor:
+                            data?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
+                        }}
                         key="1"
                         icon={
-                          <CircleNotifications
-                            fontSize="small"
-                            style={{ color: '#00A392' }}
+                          <CircleIcon
+                            sx={{
+                              fontSize: 10,
+                              color:
+                                data?.project_status === 3
+                                  ? '#00A392'
+                                  : '#96B1AB',
+                            }}
                           />
                         }
-                        label={'Finalised'}
+                        label={
+                          data?.project_status === 0
+                            ? 'Yet to select'
+                            : data?.project_status === 1
+                            ? 'Selected'
+                            : data?.project_status === 3 && 'Finalised'
+                        }
                       />
                     </TableCell>
                     <TableCell>
@@ -193,27 +224,44 @@ const DashboardNewProjectsTable = () => {
                         key={index}
                         direction={'row'}
                         alignItems="center"
-                        justifyContent={'flex-end'}
+                        justifyContent={'flex-start'}
                       >
-                        <img
-                          src={DataTablesBriefCase}
-                          width="35px"
-                          height="35px"
-                        />
+                        {data?.verifier_details_id && (
+                          <img
+                            src={DataTablesBriefCase}
+                            width="35px"
+                            height="35px"
+                          />
+                        )}
                         <Typography
+                          textAlign={'start'}
                           sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
                         >
-                          Climate Finance
+                          {data?.verifier_details_id
+                            ? data?.verifier_details_id?.verifier_name
+                            : '-'}
                         </Typography>
                       </Stack>
                     </TableCell>
                     <TableCell>
-                      <Box key={index}>
-                        <ArrowRightIcon
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => openProjectDetails(data)}
-                        />
-                      </Box>
+                      <Grid container flexDirection="row" alignItems={'center'}>
+                        <Grid item xs={9} sx={{ pl: 2 }}>
+                          {!data?.verifier_details_id &&
+                            data?.project_status !== 3 && (
+                              <img src={DashboardPencil} />
+                            )}
+                        </Grid>
+                        <Grid item xs={3}>
+                          {/*{data?.project_status !== 3 && (*/}
+                          <Box key={index}>
+                            <ArrowRightIcon
+                              sx={{ cursor: 'pointer' }}
+                              onClick={() => openProjectDetails(data)}
+                            />
+                          </Box>
+                          {/*)}*/}
+                        </Grid>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 ))}

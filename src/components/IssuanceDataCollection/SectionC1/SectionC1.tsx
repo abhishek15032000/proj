@@ -30,6 +30,7 @@ import {
 } from '../../../redux/Slices/sectionCSlice'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionC1 = () => {
   const dispatch = useAppDispatch()
@@ -39,26 +40,10 @@ const SectionC1 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-
-  useEffect(() => {
-    if (currentProjectDetails.section_c.step1.completed) {
-      const {
-        description,
-        monitoring_plan,
-        attach_org_structure_and_responsibilities_chart,
-        specific_data_monitored,
-      } = currentProjectDetails.section_c.step1
-
-      dispatch(setDatasMonitored(description))
-      dispatch(setMonioringSystem(specific_data_monitored))
-      dispatch(setMonitoringPlan(monitoring_plan))
-      dispatch(
-        setOrganizationalChartImage(
-          attach_org_structure_and_responsibilities_chart
-        )
-      )
-    }
-  }, [])
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
 
   const monitoringSystem = useAppSelector(
     ({ sectionC }) => sectionC.monitoringSystem,
@@ -80,7 +65,34 @@ const SectionC1 = () => {
     shallowEqual
   )
 
-  return (
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_c.step1.completed
+    ) {
+      const {
+        description,
+        monitoring_plan,
+        attach_org_structure_and_responsibilities_chart,
+        specific_data_monitored,
+      } = currentProjectDetails.section_c.step1
+
+      dispatch(setDatasMonitored(description))
+      dispatch(setMonioringSystem(specific_data_monitored))
+      dispatch(setMonitoringPlan(monitoring_plan))
+      dispatch(
+        setOrganizationalChartImage(
+          attach_org_structure_and_responsibilities_chart
+        )
+      )
+    }
+  }, [currentProjectDetails])
+
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
