@@ -46,7 +46,7 @@ const VerifierReportListItemListItem: FC<
     //const currentDay: any = moment().subtract(result, 'days')
     return 8 - (currentDay - result)
   }
-
+  console.log(props?.data)
   return (
     <>
       <Box sx={{ background: '#E8F3EF', py: 3, pl: 1, borderRadius: 2 }}>

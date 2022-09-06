@@ -51,6 +51,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
             const tabRows = modifiedRows.filter(
               (i: any) => i?.register === false
             )
+            console.log(modifiedRows)
             setTableRows(tabRows)
           }
         }

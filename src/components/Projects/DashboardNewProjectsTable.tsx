@@ -118,7 +118,9 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
       ) {
         navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
       } else if (projectDetails?.projectCompleted) {
-        navigate(pathNames.SELECT_VERIFIER)
+        if (projectDetails?.project_status === 3) {
+          navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        } else navigate(pathNames.SELECT_VERIFIER)
       }
     }
   }
