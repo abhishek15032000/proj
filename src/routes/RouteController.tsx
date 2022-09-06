@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { ROLES } from '../config/roles.config'
 import { useAppSelector } from '../hooks/reduxHooks'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
@@ -75,17 +76,17 @@ const RouteController = ({ localLoggedIn }: any) => {
           />
         }
       />
-      <Route
+      {/* <Route
         path={pathNames.VERIFIER_VERIFY_REPORT}
         element={
           <PublicRoute
-            roles={[]}
+            roles={[ROLES.ISSUER]}
             component={VerifierVerifyReport}
             authenticated={userData}
             userData={userData}
           />
         }
-      />
+      /> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

@@ -9,7 +9,9 @@ import { Colors } from '../../theme'
 
 // Local Imports
 
-interface VitalProjectDetailsProps {}
+interface VitalProjectDetailsProps {
+  data?: any
+}
 
 const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
   return (

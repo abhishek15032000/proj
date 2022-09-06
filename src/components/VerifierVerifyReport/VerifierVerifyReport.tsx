@@ -1,5 +1,5 @@
 // React Imports
-import React from 'react'
+import React, { useState } from 'react'
 
 // MUI Imports
 import { Grid, Box, Typography, Divider, Paper } from '@mui/material'
@@ -15,8 +15,29 @@ import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { DatePicker } from '@mui/x-date-pickers'
 import CCInputField from '../../atoms/CCInputField'
 import PDFViewer from './PDFViewer'
+import moment from 'moment'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 
 const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
+  const [explain, setExplain] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const [selectMonth, setSelectMonth] = useState(new Date())
+  const [nextSubmissionDate, setNextSubmissionDate] = useState(new Date())
+  const [relevantDocs, setRelevantDocs]: any = useState([])
+
+  const onSign = () => {
+    const payload = {
+      explain,
+      quantity,
+      selectMonth,
+      nextSubmissionDate,
+      relevantDocs
+    }
+
+    console.log('payload')
+    console.log(JSON.stringify(payload, null, 4))
+  }
+
   return (
     <Box
       sx={{
@@ -26,7 +47,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       }}
     >
       <Grid container>
-        <Grid item xs={12} >
+        <Grid item xs={12}>
           <BackHeader
             title="Back"
             sx={{ ml: 4, mt: 3, mb: 2 }}
@@ -49,7 +70,11 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               Verify & Submit Conclusive Report
             </Typography>
 
-            <TextButton sx={{ ml: 4 }} title="Sign & Mark Verified" />
+            <TextButton
+              onClick={onSign}
+              sx={{ ml: 4 }}
+              title="Sign & Mark Verified"
+            />
           </Box>
 
           <Divider />
@@ -70,6 +95,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             sx={{ m: 3, ml: 4, width: '90%' }}
             label="Explain"
             placeholder="Explain it here"
+            value={explain}
+            onChange={(e) => setExplain(e.target.value)}
           />
 
           <Typography
@@ -96,7 +123,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 label="Select Month"
                 views={['month']}
                 inputFormat="MMMM"
-                value={new Date()}
+                value={selectMonth}
                 components={{
                   OpenPickerIcon: CalendarMonthOutlinedIcon,
                 }}
@@ -107,7 +134,12 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                     style={{ backgroundColor: 'white' }}
                   />
                 )}
-                onChange={() => undefined}
+                // onChange={(e) => undefined}
+                onChange={(e) => {
+                  if (e !== null) {
+                    setSelectMonth(e)
+                  }
+                }}
               />
             </Box>
 
@@ -116,8 +148,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 label="Enter Quantity of CO2e"
                 variant="outlined"
                 // sx={{ mt: 1 }}
-                // value={captchaInput}
-                // onChange={(e) => setCaptchaInput(e.target.value)}
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
               />
             </Box>
           </Box>
@@ -139,7 +171,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             <DatePicker
               label="Next submission date"
               // views={['month']}
-              value={new Date()}
+              value={nextSubmissionDate}
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,
               }}
@@ -152,16 +184,25 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                   />
                 )
               }}
-              onChange={() => undefined}
+              onChange={(e) => {
+                if (e !== null) {
+                  setNextSubmissionDate(e)
+                }
+              }}
             />
           </Box>
-
           <CCDropAndUpload
+            sx={{ m: 4, mr: 5 }}
             mediaTitle={[]}
             title="Attach relevant docs"
             mediaItem={[]}
-            imageArray={[]}
-            sx={{ m: 4, mr: 5 }}
+            imageArray={relevantDocs}
+            onImageUpload={(item: any) => {
+              setRelevantDocs([item, ...relevantDocs])
+            }}
+            onDeleteImage={(index: number) => {
+              setRelevantDocs(deleteIndexInArray(relevantDocs, index))
+            }}
           />
         </Paper>
 

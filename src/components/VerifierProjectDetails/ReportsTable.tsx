@@ -15,7 +15,9 @@ import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { Colors } from '../../theme'
 
-interface ReportsTableProps {}
+interface ReportsTableProps {
+  data?: any
+}
 
 const ReportsTable: FC<ReportsTableProps> = (props) => {
   const [tabIndex, setTabIndex] = useState(1)

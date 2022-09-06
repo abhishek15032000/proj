@@ -21,6 +21,7 @@ import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
 import VerifierProjectsList from '../pages/VerifierProjectsList'
 import VerifierProjectDetails from '../pages/VerifierProjectDetails'
+import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 
 export const privateRouteComponents = [
   {
@@ -120,6 +121,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.VERIFIER_PROJECTS_DETAILS,
     component: VerifierProjectDetails,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.VERIFIER_VERIFY_REPORT,
+    component: VerifierVerifyReport,
     roles: [ROLES.ISSUER],
   },
 ]
