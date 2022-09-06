@@ -24,6 +24,7 @@ const Login = () => {
   const [captchaInput, setCaptchaInput] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
   const [pwdCopy, setPwdCopy] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
@@ -58,8 +59,14 @@ const Login = () => {
     }
 
     try {
+      setLoading(true)
       const res = await authCalls.loginCall(payload)
       if (res?.success && res?.data) {
+        if (res?.status === 204) {
+          alert('Retry login with new Captch')
+          setCaptchaInput('')
+          return
+        }
         if (res?.data?.captchaVerify) {
           dispatch(loginAction(res?.data)) //calling action from redux
           navigate(pathNames.DASHBOARD, { replace: true })
@@ -76,6 +83,7 @@ const Login = () => {
       console.log('Error in authCalls.loginCall api', e)
     } finally {
       new window.PasswordCredential({ id: payload.email, password: uuidv4() })
+      setLoading(false)
     }
   }
 
@@ -180,7 +188,7 @@ const Login = () => {
             variant="contained"
             // disabled={Object.values(errors).length > 0}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </CCButton>
           <Grid container justifyContent={'center'} alignItems={'center'}>
             <Typography

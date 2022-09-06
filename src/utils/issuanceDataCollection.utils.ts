@@ -12,8 +12,7 @@ import {
 import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice'
 import { store } from '../redux/store'
 import { stringExtractor } from './commonFunctions'
-import { v4 as uuidv4 } from 'uuid'
-
+import { getLocalItem } from './Storage'
 
 const dispatch = store.dispatch
 
@@ -24,6 +23,8 @@ export const moveToNextSection = async (
   const wallet_address = store.getState()?.wallet.accountAddress
   //Since List New Project is at 0th index in IssuanceDataCollection
   if (sectionIndex === 0) {
+    const { email } = getLocalItem('userDetails')
+
     const newProjectData = store.getState()?.newProject
 
     const projectName = newProjectData?.projectName
@@ -51,41 +52,40 @@ export const moveToNextSection = async (
       }
       try {
         dispatch(setLoading(true))
-        //test block
-        // needs to be used again after api response 
-        try {
 
-          const contractRes = await BlockchainCalls.contract_caller()
-          await contractRes.estimateGas.createProject(uuidv4(),
-            'E807F1FCF82D132F9BB018CA6738A19F');
-          const createProjectRes = await contractRes.createProject(
-            uuidv4(),
-            'E807F1FCF82D132F9BB018CA6738A19F'
-          )
-          console.log("🚀 ~ file: issuanceDataCollection.utils.ts ~ line 59 ~ createProjectRes", createProjectRes)
-        } catch (e) {
-          console.log('Error in contract_caller().createProject call ~ ', e)
-        }
-
-        return
-
-        //test block ends
         const res = await dataCollectionCalls.createNewProject(payload)
         if (res?.success && res?.data?.uuid) {
           const uuid = res?.data?.uuid
           // const hexHash = res?.data?.hexHash
           const hexHash = 'E807F1FCF82D132F9BB018CA6738A19F'
           getProjectDetails(uuid)
-          try {
-            const contractRes = await BlockchainCalls.contract_caller()
-            await contractRes.approve(wallet_address, "1000000");
-            const createProjectRes = await contractRes.createProject(
-              uuid,
-              hexHash
-            )
-          } catch (e) {
-            console.log('Error in contract_caller().createProject call ~ ', e)
-          }
+          // try {
+          // const contractRes = await BlockchainCalls.contract_caller()
+          // await contractRes.estimateGas.createProject(uuid, hexHash)
+          // const createProjectRes = await contractRes.createProject(
+          //   uuid,
+          //   hexHash
+          // )
+          // const toPassParam = [wallet_address, email]
+          // console.log('toPassParam', toPassParam)
+          // console.log(
+          //   'is web3 Address : ',
+          //   ethers.utils.isAddress(wallet_address)
+          // )
+          // BlockchainCalls.requestMethodCalls('personal_sign', [toPassParam])
+          // if (createProjectRes) {
+          //   const updateTxPayload = {
+          //     uuid: uuid,
+          //     tx: {
+          //       tx_id: createProjectRes?.hash,
+          //       tx_data: createProjectRes,
+          //     },
+          //   }
+          //   await dataCollectionCalls.updateTx(updateTxPayload)
+          // }
+          // } catch (e) {
+          //   console.log('Error in contract_caller().createProject call ~ ', e)
+          // }
         }
         if (!res?.success && res?.error) {
           alert(res?.error)

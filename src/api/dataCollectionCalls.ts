@@ -3,13 +3,11 @@ import { AxiosHelper } from './configs/AxiosHelper'
 
 export const dataCollectionCalls = {
   createNewProject: (payload: any) => {
-    return AxiosHelper(
-      URL_PATH.project.projectCreate,
-      'POST',
-      payload
-    ).then((res: any) => {
-      return res.data
-    })
+    return AxiosHelper(URL_PATH.project.projectCreate, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
   },
   getAllProjects: (email: string) => {
     return AxiosHelper(
@@ -26,7 +24,6 @@ export const dataCollectionCalls = {
     })
   },
   updateProjectSectionACall: (payload: any) => {
-
     return AxiosHelper(
       URL_PATH.projectSections.updateProjectSectionA,
       'POST',
@@ -36,7 +33,6 @@ export const dataCollectionCalls = {
     })
   },
   updateProjectSectionBCall: (payload: any) => {
-
     return AxiosHelper(
       URL_PATH.projectSections.updateProjectSectionB,
       'POST',
@@ -46,7 +42,6 @@ export const dataCollectionCalls = {
     })
   },
   updateProjectSectionCCall: (payload: any) => {
-
     return AxiosHelper(
       URL_PATH.projectSections.updateProjectSectionC,
       'POST',
@@ -56,7 +51,6 @@ export const dataCollectionCalls = {
     })
   },
   updateProjectSectionDCall: (payload: any) => {
-
     return AxiosHelper(
       URL_PATH.projectSections.updateProjectSectionD,
       'POST',
@@ -73,5 +67,12 @@ export const dataCollectionCalls = {
     ).then((res: any) => {
       return res.data
     })
+  },
+  updateTx: (payload: any) => {
+    return AxiosHelper(URL_PATH.project.updateTx, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
   },
 }

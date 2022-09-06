@@ -46,7 +46,6 @@ const projectTypes = [
   'Methane Avoidance',
   'Methane capture',
   'Industrial gases- ODS',
-  'Industrial gases- ODS',
   'Forestry- Avoided conversion/ deforestation',
   'Forestry- Improved forest management',
   'Forestry- Wetland restoration',
@@ -197,7 +196,7 @@ const ListNewProject = () => {
           label="Start Date"
           value={startDate}
           onChange={(newValue) => {
-            dispatch(setStartDate(newValue))
+            dispatch(setStartDate(newValue?.toISOString()))
           }}
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,
