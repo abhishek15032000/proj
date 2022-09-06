@@ -7,7 +7,7 @@ import {
   Select,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CCButton from '../../atoms/CCButton'
 import CCInputField from '../../atoms/CCInputField'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
@@ -15,6 +15,7 @@ import { shallowEqual } from 'react-redux'
 import { setMethodologies } from '../../redux/Slices/sectionASlice'
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 interface methodologiesInterface {
   approvedMethodologies: string
   projectType: string
@@ -25,6 +26,28 @@ interface methodologiesInterface {
 
 const SectionA4 = () => {
   const dispatch = useAppDispatch()
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    if (currentProjectDetails.section_a.step4.completed) {
+      const { methodologies } = currentProjectDetails.section_a.step4
+      let step4Data = []
+      step4Data = methodologies.map((item: any) => {
+        return {
+          approvedMethodologies: item.methodology,
+          projectType: item.project_type,
+          category: item.category,
+          version: item.version,
+          toolsReferred: item.tools,
+          flag: false,
+        }
+      })
+      dispatch(setMethodologies(step4Data))
+    }
+  }, [])
 
   const methodologies = useAppSelector(
     ({ sectionA }) => sectionA.methodologies,
@@ -133,9 +156,9 @@ const SectionA4 = () => {
                       handleTextChange(e, index, 'approvedMethodologies')
                     }
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={'Ten'}>Ten</MenuItem>
+                    <MenuItem value={'Twenty'}>Twenty</MenuItem>
+                    <MenuItem value={'Thirty'}>Thirty</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

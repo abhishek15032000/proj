@@ -6,7 +6,7 @@ import {
   Input,
 } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import SampleModal from '../../atoms/SampleModal/SampleModal'
 import AttachMore from '../../atoms/AttachMore/AttachMore'
@@ -20,6 +20,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 
 const SectionE1 = () => {
   const dispatch = useAppDispatch()
@@ -32,6 +33,26 @@ const SectionE1 = () => {
   const calculationOfBaselineEmissionsImages = useAppSelector(
     ({ sectionE }) => sectionE.calculationOfBaselineEmissionsImages
   )
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
+  useEffect(() => {
+    if (currentProjectDetails.section_e.step1.completed) {
+      const {
+        calculation_of_baselineEmissions_or_net_GHG,
+        attach_relevant_docs,
+      } = currentProjectDetails.section_e.step1
+
+      dispatch(
+        setCalculationOfBaselineEmissions(
+          calculation_of_baselineEmissions_or_net_GHG
+        )
+      )
+      dispatch(setCalculationOfBaselineEmissionsImages(attach_relevant_docs))
+    }
+  }, [])
 
   return (
     <Grid container sx={{ mt: 3 }}>
