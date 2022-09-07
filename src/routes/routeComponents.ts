@@ -19,6 +19,7 @@ import SeeAllProject from '../pages/SeeAllProjects/SeeAllProjects'
 import VerifierDashboard from '../pages/VerifierDashboard'
 import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
+import MonthlyReportUpdate from '../pages/MonthlyReportUpdate'
 
 export const privateRouteComponents = [
   {
@@ -108,6 +109,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.VERIFIER_PROJECTS,
     component: VerifierProjects,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.MONTHLY_REPORT_UPDATE,
+    component: MonthlyReportUpdate,
     roles: [ROLES.ISSUER],
   },
 ]

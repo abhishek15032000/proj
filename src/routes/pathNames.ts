@@ -18,12 +18,13 @@ export const pathNames = {
   SEE_ALL_PROJECTS: '/see-all-projects',
   VERIFIER_DASHBOARD: '/verifier-dashboard',
   VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
-  VERIFIER_PROJECTS: 'verifier-projects'
+  VERIFIER_PROJECTS: 'verifier-projects',
+  MONTHLY_REPORT_UPDATE: '/monthly-report-update',
 }
 
 export const linkLabels = {
   Dashboard: 'Dashboard',
   Token_Contract: 'Token & Contract',
   My_Portfolio: 'My Portfolio',
-  Marketplace: "Marketplace"
+  Marketplace: 'Marketplace',
 }
