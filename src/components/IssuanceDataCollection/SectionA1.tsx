@@ -1,12 +1,9 @@
-import { Grid, Typography } from '@mui/material'
+import { Grid, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CCInputField from '../../atoms/CCInputField'
-import CCTextarea from '../../atoms/CCTextarea'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import { authCalls } from '../../api/authCalls'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 // Redux Imports
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
@@ -19,8 +16,10 @@ import {
   setTotalGHGEmission,
   setCommissioningDate,
 } from '../../redux/Slices/sectionASlice'
+import Spinner from '../../atoms/Spinner'
+
 const SectionA1 = () => {
-  const dispatch = useAppDispatch()
+  const dispatch: any = useAppDispatch()
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -28,8 +27,16 @@ const SectionA1 = () => {
     shallowEqual
   )
 
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_a.step1.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_a.step1.completed
+    ) {
       const {
         purpose_and_description,
         measure_taken_for_gas_emissions,
@@ -50,7 +57,7 @@ const SectionA1 = () => {
       dispatch(setOperationPeriod(operation_period))
       dispatch(setTotalGHGEmission(total_GHG_emission))
     }
-  }, [])
+  }, [currentProjectDetails])
 
   const purpose_and_description = useAppSelector(
     ({ sectionA }) => sectionA.purpose_and_description,
@@ -86,11 +93,11 @@ const SectionA1 = () => {
     shallowEqual
   )
 
-  {
-    console.log('currentProjectDetails<<<', currentProjectDetails)
-  }
-
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }} spacing={1} xs={12} md={12} lg={12} xl={12}>
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCMultilineTextArea

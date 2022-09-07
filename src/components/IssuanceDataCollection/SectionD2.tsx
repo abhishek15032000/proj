@@ -25,8 +25,11 @@ import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import sampleD2 from '../../assets/Images/sample-d2.png'
 import sampleD3 from '../../assets/Images/sample-d3.png'
 import sampleD4 from '../../assets/Images/sample-d4.png'
+import Spinner from '../../atoms/Spinner'
+
 const SectionD2: FC = () => {
   const dispatch = useAppDispatch()
+
   const data_and_parameter_monitored_ExPost = useAppSelector(
     ({ sectionD }) => sectionD.data_and_parameter_monitored_ExPost,
     shallowEqual
@@ -41,8 +44,17 @@ const SectionD2: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_d.step2.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_d.step2.completed
+    ) {
       const { data_and_parameter_monitored_ExPost, attach_ex_ante_table } =
         currentProjectDetails.section_d.step2
 
@@ -51,9 +63,13 @@ const SectionD2: FC = () => {
       )
       dispatch(setAttachExPostTable(attach_ex_ante_table))
     }
-  }, [])
+  }, [currentProjectDetails])
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid
       container
       sx={{ width: '100%', mt: 3 }}

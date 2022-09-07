@@ -29,7 +29,7 @@ const projectDetails = {
   duration: 2,
   area: '1000',
 }
-const tabs = ['Issuance Details', 'Verifier & Report']
+const tabs = ['Issuance Details', 'Verifier & Reports']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
@@ -39,73 +39,62 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(1)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
-  const [VerifierReports, setVerifierReports] = useState([
-    {
-      title: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
-      place: 'Hixson, USA',
-      status: true,
-      verfierOption: 'Finalise Verifier',
-    },
-    {
-      title: 'DILLON CONSULTING LIMITED',
-      place: 'Toronto, Ontario',
-      status: true,
-      verfierOption: 'Finalise Verifier',
-    },
-    {
-      title: ' ASTER GLOBAL ENVIRONMENTAL SOLUTIONS, INC.',
-      place: 'Ohio, USA',
-      status: false,
-      verfierOption: '2 days left',
-    },
-  ])
-
   useEffect(() => {
     if (currentProjectDetails) {
       const issuanceInfoTabData = [
         {
           title: 'Project Introduction',
-          status: true,
+          status: 'Complete',
           completionPercent: 100,
         },
         {
           title: 'Sec A: Description of Project Activity',
-          status: currentProjectDetails?.section_a?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_a?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_a?.completionPercentage,
+          projectStatus: currentProjectDetails?.project_status,
         },
         {
           title: 'Sec B: Implementation of the project activity',
-          status: currentProjectDetails?.section_b?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_b?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_b?.completionPercentage,
         },
         {
           title: 'Sec C: Description of Monitoring Activity',
-          status: currentProjectDetails?.section_b?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_c?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_c?.completionPercentage,
         },
         {
           title: 'Sec D: Data and parameters',
-          status: currentProjectDetails?.section_d?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_d?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_d?.completionPercentage,
         },
         {
           title:
             'Sec E: Calculation of emission reductions or GHG removals by sinks',
-          status: currentProjectDetails?.section_e?.stepCompleted,
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          status:
+            currentProjectDetails?.section_e?.completionPercentage === 100
+              ? 'Complete'
+              : 'In Progress',
+          completionPercent:
+            currentProjectDetails?.section_e?.completionPercentage,
         },
       ]
       setIssuanceInfo(issuanceInfoTabData)
@@ -208,7 +197,9 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         {tabIndex === 0 && (
           <IssuanceInfoList data={issuanceInfo && issuanceInfo} />
         )}
-        {tabIndex === 1 && <VerifierReport data={VerifierReports} />}
+        {tabIndex === 1 && (
+          <VerifierReport currentProjectId={currentProjectDetails?._id} />
+        )}
       </Paper>
     </Box>
   )

@@ -4,6 +4,7 @@ import {
   TextareaAutosize,
   Typography,
   Input,
+  Stack,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
@@ -21,6 +22,7 @@ import {
 import { deleteIndexInArray } from '../../utils/commonFunctions'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { shallowEqual } from 'react-redux'
+import Spinner from '../../atoms/Spinner'
 
 const SectionE2 = () => {
   const dispatch = useAppDispatch()
@@ -38,8 +40,17 @@ const SectionE2 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_e.step2.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_e.step2.completed
+    ) {
       const {
         calculation_of_projectEmissions_or_net_GHG,
         attach_relevant_docs,
@@ -52,9 +63,13 @@ const SectionE2 = () => {
       )
       dispatch(setCalculationOfProjectEmissionsImages(attach_relevant_docs))
     }
-  }, [])
+  }, [currentProjectDetails])
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }}>
       <Grid item xs={12}>
         <CCMultilineTextArea

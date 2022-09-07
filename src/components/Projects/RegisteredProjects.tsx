@@ -9,8 +9,8 @@ const rows = [
     'Project Name',
     'Project Type',
     'Mumbai, India',
-    'Accepted',
-    '-',
+    'Pending',
+    '12/05/21',
     <CCButton
       key={'1'}
       sx={{
@@ -18,6 +18,7 @@ const rows = [
         color: '#fff',
         padding: '4px 6px',
         borderRadius: '20px',
+        background: '#006B5E',
       }}
       variant="contained"
     >
@@ -30,7 +31,7 @@ const rows = [
     'Project Type',
     'Mumbai, India',
     'Pending',
-    '-',
+    '12/05/21',
     <CCButton
       key={'2'}
       sx={{
@@ -38,6 +39,7 @@ const rows = [
         color: '#fff',
         padding: '4px 6px',
         borderRadius: '20px',
+        background: '#006B5E',
       }}
       variant="contained"
     >
@@ -50,7 +52,7 @@ const rows = [
     'Project Type',
     'Mumbai, India',
     'Pending',
-    '-',
+    '12/05/21',
     <CCButton
       key={'3'}
       sx={{
@@ -58,6 +60,7 @@ const rows = [
         color: '#fff',
         padding: '4px 6px',
         borderRadius: '20px',
+        background: '#006B5E',
       }}
       variant="contained"
     >
@@ -70,7 +73,7 @@ const rows = [
     'Project Type',
     'Mumbai, India',
     'Pending',
-    '-',
+    '12/05/21',
     <CCButton
       key={'4'}
       sx={{
@@ -78,6 +81,7 @@ const rows = [
         color: '#fff',
         padding: '4px 6px',
         borderRadius: '20px',
+        background: '#006B5E',
       }}
       variant="contained"
     >
@@ -98,9 +102,6 @@ const headings = [
 const RegisteredProjects = () => {
   return (
     <Box sx={{ mt: 4 }}>
-      <Typography sx={{ color: '#F15D5F', fontWeight: 500 }}>
-        Projects Registered
-      </Typography>
       <CCTable headings={headings} rows={rows} />
     </Box>
   )

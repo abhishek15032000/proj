@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material'
+import { Grid, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import React, { useEffect, useState } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
@@ -13,6 +13,8 @@ import {
   setBriefOnCreditingPeriod,
 } from '../../redux/Slices/sectionASlice'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import Spinner from '../../atoms/Spinner'
+
 const SectionA5 = () => {
   const dispatch = useAppDispatch()
 
@@ -21,17 +23,6 @@ const SectionA5 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-  useEffect(() => {
-    if (currentProjectDetails.section_a.step5.completed) {
-      const { credit_start_period, credit_period, credit_period_description } =
-        currentProjectDetails.section_a.step5
-
-      dispatch(setStartDate(credit_start_period))
-      dispatch(setFromDate(credit_period.start_date))
-      dispatch(setToDate(credit_period.end_date))
-      dispatch(setBriefOnCreditingPeriod(credit_period_description))
-    }
-  }, [])
 
   const startDate = useAppSelector(
     ({ sectionA }) => sectionA.startDate,
@@ -43,12 +34,36 @@ const SectionA5 = () => {
     shallowEqual
   )
   const toDate = useAppSelector(({ sectionA }) => sectionA.toDate, shallowEqual)
+
   const brief_on_crediting_period = useAppSelector(
     ({ sectionA }) => sectionA.brief_on_crediting_period,
     shallowEqual
   )
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
 
-  return (
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_a.step5.completed
+    ) {
+      const { credit_start_period, credit_period, credit_period_description } =
+        currentProjectDetails.section_a.step5
+
+      dispatch(setStartDate(credit_start_period))
+      dispatch(setFromDate(credit_period.start_date))
+      dispatch(setToDate(credit_period.end_date))
+      dispatch(setBriefOnCreditingPeriod(credit_period_description))
+    }
+  }, [currentProjectDetails])
+
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <>
       <Typography sx={{ mt: 3 }}> Renewable crediting period:</Typography>
       <Grid container sx={{ mt: 2 }} spacing={1}>

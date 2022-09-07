@@ -114,6 +114,24 @@ const CCTable = (props: CCTableProps) => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              '.MuiTablePagination-actions': {
+                //next icons
+                color: '1F1F1F',
+              },
+              '.MuiTablePagination-selectIcon': {
+                //rows per page arrows
+                color: '#1F1F1F',
+                //<check />
+              },
+              '.MuiTablePagination-select': {
+                //color of numbers in rows per page
+                color: '#1D4B44',
+              },
+              '.MuiTablePagination-displayedRows': {
+                color: '#1d4B44',
+              },
+            }}
           />
         )}
       </TableContainer>

@@ -35,6 +35,9 @@ export const URL_PATH = {
   },
   verifier: {
     create: ENDPOINTS.carbonServiceURL + '/verifier/create',
+    update: ENDPOINTS.carbonServiceURL + '/verifier/update',
+    getVerifierByProjectId:
+      ENDPOINTS.carbonServiceURL + '/verifier/getVerifierByProjectId',
     getAllVerifier: ENDPOINTS.carbonServiceURL + '/verifier/getAllVerifiers',
   },
   department: {
