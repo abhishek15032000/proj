@@ -31,3 +31,14 @@ export const limitTitle = (title: string, limit: number) => {
   }
   return title
 }
+
+export const capitaliseFirstLetter = (sentence: string) => {
+  const words = sentence.split(' ')
+
+  const capitaliseSentence = words
+    .map((word) => {
+      return word[0].toUpperCase() + word.substring(1)
+    })
+    .join(' ')
+  return capitaliseSentence
+}

@@ -75,4 +75,12 @@ export const dataCollectionCalls = {
       }
     )
   },
+  getIssuerProjectDashboardStats: (email: string) => {
+    return AxiosHelper(
+      URL_PATH.project.getIssuerProjectDashboardStats + `?email=${email}`,
+      'GET'
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }
