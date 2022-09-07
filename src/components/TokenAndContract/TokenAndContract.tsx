@@ -5,7 +5,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 //Local imports
 import CCTable from '../../atoms/CCTable'
-import ProjectsStats from '../../atoms/ProjectStats/ProjectsStats'
+import ProjectsStats from '../ProjectStats/ProjectsStats'
 import { Box } from '@mui/system'
 import CCButton from '../../atoms/CCButton'
 import TokenAndContractProjectList from './TokenAndContractProjectList'

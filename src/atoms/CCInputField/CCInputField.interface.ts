@@ -1,7 +1,7 @@
-import { FilledTextFieldProps, StandardTextFieldProps, TextFieldProps } from "@mui/material";
-import { MuiTextFieldProps } from "@mui/x-date-pickers/internals";
+import { TextFieldProps } from "@mui/material";
 
 export type CCInputFieldProps = TextFieldProps & {
     clearFn?: any
     onChange?: (arg: any) => void
+    color?: string
 }
