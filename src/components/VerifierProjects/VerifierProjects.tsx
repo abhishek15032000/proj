@@ -42,6 +42,7 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
   useEffect(() => {
     verifierCalls
       .getAllVerifiers('62c5829aa3bc6ba32590f950')
+      // .getAllVerifiers('630ca4c98c7365e61871f56c')
       .then((response) => {
         setTableData(response.data.data)
       })

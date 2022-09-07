@@ -23,6 +23,7 @@ import VerifierProjects from '../pages/VerifierProjects'
 import VerifierProjectsList from '../pages/VerifierProjectsList'
 import VerifierProjectDetails from '../pages/VerifierProjectDetails'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
+import IssuerWallet from '../pages/IssuerWallet'
 
 export const privateRouteComponents = [
   {
@@ -133,6 +134,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.VERIFIER_VERIFY_REPORT,
     component: VerifierVerifyReport,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.ISSUER_WALLET,
+    component: IssuerWallet,
     roles: [ROLES.ISSUER],
   },
 ]

@@ -18,6 +18,7 @@ import TabSelectorVerifier from './TabSelectorVerifier'
 import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 interface ListOfProjectsProps {
   data?: any
@@ -51,14 +52,31 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const [rowsNew, setRowsNew] = useState([])
   const [rowsRegistered, setRowsRegistered] = useState([])
 
+  const updateVerifierStatus = (status: any, data: any) => {
+    const payload = {
+      _id: data._id,
+      project_id: data.project_id._id,
+      project_status: status,
+      verifier_id: data.verifier_id,
+      verifier_name: data.verifier_name,
+      verifier_number: data.verifier_number,
+      verifier_address: data.verifier_address,
+    }
+
+    // console.log('payload')
+    // console.log(JSON.stringify(payload, null, 4))
+
+    verifierCalls.updateVerifier(payload).then((response) => {
+      console.log('response')
+      console.log(JSON.stringify(response.data, null, 4))
+    })
+  }
+
   useEffect(() => {
     const newData: any = [],
       registeredData: any = []
 
     props.data.map((item: any, index: any) => {
-      console.log('item')
-      console.log(JSON.stringify(item, null, 4))
-      
       if (
         item.project_status === 1 ||
         item.project_status === 2 ||
@@ -89,8 +107,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           </Box>,
           item.verifier_name,
           item.verifier_address,
-          <ApprovalChip key={index} variant={item.project_status} />,
-          item.project_status === 1 || item.project_status === 2 ? (
+          item.project_status === 1 ? (
+            <ApprovalChip key={index} variant={'Pending'} />
+          ) : item.project_status === 2 ? (
+            <ApprovalChip key={index} variant={'Approved'} />
+          ) : (
+            <ApprovalChip key={index} variant={'Rejected'} />
+          ),
+          item.project_status === 1 ? (
             <Box
               key={index}
               sx={{
@@ -108,6 +132,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
+                onClick={() => updateVerifierStatus(2, item)}
               >
                 Approve
               </Typography>
@@ -119,6 +144,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
+                onClick={() => updateVerifierStatus(6, item)}
               >
                 Reject
               </Typography>
@@ -156,7 +182,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           item.verifier_name,
           item.verifier_address,
           moment(item.createdAt).format('DD/MM/YYYY'),
-          <ApprovalChip key={index} variant={item.project_status} />,
+          item.project_status === 3 ? (
+            <ApprovalChip key={index} variant={'Pending'} />
+          ) : (
+            <ApprovalChip key={index} variant={'Verified'} />
+          ),
           item.project_status === 3 ? (
             <TextButton key={index} sx={{ width: '90px' }} title="Verify" />
           ) : (

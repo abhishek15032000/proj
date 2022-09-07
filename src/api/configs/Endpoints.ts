@@ -39,6 +39,7 @@ export const URL_PATH = {
     getVerifierByProjectId:
       ENDPOINTS.carbonServiceURL + '/verifier/getVerifierByProjectId',
     getAllVerifier: ENDPOINTS.carbonServiceURL + '/verifier/getAllVerifiers',
+    submitVerifier: ENDPOINTS.carbonServiceURL + '/verifier/update'
   },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',

@@ -33,4 +33,13 @@ export const verifierCalls = {
       return res
     })
   },
+  submitVerifier: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.submitVerifier,
+      'POST',
+      payload
+    ).then((res) => {
+      return res
+    })
+  },
 }

@@ -17,6 +17,7 @@ import TabSelectorVerifier from './TabSelectorVerifier'
 import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 const headingsNew = [
   'Reference ID',
@@ -50,20 +51,69 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const [rowsNew, setRowsNew] = useState([])
   const [rowsRegistered, setRowsRegistered] = useState([])
 
+  const updateVerifierStatus = (status: any, data: any) => {
+    const payload = {
+      _id: data._id,
+      project_id: data.project_id._id,
+      project_status: status,
+      verifier_id: data.verifier_id,
+      verifier_name: data.verifier_name,
+      verifier_number: data.verifier_number,
+      verifier_address: data.verifier_address,
+    }
+
+    // console.log('payload')
+    // console.log(JSON.stringify(payload, null, 4))
+
+    verifierCalls.updateVerifier(payload).then((response) => {
+      console.log('response')
+      console.log(JSON.stringify(response.data, null, 4))
+    })
+  }
+
   useEffect(() => {
     const newData: any = [],
       registeredData: any = []
 
-      props.data.map((item: any, index: any) => {
-        if (
-          item.project_status === 1 ||
-          item.project_status === 2 ||
-          item.project_status === 5 ||
-          item.project_status === 6
-        ) {
-          newData.push([
-            item.project_id._id,
-            moment(item.createdAt).format('DD/MM/YYYY'),
+    props.data.map((item: any, index: any) => {
+      if (
+        item.project_status === 1 ||
+        item.project_status === 2 ||
+        item.project_status === 5 ||
+        item.project_status === 6
+      ) {
+        newData.push([
+          item.project_id._id,
+          moment(item.createdAt).format('DD/MM/YYYY'),
+          <Box
+            key={index}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <WorkOutlineIcon />
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                ml: 1,
+              }}
+            >
+              {item.project_id.company_name}
+            </Typography>
+          </Box>,
+          item.verifier_name,
+          item.verifier_address,
+          item.project_status === 1 ? (
+            <ApprovalChip key={index} variant={'Pending'} />
+          ) : item.project_status === 2 ? (
+            <ApprovalChip key={index} variant={'Approved'} />
+          ) : (
+            <ApprovalChip key={index} variant={'Rejected'} />
+          ),
+          item.project_status === 1 ? (
             <Box
               key={index}
               sx={{
@@ -72,96 +122,80 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 alignItems: 'center',
               }}
             >
-              <WorkOutlineIcon />
+              {/* <TextButton sx={{ width: '90px' }} title="Approve" /> */}
               <Typography
                 sx={{
                   fontSize: 14,
                   fontWeight: 500,
-                  ml: 1,
+                  color: Colors.textColorDarkGreen,
+                  ml: 2,
+                  cursor: 'pointer',
                 }}
+                onClick={() => updateVerifierStatus(2, item)}
               >
-                {item.project_id.company_name}
+                Approve
               </Typography>
-            </Box>,
-            item.verifier_name,
-            item.verifier_address,
-            <ApprovalChip key={index} variant={item.project_status} />,
-            item.project_status === 1 || item.project_status === 2 ? (
-              <Box
-                key={index}
+              <Typography
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: Colors.textColorBrightRed2,
+                  ml: 2,
+                  cursor: 'pointer',
                 }}
+                onClick={() => updateVerifierStatus(6, item)}
               >
-                {/* <TextButton sx={{ width: '90px' }} title="Approve" /> */}
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: Colors.textColorDarkGreen,
-                    ml: 2,
-                    cursor: 'pointer',
-                  }}
-                >
-                  Approve
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: Colors.textColorBrightRed2,
-                    ml: 2,
-                    cursor: 'pointer',
-                  }}
-                >
-                  Reject
-                </Typography>
-              </Box>
-            ) : (
-              '-'
-            ),
-            <ChevronRightIcon key={index} />,
-          ])
-        }
-  
-        if (item.project_status === 3 || item.project_status === 4) {
-          registeredData.push([
-            item.project_id._id,
-            moment(item.createdAt).format('DD/MM/YYYY'),
-            <Box
-              key={index}
+                Reject
+              </Typography>
+            </Box>
+          ) : (
+            '-'
+          ),
+          <ChevronRightIcon key={index} />,
+        ])
+      }
+
+      if (item.project_status === 3 || item.project_status === 4) {
+        registeredData.push([
+          item.project_id._id,
+          moment(item.createdAt).format('DD/MM/YYYY'),
+          <Box
+            key={index}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <WorkOutlineIcon />
+            <Typography
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                fontSize: 14,
+                fontWeight: 500,
+                ml: 1,
               }}
             >
-              <WorkOutlineIcon />
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  ml: 1,
-                }}
-              >
-                {item.project_id.company_name}
-              </Typography>
-            </Box>,
-            item.verifier_name,
-            item.verifier_address,
-            moment(item.createdAt).format('DD/MM/YYYY'),
-            <ApprovalChip key={index} variant={item.project_status} />,
-            item.project_status === 3 ? (
-              <TextButton key={index} sx={{ width: '90px' }} title="Verify" />
-            ) : (
-              '-'
-            ),
-            <ChevronRightIcon key={index} />,
-          ])
-        }
-      })
+              {item.project_id.company_name}
+            </Typography>
+          </Box>,
+          item.verifier_name,
+          item.verifier_address,
+          moment(item.createdAt).format('DD/MM/YYYY'),
+          item.project_status === 3 ? (
+            <ApprovalChip key={index} variant={'Pending'} />
+          ) : (
+            <ApprovalChip key={index} variant={'Verified'} />
+          ),
+          item.project_status === 3 ? (
+            <TextButton key={index} sx={{ width: '90px' }} title="Verify" />
+          ) : (
+            '-'
+          ),
+          <ChevronRightIcon key={index} />,
+        ])
+      }
+    })
+
     setRowsNew(newData)
     setRowsRegistered(registeredData)
   }, [props])

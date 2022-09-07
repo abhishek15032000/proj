@@ -11,52 +11,49 @@ interface ApprovalChipProps {
 }
 
 const ApprovalChip: FC<ApprovalChipProps> = (props) => {
-  if (props.variant === 1) {
+  if (props.variant === 'Rejected') {
     return (
-      <Chip
-        sx={{ backgroundColor: Colors.lightGreyBackground, m: 1 }}
-        icon={<CircleIcon style={{ color: Colors.mediumGreyBackground }} />}
-        label={'Pending'}
+      <ApprovalChipTemplate
+        title={'Rejected'}
+        backgroundColor={Colors.darkRedBackground}
+        tintColor={'#FFF'}
+        textColor={'#FFF'}
       />
     )
-  } else if (props.variant === 2) {
+  } else if (props.variant === 'Approved') {
     return (
-      <Chip
-        sx={{ backgroundColor: Colors.lightOrangeBackground, m: 1 }}
-        icon={<CircleIcon style={{ color: Colors.darkOrangeBackground }} />}
-        label={'In progress'}
+      <ApprovalChipTemplate
+        title={'Approved'}
+        backgroundColor={Colors.lightCyanBackground}
+        tintColor={Colors.lightBlueBackground2}
+        textColor={'#000'}
       />
     )
-  } else if (props.variant === 3) {
+  } else if (props.variant === 'Verified') {
     return (
-      <Chip
-        sx={{ backgroundColor: Colors.lightCyanBackground, m: 1 }}
-        icon={<CircleIcon style={{ color: Colors.lightBlueBackground2 }} />}
-        label={'Approved'}
+      <ApprovalChipTemplate
+        title={'Verified'}
+        backgroundColor={Colors.lightCyanBackground}
+        tintColor={Colors.lightBlueBackground2}
+        textColor={'#000'}
       />
     )
-  } else if (props.variant === 4) {
+  } else if (props.variant === 'In progress') {
     return (
-      <Chip
-        sx={{ backgroundColor: Colors.lightCyanBackground, m: 1 }}
-        icon={<CircleIcon style={{ color: Colors.lightBlueBackground2 }} />}
-        label={'Verified'}
+      <ApprovalChipTemplate
+        title={'In progress'}
+        backgroundColor={Colors.lightOrangeBackground}
+        tintColor={Colors.darkOrangeBackground}
+        textColor={'#000'}
       />
     )
-  } else if (props.variant === 5) {
+  } else if (props.variant === 'Pending') {
     return (
-      <Chip
-        sx={{ backgroundColor: Colors.darkRedBackground, m: 1, color: '#FFF' }}
-        icon={<CircleIcon style={{ color: '#FFF' }} />}
-        label={'Rejected'}
-      />
-    )
-  } else if (props.variant === 6) {
-    return (
-      <Chip
-        sx={{ backgroundColor: Colors.darkRedBackground, m: 1, color: '#FFF' }}
-        icon={<CircleIcon style={{ color: '#FFF' }} />}
-        label={'Rejected' + props.variant}
+      <ApprovalChipTemplate
+        title={'Pending'}
+        backgroundColor={Colors.mediumGreyBackground}
+        tintColor={Colors.lightGreyBackground}
+        textColor={'#000'}
       />
     )
   } else {
@@ -65,3 +62,26 @@ const ApprovalChip: FC<ApprovalChipProps> = (props) => {
 }
 
 export default ApprovalChip
+
+interface ApprovalChipTemplateProps {
+  title?: any
+  backgroundColor?: any
+  tintColor?: any
+  textColor?: any
+}
+
+const ApprovalChipTemplate: FC<ApprovalChipTemplateProps> = (props) => {
+  return (
+    <Chip
+      sx={{
+        backgroundColor: props.backgroundColor,
+        m: 1,
+        color: props.textColor,
+        fontWeight: 400,
+        fontSize: 14
+      }}
+      icon={<CircleIcon style={{ color: props.tintColor }} />}
+      label={props.title}
+    />
+  )
+}
