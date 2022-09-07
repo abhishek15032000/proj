@@ -158,8 +158,6 @@ const IssuanceDataCollection = () => {
     dispatch(setSubSectionIndex(0))
     //handling next btn as per section data collection percentage
     if (sectionIndex === 5) {
-      dispatch(setSectionIndex(1))
-      dispatch(setSubSectionIndex(0))
       if (nextBtn) {
         navigate(pathNames.DASHBOARD)
       } else if (!nextBtn) {
