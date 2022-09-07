@@ -20,6 +20,7 @@ import TokenAndContractPage from '../pages/TokenAndContractPage/TokenAndContract
 import VerifierDashboard from '../pages/VerifierDashboard'
 import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
+import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
 
 export const privateRouteComponents = [
   {
@@ -115,6 +116,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.VERIFIER_PROJECTS,
     component: VerifierProjects,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.REPORT_VIEW_COMMENTS,
+    component: ReportsViewCommentsPage,
     roles: [ROLES.ISSUER],
   },
 ]
