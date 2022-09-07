@@ -26,11 +26,19 @@ const LabelInput: FC<LabelInputProps> = (props) => {
         {props.label}
       </Typography> */}
       <TextField
+        inputProps={{ 'data-testid': 'label-input' }}
         id="outlined-basic"
         label={props.label}
         variant="outlined"
         sx={{ ...props.textFieldSx }}
-        // {...props} 
+        onChange={
+          props?.setValue
+            ? props?.setValue
+            : () => {
+                return ''
+              }
+        }
+        // {...props}
       />
     </Box>
   )

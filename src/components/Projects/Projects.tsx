@@ -1,7 +1,6 @@
 import { Grid, Typography } from '@mui/material'
 import React from 'react'
-import ProjectsStats from '../../atoms/ProjectStats/ProjectsStats'
-import './Projects.css'
+import ProjectsStats from '../ProjectStats/ProjectsStats'
 import ProjectsTab from './ProjectsTab'
 import ProfileCompletion from './ProfileCompletion'
 import AddIcon from '@mui/icons-material/Add'

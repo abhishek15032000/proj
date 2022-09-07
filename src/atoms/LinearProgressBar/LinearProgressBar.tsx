@@ -36,7 +36,7 @@ function LinearProgressWithLabel(
 }
 
 const LinearProgressBar = (props: LinearProgressBarProps) => {
-    const [progress, setProgress] = React.useState(10)
+    const [progress, setProgress] = React.useState(props?.value || 10)
 
     // React.useEffect(() => {
     //     const timer = setInterval(() => {
