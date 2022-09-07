@@ -43,7 +43,6 @@ const SelectVerifier = () => {
   const [verifiers, setVerifiers] = useState<any[]>([])
   const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
   const [loading, setLoading] = useState<boolean>(false)
-  console.log('selectedVerifiers: ', selectedVerifiers)
   const handleClick = () => {
     setOpen(true)
   }
