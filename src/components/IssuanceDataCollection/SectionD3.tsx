@@ -1,5 +1,12 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Box, Grid, TextareaAutosize, Typography, Input } from '@mui/material'
+import {
+  Box,
+  Grid,
+  TextareaAutosize,
+  Typography,
+  Input,
+  Stack,
+} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import SampleModal from '../../atoms/SampleModal/SampleModal'
 import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
@@ -8,10 +15,12 @@ import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setBriefDescription } from '../../redux/Slices/sectionDSlice'
+import Spinner from '../../atoms/Spinner'
 
 const SectionD3: FC = () => {
   const [showModal, setShowModal] = useState(false)
   const dispatch = useAppDispatch()
+
   const briefDescription = useAppSelector(
     ({ sectionD }) => sectionD.briefDescription,
     shallowEqual
@@ -22,18 +31,29 @@ const SectionD3: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_d.step3.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_d.step3.completed
+    ) {
       const { implementation_of_sampling_plan } =
         currentProjectDetails.section_d.step3
 
       dispatch(setBriefDescription(implementation_of_sampling_plan))
     }
-  }, [])
-  {
-    console.log('briefDescription', briefDescription)
-  }
-  return (
+  }, [currentProjectDetails])
+
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid
       container
       sx={{ width: '100%', mt: 3 }}
@@ -44,6 +64,7 @@ const SectionD3: FC = () => {
       lg={12}
       xl={12}
     >
+      <Typography sx={{ marginTop: '64px' }}></Typography>
       <CCMultilineTextArea
         // aria-label="minimum height"
         label={'Implementation of sampling plan'}

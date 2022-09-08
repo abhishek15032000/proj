@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
@@ -9,8 +9,8 @@ import {
   setCalculationOfLeakageImages,
 } from '../../redux/Slices/sectionESlice'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { shallowEqual } from 'react-redux'
+import Spinner from '../../atoms/Spinner'
 
 const SectionE3 = () => {
   const dispatch = useAppDispatch()
@@ -27,17 +27,30 @@ const SectionE3 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const loading = useAppSelector(
+    ({ newProject }) => newProject.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_e.step3.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_e.step3.completed
+    ) {
       const { calculation_of_leakage, attach_relevant_docs } =
         currentProjectDetails.section_e.step3
 
       dispatch(setCalculationOfLeakage(calculation_of_leakage))
       dispatch(setCalculationOfLeakageImages(attach_relevant_docs))
     }
-  }, [])
+  }, [currentProjectDetails])
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }}>
       <Grid item sm={12}>
         <CCMultilineTextArea

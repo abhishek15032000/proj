@@ -21,8 +21,12 @@ import { ROLES } from '../../config/roles.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { verifierCalls } from '../../api/verifierCalls.api'
+import { pathNames } from '../../routes/pathNames'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import Spinner from '../../atoms/Spinner'
 
 const selectVerifierOptions = [
   {
@@ -33,7 +37,6 @@ const selectVerifierOptions = [
     mail: 'www.awm.net',
     location:
       '3800 Clermont Street NW North Lawrence, Ohio 44666, USA www.asterglobal.com',
-
     director:
       'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
   },
@@ -91,12 +94,20 @@ const selectVerifierOptions = [
 ]
 
 const SelectVerifier = () => {
+  const navigate = useNavigate()
   const location: any = useLocation()
+
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
   const [open, setOpen] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
   const [verifiers, setVerifiers] = useState<any[]>([])
   const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleClick = () => {
     setOpen(true)
@@ -116,6 +127,7 @@ const SelectVerifier = () => {
   }, [selectedVerifiers])
 
   const getAllVerifiers = async () => {
+    // will use the API for getting verifier list once the verifier flow started to get verifier's
     try {
       const res = await department.getUsersByOrgType(ROLES?.VERIFIER)
       if (res.data) {
@@ -127,17 +139,16 @@ const SelectVerifier = () => {
   }
 
   const createVerifier = async () => {
+    setLoading(true)
     const payload = selectedVerifiers.map((verifierDetials: any) => {
       if (
-        location.state.projectDetails &&
+        currentProjectDetails &&
         selectedVerifiers &&
         selectedVerifiers?.length
       ) {
         return {
-          project_id: location?.state?.projectDetails._id,
-          project_status: 'awaiting verifier confirmation',
-          accepted_by_verifier: false,
-          accepted_by_issuer: false,
+          project_id: currentProjectDetails?._id,
+          project_status: currentProjectDetails?.project_status,
           verifier_id: verifierDetials._id,
           verifier_name: verifierDetials.fullName,
           verifier_address: verifierDetials.location,
@@ -148,11 +159,14 @@ const SelectVerifier = () => {
     try {
       const res = await verifierCalls.createVerifier(payload)
       if (res?.data?.success) {
+        setOpen(false)
         alert('verifier selected successfully')
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
       }
-      setOpen(false)
     } catch (err) {
       console.log(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -167,7 +181,11 @@ const SelectVerifier = () => {
     }
   }
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <>
       <Grid
         container

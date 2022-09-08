@@ -52,33 +52,28 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
         },
         {
           title: 'Section A',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_a?.completionPercentage,
         },
         {
           title: 'Section B',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_b?.completionPercentage,
         },
         {
           title: 'Section C',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_c?.completionPercentage,
         },
         {
           title: 'Section D',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_d?.completionPercentage,
         },
         {
-          title: 'Section D',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          title: 'Section E',
+          completionPercent:
+            currentProjectDetails?.section_e?.completionPercentage,
         },
       ]
       setStepsCompletionData(stepsCompletionPercent)
@@ -172,7 +167,8 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
                 </Typography>
                 <Typography
                   sx={{
-                    color: item?.value === 100 ? '#006B5E' : '#BA1B1B',
+                    color:
+                      item?.completionPercent === 100 ? '#006B5E' : '#BA1B1B',
                     fontSize: 14,
                   }}
                 >

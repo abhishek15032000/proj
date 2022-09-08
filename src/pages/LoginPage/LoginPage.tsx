@@ -13,7 +13,7 @@ import CCButton from '../../atoms/CCButton'
 import CCInputField from '../../atoms/CCInputField'
 import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
-
+import LoaderOverlay from '../../components/LoderOverlay'
 declare let window: any
 
 const Login = () => {
@@ -24,6 +24,7 @@ const Login = () => {
   const [captchaInput, setCaptchaInput] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
   const [pwdCopy, setPwdCopy] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
@@ -34,6 +35,7 @@ const Login = () => {
   }
 
   const login = async () => {
+    setLoading(true)
     const payload = { email: '', id: '', password: '', captcha: '' }
 
     payload.email = values?.email
@@ -67,8 +69,11 @@ const Login = () => {
         } else {
           alert(res?.data)
         }
-      } else if (res?.error) {
-        alert(res?.error)
+      } else if (res?.error || res.status !== 200) {
+        alert(
+          res?.error ||
+            'Something seems wrong with your credentials. Please try again!'
+        )
         setCaptchaTokenFromUUID()
         setCaptchaInput('')
       }
@@ -76,6 +81,7 @@ const Login = () => {
       console.log('Error in authCalls.loginCall api', e)
     } finally {
       new window.PasswordCredential({ id: payload.email, password: uuidv4() })
+      setLoading(false)
     }
   }
 
@@ -90,6 +96,7 @@ const Login = () => {
       justifyContent="center"
       alignItems={'center'}
     >
+      {loading ? <LoaderOverlay /> : null}
       <Grid
         item
         lg={6}
@@ -108,7 +115,9 @@ const Login = () => {
             width: '100%',
           }}
         >
-          <Logo />
+          <Box py={1}>
+            <Logo />
+          </Box>
           <Typography
             sx={{ fontWeight: '700', fontSize: 32, mt: 8, color: '#1C4A43' }}
           >

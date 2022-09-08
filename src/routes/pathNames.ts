@@ -16,6 +16,7 @@ export const pathNames = {
   LIST_NEW_PROJECT: '/list-new-project',
   SELECT_VERIFIER: '/select-verifier',
   SEE_ALL_PROJECTS: '/see-all-projects',
+  TOKEN_CONTRACT: '/token-contract',
   VERIFIER_DASHBOARD: '/verifier-dashboard',
   VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
   VERIFIER_PROJECTS: 'verifier-projects',

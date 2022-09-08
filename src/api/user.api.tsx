@@ -11,4 +11,13 @@ export const USER = {
       return response
     })
   },
+  updateUserInfo: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.userRoutes.updateUserInfo,
+      'POST',
+      payload
+    ).then((response: any) => {
+      return response
+    })
+  },
 }
