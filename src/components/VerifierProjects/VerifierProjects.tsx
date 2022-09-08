@@ -8,11 +8,13 @@ import { Box, Grid, Paper, Typography } from '@mui/material'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { Colors } from '../../theme'
 import { VerifierProjectsProps } from './VerifierProjects.interface'
-import DashboardStatistics from './DashboardStatistics'
+// import DashboardStatistics from './DashboardStatistics'
+import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
 import TabSelectorVerifier from './TabSelectorVerifier'
 import CCTable from '../../atoms/CCTable'
 import ListOfProjects from './ListOfProjects'
 import { verifierCalls } from '../../api/verifierCalls.api'
+import { getLocalItem } from '../../utils/Storage'
 
 const VerifierProjects = (props: VerifierProjectsProps) => {
   const [dashboardStatistics, setDashboardStatistics] = useState([
@@ -40,12 +42,13 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
   const [tableData, setTableData] = useState([])
 
   useEffect(() => {
-    verifierCalls
-      .getAllVerifiers('62c5829aa3bc6ba32590f950')
-      // .getAllVerifiers('630ca4c98c7365e61871f56c')
-      .then((response) => {
-        setTableData(response.data.data)
-      })
+    const userDetails = getLocalItem('userDetails')
+
+    // .getAllVerifiers('62c5829aa3bc6ba32590f950')
+    // .getAllVerifiers('630ca4c98c7365e61871f56c')
+    verifierCalls.getAllVerifiers(userDetails._id).then((response) => {
+      setTableData(response.data.data)
+    })
   }, [])
 
   return (
@@ -63,9 +66,7 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
         <DashboardStatistics data={dashboardStatistics} />
 
         <Grid item xs={12}>
-          <ListOfProjects
-            data={tableData}
-          />
+          <ListOfProjects data={tableData} />
         </Grid>
       </Grid>
     </Box>

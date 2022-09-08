@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography } from '@mui/material'
@@ -12,8 +12,13 @@ import VerifierProfileIllustration from '../../assets/Images/illustrations/Verif
 import CCInputField from '../../atoms/CCInputField'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { USER } from '../../api/user.api'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import { getLocalItem } from '../../utils/Storage'
 
 const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
+  const navigate = useNavigate()
+
   const [email, setEmail] = useState('')
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
@@ -23,6 +28,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
   const [designation, setDesignation] = useState('')
 
   const onSave = () => {
+    // return
     if (
       email === '' ||
       fullName === '' ||
@@ -35,9 +41,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       console.log('Code Reachable')
       return
     }
-    
+
     const payload = {
-      uuid: 'f608f9e2-9dd0-46c3-a70d-20bf61cc18b8',
+      uuid: getLocalItem('userDetails').uuid,
       email: email,
       fullName: fullName,
       phone: phone,
@@ -50,6 +56,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
     USER.updateUserInfo(payload).then((response) => {
       console.log('response')
       console.log(JSON.stringify(response.data, null, 4))
+      navigate(pathNames.VERIFIER_PROJECTS)
     })
   }
 

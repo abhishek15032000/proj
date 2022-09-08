@@ -13,12 +13,13 @@ import moment from 'moment'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { Colors } from '../../theme'
 import { VerifierProjectsProps } from './VerifierProjects.interface'
-import DashboardStatistics from './DashboardStatistics'
 import TabSelectorVerifier from './TabSelectorVerifier'
 import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import { verifierCalls } from '../../api/verifierCalls.api'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 interface ListOfProjectsProps {
   data?: any
@@ -48,6 +49,8 @@ const headingsRegistered = [
 ]
 
 const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
+  const navigate = useNavigate()
+
   const [tabIndex, setTabIndex] = useState(1)
   const [rowsNew, setRowsNew] = useState([])
   const [rowsRegistered, setRowsRegistered] = useState([])
@@ -152,7 +155,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          <ChevronRightIcon key={index} />,
+          <ChevronRightIcon
+            key={index}
+            onClick={() => navigate(pathNames.VERIFIER_PROJECTS_DETAILS)}
+          />,
         ])
       }
 
@@ -188,11 +194,19 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             <ApprovalChip key={index} variant={'Verified'} />
           ),
           item.project_status === 3 ? (
-            <TextButton key={index} sx={{ width: '90px' }} title="Verify" />
+            <TextButton
+              key={index}
+              sx={{ width: '90px' }}
+              onClick={() => navigate(pathNames.VERIFIER_VERIFY_REPORT)}
+              title="Verify"
+            />
           ) : (
             '-'
           ),
-          <ChevronRightIcon key={index} />,
+          <ChevronRightIcon
+            key={index}
+            onClick={() => navigate(pathNames.VERIFIER_PROJECTS_DETAILS)}
+          />,
         ])
       }
     })
@@ -210,7 +224,28 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         p: 2,
       }}
     >
-      <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          pr: 1,
+        }}
+      >
+        <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
+        <Typography
+          sx={{
+            fontSize: 14,
+            fontWeight: 400,
+            color: Colors.accent,
+            cursor: 'pointer',
+          }}
+          onClick={() => navigate(pathNames.VERIFIER_PROJECTS_LIST)}
+        >
+          See all
+        </Typography>
+      </Box>
 
       <TabSelectorVerifier
         tabIndex={tabIndex}
@@ -222,6 +257,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         headings={tabIndex === 1 ? headingsNew : headingsRegistered}
         rows={tabIndex === 1 ? rowsNew : rowsRegistered}
         sx={{ minWidth: 100 }}
+        maxWidth={'100%'}
         tableSx={{ minWidth: 100 }}
       />
     </Paper>

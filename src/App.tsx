@@ -34,13 +34,21 @@ const App: FC<AppProps> = () => {
   }, [])
 
   // List of pages exempt from side menu
-  const drawerExemptList = ['/verifier-verify-report']
+  const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
 
-  drawerExemptList.map(item => {
+  let count = 0
+
+  drawerExemptList.map((item) => {
     if (item === location.pathname) {
-      isExempt = true
+      count++
     }
   })
+
+  if (count > 0) {
+    isExempt = true
+  } else {
+    isExempt = false
+  }
 
   const onPrompt = () => {
     // Fire a Modal Prompt

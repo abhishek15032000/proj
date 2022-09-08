@@ -11,13 +11,19 @@ import ListOfProjects from './ListOfProjects'
 
 import { VerifierProjectsListProps } from './VerifierProjectsList.interface'
 import { verifierCalls } from '../../api/verifierCalls.api'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { getLocalItem } from '../../utils/Storage'
 
 const VerifierProjectsList = (props: VerifierProjectsListProps) => {
+  const navigate = useNavigate()
+
   const [tableData, setTableData] = useState([])
 
   useEffect(() => {
+    const userDetails = getLocalItem('userDetails')
+
     verifierCalls
-      .getAllVerifiers('62c5829aa3bc6ba32590f950')
+      .getAllVerifiers(userDetails._id)
       .then((response) => {
         setTableData(response.data.data)
       })
@@ -32,7 +38,13 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader title="Projects" />
+          <BackHeader
+            title="Projects"
+            onClick={() => {
+              navigate(-1)
+              console.log('Code Reachable')
+            }}
+          />
         </Grid>
 
         <Grid item xs={12}>

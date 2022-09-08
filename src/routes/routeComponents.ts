@@ -109,32 +109,32 @@ export const privateRouteComponents = [
   {
     path: pathNames.VERIFIER_DASHBOARD,
     component: VerifierDashboard,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.VERIFIER_PROFILE_SETUP,
     component: VerifierProfileSetup,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.VERIFIER_PROJECTS,
     component: VerifierProjects,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.VERIFIER_PROJECTS_LIST,
     component: VerifierProjectsList,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.VERIFIER_PROJECTS_DETAILS,
     component: VerifierProjectDetails,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.VERIFIER_VERIFY_REPORT,
     component: VerifierVerifyReport,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.ISSUER_WALLET,

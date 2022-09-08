@@ -8,7 +8,7 @@ import { KeyboardArrowLeft } from '@mui/icons-material'
 
 interface BackHeaderProps {
   title: string
-  onClick?: object
+  onClick?: any
   iconDisable?: boolean
   sx?: any
   titleSx?: any
@@ -23,13 +23,13 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
         ...props.sx,
       }}
     >
-      {!props.iconDisable && <KeyboardArrowLeft />}
+      {!props.iconDisable && <KeyboardArrowLeft onClick={props.onClick} />}
       <Typography
         sx={{
           fontSize: 28,
           fontWeight: 400,
           color: Colors.tertiary,
-          ...props.titleSx
+          ...props.titleSx,
         }}
       >
         {props.title}

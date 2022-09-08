@@ -11,6 +11,7 @@ import { Colors } from '../../theme'
 import { VerifierProjectDetailsProps } from './VerifierProjectDetails.interface'
 import VitalProjectDetails from './VitalProjectDetails'
 import ReportsTable from './ReportsTable'
+import { useNavigate } from 'react-router-dom'
 
 const data = {
   issuer_details: {
@@ -39,6 +40,8 @@ const data = {
 }
 
 const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
+  const navigate = useNavigate()
+
   return (
     <Box sx={{ p: 0 }}>
       <Grid
@@ -48,7 +51,10 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader title="Project Details" />
+          <BackHeader
+            title="Project Details"
+            onClick={() => navigate(-1)}
+          />
         </Grid>
 
         <VitalProjectDetails data={data} />
