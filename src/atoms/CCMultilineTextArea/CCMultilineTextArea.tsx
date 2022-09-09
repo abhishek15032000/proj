@@ -1,5 +1,5 @@
-import { colors, InputAdornment, TextField } from '@mui/material'
-import React, { useRef, useState } from 'react'
+import { InputAdornment, TextField } from '@mui/material'
+import React, { useRef } from 'react'
 import { CCMultilineTextAreaProps } from './CCMultilineTextArea.interface'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 
@@ -9,6 +9,7 @@ const CCMultilineTextArea = (props: CCMultilineTextAreaProps) => {
   return (
     <TextField
       inputRef={inputRef}
+      inputProps={{ 'data-testid': 'cc-input-field-multiline' }}
       multiline
       minRows={6}
       fullWidth
@@ -30,7 +31,7 @@ const CCMultilineTextArea = (props: CCMultilineTextAreaProps) => {
         ) : null,
       }}
       InputLabelProps={{ style: { color: '#006B5E' } }}
-      color="darkPrimary1"
+      color={props?.color ? props?.color : 'darkPrimary1'}
       required
       {...props}
     />

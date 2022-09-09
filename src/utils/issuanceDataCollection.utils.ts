@@ -1,5 +1,9 @@
+import { ethers } from 'ethers'
+import { shallowEqual } from 'react-redux'
 import { jsonSchema } from 'uuidv4'
 import { dataCollectionCalls } from '../api/dataCollectionCalls'
+import BlockchainCalls from '../blockchain/Blockchain'
+import { useAppSelector } from '../hooks/reduxHooks'
 import {
   setCurrentProjectDetails,
   setCurrentProjectDetailsUUID,
@@ -9,6 +13,7 @@ import {
 import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice'
 import { store } from '../redux/store'
 import { stringExtractor } from './commonFunctions'
+import { getLocalItem } from './Storage'
 import { addSectionPercentages } from './newProject.utils'
 
 const dispatch = store.dispatch
@@ -17,8 +22,11 @@ export const moveToNextSection = async (
   sectionIndex: number,
   subSectionIndex: number
 ) => {
+  const wallet_address = store.getState()?.wallet.accountAddress
   //Since List New Project is at 0th index in IssuanceDataCollection
   if (sectionIndex === 0) {
+    const { email } = getLocalItem('userDetails')
+
     const newProjectData = store.getState()?.newProject
 
     const projectName = newProjectData?.projectName
@@ -46,8 +54,40 @@ export const moveToNextSection = async (
       }
       try {
         dispatch(setLoading(true))
+
         const res = await dataCollectionCalls.createNewProject(payload)
         if (res?.success && res?.data?.uuid) {
+          const uuid = res?.data?.uuid
+          // const hexHash = res?.data?.hexHash
+          const hexHash = 'E807F1FCF82D132F9BB018CA6738A19F'
+          // getProjectDetails(uuid)
+          // try {
+          // const contractRes = await BlockchainCalls.contract_caller()
+          // await contractRes.estimateGas.createProject(uuid, hexHash)
+          // const createProjectRes = await contractRes.createProject(
+          //   uuid,
+          //   hexHash
+          // )
+          // const toPassParam = [wallet_address, email]
+          // console.log('toPassParam', toPassParam)
+          // console.log(
+          //   'is web3 Address : ',
+          //   ethers.utils.isAddress(wallet_address)
+          // )
+          // BlockchainCalls.requestMethodCalls('personal_sign', [toPassParam])
+          // if (createProjectRes) {
+          //   const updateTxPayload = {
+          //     uuid: uuid,
+          //     tx: {
+          //       tx_id: createProjectRes?.hash,
+          //       tx_data: createProjectRes,
+          //     },
+          //   }
+          //   await dataCollectionCalls.updateTx(updateTxPayload)
+          // }
+          // } catch (e) {
+          //   console.log('Error in contract_caller().createProject call ~ ', e)
+          // }
           getProjectDetails(res?.data?.uuid)
           dispatch(setCurrentProjectDetailsUUID(res?.data?.uuid))
         }

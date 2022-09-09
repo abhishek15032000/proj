@@ -33,7 +33,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .then((res) => {
         if (res?.success) {
           const finalVerifierData = res?.data.filter((i: any) => {
-            return i?.accepted_by_issuer && i?.accepted_by_verifier
+            return i?.project_status === 3 || i?.project_status === 4
           })
           finalVerifierData && finalVerifierData?.length
             ? setVerifierReports(finalVerifierData)
@@ -47,10 +47,11 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   }
 
   const updateVerifier = (confirmedVerifier: any) => {
+    setLoading(true)
     const payload = {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
-      project_status: confirmedVerifier?.project_status,
+      project_status: 3,
       verifier_id: confirmedVerifier?.verifier_id,
       verifier_name: confirmedVerifier?.verifier_name,
       verifier_address: confirmedVerifier?.verifier_address,
@@ -68,6 +69,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         }
       })
       .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
@@ -142,7 +146,6 @@ const rows = [
   [
     '28 May 2020',
     '28 May 2020',
-    //'28 May 2020',
     <Box
       key={'1'}
       sx={{
@@ -268,7 +271,6 @@ const rows = [
   [
     '28 May 2020',
     '28 May 2020',
-    //'28 May 2020',
     <Box
       key={'1'}
       sx={{

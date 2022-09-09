@@ -1,3 +1,3 @@
-export interface LinearProgressBarProps{
-
+export interface LinearProgressBarProps {
+  value?: number
 }

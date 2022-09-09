@@ -48,8 +48,12 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
             ?.slice(0, 7)
             .map((i: any) => addSectionPercentages(i))
           if (modifiedRows && modifiedRows.length) {
-            const tabRows = modifiedRows.filter(
-              (i: any) => i?.register === false
+            const tabRows = modifiedRows.filter((i: any) =>
+              tabIndex === 1
+                ? i?.register === false && i?.project_status <= 3
+                : tabIndex === 2 &&
+                  i?.register === true &&
+                  i?.project_status > 3
             )
             setTableRows(tabRows)
           }

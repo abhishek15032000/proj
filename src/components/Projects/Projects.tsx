@@ -1,18 +1,26 @@
-import { Grid, Typography, Button } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import React from 'react'
-import ProjectsStats from '../../atoms/ProjectStats/ProjectsStats'
-import './Projects.css'
+import ProjectsStats from '../ProjectStats/ProjectsStats'
 import ProjectsTab from './ProjectsTab'
 import ProfileCompletion from './ProfileCompletion'
 import AddIcon from '@mui/icons-material/Add'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCButton from '../../atoms/CCButton'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import {
+  setSectionIndex,
+  setSubSectionIndex,
+} from '../../redux/Slices/issuanceDataCollection'
 
 const Projects = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
   const listNewProject = () => {
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+    dispatch(setSectionIndex(0))
+    dispatch(setSubSectionIndex(0))
   }
 
   return (

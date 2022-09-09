@@ -25,6 +25,7 @@ import VerifierProjectDetails from '../pages/VerifierProjectDetails'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import IssuerWallet from '../pages/IssuerWallet'
 import TransactionHistory from '../pages/TransactionHistory'
+import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
 
 export const privateRouteComponents = [
   {
@@ -145,6 +146,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.TRANSACTION_HISTORY,
     component: TransactionHistory,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.REPORT_VIEW_COMMENTS,
+    component: ReportsViewCommentsPage,
     roles: [ROLES.ISSUER],
   },
 ]

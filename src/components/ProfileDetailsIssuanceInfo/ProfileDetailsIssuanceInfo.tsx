@@ -39,8 +39,10 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
   const [tabIndex, setTabIndex] = useState(1)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
+
   useEffect(() => {
     if (currentProjectDetails) {
       const issuanceInfoTabData = [

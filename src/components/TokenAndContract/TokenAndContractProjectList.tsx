@@ -9,11 +9,11 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
-//MUI imports
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
-import CCTable from '../../atoms/CCTable'
 import { Box } from '@mui/system'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 interface TokenAndContractProjectListProps {
   data: any
@@ -23,8 +23,89 @@ interface TokenAndContractProjectListProps {
 const TokenAndContractProjectList = (
   props: TokenAndContractProjectListProps
 ) => {
+  const navigate = useNavigate()
   const [showDetails, setShowDetails] = useState(false)
 
+  //static table rows for reports
+  const rows = [
+    [
+      <Typography key={'1'} sx={{ fontSize: 14, fontWeight: 400 }}>
+        21/11/2022 - 26/12/2022
+      </Typography>,
+      <Typography
+        key={'1'}
+        textAlign="center"
+        sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
+      >
+        420
+      </Typography>,
+      '31/12/2022',
+      <Typography
+        key={'1'}
+        onClick={() => navigate(pathNames.REPORT_VIEW_COMMENTS)}
+        sx={{
+          fontSize: 16,
+          fontWeight: 600,
+          textDecoration: 'underline',
+          textDecorationColor: '#006B5E',
+          color: '#006B5E',
+          cursor: 'pointer',
+        }}
+      >
+        View
+      </Typography>,
+    ],
+    [
+      '21/11/2022 - 26/12/2022',
+      <Typography
+        key={'1'}
+        textAlign="center"
+        sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
+      >
+        420
+      </Typography>,
+      '31/12/2022',
+      <Typography
+        key={'1'}
+        onClick={() => navigate(pathNames.REPORT_VIEW_COMMENTS)}
+        sx={{
+          fontSize: 16,
+          fontWeight: 600,
+          textDecoration: 'underline',
+          textDecorationColor: '#006B5E',
+          color: '#006B5E',
+          cursor: 'pointer',
+        }}
+      >
+        View
+      </Typography>,
+    ],
+    [
+      '21/11/2022 - 26/12/2022',
+      <Typography
+        key={'1'}
+        textAlign="center"
+        sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
+      >
+        420
+      </Typography>,
+      '31/12/2022',
+      <Typography
+        key={'1'}
+        onClick={() => navigate(pathNames.REPORT_VIEW_COMMENTS)}
+        sx={{
+          fontSize: 16,
+          fontWeight: 600,
+          textDecoration: 'underline',
+          textDecorationColor: '#006B5E',
+          color: '#006B5E',
+          cursor: 'pointer',
+        }}
+      >
+        View
+      </Typography>,
+    ],
+  ]
   return (
     <>
       <Grid
@@ -119,81 +200,8 @@ const headings = [
     Date of Report Submission
   </Typography>,
   <Typography key="1" sx={{ fontWeight: 500, fontSize: 12, minWidth: '10vw' }}>
-    No of Co2e Authorised
+    No of Co2c Authorised
   </Typography>,
   'Date of Verification',
   'Comments',
-]
-const rows = [
-  [
-    <Typography key={'1'} sx={{ fontSize: 14, fontWeight: 400 }}>
-      21/11/2022 - 26/12/2022
-    </Typography>,
-    <Typography
-      key={'1'}
-      textAlign="center"
-      sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
-    >
-      420
-    </Typography>,
-    '31/12/2022',
-    <Typography
-      key={'1'}
-      sx={{
-        fontSize: 16,
-        fontWeight: 600,
-        textDecoration: 'underline',
-        textDecorationColor: '#006B5E',
-        color: '#006B5E',
-      }}
-    >
-      View
-    </Typography>,
-  ],
-  [
-    '21/11/2022 - 26/12/2022',
-    <Typography
-      key={'1'}
-      textAlign="center"
-      sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
-    >
-      420
-    </Typography>,
-    '31/12/2022',
-    <Typography
-      key={'1'}
-      sx={{
-        fontSize: 16,
-        fontWeight: 600,
-        textDecoration: 'underline',
-        textDecorationColor: '#006B5E',
-        color: '#006B5E',
-      }}
-    >
-      View
-    </Typography>,
-  ],
-  [
-    '21/11/2022 - 26/12/2022',
-    <Typography
-      key={'1'}
-      textAlign="center"
-      sx={{ pr: 1, fontSize: 14, fontWeight: 400 }}
-    >
-      420
-    </Typography>,
-    '31/12/2022',
-    <Typography
-      key={'1'}
-      sx={{
-        fontSize: 16,
-        fontWeight: 600,
-        textDecoration: 'underline',
-        textDecorationColor: '#006B5E',
-        color: '#006B5E',
-      }}
-    >
-      View
-    </Typography>,
-  ],
 ]

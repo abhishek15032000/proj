@@ -60,8 +60,14 @@ const Login = () => {
     }
 
     try {
+      setLoading(true)
       const res = await authCalls.loginCall(payload)
       if (res?.success && res?.data) {
+        if (res?.status === 204) {
+          alert('Retry login with new Captch')
+          setCaptchaInput('')
+          return
+        }
         if (res?.data?.captchaVerify) {
           dispatch(loginAction(res?.data)) //calling action from redux
 
@@ -196,7 +202,7 @@ const Login = () => {
             variant="contained"
             // disabled={Object.values(errors).length > 0}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </CCButton>
           <Grid container justifyContent={'center'} alignItems={'center'}>
             <Typography

@@ -20,6 +20,9 @@ export const URL_PATH = {
     projectCreate: ENDPOINTS.carbonServiceURL + '/project/create',
     getAllProjects: ENDPOINTS.carbonServiceURL + '/project/getAllProjects',
     getProjectById: ENDPOINTS.carbonServiceURL + '/project/getProjectById',
+    updateTx: ENDPOINTS.carbonServiceURL + '/project/updateTx',
+    getIssuerProjectDashboardStats:
+      ENDPOINTS.carbonServiceURL + '/project/getIssuerProjectDashboardStats',
   },
   projectSections: {
     updateProjectSectionA:
@@ -38,8 +41,10 @@ export const URL_PATH = {
     update: ENDPOINTS.carbonServiceURL + '/verifier/update',
     getVerifierByProjectId:
       ENDPOINTS.carbonServiceURL + '/verifier/getVerifierByProjectId',
+    getVerifierProjectDashboardStats:
+      ENDPOINTS.carbonServiceURL + '/verifier/getVerifierProjectDashboardStats',
     getAllVerifier: ENDPOINTS.carbonServiceURL + '/verifier/getAllVerifiers',
-    submitVerifier: ENDPOINTS.carbonServiceURL + '/verifier/update'
+    submitVerifier: ENDPOINTS.carbonServiceURL + '/verifier/update',
   },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',

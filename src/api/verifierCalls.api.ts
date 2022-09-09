@@ -3,14 +3,14 @@ import { URL_PATH } from "./configs/Endpoints"
 
 export const verifierCalls = {
   createVerifier: (payload: any) => {
-    return AxiosHelper(URL_PATH.verifier.create, "POST", payload).then(
+    return AxiosHelper(URL_PATH.verifier.create, 'POST', payload).then(
       (res) => {
         return res
       }
     )
   },
   updateVerifier: (payload: any) => {
-    return AxiosHelper(URL_PATH.verifier.update, "POST", payload).then(
+    return AxiosHelper(URL_PATH.verifier.update, 'POST', payload).then(
       (res) => {
         return res?.data
       }
@@ -19,7 +19,15 @@ export const verifierCalls = {
   getVerifierByProjectId: (token: any) => {
     return AxiosHelper(
       URL_PATH.verifier.getVerifierByProjectId + `?id=${token}`,
-      "GET"
+      'GET'
+    ).then((res) => {
+      return res?.data
+    })
+  },
+  getVerifierProjectDashboardStats: (id: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.getVerifierProjectDashboardStats + `?_id=${id}`,
+      'GET'
     ).then((res) => {
       return res?.data
     })
