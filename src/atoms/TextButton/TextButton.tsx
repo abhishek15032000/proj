@@ -11,6 +11,7 @@ interface TextButtonProps {
   sx?: any
   title?: string | number
   textStyle?: any
+  onClick?: any
 }
 
 const TextButton: FC<TextButtonProps> = (props) => {
@@ -24,6 +25,7 @@ const TextButton: FC<TextButtonProps> = (props) => {
         backgroundColor: Colors.darkPrimary1,
         ...props.sx,
       }}
+      onClick={props.onClick}
     >
       <Typography
         sx={{

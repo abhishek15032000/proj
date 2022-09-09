@@ -37,5 +37,12 @@ export const AllColors = {
   lightGreenBackground3: '#E1EEE8',
   lightGreenBackground4: '#B9E7E0',
   lightPinkBackground: '#FFDDD5',
-  lightOrangeBackground: '#FFF1CC'
+  lightOrangeBackground: '#FFF1CC',
+  darkRedBackground: '#BA1B1B',
+  lightBlueBackground2: '#00A392',
+  mediumGreyBackground: '#A8ACAA',
+  lightGreyBackground: '#E1E3E1',
+  lightCyanBackground: '#3DF3BA',
+  darkOrangeBackground: '#E6A603',
+  lightOrangeBackground2: '#f2bc4b',
 }
