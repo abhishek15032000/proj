@@ -21,7 +21,7 @@ const VerifierDashboard = (props: VerifierDashboardProps) => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader title="Dashboard" iconDisable />
+          <BackHeader sx={{ mb: 2 }} title="Dashboard" iconDisable />
         </Grid>
 
         <WelcomeIllustration />

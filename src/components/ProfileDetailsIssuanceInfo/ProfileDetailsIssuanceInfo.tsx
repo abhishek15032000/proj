@@ -5,6 +5,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { Box, Grid, Paper, Typography } from '@mui/material'
 import TodayIcon from '@mui/icons-material/Today'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
+
 // Local Imports
 import IssuanceInfoList from './IssuanceInfoList'
 import VerifierReport from './VerifierReport'
@@ -101,6 +102,11 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       setIssuanceInfo(issuanceInfoTabData)
     }
   }, [currentProjectDetails])
+
+  useEffect(() => {
+    console.log('currentProjectDetails')
+    console.log(JSON.stringify(currentProjectDetails, null, 4))
+  }, [])
 
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
