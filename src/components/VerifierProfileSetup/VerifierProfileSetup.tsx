@@ -19,13 +19,23 @@ import { getLocalItem } from '../../utils/Storage'
 const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
   const navigate = useNavigate()
 
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(getLocalItem('userDetails').email)
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [organisationName, setOrganisationName] = useState('')
   const [address, setAddress] = useState('')
   const [website, setWebsite] = useState('')
   const [designation, setDesignation] = useState('')
+
+  useEffect(() => {
+    USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
+      setFullName(response?.data?.data?.fullName)
+      setPhone(response?.data?.data?.phone)
+      setAddress(response?.data?.data?.address)
+      setOrganisationName(response?.data?.data?.organisationName)
+      setWebsite(response?.data?.data?.organisationName)
+    })
+  }, [])
 
   const onSave = () => {
     // return
@@ -46,12 +56,15 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       uuid: getLocalItem('userDetails').uuid,
       email: email,
       fullName: fullName,
-      phone: phone,
+      phone: phone.toString(),
       organisationName: organisationName,
       address: address,
       website: website,
       designation: designation,
     }
+
+    console.log('payload')
+    console.log(JSON.stringify(payload, null, 4))
 
     USER.updateUserInfo(payload).then((response) => {
       console.log('response')
@@ -116,6 +129,8 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               sx={{ mb: 1.5 }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled
+              required={false}
             />
 
             <CCInputField

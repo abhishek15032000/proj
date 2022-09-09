@@ -42,13 +42,13 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
   const [tableData, setTableData] = useState([])
 
   useEffect(() => {
-    const userDetails = getLocalItem('userDetails')
-
     // .getAllVerifiers('62c5829aa3bc6ba32590f950')
     // .getAllVerifiers('630ca4c98c7365e61871f56c')
-    verifierCalls.getAllVerifiers(userDetails._id).then((response) => {
-      setTableData(response.data.data)
-    })
+    verifierCalls
+      .getAllVerifiers(getLocalItem('userDetails').user_id)
+      .then((response) => {
+        setTableData(response.data.data)
+      })
   }, [])
 
   return (

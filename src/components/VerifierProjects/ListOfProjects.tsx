@@ -52,8 +52,8 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const navigate = useNavigate()
 
   const [tabIndex, setTabIndex] = useState(1)
-  const [rowsNew, setRowsNew] = useState([])
-  const [rowsRegistered, setRowsRegistered] = useState([])
+  const [rowsRegistered, setRowsRegistered]: any = useState([])
+  const [rowsNew, setRowsNew]: any = useState([])
 
   const updateVerifierStatus = (status: any, data: any) => {
     const payload = {
@@ -211,8 +211,18 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       }
     })
 
-    setRowsNew(newData)
-    setRowsRegistered(registeredData)
+    if (newData.length !== 0) {
+      setRowsNew(newData)
+    } else {
+      setRowsNew([{}])
+    }
+
+    if (registeredData.length !== 0) {
+      setRowsRegistered(registeredData)
+    } else {
+      setRowsRegistered([{}])
+    }
+
   }, [props])
 
   return (

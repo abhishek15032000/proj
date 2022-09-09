@@ -20,10 +20,8 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
   const [tableData, setTableData] = useState([])
 
   useEffect(() => {
-    const userDetails = getLocalItem('userDetails')
-
     verifierCalls
-      .getAllVerifiers(userDetails._id)
+      .getAllVerifiers(getLocalItem('userDetails').user_id)
       .then((response) => {
         setTableData(response.data.data)
       })

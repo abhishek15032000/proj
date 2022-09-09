@@ -70,15 +70,12 @@ const Login = () => {
         }
         if (res?.data?.captchaVerify) {
           dispatch(loginAction(res?.data)) //calling action from redux
-
-          console.log('res.data')
-          console.log(JSON.stringify(res.data, null, 4))
           if ( res.data.type === "ISSUER" ) {
             navigate(pathNames.DASHBOARD, { replace: true })
           } else if ( res.data.type === "VERIFIER" ) {
             navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
           }
-          window.location.reload()
+          // window.location.reload()
         } else {
           alert(res?.data)
         }
