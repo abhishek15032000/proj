@@ -72,7 +72,22 @@ const ReportsViewComments = () => {
               <Divider sx={{ color: '#CDCDCD' }} />
               {/*<hr style={{ color: '#CDCDCD' }}></hr>*/}
             </Grid>
-            <Grid item xs={12}></Grid>
+            <Grid item xs={10}>
+              {projectReviewDetials.map((i: any, index: number) => (
+                <Grid container key={index}>
+                  <Grid item xs={6}>
+                    <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+                      {i?.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+                      {i?.value}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              ))}
+            </Grid>
           </Grid>
         </Paper>
       </Grid>
@@ -81,3 +96,21 @@ const ReportsViewComments = () => {
 }
 
 export default ReportsViewComments
+const projectReviewDetials = [
+  {
+    name: 'Date of Report Submission',
+    value: '21/11/2022 - 26/12/2022',
+  },
+  {
+    name: 'No of Co2cAuthorised',
+    value: '420',
+  },
+  {
+    name: 'Date of Verification',
+    value: '31/12/2022',
+  },
+  {
+    name: 'Next Date for monthly report submission',
+    value: '25/01/2023',
+  },
+]
