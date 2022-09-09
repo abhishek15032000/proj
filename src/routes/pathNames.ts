@@ -23,7 +23,8 @@ export const pathNames = {
   VERIFIER_PROJECTS_LIST: "/verifier-projects-list",
   VERIFIER_PROJECTS_DETAILS: '/verifier-projects-details',
   VERIFIER_VERIFY_REPORT: '/verifier-verify-report',
-  ISSUER_WALLET: '/issuer-wallet'
+  ISSUER_WALLET: '/issuer-wallet',
+  TRANSACTION_HISTORY: '/transaction-history'
 }
 
 export const linkLabels = {

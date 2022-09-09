@@ -24,6 +24,7 @@ import VerifierProjectsList from '../pages/VerifierProjectsList'
 import VerifierProjectDetails from '../pages/VerifierProjectDetails'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import IssuerWallet from '../pages/IssuerWallet'
+import TransactionHistory from '../pages/TransactionHistory'
 
 export const privateRouteComponents = [
   {
@@ -139,6 +140,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUER_WALLET,
     component: IssuerWallet,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.TRANSACTION_HISTORY,
+    component: TransactionHistory,
     roles: [ROLES.ISSUER],
   },
 ]
