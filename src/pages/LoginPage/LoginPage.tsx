@@ -75,7 +75,7 @@ const Login = () => {
           } else if ( res.data.type === "VERIFIER" ) {
             navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
           }
-          // window.location.reload()
+          window.location.reload()
         } else {
           alert(res?.data)
         }
