@@ -30,6 +30,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
   const [tableRows, setTableRows] = useState<any>(undefined)
   const [filterProjectDetails, setFilterProjectDetails] =
     useState<boolean>(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     //will use it when registered projects are true in API res
@@ -40,6 +41,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
   }, [tabIndex])
 
   const getAllProjects = () => {
+    setLoading(true)
     dataCollectionCalls
       .getAllProjects(userDetails?.email)
       .then((res: any) => {
@@ -57,9 +59,13 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
             )
             setTableRows(tabRows)
           }
+          setLoading(false)
         }
       })
-      .catch((e: any) => console.log(e))
+      .catch((e: any) => {
+        console.log('Error in dataCollectionCalls.getAllProjects api :', e)
+        setLoading(false)
+      })
   }
 
   return (
@@ -100,11 +106,12 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         sx={{ marginBottom: 2 }}
       />
       {tabIndex === 1 ? (
-        <DashboardNewProjectsTable tableRows={tableRows} />
+        <DashboardNewProjectsTable tableRows={tableRows} loading={loading} />
       ) : (
         tabIndex === 2 && (
           <DashboardRegisteredProjectsTable
             tableRows={filterProjectDetails && tableRows}
+            loading={loading}
           />
         )
       )}

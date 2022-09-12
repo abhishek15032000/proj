@@ -118,7 +118,6 @@ const IssuanceDataCollection = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
-  console.log(currentProjectDetails)
   const sectionIndex = useAppSelector(
     ({ issuanceDataCollection }) => issuanceDataCollection.sectionIndex,
     shallowEqual
