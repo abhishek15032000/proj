@@ -61,6 +61,7 @@ const SelectVerifier = () => {
   }, [selectedVerifiers])
 
   const getAllVerifiers = async () => {
+    setLoading(true)
     try {
       const res = await department.getUsersByOrgType(ROLES?.VERIFIER)
       if (res.data) {
@@ -68,6 +69,8 @@ const SelectVerifier = () => {
       }
     } catch (err) {
       console.log('Error in department.getUsersByOrgType ~ ', err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -105,14 +108,31 @@ const SelectVerifier = () => {
   }
 
   const selectVerifiers = (verifier: any) => {
-    if (selectedVerifiers.length && selectedVerifiers.includes(verifier)) {
+    const selectedVerifierIds = selectedVerifiers.map(
+      (verifier: any) => verifier._id
+    )
+    if (
+      selectedVerifiers.length &&
+      selectedVerifierIds.includes(verifier?._id)
+    ) {
       const newVerifierList = selectedVerifiers.filter(
-        (v: any) => v !== verifier
+        (v: any) => v?._id !== verifier?._id
       )
       setSelectedVerifiers(newVerifierList)
     } else {
       setSelectedVerifiers([...selectedVerifiers, verifier])
     }
+  }
+
+  const isThisVerifierSelected = (id: string) => {
+    if (selectedVerifiers.length) {
+      const selectedVerifierIds = selectedVerifiers.map(
+        (verifier: any) => verifier._id
+      )
+      if (selectedVerifierIds.includes(id)) return true
+      else return false
+    }
+    return false
   }
 
   return loading === true ? (
@@ -158,7 +178,7 @@ const SelectVerifier = () => {
                 width: '100%',
                 display: 'flex',
                 borderRadius: 2,
-                borderTop: selectedVerifiers.includes(verifier?._id)
+                borderTop: isThisVerifierSelected(verifier?._id)
                   ? '6px solid #006B5E'
                   : '6px solid transparent',
               }}
@@ -188,11 +208,18 @@ const SelectVerifier = () => {
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.location || '-'}</Typography>
+                  <Typography>{verifier?.address || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <LanguageIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.website || '-'}</Typography>
+                  <Typography>
+                    <a
+                      style={{ color: '#25BBD2', textDecoration: 'underline' }}
+                      href={verifier?.website}
+                    >
+                      {verifier?.website || '-'}
+                    </a>
+                  </Typography>
                 </Box>
                 <Divider sx={{ my: 2 }} />
                 <Box sx={{ display: 'flex', mt: 1 }}>
@@ -201,11 +228,11 @@ const SelectVerifier = () => {
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.contact || '-'}</Typography>
+                  <Typography>{verifier?.phone || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.mail || '-'}</Typography>
+                  <Typography>{verifier?.email || '-'}</Typography>
                 </Box>
               </Grid>
               <Grid item xs={3} sx={{ my: 'auto' }} justifyContent="end">

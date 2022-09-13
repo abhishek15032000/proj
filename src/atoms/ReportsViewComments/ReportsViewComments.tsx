@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC, useEffect, useState } from 'react'
 //MUI imports
 import { Divider, Grid, Paper, Stack, Typography } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -8,7 +8,7 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import moment from 'moment'
 import CCMultilineTextArea from '../CCMultilineTextArea'
 
-const projectDetails = {
+const data = {
   company_name:
     '3.66 MW poultry litter based power generation project by Raus Power in India',
   start_date: '2022-08-08T08:04:33.441Z',
@@ -19,9 +19,22 @@ const projectDetails = {
   location: '6430 Hixson Pike, Hixson, TN 37343, USA',
 }
 
-const ReportsViewComments = () => {
+interface ReportsViewCommentsProps {
+  projectDetails?: any
+}
+
+const ReportsViewComments: FC<ReportsViewCommentsProps> = (props) => {
+  const [projectDetails, setProjectDetails] = useState<null | any>(null)
+
+  useEffect(() => {
+    if (props?.projectDetails) {
+      setProjectDetails(props.projectDetails)
+    } else {
+      setProjectDetails(data)
+    }
+  }, [])
   return (
-    <Grid container>
+    <Grid container data-testid="reports-view-comments">
       <Grid item xs={12}>
         <Stack direction="row" alignItems="center">
           <ChevronLeftIcon />
@@ -40,6 +53,7 @@ const ReportsViewComments = () => {
               <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
                 {projectDetails?.type?.map((type: any, index: number) => (
                   <Box
+                    data-testid="reports-view-comments-type"
                     sx={{
                       fontSize: 14,
                       color: '#191C1B',

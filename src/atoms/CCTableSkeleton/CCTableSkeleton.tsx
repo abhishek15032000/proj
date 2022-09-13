@@ -5,7 +5,7 @@ import { CCTableSkeletonProps } from './CCTableSkeleton.interface'
 
 const CCTableSkeleton = ({ height = 40, items = 10 }: CCTableSkeletonProps) => {
   return (
-    <Stack>
+    <Stack data-testid={'cc-table-skeleton'}>
       <Skeleton
         variant="rectangular"
         height={56.5}
@@ -15,6 +15,7 @@ const CCTableSkeleton = ({ height = 40, items = 10 }: CCTableSkeletonProps) => {
 
       {new Array(items).fill(0, 0, items).map((i, index) => (
         <Skeleton
+          data-testid={'cc-table-skeleton-row'}
           key={index.toString()}
           variant="rectangular"
           height={height}

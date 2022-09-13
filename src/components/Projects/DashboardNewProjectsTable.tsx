@@ -89,6 +89,7 @@ const headingItems = [
 ]
 interface DashboardNewProjectsTableProps {
   tableRows: any
+  loading: boolean
 }
 
 const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
@@ -118,7 +119,7 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
 
   return (
     <>
-      {!props?.tableRows ? (
+      {props?.loading ? (
         <CCTableSkeleton height={78} />
       ) : (
         <TableContainer
