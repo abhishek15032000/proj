@@ -20,9 +20,11 @@ import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 interface ListOfProjectsProps {
   data?: any
+  loading?: any
 }
 
 const headingsNew = [
@@ -157,10 +159,16 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ),
           <ChevronRightIcon
             key={index}
-            onClick={() => navigate(pathNames.VERIFIER_PROJECTS_DETAILS)}
+            onClick={() => {
+              navigate(pathNames.VERIFIER_PROJECTS_DETAILS)
+            }}
           />,
         ])
       }
+
+      // , {
+      //   project_uuid: item?.project_id?.uuid,
+      // }
 
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
@@ -222,7 +230,6 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
     } else {
       setRowsRegistered([{}])
     }
-
   }, [props])
 
   return (
@@ -263,13 +270,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         newProjects={4}
       />
 
-      <CCTable
-        headings={tabIndex === 1 ? headingsNew : headingsRegistered}
-        rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-        sx={{ minWidth: 100 }}
-        maxWidth={'100%'}
-        tableSx={{ minWidth: 100 }}
-      />
+      {props.loading && <CCTableSkeleton height={40} />}
+      {!props.loading && (
+        <CCTable
+          headings={tabIndex === 1 ? headingsNew : headingsRegistered}
+          rows={tabIndex === 1 ? rowsNew : rowsRegistered}
+          sx={{ minWidth: 100 }}
+          maxWidth={'100%'}
+          tableSx={{ minWidth: 100 }}
+          loading={true}
+        />
+      )}
     </Paper>
   )
 }

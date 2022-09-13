@@ -24,6 +24,8 @@ export const URL_PATH = {
     updateTx: ENDPOINTS.carbonServiceURL + '/project/updateTx',
     getIssuerProjectDashboardStats:
       ENDPOINTS.carbonServiceURL + '/project/getIssuerProjectDashboardStats',
+    getReportByProjectId:
+      ENDPOINTS.carbonServiceURL + '/project/report/getReportByProjectId',
   },
   projectSections: {
     updateProjectSectionA:

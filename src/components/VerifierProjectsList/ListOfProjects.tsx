@@ -20,6 +20,7 @@ import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 const headingsNew = [
   'Reference ID',
@@ -46,6 +47,7 @@ const headingsRegistered = [
 
 interface ListOfProjectsProps {
   data?: any
+  loading?: any
 }
 
 const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
@@ -75,7 +77,6 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
     })
   }
 
-  
   useEffect(() => {
     const newData: any = [],
       registeredData: any = []
@@ -223,7 +224,6 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
     } else {
       setRowsRegistered([{}])
     }
-
   }, [props])
 
   return (
@@ -241,12 +241,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         newProjects={4}
       />
 
-      <CCTable
-        headings={tabIndex === 1 ? headingsNew : headingsRegistered}
-        rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-        sx={{ minWidth: 100 }}
-        tableSx={{ minWidth: 100 }}
-      />
+      {props.loading && <CCTableSkeleton height={60} />}
+      {!props.loading && (
+        <CCTable
+          headings={tabIndex === 1 ? headingsNew : headingsRegistered}
+          rows={tabIndex === 1 ? rowsNew : rowsRegistered}
+          sx={{ minWidth: 100 }}
+          maxWidth={'100%'}
+          tableSx={{ minWidth: 100 }}
+          loading={true}
+        />
+      )}
     </Paper>
   )
 }

@@ -18,12 +18,19 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
   const navigate = useNavigate()
 
   const [tableData, setTableData] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
+    
     verifierCalls
       .getAllVerifiers(getLocalItem('userDetails').user_id)
       .then((response) => {
         setTableData(response.data.data)
+        setLoading(false)
+      })
+      .catch((e) => {
+        setLoading(false)
       })
   }, [])
 
@@ -46,7 +53,7 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ListOfProjects data={tableData} />
+          <ListOfProjects data={tableData} loading={loading} />
         </Grid>
       </Grid>
     </Box>
