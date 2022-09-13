@@ -19,8 +19,6 @@ import { ProjectsProps } from './Projects.interface'
 //interface ProfileCompletionProps {}
 
 const ProfileCompletion = (props: ProjectsProps) => {
-  console.log('props?.walletPercentage:', props?.walletPercentage)
-
   const [profileCompletion, setProfileCompletion] = useState<number>()
 
   useEffect(() => {
@@ -92,7 +90,6 @@ const ProfileCompletion = (props: ProjectsProps) => {
             }}
           >
             {`${props?.walletPercentage ? '100%' : '0%'} Complete`}
-            {/*100% Complete*/}
           </Typography>
         </Box>
 

@@ -12,19 +12,19 @@ import {
 import { Box } from '@mui/system'
 
 // Local Imports
-import SectionB1UploadImages from './SectionB1Upload/SectionB1Upload'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import Spinner from '../../atoms/Spinner'
+import SectionB1UploadImages from '../SectionB1Upload/SectionB1Upload'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import Spinner from '../../../atoms/Spinner'
 
 // Asset Imports
-import SectionB1TechnicalDescription from '../../assets/Images/SampleData/SectionB1TechnicalDescription.png'
-import SectionB1ShutDownDetails from '../../assets/Images/SampleData/SectionB1ShutDownDetails.png'
-import SectionB1ImplementationOfMilestones from '../../assets/Images/SampleData/SectionB1ImplementationOfMilestones.png'
-import SectionB1EventDescription from '../../assets/Images/SampleData/SectionB1EventDescription.png'
+import SectionB1TechnicalDescription from '../../../assets/Images/SampleData/SectionB1TechnicalDescription.png'
+import SectionB1ShutDownDetails from '../../../assets/Images/SampleData/SectionB1ShutDownDetails.png'
+import SectionB1ImplementationOfMilestones from '../../../assets/Images/SampleData/SectionB1ImplementationOfMilestones.png'
+import SectionB1EventDescription from '../../../assets/Images/SampleData/SectionB1EventDescription.png'
 
 // Redux Imports
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setBriefOnPurpuse,
@@ -34,11 +34,11 @@ import {
   setProjectTimelineImage,
   setTechnicalDescription,
   setTechnicalDescriptionImage,
-} from '../../redux/Slices/sectionBSlice'
+} from '../../../redux/Slices/sectionBSlice'
 
 // Functional Imports
-import { deleteIndexInArray } from '../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 
 const SectionB1 = () => {
   // const [briefOnPurpuse, setBriefOnPurpuse] = useState('')

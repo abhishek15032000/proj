@@ -9,20 +9,20 @@ import {
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../atoms/AttachMore/AttachMore'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import SectionE5ComparisonOfActualEmissionReductions from '../../assets/Images/SampleData/SectionE5ComparisonOfActualEmissionReductions.png'
+import SampleModal from '../../../atoms/SampleModal/SampleModal'
+import AttachMore from '../../../atoms/AttachMore/AttachMore'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import SectionE5ComparisonOfActualEmissionReductions from '../../../assets/Images/SampleData/SectionE5ComparisonOfActualEmissionReductions.png'
 import {
   setComparisionOfActualEmissionReductions,
   setComparisionOfActualEmissionReductionsImages,
-} from '../../redux/Slices/sectionESlice'
-import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
+} from '../../../redux/Slices/sectionESlice'
+import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import Spinner from '../../atoms/Spinner'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionE5 = () => {
   const dispatch = useAppDispatch()

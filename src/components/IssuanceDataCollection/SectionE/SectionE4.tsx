@@ -1,19 +1,19 @@
 import { Grid, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import SectionE4CalculationSummaryOfEmissionReductions from '../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import SectionE4CalculationSummaryOfEmissionReductions from '../../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
 import {
   setActualEmissionReductions,
   setActualEmissionReductionsImages,
   setCalculationSummaryOfEmission,
   setCalculationSummaryOfEmissionImages,
-} from '../../redux/Slices/sectionESlice'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+} from '../../../redux/Slices/sectionESlice'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { shallowEqual } from 'react-redux'
-import Spinner from '../../atoms/Spinner'
+import Spinner from '../../../atoms/Spinner'
 const SectionE4 = () => {
   const dispatch = useAppDispatch()
 

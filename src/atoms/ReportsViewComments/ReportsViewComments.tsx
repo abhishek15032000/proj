@@ -6,6 +6,7 @@ import { Box } from '@mui/system'
 import TodayIcon from '@mui/icons-material/Today'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import moment from 'moment'
+import CCMultilineTextArea from '../CCMultilineTextArea'
 
 const projectDetails = {
   company_name:
@@ -30,9 +31,9 @@ const ReportsViewComments = () => {
         </Stack>
       </Grid>
       <Grid item xs={12} sx={{ pt: 4 }}>
-        <Paper elevation={4}>
+        <Paper elevation={4} sx={{ p: 2 }}>
           <Grid container>
-            <Grid item xs={12} sx={{ p: 2 }}>
+            <Grid item xs={12}>
               <Typography sx={{ fontSize: 24, fontWeight: 400 }}>
                 {projectDetails?.company_name}
               </Typography>
@@ -68,13 +69,13 @@ const ReportsViewComments = () => {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ py: 3 }}>
               <Divider sx={{ color: '#CDCDCD' }} />
               {/*<hr style={{ color: '#CDCDCD' }}></hr>*/}
             </Grid>
             <Grid item xs={10}>
               {projectReviewDetials.map((i: any, index: number) => (
-                <Grid container key={index}>
+                <Grid container key={index} sx={{ pb: 2 }}>
                   <Grid item xs={6}>
                     <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
                       {i?.name}
@@ -87,6 +88,26 @@ const ReportsViewComments = () => {
                   </Grid>
                 </Grid>
               ))}
+            </Grid>
+            <Grid item xs={12} sx={{ pt: 3 }}>
+              <Typography
+                sx={{ fontWeight: 500, fontSize: 16, color: '#1D4B44', pb: 2 }}
+              >
+                GHG reduction occuring from this project
+              </Typography>
+              <CCMultilineTextArea
+                value={
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent egestas tempus adipiscing cursus aliquam. Suspendisse in velit volutpat a. Augue augue in sed ipsum placerat gravida nunc. Cursus at nisl arcu et proin adipiscing. Pellentesque tempor viverra vitae quam. A duis cursus aliquam integer. Non cursus congue amet eu aliquet sit eget est. Donec nunc lacus, euismod nulla. Sed congue nisl vitae varius. Dolor accumsan in arcu, ipsum, egestas mi donec gravida ipsum. Ultrices morbi morbi imperdiet aliquet vestibulum dolor. Egestas vel et vitae id odio viverra adipiscing. Magna maecenas non id mus eu eu turpis proin sem. Mauris nec ut. '
+                }
+                sx={{ background: '#FAFDFA' }}
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ pt: 2 }}>
+              <Typography
+                sx={{ fontWeight: 500, fontSize: 16, color: '#1D4B44' }}
+              >
+                Relevant Docs
+              </Typography>
             </Grid>
           </Grid>
         </Paper>

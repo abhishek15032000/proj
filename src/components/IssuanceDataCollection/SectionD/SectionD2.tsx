@@ -8,24 +8,24 @@ import {
   Stack,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import CCButton from '../../atoms/CCButton'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import SampleModal from '../../../atoms/SampleModal/SampleModal'
+import ImageComponent from '../../../atoms/ImageComponent/ImageComponent'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import CCButton from '../../../atoms/CCButton'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setAttachExPostTable,
   setDataAndParameterFixedExAnte,
   setDataAndParameterMonitoredExPost,
-} from '../../redux/Slices/sectionDSlice'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import sampleD2 from '../../assets/Images/sample-d2.png'
-import sampleD3 from '../../assets/Images/sample-d3.png'
-import sampleD4 from '../../assets/Images/sample-d4.png'
-import Spinner from '../../atoms/Spinner'
+} from '../../../redux/Slices/sectionDSlice'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import sampleD2 from '../../../assets/Images/sample-d2.png'
+import sampleD3 from '../../../assets/Images/sample-d3.png'
+import sampleD4 from '../../../assets/Images/sample-d4.png'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionD2: FC = () => {
   const dispatch = useAppDispatch()

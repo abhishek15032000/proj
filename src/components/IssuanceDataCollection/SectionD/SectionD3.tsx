@@ -8,14 +8,14 @@ import {
   Stack,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import SampleModal from '../../../atoms/SampleModal/SampleModal'
+import ImageComponent from '../../../atoms/ImageComponent/ImageComponent'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setBriefDescription } from '../../redux/Slices/sectionDSlice'
-import Spinner from '../../atoms/Spinner'
+import { setBriefDescription } from '../../../redux/Slices/sectionDSlice'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionD3: FC = () => {
   const [showModal, setShowModal] = useState(false)
