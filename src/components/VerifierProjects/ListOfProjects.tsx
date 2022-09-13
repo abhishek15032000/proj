@@ -25,6 +25,7 @@ import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 interface ListOfProjectsProps {
   data?: any
   loading?: any
+  updateStatus?: any
 }
 
 const headingsNew = [
@@ -56,26 +57,6 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const [tabIndex, setTabIndex] = useState(1)
   const [rowsRegistered, setRowsRegistered]: any = useState([])
   const [rowsNew, setRowsNew]: any = useState([])
-
-  const updateVerifierStatus = (status: any, data: any) => {
-    const payload = {
-      _id: data._id,
-      project_id: data.project_id._id,
-      project_status: status,
-      verifier_id: data.verifier_id,
-      verifier_name: data.verifier_name,
-      verifier_number: data.verifier_number,
-      verifier_address: data.verifier_address,
-    }
-
-    // console.log('payload')
-    // console.log(JSON.stringify(payload, null, 4))
-
-    verifierCalls.updateVerifier(payload).then((response) => {
-      console.log('response')
-      console.log(JSON.stringify(response.data, null, 4))
-    })
-  }
 
   useEffect(() => {
     const newData: any = [],
@@ -137,7 +118,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => updateVerifierStatus(2, item)}
+                onClick={() => props.updateStatus(2, item)}
               >
                 Approve
               </Typography>
@@ -149,7 +130,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => updateVerifierStatus(6, item)}
+                onClick={() => props.updateStatus(6, item)}
               >
                 Reject
               </Typography>

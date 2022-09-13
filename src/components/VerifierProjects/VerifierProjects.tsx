@@ -50,7 +50,6 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
   const [loadingStat, setLoadingStat] = useState(false)
 
   useEffect(() => {
-    setLoadingTable(true)
     setLoadingStat(true)
 
     verifierCalls
@@ -70,6 +69,12 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
         setLoadingStat(false)
       })
 
+    loadTableData()
+  }, [])
+
+  const loadTableData = () => {
+    setLoadingTable(true)
+
     verifierCalls
       .getAllVerifiers(getLocalItem('userDetails')?.user_id)
       .then((response) => {
@@ -79,7 +84,25 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
       .catch((e) => {
         setLoadingTable(false)
       })
-  }, [])
+  }
+
+  const updateVerifierStatus = (status: any, data: any) => {
+    setLoadingTable(true)
+
+    const payload = {
+      _id: data._id,
+      project_id: data.project_id._id,
+      project_status: status,
+      verifier_id: data.verifier_id,
+      verifier_name: data.verifier_name,
+      verifier_number: data.verifier_number,
+      verifier_address: data.verifier_address,
+    }
+
+    verifierCalls.updateVerifier(payload).then((response) => {
+      loadTableData()
+    })
+  }
 
   return (
     <Box sx={{ p: 0 }}>
@@ -96,7 +119,11 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
         <DashboardStatistics data={dashboardStatistics} loading={loadingStat} />
 
         <Grid item xs={12}>
-          <ListOfProjects data={tableData} loading={loadingTable} />
+          <ListOfProjects
+            data={tableData}
+            loading={loadingTable}
+            updateStatus={updateVerifierStatus}
+          />
         </Grid>
       </Grid>
     </Box>
