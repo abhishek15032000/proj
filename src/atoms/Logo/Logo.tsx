@@ -9,6 +9,7 @@ const Logo = ({ width = 159.45 }: LogoProps) => {
   const navigate = useNavigate()
   return (
     <img
+      data-testid="logo-img"
       className="logoImage"
       src={Images.logo}
       style={{ width }}
