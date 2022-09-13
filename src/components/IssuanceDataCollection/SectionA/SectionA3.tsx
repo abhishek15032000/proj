@@ -2,12 +2,12 @@ import { SelectChangeEvent, Stack } from '@mui/material'
 import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import CCButton from '../../atoms/CCButton'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import CCButton from '../../../atoms/CCButton'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setProjectParticipants } from '../../redux/Slices/sectionASlice'
-import Spinner from '../../atoms/Spinner'
+import { setProjectParticipants } from '../../../redux/Slices/sectionASlice'
+import Spinner from '../../../atoms/Spinner'
 interface dataInterface {
   partyInvolved: string
   participantType: string

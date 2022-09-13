@@ -11,7 +11,7 @@ import ListNewProject from '../pages/ListNewProject'
 
 import LogoutPage from '../pages/LogoutPage'
 
-import Onboarding from '../pages/Onboarding'
+import Onboarding from '../pages/OnboardingOld'
 
 import { linkLabels, pathNames } from './pathNames'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
@@ -30,7 +30,7 @@ import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsVie
 export const privateRouteComponents = [
   {
     path: pathNames.DASHBOARD,
-    // component: DashboardPage,
+    //component: DashboardPage,
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,

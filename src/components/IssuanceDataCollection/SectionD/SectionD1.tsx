@@ -8,21 +8,21 @@ import {
   Stack,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import ImageComponent from '../../atoms/ImageComponent/ImageComponent'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import CCButton from '../../atoms/CCButton'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import SampleModal from '../../../atoms/SampleModal/SampleModal'
+import ImageComponent from '../../../atoms/ImageComponent/ImageComponent'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import CCButton from '../../../atoms/CCButton'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setAttachExAnteTable,
   setDataAndParameterFixedExAnte,
-} from '../../redux/Slices/sectionDSlice'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import sampleAnteTable from '../../assets/Images/sample-d1.png'
-import Spinner from '../../atoms/Spinner'
+} from '../../../redux/Slices/sectionDSlice'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import sampleAnteTable from '../../../assets/Images/sample-d1.png'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionD1: FC = () => {
   const dispatch = useAppDispatch()

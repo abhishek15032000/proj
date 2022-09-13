@@ -9,15 +9,15 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import CCButton from '../../atoms/CCButton'
-import CCInputField from '../../atoms/CCInputField'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import CCButton from '../../../atoms/CCButton'
+import CCInputField from '../../../atoms/CCInputField'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setMethodologies } from '../../redux/Slices/sectionASlice'
+import { setMethodologies } from '../../../redux/Slices/sectionASlice'
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import Spinner from '../../atoms/Spinner'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 interface methodologiesInterface {
   approvedMethodologies: string

@@ -1,17 +1,17 @@
 import { Grid, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import SectionE7ActualReductionInFirstEmission from '../../assets/Images/SampleData/SectionE7ActualReductionInFirstEmission.png'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import SectionE7ActualReductionInFirstEmission from '../../../assets/Images/SampleData/SectionE7ActualReductionInFirstEmission.png'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setActualEmissionReductions,
   setActualEmissionReductionsImages,
-} from '../../redux/Slices/sectionESlice'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
+} from '../../../redux/Slices/sectionESlice'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import Spinner from '../../atoms/Spinner'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 const SectionE7 = () => {
   const dispatch = useAppDispatch()
 

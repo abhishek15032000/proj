@@ -2,18 +2,18 @@ import { Grid, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import React, { useEffect, useState } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
-import CCInputField from '../../atoms/CCInputField'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import CCInputField from '../../../atoms/CCInputField'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setStartDate,
   setFromDate,
   setToDate,
   setBriefOnCreditingPeriod,
-} from '../../redux/Slices/sectionASlice'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import Spinner from '../../atoms/Spinner'
+} from '../../../redux/Slices/sectionASlice'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionA5 = () => {
   const dispatch = useAppDispatch()

@@ -6,7 +6,7 @@ import { Box, Grid, Stack, TextareaAutosize, Typography } from '@mui/material'
 
 // Redux Imports
 import { shallowEqual } from 'react-redux'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setBriefOnPurpuseB2,
   setChangesToProject,
@@ -14,12 +14,12 @@ import {
   setCorrections,
   setPermanentChanges,
   setTemporaryDeviations,
-} from '../../redux/Slices/sectionBSlice'
+} from '../../../redux/Slices/sectionBSlice'
 
 // Local Components
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import Spinner from '../../atoms/Spinner'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionB2 = () => {
   const dispatch = useAppDispatch()

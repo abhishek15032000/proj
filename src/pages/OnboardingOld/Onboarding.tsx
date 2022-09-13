@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import React from 'react'
-import OnboardingComp from '../../components/Onboarding'
+import OnboardingComp from '../../components/OnboardingOld'
 
 const Onboarding = () => {
   return (

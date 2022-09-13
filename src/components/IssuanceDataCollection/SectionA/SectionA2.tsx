@@ -11,11 +11,11 @@ import {
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
-import CCButton from '../../atoms/CCButton'
-import CCInputField from '../../atoms/CCInputField'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import CCButton from '../../../atoms/CCButton'
+import CCInputField from '../../../atoms/CCInputField'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setCountry,
@@ -24,10 +24,10 @@ import {
   setLandmark,
   setPincode,
   setFileAttach,
-} from '../../redux/Slices/sectionASlice'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
-import Spinner from '../../atoms/Spinner'
+} from '../../../redux/Slices/sectionASlice'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionA2 = () => {
   const dispatch = useAppDispatch()

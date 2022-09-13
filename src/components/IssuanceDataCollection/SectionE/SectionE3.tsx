@@ -1,16 +1,16 @@
 import { Grid, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import SectionE4CalculationSummaryOfEmissionReductions from '../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
-import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import SectionE4CalculationSummaryOfEmissionReductions from '../../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
+import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
 import {
   setCalculationOfLeakage,
   setCalculationOfLeakageImages,
-} from '../../redux/Slices/sectionESlice'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
+} from '../../../redux/Slices/sectionESlice'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
-import Spinner from '../../atoms/Spinner'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionE3 = () => {
   const dispatch = useAppDispatch()
