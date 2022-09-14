@@ -2,7 +2,7 @@
 import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import { Box, Grid, Paper, Skeleton, Typography } from '@mui/material'
 
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
@@ -15,46 +15,94 @@ import CCTable from '../../atoms/CCTable'
 import ListOfProjects from './ListOfProjects'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { getLocalItem } from '../../utils/Storage'
+import { USER } from '../../api/user.api'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const VerifierProjects = (props: VerifierProjectsProps) => {
+  const navigate = useNavigate()
+
   const [dashboardStatistics, setDashboardStatistics] = useState([
     {
       title: 'Total Project Requests',
-      value: '20',
+      value: 0,
       color: Colors.lightPinkBackground,
     },
     {
       title: 'Projects under verification',
-      value: '16',
+      value: 0,
       color: Colors.lightGreenBackground3,
     },
     {
       title: 'Projects verified',
-      value: '12',
+      value: 0,
       color: Colors.lightGreenBackground4,
     },
     {
       title: 'Projects verification Pending',
-      value: '04',
+      value: 0,
       color: Colors.lightOrangeBackground,
     },
   ])
   const [tableData, setTableData] = useState([])
 
-  useEffect(() => {
-    const userDetails = getLocalItem('userDetails')
+  const [loadingTable, setLoadingTable] = useState(false)
+  const [loadingStat, setLoadingStat] = useState(false)
 
-    // .getAllVerifiers('62c5829aa3bc6ba32590f950')
-    // .getAllVerifiers('630ca4c98c7365e61871f56c')
+  useEffect(() => {
+    setLoadingStat(true)
+
     verifierCalls
-      .getAllVerifiers('62c5829aa3bc6ba32590f950')
+      .getVerifierProjectDashboardStats(getLocalItem('userDetails')?.user_id)
+      .then((response) => {
+        const tempData = dashboardStatistics
+
+        tempData[0].value = response?.data?.no_of_projects
+        tempData[1].value = response?.data?.projects_under_verification
+        tempData[2].value = response?.data?.projects_verified
+        tempData[3].value = response?.data?.projects_verification_pending
+
+        setDashboardStatistics(tempData)
+        setLoadingStat(false)
+      })
+      .catch((e) => {
+        setLoadingStat(false)
+      })
+
+    loadTableData()
+  }, [])
+
+  const loadTableData = () => {
+    setLoadingTable(true)
+
+    verifierCalls
+      .getAllVerifiers(getLocalItem('userDetails')?.user_id)
       .then((response) => {
         setTableData(response.data.data)
+        setLoadingTable(false)
       })
-    //verifierCalls.getAllVerifiers(userDetails._id).then((response) => {
-    //  setTableData(response.data.data)
-    //})
-  }, [])
+      .catch((e) => {
+        setLoadingTable(false)
+      })
+  }
+
+  const updateVerifierStatus = (status: any, data: any) => {
+    setLoadingTable(true)
+
+    const payload = {
+      _id: data._id,
+      project_id: data.project_id._id,
+      project_status: status,
+      verifier_id: data.verifier_id,
+      verifier_name: data.verifier_name,
+      verifier_number: data.verifier_number,
+      verifier_address: data.verifier_address,
+    }
+
+    verifierCalls.updateVerifier(payload).then((response) => {
+      loadTableData()
+    })
+  }
 
   return (
     <Box sx={{ p: 0 }}>
@@ -68,10 +116,14 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
           <BackHeader title="Dashboard" iconDisable />
         </Grid>
 
-        <DashboardStatistics data={dashboardStatistics} />
+        <DashboardStatistics data={dashboardStatistics} loading={loadingStat} />
 
         <Grid item xs={12}>
-          <ListOfProjects data={tableData} />
+          <ListOfProjects
+            data={tableData}
+            loading={loadingTable}
+            updateStatus={updateVerifierStatus}
+          />
         </Grid>
       </Grid>
     </Box>

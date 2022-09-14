@@ -77,7 +77,15 @@ const Login = () => {
           if (res.data.type === 'ISSUER') {
             navigate(pathNames.DASHBOARD, { replace: true })
           } else if (res.data.type === 'VERIFIER') {
-            navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
+            USER.getUserInfo(res?.data?.uuid).then(
+              (response) => {
+                if (response?.data?.data?.organisationName === '') {
+                  navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
+                } else {
+                  navigate(pathNames.VERIFIER_PROJECTS, { replace: true })
+                }
+              }
+            )
           } else if (res?.data?.type === ROLES.BUYER) {
             const profileCompleted = userResponse?.data?.orgName ? true : false
             setLocalItem('profileCompleted', profileCompleted)
@@ -86,7 +94,7 @@ const Login = () => {
 
           dispatch(loginAction(res?.data)) //calling action from redux
 
-          window.location.reload()
+          // window.location.reload()
         } else {
           alert(res?.data)
         }

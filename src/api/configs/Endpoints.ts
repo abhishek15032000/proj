@@ -11,6 +11,7 @@ export const URL_PATH = {
     onboardingUser: ENDPOINTS.userServiceURL + '/users/onboarding-user',
     updateUserInfo: ENDPOINTS.userServiceURL + '/users/updateUserInfo',
     getUsersById: ENDPOINTS.userServiceURL + '/users/getUsersById',
+    userInfo: ENDPOINTS.userServiceURL + '/users/user/',
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + '/auth/login',
@@ -24,6 +25,8 @@ export const URL_PATH = {
     updateTx: ENDPOINTS.carbonServiceURL + '/project/updateTx',
     getIssuerProjectDashboardStats:
       ENDPOINTS.carbonServiceURL + '/project/getIssuerProjectDashboardStats',
+    getReportByProjectId:
+      ENDPOINTS.carbonServiceURL + '/project/report/getReportByProjectId',
   },
   projectSections: {
     updateProjectSectionA:

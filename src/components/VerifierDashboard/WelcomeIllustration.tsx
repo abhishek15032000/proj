@@ -75,8 +75,8 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
           </Typography>
 
           <TextButton
-            sx={{ mt: 3 }}
-            title="start"
+            sx={{ mt: 3, zIndex: 2 }}
+            title="Start"
             onClick={() => {
               navigate(pathNames.VERIFIER_PROFILE_SETUP)
             }}
@@ -84,7 +84,7 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
         </Box>
         <Box
           component="img"
-          sx={{ width: '100%', position: 'absolute', bottom: 0, right: 0 }}
+          sx={{ width: '100%', position: 'absolute', bottom: 0, right: 0, zIndex: 1 }}
           src={VerifierDashboardIllustration}
         />
       </Paper>

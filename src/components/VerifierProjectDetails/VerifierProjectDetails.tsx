@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography, Chip } from '@mui/material'
@@ -12,35 +12,27 @@ import { VerifierProjectDetailsProps } from './VerifierProjectDetails.interface'
 import VitalProjectDetails from './VitalProjectDetails'
 import ReportsTable from './ReportsTable'
 import { useNavigate } from 'react-router-dom'
-
-const data = {
-  issuer_details: {
-    user_id: '630765b218466dcce1770a93',
-    name: 'Chaturvedi',
-    email: 'swapnil@chainflux.com',
-  },
-  verifier_details: {
-    user_id: '630ca4c98c7365e61871f56c',
-    name: 'test1 verifier',
-    email: 'test@verifier.com',
-  },
-  status: 0,
-  _id: '630caa181e34bff3c665bb09',
-  uuid: '024c7b07-8c26-491c-bf8e-493486c12da6',
-  project_id: '296149c9-9284-46a7-a35f-079a9b417143',
-  current_month: 'string',
-  next_date: '2022-08-29T11:33:37.910Z',
-  ghg_reduction_explanation: 'string',
-  file_attach: ['string'],
-  signature_hash: 'string',
-  signer: 'string',
-  createdAt: '2022-08-29T11:59:20.593Z',
-  updatedAt: '2022-08-29T11:59:20.593Z',
-  __v: 0,
-}
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
   const navigate = useNavigate()
+  const [projectDetails, setProjectDetails] = useState()
+
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectById('5c00aacd-8d5f-4e4a-b190-f394c6e56f6d')
+      .then((response) => {
+        setProjectDetails(response.data)
+      })
+
+    verifierCalls
+      .getReportByProjectId('89a9a101-f525-4658-a489-7e75694d1097')
+      .then((response) => {
+        // console.log('response.data')
+        // console.log(JSON.stringify(response.data, null, 4))
+      })
+  }, [])
 
   return (
     <Box sx={{ p: 0 }}>
@@ -51,15 +43,12 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader
-            title="Project Details"
-            onClick={() => navigate(-1)}
-          />
+          <BackHeader title="Project Details" onClick={() => navigate(-1)} />
         </Grid>
 
-        <VitalProjectDetails data={data} />
+        <VitalProjectDetails data={projectDetails} />
 
-        <ReportsTable data={data} />
+        <ReportsTable />
       </Grid>
     </Box>
   )
