@@ -20,9 +20,12 @@ import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 interface ListOfProjectsProps {
   data?: any
+  loading?: any
+  updateStatus?: any
 }
 
 const headingsNew = [
@@ -52,28 +55,8 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const navigate = useNavigate()
 
   const [tabIndex, setTabIndex] = useState(1)
-  const [rowsNew, setRowsNew] = useState([])
-  const [rowsRegistered, setRowsRegistered] = useState([])
-
-  const updateVerifierStatus = (status: any, data: any) => {
-    const payload = {
-      _id: data._id,
-      project_id: data.project_id._id,
-      project_status: status,
-      verifier_id: data.verifier_id,
-      verifier_name: data.verifier_name,
-      verifier_number: data.verifier_number,
-      verifier_address: data.verifier_address,
-    }
-
-    // console.log('payload')
-    // console.log(JSON.stringify(payload, null, 4))
-
-    verifierCalls.updateVerifier(payload).then((response) => {
-      console.log('response')
-      console.log(JSON.stringify(response.data, null, 4))
-    })
-  }
+  const [rowsRegistered, setRowsRegistered]: any = useState([])
+  const [rowsNew, setRowsNew]: any = useState([])
 
   useEffect(() => {
     const newData: any = [],
@@ -135,7 +118,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => updateVerifierStatus(2, item)}
+                onClick={() => props.updateStatus(2, item)}
               >
                 Approve
               </Typography>
@@ -147,7 +130,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => updateVerifierStatus(6, item)}
+                onClick={() => props.updateStatus(6, item)}
               >
                 Reject
               </Typography>
@@ -157,10 +140,16 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ),
           <ChevronRightIcon
             key={index}
-            onClick={() => navigate(pathNames.VERIFIER_PROJECTS_DETAILS)}
+            onClick={() => {
+              navigate(pathNames.VERIFIER_PROJECTS_DETAILS)
+            }}
           />,
         ])
       }
+
+      // , {
+      //   project_uuid: item?.project_id?.uuid,
+      // }
 
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
@@ -211,8 +200,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       }
     })
 
-    setRowsNew(newData)
-    setRowsRegistered(registeredData)
+    if (newData.length !== 0) {
+      setRowsNew(newData)
+    } else {
+      setRowsNew([{}])
+    }
+
+    if (registeredData.length !== 0) {
+      setRowsRegistered(registeredData)
+    } else {
+      setRowsRegistered([{}])
+    }
   }, [props])
 
   return (
@@ -253,13 +251,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         newProjects={4}
       />
 
-      <CCTable
-        headings={tabIndex === 1 ? headingsNew : headingsRegistered}
-        rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-        sx={{ minWidth: 100 }}
-        maxWidth={'100%'}
-        tableSx={{ minWidth: 100 }}
-      />
+      {props.loading && <CCTableSkeleton height={40} />}
+      {!props.loading && (
+        <CCTable
+          headings={tabIndex === 1 ? headingsNew : headingsRegistered}
+          rows={tabIndex === 1 ? rowsNew : rowsRegistered}
+          sx={{ minWidth: 100 }}
+          maxWidth={'100%'}
+          tableSx={{ minWidth: 100 }}
+          loading={true}
+        />
+      )}
     </Paper>
   )
 }

@@ -20,4 +20,12 @@ export const USER = {
       return response
     })
   },
+  getUserInfo: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.userRoutes.userInfo + '/' + payload,
+      'GET'
+    ).then((response: any) => {
+      return response
+    })
+  },
 }

@@ -18,16 +18,45 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
   const navigate = useNavigate()
 
   const [tableData, setTableData] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const userDetails = getLocalItem('userDetails')
+    setLoading(true)
+
+    loadTableData()
+  }, [])
+
+  const loadTableData = () => {
+    setLoading(true)
 
     verifierCalls
-      .getAllVerifiers(userDetails._id)
+      .getAllVerifiers(getLocalItem('userDetails')?.user_id)
       .then((response) => {
         setTableData(response.data.data)
+        setLoading(false)
       })
-  }, [])
+      .catch((e) => {
+        setLoading(false)
+      })
+  }
+
+  const updateVerifierStatus = (status: any, data: any) => {
+    setLoading(true)
+
+    const payload = {
+      _id: data._id,
+      project_id: data.project_id._id,
+      project_status: status,
+      verifier_id: data.verifier_id,
+      verifier_name: data.verifier_name,
+      verifier_number: data.verifier_number,
+      verifier_address: data.verifier_address,
+    }
+
+    verifierCalls.updateVerifier(payload).then((response) => {
+      loadTableData()
+    })
+  }
 
   return (
     <Box sx={{ p: 0 }}>
@@ -48,7 +77,11 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
         </Grid>
 
         <Grid item xs={12}>
-          <ListOfProjects data={tableData} />
+          <ListOfProjects
+            data={tableData}
+            loading={loading}
+            updateStatus={updateVerifierStatus}
+          />
         </Grid>
       </Grid>
     </Box>

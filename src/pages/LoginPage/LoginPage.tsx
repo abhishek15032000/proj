@@ -14,6 +14,7 @@ import CCInputField from '../../atoms/CCInputField'
 import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
 import LoaderOverlay from '../../components/LoderOverlay'
+import { USER } from '../../api/user.api'
 declare let window: any
 
 const Login = () => {
@@ -70,15 +71,20 @@ const Login = () => {
         }
         if (res?.data?.captchaVerify) {
           dispatch(loginAction(res?.data)) //calling action from redux
-
-          console.log('res.data')
-          console.log(JSON.stringify(res.data, null, 4))
-          if ( res.data.type === "ISSUER" ) {
+          if (res.data.type === 'ISSUER') {
             navigate(pathNames.DASHBOARD, { replace: true })
-          } else if ( res.data.type === "VERIFIER" ) {
-            navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
+          } else if (res.data.type === 'VERIFIER') {
+            USER.getUserInfo(res?.data?.uuid).then(
+              (response) => {
+                if (response?.data?.data?.organisationName === '') {
+                  navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
+                } else {
+                  navigate(pathNames.VERIFIER_PROJECTS, { replace: true })
+                }
+              }
+            )
           }
-          window.location.reload()
+          // window.location.reload()
         } else {
           alert(res?.data)
         }

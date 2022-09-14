@@ -2,7 +2,7 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import { Box, Grid, Paper, Skeleton, Typography } from '@mui/material'
 
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
@@ -10,6 +10,7 @@ import { Colors } from '../../theme'
 
 interface DashboardStatisticsProps {
   data?: any
+  loading?: any
 }
 
 const DashboardStatistics: FC<DashboardStatisticsProps> = (props) => {
@@ -22,14 +23,20 @@ const DashboardStatistics: FC<DashboardStatisticsProps> = (props) => {
         mt: 1,
       }}
     >
-      {props.data.map((item: any, index: any) => (
-        <DashboardStatisticTile
-          key={index}
-          title={item.title}
-          value={item.value}
-          color={item.color}
-        />
-      ))}
+      {props.loading &&
+        props.data.map((item: any, index: any) => (
+          <DashboardStatisticSkeleton key={index} />
+        ))}
+
+      {!props.loading &&
+        props.data.map((item: any, index: any) => (
+          <DashboardStatisticTile
+            key={index}
+            title={item.title}
+            value={item.value}
+            color={item.color}
+          />
+        ))}
     </Box>
   )
 }
@@ -80,6 +87,49 @@ const DashboardStatisticTile: FC<DashboardStatisticTileProps> = (props) => {
           backgroundColor: props.color,
         }}
       ></Box>
+    </Paper>
+  )
+}
+
+interface DashboardStatisticSkeletonProps {}
+
+const DashboardStatisticSkeleton: FC<DashboardStatisticSkeletonProps> = (
+  props
+) => {
+  return (
+    <Paper
+      sx={{
+        width: '260px',
+        height: '120px',
+        borderRadius: '8px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        p: 2,
+        mr: 2,
+      }}
+    >
+      <Box>
+        <Skeleton
+          sx={{ fontSize: '1rem', bgcolor: '#CCE8E1', width: '100px', mb: 2 }}
+          variant="text"
+        />
+        <Skeleton
+          sx={{ fontSize: '1rem', bgcolor: '#CCE8E1', width: '100px' }}
+          variant="text"
+        />
+      </Box>
+
+      <Skeleton
+        sx={{
+          height: '80px',
+          width: '80px',
+          borderRadius: '20px',
+          boxShadow: '1px 1px 2px 2px #EEE',
+          backgroundColor: '#CCE8E1',
+        }}
+        variant="rectangular"
+      />
     </Paper>
   )
 }
