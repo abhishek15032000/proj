@@ -3,7 +3,7 @@ import React from 'react'
 import { SpinnerProps } from './Spinner.interface'
 const Spinner = ({ size = 50 }: SpinnerProps) => {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }} data-testid="spinner">
       <CircularProgress disableShrink size={size} />
     </Box>
   )

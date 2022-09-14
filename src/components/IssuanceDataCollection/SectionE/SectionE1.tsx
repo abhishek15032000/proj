@@ -9,20 +9,20 @@ import {
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../atoms/AttachMore/AttachMore'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
-import SectionE1GHGEmissionBaseline from '../../assets/Images/SampleData/SectionE1GHGEmissionBaseline.png'
+import SampleModal from '../../../atoms/SampleModal/SampleModal'
+import AttachMore from '../../../atoms/AttachMore/AttachMore'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import SectionE1GHGEmissionBaseline from '../../../assets/Images/SampleData/SectionE1GHGEmissionBaseline.png'
 import {
   setCalculationOfBaselineEmissions,
   setCalculationOfBaselineEmissionsImages,
-} from '../../redux/Slices/sectionESlice'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+} from '../../../redux/Slices/sectionESlice'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import Spinner from '../../atoms/Spinner'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionE1 = () => {
   const dispatch = useAppDispatch()

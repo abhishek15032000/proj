@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import Spinner from './Spinner';
 
 test("renders Spinner", () => {
-  // render(<App />);
-  // const linkElement = screen.getByText(/Spinner/i);
-  // expect(linkElement).toBeInTheDocument();
+  render(<Spinner />)
+  const field = screen.getByTestId('spinner')
+  expect(field).toBeInTheDocument()
 });

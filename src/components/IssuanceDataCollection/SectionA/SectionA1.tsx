@@ -2,10 +2,10 @@ import { Grid, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import React, { useEffect } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
-import CCInputField from '../../atoms/CCInputField'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import CCInputField from '../../../atoms/CCInputField'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 // Redux Imports
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setPurposeAndDescription,
@@ -15,8 +15,8 @@ import {
   setOperationPeriod,
   setTotalGHGEmission,
   setCommissioningDate,
-} from '../../redux/Slices/sectionASlice'
-import Spinner from '../../atoms/Spinner'
+} from '../../../redux/Slices/sectionASlice'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionA1 = () => {
   const dispatch: any = useAppDispatch()

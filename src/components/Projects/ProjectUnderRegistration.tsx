@@ -35,6 +35,7 @@ const ProjectsUnderRegistration = () => {
   const userDetails = getLocalItem('userDetails')
 
   const [allProjects, setAllProjects] = useState<any>(undefined)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getAllProjects()
@@ -56,6 +57,7 @@ const ProjectsUnderRegistration = () => {
   }
 
   const getAllProjects = () => {
+    setLoading(true)
     dataCollectionCalls.getAllProjects(userDetails?.email).then((res: any) => {
       if (res?.data?.success) {
         const modifiedRows = res?.data?.data.map((i: any) =>
@@ -155,12 +157,13 @@ const ProjectsUnderRegistration = () => {
           })
         setAllProjects(rows)
       }
+      setLoading(false)
     })
   }
 
   return (
     <Box>
-      {!allProjects ? (
+      {loading ? (
         <CCTableSkeleton height={78} />
       ) : (
         <CCTable headings={headings} rows={allProjects} pagination={true} />
