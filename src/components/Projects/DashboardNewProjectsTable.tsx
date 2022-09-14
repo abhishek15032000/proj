@@ -112,16 +112,7 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
     if (projectDetails) {
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(projectDetails))
-      if (
-        !projectDetails?.projectCompleted ||
-        projectDetails?.project_status === 1
-      ) {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
-      } else if (projectDetails?.projectCompleted) {
-        if (projectDetails?.project_status === 3) {
-          navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
-        } else navigate(pathNames.SELECT_VERIFIER)
-      }
+      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
     }
   }
 
@@ -213,7 +204,8 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                         label={
                           data?.project_status === 0
                             ? 'Yet to select'
-                            : data?.project_status === 1
+                            : data?.project_status === 1 ||
+                              data?.project_status === 2
                             ? 'Selected'
                             : data?.project_status === 3 && 'Finalised'
                         }
@@ -237,7 +229,8 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                           textAlign={'start'}
                           sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
                         >
-                          {data?.verifier_details_id
+                          {data?.project_status === 3 &&
+                          data?.verifier_details_id
                             ? data?.verifier_details_id?.verifier_name
                             : '-'}
                         </Typography>
@@ -252,14 +245,12 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                             )}
                         </Grid>
                         <Grid item xs={3}>
-                          {/*{data?.project_status !== 3 && (*/}
                           <Box key={index}>
                             <ArrowRightIcon
                               sx={{ cursor: 'pointer' }}
                               onClick={() => openProjectDetails(data)}
                             />
                           </Box>
-                          {/*)}*/}
                         </Grid>
                       </Grid>
                     </TableCell>

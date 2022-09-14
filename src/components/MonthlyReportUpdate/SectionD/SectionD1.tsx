@@ -35,19 +35,18 @@ const SectionD1: FC = () => {
   )
 
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_d.step1.completed) {
-  //     const { data_and_parameter_fixed_ExAnte, attach_ex_ante_table } =
-  //       currentProjectDetails.section_d.step1
+  useEffect(() => {
+    if (currentProjectDetails.section_d.step1.completed) {
+      const { data_and_parameter_fixed_ExAnte, attach_ex_ante_table } =
+        currentProjectDetails.section_d.step1
 
-  //     dispatch(setDataAndParameterFixedExAnte(data_and_parameter_fixed_ExAnte))
-  //     dispatch(setAttachExAnteTable(attach_ex_ante_table))
-  //   }
-  // }, [])
+      dispatch(setDataAndParameterFixedExAnte(data_and_parameter_fixed_ExAnte))
+      dispatch(setAttachExAnteTable(attach_ex_ante_table))
+    }
+  }, [])
   return (
     <Grid
       container

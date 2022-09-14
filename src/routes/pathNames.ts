@@ -21,6 +21,7 @@ export const pathNames = {
   VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
   VERIFIER_PROJECTS: 'verifier-projects',
   MONTHLY_REPORT_UPDATE: '/monthly-report-update',
+  REPORT_VIEW_COMMENTS: '/report-view-comments',
 }
 
 export const linkLabels = {

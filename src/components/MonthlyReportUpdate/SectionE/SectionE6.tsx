@@ -23,25 +23,24 @@ const SectionE6 = () => {
   )
 
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_e.step6.completed) {
-  //     const { remark_on_difference_from_estimate_value, attach_relevant_docs } =
-  //       currentProjectDetails.section_e.step6
+  useEffect(() => {
+    if (currentProjectDetails.section_e.step6.completed) {
+      const { remark_on_difference_from_estimate_value, attach_relevant_docs } =
+        currentProjectDetails.section_e.step6
 
-  //     dispatch(
-  //       setRemarksOnDifferenceFromEstimatedValue(
-  //         remark_on_difference_from_estimate_value
-  //       )
-  //     )
-  //     dispatch(
-  //       setRemarksOnDifferenceFromEstimatedValueImages(attach_relevant_docs)
-  //     )
-  //   }
-  // })
+      dispatch(
+        setRemarksOnDifferenceFromEstimatedValue(
+          remark_on_difference_from_estimate_value
+        )
+      )
+      dispatch(
+        setRemarksOnDifferenceFromEstimatedValueImages(attach_relevant_docs)
+      )
+    }
+  })
 
   return (
     <Grid container sx={{ mt: 3 }}>

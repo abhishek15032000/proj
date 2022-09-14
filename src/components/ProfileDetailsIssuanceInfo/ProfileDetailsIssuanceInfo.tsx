@@ -2,7 +2,7 @@
 import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, Typography } from '@mui/material'
 import TodayIcon from '@mui/icons-material/Today'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 // Local Imports
@@ -15,6 +15,8 @@ import { shallowEqual } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import moment from 'moment'
+import TextButton from '../../atoms/TextButton/TextButton'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 
 const projectDetails = {
   company_name:
@@ -38,8 +40,11 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
   const [tabIndex, setTabIndex] = useState(1)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
+
+  console.log('currentProjectDetails', currentProjectDetails)
   useEffect(() => {
     if (currentProjectDetails) {
       const issuanceInfoTabData = [
@@ -164,6 +169,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
           </Grid>
         </Grid>
       </Paper>
+
       <Paper sx={{ mt: 2, px: 2, py: 2 }}>
         <Box sx={{ display: 'flex', mt: 1 }}>
           {tabs.map((tab, index) => (
@@ -192,7 +198,10 @@ const ProfileDetailsIssuanceInfo: FC = () => {
           <IssuanceInfoList data={issuanceInfo && issuanceInfo} />
         )}
         {tabIndex === 1 && (
-          <VerifierReport currentProjectId={currentProjectDetails?._id} />
+          <VerifierReport
+            currentProjectId={currentProjectDetails?._id}
+            currentProjectUUID={currentProjectDetails?.uuid}
+          />
         )}
       </Paper>
     </Box>

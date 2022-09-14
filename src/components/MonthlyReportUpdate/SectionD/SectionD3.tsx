@@ -18,18 +18,17 @@ const SectionD3: FC = () => {
   )
 
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_d.step3.completed) {
-  //     const { implementation_of_sampling_plan } =
-  //       currentProjectDetails.section_d.step3
+  useEffect(() => {
+    if (currentProjectDetails.section_d.step3.completed) {
+      const { implementation_of_sampling_plan } =
+        currentProjectDetails.section_d.step3
 
-  //     dispatch(setBriefDescription(implementation_of_sampling_plan))
-  //   }
-  // }, [])
+      dispatch(setBriefDescription(implementation_of_sampling_plan))
+    }
+  }, [])
   {
     console.log('briefDescription', briefDescription)
   }

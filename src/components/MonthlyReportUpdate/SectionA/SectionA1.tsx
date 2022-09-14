@@ -11,32 +11,22 @@ import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setTotalGHGEmission } from '../../../redux/Slices/MonthlyReport/sectionAMonthly'
+import { setCurrentProjectDetails } from '../../../redux/Slices/MonthlyReportUpdate'
 const SectionA1 = () => {
   const dispatch = useAppDispatch()
 
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_a.step1.completed) {
-  //     const {
-  //       purpose_and_description,
-  //       measure_taken_for_gas_emissions,
-  //       brief_description_installed_tech,
-  //       project_comissioning_date,
-  //       construction_date,
-  //       operation_period,
-  //       total_GHG_emission,
-  //     } = currentProjectDetails.section_a.step1
+  const currentProjectDetails = useAppSelector(
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
+    shallowEqual
+  )
 
-  //     dispatch(setPurposeAndDescription(purpose_and_description))
-  //     dispatch(setMeasureTakenForGasEmissions(measure_taken_for_gas_emissions))
-  //     dispatch(
-  //       setBriefDescriptionInstalledTech(brief_description_installed_tech)
-  //     )
-  //     dispatch(setCommissioningDate(project_comissioning_date))
-  //     dispatch(setConstructionDate(construction_date))
-  //     dispatch(setOperationPeriod(operation_period))
-  //     dispatch(setTotalGHGEmission(total_GHG_emission))
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (currentProjectDetails?.section_a?.step1?.completed) {
+      const { total_GHG_emission } = currentProjectDetails.section_a.step1
+
+      dispatch(setTotalGHGEmission(total_GHG_emission))
+    }
+  }, [])
 
   const total_GHG_emission = useAppSelector(
     ({ sectionAMonthly }) => sectionAMonthly.total_GHG_emission,

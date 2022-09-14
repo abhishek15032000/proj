@@ -35,30 +35,29 @@ const SectionC1 = () => {
   const dispatch = useAppDispatch()
 
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
 
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_c.step1.completed) {
-  //     const {
-  //       description,
-  //       monitoring_plan,
-  //       attach_org_structure_and_responsibilities_chart,
-  //       specific_data_monitored,
-  //     } = currentProjectDetails.section_c.step1
+  useEffect(() => {
+    if (currentProjectDetails.section_c.step1.completed) {
+      const {
+        description,
+        monitoring_plan,
+        attach_org_structure_and_responsibilities_chart,
+        specific_data_monitored,
+      } = currentProjectDetails.section_c.step1
 
-  //     dispatch(setDatasMonitored(description))
-  //     dispatch(setMonioringSystem(specific_data_monitored))
-  //     dispatch(setMonitoringPlan(monitoring_plan))
-  //     dispatch(
-  //       setOrganizationalChartImage(
-  //         attach_org_structure_and_responsibilities_chart
-  //       )
-  //     )
-  //   }
-  // }, [])
+      dispatch(setDatasMonitored(description))
+      dispatch(setMonioringSystem(specific_data_monitored))
+      dispatch(setMonitoringPlan(monitoring_plan))
+      dispatch(
+        setOrganizationalChartImage(
+          attach_org_structure_and_responsibilities_chart
+        )
+      )
+    }
+  }, [])
 
   const monitoringSystem = useAppSelector(
     ({ sectionCMonthly }) => sectionCMonthly.monitoringSystem,

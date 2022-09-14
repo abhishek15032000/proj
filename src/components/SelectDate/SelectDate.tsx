@@ -10,7 +10,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DatePicker } from '@mui/x-date-pickers'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation'
@@ -33,40 +33,19 @@ const SelectDate = () => {
     shallowEqual
   )
 
-  // const handleChange = (event: SelectChangeEvent<typeof projectType>) => {
-  //   const {
-  //     target: { value },
-  //   } = event
-  //   dispatch(
-  //     setProjectType(
-  //       // On autofill we get a stringified value.
-  //       typeof value === 'string' ? value.split(',') : value
-  //     )
-  //   )
-  // }
+  const currentProjectDetails = useAppSelector(
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
+    shallowEqual
+  )
 
-  // const handleTextChange = (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   type: string
-  // ) => {
-  //   if (type === 'projectName') {
-  //     dispatch(setProjectName(e?.target?.value))
-  //   } else if (type === 'projectLocation') {
-  //     dispatch(setProjectLocation(e?.target?.value))
-  //   } else if (type === 'projectDuration') {
-  //     //Allow only no.s upto 2 decimal places
-  //     const regexp = /^\d+(\.\d{0,2})?$/
-  //     if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-  //       dispatch(setProjectDuration(e?.target?.value))
-  //     }
-  //   } else if (type === 'projectArea') {
-  //     //Allow only no.s upto 2 decimal places
-  //     const regexp = /^\d+(\.\d{0,2})?$/
-  //     if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-  //       dispatch(setProjectArea(e?.target?.value))
-  //     }
-  //   }
-  // }
+  useEffect(() => {
+    if (currentProjectDetails?.section_a?.step1?.completed) {
+      const { end_date, createdAt } = currentProjectDetails.section_a.step1
+
+      dispatch(setStartDate(createdAt))
+      dispatch(setEndDate(end_date))
+    }
+  }, [])
 
   return (
     <Grid container xs={12} spacing={2} sx={{ mt: 2 }}>

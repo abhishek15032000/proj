@@ -23,21 +23,20 @@ const SectionE4 = () => {
     ({ sectionEMonthly }) => sectionEMonthly.calculationSummaryOfEmissionImages
   )
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_e.step4.completed) {
-  //     const { calculation_of_emissions_reduction, attach_relevant_docs } =
-  //       currentProjectDetails.section_e.step4
+  useEffect(() => {
+    if (currentProjectDetails.section_e.step4.completed) {
+      const { calculation_of_emissions_reduction, attach_relevant_docs } =
+        currentProjectDetails.section_e.step4
 
-  //     dispatch(
-  //       setCalculationSummaryOfEmission(calculation_of_emissions_reduction)
-  //     )
-  //     dispatch(setCalculationSummaryOfEmissionImages(attach_relevant_docs))
-  //   }
-  // }, [])
+      dispatch(
+        setCalculationSummaryOfEmission(calculation_of_emissions_reduction)
+      )
+      dispatch(setCalculationSummaryOfEmissionImages(attach_relevant_docs))
+    }
+  }, [])
   return (
     <Grid container sx={{ mt: 3 }}>
       <Grid item xs={12}>

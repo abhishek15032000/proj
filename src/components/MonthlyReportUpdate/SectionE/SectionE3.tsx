@@ -23,19 +23,18 @@ const SectionE3 = () => {
   )
 
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_e.step3.completed) {
-  //     const { calculation_of_leakage, attach_relevant_docs } =
-  //       currentProjectDetails.section_e.step3
+  useEffect(() => {
+    if (currentProjectDetails.section_e.step3.completed) {
+      const { calculation_of_leakage, attach_relevant_docs } =
+        currentProjectDetails.section_e.step3
 
-  //     dispatch(setCalculationOfLeakage(calculation_of_leakage))
-  //     dispatch(setCalculationOfLeakageImages(attach_relevant_docs))
-  //   }
-  // }, [])
+      dispatch(setCalculationOfLeakage(calculation_of_leakage))
+      dispatch(setCalculationOfLeakageImages(attach_relevant_docs))
+    }
+  }, [])
 
   return (
     <Grid container sx={{ mt: 3 }}>

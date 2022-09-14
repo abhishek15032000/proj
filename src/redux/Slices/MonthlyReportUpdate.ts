@@ -6,7 +6,7 @@ interface MonthlyReportUpdateReducerInterface {
   currentProjectDetails: any
 }
 const initialState: MonthlyReportUpdateReducerInterface = {
-  sectionIndex: 1,
+  sectionIndex: 0,
   subSectionIndex: 0,
   currentProjectDetails: null,
 }

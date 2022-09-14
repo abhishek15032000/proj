@@ -35,25 +35,24 @@ const SectionE1 = () => {
       sectionEMonthly.calculationOfBaselineEmissionsImages
   )
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_e.step1.completed) {
-  //     const {
-  //       calculation_of_baselineEmissions_or_net_GHG,
-  //       attach_relevant_docs,
-  //     } = currentProjectDetails.section_e.step1
+  useEffect(() => {
+    if (currentProjectDetails.section_e.step1.completed) {
+      const {
+        calculation_of_baselineEmissions_or_net_GHG,
+        attach_relevant_docs,
+      } = currentProjectDetails.section_e.step1
 
-  //     dispatch(
-  //       setCalculationOfBaselineEmissions(
-  //         calculation_of_baselineEmissions_or_net_GHG
-  //       )
-  //     )
-  //     dispatch(setCalculationOfBaselineEmissionsImages(attach_relevant_docs))
-  //   }
-  // }, [])
+      dispatch(
+        setCalculationOfBaselineEmissions(
+          calculation_of_baselineEmissions_or_net_GHG
+        )
+      )
+      dispatch(setCalculationOfBaselineEmissionsImages(attach_relevant_docs))
+    }
+  }, [])
 
   return (
     <Grid container sx={{ mt: 3 }}>

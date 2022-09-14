@@ -19,16 +19,22 @@ export const moveToNextSection = async (
   //Since List New Project is at 0th index in IssuanceDataCollection
   if (sectionIndex === 0) {
     const selectDate = store.getState()?.selectDate
-    const newProjectData = store.getState()?.newProject
+    const newProjectData =
+      store.getState()?.issuanceDataCollection?.currentProjectDetails
 
-    const projectName = newProjectData?.projectName
-    const projectType = newProjectData?.projectType
-    const projectLocation = newProjectData?.projectLocation
-    const projectDuration = newProjectData?.projectDuration
-    const projectArea = newProjectData?.projectArea
+    const projectName = newProjectData?.company_name
+    const projectType = newProjectData?.type
+    const projectLocation = newProjectData?.location
+    const projectDuration = newProjectData?.duration
+    const projectArea = newProjectData?.area
     const startDate = selectDate?.startDate
     const endDate = selectDate?.endDate
-
+    const project_uuid = newProjectData?.uuid
+    console.log(
+      'newProjectData',
+      newProjectData,
+      newProjectData?.currentProjectDetails
+    )
     if (
       startDate &&
       endDate &&
@@ -47,6 +53,7 @@ export const moveToNextSection = async (
         location: projectLocation,
         duration: Number(projectDuration),
         area: projectArea,
+        project_uuid: project_uuid,
       }
       try {
         dispatch(setLoading(true))
@@ -73,10 +80,9 @@ export const moveToNextSection = async (
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
 
     console.log(
-      'step3data',
+      'sectionA',
 
-      newProjectData,
-      issuanceDataCollection
+      sectionA
     )
 
     const { purpose_and_description } = sectionA
@@ -89,8 +95,7 @@ export const moveToNextSection = async (
       }
       params = {
         step1: {
-          purpose_and_description: sectionA.purpose_and_description,
-
+          total_GHG_emission: sectionA.total_GHG_emission,
           completed: true,
         },
       }

@@ -38,36 +38,35 @@ const SectionB1 = () => {
   const dispatch = useAppDispatch()
 
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
 
-  // useEffect(() => {
-  //   if (currentProjectDetails.section_b.step1.completed) {
-  //     const {
-  //       general_description,
-  //       technical_description,
-  //       data_tables_technical_description_attach,
-  //       operational_description,
-  //       shut_down_details_attach,
-  //       implementation_milestones_attach,
-  //       project_timeline_attach,
-  //     } = currentProjectDetails.section_b.step1
+  useEffect(() => {
+    if (currentProjectDetails.section_b.step1.completed) {
+      const {
+        general_description,
+        technical_description,
+        data_tables_technical_description_attach,
+        operational_description,
+        shut_down_details_attach,
+        implementation_milestones_attach,
+        project_timeline_attach,
+      } = currentProjectDetails.section_b.step1
 
-  //     dispatch(setBriefOnPurpuse(general_description))
-  //     dispatch(
-  //       setImplementationMilestoneImage(implementation_milestones_attach)
-  //     )
-  //     dispatch(setMajorShutDownImage(shut_down_details_attach))
-  //     dispatch(setOperationalDetails(operational_description))
-  //     dispatch(setProjectTimelineImage(project_timeline_attach))
-  //     dispatch(setTechnicalDescription(technical_description))
-  //     dispatch(
-  //       setTechnicalDescriptionImage(data_tables_technical_description_attach)
-  //     )
-  //   }
-  // }, [])
+      dispatch(setBriefOnPurpuse(general_description))
+      dispatch(
+        setImplementationMilestoneImage(implementation_milestones_attach)
+      )
+      dispatch(setMajorShutDownImage(shut_down_details_attach))
+      dispatch(setOperationalDetails(operational_description))
+      dispatch(setProjectTimelineImage(project_timeline_attach))
+      dispatch(setTechnicalDescription(technical_description))
+      dispatch(
+        setTechnicalDescriptionImage(data_tables_technical_description_attach)
+      )
+    }
+  }, [])
 
   const briefOnPurpuse = useAppSelector(
     ({ sectionBMonthly }) => sectionBMonthly.briefOnPurpuse,
