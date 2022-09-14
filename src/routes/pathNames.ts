@@ -20,12 +20,13 @@ export const pathNames = {
   VERIFIER_DASHBOARD: '/verifier-dashboard',
   VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
   VERIFIER_PROJECTS: '/verifier-projects',
-  VERIFIER_PROJECTS_LIST: "/verifier-projects-list",
+  VERIFIER_PROJECTS_LIST: '/verifier-projects-list',
   VERIFIER_PROJECTS_DETAILS: '/verifier-projects-details',
   VERIFIER_VERIFY_REPORT: '/verifier-verify-report',
   ISSUER_WALLET: '/issuer-wallet',
   TRANSACTION_HISTORY: '/transaction-history',
   REPORT_VIEW_COMMENTS: '/report-view-comments',
+  BUYER_ONBOARDING: '/buyer-onboarding',
 }
 
 export const linkLabels = {

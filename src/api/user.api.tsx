@@ -20,4 +20,12 @@ export const USER = {
       return response
     })
   },
+  getUsersById: (id: string) => {
+    return AxiosHelper(
+      URL_PATH.userRoutes.getUsersById + `?id=${id}`,
+      'GET'
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }

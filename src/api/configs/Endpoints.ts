@@ -10,6 +10,7 @@ export const URL_PATH = {
   userRoutes: {
     onboardingUser: ENDPOINTS.userServiceURL + '/users/onboarding-user',
     updateUserInfo: ENDPOINTS.userServiceURL + '/users/updateUserInfo',
+    getUsersById: ENDPOINTS.userServiceURL + '/users/getUsersById',
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + '/auth/login',
