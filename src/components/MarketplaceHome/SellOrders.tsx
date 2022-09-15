@@ -25,7 +25,7 @@ const SellOrders: FC<SellOrdersProps> = (props) => {
         Sell Orders
       </Typography>
 
-      <CCTable headings={headings} rows={rows} maxWidth={900} />
+      <CCTable headings={headings} rows={rows} />
     </>
   )
 }
