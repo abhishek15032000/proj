@@ -19,6 +19,7 @@ const Projects = () => {
   const dispatch = useAppDispatch()
 
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
+  const [loader, setloader] = useState<boolean>(true)
   //const []
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
@@ -28,7 +29,11 @@ const Projects = () => {
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
-
+  useEffect(() => {
+    setTimeout(() => {
+      setloader(false)
+    }, 200)
+  }, [showDashboard])
   console.log('setMetamask: ', setMetamask, 'isConnected: ', isConnected)
 
   const listNewProject = () => {
@@ -39,7 +44,7 @@ const Projects = () => {
 
   return (
     <>
-      {!showDashboard ? (
+      {loader ? (
         <LoaderOverlay />
       ) : (
         <>

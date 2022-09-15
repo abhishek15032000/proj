@@ -8,6 +8,14 @@ const MENUS = {
     linkLabels.Marketplace,
     linkLabels.Wallet,
   ],
+  verifier_menus: [
+    linkLabels.Dashboard,
+  ],
+  buyer_menus: [
+    linkLabels.Dashboard,
+    linkLabels.Marketplace,
+    linkLabels.Token_Contract,
+  ],
 }
 
 
