@@ -16,9 +16,6 @@ interface BuySellComponentProps {}
 
 const BuySellComponent: FC<BuySellComponentProps> = (props) => {
 
-  console.log('getLocalItem')
-  console.log(JSON.stringify(getLocalItem('userDetails')?.jwtToken, null, 4))
-
   return (
     <Grid container>
       <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
