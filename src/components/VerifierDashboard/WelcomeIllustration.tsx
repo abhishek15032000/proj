@@ -46,7 +46,8 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
         <Box
           sx={{
             height: '180px',
-            width: '430px',
+            maxWidth: '430px',
+            width: '50%',
             borderRadius: '8px',
             backgroundColor: Colors.lightGreenBackground2,
             p: 1.5,

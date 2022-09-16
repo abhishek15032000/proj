@@ -2,11 +2,14 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid, Typography, Paper } from '@mui/material'
 
 // Local Imports
 import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
+import NoSellOrders from '../../assets/Images/illustrations/NoSellOrder.png'
+import { Colors } from '../../theme'
+import EmptySellOrders from './EmptySellOrders'
 
 interface SellOrdersProps {}
 
@@ -25,181 +28,62 @@ const SellOrders: FC<SellOrdersProps> = (props) => {
         Sell Orders
       </Typography>
 
-      <CCTable headings={headings} rows={rows} />
+      <CCTable headings={headings} rows={rows} maxWidth={900} />
+      {/* <EmptySellOrders /> */}
     </>
   )
 }
 
 export default SellOrders
 
+const rowItem = [
+  '200',
+  '11 July, 2022',
+  '19:21:28',
+  '50',
+  '30',
+  '1500',
+  '10',
+
+  <Box
+    key={'1'}
+    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+  >
+    <TextButton
+      title="Verify"
+      sx={{
+        height: '40px',
+        width: '100px',
+        borderRadius: '24px',
+        margin: 0.5,
+      }}
+      textStyle={{
+        fontSize: 14,
+      }}
+    />
+
+    <TextButton
+      title="Cancel"
+      sx={{
+        height: '40px',
+        width: '100px',
+        borderRadius: '24px',
+        margin: 0.5,
+        backgroundColor: '#EEE',
+      }}
+      textStyle={{
+        fontSize: 14,
+        color: 'black',
+      }}
+    />
+  </Box>,
+]
+
 const rows = [
-  [
-    '200',
-    '11 July, 2022',
-    '19:21:28',
-    '50',
-    '30',
-    '1500',
-    '10',
-
-    <Box
-      key={'1'}
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <TextButton
-        title="Verify"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-        }}
-        textStyle={{
-          fontSize: 14,
-        }}
-      />
-
-      <TextButton
-        title="Cancel"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-          backgroundColor: '#EEE',
-        }}
-        textStyle={{
-          fontSize: 14,
-          color: 'black',
-        }}
-      />
-    </Box>,
-  ],
-  [
-    '200',
-    '11 July, 2022',
-    '19:21:28',
-    '50',
-    '30',
-    '1500',
-    '10',
-
-    <Box
-      key={'1'}
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <TextButton
-        title="Verify"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-        }}
-        textStyle={{
-          fontSize: 14,
-        }}
-      />
-
-      <TextButton
-        title="Cancel"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-          backgroundColor: '#EEE',
-        }}
-        textStyle={{
-          fontSize: 14,
-          color: 'black',
-        }}
-      />
-    </Box>,
-  ],
-  [
-    '200',
-    '11 July, 2022',
-    '19:21:28',
-    '50',
-    '30',
-    '1500',
-    '10',
-
-    <Box
-      key={'1'}
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <TextButton
-        title="Verify"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-        }}
-        textStyle={{
-          fontSize: 14,
-        }}
-      />
-
-      <TextButton
-        title="Cancel"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-          backgroundColor: '#EEE',
-        }}
-        textStyle={{
-          fontSize: 14,
-          color: 'black',
-        }}
-      />
-    </Box>,
-  ],
-  [
-    '200',
-    '11 July, 2022',
-    '19:21:28',
-    '50',
-    '30',
-    '1500',
-    '10',
-    <Box
-      key={'1'}
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <TextButton
-        title="Verify"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-        }}
-        textStyle={{
-          fontSize: 14,
-        }}
-      />
-
-      <TextButton
-        title="Cancel"
-        sx={{
-          height: '40px',
-          width: '100px',
-          borderRadius: '24px',
-          margin: 0.5,
-          backgroundColor: '#EEE',
-        }}
-        textStyle={{
-          fontSize: 14,
-          color: 'black',
-        }}
-      />
-    </Box>,
-  ],
+  rowItem,
+  rowItem,
+  rowItem,
+  rowItem,
 ]
 
 const headings = [

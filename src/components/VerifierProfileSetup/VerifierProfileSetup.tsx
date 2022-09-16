@@ -35,6 +35,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       setFullName(response?.data?.data?.fullName)
       setPhone(response?.data?.data?.phone)
       setAddress(response?.data?.data?.address)
+      setDesignation(response?.data?.data?.designation)
       setOrganisationName(response?.data?.data?.organisationName)
       setWebsite(response?.data?.data?.organisationName)
     })
@@ -72,8 +73,6 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
 
     USER.updateUserInfo(payload)
       .then((response) => {
-        console.log('response')
-        console.log(JSON.stringify(response.data, null, 4))
         navigate(pathNames.VERIFIER_PROJECTS)
         setLoading(false)
       })

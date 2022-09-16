@@ -75,27 +75,14 @@ const Login = () => {
         if (res?.data?.captchaVerify) {
           const userResponse = await USER.getUsersById(res?.data?.user_id)
           setLocalItem('userDetails2', userResponse?.data)
-          if (res.data.type === 'ISSUER') {
-            navigate(pathNames.DASHBOARD, { replace: true })
-          } else if (res.data.type === 'VERIFIER') {
-            USER.getUserInfo(res?.data?.uuid).then(
-              (response) => {
-                if (response?.data?.data?.organisationName === '') {
-                  navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
-                } else {
-                  navigate(pathNames.VERIFIER_PROJECTS, { replace: true })
-                }
-              }
-            )
-          } else if (res?.data?.type === ROLES.BUYER) {
-            const profileCompleted = userResponse?.data?.orgName ? true : false
+          const profileCompleted = userResponse?.data?.orgName ? true : false
             setLocalItem('profileCompleted', profileCompleted)
-            navigate(pathNames.BUYER_ONBOARDING, { replace: true })
-          }
-
           dispatch(loginAction(res?.data)) //calling action from redux
-
-          // window.location.reload()
+          if (res.data.type === 'ISSUER' || res.data.type === 'VERIFIER') {
+            navigate(pathNames.DASHBOARD, { replace: true })
+          }
+          
+          window.location.reload()
         } else {
           alert(res?.data)
         }
