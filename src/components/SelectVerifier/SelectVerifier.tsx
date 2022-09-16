@@ -21,83 +21,28 @@ import { ROLES } from '../../config/roles.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { verifierCalls } from '../../api/verifierCalls.api'
-
-const selectVerifierOptions = [
-  {
-    _id: '2',
-    fullName: 'ASTER GLOBAL ENVIRONMENTAL SOLUTIONS, INC.',
-    contact: '423-843-2206',
-    website: 'www.awm.net',
-    mail: 'www.awm.net',
-    location:
-      '3800 Clermont Street NW North Lawrence, Ohio 44666, USA www.asterglobal.com',
-
-    director:
-      'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
-  },
-  {
-    _id: '1',
-    fullName: 'ADVANCED WASTE MANAGEMENT SYSTEMS, INC.',
-    contact: '423-843-2206',
-    website: 'www.awm.net',
-    mail: 'www.awm.net',
-    location: '6430 Hixson Pike Hixson, TN 37343 USA www.awm.net',
-    director:
-      'Rob Ellis Director, Western Region 423-843-2206 robellis@awm.net',
-  },
-  {
-    _id: '3',
-    fullName: 'CAMERON-COLE, LLC',
-    contact: '423-843-2206',
-    website: 'www.awm.net',
-    mail: 'www.awm.net',
-    location: '50 Hegenberger Loop Oakland, CA 94621 USA www.cameron-cole.com',
-    director:
-      'Chris Lawless Director, Greenhouse Gas Management Services 510-777-1858 clawless@cameron-cole.com',
-  },
-  {
-    _id: '4',
-    fullName: 'DILLON CONSULTING LIMITED',
-    contact: '423-843-2206',
-    website: 'www.awm.net',
-    mail: 'www.awm.net',
-    location:
-      '235 Yorkland Boulevard, Suite 800 Toronto, Ontario M2J 4Y8 www.dillon.ca',
-    director:
-      'Zachary Zehr Project Manager & Lead Verifier 1-519-571-9833 ext. 3151 zzehr@dillon.ca',
-  },
-  {
-    _id: '5',
-    fullName: 'FIRST ENVIRONMENT, INC.',
-    contact: '423-843-2206',
-    website: 'www.awm.net',
-    mail: 'www.awm.net',
-    location: '91 Fulton St. Boonton, NJ 07005 USA www.first environment.com',
-    director:
-      'Michael Carim Environmental Specialist 973-334-0003 mic@firstenvironment .com',
-  },
-  {
-    _id: '6',
-    fullName: 'GHD LIMITED',
-    contact: '423-843-2206',
-    website: 'www.awm.net',
-    mail: 'www.awm.net',
-    location: '455 Phillip St Waterloo, Ontario N2L 3X2 CAN www.ghd.com',
-    director:
-      'Jason Clarke Program Manager +1 (519) 340-4270 jason.clarke@ghd.com',
-  },
-]
+import { pathNames } from '../../routes/pathNames'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import Spinner from '../../atoms/Spinner'
 
 const SelectVerifier = () => {
+  const navigate = useNavigate()
   const location: any = useLocation()
+
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
   const [open, setOpen] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
   const [verifiers, setVerifiers] = useState<any[]>([])
   const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
-
+  const [loading, setLoading] = useState<boolean>(false)
   const handleClick = () => {
     setOpen(true)
   }
@@ -116,6 +61,7 @@ const SelectVerifier = () => {
   }, [selectedVerifiers])
 
   const getAllVerifiers = async () => {
+    setLoading(true)
     try {
       const res = await department.getUsersByOrgType(ROLES?.VERIFIER)
       if (res.data) {
@@ -123,43 +69,53 @@ const SelectVerifier = () => {
       }
     } catch (err) {
       console.log('Error in department.getUsersByOrgType ~ ', err)
+    } finally {
+      setLoading(false)
     }
   }
 
   const createVerifier = async () => {
+    setLoading(true)
     const payload = selectedVerifiers.map((verifierDetials: any) => {
       if (
-        location.state.projectDetails &&
+        currentProjectDetails &&
         selectedVerifiers &&
         selectedVerifiers?.length
       ) {
         return {
-          project_id: location?.state?.projectDetails._id,
-          project_status: 'awaiting verifier confirmation',
-          accepted_by_verifier: false,
-          accepted_by_issuer: false,
-          verifier_id: verifierDetials._id,
-          verifier_name: verifierDetials.fullName,
-          verifier_address: verifierDetials.location,
-          verifier_number: verifierDetials.contact,
+          project_id: currentProjectDetails?._id,
+          project_status: 1,
+          verifier_id: verifierDetials?._id,
+          verifier_name: verifierDetials?.fullName,
+          verifier_address: verifierDetials?.address,
+          verifier_number: verifierDetials?.phone.toString(),
         }
       }
     })
     try {
       const res = await verifierCalls.createVerifier(payload)
       if (res?.data?.success) {
+        setOpen(false)
         alert('verifier selected successfully')
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
       }
-      setOpen(false)
     } catch (err) {
       console.log(err)
+    } finally {
+      setLoading(false)
     }
   }
 
   const selectVerifiers = (verifier: any) => {
-    if (selectedVerifiers.length && selectedVerifiers.includes(verifier)) {
+    const selectedVerifierIds = selectedVerifiers.map(
+      (verifier: any) => verifier._id
+    )
+    if (
+      selectedVerifiers.length &&
+      selectedVerifierIds.includes(verifier?._id)
+    ) {
       const newVerifierList = selectedVerifiers.filter(
-        (v: any) => v !== verifier
+        (v: any) => v?._id !== verifier?._id
       )
       setSelectedVerifiers(newVerifierList)
     } else {
@@ -167,7 +123,22 @@ const SelectVerifier = () => {
     }
   }
 
-  return (
+  const isThisVerifierSelected = (id: string) => {
+    if (selectedVerifiers.length) {
+      const selectedVerifierIds = selectedVerifiers.map(
+        (verifier: any) => verifier._id
+      )
+      if (selectedVerifierIds.includes(id)) return true
+      else return false
+    }
+    return false
+  }
+
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <>
       <Grid
         container
@@ -198,8 +169,7 @@ const SelectVerifier = () => {
         </Grid>
       </Grid>
       <Grid container sx={{ mt: 2 }} spacing={3} xs={12}>
-        {/*{verifiers?.map((verifier: any, index: number) => (*/}
-        {selectVerifierOptions?.map((verifier, index) => (
+        {verifiers?.map((verifier: any, index: number) => (
           <Grid key={index} item container xs={12} lg={6}>
             <Paper
               elevation={4}
@@ -207,12 +177,18 @@ const SelectVerifier = () => {
                 width: '100%',
                 display: 'flex',
                 borderRadius: 2,
-                borderTop: selectedVerifiers.includes(verifier?._id)
-                  ? `6px solid #006B5E`
+                borderTop: isThisVerifierSelected(verifier?._id)
+                  ? '6px solid #006B5E'
                   : '6px solid transparent',
               }}
             >
-              <Grid item xs={9} sx={{ p: 2 }}>
+              <Grid
+                item
+                xs={9}
+                sx={{
+                  p: 2,
+                }}
+              >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Checkbox
                     sx={{
@@ -231,11 +207,18 @@ const SelectVerifier = () => {
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.location || '-'}</Typography>
+                  <Typography>{verifier?.address || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <LanguageIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.website || '-'}</Typography>
+                  <Typography>
+                    <a
+                      style={{ color: '#25BBD2', textDecoration: 'underline' }}
+                      href={verifier?.website}
+                    >
+                      {verifier?.website || '-'}
+                    </a>
+                  </Typography>
                 </Box>
                 <Divider sx={{ my: 2 }} />
                 <Box sx={{ display: 'flex', mt: 1 }}>
@@ -244,11 +227,11 @@ const SelectVerifier = () => {
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.contact || '-'}</Typography>
+                  <Typography>{verifier?.phone || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.mail || '-'}</Typography>
+                  <Typography>{verifier?.email || '-'}</Typography>
                 </Box>
               </Grid>
               <Grid item xs={3} sx={{ my: 'auto' }} justifyContent="end">

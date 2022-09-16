@@ -44,7 +44,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   const handleClose = () => closeModal()
 
   useEffect(() => {
-    console.log(loadWallet)
+    // console.log(loadWallet)
     setOpen(loadWallet)
   }, [loadWallet])
 
@@ -90,31 +90,35 @@ const LoadWallet = (props: LoadWalletProps) => {
         })
       } catch (e: any) {
         reject(new Error(e.toString()))
+        console.log('checkMetamaskAvailability fn :', e)
       }
     })
   }
   const onManualConnectClick = async () => {
-    checkMetamaskAvailability().then((res) => {
-      if (res) {
-        //call userUpdateApi
-        const user_data = getLocalItem('userDetails')
-        return USER.updateUserInfo(user_data)
-          .then((res: any) => {
-            console.log(
-              '🚀 ~ file: LoadWallet.tsx ~ line 105 ~ USER.updateUserInfo ~ res',
-              res
-            )
-            if (res?.data?.success && res?.data?.data) {
-              // setLocalItem('uuid', res?.data?.data?.uuid)
-              // navigate(pathNames.TWOFA)
-              return res
-            } else if (!res?.data?.success) {
-              alert(res?.data?.error)
-            }
-          })
-          .catch((e) => console.log(e))
-      }
-    })
+    // checkMetamaskAvailability().then((res) => {
+    const metamaskAvailabilityRes = await checkMetamaskAvailability()
+    if (metamaskAvailabilityRes) {
+      //call userUpdateApi
+      const user_data = getLocalItem('userDetails')
+      return USER.updateUserInfo(user_data)
+        .then((res: any) => {
+          console.log(
+            '🚀 ~ file: LoadWallet.tsx ~ line 105 ~ USER.updateUserInfo ~ res',
+            res
+          )
+          if (res?.data?.success && res?.data?.data) {
+            // setLocalItem('uuid', res?.data?.data?.uuid)
+            // navigate(pathNames.TWOFA)
+            return res
+          } else if (!res?.data?.success) {
+            alert(res?.data?.error)
+          }
+        })
+        .catch((e) =>
+          console.log('error checkMetamaskAvailability promise :', e)
+        )
+    }
+    // })
   }
 
   const connectWallet = async () => {
@@ -122,6 +126,8 @@ const LoadWallet = (props: LoadWalletProps) => {
       BlockchainCalls.connectWallet().then((res: any) => {
         dispatch(setAccountAddress(res.accountAddress))
         dispatch(setConnected(res.isConnected))
+        updateUserWithShineKey(res.accountAddress)
+
         return true
       })
     } catch (error: any) {
@@ -132,13 +138,27 @@ const LoadWallet = (props: LoadWalletProps) => {
 
   const getWalletBalance = async () => {
     try {
-      console.log(accountAddress)
+      // console.log(accountAddress)
       BlockchainCalls.getWalletBalance(accountAddress).then((res: any) => {
         dispatch(setAccountBalance(res.balance))
         setLoading(false)
       })
     } catch (error) {
       dispatch(setConnected(false))
+    }
+  }
+
+  const updateUserWithShineKey = async (shineKey: string) => {
+    try {
+      const user_data = getLocalItem('userDetails2')
+      user_data.phone = user_data.phone.toString()
+      delete user_data._id
+      await USER.updateUserInfo({
+        ...user_data,
+        shineKey,
+      })
+    } catch (error) {
+      console.log('error USER.updateUserInfo api :', error)
     }
   }
 

@@ -4,32 +4,6 @@ import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors, Images } from '../../theme'
 
-export const sideMenuList = [
-  {
-    label: 'Project Introduction',
-    value: 100,
-  },
-  {
-    label: 'Section A',
-    value: 10,
-  },
-  {
-    label: 'Section B',
-    value: 10,
-  },
-  {
-    label: 'Section C',
-    value: 10,
-  },
-  {
-    label: 'Section D',
-    value: 10,
-  },
-  {
-    label: 'Section E',
-    value: 10,
-  },
-]
 
 const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
   const currentProjectDetails = useAppSelector(
@@ -38,9 +12,8 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
     shallowEqual
   )
 
-  const [stepsCompletionData, setStepsCompletionData] = useState<any | null>(
-    null
-  )
+  const [stepsCompletionData, setStepsCompletionData] = useState<any | null>()
+  const [stepsCompletionPercent, setStepsCompletionPercent] = useState(0)
 
   useEffect(() => {
     let stepsCompletionPercent
@@ -52,33 +25,28 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
         },
         {
           title: 'Section A',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_a?.completionPercentage,
         },
         {
           title: 'Section B',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_b?.completionPercentage,
         },
         {
           title: 'Section C',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_c?.completionPercentage,
         },
         {
           title: 'Section D',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          completionPercent:
+            currentProjectDetails?.section_d?.completionPercentage,
         },
         {
-          title: 'Section D',
-          completionPercent: currentProjectDetails?.section_a?.stepCompleted
-            ? 100
-            : 0,
+          title: 'Section E',
+          completionPercent:
+            currentProjectDetails?.section_e?.completionPercentage,
         },
       ]
       setStepsCompletionData(stepsCompletionPercent)
@@ -113,6 +81,22 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
     setStepsCompletionData(stepsCompletionPercent)
   }, [currentProjectDetails])
 
+  useEffect(() => {
+    const totalStepsCount = 6
+    let completedStepsCount = 0
+    if (stepsCompletionData && stepsCompletionData.length) {
+      stepsCompletionData.forEach((step: any) => {
+        if (step?.completionPercent === 100) {
+          completedStepsCount += 1
+        }
+      })
+    }
+    const completionPercent = Math.floor(
+      (completedStepsCount / totalStepsCount) * 100
+    )
+    setStepsCompletionPercent(completionPercent)
+  }, [stepsCompletionData])
+
   return (
     <Box sx={{ py: 2, px: { md: 3, lg: 4 } }}>
       <Box sx={{ display: 'flex' }}>
@@ -127,7 +111,7 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
         </Typography>
         <LinearProgress
           variant="determinate"
-          value={10}
+          value={stepsCompletionPercent}
           sx={{
             borderRadius: 8,
             height: 8,
@@ -172,7 +156,8 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
                 </Typography>
                 <Typography
                   sx={{
-                    color: item?.value === 100 ? '#006B5E' : '#BA1B1B',
+                    color:
+                      item?.completionPercent === 100 ? '#006B5E' : '#BA1B1B',
                     fontSize: 14,
                   }}
                 >

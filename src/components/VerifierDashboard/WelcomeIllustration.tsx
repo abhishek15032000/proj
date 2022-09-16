@@ -11,10 +11,14 @@ import { VerifierDashboardProps } from './VerifierDashboard.interface'
 import { Colors } from '../../theme'
 import TextButton from '../../atoms/TextButton/TextButton'
 import VerifierDashboardIllustration from '../../assets/Images/illustrations/VerifierDashboard.png'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 interface WelcomeIllustrationProps {}
 
 const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
+  const navigate = useNavigate()
+
   return (
     <Grid item xs={9} sx={{ pr: 1 }}>
       <Paper
@@ -25,7 +29,7 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
           // border: '2px solid',
           backgroundColor: Colors.white,
           p: 2,
-          position: 'relative'
+          position: 'relative',
         }}
       >
         <Typography
@@ -42,7 +46,8 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
         <Box
           sx={{
             height: '180px',
-            width: '430px',
+            maxWidth: '430px',
+            width: '50%',
             borderRadius: '8px',
             backgroundColor: Colors.lightGreenBackground2,
             p: 1.5,
@@ -70,11 +75,17 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
             Complete your profile info to get started
           </Typography>
 
-          <TextButton sx={{ mt: 3 }} title="start" />
+          <TextButton
+            sx={{ mt: 3, zIndex: 2 }}
+            title="Start"
+            onClick={() => {
+              navigate(pathNames.VERIFIER_PROFILE_SETUP)
+            }}
+          />
         </Box>
         <Box
           component="img"
-          sx={{ width: '100%', position: 'absolute', bottom: 0, right: 0 }}
+          sx={{ width: '100%', position: 'absolute', bottom: 0, right: 0, zIndex: 1 }}
           src={VerifierDashboardIllustration}
         />
       </Paper>

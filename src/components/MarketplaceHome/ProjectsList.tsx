@@ -2,10 +2,12 @@
 import React, { FC } from 'react'
 
 // MUI Imports
-import { Grid } from '@mui/material'
+import { Box, Grid, Typography, Paper } from '@mui/material'
 
 // Local Imports
 import ProjectTile from './ProjectTile'
+import EmptyProjectsList from './EmptyProjectsList'
+
 
 interface ProjectsListProps {}
 
@@ -24,6 +26,8 @@ const ProjectsList: FC<ProjectsListProps> = (props) => {
       <ProjectTile />
       <ProjectTile />
       <ProjectTile />
+
+      {/* <EmptyProjectsList /> */}
     </Grid>
   )
 }

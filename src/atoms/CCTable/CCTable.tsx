@@ -72,7 +72,7 @@ const CCTable = (props: CCTableProps) => {
           aria-label="customized table"
         >
           <TableHead>
-            <TableRow>
+            <TableRow data-testid={'cc-table-heading'}>
               {props?.headings &&
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
@@ -86,7 +86,7 @@ const CCTable = (props: CCTableProps) => {
             {tableRowData &&
               tableRowData?.length > 0 &&
               tableRowData.map((row: any, index: number) => (
-                <StyledTableRow key={index}>
+                <StyledTableRow key={index} data-testid={'cc-table-row'}>
                   {row?.length > 0 &&
                     row.map((tdValue: any, tdIndex: number) => (
                       <StyledTableCell key={tdIndex} align="center">
@@ -114,6 +114,24 @@ const CCTable = (props: CCTableProps) => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              '.MuiTablePagination-actions': {
+                //next icons
+                color: '1F1F1F',
+              },
+              '.MuiTablePagination-selectIcon': {
+                //rows per page arrows
+                color: '#1F1F1F',
+                //<check />
+              },
+              '.MuiTablePagination-select': {
+                //color of numbers in rows per page
+                color: '#1D4B44',
+              },
+              '.MuiTablePagination-displayedRows': {
+                color: '#1d4B44',
+              },
+            }}
           />
         )}
       </TableContainer>

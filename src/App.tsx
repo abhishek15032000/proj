@@ -13,14 +13,36 @@ import { Toaster } from 'react-hot-toast'
 import { Colors } from './theme'
 import { shallowEqual } from 'react-redux'
 import { useIdleTimer } from 'react-idle-timer'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from './routes/pathNames'
+
+let isExempt = false
+
 type AppProps = {
   appName?: string
 }
+
 const App: FC<AppProps> = () => {
   const navigate = useNavigate()
   const localloggedIn = getLocalItem('loggedIn')
+  const location = useLocation()
+
+  // List of pages exempt from side menu
+  const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
+
+  let count = 0
+
+  drawerExemptList.map((item) => {
+    if (item === location.pathname) {
+      count++
+    }
+  })
+
+  if (count > 0) {
+    isExempt = true
+  } else {
+    isExempt = false
+  }
 
   const onPrompt = () => {
     // Fire a Modal Prompt
@@ -114,10 +136,15 @@ const App: FC<AppProps> = () => {
     <>
       {/* For using mui DatePicker */}
       <LocalizationProvider dateAdapter={AdapterMoment}>
-        {userData && (
+        {userData && !isExempt && (
           <AppDrawer>
             <RouteController />
           </AppDrawer>
+        )}
+        {userData && isExempt && (
+          // <AppDrawer>
+          <RouteController />
+          // </AppDrawer>
         )}
         {!userData && (
           <Box

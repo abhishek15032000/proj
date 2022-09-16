@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { ROLES } from '../config/roles.config'
 import { useAppSelector } from '../hooks/reduxHooks'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
@@ -8,6 +9,8 @@ import MaintenancePage from '../pages/MaintenancePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
+import VerifierVerifyReport from '../pages/VerifierVerifyReport'
+import { getLocalItem } from '../utils/Storage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
@@ -132,6 +135,8 @@ const PublicRoute = ({
   roles,
   userData,
 }: Props) => {
+  const userDetails = getLocalItem('userDetails')
+
   const isAuthenticated = authenticated
   const userRoles = userData?.roles
 
@@ -142,7 +147,14 @@ const PublicRoute = ({
     return <RouteComponent />
   }
 
-  return <Navigate to={pathNames.DASHBOARD} />
+  if (userDetails?.type === ROLES.ISSUER) {
+    return <Navigate to={pathNames.DASHBOARD} />
+  } else if (userDetails?.type === ROLES.VERIFIER) {
+    return <Navigate to={pathNames.VERIFIER_PROJECTS} />
+  } else {
+    //To send Buyer directly to BUYER_ONBOARDING since when redirecting to /(homepage) getting "access denied"
+    return <Navigate to={pathNames.BUYER_ONBOARDING} />
+  }
 }
 
 export default RouteController

@@ -11,6 +11,13 @@ import sectionA from './sectionASlice'
 import sectionD from './sectionDSlice'
 import wallet from './walletSlice'
 import sectionE from './sectionESlice'
+import MonthlyReportUpdate from './MonthlyReportUpdate'
+import selectDate from './SelectDateSlice'
+import sectionAMonthly from './MonthlyReport/sectionAMonthly'
+import sectionBMonthly from './MonthlyReport/sectionBMonthly'
+import sectionCMonthly from './MonthlyReport/sectionCMonthly'
+import sectionDMonthly from './MonthlyReport/sectionDMonthly'
+import sectionEMonthly from './MonthlyReport/sectionEMonthly'
 // TODO: rename names
 export default {
   auth,
@@ -23,4 +30,11 @@ export default {
   sectionA,
   sectionD,
   sectionE,
+  MonthlyReportUpdate,
+  selectDate,
+  sectionAMonthly,
+  sectionBMonthly,
+  sectionCMonthly,
+  sectionDMonthly,
+  sectionEMonthly,
 }

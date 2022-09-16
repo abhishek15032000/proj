@@ -8,6 +8,7 @@ const CCInputField = (props: CCInputFieldProps) => {
 
   return (
     <TextField
+      inputProps={{ 'data-testid': 'cc-input-field' }}
       variant="outlined"
       inputRef={inputRef}
       fullWidth
@@ -30,7 +31,7 @@ const CCInputField = (props: CCInputFieldProps) => {
         ) : null,
       }}
       InputLabelProps={{ style: { color: '#006B5E' } }}
-      color="darkPrimary1"
+      color={props?.color ? props?.color : 'darkPrimary1'}
       required
       {...props}
     />

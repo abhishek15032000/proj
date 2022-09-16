@@ -13,6 +13,10 @@ import CCButton from '../../atoms/CCButton'
 import CCInputField from '../../atoms/CCInputField'
 import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
+import LoaderOverlay from '../../components/LoderOverlay'
+import { ROLES } from '../../config/roles.config'
+import { USER } from '../../api/user.api'
+import { setLocalItem } from '../../utils/Storage'
 
 declare let window: any
 
@@ -24,6 +28,7 @@ const Login = () => {
   const [captchaInput, setCaptchaInput] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
   const [pwdCopy, setPwdCopy] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
@@ -34,6 +39,7 @@ const Login = () => {
   }
 
   const login = async () => {
+    setLoading(true)
     const payload = { email: '', id: '', password: '', captcha: '' }
 
     payload.email = values?.email
@@ -58,17 +64,33 @@ const Login = () => {
     }
 
     try {
+      setLoading(true)
       const res = await authCalls.loginCall(payload)
       if (res?.success && res?.data) {
+        if (res?.status === 204) {
+          alert('Retry login with new Captch')
+          setCaptchaInput('')
+          return
+        }
         if (res?.data?.captchaVerify) {
+          const userResponse = await USER.getUsersById(res?.data?.user_id)
+          setLocalItem('userDetails2', userResponse?.data)
+          const profileCompleted = userResponse?.data?.orgName ? true : false
+            setLocalItem('profileCompleted', profileCompleted)
           dispatch(loginAction(res?.data)) //calling action from redux
-          navigate(pathNames.DASHBOARD, { replace: true })
+          if (res.data.type === 'ISSUER' || res.data.type === 'VERIFIER') {
+            navigate(pathNames.DASHBOARD, { replace: true })
+          }
+          
           window.location.reload()
         } else {
           alert(res?.data)
         }
-      } else if (res?.error) {
-        alert(res?.error)
+      } else if (res?.error || res.status !== 200) {
+        alert(
+          res?.error ||
+            'Something seems wrong with your credentials. Please try again!'
+        )
         setCaptchaTokenFromUUID()
         setCaptchaInput('')
       }
@@ -76,6 +98,7 @@ const Login = () => {
       console.log('Error in authCalls.loginCall api', e)
     } finally {
       new window.PasswordCredential({ id: payload.email, password: uuidv4() })
+      setLoading(false)
     }
   }
 
@@ -90,6 +113,7 @@ const Login = () => {
       justifyContent="center"
       alignItems={'center'}
     >
+      {loading ? <LoaderOverlay /> : null}
       <Grid
         item
         lg={6}
@@ -108,7 +132,9 @@ const Login = () => {
             width: '100%',
           }}
         >
-          <Logo />
+          <Box py={1}>
+            <Logo />
+          </Box>
           <Typography
             sx={{ fontWeight: '700', fontSize: 32, mt: 8, color: '#1C4A43' }}
           >
@@ -180,7 +206,7 @@ const Login = () => {
             variant="contained"
             // disabled={Object.values(errors).length > 0}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </CCButton>
           <Grid container justifyContent={'center'} alignItems={'center'}>
             <Typography

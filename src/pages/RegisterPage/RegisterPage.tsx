@@ -29,12 +29,13 @@ import { setLocalItem } from '../../utils/Storage'
 const RegisterPage = (props: RegisterPageProps) => {
   const [number, setNumber] = useState<number>()
   const [password, setPassword] = useState<any>()
-  const [firstName, setFirstName] = useState()
-  const [lastName, setLastName] = useState()
+  const [firstName, setFirstName] = useState<string>('')
+  const [lastName, setLastName] = useState<string>('')
   const [email, setEmail] = useState()
   const [captchaToken, setCaptchaToken] = useState('')
   const [captchaInput, setCaptchInput] = useState<string>('')
   const [showPassword, setShowPassword] = useState(false)
+  const [countryCode, setCountryCode] = useState<any>()
   const [typeOptions, setTypeOptions] = useState<any>([])
   const [selectedRole, setSelectedRole] = useState<any>()
   const [departmentId, setDepartmentId] = useState<any>()
@@ -79,7 +80,7 @@ const RegisterPage = (props: RegisterPageProps) => {
 
   const onBoardingNewUser = async () => {
     const payload = {
-      fullName: firstName,
+      fullName: firstName + ' ' + lastName,
       email: email,
       phone: Number(number),
       country_code: '91',
@@ -90,9 +91,13 @@ const RegisterPage = (props: RegisterPageProps) => {
     }
     USER.onBoardingUser(payload)
       .then((res: any) => {
-        if (res?.data?.success && res?.data?.data) {
-          setLocalItem('uuid', res?.data?.data?.uuid)
-          navigate(pathNames.TWOFA)
+        if (res?.data?.success) {
+          if (res?.data?.data?.alreadyExits) {
+            alert('user already exists')
+          } else {
+            setLocalItem('uuid', res?.data?.data?.uuid)
+            navigate(pathNames.TWOFA)
+          }
         } else if (!res?.data?.success) {
           alert(res?.data?.error)
         }
@@ -108,7 +113,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   }
 
   const { handleChange, values, errors, handleSubmit } = useForm(register)
-
+  console.log(values)
   return (
     <Grid container flexDirection="row" xs={12} sx={{ height: '100vh' }}>
       <Grid
@@ -142,7 +147,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <Grid container columnSpacing={2}>
               <Grid item xs={12} md={6}>
                 <CCInputField
-                  label=" First Name"
+                  label="First Name"
                   variant="outlined"
                   name="firstName"
                   //onChange={handleChange}
@@ -151,14 +156,14 @@ const RegisterPage = (props: RegisterPageProps) => {
                   sx={{ background: '#F5F5F5' }}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={6} pt={{ xs: 2, md: 0 }}>
                 <CCInputField
                   label="Last Name"
                   variant="outlined"
                   name="firstName"
                   //onChange={handleChange}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  defaultValue={values?.firstName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  defaultValue={values?.lastName}
                   sx={{ background: '#F5F5F5' }}
                 />
               </Grid>
@@ -179,7 +184,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <CCSelectBox
               //fullWidth
               //variant="outlined"
-              label="Particpant Type"
+              label="Participant Type"
               items={typeOptions}
               onChange={(e) => setSelectedRole(e.target.value)}
               sx={{ background: '#F5F5F5' }}
@@ -187,14 +192,14 @@ const RegisterPage = (props: RegisterPageProps) => {
           </Grid>
           <Grid item xs={12}>
             <Grid container columnSpacing={2}>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={3} pb={{ xs: 2, md: 0 }}>
                 <CCSelectBox
                   variant="outlined"
                   sx={{ background: '#F5F5F5' }}
-                  //sx={{ width: '100%', backg }}
                   // label="Country Code"
                   name="country_code"
-                  onChange={handleChange}
+                  //onChange={handleChange}
+                  //onChange={(e) => console.log('e.target.value')}
                   value={'+91'}
                   autoWidth={false}
                   items={[{ label: '+91', value: '+91' }]}

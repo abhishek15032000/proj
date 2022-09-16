@@ -21,7 +21,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
   const handleVerify = () => {
     const payload = {
       uuid: uuid,
-      otp: '12121',
+      otp: otp,
     }
     authCalls.verifyOtp(payload).then((res: any) => {
       if (res?.success && res?.data === 'verified') {
