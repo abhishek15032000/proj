@@ -74,6 +74,7 @@ const Login = () => {
         }
         if (res?.data?.captchaVerify) {
           const userResponse = await USER.getUsersById(res?.data?.user_id)
+          setLocalItem('userDetails2', userResponse?.data)
           if (res.data.type === 'ISSUER') {
             navigate(pathNames.DASHBOARD, { replace: true })
           } else if (res.data.type === 'VERIFIER') {

@@ -49,10 +49,16 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/verifier/getVerifierProjectDashboardStats',
     getAllVerifier: ENDPOINTS.carbonServiceURL + '/verifier/getAllVerifiers',
     submitVerifier: ENDPOINTS.carbonServiceURL + '/verifier/update',
+    getPDFHash: ENDPOINTS.carbonServiceURL + '/verifier/utils/getHash',
+    verifyPDFAndMintToken:
+      ENDPOINTS.carbonServiceURL + '/verifier/report/submit',
   },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',
     getUsersByOrgType:
       ENDPOINTS.userServiceURL + '/department/getUsersByOrgType?type=',
+  },
+  fileupload: {
+    getFile: ENDPOINTS.carbonServiceURL + '/fileupload/getFile',
   },
 }

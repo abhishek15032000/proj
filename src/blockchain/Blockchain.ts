@@ -77,8 +77,11 @@ const BlockchainCalls = {
   },
 
   requestMethodCalls: async (method: string, params: any) => {
-    try { window.ethereum.request({ method, params }) } catch (e) {
-      console.log(e)
+    try {
+      const res = await window.ethereum.request({ method, params })
+      return res
+    } catch (e) {
+      console.log('Error in Blockchain.ts - requestMethodCalls :', e)
     }
   },
   toHexConvert: (number: any) => ethers.utils.hexlify(number)
