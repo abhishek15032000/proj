@@ -1,5 +1,5 @@
 export const ROLES = {
-  ISSUER: 'ISSUER',
-  VERIFIER: 'VERIFIER',
-  BUYER: 'BUYER',
+    ISSUER: "ISSUER",
+    VERIFIER: "VERIFIER",
+    BUYER: "BUYER"
 }

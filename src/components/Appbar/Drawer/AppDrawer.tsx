@@ -112,6 +112,14 @@ export default function ResponsiveDrawer(props: any) {
       _.intersectionWith(userDataRoles, [ROLES.ISSUER], _.isEqual).length > 0
     ) {
       return MENUS.issuer_menus
+    } else if (
+      _.intersectionWith(userDataRoles, [ROLES.VERIFIER], _.isEqual).length > 0
+    ) {
+      return MENUS.verifier_menus
+    } else if (
+      _.intersectionWith(userDataRoles, [ROLES.BUYER], _.isEqual).length > 0
+    ) {
+      return MENUS.buyer_menus
     } else {
       return []
     }
@@ -174,8 +182,8 @@ export default function ResponsiveDrawer(props: any) {
         <Logo width="50%" />
       </Grid>
 
-      <Grid container sx={{ height: '100%', width: '100%' }}>
-        <List sx={{ mt: 1 }}>
+      <Grid container xs={12} sx={{ height: '100%', width: '100%' }}>
+        <List sx={{ mt: 1, width: '100%' }}>
           {midMenu().map((text, index) => (
             <NavLink
               key={index.toString()}

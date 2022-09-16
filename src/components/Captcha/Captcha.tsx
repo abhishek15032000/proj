@@ -58,7 +58,7 @@ export default function Captcha({
         />
         <Box
           sx={{
-            alignSelf: 'end',
+            alignSelf: 'center',
             cursor: 'pointer',
             fontSize: 12,
             color: Colors.darkPrimary1,
@@ -72,7 +72,7 @@ export default function Captcha({
           Refresh
           <RefreshIcon
             style={{
-              fontSize: 20,
+              fontSize: 16,
               color: Colors.darkPrimary1,
               fontWeight: '500',
             }}
