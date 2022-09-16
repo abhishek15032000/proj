@@ -4,6 +4,7 @@ import {
   TextareaAutosize,
   Typography,
   Input,
+  Stack,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
@@ -21,6 +22,7 @@ import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 const SectionE5 = () => {
   const dispatch = useAppDispatch()
 
@@ -52,8 +54,15 @@ const SectionE5 = () => {
       )
     }
   })
-
-  return (
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }}>
       <Grid item xs={12}>
         <CCMultilineTextArea

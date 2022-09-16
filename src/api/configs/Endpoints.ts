@@ -43,6 +43,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/verifier/getVerifierByProjectId',
     getVerifierProjectDashboardStats:
       ENDPOINTS.carbonServiceURL + '/verifier/getVerifierProjectDashboardStats',
+    getAllVerifier: ENDPOINTS.carbonServiceURL + '/verifier/getAllVerifiers',
+    submitVerifier: ENDPOINTS.carbonServiceURL + '/verifier/update',
   },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',
@@ -51,6 +53,6 @@ export const URL_PATH = {
   },
   reports: {
     getReportByProjectId:
-      ENDPOINTS.carbonServiceURL + '/project/report/getReportByProjectId',
+      ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
   },
 }

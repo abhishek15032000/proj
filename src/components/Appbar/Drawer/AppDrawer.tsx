@@ -78,12 +78,15 @@ export default function ResponsiveDrawer(props: any) {
           </SvgIcon>
         )
         break
-      case linkLabels.My_Portfolio:
-        IconComponent = SquareIcon
-        break
+      // case linkLabels.My_Portfolio:
+      //   IconComponent = SquareIcon
+      //   break
       case linkLabels.Marketplace:
         IconComponent = PentagonIcon
 
+        break
+      case linkLabels.Wallet:
+        IconComponent = SquareIcon
         break
 
       default:

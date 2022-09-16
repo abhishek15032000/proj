@@ -47,7 +47,7 @@ const initialState: SectionAInterface = {
   city: '',
   pincode: '',
   landmark: '',
-  file_attach: [''],
+  file_attach: [],
 
   // A3
   projectParticipants: [

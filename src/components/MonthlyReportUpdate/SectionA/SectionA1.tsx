@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material'
+import { Grid, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import React, { useState, useEffect } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setTotalGHGEmission } from '../../../redux/Slices/MonthlyReport/sectionAMonthly'
 import { setCurrentProjectDetails } from '../../../redux/Slices/MonthlyReportUpdate'
+import Spinner from '../../../atoms/Spinner'
 const SectionA1 = () => {
   const dispatch = useAppDispatch()
 
@@ -32,8 +33,16 @@ const SectionA1 = () => {
     ({ sectionAMonthly }) => sectionAMonthly.total_GHG_emission,
     shallowEqual
   )
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }} spacing={1} xs={12} md={12} lg={12} xl={12}>
       <Grid item xs={12} sx={{ mt: 2 }}>
         <CCMultilineTextArea

@@ -44,7 +44,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   const handleClose = () => closeModal()
 
   useEffect(() => {
-    console.log(loadWallet)
+    // console.log(loadWallet)
     setOpen(loadWallet)
   }, [loadWallet])
 
@@ -132,7 +132,7 @@ const LoadWallet = (props: LoadWalletProps) => {
 
   const getWalletBalance = async () => {
     try {
-      console.log(accountAddress)
+      // console.log(accountAddress)
       BlockchainCalls.getWalletBalance(accountAddress).then((res: any) => {
         dispatch(setAccountBalance(res.balance))
         setLoading(false)

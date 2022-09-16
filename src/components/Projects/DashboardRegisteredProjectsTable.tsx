@@ -29,6 +29,7 @@ import DashboardPencil from '../../assets/Images/Icons/DashboardPencil.png'
 
 interface DashboardNewProjectsTableProps {
   tableRows?: any
+  loading: boolean
 }
 
 const headingItems = [
@@ -132,144 +133,148 @@ const DashboardRegisteredProjectsTable = (
 
   return (
     <>
-      <TableContainer
-        onScroll={handleScroll}
-        sx={{
-          maxWidth: '100%',
-          overflowX: 'scroll',
-        }}
-      >
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headingItems.map((i) => (
-                <TableCell
-                  key={i?.index}
-                  sx={{
-                    ...i?.style,
-                    background: '#CCE8E1',
-                  }}
-                >
-                  {i?.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {props?.tableRows &&
-              props?.tableRows?.length > 0 &&
-              props?.tableRows.map((data: any, index: number) => (
-                <TableRow
-                  key={index}
-                  sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
-                >
+      {props?.loading ? (
+        <CCTableSkeleton height={78} />
+      ) : (
+        <TableContainer
+          onScroll={handleScroll}
+          sx={{
+            maxWidth: '100%',
+            overflowX: 'scroll',
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                {headingItems.map((i) => (
                   <TableCell
+                    key={i?.index}
                     sx={{
-                      position: 'sticky',
-                      top: 0,
-                      left: 0,
-                      background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                      ...i?.style,
+                      background: '#CCE8E1',
                     }}
                   >
-                    <Typography
-                      textAlign="start"
-                      sx={{ fontSize: 15, fontWeight: 500 }}
-                    >
-                      {limitTitle(data?.uuid, 10)}
-                    </Typography>
+                    {i?.label}
                   </TableCell>
-                  <TableCell>
-                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
-                      {moment(data?.createdAt).format(`DD/MM/YY`)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
-                      {data?.company_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
-                      {data?.location}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Chip
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props?.tableRows &&
+                props?.tableRows?.length > 0 &&
+                props?.tableRows.map((data: any, index: number) => (
+                  <TableRow
+                    key={index}
+                    sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
+                  >
+                    <TableCell
                       sx={{
-                        pl: 1,
-                        backgroundColor:
-                          data?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
+                        position: 'sticky',
+                        top: 0,
+                        left: 0,
+                        background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
                       }}
-                      key="1"
-                      icon={
-                        <CircleIcon
-                          sx={{
-                            fontSize: 10,
-                            color:
-                              data?.project_status === 3
-                                ? '#00A392'
-                                : '#96B1AB',
-                          }}
-                        />
-                      }
-                      label={
-                        data?.project_status === 0
-                          ? 'Yet to select'
-                          : data?.project_status === 1
-                          ? 'Selected'
-                          : data?.project_status === 3 && 'Finalised'
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Stack
-                      key={index}
-                      direction={'row'}
-                      alignItems="center"
-                      justifyContent={'flex-start'}
                     >
-                      {data?.verifier_details_id && (
-                        <img
-                          src={DataTablesBriefCase}
-                          width="35px"
-                          height="35px"
-                        />
-                      )}
                       <Typography
-                        textAlign={'start'}
-                        sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
+                        textAlign="start"
+                        sx={{ fontSize: 15, fontWeight: 500 }}
                       >
-                        {data?.verifier_details_id
-                          ? data?.verifier_details_id?.verifier_name
-                          : '-'}
+                        {limitTitle(data?.uuid, 10)}
                       </Typography>
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-                    <Grid container flexDirection="row" alignItems={'center'}>
-                      <Grid item xs={9} sx={{ pl: 2 }}>
-                        {!data?.verifier_details_id &&
-                          data?.project_status !== 3 && (
-                            <img src={DashboardPencil} />
-                          )}
-                      </Grid>
-                      <Grid item xs={3}>
-                        {/*{data?.project_status !== 3 && (*/}
-                        <Box key={index}>
-                          <ArrowRightIcon
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() => openProjectDetails(data)}
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                        {moment(data?.createdAt).format(`DD/MM/YY`)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                        {data?.company_name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+                        {data?.location}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        sx={{
+                          pl: 1,
+                          backgroundColor:
+                            data?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
+                        }}
+                        key="1"
+                        icon={
+                          <CircleIcon
+                            sx={{
+                              fontSize: 10,
+                              color:
+                                data?.project_status === 3
+                                  ? '#00A392'
+                                  : '#96B1AB',
+                            }}
                           />
-                        </Box>
-                        {/*)}*/}
+                        }
+                        label={
+                          data?.project_status === 0
+                            ? 'Yet to select'
+                            : data?.project_status === 1
+                            ? 'Selected'
+                            : data?.project_status === 3 && 'Finalised'
+                        }
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Stack
+                        key={index}
+                        direction={'row'}
+                        alignItems="center"
+                        justifyContent={'flex-start'}
+                      >
+                        {data?.verifier_details_id && (
+                          <img
+                            src={DataTablesBriefCase}
+                            width="35px"
+                            height="35px"
+                          />
+                        )}
+                        <Typography
+                          textAlign={'start'}
+                          sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
+                        >
+                          {data?.verifier_details_id
+                            ? data?.verifier_details_id?.verifier_name
+                            : '-'}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell>
+                      <Grid container flexDirection="row" alignItems={'center'}>
+                        <Grid item xs={9} sx={{ pl: 2 }}>
+                          {!data?.verifier_details_id &&
+                            data?.project_status !== 3 && (
+                              <img src={DashboardPencil} />
+                            )}
+                        </Grid>
+                        <Grid item xs={3}>
+                          {/*{data?.project_status !== 3 && (*/}
+                          <Box key={index}>
+                            <ArrowRightIcon
+                              sx={{ cursor: 'pointer' }}
+                              onClick={() => openProjectDetails(data)}
+                            />
+                          </Box>
+                          {/*)}*/}
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}{' '}
     </>
   )
 }

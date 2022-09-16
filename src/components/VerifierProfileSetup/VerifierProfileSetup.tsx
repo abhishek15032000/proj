@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography } from '@mui/material'
@@ -11,8 +11,55 @@ import { VerifierProfileSetupProps } from './VerifierProfileSetup.interface'
 import VerifierProfileIllustration from '../../assets/Images/illustrations/VerifierProfile.png'
 import CCInputField from '../../atoms/CCInputField'
 import TextButton from '../../atoms/TextButton/TextButton'
+import { USER } from '../../api/user.api'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import { getLocalItem } from '../../utils/Storage'
 
 const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [organisationName, setOrganisationName] = useState('')
+  const [address, setAddress] = useState('')
+  const [website, setWebsite] = useState('')
+  const [designation, setDesignation] = useState('')
+
+  const onSave = () => {
+    // return
+    if (
+      email === '' ||
+      fullName === '' ||
+      phone === '' ||
+      organisationName === '' ||
+      address === '' ||
+      website === '' ||
+      designation === ''
+    ) {
+      console.log('Code Reachable')
+      return
+    }
+
+    const payload = {
+      uuid: getLocalItem('userDetails').uuid,
+      email: email,
+      fullName: fullName,
+      phone: phone,
+      organisationName: organisationName,
+      address: address,
+      website: website,
+      designation: designation,
+    }
+
+    USER.updateUserInfo(payload).then((response) => {
+      console.log('response')
+      console.log(JSON.stringify(response.data, null, 4))
+      navigate(pathNames.VERIFIER_PROJECTS)
+    })
+  }
+
   return (
     <Box sx={{ p: 0 }}>
       <Grid
@@ -41,7 +88,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               }}
             >
               <BackHeader title="Profile" />
-              <TextButton title="Save" />
+              <TextButton title="Save" onClick={onSave} />
             </Box>
 
             <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
@@ -51,24 +98,32 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               label="Participant Name"
               placeholder="Enter Participant Name"
               sx={{ mb: 1.5 }}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
             />
 
             <CCInputField
               label="Designation"
               placeholder="Enter Designation"
               sx={{ mb: 1.5 }}
+              value={designation}
+              onChange={(e) => setDesignation(e.target.value)}
             />
 
             <CCInputField
               label="Email ID"
               placeholder="Enter Email ID"
               sx={{ mb: 1.5 }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
 
             <CCInputField
               label="Contact Number"
               placeholder="Enter Contact Number"
               sx={{ mb: 1.5 }}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               required={false}
             />
 
@@ -76,18 +131,24 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               label="Organisation Name"
               placeholder="Enter Organisation Name"
               sx={{ mb: 1.5 }}
+              value={organisationName}
+              onChange={(e) => setOrganisationName(e.target.value)}
             />
 
             <CCInputField
               label="Organisation Address"
               placeholder="Enter Organisation Address"
               sx={{ mb: 1.5 }}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
 
             <CCInputField
               label="Official Website"
               placeholder="Enter Official Website"
               sx={{ mb: 1.5 }}
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
             />
 
             <Box

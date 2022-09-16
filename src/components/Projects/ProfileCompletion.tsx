@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import {
@@ -12,12 +12,22 @@ import {
 } from '@mui/material'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
 import CheckIcon from '@mui/icons-material/Check'
+import { ProjectsProps } from './Projects.interface'
 
 // Local Imports
 
-interface ProfileCompletionProps {}
+//interface ProfileCompletionProps {}
 
-const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
+const ProfileCompletion = (props: ProjectsProps) => {
+  const [profileCompletion, setProfileCompletion] = useState<number>()
+
+  useEffect(() => {
+    if (props?.walletPercentage) {
+      setProfileCompletion(50)
+    }
+  }),
+    [props?.walletPercentage]
+
   return (
     <Box
       sx={{
@@ -48,7 +58,7 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={40}
+        value={profileCompletion}
       />
 
       <Typography
@@ -72,8 +82,14 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
       >
         <Box>
           <Typography sx={{ fontSize: 16, fontWeight: 500 }}>Wallet</Typography>
-          <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#388E81' }}>
-            100% Complete
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 400,
+              color: props?.walletPercentage ? '#388E81' : '#BA1B1B',
+            }}
+          >
+            {`${props?.walletPercentage ? '100%' : '0%'} Complete`}
           </Typography>
         </Box>
 

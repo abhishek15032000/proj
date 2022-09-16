@@ -11,7 +11,7 @@ import ListNewProject from '../pages/ListNewProject'
 
 import LogoutPage from '../pages/LogoutPage'
 
-import Onboarding from '../pages/Onboarding'
+import Onboarding from '../pages/OnboardingOld'
 
 import { linkLabels, pathNames } from './pathNames'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
@@ -21,12 +21,17 @@ import VerifierDashboard from '../pages/VerifierDashboard'
 import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
 import MonthlyReportUpdate from '../pages/MonthlyReportUpdate'
+import VerifierProjectsList from '../pages/VerifierProjectsList'
+import VerifierProjectDetails from '../pages/VerifierProjectDetails'
+import VerifierVerifyReport from '../pages/VerifierVerifyReport'
+import IssuerWallet from '../pages/IssuerWallet'
+import TransactionHistory from '../pages/TransactionHistory'
 import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
 
 export const privateRouteComponents = [
   {
     path: pathNames.DASHBOARD,
-    // component: DashboardPage,
+    //component: DashboardPage,
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
@@ -56,6 +61,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.MARKETPLACE,
     component: MarketplaceHome,
+    sidebarName: linkLabels.Marketplace,
     roles: [ROLES.ISSUER],
   },
   {
@@ -107,16 +113,41 @@ export const privateRouteComponents = [
   {
     path: pathNames.VERIFIER_DASHBOARD,
     component: VerifierDashboard,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.VERIFIER_PROFILE_SETUP,
     component: VerifierProfileSetup,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.VERIFIER],
   },
   {
     path: pathNames.VERIFIER_PROJECTS,
     component: VerifierProjects,
+    roles: [ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.VERIFIER_PROJECTS_LIST,
+    component: VerifierProjectsList,
+    roles: [ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.VERIFIER_PROJECTS_DETAILS,
+    component: VerifierProjectDetails,
+    roles: [ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.VERIFIER_VERIFY_REPORT,
+    component: VerifierVerifyReport,
+    roles: [ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.ISSUER_WALLET,
+    component: IssuerWallet,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.TRANSACTION_HISTORY,
+    component: TransactionHistory,
     roles: [ROLES.ISSUER],
   },
   {

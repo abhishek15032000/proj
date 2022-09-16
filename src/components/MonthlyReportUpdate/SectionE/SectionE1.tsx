@@ -4,6 +4,7 @@ import {
   TextareaAutosize,
   Typography,
   Input,
+  Stack,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
@@ -21,6 +22,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionE1 = () => {
   const dispatch = useAppDispatch()
@@ -53,8 +55,15 @@ const SectionE1 = () => {
       dispatch(setCalculationOfBaselineEmissionsImages(attach_relevant_docs))
     }
   }, [])
-
-  return (
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }}>
       <Grid item xs={12}>
         <CCMultilineTextArea

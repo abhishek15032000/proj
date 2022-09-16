@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography } from '@mui/material'
@@ -8,10 +8,13 @@ import { Box, Grid, Paper, Typography } from '@mui/material'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { Colors } from '../../theme'
 import { VerifierProjectsProps } from './VerifierProjects.interface'
-import DashboardStatistics from './DashboardStatistics'
+// import DashboardStatistics from './DashboardStatistics'
+import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
 import TabSelectorVerifier from './TabSelectorVerifier'
 import CCTable from '../../atoms/CCTable'
 import ListOfProjects from './ListOfProjects'
+import { verifierCalls } from '../../api/verifierCalls.api'
+import { getLocalItem } from '../../utils/Storage'
 
 const VerifierProjects = (props: VerifierProjectsProps) => {
   const [dashboardStatistics, setDashboardStatistics] = useState([
@@ -36,6 +39,22 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
       color: Colors.lightOrangeBackground,
     },
   ])
+  const [tableData, setTableData] = useState([])
+
+  useEffect(() => {
+    const userDetails = getLocalItem('userDetails')
+
+    // .getAllVerifiers('62c5829aa3bc6ba32590f950')
+    // .getAllVerifiers('630ca4c98c7365e61871f56c')
+    verifierCalls
+      .getAllVerifiers('62c5829aa3bc6ba32590f950')
+      .then((response) => {
+        setTableData(response.data.data)
+      })
+    //verifierCalls.getAllVerifiers(userDetails._id).then((response) => {
+    //  setTableData(response.data.data)
+    //})
+  }, [])
 
   return (
     <Box sx={{ p: 0 }}>
@@ -52,7 +71,7 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
         <DashboardStatistics data={dashboardStatistics} />
 
         <Grid item xs={12}>
-          <ListOfProjects />
+          <ListOfProjects data={tableData} />
         </Grid>
       </Grid>
     </Box>
@@ -60,4 +79,3 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
 }
 
 export default VerifierProjects
-

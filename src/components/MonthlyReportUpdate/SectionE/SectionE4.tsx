@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { shallowEqual } from 'react-redux'
+import Spinner from '../../../atoms/Spinner'
 const SectionE4 = () => {
   const dispatch = useAppDispatch()
 
@@ -37,7 +38,15 @@ const SectionE4 = () => {
       dispatch(setCalculationSummaryOfEmissionImages(attach_relevant_docs))
     }
   }, [])
-  return (
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container sx={{ mt: 3 }}>
       <Grid item xs={12}>
         <CCMultilineTextArea

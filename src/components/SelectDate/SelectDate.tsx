@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
+  Stack,
   Typography,
 } from '@mui/material'
 import React, { useEffect } from 'react'
@@ -19,6 +20,7 @@ import { Box } from '@mui/system'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setEndDate, setStartDate } from '../../redux/Slices/SelectDateSlice'
+import Spinner from '../../atoms/Spinner'
 
 const SelectDate = () => {
   const dispatch = useAppDispatch()
@@ -38,6 +40,11 @@ const SelectDate = () => {
     shallowEqual
   )
 
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
     if (currentProjectDetails?.section_a?.step1?.completed) {
       const { end_date, createdAt } = currentProjectDetails.section_a.step1
@@ -47,7 +54,11 @@ const SelectDate = () => {
     }
   }, [])
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid container xs={12} spacing={2} sx={{ mt: 2 }}>
       <Grid item xs={6} md={6}>
         <DatePicker

@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@mui/material'
+import { Grid, Modal, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -27,6 +27,7 @@ import { shallowEqual } from 'react-redux'
 import {
   setSectionIndex,
   setSubSectionIndex,
+  setIsApiCalled,
 } from '../../redux/Slices/MonthlyReportUpdate'
 // import { moveToNextSection } from '../../utils/MonthlyReportUpdate.utils'
 import CCButton from '../../atoms/CCButton'
@@ -34,6 +35,7 @@ import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import SelectDate from '../SelectDate'
 import { moveToNextSection } from '../../utils/monthlyReportUpdate.utils'
+import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 
 const sections = [
   { name: 'Select Time Period' },
@@ -100,6 +102,10 @@ const MonthlyReportUpdate = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [nextBtn, setNextBtn] = useState(true)
+  const [modal, setModal] = useState<boolean>(false)
+  const [subSectionIndexState, setSubSectionIndexState] = useState<number>()
+  const [sectionIndexState, setSectionIndexState] = useState<number>()
+  const [changeInSection, setChangeInSection] = useState<boolean>(false)
 
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
@@ -114,6 +120,12 @@ const MonthlyReportUpdate = () => {
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.sectionIndex,
     shallowEqual
   )
+
+  const IsApiCalled = useAppSelector(
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.isApiCalled,
+    shallowEqual
+  )
+
   useEffect(() => {
     if (
       currentProjectDetails &&
@@ -137,24 +149,64 @@ const MonthlyReportUpdate = () => {
   }
   const handlePrevious = () => {
     if (sectionIndex > 0) {
-      dispatch(setSectionIndex(sectionIndex - 1))
-      dispatch(setSubSectionIndex(0))
+      if (!IsApiCalled) {
+        setModal(true)
+        setChangeInSection(true)
+        setSectionIndexState(sectionIndex - 1)
+        setSubSectionIndexState(0)
+        //return
+      } else if (IsApiCalled) {
+        dispatch(setIsApiCalled(false))
+        dispatch(setSectionIndex(sectionIndex - 1))
+        dispatch(setSubSectionIndex(0))
+      }
     }
   }
+
   const handleNext = () => {
-    dispatch(setSectionIndex(sectionIndex + 1))
-    dispatch(setSubSectionIndex(0))
+    if (sectionIndex === 0) dispatch(setSectionIndex(sectionIndex + 1))
+    if (sectionIndex > 0 && !IsApiCalled) {
+      setModal(true)
+      setChangeInSection(true)
+      setSectionIndexState(sectionIndex + 1)
+      setSubSectionIndexState(0)
+    } else if (IsApiCalled) {
+      dispatch(setIsApiCalled(false))
+      dispatch(setSectionIndex(sectionIndex + 1))
+      dispatch(setSubSectionIndex(0))
+    }
     //handling next btn as per section data collection percentage
     if (sectionIndex === 5) {
       if (nextBtn) {
         navigate(pathNames.DASHBOARD)
       }
-      // else if (!nextBtn) {
-      //   if (currentProjectDetails?.project_status === 0) {
-      //     navigate(pathNames.SELECT_VERIFIER)
-      //   } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
-      // }
     }
+  }
+
+  const handleSubSectionClick = (index?: number) => {
+    if (subSectionIndex !== index) {
+      if (sectionIndex > 0 && !IsApiCalled) {
+        setModal(true)
+        setSubSectionIndexState(index)
+        return
+      } else if (IsApiCalled) {
+        dispatch(setIsApiCalled(false))
+        dispatch(setSubSectionIndex(index))
+      }
+    }
+  }
+
+  const handleQuitWithoutSave = () => {
+    setModal(false)
+    //ChangeInSection is to know whether the issuer has clicked on section level next or he is changing in subSection level
+    changeInSection && dispatch(setSectionIndex(sectionIndexState))
+    dispatch(setSubSectionIndex(subSectionIndexState))
+    setChangeInSection(false)
+  }
+
+  const handleModalSave = () => {
+    setModal(false)
+    handleSave()
   }
 
   const renderTab = () => {
@@ -164,42 +216,68 @@ const MonthlyReportUpdate = () => {
   }
 
   return (
-    <Grid container>
-      <Grid item xs={9}>
-        <Paper sx={{ p: 3 }}>
-          <Grid
-            container
-            xs={12}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-          >
-            <Grid item container xs={6} alignItems={'center'}>
-              <KeyboardArrowLeft
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  navigate(-1)
-                }}
-              />
-              <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
-                Monthly Report Update
-              </Typography>
-            </Grid>
-            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end' }}>
-              <CCButton
-                sx={{
-                  backgroundColor: Colors.darkPrimary1,
-                  padding: '8px 24px',
-                  minWidth: '50px',
-                  color: '#fff',
-                  borderRadius: 10,
-                  fontSize: 14,
-                  mr: 1,
-                }}
-                onClick={handleSave}
-              >
-                {loading ? 'Saving ...' : 'Save'}
-              </CCButton>
-              {sectionIndex !== 0 && (
+    <>
+      <Grid container>
+        <Grid item xs={9}>
+          <Paper sx={{ p: 3 }}>
+            <Grid
+              container
+              xs={12}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+            >
+              <Grid item container xs={6} alignItems={'center'}>
+                <KeyboardArrowLeft
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    navigate(-1)
+                  }}
+                />
+                <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
+                  Monthly Report Update
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end' }}>
+                <CCButton
+                  sx={{
+                    backgroundColor: Colors.darkPrimary1,
+                    padding: '8px 24px',
+                    minWidth: '50px',
+                    color: '#fff',
+                    borderRadius: 10,
+                    fontSize: 14,
+                    mr: 1,
+                  }}
+                  onClick={handleSave}
+                >
+                  {loading ? 'Saving ...' : 'Save'}
+                </CCButton>
+                {sectionIndex !== 0 && (
+                  <Box
+                    sx={{
+                      backgroundColor: '#F6F9F7',
+                      borderRadius: 4,
+                      display: 'flex',
+                      alignItems: 'center',
+                      p: 1,
+                      mr: 1,
+                      cursor: 'pointer',
+                    }}
+                    onClick={handlePrevious}
+                  >
+                    <ArrowBackIcon
+                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                    />
+                    <Typography
+                      sx={{
+                        color: '#006B5E',
+                        fontWeight: 500,
+                      }}
+                    >
+                      Previous
+                    </Typography>
+                  </Box>
+                )}
                 <Box
                   sx={{
                     backgroundColor: '#F6F9F7',
@@ -207,93 +285,133 @@ const MonthlyReportUpdate = () => {
                     display: 'flex',
                     alignItems: 'center',
                     p: 1,
-                    mr: 1,
                     cursor: 'pointer',
                   }}
-                  onClick={handlePrevious}
+                  onClick={handleNext}
                 >
-                  <ArrowBackIcon
-                    sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
-                  />
                   <Typography
                     sx={{
                       color: '#006B5E',
                       fontWeight: 500,
+                      mr: 1,
                     }}
                   >
-                    Previous
+                    {nextBtn ? 'Next' : 'Complete'}
                   </Typography>
+                  <ArrowForwardIcon sx={{ color: '#006B5E', fontSize: 18 }} />
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              xs={12}
+              sx={{ mt: 3 }}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+            >
+              <Grid
+                item
+                sx={{
+                  p: 1,
+                  backgroundColor: '#DAF7F0',
+                  borderBottom: '2px solid #005046',
+                  borderRadius: '6px 6px 0 0',
+                }}
+              >
+                {getSectionName()}
+              </Grid>
+            </Grid>
+            <Grid container xs={12}>
+              {sectionIndex !== 0 && (
+                <Box sx={{ mt: 3 }} className="tabs-container">
+                  <Box className="tabs">
+                    {sectionATabs[sectionIndex]?.map((tab, index) => (
+                      <Box
+                        key={index}
+                        className={`${
+                          subSectionIndex === index ? 'selected-tab' : 'tab'
+                        }`}
+                        onClick={() => handleSubSectionClick(index)}
+                      >
+                        <Box className="tab-title">{tab.name}</Box>
+                      </Box>
+                    ))}
+                  </Box>
                 </Box>
               )}
-              <Box
-                sx={{
-                  backgroundColor: '#F6F9F7',
-                  borderRadius: 4,
-                  display: 'flex',
-                  alignItems: 'center',
-                  p: 1,
-                  cursor: 'pointer',
-                }}
-                onClick={handleNext}
-              >
-                <Typography
-                  sx={{
-                    color: '#006B5E',
-                    fontWeight: 500,
-                    mr: 1,
-                  }}
-                >
-                  {nextBtn ? 'Next' : 'Complete'}
-                </Typography>
-                <ArrowForwardIcon sx={{ color: '#006B5E', fontSize: 18 }} />
-              </Box>
+              <Box sx={{ width: '100%' }}>{renderTab()}</Box>
             </Grid>
-          </Grid>
-          <Grid
-            container
-            xs={12}
-            sx={{ mt: 3 }}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-          >
-            <Grid
-              item
+          </Paper>
+        </Grid>
+        <Grid item container xs={3}>
+          <ProjectCompletionProgress sectionIndex={sectionIndex} />
+        </Grid>
+      </Grid>
+      <Modal
+        open={modal}
+        onClose={() => setModal(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'rgba(56, 142, 129, 0.4)',
+        }}
+      >
+        <Paper
+          sx={{
+            px: 10,
+            py: 6,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 3,
+            outline: 'none',
+          }}
+        >
+          <Box>
+            <Typography
+              textAlign="center"
+              sx={{ fontWeight: 500, fontSize: 20 }}
+            >
+              Save Changes?
+            </Typography>
+            <Typography sx={{ fontWeight: 500, fontSize: 14, pt: 3, pb: 5 }}>
+              Your unsaved changes will be lost. Save changes before closing ?
+            </Typography>
+          </Box>
+          <Stack direction="row" justifyContent={'space-between'}>
+            <CCButtonOutlined
               sx={{
-                p: 1,
-                backgroundColor: '#DAF7F0',
-                borderBottom: '2px solid #005046',
-                borderRadius: '6px 6px 0 0',
+                minWidth: 0,
+                padding: '6px 17px',
+                borderRadius: 10,
+                mr: 3,
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+              onClick={handleQuitWithoutSave}
+            >
+              Quit without saving
+            </CCButtonOutlined>
+            <CCButton
+              onClick={handleModalSave}
+              sx={{
+                minWidth: 0,
+                padding: '6px 68px',
+                borderRadius: 10,
+                fontSize: 14,
+                fontWeight: 500,
               }}
             >
-              {getSectionName()}
-            </Grid>
-          </Grid>
-          <Grid container xs={12}>
-            {sectionIndex !== 0 && (
-              <Box sx={{ mt: 3 }} className="tabs-container">
-                <Box className="tabs">
-                  {sectionATabs[sectionIndex]?.map((tab, index) => (
-                    <Box
-                      key={index}
-                      className={`${
-                        subSectionIndex === index ? 'selected-tab' : 'tab'
-                      }`}
-                      onClick={() => dispatch(setSubSectionIndex(index))}
-                    >
-                      <Box className="tab-title">{tab.name}</Box>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            )}
-            <Box sx={{ width: '100%' }}>{renderTab()}</Box>
-          </Grid>
+              Save
+            </CCButton>
+          </Stack>
         </Paper>
-      </Grid>
-      <Grid item container xs={3}>
-        <ProjectCompletionProgress sectionIndex={sectionIndex} />
-      </Grid>
-    </Grid>
+      </Modal>
+    </>
   )
 }
 

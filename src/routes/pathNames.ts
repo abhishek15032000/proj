@@ -21,12 +21,18 @@ export const pathNames = {
   VERIFIER_PROFILE_SETUP: '/verifier-profile-setup',
   VERIFIER_PROJECTS: 'verifier-projects',
   MONTHLY_REPORT_UPDATE: '/monthly-report-update',
+  VERIFIER_PROJECTS_LIST: '/verifier-projects-list',
+  VERIFIER_PROJECTS_DETAILS: '/verifier-projects-details',
+  VERIFIER_VERIFY_REPORT: '/verifier-verify-report',
+  ISSUER_WALLET: '/issuer-wallet',
+  TRANSACTION_HISTORY: '/transaction-history',
   REPORT_VIEW_COMMENTS: '/report-view-comments',
 }
 
 export const linkLabels = {
   Dashboard: 'Dashboard',
   Token_Contract: 'Token & Contract',
-  My_Portfolio: 'My Portfolio',
+  // My_Portfolio: 'My Portfolio',
   Marketplace: 'Marketplace',
+  Wallet: 'Wallet',
 }

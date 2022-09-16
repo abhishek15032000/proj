@@ -16,15 +16,19 @@ interface TabSelectorProps {
 
 const TabSelector: FC<TabSelectorProps> = (props) => {
   return (
-    <Box sx={{ width: '100%', marginTop: 3, ...props.sx }}>
+    <Box
+      sx={{ width: '100%', marginTop: 3, ...props.sx }}
+      data-testid="tab-selector-container"
+    >
       <Tabs
         value={props.tabIndex}
         indicatorColor="primary"
         aria-label="secondary tabs example"
-        TabIndicatorProps={{style: {background: Colors.darkGreen }}}
+        TabIndicatorProps={{ style: { background: Colors.darkGreen } }}
       >
         {props.tabArray?.map((tab, index) => (
           <Tab
+            data-testid="tab-selector-tab"
             sx={{ textTransform: 'unset', height: '50px', width: '80px' }}
             key={index}
             value={index + 1}

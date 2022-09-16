@@ -9,6 +9,7 @@ import {
   setCurrentProjectDetailsUUID,
   setSectionIndex,
   setSubSectionIndex,
+  setIsApiCalled,
 } from '../redux/Slices/issuanceDataCollection'
 import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice'
 import { store } from '../redux/store'
@@ -265,7 +266,7 @@ export const moveToNextSection = async (
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -297,9 +298,9 @@ export const moveToNextSection = async (
         technicalDescription === '' ||
         operationalDetails === '' ||
         technicalDescriptionImage.length === 0 ||
-        majorShutDownImage === 0 ||
-        implementationMilestoneImage === 0 ||
-        projectTimelineImage === 0
+        majorShutDownImage.length === 0 ||
+        implementationMilestoneImage.length === 0 ||
+        projectTimelineImage.length === 0
       ) {
         console.log('Code Reachable')
         return
@@ -373,7 +374,7 @@ export const moveToNextSection = async (
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -428,6 +429,7 @@ export const moveToNextSection = async (
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
     } finally {
       dispatch(setLoading(false))
+      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -509,7 +511,7 @@ export const moveToNextSection = async (
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -672,14 +674,14 @@ export const moveToNextSection = async (
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setIsApiCalled(true))
     }
   }
 }
 
 const getProjectDetails = async (projectID: string) => {
   try {
-    dispatch(setLoading(true))
+    //dispatch(setLoading(true))
     const res = await dataCollectionCalls.getProjectById(projectID)
     if (res?.success && res?.data) {
       const modifiedRows = addSectionPercentages(res?.data)

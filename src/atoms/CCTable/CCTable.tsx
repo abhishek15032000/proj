@@ -72,7 +72,7 @@ const CCTable = (props: CCTableProps) => {
           aria-label="customized table"
         >
           <TableHead>
-            <TableRow>
+            <TableRow data-testid={'cc-table-heading'}>
               {props?.headings &&
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
@@ -86,7 +86,7 @@ const CCTable = (props: CCTableProps) => {
             {tableRowData &&
               tableRowData?.length > 0 &&
               tableRowData.map((row: any, index: number) => (
-                <StyledTableRow key={index}>
+                <StyledTableRow key={index} data-testid={'cc-table-row'}>
                   {row?.length > 0 &&
                     row.map((tdValue: any, tdIndex: number) => (
                       <StyledTableCell key={tdIndex} align="center">

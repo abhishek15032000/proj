@@ -30,6 +30,7 @@ import {
 } from '../../../redux/Slices/MonthlyReport/sectionCMonthly'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionC1 = () => {
   const dispatch = useAppDispatch()
@@ -78,8 +79,16 @@ const SectionC1 = () => {
     ({ sectionCMonthly }) => sectionCMonthly.datasMonitored,
     shallowEqual
   )
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>

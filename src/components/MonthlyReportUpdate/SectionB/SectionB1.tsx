@@ -2,7 +2,13 @@
 import React, { useState, useEffect } from 'react'
 
 // MUI Imports
-import { Button, Grid, TextareaAutosize, Typography } from '@mui/material'
+import {
+  Button,
+  Grid,
+  TextareaAutosize,
+  Typography,
+  Stack,
+} from '@mui/material'
 import { Box } from '@mui/system'
 
 // Local Imports
@@ -28,7 +34,7 @@ import {
   setTechnicalDescription,
   setTechnicalDescriptionImage,
 } from '../../../redux/Slices/MonthlyReport/sectionBMonthly'
-
+import Spinner from '../../../atoms/Spinner'
 // Functional Imports
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
@@ -102,8 +108,15 @@ const SectionB1 = () => {
     ({ sectionBMonthly }) => sectionBMonthly.projectTimelineImage,
     shallowEqual
   )
-
-  return (
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>

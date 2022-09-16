@@ -33,7 +33,7 @@ interface VerifierReportListProps {
 
 const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [verifierReports, setVerifierReports] = useState<any>([])
-  const [showTable, setShowTable] = useState<boolean>(false)
+  const [showTable, setShowTable] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
   const navigate = useNavigate()

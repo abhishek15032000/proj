@@ -25,6 +25,7 @@ import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import sampleD2 from '../../../assets/Images/sample-d2.png'
 import sampleD3 from '../../../assets/Images/sample-d3.png'
 import sampleD4 from '../../../assets/Images/sample-d4.png'
+import Spinner from '../../../atoms/Spinner'
 const SectionD2: FC = () => {
   const dispatch = useAppDispatch()
   const data_and_parameter_monitored_ExPost = useAppSelector(
@@ -52,8 +53,16 @@ const SectionD2: FC = () => {
       dispatch(setAttachExPostTable(attach_ex_ante_table))
     }
   }, [])
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
 
-  return (
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid
       container
       sx={{ width: '100%', mt: 3 }}

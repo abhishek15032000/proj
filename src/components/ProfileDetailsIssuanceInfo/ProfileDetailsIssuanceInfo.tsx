@@ -5,6 +5,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { Box, Button, Grid, Paper, Typography } from '@mui/material'
 import TodayIcon from '@mui/icons-material/Today'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
+
 // Local Imports
 import IssuanceInfoList from './IssuanceInfoList'
 import VerifierReport from './VerifierReport'
@@ -44,7 +45,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   const [tabIndex, setTabIndex] = useState(1)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
 
-  console.log('currentProjectDetails', currentProjectDetails)
   useEffect(() => {
     if (currentProjectDetails) {
       const issuanceInfoTabData = [

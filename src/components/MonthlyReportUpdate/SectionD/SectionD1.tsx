@@ -22,6 +22,7 @@ import {
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import sampleAnteTable from '../../../assets/Images/sample-d1.png'
+import Spinner from '../../../atoms/Spinner'
 
 const SectionD1: FC = () => {
   const dispatch = useAppDispatch()
@@ -47,7 +48,15 @@ const SectionD1: FC = () => {
       dispatch(setAttachExAnteTable(attach_ex_ante_table))
     }
   }, [])
-  return (
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Grid
       container
       sx={{ width: '100%', mt: 3 }}

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 
 // MUI Imports
-import { Box, Grid, TextareaAutosize, Typography } from '@mui/material'
+import { Box, Grid, Stack, TextareaAutosize, Typography } from '@mui/material'
 
 // Redux Imports
 import { shallowEqual } from 'react-redux'
@@ -19,7 +19,7 @@ import {
 // Local Components
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
-
+import Spinner from '../../../atoms/Spinner'
 const SectionB2 = () => {
   const dispatch = useAppDispatch()
 
@@ -79,8 +79,15 @@ const SectionB2 = () => {
     ({ sectionBMonthly }) => sectionBMonthly.changesToStart,
     shallowEqual
   )
-
-  return (
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+  return loading === true ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
     <Box>
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
