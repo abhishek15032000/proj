@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/material'
+import { Grid, Skeleton } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
@@ -73,7 +73,10 @@ const ProjectsStats = () => {
           mt: 3,
           paddingBottom: 2,
         }}
-        style={{ marginLeft: -10, marginRight: -10 }}
+        style={{
+          marginLeft: -10,
+          //  marginRight: -10
+        }}
         className="stats-row"
         id="stats-row"
       >
@@ -108,36 +111,40 @@ const ProjectsStats = () => {
     )
   }
 
-  return loading === true ? (
-    renderSkeleton()
-  ) : (
-    <>
-      <Box
-        ref={scrollRef}
-        sx={{
-          mt: 3,
-          paddingBottom: 2,
-        }}
-        style={{ marginLeft: -10, marginRight: -10 }}
-        className="stats-row"
-        id="stats-row"
-      >
-        {stats &&
-          stats.length &&
-          stats?.map((stat, index) => (
-            <Box key={index} className="stats-container">
-              <Box className="content-container">
-                <Box className="stats-title">{stat?.title}</Box>
-                <Box className="stats-value">{stat?.value}</Box>
-              </Box>
-              <Box
-                className="colored-div"
-                sx={{ bgcolor: getColoredDivColor(index) }}
-              ></Box>
-            </Box>
-          ))}
-      </Box>
-    </>
+  return (
+    <Grid>
+      {loading === true ? (
+        renderSkeleton()
+      ) : (
+        <>
+          <Box
+            ref={scrollRef}
+            sx={{
+              mt: 3,
+              paddingBottom: 2,
+            }}
+            style={{ marginLeft: -10 }}
+            className="stats-row"
+            id="stats-row"
+          >
+            {stats &&
+              stats.length &&
+              stats?.map((stat, index) => (
+                <Box key={index} className="stats-container">
+                  <Box className="content-container">
+                    <Box className="stats-title">{stat?.title}</Box>
+                    <Box className="stats-value">{stat?.value}</Box>
+                  </Box>
+                  <Box
+                    className="colored-div"
+                    sx={{ bgcolor: getColoredDivColor(index) }}
+                  ></Box>
+                </Box>
+              ))}
+          </Box>
+        </>
+      )}
+    </Grid>
   )
 }
 

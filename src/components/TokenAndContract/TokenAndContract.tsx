@@ -22,7 +22,7 @@ const TokenAndContract = () => {
           Token & Contracts
         </Typography>
       </Grid>
-      <Grid item xs={11}>
+      <Grid item xs={12} sx={{ marginRight: 100 }}>
         <ProjectsStats />
       </Grid>
       <Grid item xs={12} sx={{ mt: 4 }}>

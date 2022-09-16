@@ -71,20 +71,11 @@ const Login = () => {
         }
         if (res?.data?.captchaVerify) {
           dispatch(loginAction(res?.data)) //calling action from redux
-          if (res.data.type === 'ISSUER') {
+          if (res.data.type === 'ISSUER' || res.data.type === 'VERIFIER') {
             navigate(pathNames.DASHBOARD, { replace: true })
-          } else if (res.data.type === 'VERIFIER') {
-            USER.getUserInfo(res?.data?.uuid).then(
-              (response) => {
-                if (response?.data?.data?.organisationName === '') {
-                  navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
-                } else {
-                  navigate(pathNames.VERIFIER_PROJECTS, { replace: true })
-                }
-              }
-            )
           }
-          // window.location.reload()
+          
+          window.location.reload()
         } else {
           alert(res?.data)
         }
