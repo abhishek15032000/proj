@@ -6,6 +6,7 @@ import { Grid, Box, Typography, Paper, Chip } from '@mui/material'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import { Colors } from '../../theme'
+import moment from 'moment'
 
 // Local Imports
 
@@ -30,17 +31,22 @@ const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
     >
       <Box>
         <Typography sx={{ fontSize: 24, fontWeight: 400 }}>
-          3.66 MW poultry litter based power generation project by Raus Power in
-          India
+          {props.data?.company_name}
         </Typography>
 
-        <Chip
-          sx={{
-            borderRadius: '8px',
-            backgroundColor: Colors.lightGreenBackground,
-          }}
-          label="Agricultural Land Management (ALM)"
-        />
+        {props.data?.type.map((item: any, index: number) => (
+          <Chip
+            key={index}
+            sx={{
+              borderRadius: '8px',
+              mr: 2,
+              mt: 1,
+              mb: 1,
+              backgroundColor: Colors.lightGreenBackground,
+            }}
+            label={item}
+          />
+        ))}
 
         <Box sx={{ alignItems: 'center', display: 'flex', mb: 1, mt: 2 }}>
           <CalendarMonthIcon
@@ -51,7 +57,7 @@ const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
             }}
           />
           <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-            Started on DD/MM/YYYY
+            Started on {moment(props.data?.createdAt).format(`DD/MM/YY`)}
           </Typography>
         </Box>
 
@@ -64,7 +70,7 @@ const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
             }}
           />
           <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-            6430 Hixson Pike, Hixson, TN 37343, USA
+            {props.data?.location}
           </Typography>
         </Box>
       </Box>
@@ -78,7 +84,7 @@ const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
         }}
       >
         <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-          206.54 SqKm
+          {props.data?.area} SqKm
         </Typography>
         <Typography sx={{ fontSize: 14, fontWeight: 400 }}>Area</Typography>
       </Box>

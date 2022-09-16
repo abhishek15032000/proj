@@ -24,6 +24,12 @@ import MonthlyReportUpdate, {
   setCurrentProjectDetails,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import { useAppDispatch } from '../../hooks/reduxHooks'
+
+import BlockchainCalls from '../../blockchain/Blockchain'
+import { getLocalItem } from '../../utils/Storage'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+
 interface VerifierReportListProps {
   //data?: any
   //selectedVerifiersData?: []
@@ -32,6 +38,11 @@ interface VerifierReportListProps {
 }
 
 const VerifierReport: FC<VerifierReportListProps> = (props) => {
+  const wallet_address = useAppSelector(
+    ({ wallet }) => wallet.accountAddress,
+    shallowEqual
+  )
+
   const [verifierReports, setVerifierReports] = useState<any>([])
   const [showTable, setShowTable] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
@@ -195,21 +206,42 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       verifier_address: confirmedVerifier?.verifier_address,
       verifier_number: confirmedVerifier?.verifier_number,
     }
-
     verifierCalls
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          if (res?.data.acknowledged) {
-            alert('successfully confirmed Verifier')
-            getVerifierByProject()
-          }
+          alert('successfully confirmed Verifier')
+          getVerifierByProject()
+          createProjectContractCall(res?.data?.fileHash)
         }
       })
       .catch((err) => console.log(err))
       .finally(() => {
         setLoading(false)
       })
+  }
+
+  const createProjectContractCall = async (fileHash: string) => {
+    const { email, uuid } = getLocalItem('userDetails')
+    try {
+      const contractRes = await BlockchainCalls.contract_caller()
+      await contractRes.estimateGas.createProject(uuid, fileHash)
+      const createProjectRes = await contractRes.createProject(uuid, fileHash)
+      const toPassParam = [wallet_address, email]
+      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
+      if (createProjectRes) {
+        const updateTxPayload = {
+          uuid: uuid,
+          tx: {
+            tx_id: createProjectRes?.hash,
+            tx_data: createProjectRes,
+          },
+        }
+        await dataCollectionCalls.updateTx(updateTxPayload)
+      }
+    } catch (e) {
+      console.log('Error in contract_caller().createProject call ~ ', e)
+    }
   }
 
   return (

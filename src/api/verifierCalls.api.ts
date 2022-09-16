@@ -1,5 +1,5 @@
-import { AxiosHelper } from "./configs/AxiosHelper"
-import { URL_PATH } from "./configs/Endpoints"
+import { AxiosHelper } from './configs/AxiosHelper'
+import { URL_PATH } from './configs/Endpoints'
 
 export const verifierCalls = {
   createVerifier: (payload: any) => {
@@ -42,12 +42,34 @@ export const verifierCalls = {
     })
   },
   submitVerifier: (payload: any) => {
+    return AxiosHelper(URL_PATH.verifier.submitVerifier, 'POST', payload).then(
+      (res) => {
+        return res
+      }
+    )
+  },
+  getReportByProjectId: (project_uuid: any) => {
     return AxiosHelper(
-      URL_PATH.verifier.submitVerifier,
+      URL_PATH.project.getReportByProjectId + `?project_uuid=${project_uuid}`,
+      'GET'
+    ).then((res) => {
+      return res?.data
+    })
+  },
+  getPDFHash: (payload: any) => {
+    return AxiosHelper(URL_PATH.verifier.getPDFHash, 'POST', payload).then(
+      (response: any) => {
+        return response
+      }
+    )
+  },
+  verifyPDFAndMintToken: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.verifyPDFAndMintToken,
       'POST',
       payload
-    ).then((res) => {
-      return res
+    ).then((response: any) => {
+      return response
     })
   },
 }

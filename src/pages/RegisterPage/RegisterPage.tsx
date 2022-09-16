@@ -163,7 +163,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                   name="firstName"
                   //onChange={handleChange}
                   onChange={(e) => setLastName(e.target.value)}
-                  defaultValue={values?.firstName}
+                  defaultValue={values?.lastName}
                   sx={{ background: '#F5F5F5' }}
                 />
               </Grid>
@@ -184,7 +184,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <CCSelectBox
               //fullWidth
               //variant="outlined"
-              label="Particpant Type"
+              label="Participant Type"
               items={typeOptions}
               onChange={(e) => setSelectedRole(e.target.value)}
               sx={{ background: '#F5F5F5' }}

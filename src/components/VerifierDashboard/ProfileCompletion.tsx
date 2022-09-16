@@ -16,7 +16,9 @@ import CheckIcon from '@mui/icons-material/Check'
 
 // Local Imports
 
-interface ProfileCompletionProps {}
+interface ProfileCompletionProps {
+  value?: any
+}
 
 const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
   return (
@@ -49,7 +51,7 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={40}
+        value={props.value}
       />
 
       <Typography
@@ -75,7 +77,7 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
             Profile
           </Typography>
           <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#BA1B1B' }}>
-            60% Complete
+            {props.value}% Complete
           </Typography>
         </Box>
       </Box>

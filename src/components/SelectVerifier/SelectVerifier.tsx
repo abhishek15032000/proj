@@ -87,9 +87,8 @@ const SelectVerifier = () => {
           project_status: 1,
           verifier_id: verifierDetials?._id,
           verifier_name: verifierDetials?.fullName,
-          //keeping verifier address & number as static, once verifier detials are filled when creating verifier, will make it dynamic
-          verifier_address: 'verifierDetials?.location',
-          verifier_number: 'verifierDetials?.contact',
+          verifier_address: verifierDetials?.address,
+          verifier_number: verifierDetials?.phone.toString(),
         }
       }
     })

@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography, Chip } from '@mui/material'
@@ -12,35 +12,29 @@ import { VerifierProjectDetailsProps } from './VerifierProjectDetails.interface'
 import VitalProjectDetails from './VitalProjectDetails'
 import ReportsTable from './ReportsTable'
 import { useNavigate } from 'react-router-dom'
-
-const data = {
-  issuer_details: {
-    user_id: '630765b218466dcce1770a93',
-    name: 'Chaturvedi',
-    email: 'swapnil@chainflux.com',
-  },
-  verifier_details: {
-    user_id: '630ca4c98c7365e61871f56c',
-    name: 'test1 verifier',
-    email: 'test@verifier.com',
-  },
-  status: 0,
-  _id: '630caa181e34bff3c665bb09',
-  uuid: '024c7b07-8c26-491c-bf8e-493486c12da6',
-  project_id: '296149c9-9284-46a7-a35f-079a9b417143',
-  current_month: 'string',
-  next_date: '2022-08-29T11:33:37.910Z',
-  ghg_reduction_explanation: 'string',
-  file_attach: ['string'],
-  signature_hash: 'string',
-  signer: 'string',
-  createdAt: '2022-08-29T11:59:20.593Z',
-  updatedAt: '2022-08-29T11:59:20.593Z',
-  __v: 0,
-}
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { verifierCalls } from '../../api/verifierCalls.api'
 
 const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
   const navigate = useNavigate()
+  const [projectDetails, setProjectDetails] = useState()
+  const [reportDetails, setReportDetails]: any = useState()
+
+  useEffect(() => {
+    dataCollectionCalls
+      .getProjectById('5c00aacd-8d5f-4e4a-b190-f394c6e56f6d')
+      .then((response) => {
+        setProjectDetails(response.data)
+      })
+
+    verifierCalls
+      .getReportByProjectId('e8712a5e-3d13-4619-9bc7-930401044ebb')
+      .then((response) => {
+        const tempObj = [response.data.data.report]
+
+        // setReportDetails(tempObj)
+      })
+  }, [])
 
   return (
     <Box sx={{ p: 0 }}>
@@ -51,18 +45,44 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader
-            title="Project Details"
-            onClick={() => navigate(-1)}
-          />
+          <BackHeader title="Project Details" onClick={() => navigate(-1)} />
         </Grid>
 
-        <VitalProjectDetails data={data} />
-
-        <ReportsTable data={data} />
+        <VitalProjectDetails data={projectDetails} />
+        <ReportsTable data={[obj]} />
       </Grid>
     </Box>
   )
 }
 
 export default VerifierProjectDetails
+
+const obj = {
+  issuer_details: {
+    user_id: '62f2542f0ebdffbf5e09925a',
+    name: 'Chaturvedi',
+    email: 'swapnil@chainflux.com',
+  },
+  verifier_details: {
+    user_id: '62c5829aa3bc6ba32590f950',
+    name: 'string',
+    email: 'shine@verifier.com',
+  },
+  sale: 0,
+  _id: '63172de61c56090ec4ad1a83',
+  uuid: '1fd21c4c-ad93-48ab-b302-8f4d071a5ea6',
+  project_id: 'e8712a5e-3d13-4619-9bc7-930401044ebb',
+  projectId: '6315d20f88fa02971e259594',
+  current_month: '2022-09-06T09:02:10.231Z',
+  quantity: 10,
+  next_date: '2022-09-06T09:02:10.231Z',
+  ghg_reduction_explanation: 'string',
+  file_attach: ['string'],
+  signature_hash:
+    '0x75f5331d6567cb30d20088155d3cbb6c3f3e9e34519682a0c21317ba5e7232c50bf6c6c929909a63709f5a6e688061678044205c12c6e2c0fc673972030f3ca81b',
+  signer: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+  status: 0,
+  createdAt: '2022-09-06T11:24:22.549Z',
+  updatedAt: '2022-09-06T11:24:22.549Z',
+  __v: 0,
+}

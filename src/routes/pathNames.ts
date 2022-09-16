@@ -27,6 +27,7 @@ export const pathNames = {
   ISSUER_WALLET: '/issuer-wallet',
   TRANSACTION_HISTORY: '/transaction-history',
   REPORT_VIEW_COMMENTS: '/report-view-comments',
+  BUYER_ONBOARDING: '/buyer-onboarding',
 }
 
 export const linkLabels = {

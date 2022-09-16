@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Chip, Grid, Paper, Typography } from '@mui/material'
@@ -14,6 +14,18 @@ import TabSelector from '../../atoms/TabSelector/TabSelector'
 import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { Colors } from '../../theme'
+import moment from 'moment'
+
+const headings = [
+  'Submitted On',
+  'Next Submission date',
+  'Report',
+  'Report Version',
+  'Status',
+  'Conclusive Report',
+  'CO2e Sequestered',
+  'Action',
+]
 
 interface ReportsTableProps {
   data?: any
@@ -21,6 +33,68 @@ interface ReportsTableProps {
 
 const ReportsTable: FC<ReportsTableProps> = (props) => {
   const [tabIndex, setTabIndex] = useState(1)
+  const [rows, setRows] = useState([])
+
+  useEffect(() => {
+    const reportsData: any = []
+
+    props.data.map((item: any, index: any) => {
+
+      reportsData.push([
+        moment(item.createdAt).format('DD/MM/YYYY'),
+        moment(item.next_date).format('DD/MM/YYYY'),
+        <Box
+          key={'1'}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 500,
+              ml: 1,
+              textAlign: 'left',
+            }}
+          >
+            Project Issuance
+          </Typography>
+          <ArticleIcon
+            style={{ color: Colors.lightPrimary1, marginRight: 2 }}
+          />
+          <DownloadIcon style={{ color: Colors.lightPrimary1 }} />
+        </Box>,
+        'V1.0',
+        <ApprovalChip key={'1'} />,
+        <Box
+          key={'1'}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 500,
+              ml: 1,
+              textAlign: 'left',
+            }}
+          >
+            Conclusive Report
+          </Typography>
+          <ArticleIcon style={{ color: Colors.lightPrimary1 }} />
+        </Box>,
+        item.quantity,
+        <TextButton key={'1'} sx={{ width: '90px' }} title="Verify" />,
+      ])
+    })
+
+    setRows(reportsData)
+  }, [props])
 
   return (
     <Paper
@@ -64,58 +138,3 @@ const ApprovalChip: FC<ApprovalChipProps> = (props) => {
 }
 
 interface ApprovalChipProps {}
-
-const rowItem = [
-  '28 July 2021',
-  '28 Jun 2021',
-  <Box
-    key={'1'}
-    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-  >
-    <Typography
-      sx={{
-        fontSize: 14,
-        fontWeight: 500,
-        ml: 1,
-        textAlign: 'left',
-      }}
-    >
-      Project Issuance
-    </Typography>
-    <ArticleIcon style={{ color: Colors.lightPrimary1, marginRight: 2 }} />
-    <DownloadIcon style={{ color: Colors.lightPrimary1 }} />
-  </Box>,
-  'V1.0',
-  <ApprovalChip key={'1'} />,
-  <Box
-    key={'1'}
-    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-  >
-    <Typography
-      sx={{
-        fontSize: 14,
-        fontWeight: 500,
-        ml: 1,
-        textAlign: 'left',
-      }}
-    >
-      Conclusive Report
-    </Typography>
-    <ArticleIcon style={{ color: Colors.lightPrimary1 }} />
-  </Box>,
-  '423',
-  <TextButton key={'1'} sx={{ width: '90px' }} title="Verify" />,
-]
-
-const rows = [rowItem, rowItem, rowItem, rowItem]
-
-const headings = [
-  'Submitted On',
-  'Next Submission date',
-  'Report',
-  'Report Version',
-  'Status',
-  'Conclusive Report',
-  'CO2e Sequestered',
-  'Action',
-]

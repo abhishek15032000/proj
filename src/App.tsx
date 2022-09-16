@@ -27,12 +27,6 @@ const App: FC<AppProps> = () => {
   const localloggedIn = getLocalItem('loggedIn')
   const location = useLocation()
 
-  useEffect(() => {
-    // Use this to access JWT Token
-    console.log('getLocalItem')
-    console.log(JSON.stringify(getLocalItem('userDetails'), null, 4))
-  }, [])
-
   // List of pages exempt from side menu
   const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
 
