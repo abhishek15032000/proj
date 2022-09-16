@@ -20,6 +20,7 @@ import TokenAndContractPage from '../pages/TokenAndContractPage/TokenAndContract
 import VerifierDashboard from '../pages/VerifierDashboard'
 import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
+import MonthlyReportUpdate from '../pages/MonthlyReportUpdate'
 import VerifierProjectsList from '../pages/VerifierProjectsList'
 import VerifierProjectDetails from '../pages/VerifierProjectDetails'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
@@ -148,6 +149,12 @@ export const privateRouteComponents = [
   {
     path: pathNames.TRANSACTION_HISTORY,
     component: TransactionHistory,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.MONTHLY_REPORT_UPDATE,
+    component: MonthlyReportUpdate,
+
     roles: [ROLES.ISSUER],
   },
   {

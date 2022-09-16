@@ -14,40 +14,34 @@ import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setBriefDescription } from '../../../redux/Slices/sectionDSlice'
+import { setBriefDescription } from '../../../redux/Slices/MonthlyReport/sectionDMonthly'
 import Spinner from '../../../atoms/Spinner'
 
 const SectionD3: FC = () => {
   const [showModal, setShowModal] = useState(false)
   const dispatch = useAppDispatch()
-
   const briefDescription = useAppSelector(
-    ({ sectionD }) => sectionD.briefDescription,
+    ({ sectionDMonthly }) => sectionDMonthly.briefDescription,
     shallowEqual
   )
 
   const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-
-  const loading = useAppSelector(
-    ({ newProject }) => newProject.loading,
-    shallowEqual
-  )
-
   useEffect(() => {
-    if (
-      currentProjectDetails &&
-      currentProjectDetails.section_d.step3.completed
-    ) {
+    if (currentProjectDetails.section_d.step3.completed) {
       const { implementation_of_sampling_plan } =
         currentProjectDetails.section_d.step3
 
       dispatch(setBriefDescription(implementation_of_sampling_plan))
     }
-  }, [currentProjectDetails])
+  }, [])
+
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
 
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
@@ -64,7 +58,6 @@ const SectionD3: FC = () => {
       lg={12}
       xl={12}
     >
-      <Typography sx={{ marginTop: '64px' }}></Typography>
       <CCMultilineTextArea
         // aria-label="minimum height"
         label={'Implementation of sampling plan'}

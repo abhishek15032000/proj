@@ -13,16 +13,16 @@ interface NewProjectReducerInterface {
   newProjectUUID: string
 }
 const initialState: NewProjectReducerInterface = {
-  projectName: "",
+  projectName: '',
   projectType: [],
-  projectLocation: "",
+  projectLocation: '',
   startDate: null,
-  projectDuration: "",
-  projectArea: "",
+  projectDuration: '',
+  projectArea: '',
   loading: false,
 
   //Will get from create new project call
-  newProjectUUID: "",
+  newProjectUUID: '',
 }
 const newProject = createSlice({
   name: 'newProject',
@@ -55,6 +55,15 @@ const newProject = createSlice({
   },
 })
 
-export const { setStartDate, setProjectType, setProjectName, setProjectLocation, setProjectDuration, setProjectArea, setNewProjectUUID, setLoading } = newProject.actions
+export const {
+  setStartDate,
+  setProjectType,
+  setProjectName,
+  setProjectLocation,
+  setProjectDuration,
+  setProjectArea,
+  setNewProjectUUID,
+  setLoading,
+} = newProject.actions
 
 export default newProject.reducer

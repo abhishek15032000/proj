@@ -58,6 +58,10 @@ export const URL_PATH = {
     getUsersByOrgType:
       ENDPOINTS.userServiceURL + '/department/getUsersByOrgType?type=',
   },
+  reports: {
+    getReportByProjectId:
+      ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
+  },
   fileupload: {
     getFile: ENDPOINTS.carbonServiceURL + '/fileupload/getFile',
   },
