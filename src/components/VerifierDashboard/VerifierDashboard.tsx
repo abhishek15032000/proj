@@ -28,6 +28,10 @@ const VerifierDashboard = (props: VerifierDashboardProps) => {
         count++
       } 
       
+      if (response?.data?.data?.designation !== '') {
+        count++
+      } 
+
       if (response?.data?.data?.phone !== '') {
         count++
       } 
@@ -44,7 +48,7 @@ const VerifierDashboard = (props: VerifierDashboardProps) => {
         count++
       }
 
-      setValue(Math.round(count/6 * 100))
+      setValue(Math.round(count/7 * 100))
     })
   }, [])
 

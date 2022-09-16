@@ -34,7 +34,7 @@ export const privateRouteComponents = [
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER],
   },
   {
     path: pathNames.TOKEN_CONTRACT,

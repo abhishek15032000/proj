@@ -25,7 +25,7 @@ export const URL_PATH = {
     getIssuerProjectDashboardStats:
       ENDPOINTS.carbonServiceURL + '/project/getIssuerProjectDashboardStats',
     getReportByProjectId:
-      ENDPOINTS.carbonServiceURL + '/project/report/getReportByProjectId',
+      ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
   },
   projectSections: {
     updateProjectSectionA:

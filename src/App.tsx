@@ -29,8 +29,8 @@ const App: FC<AppProps> = () => {
 
   useEffect(() => {
     // Use this to access JWT Token
-    console.log('getLocalItem')
-    console.log(JSON.stringify(getLocalItem('userDetails'), null, 4))
+    // console.log('getLocalItem')
+    // console.log(JSON.stringify(getLocalItem('userDetails'), null, 4))
   }, [])
 
   // List of pages exempt from side menu

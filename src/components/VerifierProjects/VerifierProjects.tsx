@@ -50,8 +50,13 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
   const [loadingStat, setLoadingStat] = useState(false)
 
   useEffect(() => {
-    setLoadingStat(true)
+    loadDashboardData()
+    loadTableData()
+    checkForUserDetails()
+  }, [])
 
+  const loadDashboardData = () => {
+    setLoadingStat(true)
     verifierCalls
       .getVerifierProjectDashboardStats(getLocalItem('userDetails')?.user_id)
       .then((response) => {
@@ -68,9 +73,7 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
       .catch((e) => {
         setLoadingStat(false)
       })
-
-    loadTableData()
-  }, [])
+  }
 
   const loadTableData = () => {
     setLoadingTable(true)
@@ -84,6 +87,32 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
       .catch((e) => {
         setLoadingTable(false)
       })
+  }
+
+  const checkForUserDetails = () => {
+    USER.getUserInfo(getLocalItem('userDetails')?.uuid).then((response) => {
+      const {
+        fullName,
+        email,
+        phone,
+        address,
+        designation,
+        organisationName,
+        website,
+      } = response.data.data
+
+      if (
+        fullName === '' ||
+        email === '' ||
+        phone === '' ||
+        address === '' ||
+        designation === '' ||
+        organisationName === '' ||
+        website === ''
+      ) {
+        navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
+      }
+    })
   }
 
   const updateVerifierStatus = (status: any, data: any) => {

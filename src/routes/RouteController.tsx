@@ -76,17 +76,6 @@ const RouteController = ({ localLoggedIn }: any) => {
           />
         }
       />
-      {/* <Route
-        path={pathNames.VERIFIER_VERIFY_REPORT}
-        element={
-          <PublicRoute
-            roles={[ROLES.ISSUER]}
-            component={VerifierVerifyReport}
-            authenticated={userData}
-            userData={userData}
-          />
-        }
-      /> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
