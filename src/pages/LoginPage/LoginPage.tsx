@@ -14,7 +14,10 @@ import CCInputField from '../../atoms/CCInputField'
 import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
 import LoaderOverlay from '../../components/LoderOverlay'
+import { ROLES } from '../../config/roles.config'
 import { USER } from '../../api/user.api'
+import { setLocalItem } from '../../utils/Storage'
+
 declare let window: any
 
 const Login = () => {
@@ -70,6 +73,10 @@ const Login = () => {
           return
         }
         if (res?.data?.captchaVerify) {
+          const userResponse = await USER.getUsersById(res?.data?.user_id)
+          setLocalItem('userDetails2', userResponse?.data)
+          const profileCompleted = userResponse?.data?.orgName ? true : false
+            setLocalItem('profileCompleted', profileCompleted)
           dispatch(loginAction(res?.data)) //calling action from redux
           if (res.data.type === 'ISSUER' || res.data.type === 'VERIFIER') {
             navigate(pathNames.DASHBOARD, { replace: true })

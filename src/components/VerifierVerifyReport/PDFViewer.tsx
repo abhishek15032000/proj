@@ -12,12 +12,14 @@ import '@react-pdf-viewer/core/lib/styles/index.css'
 
 // Local Imports
 
-interface PDFViewerProps {}
+interface PDFViewerProps {
+  pdfUrl: any
+}
 
 const PDFViewer: FC<PDFViewerProps> = (props) => {
   return (
     <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
-      <Viewer fileUrl={require('../../assets/Documents/dummy2.pdf')} />
+      <Viewer fileUrl={props?.pdfUrl} />
     </Worker>
   )
 }

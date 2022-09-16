@@ -26,6 +26,7 @@ import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import IssuerWallet from '../pages/IssuerWallet'
 import TransactionHistory from '../pages/TransactionHistory'
 import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
+import BuyerOnboarding from '../pages/BuyerOnboarding'
 
 export const privateRouteComponents = [
   {
@@ -102,7 +103,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
   {
     path: pathNames.SELECT_VERIFIER,
@@ -153,5 +154,10 @@ export const privateRouteComponents = [
     path: pathNames.REPORT_VIEW_COMMENTS,
     component: ReportsViewCommentsPage,
     roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.BUYER_ONBOARDING,
+    component: BuyerOnboarding,
+    roles: [ROLES.BUYER],
   },
 ]

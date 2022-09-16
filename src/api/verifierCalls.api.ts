@@ -56,4 +56,20 @@ export const verifierCalls = {
       return res?.data
     })
   },
+  getPDFHash: (payload: any) => {
+    return AxiosHelper(URL_PATH.verifier.getPDFHash, 'POST', payload).then(
+      (response: any) => {
+        return response
+      }
+    )
+  },
+  verifyPDFAndMintToken: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.verifyPDFAndMintToken,
+      'POST',
+      payload
+    ).then((response: any) => {
+      return response
+    })
+  },
 }
