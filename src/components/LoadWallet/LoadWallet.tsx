@@ -151,6 +151,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   const updateUserWithShineKey = async (shineKey: string) => {
     try {
       const user_data = getLocalItem('userDetails2')
+      user_data.phone = user_data.phone.toString()
       delete user_data._id
       await USER.updateUserInfo({
         ...user_data,
