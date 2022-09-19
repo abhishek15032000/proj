@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
 import CheckIcon from '@mui/icons-material/Check'
+import { Colors } from '../../theme'
 
 // Local Imports
 
@@ -39,13 +40,12 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
         sx={{
           fontSize: 14,
           fontWeight: 500,
-          color: '#F15D5F',
+          color: props.value !== 100 ? '#F15D5F' : Colors.textColorDarkGreen,
           marginTop: 2,
           marginBottom: 0.5,
-
         }}
       >
-        Incomplete!
+        {props.value !== 100 ? 'Incomplete!' : 'Complete'}
       </Typography>
 
       <LinearProgress
@@ -55,7 +55,13 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
       />
 
       <Typography
-        sx={{ fontSize: 14, fontWeight: 400, marginTop: 1, marginBottom: 2, mt: 2, }}
+        sx={{
+          fontSize: 14,
+          fontWeight: 400,
+          marginTop: 1,
+          marginBottom: 2,
+          mt: 2,
+        }}
       >
         Complete your profile setup!
       </Typography>
@@ -76,7 +82,14 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
           <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
             Profile
           </Typography>
-          <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#BA1B1B' }}>
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 400,
+              color:
+                props.value !== 100 ? '#BA1B1B' : Colors.textColorDarkGreen,
+            }}
+          >
             {props.value}% Complete
           </Typography>
         </Box>

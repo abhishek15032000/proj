@@ -37,7 +37,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       setAddress(response?.data?.data?.address)
       setDesignation(response?.data?.data?.designation)
       setOrganisationName(response?.data?.data?.organisationName)
-      setWebsite(response?.data?.data?.organisationName)
+      setWebsite(response?.data?.data?.website)
     })
   }, [])
 
@@ -68,12 +68,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       designation: designation,
     }
 
-    // console.log('payload')
-    // console.log(JSON.stringify(payload, null, 4))
-
     USER.updateUserInfo(payload)
       .then((response) => {
-        navigate(pathNames.VERIFIER_PROJECTS)
+        navigate(pathNames.DASHBOARD, { replace: true })
         setLoading(false)
       })
       .catch((e) => {

@@ -44,11 +44,15 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     ({ wallet }) => wallet.isConnected,
     shallowEqual
   )
+  const wallet = useAppSelector(
+    ({ wallet }) => wallet,
+    shallowEqual
+  )
 
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState('')
   const [selectMonth, setSelectMonth] = useState(new Date())
-  const [nextSubmissionDate, setNextSubmissionDate] = useState('')
+  const [nextSubmissionDate, setNextSubmissionDate] = useState(new Date())
   const [relevantDocs, setRelevantDocs]: any = useState([])
   const [nonce, setNonce] = useState(1)
   const [loading, setLoading] = useState(false)

@@ -140,7 +140,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ),
           <ChevronRightIcon
             key={index}
-            onClick={() => navigate(pathNames.VERIFIER_PROJECTS_DETAILS)}
+            onClick={() =>
+              navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                state: { project_uuid: item.project_id.uuid },
+              })
+            }
           />,
         ])
       }
@@ -180,7 +184,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             <TextButton
               key={index}
               sx={{ width: '90px' }}
-              onClick={() => navigate(pathNames.VERIFIER_VERIFY_REPORT)}
+              onClick={() =>
+                navigate(pathNames.VERIFIER_VERIFY_REPORT, {
+                  state: {
+                    project: item?.project_id,
+                    pdf: item?.project_id?.project_pdf,
+                  },
+                })
+              }
               title="Verify"
             />
           ) : (
@@ -188,7 +199,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ),
           <ChevronRightIcon
             key={index}
-            onClick={() => navigate(pathNames.VERIFIER_PROJECTS_DETAILS)}
+            onClick={() =>
+              navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                state: { project_uuid: item.project_id.uuid },
+              })
+            }
           />,
         ])
       }
