@@ -16,7 +16,7 @@ import { useIdleTimer } from 'react-idle-timer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from './routes/pathNames'
 
-let isExempt = false
+const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
 
 type AppProps = {
   appName?: string
@@ -27,22 +27,15 @@ const App: FC<AppProps> = () => {
   const localloggedIn = getLocalItem('loggedIn')
   const location = useLocation()
 
-  // List of pages exempt from side menu
-  const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
+  const [showDrawer, setshowDrawer] = useState(true)
 
-  let count = 0
-
-  drawerExemptList.map((item) => {
-    if (item === location.pathname) {
-      count++
+  useEffect(() => {
+    if (drawerExemptList.includes(location.pathname)) {
+      setshowDrawer(false)
+    } else {
+      setshowDrawer(true)
     }
-  })
-
-  if (count > 0) {
-    isExempt = true
-  } else {
-    isExempt = false
-  }
+  }, [location.pathname])
 
   const onPrompt = () => {
     // Fire a Modal Prompt
@@ -136,12 +129,12 @@ const App: FC<AppProps> = () => {
     <>
       {/* For using mui DatePicker */}
       <LocalizationProvider dateAdapter={AdapterMoment}>
-        {userData && !isExempt && (
+        {userData && showDrawer && (
           <AppDrawer>
             <RouteController />
           </AppDrawer>
         )}
-        {userData && isExempt && (
+        {userData && !showDrawer && (
           // <AppDrawer>
           <RouteController />
           // </AppDrawer>
