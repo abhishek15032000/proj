@@ -44,7 +44,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   )
 
   const [verifierReports, setVerifierReports] = useState<any>([])
-  const [showTable, setShowTable] = useState<boolean>(true)
+  const [showTable, setShowTable] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
   const navigate = useNavigate()
@@ -61,8 +61,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .getAllMonthlyData(props?.currentProjectUUID)
       .then((res: any) => {
         if (res?.success) {
-          const modifiedRows = res?.data
-
+          const modifiedRows = res?.data?.record
+          console.log('modifiedRows', res)
           const rows =
             modifiedRows &&
             modifiedRows.map((i: any, index: number) => {
@@ -277,14 +277,15 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
         {showTable ? (
-          <Grid item xs={12}>
-            <Box
+          <>
+            <Grid
+              item
+              xs={12}
               sx={{
-                flex: 'display',
-                flexDirection: 'row',
+                display: 'flex',
                 justifyContent: 'space-between',
+                flexDirection: 'row',
                 alignItems: 'center',
-                width: '100%',
               }}
             >
               <Typography
@@ -298,10 +299,11 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 sx={{
                   backgroundColor: '#F3BA4D',
                   textTransform: 'none',
-                  width: '260px',
+                  width: '150px',
                   borderRadius: '100px',
 
-                  padding: '10px 24px 10px 16px',
+                  padding: '10px ',
+                  fontSize: '12px',
                 }}
                 startIcon={<AddIcon style={{ color: '#005046' }} />}
                 onClick={() =>
@@ -310,9 +312,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
               >
                 Add Monthly Data
               </CCButton>
-            </Box>
+            </Grid>
             <CCTable headings={headings} rows={monthlyReportsList} />
-          </Grid>
+          </>
         ) : (
           <Box
             sx={{

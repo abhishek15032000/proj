@@ -1,1 +1,1 @@
-export interface DashboardPageProps { }
+export interface DashboardPageProps {}

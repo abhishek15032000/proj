@@ -28,6 +28,7 @@ import IssuerWallet from '../pages/IssuerWallet'
 import TransactionHistory from '../pages/TransactionHistory'
 import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
 import BuyerOnboarding from '../pages/BuyerOnboarding'
+import OrganisationalDetails from '../pages/OrganisationalDetails'
 
 export const privateRouteComponents = [
   {
@@ -165,6 +166,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.BUYER_ONBOARDING,
     component: BuyerOnboarding,
+    roles: [ROLES.BUYER],
+  },
+  {
+    path: pathNames.ORGANISATIONAL_DETAILS,
+    component: OrganisationalDetails,
     roles: [ROLES.BUYER],
   },
 ]
