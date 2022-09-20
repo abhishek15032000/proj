@@ -228,11 +228,11 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
 
     try {
       setContractCallLoading(true)
+      const toPassParam = [wallet_address, email]
+      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
       const contractRes = await BlockchainCalls.contract_caller()
       await contractRes.estimateGas.createProject(uuid, fileHash)
       const createProjectRes = await contractRes.createProject(uuid, fileHash)
-      const toPassParam = [wallet_address, email]
-      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
       if (createProjectRes) {
         const updateTxPayload = {
           uuid: uuid,
@@ -257,9 +257,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           Verifiers Selected
         </Typography>
       </Grid>
-      {loading ? <LoaderOverlay /> : null}
+      {/* {loading ? <LoaderOverlay /> : null} */}
       <Grid item xs={12}>
-        {/* {loading === true ? (
+        {loading === true ? (
           <Stack
             alignItems="center"
             justifyContent="center"
@@ -267,20 +267,20 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           >
             <Spinner />
           </Stack>
-        ) : ( */}
-        <Grid container rowSpacing={3}>
-          {verifierReports &&
-            verifierReports?.length > 0 &&
-            verifierReports?.map((verifier: any, index: number) => (
-              <Grid item key={index} xs={12}>
-                <VerifierReportListItem
-                  data={verifier}
-                  updateVerifierAPI={updateVerifier}
-                />
-              </Grid>
-            ))}
-        </Grid>
-        {/* )} */}
+        ) : (
+          <Grid container rowSpacing={3}>
+            {verifierReports &&
+              verifierReports?.length > 0 &&
+              verifierReports?.map((verifier: any, index: number) => (
+                <Grid item key={index} xs={12}>
+                  <VerifierReportListItem
+                    data={verifier}
+                    updateVerifierAPI={updateVerifier}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+        )}
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
         {showTable ? (

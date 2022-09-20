@@ -50,13 +50,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     ({ wallet }) => wallet.isConnected,
     shallowEqual
   )
-  const wallet = useAppSelector(
-    ({ wallet }) => wallet,
-    shallowEqual
-  )
+  const wallet = useAppSelector(({ wallet }) => wallet, shallowEqual)
 
   const [explain, setExplain] = useState('')
-  const [quantity, setQuantity] = useState('')
+  const [quantity, setQuantity] = useState<null | number>(null)
   const [selectMonth, setSelectMonth] = useState(new Date())
   const [nextSubmissionDate, setNextSubmissionDate] = useState(new Date())
   const [relevantDocs, setRelevantDocs]: any = useState([])
@@ -130,9 +127,13 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   }
 
   const getSignatureHash = async () => {
+    let quantityToPass
+    if (quantity) {
+      quantityToPass = quantity * Math.pow(10, 18)
+    }
     const signatureHashPayload = {
       recipient: issuerShineKey,
-      _amount: Number(quantity),
+      _amount: quantityToPass,
       _project_data: { projectId: project?.uuid },
       _nonce: nonce,
     }
@@ -159,11 +160,16 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       state: { project },
     } = location
 
+    let quantityToPass
+    if (quantity) {
+      quantityToPass = quantity * Math.pow(10, 18)
+    }
+
     const verifyPDFAndMintTokenpayload = {
       project_id: project?.uuid,
       current_month: selectMonth,
       next_date: nextSubmissionDate,
-      quantity: Number(quantity),
+      quantity: quantityToPass,
       ghg_reduction_explanation: explain,
       signature_hash: signatureHash,
       signer: accountAddress,

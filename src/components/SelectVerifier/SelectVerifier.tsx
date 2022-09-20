@@ -192,20 +192,31 @@ const SelectVerifier = () => {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Checkbox
+                  <Box
                     sx={{
-                      p: 0,
-                      mr: 1,
-                      color: '#006B5E',
-                      '&.Mui-checked': {
-                        color: '#006B5E',
-                      },
+                      display: 'flex',
+                      alignItems: 'center',
+                      cursor: 'pointer',
                     }}
-                    onChange={() => selectVerifiers(verifier)}
-                  />
-                  <Typography sx={{ fontSize: 18, textTransform: 'uppercase' }}>
-                    {verifier?.fullName}
-                  </Typography>
+                    onClick={() => selectVerifiers(verifier)}
+                  >
+                    <Checkbox
+                      sx={{
+                        p: 0,
+                        mr: 1,
+                        color: '#006B5E',
+                        '&.Mui-checked': {
+                          color: '#006B5E',
+                        },
+                      }}
+                      checked={isThisVerifierSelected(verifier?._id)}
+                    />
+                    <Typography
+                      sx={{ fontSize: 18, textTransform: 'uppercase' }}
+                    >
+                      {verifier?.fullName}
+                    </Typography>
+                  </Box>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <PlaceOutlinedIcon
