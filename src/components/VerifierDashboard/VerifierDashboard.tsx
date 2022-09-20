@@ -20,35 +20,56 @@ const VerifierDashboard = (props: VerifierDashboardProps) => {
     USER.getUserInfo(getLocalItem('userDetails')?.uuid).then((response) => {
       let count = 0
 
-      if (response?.data?.data?.fullName !== '') {
-        count++
-      } 
-      
-      if (response?.data?.data?.email !== '') {
-        count++
-      } 
-      
-      if (response?.data?.data?.designation !== '') {
-        count++
-      } 
-
-      if (response?.data?.data?.phone !== '') {
-        count++
-      } 
-      
-      if (response?.data?.data?.address !== '') {
-        count++
-      } 
-      
-      if (response?.data?.data?.organisationName !== '') {
-        count++
-      } 
-      
-      if (response?.data?.data?.website !== '') {
+      if (
+        response?.data?.data?.fullName !== '' &&
+        response?.data?.data?.fullName !== undefined
+      ) {
         count++
       }
 
-      setValue(Math.round(count/7 * 100))
+      if (
+        response?.data?.data?.email !== '' &&
+        response?.data?.data?.email !== undefined
+      ) {
+        count++
+      }
+
+      if (
+        response?.data?.data?.designation !== '' &&
+        response?.data?.data?.designation !== undefined
+      ) {
+        count++
+      }
+
+      if (
+        response?.data?.data?.phone !== '' &&
+        response?.data?.data?.phone !== undefined
+      ) {
+        count++
+      }
+
+      if (
+        response?.data?.data?.address !== '' &&
+        response?.data?.data?.address !== undefined
+      ) {
+        count++
+      }
+
+      if (
+        response?.data?.data?.organisationName !== '' &&
+        response?.data?.data?.organisationName !== undefined
+      ) {
+        count++
+      }
+
+      if (
+        response?.data?.data?.website !== '' &&
+        response?.data?.data?.website !== undefined
+      ) {
+        count++
+      }
+
+      setValue(Math.round((count / 7) * 100))
     })
   }, [])
 

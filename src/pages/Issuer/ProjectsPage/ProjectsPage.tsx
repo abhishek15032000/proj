@@ -8,9 +8,6 @@ import { ROLES } from '../../../config/roles.config'
 const ProjectsPage = (props: ProjectsPageProps) => {
   const userDetails = getLocalItem('userDetails')
 
-  // console.log('jwtToken')
-  // console.log(JSON.stringify(getLocalItem('userDetails')?.jwtToken, null, 4))
-
   return (
     <>
       <LoadWallet />

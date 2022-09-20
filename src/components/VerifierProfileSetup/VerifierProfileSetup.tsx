@@ -43,16 +43,24 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
 
   const onSave = () => {
     // return
+
     if (
       email === '' ||
+      email === undefined ||
       fullName === '' ||
+      fullName === undefined ||
       phone === '' ||
+      phone === undefined ||
       organisationName === '' ||
+      organisationName === undefined ||
       address === '' ||
+      address === undefined ||
       website === '' ||
-      designation === ''
+      website === undefined ||
+      designation === '' ||
+      designation === undefined
     ) {
-      console.log('Code Reachable')
+      alert('Fill all the Fields!')
       return
     }
     setLoading(true)
