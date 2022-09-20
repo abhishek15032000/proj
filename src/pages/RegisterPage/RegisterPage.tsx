@@ -67,15 +67,19 @@ const RegisterPage = (props: RegisterPageProps) => {
     department
       .getDepartment()
       .then((response: any) => {
-        const roles = response?.data.map((department: any, index: number) => {
-          return {
-            value: department.name,
-            label: department._id,
-          }
-        })
+        const roles = response?.data
+          .filter(
+            (department: any) => department.name !== 'super admin department'
+          )
+          .map((department: any, index: number) => {
+            return {
+              value: department.name,
+              label: department._id,
+            }
+          })
         setTypeOptions(roles)
       })
-      .catch((e) => console.log(e))
+      .catch((e) => console.log('Error in department.getDepartment api :', e))
   }
 
   const onBoardingNewUser = async () => {

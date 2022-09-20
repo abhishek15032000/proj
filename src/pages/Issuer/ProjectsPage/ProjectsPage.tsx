@@ -14,7 +14,11 @@ const ProjectsPage = (props: ProjectsPageProps) => {
       </>
     )
   } else if (userDetails?.type === 'VERIFIER') {
-    return <VerifierProjects />
+    return (
+      <>
+        <LoadWallet /> <VerifierProjects />
+      </>
+    )
   }
 }
 

@@ -29,10 +29,16 @@ import { verifierCalls } from '../../api/verifierCalls.api'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import LoaderOverlay from '../../components/LoderOverlay'
 import Spinner from '../../atoms/Spinner'
+import { USER } from '../../api/user.api'
+import { pathNames } from '../../routes/pathNames'
 
 const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const navigate = useNavigate()
   const location: any = useLocation()
+
+  const {
+    state: { project },
+  } = location
 
   const { jwtToken } = getLocalItem('userDetails')
 
@@ -53,11 +59,12 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const [nonce, setNonce] = useState(1)
   const [loading, setLoading] = useState(false)
   const [pdfLoading, setPDFLoading] = useState(false)
-
   const [pdfURL, setpdfURL] = useState<null | string>(null)
+  const [issuerShineKey, setIssuerShineKey] = useState('')
 
   useEffect(() => {
     getPDF()
+    getIssuerShineKey()
   }, [])
 
   const getPDF = async () => {
@@ -78,6 +85,19 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     }
   }
 
+  const getIssuerShineKey = async () => {
+    try {
+      const userResponse = await USER.getUsersById(project?.user_id)
+      if (userResponse) {
+        setIssuerShineKey(userResponse?.data.shineKey)
+      } else {
+        alert("Couldn't get issuer shine key. Please try again!!!")
+      }
+    } catch (err) {
+      console.log('Error in USER.getUsersById api : ', err)
+    }
+  }
+
   const incrementNonce = () => {
     setNonce((nonce) => nonce + 1)
   }
@@ -85,6 +105,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const signAndVerify = async () => {
     if (!isConnected) {
       alert('Please connect Wallet before continuing!!!')
+      return
+    }
+    if (!issuerShineKey) {
+      alert("Couldn't get issuer shine key. Please try again!!!")
       return
     }
     if (
@@ -102,14 +126,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   }
 
   const getSignatureHash = async () => {
-    const {
-      state: { project },
-    } = location
-
     const signatureHashPayload = {
-      recipient: accountAddress,
-      _amount: quantity,
-      _project_data: project,
+      recipient: issuerShineKey,
+      _amount: Number(quantity),
+      _project_data: { projectId: project?.uuid },
       _nonce: nonce,
     }
     try {
@@ -139,7 +159,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       project_id: project?.uuid,
       current_month: selectMonth,
       next_date: nextSubmissionDate,
-      quantity,
+      quantity: Number(quantity),
       ghg_reduction_explanation: explain,
       signature_hash: signatureHash,
       signer: accountAddress,
@@ -149,10 +169,15 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     try {
       const verifyPDFAndMintTokenRes =
         await verifierCalls.verifyPDFAndMintToken(verifyPDFAndMintTokenpayload)
-      if (verifyPDFAndMintTokenRes?.success) {
+      if (verifyPDFAndMintTokenRes?.data.success) {
         //If verifer wants to make some more /report/submit (blockchain) calls then different nonce needs to be passed to indicate different transaction
         incrementNonce()
-        alert('PDF veriferd and token minted successfully')
+        if (verifyPDFAndMintTokenRes?.data?.data.success) {
+          alert('PDF veriferd and token minted successfully')
+          navigate(pathNames.DASHBOARD, { replace: true })
+        } else {
+          alert(verifyPDFAndMintTokenRes?.data?.data.error)
+        }
       }
     } catch (err) {
       console.log('Error in verifierCalls.getPDFHash api :', err)
