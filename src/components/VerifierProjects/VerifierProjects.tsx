@@ -18,6 +18,7 @@ import { getLocalItem } from '../../utils/Storage'
 import { USER } from '../../api/user.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 const VerifierProjects = (props: VerifierProjectsProps) => {
   const navigate = useNavigate()
@@ -91,24 +92,21 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
 
   const checkForUserDetails = () => {
     USER.getUserInfo(getLocalItem('userDetails')?.uuid).then((response) => {
-      const {
-        fullName,
-        email,
-        phone,
-        address,
-        designation,
-        organisationName,
-        website,
-      } = response.data.data
-
       if (
-        fullName === '' ||
-        email === '' ||
-        phone === '' ||
-        address === '' ||
-        designation === '' ||
-        organisationName === '' ||
-        website === ''
+        response?.data?.data?.fullName === '' ||
+        response?.data?.data?.fullName === undefined ||
+        response?.data?.data?.email === '' ||
+        response?.data?.data?.email === undefined ||
+        response?.data?.data?.phone === '' ||
+        response?.data?.data?.phone === undefined ||
+        response?.data?.data?.address === '' ||
+        response?.data?.data?.address === undefined ||
+        response?.data?.data?.designation === '' ||
+        response?.data?.data?.designation === undefined ||
+        response?.data?.data?.organisationName === '' ||
+        response?.data?.data?.organisationName === undefined ||
+        response?.data?.data?.website === '' ||
+        response?.data?.data?.website === undefined
       ) {
         navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
       }
@@ -148,11 +146,28 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
         <DashboardStatistics data={dashboardStatistics} loading={loadingStat} />
 
         <Grid item xs={12}>
-          <ListOfProjects
-            data={tableData}
-            loading={loadingTable}
-            updateStatus={updateVerifierStatus}
-          />
+          {tableData.length === 0 && loadingTable === false && (
+            <EmptyComponent
+              title="No project verification request yet!"
+              photoType={1}
+            />
+          )}
+
+          {tableData.length > 0 && loadingTable === false && (
+            <ListOfProjects
+              data={tableData}
+              loading={loadingTable}
+              updateStatus={updateVerifierStatus}
+            />
+          )}
+
+          {loadingTable === true && (
+            <ListOfProjects
+              data={tableData}
+              loading={loadingTable}
+              updateStatus={updateVerifierStatus}
+            />
+          )}
         </Grid>
       </Grid>
     </Box>

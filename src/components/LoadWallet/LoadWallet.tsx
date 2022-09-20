@@ -54,6 +54,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   const { ethereum } = window
 
   const walletReducer = useAppSelector((state) => state.wallet)
+
   const {
     haveMetamask,
     isConnected,
@@ -137,6 +138,7 @@ const LoadWallet = (props: LoadWalletProps) => {
       })
     } catch (error: any) {
       dispatch(setConnected(false))
+      console.log('Code Reachable')
       setError(error.toString())
     }
   }
@@ -150,6 +152,7 @@ const LoadWallet = (props: LoadWalletProps) => {
       })
     } catch (error) {
       dispatch(setConnected(false))
+      console.log('Code Reachable')
     }
   }
 

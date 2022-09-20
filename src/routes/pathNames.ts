@@ -28,6 +28,7 @@ export const pathNames = {
   TRANSACTION_HISTORY: '/transaction-history',
   REPORT_VIEW_COMMENTS: '/report-view-comments',
   BUYER_ONBOARDING: '/buyer-onboarding',
+  ORGANISATIONAL_DETAILS: '/organisational-details',
 }
 
 export const linkLabels = {
