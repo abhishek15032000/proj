@@ -70,7 +70,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
       })
   }
 
-  if (loading || (loading === false && tableRows.length > 0)) {
+  // if (loading || (loading === false && tableRows.length > 0)) {
     return (
       <Paper
         elevation={2}
@@ -122,17 +122,17 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         )}
       </Paper>
     )
-  } else if (loading === false && tableRows.length === 0) {
-    return (
-      <EmptyComponent
-        photoType={1}
-        title="No projects listed yet !"
-        listNewProject
-      />
-    )
-  } else {
-    return null
-  }
+  // } else if (loading === false && tableRows.length === 0) {
+  //   return (
+  //     <EmptyComponent
+  //       photoType={1}
+  //       title="No projects listed yet !"
+  //       listNewProject
+  //     />
+  //   )
+  // } else {
+  //   return null
+  // }
 }
 
 export default ProjectsTab

@@ -239,24 +239,40 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       />
 
       {props.loading && <CCTableSkeleton height={60} />}
-      {!props.loading && (
-        <CCTable
-          headings={tabIndex === 1 ? headingsNew : headingsRegistered}
-          rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-          sx={{ minWidth: 100 }}
-          maxWidth={'100%'}
-          tableSx={{ minWidth: 100 }}
-          loading={true}
-        />
-      )}
+
+      {!props.loading &&
+        tabIndex === 1 &&
+        Object.keys(rowsNew[0]).length > 0 && (
+          <CCTable
+            headings={headingsNew}
+            rows={rowsNew}
+            sx={{ minWidth: 100 }}
+            maxWidth={'100%'}
+            tableSx={{ minWidth: 100 }}
+            loading={true}
+          />
+        )}
+
+      {!props.loading &&
+        tabIndex === 2 &&
+        Object.keys(rowsRegistered[0]).length > 0 && (
+          <CCTable
+            headings={headingsRegistered}
+            rows={rowsRegistered}
+            sx={{ minWidth: 100 }}
+            maxWidth={'100%'}
+            tableSx={{ minWidth: 100 }}
+            loading={true}
+          />
+        )}
 
       {!props.loading &&
         Object.keys(rowsNew[0]).length === 0 &&
-        tabIndex === 1 && <NoData />}
+        tabIndex === 1 && <NoData title="No new projects available" />}
 
       {!props.loading &&
         Object.keys(rowsRegistered[0]).length === 0 &&
-        tabIndex === 2 && <NoData />}
+        tabIndex === 2 && <NoData title="No registered projects available" />}
     </Paper>
   )
 }
