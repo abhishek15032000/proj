@@ -170,9 +170,9 @@ const SectionA4 = () => {
                       handleTextChange(e, index, 'approvedMethodologies')
                     }
                   >
-                    <MenuItem value={'Ten'}>Ten</MenuItem>
-                    <MenuItem value={'Twenty'}>Twenty</MenuItem>
-                    <MenuItem value={'Thirty'}>Thirty</MenuItem>
+                    <MenuItem value={'Ten'}>Methodology 1</MenuItem>
+                    <MenuItem value={'Twenty'}>Methodology 2</MenuItem>
+                    <MenuItem value={'Thirty'}>Methodology 3</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

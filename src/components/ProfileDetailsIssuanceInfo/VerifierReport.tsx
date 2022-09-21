@@ -24,11 +24,11 @@ import MonthlyReportUpdate, {
   setCurrentProjectDetails,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import { useAppDispatch } from '../../hooks/reduxHooks'
-
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { getLocalItem } from '../../utils/Storage'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import LoaderOverlay from '../../components/LoderOverlay'
 
 interface VerifierReportListProps {
   //data?: any
@@ -47,6 +47,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [showTable, setShowTable] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
+  const [contractCallLoading, setContractCallLoading] = useState(false)
+
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -223,12 +225,14 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
 
   const createProjectContractCall = async (fileHash: string) => {
     const { email, uuid } = getLocalItem('userDetails')
+
     try {
+      setContractCallLoading(true)
+      const toPassParam = [wallet_address, email]
+      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
       const contractRes = await BlockchainCalls.contract_caller()
       await contractRes.estimateGas.createProject(uuid, fileHash)
       const createProjectRes = await contractRes.createProject(uuid, fileHash)
-      const toPassParam = [wallet_address, email]
-      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
       if (createProjectRes) {
         const updateTxPayload = {
           uuid: uuid,
@@ -241,6 +245,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       }
     } catch (e) {
       console.log('Error in contract_caller().createProject call ~ ', e)
+    } finally {
+      setContractCallLoading(false)
     }
   }
 
@@ -251,6 +257,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           Verifiers Selected
         </Typography>
       </Grid>
+      {/* {loading ? <LoaderOverlay /> : null} */}
       <Grid item xs={12}>
         {loading === true ? (
           <Stack

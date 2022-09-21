@@ -14,29 +14,25 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
-import { shallowEqual } from 'react-redux'
-
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
-  const { haveMetamask, isConnected } = useAppSelector(
-    ({ wallet }) => wallet,
-    shallowEqual
-  )
+  const [loader, setloader] = useState<boolean>(true)
+  const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
+  const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
   useEffect(() => {
-    if (haveMetamask && isConnected) {
-      setTimeout(() => {
-        setShowDashboard(true)
-      }, 200)
-    } else {
-      setShowDashboard(false)
-    }
-  }, [haveMetamask, isConnected])
-
-  console.log('haveMetamask: ', haveMetamask, 'isConnected: ', isConnected)
+    setMetamask && isConnected
+      ? setShowDashboard(true)
+      : setShowDashboard(false)
+  }, [setMetamask, isConnected])
+  useEffect(() => {
+    setTimeout(() => {
+      setloader(false)
+    }, 200)
+  }, [showDashboard])
 
   const listNewProject = () => {
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)
@@ -46,7 +42,7 @@ const Projects = () => {
 
   return (
     <>
-      {!showDashboard ? (
+      {loader ? (
         <LoaderOverlay />
       ) : (
         <>
@@ -95,5 +91,4 @@ const Projects = () => {
     </>
   )
 }
-
 export default Projects
