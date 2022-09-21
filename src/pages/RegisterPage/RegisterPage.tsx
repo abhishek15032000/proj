@@ -67,15 +67,19 @@ const RegisterPage = (props: RegisterPageProps) => {
     department
       .getDepartment()
       .then((response: any) => {
-        const roles = response?.data.map((department: any, index: number) => {
-          return {
-            value: department.name,
-            label: department._id,
-          }
-        })
+        const roles = response?.data
+          .filter(
+            (department: any) => department.name !== 'super admin department'
+          )
+          .map((department: any, index: number) => {
+            return {
+              value: department.name,
+              label: department._id,
+            }
+          })
         setTypeOptions(roles)
       })
-      .catch((e) => console.log(e))
+      .catch((e) => console.log('Error in department.getDepartment api :', e))
   }
 
   const onBoardingNewUser = async () => {
@@ -163,7 +167,7 @@ const RegisterPage = (props: RegisterPageProps) => {
                   name="firstName"
                   //onChange={handleChange}
                   onChange={(e) => setLastName(e.target.value)}
-                  defaultValue={values?.firstName}
+                  defaultValue={values?.lastName}
                   sx={{ background: '#F5F5F5' }}
                 />
               </Grid>
@@ -184,7 +188,7 @@ const RegisterPage = (props: RegisterPageProps) => {
             <CCSelectBox
               //fullWidth
               //variant="outlined"
-              label="Particpant Type"
+              label="Participant Type"
               items={typeOptions}
               onChange={(e) => setSelectedRole(e.target.value)}
               sx={{ background: '#F5F5F5' }}

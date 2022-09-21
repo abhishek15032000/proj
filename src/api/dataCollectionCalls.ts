@@ -83,4 +83,12 @@ export const dataCollectionCalls = {
       return res.data
     })
   },
+  getAllMonthlyData: (project_id: string) => {
+    return AxiosHelper(
+      URL_PATH.reports.getReportByProjectId + `?project_uuid=${project_id}`,
+      'GET'
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }

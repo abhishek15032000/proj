@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import { shallowEqual } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ROLES } from '../config/roles.config'
 import { useAppSelector } from '../hooks/reduxHooks'
@@ -10,11 +11,12 @@ import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
+import { getLocalItem } from '../utils/Storage'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
 const RouteController = ({ localLoggedIn }: any) => {
-  const userData = useAppSelector((state: any) => state.auth.data)
+  const userData = useAppSelector((state: any) => state.auth.data, shallowEqual)
 
   return (
     <Routes>
@@ -76,17 +78,6 @@ const RouteController = ({ localLoggedIn }: any) => {
           />
         }
       />
-      {/* <Route
-        path={pathNames.VERIFIER_VERIFY_REPORT}
-        element={
-          <PublicRoute
-            roles={[ROLES.ISSUER]}
-            component={VerifierVerifyReport}
-            authenticated={userData}
-            userData={userData}
-          />
-        }
-      /> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
@@ -145,6 +136,8 @@ const PublicRoute = ({
   roles,
   userData,
 }: Props) => {
+  const userDetails = getLocalItem('userDetails')
+
   const isAuthenticated = authenticated
   const userRoles = userData?.roles
 
@@ -155,7 +148,14 @@ const PublicRoute = ({
     return <RouteComponent />
   }
 
-  return <Navigate to={pathNames.DASHBOARD} />
+  if (userDetails?.type === ROLES.ISSUER) {
+    return <Navigate to={pathNames.DASHBOARD} />
+  } else if (userDetails?.type === ROLES.VERIFIER) {
+    return <Navigate to={pathNames.VERIFIER_PROJECTS} />
+  } else {
+    //To send Buyer directly to BUYER_ONBOARDING since when redirecting to /(homepage) getting "access denied"
+    return <Navigate to={pathNames.BUYER_ONBOARDING} />
+  }
 }
 
 export default RouteController

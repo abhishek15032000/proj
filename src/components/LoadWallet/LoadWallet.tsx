@@ -20,7 +20,7 @@ import Spinner from '../../atoms/Spinner'
 import InfoIcon from '@mui/icons-material/Info'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { USER } from '../../api/user.api'
-import { getLocalItem } from '../../utils/Storage'
+import { getLocalItem, setLocalItem } from '../../utils/Storage'
 
 // let window: any
 declare let window: any
@@ -30,6 +30,9 @@ declare let window: any
 const LoadWallet = (props: LoadWalletProps) => {
   const dispatch = useAppDispatch()
   const loadWallet = useAppSelector((state) => state.wallet.loadWallet)
+
+  const { user_id } = getLocalItem('userDetails')
+  const { wallet_added } = getLocalItem('userDetails2')
 
   const closeModal = () => dispatch(setLoadWallet(false))
 
@@ -51,6 +54,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   const { ethereum } = window
 
   const walletReducer = useAppSelector((state) => state.wallet)
+
   const {
     haveMetamask,
     isConnected,
@@ -90,31 +94,35 @@ const LoadWallet = (props: LoadWalletProps) => {
         })
       } catch (e: any) {
         reject(new Error(e.toString()))
+        console.log('checkMetamaskAvailability fn :', e)
       }
     })
   }
   const onManualConnectClick = async () => {
-    checkMetamaskAvailability().then((res) => {
-      if (res) {
-        //call userUpdateApi
-        const user_data = getLocalItem('userDetails')
-        return USER.updateUserInfo(user_data)
-          .then((res: any) => {
-            console.log(
-              '🚀 ~ file: LoadWallet.tsx ~ line 105 ~ USER.updateUserInfo ~ res',
-              res
-            )
-            if (res?.data?.success && res?.data?.data) {
-              // setLocalItem('uuid', res?.data?.data?.uuid)
-              // navigate(pathNames.TWOFA)
-              return res
-            } else if (!res?.data?.success) {
-              alert(res?.data?.error)
-            }
-          })
-          .catch((e) => console.log(e))
-      }
-    })
+    // checkMetamaskAvailability().then((res) => {
+    const metamaskAvailabilityRes = await checkMetamaskAvailability()
+    if (metamaskAvailabilityRes) {
+      //call userUpdateApi
+      const user_data = getLocalItem('userDetails')
+      return USER.updateUserInfo(user_data)
+        .then((res: any) => {
+          console.log(
+            '🚀 ~ file: LoadWallet.tsx ~ line 105 ~ USER.updateUserInfo ~ res',
+            res
+          )
+          if (res?.data?.success && res?.data?.data) {
+            // setLocalItem('uuid', res?.data?.data?.uuid)
+            // navigate(pathNames.TWOFA)
+            return res
+          } else if (!res?.data?.success) {
+            alert(res?.data?.error)
+          }
+        })
+        .catch((e) =>
+          console.log('error checkMetamaskAvailability promise :', e)
+        )
+    }
+    // })
   }
 
   const connectWallet = async () => {
@@ -122,10 +130,15 @@ const LoadWallet = (props: LoadWalletProps) => {
       BlockchainCalls.connectWallet().then((res: any) => {
         dispatch(setAccountAddress(res.accountAddress))
         dispatch(setConnected(res.isConnected))
+        if (!wallet_added) {
+          updateUserWithShineKey(res.accountAddress)
+        }
+
         return true
       })
     } catch (error: any) {
       dispatch(setConnected(false))
+      console.log('Code Reachable')
       setError(error.toString())
     }
   }
@@ -139,6 +152,30 @@ const LoadWallet = (props: LoadWalletProps) => {
       })
     } catch (error) {
       dispatch(setConnected(false))
+      console.log('Code Reachable')
+    }
+  }
+
+  const updateUserWithShineKey = async (shineKey: string) => {
+    try {
+      const user_data = getLocalItem('userDetails2')
+      user_data.phone = user_data.phone.toString()
+      delete user_data._id
+      const updateUserRes = await USER.updateUserInfo({
+        ...user_data,
+        shineKey,
+      })
+      if (updateUserRes?.data?.success) {
+        if (user_id) {
+          const userResponse = await USER.getUsersById(user_id)
+          setLocalItem('userDetails2', userResponse?.data)
+        } else {
+          //Couldn't get userId from localStorage
+          alert('User id not found')
+        }
+      }
+    } catch (error) {
+      console.log('error USER.updateUserInfo api :', error)
     }
   }
 

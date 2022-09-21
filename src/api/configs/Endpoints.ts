@@ -10,6 +10,8 @@ export const URL_PATH = {
   userRoutes: {
     onboardingUser: ENDPOINTS.userServiceURL + '/users/onboarding-user',
     updateUserInfo: ENDPOINTS.userServiceURL + '/users/updateUserInfo',
+    getUsersById: ENDPOINTS.userServiceURL + '/users/getUsersById',
+    userInfo: ENDPOINTS.userServiceURL + '/users/user/',
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + '/auth/login',
@@ -23,6 +25,8 @@ export const URL_PATH = {
     updateTx: ENDPOINTS.carbonServiceURL + '/project/updateTx',
     getIssuerProjectDashboardStats:
       ENDPOINTS.carbonServiceURL + '/project/getIssuerProjectDashboardStats',
+    getReportByProjectId:
+      ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
   },
   projectSections: {
     updateProjectSectionA:
@@ -45,10 +49,20 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/verifier/getVerifierProjectDashboardStats',
     getAllVerifier: ENDPOINTS.carbonServiceURL + '/verifier/getAllVerifiers',
     submitVerifier: ENDPOINTS.carbonServiceURL + '/verifier/update',
+    getPDFHash: ENDPOINTS.carbonServiceURL + '/verifier/utils/getHash',
+    verifyPDFAndMintToken:
+      ENDPOINTS.carbonServiceURL + '/verifier/report/submit',
   },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',
     getUsersByOrgType:
       ENDPOINTS.userServiceURL + '/department/getUsersByOrgType?type=',
+  },
+  reports: {
+    getReportByProjectId:
+      ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
+  },
+  fileupload: {
+    getFile: ENDPOINTS.carbonServiceURL + '/fileupload/getFile',
   },
 }

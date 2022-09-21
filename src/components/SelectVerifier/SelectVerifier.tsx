@@ -27,6 +27,7 @@ import { pathNames } from '../../routes/pathNames'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import Spinner from '../../atoms/Spinner'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 
 const SelectVerifier = () => {
   const navigate = useNavigate()
@@ -87,9 +88,8 @@ const SelectVerifier = () => {
           project_status: 1,
           verifier_id: verifierDetials?._id,
           verifier_name: verifierDetials?.fullName,
-          //keeping verifier address & number as static, once verifier detials are filled when creating verifier, will make it dynamic
-          verifier_address: 'verifierDetials?.location',
-          verifier_number: 'verifierDetials?.contact',
+          verifier_address: verifierDetials?.address,
+          verifier_number: verifierDetials?.phone.toString(),
         }
       }
     })
@@ -146,14 +146,15 @@ const SelectVerifier = () => {
         justifyContent={'space-between'}
         alignItems="center"
         spacing={3}
+        sx={{ fontSize: 14 }}
       >
         <Grid item xs={6}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <KeyboardArrowLeft />
-            <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
-              List New Project
-            </Typography>
-          </Box>
+          <BackHeader
+            title="Select Verifier"
+            onClick={() => {
+              navigate(-1)
+            }}
+          />
           <Typography sx={{ mt: 2, fontSize: 16, fontWeight: 500 }}>
             Select potential verifiers for your project issuance
           </Typography>
@@ -191,28 +192,45 @@ const SelectVerifier = () => {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Checkbox
+                  <Box
                     sx={{
-                      p: 0,
-                      mr: 1,
-                      color: '#006B5E',
-                      '&.Mui-checked': {
-                        color: '#006B5E',
-                      },
+                      display: 'flex',
+                      alignItems: 'center',
+                      cursor: 'pointer',
                     }}
-                    onChange={() => selectVerifiers(verifier)}
+                    onClick={() => selectVerifiers(verifier)}
+                  >
+                    <Checkbox
+                      sx={{
+                        p: 0,
+                        mr: 1,
+                        color: '#006B5E',
+                        '&.Mui-checked': {
+                          color: '#006B5E',
+                        },
+                      }}
+                      checked={isThisVerifierSelected(verifier?._id)}
+                    />
+                    <Typography
+                      sx={{ fontSize: 18, textTransform: 'uppercase' }}
+                    >
+                      {verifier?.fullName}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ display: 'flex', mt: 1 }}>
+                  <PlaceOutlinedIcon
+                    sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                   />
-                  <Typography sx={{ fontSize: 18, textTransform: 'uppercase' }}>
-                    {verifier?.fullName}
+                  <Typography sx={{ fontSize: 14 }}>
+                    {verifier?.address || '-'}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.address || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <LanguageIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>
+                  <LanguageIcon
+                    sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                  />
+                  <Typography sx={{ fontSize: 14 }}>
                     <a
                       style={{ color: '#25BBD2', textDecoration: 'underline' }}
                       href={verifier?.website}
@@ -222,17 +240,34 @@ const SelectVerifier = () => {
                   </Typography>
                 </Box>
                 <Divider sx={{ my: 2 }} />
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PermIdentityOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.director || '-'}</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                  <PermIdentityOutlinedIcon
+                    sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                  />
+                  <Box>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {verifier?.designation}
+                    </Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {verifier?.address}
+                    </Typography>
+                  </Box>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.phone || '-'}</Typography>
+                  <PhoneInTalkOutlinedIcon
+                    sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                  />
+                  <Typography sx={{ fontSize: 14 }}>
+                    {verifier?.phone || '-'}
+                  </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
-                  <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.email || '-'}</Typography>
+                  <MailOutlineIcon
+                    sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                  />
+                  <Typography sx={{ fontSize: 14 }}>
+                    {verifier?.email || '-'}
+                  </Typography>
                 </Box>
               </Grid>
               <Grid item xs={3} sx={{ my: 'auto' }} justifyContent="end">

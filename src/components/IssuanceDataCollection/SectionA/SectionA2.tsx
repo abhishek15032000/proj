@@ -42,7 +42,7 @@ const SectionA2 = () => {
   useEffect(() => {
     if (
       currentProjectDetails &&
-      currentProjectDetails.section_a.step1.completed
+      currentProjectDetails.section_a.step2.completed
     ) {
       const { country, state, city, pincode, landmark, file_attach } =
         currentProjectDetails.section_a.step2

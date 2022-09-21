@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // MUI Imports
 import { Grid, Box, Typography, Divider, Paper } from '@mui/material'
@@ -16,26 +16,174 @@ import { DatePicker } from '@mui/x-date-pickers'
 import CCInputField from '../../atoms/CCInputField'
 import PDFViewer from './PDFViewer'
 import moment from 'moment'
-import { deleteIndexInArray } from '../../utils/commonFunctions'
+import {
+  deleteIndexInArray,
+  stringExtractor,
+} from '../../utils/commonFunctions'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { fileUploadCalls } from '../../api/fileUpload.api'
+import { getLocalItem } from '../../utils/Storage'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import { verifierCalls } from '../../api/verifierCalls.api'
+import BlockchainCalls from '../../blockchain/Blockchain'
+import LoaderOverlay from '../../components/LoderOverlay'
+import Spinner from '../../atoms/Spinner'
+import { USER } from '../../api/user.api'
+import { pathNames } from '../../routes/pathNames'
 
 const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
+  const navigate = useNavigate()
+  const location: any = useLocation()
+
+  const {
+    state: { project },
+  } = location
+
+  const { jwtToken } = getLocalItem('userDetails')
+
+  const accountAddress = useAppSelector(
+    ({ wallet }) => wallet.accountAddress,
+    shallowEqual
+  )
+  const isConnected = useAppSelector(
+    ({ wallet }) => wallet.isConnected,
+    shallowEqual
+  )
+
   const [explain, setExplain] = useState('')
-  const [quantity, setQuantity] = useState('')
+  const [quantity, setQuantity] = useState<null | number>(null)
   const [selectMonth, setSelectMonth] = useState(new Date())
   const [nextSubmissionDate, setNextSubmissionDate] = useState(new Date())
   const [relevantDocs, setRelevantDocs]: any = useState([])
+  const [nonce, setNonce] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [pdfLoading, setPDFLoading] = useState(false)
+  const [pdfURL, setpdfURL] = useState<null | string>(null)
+  const [issuerShineKey, setIssuerShineKey] = useState('')
 
-  const onSign = () => {
-    const payload = {
-      explain,
-      quantity,
-      selectMonth,
-      nextSubmissionDate,
-      relevantDocs
+  useEffect(() => {
+    getPDF()
+    getIssuerShineKey()
+  }, [])
+
+  const getPDF = async () => {
+    if (location && location?.state && location.state?.pdf) {
+      const {
+        state: { pdf },
+      } = location
+      setPDFLoading(true)
+      try {
+        const res = await fileUploadCalls.getFile(pdf, jwtToken)
+        const pdfObjectURL = URL.createObjectURL(res)
+        setpdfURL(pdfObjectURL)
+      } catch (err) {
+        console.log('Error in fileUploadCalls.getFile api : ', err)
+      } finally {
+        setPDFLoading(false)
+      }
     }
+  }
 
-    console.log('payload')
-    console.log(JSON.stringify(payload, null, 4))
+  const getIssuerShineKey = async () => {
+    try {
+      const userResponse = await USER.getUsersById(project?.user_id)
+      if (userResponse) {
+        setIssuerShineKey(userResponse?.data.shineKey)
+      } else {
+        alert("Couldn't get issuer shine key. Please try again!!!")
+      }
+    } catch (err) {
+      console.log('Error in USER.getUsersById api : ', err)
+    }
+  }
+
+  const incrementNonce = () => {
+    setNonce((nonce) => nonce + 1)
+  }
+
+  const signAndVerify = async () => {
+    if (!isConnected) {
+      alert('Please connect Wallet before continuing!!!')
+      return
+    }
+    if (!issuerShineKey) {
+      alert("Couldn't get issuer shine key. Please try again!!!")
+      return
+    }
+    if (nextSubmissionDate && selectMonth && quantity) {
+      setLoading(true)
+      getSignatureHash()
+    } else {
+      alert('Please enter all fields!!!')
+    }
+  }
+
+  const getSignatureHash = async () => {
+    const signatureHashPayload = {
+      recipient: issuerShineKey,
+      _amount: Number(quantity),
+      _project_data: JSON.stringify({ projectId: project?.uuid }),
+      _nonce: nonce,
+    }
+    try {
+      const signatureHashRes = await verifierCalls.getPDFHash(
+        signatureHashPayload
+      )
+      if (signatureHashRes?.data?.success && signatureHashRes?.data?.data) {
+        const toPassParam = [accountAddress, signatureHashRes?.data?.data?.data]
+        const personalSignRes = await BlockchainCalls.requestMethodCalls(
+          'personal_sign',
+          toPassParam
+        )
+        if (personalSignRes) {
+          verifyPDF(personalSignRes)
+        } else {
+          alert("Couldn't sign successfully. Please try again!!!")
+          return
+        }
+      }
+    } catch (err) {
+      console.log('Error in verifierCalls.getPDFHash api :', err)
+      setLoading(false)
+      alert('Error in verifierCalls.getPDFHash api')
+    }
+  }
+
+  const verifyPDF = async (signatureHash: string) => {
+    const {
+      state: { project },
+    } = location
+
+    const verifyPDFAndMintTokenpayload = {
+      project_id: project?.uuid,
+      current_month: selectMonth,
+      next_date: nextSubmissionDate,
+      quantity: Number(quantity),
+      ghg_reduction_explanation: explain,
+      signature_hash: signatureHash,
+      signer: accountAddress,
+      file_attach: stringExtractor(relevantDocs, 'fileName'),
+      nonce: nonce,
+    }
+    try {
+      const verifyPDFAndMintTokenRes =
+        await verifierCalls.verifyPDFAndMintToken(verifyPDFAndMintTokenpayload)
+      if (verifyPDFAndMintTokenRes?.data.success) {
+        //If verifer wants to make some more /report/submit (blockchain) calls then different nonce needs to be passed to indicate different transaction
+        incrementNonce()
+        if (verifyPDFAndMintTokenRes?.data?.data.success) {
+          alert('PDF veriferd and token minted successfully')
+          navigate(pathNames.DASHBOARD, { replace: true })
+        } else {
+          alert(verifyPDFAndMintTokenRes?.data?.data.error)
+        }
+      }
+    } catch (err) {
+      console.log('Error in verifierCalls.getPDFHash api :', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -46,12 +194,16 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         backgroundColor: Colors.background,
       }}
     >
+      {loading ? <LoaderOverlay /> : null}
       <Grid container>
         <Grid item xs={12}>
           <BackHeader
             title="Back"
-            sx={{ ml: 4, mt: 3, mb: 2 }}
+            sx={{ ml: 4, mt: 3, mb: 2, cursor: 'pointer' }}
             titleSx={{ fontSize: 14 }}
+            onClick={() => {
+              navigate(-1)
+            }}
           />
         </Grid>
 
@@ -71,7 +223,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             </Typography>
 
             <TextButton
-              onClick={onSign}
+              onClick={signAndVerify}
               sx={{ ml: 4 }}
               title="Sign & Mark Verified"
             />
@@ -215,7 +367,20 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           }}
         />
         <Paper sx={{ height: '100vh', flex: 1 }}>
-          <PDFViewer />
+          {pdfLoading ? (
+            <Box
+              sx={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Spinner />
+            </Box>
+          ) : (
+            pdfURL && <PDFViewer pdfUrl={pdfURL} />
+          )}
         </Paper>
       </Grid>
     </Box>

@@ -54,9 +54,19 @@ const SectionD3: FC = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Grid>
+    <Grid
+      container
+      sx={{ width: '100%', mt: 3 }}
+      columnSpacing={{ xs: 0, md: 1 }}
+      rowSpacing={1}
+      xs={12}
+      md={12}
+      lg={12}
+      xl={12}
+    >
       <Typography sx={{ marginTop: '64px' }}></Typography>
       <CCMultilineTextArea
+        // aria-label="minimum height"
         label={'Implementation of sampling plan'}
         placeholder="Process of Implementation of sampling plan, if applicable"
         value={briefDescription}

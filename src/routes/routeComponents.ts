@@ -20,12 +20,15 @@ import TokenAndContractPage from '../pages/TokenAndContractPage/TokenAndContract
 import VerifierDashboard from '../pages/VerifierDashboard'
 import VerifierProfileSetup from '../pages/VerifierProfileSetup'
 import VerifierProjects from '../pages/VerifierProjects'
+import MonthlyReportUpdate from '../pages/MonthlyReportUpdate'
 import VerifierProjectsList from '../pages/VerifierProjectsList'
 import VerifierProjectDetails from '../pages/VerifierProjectDetails'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import IssuerWallet from '../pages/IssuerWallet'
 import TransactionHistory from '../pages/TransactionHistory'
 import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
+import BuyerOnboarding from '../pages/BuyerOnboarding'
+import OrganisationalDetails from '../pages/OrganisationalDetails'
 
 export const privateRouteComponents = [
   {
@@ -34,7 +37,7 @@ export const privateRouteComponents = [
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER],
   },
   {
     path: pathNames.TOKEN_CONTRACT,
@@ -102,7 +105,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
   {
     path: pathNames.SELECT_VERIFIER,
@@ -150,8 +153,24 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
+    path: pathNames.MONTHLY_REPORT_UPDATE,
+    component: MonthlyReportUpdate,
+
+    roles: [ROLES.ISSUER],
+  },
+  {
     path: pathNames.REPORT_VIEW_COMMENTS,
     component: ReportsViewCommentsPage,
     roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.BUYER_ONBOARDING,
+    component: BuyerOnboarding,
+    roles: [ROLES.BUYER],
+  },
+  {
+    path: pathNames.ORGANISATIONAL_DETAILS,
+    component: OrganisationalDetails,
+    roles: [ROLES.BUYER],
   },
 ]
