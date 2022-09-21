@@ -50,7 +50,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     ({ wallet }) => wallet.isConnected,
     shallowEqual
   )
-  const wallet = useAppSelector(({ wallet }) => wallet, shallowEqual)
 
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState<null | number>(null)
@@ -112,13 +111,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       alert("Couldn't get issuer shine key. Please try again!!!")
       return
     }
-    if (
-      explain &&
-      nextSubmissionDate &&
-      selectMonth &&
-      quantity &&
-      relevantDocs.length
-    ) {
+    if (nextSubmissionDate && selectMonth && quantity) {
       setLoading(true)
       getSignatureHash()
     } else {
@@ -127,14 +120,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   }
 
   const getSignatureHash = async () => {
-    let quantityToPass
-    if (quantity) {
-      quantityToPass = quantity * Math.pow(10, 18)
-    }
     const signatureHashPayload = {
       recipient: issuerShineKey,
-      _amount: quantityToPass,
-      _project_data: { projectId: project?.uuid },
+      _amount: Number(quantity),
+      _project_data: JSON.stringify({ projectId: project?.uuid }),
       _nonce: nonce,
     }
     try {
@@ -147,11 +136,17 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           'personal_sign',
           toPassParam
         )
-        verifyPDF(personalSignRes)
+        if (personalSignRes) {
+          verifyPDF(personalSignRes)
+        } else {
+          alert("Couldn't sign successfully. Please try again!!!")
+          return
+        }
       }
     } catch (err) {
-      setLoading(false)
       console.log('Error in verifierCalls.getPDFHash api :', err)
+      setLoading(false)
+      alert('Error in verifierCalls.getPDFHash api')
     }
   }
 
@@ -160,16 +155,11 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       state: { project },
     } = location
 
-    let quantityToPass
-    if (quantity) {
-      quantityToPass = quantity * Math.pow(10, 18)
-    }
-
     const verifyPDFAndMintTokenpayload = {
       project_id: project?.uuid,
       current_month: selectMonth,
       next_date: nextSubmissionDate,
-      quantity: quantityToPass,
+      quantity: Number(quantity),
       ghg_reduction_explanation: explain,
       signature_hash: signatureHash,
       signer: accountAddress,
