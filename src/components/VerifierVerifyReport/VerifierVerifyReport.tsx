@@ -44,10 +44,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     ({ wallet }) => wallet.isConnected,
     shallowEqual
   )
-  const wallet = useAppSelector(
-    ({ wallet }) => wallet,
-    shallowEqual
-  )
+  const wallet = useAppSelector(({ wallet }) => wallet, shallowEqual)
 
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState('')
@@ -345,7 +342,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             width: '20px',
           }}
         />
-        <Paper sx={{ height: '100vh', flex: 1 }}>
+        <Paper sx={{ height: '120vh', flex: 1 }}>
           {pdfLoading ? (
             <Box
               sx={{
