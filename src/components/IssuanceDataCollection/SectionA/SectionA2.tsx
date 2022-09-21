@@ -17,14 +17,7 @@ import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import {
-  setCountry,
-  setState,
-  setCity,
-  setLandmark,
-  setPincode,
-  setFileAttach,
-} from '../../../redux/Slices/sectionASlice'
+import { setA2 } from '../../../redux/Slices/sectionASlice'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import Spinner from '../../../atoms/Spinner'
@@ -37,25 +30,9 @@ const SectionA2 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+  const A2 = useAppSelector(({ sectionA }) => sectionA.A2)
 
-  const country = useAppSelector(
-    ({ sectionA }) => sectionA.country,
-    shallowEqual
-  )
-  const city = useAppSelector(({ sectionA }) => sectionA.city, shallowEqual)
-  const states = useAppSelector(({ sectionA }) => sectionA.state, shallowEqual)
-  const landmark = useAppSelector(
-    ({ sectionA }) => sectionA.landmark,
-    shallowEqual
-  )
-  const pincode = useAppSelector(
-    ({ sectionA }) => sectionA.pincode,
-    shallowEqual
-  )
-  const file_attach = useAppSelector(
-    ({ sectionA }) => sectionA.file_attach,
-    shallowEqual
-  )
+  const { file_attach } = A2
 
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
@@ -70,12 +47,12 @@ const SectionA2 = () => {
       const { country, state, city, pincode, landmark, file_attach } =
         currentProjectDetails.section_a.step2
 
-      dispatch(setCity(city))
-      dispatch(setCountry(country))
-      dispatch(setState(state))
-      dispatch(setPincode(pincode))
-      dispatch(setLandmark(landmark))
-      dispatch(setFileAttach(file_attach))
+      dispatch(setA2({ name: 'city', value: city }))
+      dispatch(setA2({ name: 'country', value: country }))
+      dispatch(setA2({ name: 'state', value: state }))
+      dispatch(setA2({ name: 'pincode', value: pincode }))
+      dispatch(setA2({ name: 'landmark', value: landmark }))
+      dispatch(setA2({ name: 'file_attach', value: file_attach }))
     }
   }, [currentProjectDetails])
 
@@ -111,36 +88,47 @@ const SectionA2 = () => {
           <CCInputField
             label=" Country"
             style={{ backgroundColor: ' #FFFFFF', border: '1px solid white' }}
-            value={country}
-            onChange={(e) => dispatch(setCountry(e.target.value))}
+            value={A2.country}
+            name={'country'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setA2({ name, value }))
+            }
           />
         </Grid>
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label=" Region/ State/ Province"
             sx={{ backgroundColor: ' #FFFFFF' }}
-            value={states}
-            onChange={(e) => dispatch(setState(e.target.value))}
+            value={A2.state}
+            name={'state'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setA2({ name, value }))
+            }
           />
         </Grid>
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label="City/Town/District"
             sx={{ backgroundColor: ' #FFFFFF' }}
-            value={city}
-            onChange={(e) => dispatch(setCity(e.target.value))}
+            value={A2.city}
+            name={'city'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setA2({ name, value }))
+            }
           />
         </Grid>
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label="Landmark"
             sx={{ backgroundColor: ' #FFFFFF' }}
-            value={landmark}
-            onChange={(e) => dispatch(setLandmark(e.target.value))}
+            value={A2.landmark}
+            name={'landmark'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setA2({ name, value }))
+            }
           />
         </Grid>
       </Grid>
-
       <Grid
         sx={{ mt: 1 }}
         container
@@ -155,8 +143,11 @@ const SectionA2 = () => {
           <CCInputField
             label="Pincode"
             sx={{ backgroundColor: ' #FFFFFF' }}
-            value={pincode}
-            onChange={(e) => dispatch(setPincode(e.target.value))}
+            value={A2.pincode}
+            name={'pincode'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setA2({ value, name }))
+            }
           />
         </Grid>
       </Grid>
@@ -165,12 +156,19 @@ const SectionA2 = () => {
           mediaTitle={['Sample Report - Implementation of Milestones']}
           title="Upload location map images"
           mediaItem={[]}
-          imageArray={file_attach}
+          imageArray={A2.file_attach}
           onImageUpload={(item: any) => {
-            dispatch(setFileAttach([...file_attach, item]))
+            dispatch(
+              setA2({ name: 'file_attach', value: [...file_attach, item] })
+            )
           }}
           onDeleteImage={(index: number) => {
-            dispatch(setFileAttach(deleteIndexInArray(file_attach, index)))
+            dispatch(
+              setA2({
+                name: 'file_attach',
+                value: deleteIndexInArray(file_attach, index),
+              })
+            )
           }}
         />
       </Grid>

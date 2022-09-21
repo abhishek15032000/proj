@@ -39,6 +39,11 @@ import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import Spinner from '../../atoms/Spinner'
+import _ from 'lodash'
+import { setLocalItem } from '../../utils/Storage'
+import { isDataModifiedCheckFunc } from '../../utils/IssuanceDataCollectionModal.utils'
+import { store } from '../../redux/store'
+import { resetSectionA } from '../../redux/Slices/sectionASlice'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -110,6 +115,7 @@ const sectionATabs = [
 const IssuanceDataCollection = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const sectionA = store.getState()?.sectionA
 
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
@@ -128,13 +134,18 @@ const IssuanceDataCollection = () => {
     ({ issuanceDataCollection }) => issuanceDataCollection.subSectionIndex,
     shallowEqual
   )
-  const IsApiCalled = useAppSelector(
-    ({ issuanceDataCollection }) => issuanceDataCollection.isApiCalled,
-    shallowEqual
+
+  const A1 = useAppSelector(({ sectionA }) => sectionA.A1)
+  const A2 = useAppSelector(({ sectionA }) => sectionA.A2)
+  const party_and_project_participants = useAppSelector(
+    ({ sectionA }) => sectionA.party_and_project_participants
   )
+  const methodologies = useAppSelector(({ sectionA }) => sectionA.methodologies)
+  const A5 = useAppSelector(({ sectionA }) => sectionA.A5)
+  const B1 = useAppSelector(({ sectionB }) => sectionB.B1)
+  const B2 = useAppSelector(({ sectionB }) => sectionB.B2)
 
   const [nextBtn, setNextBtn] = useState<boolean>(true)
-  //const [IsApiCalled, setIsApiCalled] = useState<boolean>(false)
   const [modal, setModal] = useState<boolean>(false)
   const [subSectionIndexState, setSubSectionIndexState] = useState<number>()
   const [sectionIndexState, setSectionIndexState] = useState<number>()
@@ -160,14 +171,14 @@ const IssuanceDataCollection = () => {
 
   const handlePrevious = () => {
     if (sectionIndex > 0) {
-      if (!IsApiCalled) {
+      const isDataModified = handleDataCheck()
+
+      if (isDataModified) {
         setModal(true)
         setChangeInSection(true)
         setSectionIndexState(sectionIndex - 1)
         setSubSectionIndexState(0)
-        //return
-      } else if (IsApiCalled) {
-        dispatch(setIsApiCalled(false))
+      } else if (!isDataModified) {
         dispatch(setSectionIndex(sectionIndex - 1))
         dispatch(setSubSectionIndex(0))
       }
@@ -176,15 +187,18 @@ const IssuanceDataCollection = () => {
 
   const handleNext = () => {
     if (sectionIndex === 0) dispatch(setSectionIndex(sectionIndex + 1))
-    if (sectionIndex > 0 && !IsApiCalled) {
-      setModal(true)
-      setChangeInSection(true)
-      setSectionIndexState(sectionIndex + 1)
-      setSubSectionIndexState(0)
-    } else if (IsApiCalled) {
-      dispatch(setIsApiCalled(false))
-      dispatch(setSectionIndex(sectionIndex + 1))
-      dispatch(setSubSectionIndex(0))
+    else if (sectionIndex > 0) {
+      const isDataModified = handleDataCheck()
+
+      if (isDataModified) {
+        setModal(true)
+        setChangeInSection(true)
+        setSectionIndexState(sectionIndex + 1)
+        setSubSectionIndexState(0)
+      } else if (!isDataModified) {
+        dispatch(setSectionIndex(sectionIndex + 1))
+        dispatch(setSubSectionIndex(0))
+      }
     }
     //handling next btn as per section data collection percentage
     if (sectionIndex === 5) {
@@ -198,21 +212,89 @@ const IssuanceDataCollection = () => {
     }
   }
 
+  const handleDataCheck = () => {
+    const data = [
+      {
+        sectionName: A1,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
+        section: 1,
+        subSection: 0,
+      },
+      {
+        sectionName: A2,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
+        section: 1,
+        subSection: 1,
+      },
+      {
+        sectionName: party_and_project_participants,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`][
+            'party_and_project_participants'
+          ],
+        section: 1,
+        subSection: 2,
+      },
+      {
+        sectionName: methodologies,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`][
+            'methodologies'
+          ],
+        section: 1,
+        subSection: 3,
+      },
+      {
+        sectionName: A5,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
+        section: 1,
+        subSection: 4,
+      },
+      {
+        sectionName: B1,
+        subSectionRow:
+          currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
+        section: 2,
+        subSection: 0,
+      },
+      {
+        sectionName: B2,
+        subSectionRow:
+          currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
+        section: 2,
+        subSection: 1,
+      },
+    ]
+    let dataModified = false
+    const params = data.filter((i: any) => {
+      return i?.section === sectionIndex && i?.subSection === subSectionIndex
+    })
+    if (params.length) {
+      dataModified = isDataModifiedCheckFunc(
+        params[0].sectionName,
+        params[0].subSectionRow,
+        sectionIndex,
+        subSectionIndex
+      )
+    }
+    return dataModified
+  }
+
   const handleSubSectionClick = (index?: number) => {
-    if (subSectionIndex !== index) {
-      if (sectionIndex > 0 && !IsApiCalled) {
-        setModal(true)
-        setSubSectionIndexState(index)
-        return
-      } else if (IsApiCalled) {
-        dispatch(setIsApiCalled(false))
-        dispatch(setSubSectionIndex(index))
-      }
+    console.log('currentProjectDetails: ', currentProjectDetails)
+    const dataModified = handleDataCheck()
+    if (dataModified) {
+      setModal(true)
+      setSubSectionIndexState(index)
+    } else if (!dataModified) {
+      dispatch(setSubSectionIndex(index))
     }
   }
 
   const handleQuitWithoutSave = () => {
-    //console.log('sectionIndex', sectionIndex, subSectionIndexState)
     setModal(false)
     //ChangeInSection is to know whether the issuer has clicked on section level next or he is changing in subSection level
     changeInSection && dispatch(setSectionIndex(sectionIndexState))

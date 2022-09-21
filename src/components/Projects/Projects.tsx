@@ -9,6 +9,7 @@ import { pathNames } from '../../routes/pathNames'
 import CCButton from '../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
+  setCurrentProjectDetails,
   setSectionIndex,
   setSubSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
@@ -19,7 +20,6 @@ const Projects = () => {
   const dispatch = useAppDispatch()
 
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
-  //const []
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
@@ -29,12 +29,11 @@ const Projects = () => {
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
 
-  console.log('setMetamask: ', setMetamask, 'isConnected: ', isConnected)
-
   const listNewProject = () => {
-    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+    //dispatch(setCurrentProjectDetails(null))
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
   }
 
   return (

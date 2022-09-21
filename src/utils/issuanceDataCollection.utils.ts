@@ -112,20 +112,21 @@ export const moveToNextSection = async (
     const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
     let step3data = [],
       step4data = []
-    step3data = sectionA.projectParticipants.map((item: any) => {
+    step3data = sectionA.party_and_project_participants.map((item: any) => {
       return {
-        party_involved: item.partyInvolved,
-        private_or_public_project_participant: item.participantType,
-        indicate_party_involved: item.isProjectParticipant,
+        party_involved: item.party_involved,
+        private_or_public_project_participant:
+          item.private_or_public_project_participant,
+        indicate_party_involved: item.indicate_party_involved,
       }
     })
     step4data = sectionA.methodologies.map((item: any) => {
       return {
-        methodology: item.approvedMethodologies,
-        project_type: item.projectType,
+        methodology: item.methodology,
+        project_type: item.project_type,
         category: item.category,
         version: item.version,
-        tools: item.toolsReferred,
+        tools: item.tools,
       }
     })
 
@@ -136,20 +137,12 @@ export const moveToNextSection = async (
       construction_date,
       operation_period,
       total_GHG_emission,
-      commissioning_date,
-      country,
-      state,
-      city,
-      pincode,
-      landmark,
-      file_attach,
-      projectParticipants,
-      methodologies,
-      startDate,
-      fromDate,
-      toDate,
-      brief_on_crediting_period,
-    } = sectionA
+      project_comissioning_date,
+    } = sectionA.A1
+    const { country, state, city, pincode, landmark, file_attach } = sectionA.A2
+    const { party_and_project_participants, methodologies } = sectionA
+    const { credit_start_period, credit_period, credit_period_description } =
+      sectionA.A5
     let params = {}
     if (subSectionIndex === 0) {
       if (
@@ -159,22 +152,20 @@ export const moveToNextSection = async (
         construction_date === '' ||
         operation_period === '' ||
         total_GHG_emission === '' ||
-        commissioning_date === ''
+        project_comissioning_date === ''
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step1: {
-          purpose_and_description: sectionA.purpose_and_description,
-          measure_taken_for_gas_emissions:
-            sectionA.measure_taken_for_gas_emissions,
-          brief_description_installed_tech:
-            sectionA.brief_description_installed_tech,
-          project_comissioning_date: sectionA.commissioning_date,
-          construction_date: sectionA.construction_date,
-          operation_period: sectionA.operation_period,
-          total_GHG_emission: sectionA.total_GHG_emission,
+          purpose_and_description,
+          measure_taken_for_gas_emissions,
+          brief_description_installed_tech,
+          project_comissioning_date,
+          construction_date,
+          operation_period,
+          total_GHG_emission,
           completed: true,
         },
       }
@@ -192,18 +183,19 @@ export const moveToNextSection = async (
       }
       params = {
         step2: {
-          country: sectionA.country,
-          state: sectionA.state,
-          city: sectionA.city,
+          country,
+          state,
+          city,
           village: 'remove',
-          pincode: sectionA.pincode,
-          landmark: sectionA.landmark,
-          file_attach: stringExtractor(sectionA.file_attach, 'fileName'),
+          pincode,
+          landmark,
+          file_attach,
+          //file_attach: stringExtractor(file_attach, 'fileName'),
           completed: true,
         },
       }
     } else if (subSectionIndex === 2) {
-      if (projectParticipants.length === 0) {
+      if (party_and_project_participants.length === 0) {
         console.log('Code Reachable')
         return
       }
@@ -226,22 +218,22 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 4) {
       if (
-        startDate === '' ||
-        fromDate === '' ||
-        toDate === '' ||
-        brief_on_crediting_period === ''
+        credit_start_period === '' ||
+        credit_period.start_date === '' ||
+        credit_period.end_date === '' ||
+        credit_period_description === ''
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step5: {
-          credit_start_period: sectionA.startDate,
+          credit_start_period,
           credit_period: {
-            start_date: sectionA.fromDate,
-            end_date: sectionA.toDate,
+            start_date: credit_period.start_date,
+            end_date: credit_period.start_date,
           },
-          credit_period_description: sectionA.brief_on_crediting_period,
+          credit_period_description,
           completed: true,
         },
       }
@@ -255,6 +247,7 @@ export const moveToNextSection = async (
         issuanceDataCollection?.currentProjectDetails?.section_a?.project_id,
       ...params,
     }
+
     try {
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
       if (res?.success) {
@@ -276,54 +269,58 @@ export const moveToNextSection = async (
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
     const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
     const {
-      briefOnPurpuse,
-      technicalDescription,
-      technicalDescriptionImage,
-      operationalDetails,
-      majorShutDownImage,
-      implementationMilestoneImage,
-      projectTimelineImage,
-      temporaryDeviations,
-      corrections,
-      permanentChanges,
-      briefOnPurpuseB2,
-      changesToProject,
-      changesToStart,
+      B1: {
+        general_description,
+        technical_description,
+        data_tables_technical_description_attach,
+        operational_description,
+        shut_down_details_attach,
+        implementation_milestones_attach,
+        project_timeline_attach,
+      },
+      B2: {
+        temporary_deviation,
+        corrections,
+        permanent_changes_from_registered_monitoring_plan,
+        change_project_design,
+        change_startDate_creditPeriod,
+        typeOf_changes_specific,
+      },
     } = sectionB
 
     let params = {}
     if (subSectionIndex === 0) {
       if (
-        briefOnPurpuse === '' ||
-        technicalDescription === '' ||
-        operationalDetails === '' ||
-        technicalDescriptionImage.length === 0 ||
-        majorShutDownImage.length === 0 ||
-        implementationMilestoneImage.length === 0 ||
-        projectTimelineImage.length === 0
+        general_description === '' ||
+        technical_description === '' ||
+        operational_description === '' ||
+        data_tables_technical_description_attach.length === 0 ||
+        shut_down_details_attach.length === 0 ||
+        implementation_milestones_attach.length === 0 ||
+        project_timeline_attach.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step1: {
-          general_description: briefOnPurpuse,
-          technical_description: technicalDescription,
+          general_description,
+          technical_description,
           data_tables_technical_description_attach: stringExtractor(
-            technicalDescriptionImage,
+            data_tables_technical_description_attach,
             'fileName'
           ),
-          operational_description: operationalDetails,
+          operational_description,
           shut_down_details_attach: stringExtractor(
-            majorShutDownImage,
+            shut_down_details_attach,
             'fileName'
           ),
           implementation_milestones_attach: stringExtractor(
-            implementationMilestoneImage,
+            implementation_milestones_attach,
             'fileName'
           ),
           project_timeline_attach: stringExtractor(
-            projectTimelineImage,
+            project_timeline_attach,
             'fileName'
           ),
           completed: true,
@@ -331,24 +328,24 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 1) {
       if (
-        temporaryDeviations === '' ||
+        temporary_deviation === '' ||
         corrections === '' ||
-        permanentChanges === '' ||
-        changesToProject === '' ||
-        changesToStart === '' ||
-        briefOnPurpuseB2 === ''
+        permanent_changes_from_registered_monitoring_plan === '' ||
+        change_project_design === '' ||
+        change_startDate_creditPeriod === '' ||
+        typeOf_changes_specific === ''
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step2: {
-          temporary_deviation: temporaryDeviations,
-          corrections: corrections,
-          permanent_changes_from_registered_monitoring_plan: permanentChanges,
-          change_project_design: changesToProject,
-          change_startDate_creditPeriod: changesToStart,
-          typeOf_changes_specific: briefOnPurpuseB2,
+          temporary_deviation,
+          corrections,
+          permanent_changes_from_registered_monitoring_plan,
+          change_project_design,
+          change_startDate_creditPeriod,
+          typeOf_changes_specific,
           completed: true,
         },
       }
