@@ -21,6 +21,7 @@ import { verifierCalls } from '../../api/verifierCalls.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import NoData from '../../atoms/NoData/NoData'
 
 const headingsNew = [
   'Reference ID',
@@ -55,8 +56,8 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const navigate = useNavigate()
 
   const [tabIndex, setTabIndex] = useState(1)
-  const [rowsNew, setRowsNew]: any = useState([])
-  const [rowsRegistered, setRowsRegistered]: any = useState([])
+  const [rowsNew, setRowsNew]: any = useState([{}])
+  const [rowsRegistered, setRowsRegistered]: any = useState([{}])
 
   useEffect(() => {
     const newData: any = [],
@@ -248,6 +249,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           loading={true}
         />
       )}
+
+      {!props.loading &&
+        Object.keys(rowsNew[0]).length === 0 &&
+        tabIndex === 1 && <NoData />}
+
+      {!props.loading &&
+        Object.keys(rowsRegistered[0]).length === 0 &&
+        tabIndex === 2 && <NoData />}
     </Paper>
   )
 }
