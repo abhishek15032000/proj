@@ -96,7 +96,7 @@ const VerifierReportListItemListItem: FC<
                 <Box sx={{ display: 'flex', mt: 1 }}>
                   <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
                   <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                    {props?.data?.contact}
+                    {props?.data?.verifier_number}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mt: 1 }}>
