@@ -121,8 +121,8 @@ deploy_dev:
       --set-string environmentVariables.ENVIRONMENT=${ENVIRONMENT}
       --values deployment/charts/config/values-${CI_ENVIRONMENT_NAME}.yaml
       --debug
-  # only:
-  #   - dev
+  only:
+    - dev
   dependencies: []
   when: manual
   allow_failure: true
@@ -147,8 +147,8 @@ destroy_dev:
       --set-string environmentVariables.ENVIRONMENT=${ENVIRONMENT}
       --values deployment/charts/config/values-${CI_ENVIRONMENT_NAME}.yaml
       --debug
-  # only:
-  #   - dev
+  only:
+    - dev
   dependencies:
     - deploy_dev
   when: manual
@@ -267,4 +267,5 @@ destroy_production:
   when: manual
 
   ## testing pipeline
+  # testing staging pipeline
   
