@@ -14,6 +14,7 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
+import { getLocalItem } from '../../utils/Storage'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import { shallowEqual } from 'react-redux'
 
@@ -21,13 +22,15 @@ const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const { wallet_added } = getLocalItem('userDetails2')
+
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
   useEffect(() => {
-    setMetamask && isConnected
+    setMetamask && isConnected && wallet_added
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
@@ -62,7 +65,6 @@ const Projects = () => {
                   <ProjectsTab />
                 </>
               )}
-
             </Grid>
             <Grid item lg={3} sx={{ paddingLeft: 1 }}>
               {showDashboard && (
@@ -87,7 +89,7 @@ const Projects = () => {
                   </Typography>
                 </CCButton>
               )}
-              <ProfileCompletion walletPercentage={showDashboard} />
+              <ProfileCompletion />
             </Grid>
           </Grid>
         </>
