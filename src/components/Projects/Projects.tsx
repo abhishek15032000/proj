@@ -23,25 +23,16 @@ const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  //const { wallet_added = false } = getLocalItem('userDetails2')
+  const { wallet_added = false } = getLocalItem('userDetails2')
 
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
-  const [walletAdded, setWalletAdded] = useState<boolean>(false)
 
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
   useEffect(() => {
-    const userDetails2 = getLocalItem('userDetails2')
-    if (userDetails2) {
-      const { wallet_added = false } = userDetails2
-      setWalletAdded(wallet_added)
-    }
-  }, [])
-
-  useEffect(() => {
-    setMetamask && isConnected && walletAdded
+    setMetamask && isConnected
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
