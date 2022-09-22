@@ -33,10 +33,12 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
       setUploading(true)
       ImageUpload(selectedFile, selectedFile.name)
         .then((result) => {
-          props.onImageUpload({
-            fileName: result.data[0].ipfs_hash,
-            fileSize: Math.round(sizeTemp * 100) / 100,
-          })
+          result?.success
+            ? props.onImageUpload(
+                result.data[0].ipfs_hash
+                //fileSize: Math.round(sizeTemp * 100) / 100,
+              )
+            : alert('File not uploaded, please try again')
           setUploading(false)
         })
         .catch((error) => {
@@ -207,7 +209,7 @@ const FileTab: FC<FileTabProps> = (props) => {
 
       <CloseIcon
         onClick={() => props.deleteImage(props.index)}
-        style={{ color: '#388E81' }}
+        style={{ color: '#388E81', cursor: 'pointer' }}
       />
     </Box>
   )

@@ -4,10 +4,7 @@ import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import SectionE4CalculationSummaryOfEmissionReductions from '../../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
 import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
-import {
-  setCalculationOfLeakage,
-  setCalculationOfLeakageImages,
-} from '../../../redux/Slices/sectionESlice'
+import { setE3 } from '../../../redux/Slices/sectionESlice'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
 import Spinner from '../../../atoms/Spinner'
@@ -15,13 +12,8 @@ import Spinner from '../../../atoms/Spinner'
 const SectionE3 = () => {
   const dispatch = useAppDispatch()
 
-  const calculationOfLeakage = useAppSelector(
-    ({ sectionE }) => sectionE.calculationOfLeakage
-  )
-  const calculationOfleakageimages = useAppSelector(
-    ({ sectionE }) => sectionE.calculationOfLeakageImages
-  )
-
+  const E3 = useAppSelector(({ sectionE }) => sectionE.E3)
+  const { attach_relevant_docs } = E3
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
@@ -41,8 +33,12 @@ const SectionE3 = () => {
       const { calculation_of_leakage, attach_relevant_docs } =
         currentProjectDetails.section_e.step3
 
-      dispatch(setCalculationOfLeakage(calculation_of_leakage))
-      dispatch(setCalculationOfLeakageImages(attach_relevant_docs))
+      dispatch(
+        setE3({ name: 'calculation_of_leakage', value: calculation_of_leakage })
+      )
+      dispatch(
+        setE3({ name: 'attach_relevant_docs', value: attach_relevant_docs })
+      )
     }
   }, [currentProjectDetails])
 
@@ -56,8 +52,11 @@ const SectionE3 = () => {
         <CCMultilineTextArea
           label="Calculation of leakage"
           placeholder="Calculation of leakage emissions, if any"
-          value={calculationOfLeakage}
-          onChange={(e) => dispatch(setCalculationOfLeakage(e.target.value))}
+          value={E3.calculation_of_leakage}
+          name={'calculation_of_leakage'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setE3({ name, value }))
+          }
         />
       </Grid>
       <Grid item xs={12}>
@@ -67,20 +66,21 @@ const SectionE3 = () => {
             'Sample Report - Calculation summary of emission reductions',
           ]}
           mediaItem={[SectionE4CalculationSummaryOfEmissionReductions]}
-          imageArray={calculationOfleakageimages}
+          imageArray={E3.attach_relevant_docs}
           onImageUpload={(item: any) => {
             dispatch(
-              setCalculationOfLeakageImages([
-                ...calculationOfleakageimages,
-                item,
-              ])
+              setE3({
+                name: 'attach_relevant_docs',
+                value: [...attach_relevant_docs, item],
+              })
             )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setCalculationOfLeakageImages(
-                deleteIndexInArray(calculationOfleakageimages, index)
-              )
+              setE3({
+                name: 'attach_relevant_docs',
+                value: deleteIndexInArray(attach_relevant_docs, index),
+              })
             )
           }}
         />

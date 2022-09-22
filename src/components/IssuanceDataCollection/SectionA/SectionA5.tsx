@@ -6,13 +6,7 @@ import CCInputField from '../../../atoms/CCInputField'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import {
-  setStartDate,
-  setFromDate,
-  setToDate,
-  setBriefOnCreditingPeriod,
-} from '../../../redux/Slices/sectionASlice'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import { setA5 } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
 
 const SectionA5 = () => {
@@ -24,26 +18,11 @@ const SectionA5 = () => {
     shallowEqual
   )
 
-  const startDate = useAppSelector(
-    ({ sectionA }) => sectionA.startDate,
-    shallowEqual
-  )
-
-  const fromDate = useAppSelector(
-    ({ sectionA }) => sectionA.fromDate,
-    shallowEqual
-  )
-  const toDate = useAppSelector(({ sectionA }) => sectionA.toDate, shallowEqual)
-
-  const brief_on_crediting_period = useAppSelector(
-    ({ sectionA }) => sectionA.brief_on_crediting_period,
-    shallowEqual
-  )
+  const A5 = useAppSelector(({ sectionA }) => sectionA.A5, shallowEqual)
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
   )
-
   useEffect(() => {
     if (
       currentProjectDetails &&
@@ -51,11 +30,30 @@ const SectionA5 = () => {
     ) {
       const { credit_start_period, credit_period, credit_period_description } =
         currentProjectDetails.section_a.step5
-
-      dispatch(setStartDate(credit_start_period))
-      dispatch(setFromDate(credit_period.start_date))
-      dispatch(setToDate(credit_period.end_date))
-      dispatch(setBriefOnCreditingPeriod(credit_period_description))
+      dispatch(
+        setA5({
+          name: 'credit_start_period',
+          value: credit_start_period ? credit_start_period : '',
+        })
+      )
+      dispatch(
+        setA5({
+          name: ['credit_period', 'start_date'],
+          value: credit_period.start_date,
+        })
+      )
+      dispatch(
+        setA5({
+          name: ['credit_period', 'end_date'],
+          value: credit_period.end_date,
+        })
+      )
+      dispatch(
+        setA5({
+          name: 'credit_period_description',
+          value: credit_period_description,
+        })
+      )
     }
   }, [currentProjectDetails])
 
@@ -70,9 +68,14 @@ const SectionA5 = () => {
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <DatePicker
             label="Start date of 1st crediting period "
-            value={startDate}
+            value={A5.credit_start_period}
             onChange={(newValue) => {
-              dispatch(setStartDate(newValue))
+              dispatch(
+                setA5({
+                  name: 'credit_start_period',
+                  value: newValue?._isValid ? newValue.toISOString() : '',
+                })
+              )
             }}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -83,9 +86,14 @@ const SectionA5 = () => {
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <DatePicker
             label="Crediting from "
-            value={fromDate}
+            value={A5.credit_period.start_date}
             onChange={(newValue) => {
-              dispatch(setFromDate(newValue))
+              dispatch(
+                setA5({
+                  name: ['credit_period', 'start_date'],
+                  value: newValue?._isValid ? newValue.toISOString() : '',
+                })
+              )
             }}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -96,9 +104,14 @@ const SectionA5 = () => {
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <DatePicker
             label="Crediting end "
-            value={toDate}
+            value={A5.credit_period.end_date}
             onChange={(newValue) => {
-              dispatch(setToDate(newValue))
+              dispatch(
+                setA5({
+                  name: ['credit_period', 'end_date'],
+                  value: newValue?._isValid ? newValue.toISOString() : '',
+                })
+              )
             }}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -110,9 +123,10 @@ const SectionA5 = () => {
           <CCMultilineTextArea
             label="Brief on crediting period"
             placeholder="Write a brief on commencement of crediting period"
-            value={brief_on_crediting_period}
-            onChange={(e) =>
-              dispatch(setBriefOnCreditingPeriod(e.target.value))
+            value={A5.credit_period_description}
+            name={'credit_period_description'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setA5({ value, name }))
             }
           />
         </Grid>

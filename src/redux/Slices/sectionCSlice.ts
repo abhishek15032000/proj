@@ -1,19 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface SectionCInterface {
-  // C1
-  monitoringSystem: string
-  monitoringPlan: string
-  organizationalChartImage: Array<any>
-  datasMonitored: string
+  C1: any
 }
 
 const initialState: SectionCInterface = {
-  // C1
-  monitoringSystem: '',
-  monitoringPlan: '',
-  organizationalChartImage: [],
-  datasMonitored: '',
+  C1: {
+    description: '',
+    monitoring_plan: '',
+    attach_org_structure_and_responsibilities_chart: [],
+    specific_data_monitored: '',
+  },
 }
 
 const sectionC = createSlice({
@@ -21,26 +18,13 @@ const sectionC = createSlice({
   initialState,
   reducers: {
     // C1 Handlers
-    setMonioringSystem: (state, action: PayloadAction<any>) => {
-      state.monitoringSystem = action.payload
-    },
-    setMonitoringPlan: (state, action: PayloadAction<any>) => {
-      state.monitoringPlan = action.payload
-    },
-    setOrganizationalChartImage: (state, action: PayloadAction<any>) => {
-      state.organizationalChartImage = action.payload
-    },
-    setDatasMonitored: (state, action: PayloadAction<any>) => {
-      state.datasMonitored = action.payload
+    setC1: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.C1[name] = value
     },
   },
 })
 
-export const {
-  setMonioringSystem,
-  setMonitoringPlan,
-  setOrganizationalChartImage,
-  setDatasMonitored,
-} = sectionC.actions
+export const { setC1 } = sectionC.actions
 
 export default sectionC.reducer
