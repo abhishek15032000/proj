@@ -14,9 +14,12 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
+import { getLocalItem } from '../../utils/Storage'
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  const { wallet_added } = getLocalItem('userDetails2')
 
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
@@ -24,7 +27,7 @@ const Projects = () => {
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
   useEffect(() => {
-    setMetamask && isConnected
+    setMetamask && isConnected && wallet_added
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
