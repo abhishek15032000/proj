@@ -18,6 +18,8 @@ import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import NoData from '../../atoms/NoData/NoData'
 
 const headings = [
   'Submitted On',
@@ -32,6 +34,7 @@ const headings = [
 
 interface ReportsTableProps {
   data?: any
+  loading?: any
 }
 
 const ReportsTable: FC<ReportsTableProps> = (props) => {
@@ -44,7 +47,6 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
     const reportsData: any = []
 
     props.data?.map((item: any, index: any) => {
-
       reportsData.push([
         moment(item.createdAt).format('DD/MM/YYYY'),
         moment(item.next_date).format('DD/MM/YYYY'),
@@ -145,12 +147,18 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
         Reports Received
       </Typography>
 
-      <CCTable
-        headings={headings}
-        rows={rows}
-        sx={{ minWidth: 100 }}
-        tableSx={{ minWidth: 100 }}
-      />
+      {!props.loading && props.data.length > 0 && (
+        <CCTable
+          headings={headings}
+          rows={rows}
+          sx={{ minWidth: 100 }}
+          tableSx={{ minWidth: 100 }}
+        />
+      )}
+
+      {!props.loading && props.data.length === 0 && (
+        <NoData title="Your project’s review report will show up here" />
+      )}
     </Paper>
   )
 }

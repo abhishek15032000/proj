@@ -15,6 +15,7 @@ import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
 import LoaderOverlay from '../../components/LoderOverlay'
 import { USER } from '../../api/user.api'
+import { setLocalItem } from '../../utils/Storage'
 declare let window: any
 
 const Login = () => {
@@ -70,19 +71,16 @@ const Login = () => {
           return
         }
         if (res?.data?.captchaVerify) {
+          const userResponse = await USER.getUsersById(res?.data?.user_id)
+          setLocalItem('userDetails2', userResponse?.data)
+          const profileCompleted = userResponse?.data?.orgName ? true : false
+          setLocalItem('profileCompleted', profileCompleted)
           dispatch(loginAction(res?.data)) //calling action from redux
-          if (res.data.type === 'ISSUER') {
+          if (res.data.type === 'ISSUER' || res.data.type === 'VERIFIER') {
             navigate(pathNames.DASHBOARD, { replace: true })
-          } else if (res.data.type === 'VERIFIER') {
-            USER.getUserInfo(res?.data?.uuid).then((response) => {
-              if (response?.data?.data?.organisationName === '') {
-                navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
-              } else {
-                navigate(pathNames.VERIFIER_PROJECTS, { replace: true })
-              }
-            })
           }
-          // window.location.reload()
+
+          window.location.reload()
         } else {
           alert(res?.data)
         }

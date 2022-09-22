@@ -1,17 +1,22 @@
 import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import CCButton from '../../atoms/CCButton'
+import CCButton from '../CCButton'
 import { Colors } from '../../theme'
 
-interface CardProps {
+interface ProfileCardProps {
   title: string
   content: string
   onClickFn?: any
   buttonText?: string
 }
 
-const Card = ({ title, content, buttonText, onClickFn }: CardProps) => {
+const ProfileCard = ({
+  title,
+  content,
+  buttonText,
+  onClickFn,
+}: ProfileCardProps) => {
   const handleClick = () => {
     if (onClickFn) onClickFn()
   }
@@ -61,4 +66,4 @@ const Card = ({ title, content, buttonText, onClickFn }: CardProps) => {
   )
 }
 
-export default Card
+export default ProfileCard

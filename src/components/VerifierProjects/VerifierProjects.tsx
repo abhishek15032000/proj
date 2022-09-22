@@ -6,12 +6,6 @@ import { Box, Grid, Paper, Skeleton, Typography } from '@mui/material'
 
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
-import { Colors } from '../../theme'
-import { VerifierProjectsProps } from './VerifierProjects.interface'
-// import DashboardStatistics from './DashboardStatistics'
-import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
-import TabSelectorVerifier from './TabSelectorVerifier'
-import CCTable from '../../atoms/CCTable'
 import ListOfProjects from './ListOfProjects'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { getLocalItem } from '../../utils/Storage'
@@ -19,62 +13,27 @@ import { USER } from '../../api/user.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import {
+  setProfileCompletionPercent,
+  setProfileUpdated,
+} from '../../redux/Slices/verifierSlice'
+import ProjectsStats from '../ProjectStats/ProjectsStats'
 
-const VerifierProjects = (props: VerifierProjectsProps) => {
+const VerifierProjects = () => {
   const navigate = useNavigate()
 
-  const [dashboardStatistics, setDashboardStatistics] = useState([
-    {
-      title: 'Total Project Requests',
-      value: 0,
-      color: Colors.lightPinkBackground,
-    },
-    {
-      title: 'Projects under verification',
-      value: 0,
-      color: Colors.lightGreenBackground3,
-    },
-    {
-      title: 'Projects verified',
-      value: 0,
-      color: Colors.lightGreenBackground4,
-    },
-    {
-      title: 'Projects verification Pending',
-      value: 0,
-      color: Colors.lightOrangeBackground,
-    },
-  ])
+  const dispatch = useAppDispatch()
+
   const [tableData, setTableData] = useState([])
 
   const [loadingTable, setLoadingTable] = useState(false)
-  const [loadingStat, setLoadingStat] = useState(false)
 
   useEffect(() => {
-    loadDashboardData()
     loadTableData()
-    checkForUserDetails()
+    checkForUserDetailsAndWalletAdded()
+    // checkForUserDetails()
   }, [])
-
-  const loadDashboardData = () => {
-    setLoadingStat(true)
-    verifierCalls
-      .getVerifierProjectDashboardStats(getLocalItem('userDetails')?.user_id)
-      .then((response) => {
-        const tempData = dashboardStatistics
-
-        tempData[0].value = response?.data?.no_of_projects
-        tempData[1].value = response?.data?.projects_under_verification
-        tempData[2].value = response?.data?.projects_verified
-        tempData[3].value = response?.data?.projects_verification_pending
-
-        setDashboardStatistics(tempData)
-        setLoadingStat(false)
-      })
-      .catch((e) => {
-        setLoadingStat(false)
-      })
-  }
 
   const loadTableData = () => {
     setLoadingTable(true)
@@ -90,27 +49,48 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
       })
   }
 
-  const checkForUserDetails = () => {
-    USER.getUserInfo(getLocalItem('userDetails')?.uuid).then((response) => {
-      if (
-        response?.data?.data?.fullName === '' ||
-        response?.data?.data?.fullName === undefined ||
-        response?.data?.data?.email === '' ||
-        response?.data?.data?.email === undefined ||
-        response?.data?.data?.phone === '' ||
-        response?.data?.data?.phone === undefined ||
-        response?.data?.data?.address === '' ||
-        response?.data?.data?.address === undefined ||
-        response?.data?.data?.designation === '' ||
-        response?.data?.data?.designation === undefined ||
-        response?.data?.data?.organisationName === '' ||
-        response?.data?.data?.organisationName === undefined ||
-        response?.data?.data?.website === '' ||
-        response?.data?.data?.website === undefined
-      ) {
-        navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
+  const checkForUserDetailsAndWalletAdded = async () => {
+    const { wallet_added = false, uuid = '' } = getLocalItem('userDetails2')
+
+    // Wallet added and Profile completed considered as 2 step
+    const totalSteps = 2
+    let stepsCompleted = 0
+
+    let allFieldsUpdatedInUserProfile = true
+
+    if (uuid) {
+      try {
+        const userRes = await USER.getUserInfo(uuid)
+        if (userRes) {
+          const fieldsToCheck = [
+            'fullName',
+            'email',
+            'designation',
+            'phone',
+            'address',
+            'organisationName',
+          ]
+          const userObject = userRes?.data?.data
+          for (let i = 0; i < fieldsToCheck.length; i++) {
+            if (!userObject[fieldsToCheck[i]]) {
+              allFieldsUpdatedInUserProfile = false
+              break
+            }
+          }
+          if (allFieldsUpdatedInUserProfile) stepsCompleted += 1
+          dispatch(setProfileUpdated(allFieldsUpdatedInUserProfile))
+          if (wallet_added) stepsCompleted += 1
+          const completionPercent = (stepsCompleted / totalSteps) * 100
+          dispatch(setProfileCompletionPercent(completionPercent))
+        }
+      } catch (err) {
+        console.log('Error in USER.getUserInfo api :', err)
+        alert('Error in USER.getUserInfo api')
       }
-    })
+    }
+    if (stepsCompleted < 2) {
+      navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
+    }
   }
 
   const updateVerifierStatus = (status: any, data: any) => {
@@ -143,7 +123,9 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
           <BackHeader title="Dashboard" iconDisable />
         </Grid>
 
-        <DashboardStatistics data={dashboardStatistics} loading={loadingStat} />
+        <Grid item sm={12} sx={{ pr: 2 }}>
+          <ProjectsStats />
+        </Grid>
 
         <Grid item xs={12}>
           {tableData.length === 0 && loadingTable === false && (

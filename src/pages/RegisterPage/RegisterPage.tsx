@@ -117,7 +117,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   }
 
   const { handleChange, values, errors, handleSubmit } = useForm(register)
-  console.log(values)
+
   return (
     <Grid container flexDirection="row" xs={12} sx={{ height: '100vh' }}>
       <Grid
@@ -310,10 +310,11 @@ const RegisterPage = (props: RegisterPageProps) => {
             lg: 'flex',
             xs: 'none',
           },
+          minHeight: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
           backgroundSize: 'cover',
-          backgroundRepeat: 'repeat-y',
+          backgroundRepeat: 'no-repeat',
         }}
       />
     </Grid>

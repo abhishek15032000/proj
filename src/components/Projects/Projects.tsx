@@ -15,18 +15,33 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
+import { getLocalItem } from '../../utils/Storage'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import { shallowEqual } from 'react-redux'
 
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  //const { wallet_added = false } = getLocalItem('userDetails2')
+
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
+  const [walletAdded, setWalletAdded] = useState<boolean>(false)
+
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
   useEffect(() => {
-    setMetamask && isConnected
+    const userDetails2 = getLocalItem('userDetails2')
+    if (userDetails2) {
+      const { wallet_added = false } = userDetails2
+      setWalletAdded(wallet_added)
+    }
+  }, [])
+
+  useEffect(() => {
+    setMetamask && isConnected && walletAdded
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
@@ -86,7 +101,7 @@ const Projects = () => {
                   </Typography>
                 </CCButton>
               )}
-              <ProfileCompletion walletPercentage={showDashboard} />
+              <ProfileCompletion />
             </Grid>
           </Grid>
         </>
