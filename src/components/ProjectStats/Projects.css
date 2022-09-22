@@ -21,14 +21,14 @@
 	margin-bottom: -10px;
 }
 .stats-container{  
-	padding: 30px;
+	padding: 20px;
 	background-color: #FFFFFF;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	border-radius: 8px;
 	color: #000000;
-	min-width: 320px;
+	min-width: 280px;
 	margin-right: 24px;
 	box-shadow:  0px 5px 25px rgba(0, 0, 0, 0.12) ;
 	margin: 10px;

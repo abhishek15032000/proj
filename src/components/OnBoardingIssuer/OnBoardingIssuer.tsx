@@ -65,7 +65,7 @@ const OnBoardingIssuer = () => {
                 </CCButton>
               </Box>
             </Grid>
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <Box
                 sx={{
                   minHeight: 210,
@@ -106,7 +106,7 @@ const OnBoardingIssuer = () => {
                   Start
                 </CCButton>
               </Box>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
         <Box sx={{ background: '#FFFFFF', pt: 2 }}>
