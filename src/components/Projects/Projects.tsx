@@ -83,7 +83,7 @@ const Projects = () => {
                   </Typography>
                 </CCButton>
               )}
-              <ProfileCompletion walletPercentage={showDashboard} />
+              <ProfileCompletion />
             </Grid>
           </Grid>
         </>

@@ -7,8 +7,8 @@ import { setLoadWallet } from '../../redux/Slices/walletSlice'
 import { pathNames } from '../../routes/pathNames'
 import { Colors } from '../../theme'
 import LoadWallet from '../LoadWallet'
-import Card from './Card'
 import ProfileCompletion from './ProfileCompletion'
+import ProfileCard from '../../atoms/ProfileCard/ProfileCard'
 
 const BuyerOnboarding = () => {
   const dispatch = useAppDispatch()
@@ -39,14 +39,14 @@ const BuyerOnboarding = () => {
               </Box>
               <Grid container columnSpacing={2}>
                 <Grid item xs={6}>
-                  <Card
+                  <ProfileCard
                     title="Create/Link Wallet"
                     content="Create a new wallet or link your already existing wallet to our platform for a smooth transaction process"
                     onClickFn={() => dispatch(setLoadWallet(true))}
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <Card
+                  <ProfileCard
                     title="Organisational Details"
                     content="Complete filling your organisational details to complete the onboarding process"
                     buttonText="Resume"
