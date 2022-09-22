@@ -32,6 +32,7 @@ const VerifierProjects = () => {
   useEffect(() => {
     loadTableData()
     checkForUserDetailsAndWalletAdded()
+    // checkForUserDetails()
   }, [])
 
   const loadTableData = () => {

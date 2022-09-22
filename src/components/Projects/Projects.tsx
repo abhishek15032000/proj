@@ -15,6 +15,9 @@ import {
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
 import { getLocalItem } from '../../utils/Storage'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import { shallowEqual } from 'react-redux'
+
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
