@@ -261,7 +261,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         newProjects={4}
       />
 
-      {props.loading && <CCTableSkeleton height={40} />}
+      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
       
       {!props.loading &&
         tabIndex === 1 &&

@@ -42,7 +42,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     shallowEqual
   )
 
-  const [tabIndex, setTabIndex] = useState(1)
+  const [tabIndex, setTabIndex] = useState(0)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
 
   useEffect(() => {

@@ -38,6 +38,15 @@ const ApprovalChip: FC<ApprovalChipProps> = (props) => {
         textColor={'#000'}
       />
     )
+  } else if (props.variant === 'Finalised') {
+    return (
+      <ApprovalChipTemplate
+        title={'Finalised'}
+        backgroundColor={Colors.lightCyanBackground}
+        tintColor={Colors.lightBlueBackground2}
+        textColor={'#000'}
+      />
+    )
   } else if (props.variant === 'In progress') {
     return (
       <ApprovalChipTemplate
@@ -53,6 +62,24 @@ const ApprovalChip: FC<ApprovalChipProps> = (props) => {
         title={'Pending'}
         backgroundColor={Colors.mediumGreyBackground}
         tintColor={Colors.lightGreyBackground}
+        textColor={'#000'}
+      />
+    )
+  } else if (props.variant === 'Selected') {
+    return (
+      <ApprovalChipTemplate
+        title={'Selected'}
+        backgroundColor={Colors.lightGreyBackground}
+        tintColor={Colors.mediumGreyBackground}
+        textColor={'#000'}
+      />
+    )
+  } else if (props.variant === 'Yet to Select') {
+    return (
+      <ApprovalChipTemplate
+        title={'Yet to Select'}
+        backgroundColor={Colors.lightGreyBackground}
+        tintColor={Colors.mediumGreyBackground}
         textColor={'#000'}
       />
     )
@@ -78,7 +105,7 @@ const ApprovalChipTemplate: FC<ApprovalChipTemplateProps> = (props) => {
         m: 1,
         color: props.textColor,
         fontWeight: 400,
-        fontSize: 14
+        fontSize: 14,
       }}
       icon={<CircleIcon style={{ color: props.tintColor }} />}
       label={props.title}
