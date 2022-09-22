@@ -14,6 +14,9 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import { shallowEqual } from 'react-redux'
+
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -59,6 +62,7 @@ const Projects = () => {
                   <ProjectsTab />
                 </>
               )}
+
             </Grid>
             <Grid item lg={3} sx={{ paddingLeft: 1 }}>
               {showDashboard && (

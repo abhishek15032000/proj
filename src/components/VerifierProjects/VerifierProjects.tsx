@@ -53,7 +53,7 @@ const VerifierProjects = (props: VerifierProjectsProps) => {
   useEffect(() => {
     loadDashboardData()
     loadTableData()
-    checkForUserDetails()
+    // checkForUserDetails()
   }, [])
 
   const loadDashboardData = () => {

@@ -23,6 +23,7 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
   const [projectDetails, setProjectDetails] = useState()
   const [reportDetails, setReportDetails]: any = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadingReport, setLoadingReport] = useState(false)
 
   useEffect(() => {
     setLoading(true)
@@ -37,16 +38,19 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
 
     // 'e8712a5e-3d13-4619-9bc7-930401044ebb'
 
+    setLoadingReport(true)
     verifierCalls
       .getReportByProjectId(location?.state?.project_uuid)
       .then((response) => {
         let tempObj: any = []
-        if (response?.data?.data?.report !== undefined) {
-          tempObj = [response.data.data.report]
+        if (response?.data?.main_project?.report !== undefined) {
+          tempObj = [response.data.main_project.report]
         }
 
         setReportDetails(tempObj)
+        setLoadingReport(false)
       })
+      .catch((e) => setLoadingReport(false))
   }, [])
 
   if (loading) {
@@ -73,7 +77,7 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
           </Grid>
 
           <VitalProjectDetails data={projectDetails} />
-          <ReportsTable data={reportDetails} />
+          <ReportsTable data={reportDetails} loading={loadingReport} />
         </Grid>
       </Box>
     )

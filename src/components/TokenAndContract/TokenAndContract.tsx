@@ -11,6 +11,7 @@ import CCButton from '../../atoms/CCButton'
 import TokenAndContractProjectList from './TokenAndContractProjectList'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 const TokenAndContract = () => {
   const navigate = useNavigate()
@@ -86,6 +87,14 @@ const TokenAndContract = () => {
           ))}
         </Paper>
       </Grid>
+
+      {/* <Grid item xs={12} sx={{ mt: 4 }}>
+        <EmptyComponent
+          photoType={1}
+          title="No Reports & Contracts to show yet !"
+          listNewProject
+        />
+      </Grid> */}
     </Grid>
   )
 }
