@@ -147,14 +147,7 @@ const PublicRoute = ({
     return <RouteComponent />
   }
 
-  if (userDetails?.type === ROLES.ISSUER) {
-    return <Navigate to={pathNames.DASHBOARD} />
-  } else if (userDetails?.type === ROLES.VERIFIER) {
-    return <Navigate to={pathNames.VERIFIER_PROJECTS} />
-  } else {
-    //To send Buyer directly to BUYER_ONBOARDING since when redirecting to /(homepage) getting "access denied"
-    return <Navigate to={pathNames.BUYER_ONBOARDING} />
-  }
+  return <Navigate to={pathNames.DASHBOARD} />
 }
 
 export default RouteController

@@ -29,6 +29,7 @@ import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import CircleIcon from '@mui/icons-material/Circle'
 import { addSectionPercentages } from '../../utils/newProject.utils'
 import DashboardPencil from '../../assets/Images/Icons/DashboardPencil.png'
+import './style.css'
 
 const headingItems = [
   {
@@ -137,6 +138,8 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                     key={i?.index}
                     sx={{
                       ...i?.style,
+                      boxShadow:
+                        showBorder && i?.index === 'referenceId' ? 5 : 0,
                       background: '#CCE8E1',
                     }}
                   >
@@ -151,19 +154,26 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                 props?.tableRows.map((data: any, index: number) => (
                   <TableRow
                     key={index}
-                    sx={{ background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8' }}
+                    sx={{
+                      background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                    }}
                   >
                     <TableCell
                       sx={{
+                        minWidth: 150,
                         position: 'sticky',
                         top: 0,
                         left: 0,
                         background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                        display: 'block',
+                        boxShadow: showBorder ? 5 : 0,
+                        zIndex: 1000,
+                        height: '65px',
                       }}
                     >
                       <Typography
                         textAlign="start"
-                        sx={{ fontSize: 15, fontWeight: 500 }}
+                        sx={{ fontSize: 15, fontWeight: 500, pt: 0.5 }}
                       >
                         {limitTitle(data?.uuid, 10)}
                       </Typography>
@@ -239,13 +249,13 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                     </TableCell>
                     <TableCell>
                       <Grid container flexDirection="row" alignItems={'center'}>
-                        <Grid item xs={9} sx={{ pl: 2 }}>
+                        <Grid item xs={10} sx={{ pl: 1 }}>
                           {!data?.verifier_details_id &&
                             data?.project_status !== 3 && (
                               <img src={DashboardPencil} />
                             )}
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={2}>
                           <Box key={index}>
                             <ArrowRightIcon
                               sx={{ cursor: 'pointer' }}
