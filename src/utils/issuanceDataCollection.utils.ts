@@ -224,8 +224,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -346,12 +344,17 @@ export const moveToNextSection = async (
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
     const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
-
+    const {
+      description,
+      monitoring_plan,
+      attach_org_structure_and_responsibilities_chart,
+      specific_data_monitored,
+    } = sectionC.C1
     if (
-      sectionC.monitoringSystem === '' ||
-      sectionC.monitoringPlan === '' ||
-      sectionC.organizationalChartImage.length === 0 ||
-      sectionC.datasMonitored === ''
+      description === '' ||
+      monitoring_plan === '' ||
+      attach_org_structure_and_responsibilities_chart.length === 0 ||
+      specific_data_monitored === ''
     ) {
       console.log('Code Reachable')
       return
@@ -363,13 +366,10 @@ export const moveToNextSection = async (
       project_id:
         issuanceDataCollection?.currentProjectDetails?.section_c?.project_id,
       step1: {
-        description: sectionC.monitoringSystem,
-        monitoring_plan: sectionC.monitoringPlan,
-        attach_org_structure_and_responsibilities_chart: stringExtractor(
-          sectionC.organizationalChartImage,
-          'fileName'
-        ),
-        specific_data_monitored: sectionC.datasMonitored,
+        description,
+        monitoring_plan,
+        attach_org_structure_and_responsibilities_chart,
+        specific_data_monitored,
         completed: true,
       },
     }
@@ -390,9 +390,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
-      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -401,54 +398,54 @@ export const moveToNextSection = async (
     const newProjectData = store.getState()?.newProject
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
     const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
-
+    const {
+      D1: { data_and_parameter_fixed_ExAnte, attach_ex_ante_table },
+      D2: { data_and_parameter_monitored_ExPost },
+      D3: { implementation_of_sampling_plan },
+    } = sectionD
     let params = {}
     if (subSectionIndex === 0) {
       if (
-        sectionD.data_and_parameter_fixed_ExAnte === '' ||
-        sectionD.attach_ex_ante_table.length === 0
+        data_and_parameter_fixed_ExAnte === '' ||
+        attach_ex_ante_table.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step1: {
-          data_and_parameter_fixed_ExAnte:
-            sectionD.data_and_parameter_fixed_ExAnte,
-          attach_ex_ante_table: stringExtractor(
-            sectionD.attach_ex_ante_table,
-            'fileName'
-          ),
+          data_and_parameter_fixed_ExAnte,
+          attach_ex_ante_table,
           completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
       if (
-        sectionD.data_and_parameter_monitored_ExPost === '' ||
-        sectionD.attach_ex_post_table.length === 0
+        data_and_parameter_monitored_ExPost === '' ||
+        sectionD.D2.attach_ex_ante_table.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step2: {
-          data_and_parameter_monitored_ExPost:
-            sectionD.data_and_parameter_monitored_ExPost,
-          attach_ex_ante_table: stringExtractor(
-            sectionD.attach_ex_post_table,
-            'fileName'
-          ),
+          data_and_parameter_monitored_ExPost,
+          attach_ex_ante_table: sectionD.D2.attach_ex_post_table,
+          //attach_ex_ante_table: stringExtractor(
+          //  sectionD.D2.attach_ex_post_table,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 2) {
-      if (sectionD.briefDescription === '') {
+      if (implementation_of_sampling_plan === '') {
         console.log('Code Reachable')
         return
       }
       params = {
         step3: {
-          implementation_of_sampling_plan: sectionD.briefDescription,
+          implementation_of_sampling_plan,
           completed: true,
         },
       }
@@ -473,8 +470,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -484,134 +479,145 @@ export const moveToNextSection = async (
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
     const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
     let params = {}
+    const {
+      E1: { calculation_of_baselineEmissions_or_net_GHG, attach_relevant_docs },
+      E2: { calculation_of_projectEmissions_or_net_GHG },
+      E3: { calculation_of_leakage },
+      E4: { calculation_of_emissions_reduction },
+      E5: { comparison_of_actual_emission_reduction },
+      E6: { remark_on_difference_from_estimate_value },
+      E7: { actual_emission_reductions },
+    } = sectionE
     if (subSectionIndex === 0) {
       if (
-        sectionE.calculationOfBaselineEmissions === '' ||
-        sectionE.calculationOfBaselineEmissionsImages.length === 0
+        calculation_of_baselineEmissions_or_net_GHG === '' ||
+        attach_relevant_docs.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step1: {
-          calculation_of_baselineEmissions_or_net_GHG:
-            sectionE.calculationOfBaselineEmissions,
-          attach_relevant_docs: stringExtractor(
-            sectionE.calculationOfBaselineEmissionsImages,
-            'fileName'
-          ),
+          calculation_of_baselineEmissions_or_net_GHG,
+          attach_relevant_docs,
+          //attach_relevant_docs: stringExtractor(
+          //  sectionE.calculationOfBaselineEmissionsImages,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
       if (
-        sectionE.calculationOfProjectEmissions === '' ||
-        sectionE.calculationOfProjectEmissionsImages.length === 0
+        calculation_of_projectEmissions_or_net_GHG === '' ||
+        sectionE.E2.attach_relevant_docs.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step2: {
-          calculation_of_projectEmissions_or_net_GHG:
-            sectionE.calculationOfProjectEmissions,
-          attach_relevant_docs: stringExtractor(
-            sectionE.calculationOfProjectEmissionsImages,
-            'fileName'
-          ),
+          calculation_of_projectEmissions_or_net_GHG,
+          attach_relevant_docs: sectionE.E2.attach_relevant_docs,
+          //attach_relevant_docs: stringExtractor(
+          //  sectionE.calculationOfProjectEmissionsImages,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 2) {
       if (
-        sectionE.calculationOfLeakage === '' ||
-        sectionE.calculationOfLeakageImages.length === 0
+        calculation_of_leakage === '' ||
+        sectionE.E3.attach_relevant_docs.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step3: {
-          calculation_of_leakage: sectionE.calculationOfLeakage,
-          attach_relevant_docs: stringExtractor(
-            sectionE.calculationOfLeakageImages,
-            'fileName'
-          ),
+          calculation_of_leakage,
+          attach_relevant_docs: sectionE.E3.attach_relevant_docs,
+          //attach_relevant_docs: stringExtractor(
+          //  sectionE.calculationOfLeakageImages,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 3) {
       if (
-        sectionE.calculationSummaryOfEmission === '' ||
-        sectionE.calculationSummaryOfEmissionImages.length === 0
+        calculation_of_emissions_reduction === '' ||
+        sectionE.E4.attach_relevant_docs.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step4: {
-          calculation_of_emissions_reduction:
-            sectionE.calculationSummaryOfEmission,
-          attach_relevant_docs: stringExtractor(
-            sectionE.calculationSummaryOfEmissionImages,
-            'fileName'
-          ),
+          calculation_of_emissions_reduction,
+          attach_relevant_docs: sectionE.E4.attach_relevant_docs,
+          //attach_relevant_docs: stringExtractor(
+          //  sectionE.calculationSummaryOfEmissionImages,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 4) {
       if (
-        sectionE.comparisionOfActualEmissionReductions === '' ||
-        sectionE.comparisionOfActualEmissionReductionsImages.length === 0
+        comparison_of_actual_emission_reduction === '' ||
+        sectionE.E5.attach_relevant_docs.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step5: {
-          comparison_of_actual_emission_reduction:
-            sectionE.comparisionOfActualEmissionReductions,
-          attach_relevant_docs: stringExtractor(
-            sectionE.comparisionOfActualEmissionReductionsImages,
-            'fileName'
-          ),
+          comparison_of_actual_emission_reduction,
+          attach_relevant_docs: sectionE.E5.attach_relevant_docs,
+          //attach_relevant_docs: stringExtractor(
+          //  sectionE.comparisionOfActualEmissionReductionsImages,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 5) {
       if (
-        sectionE.remarksOnDifferenceFromEstimatedValue === '' ||
-        sectionE.remarksOnDifferenceFromEstimatedValueImages.length === 0
+        remark_on_difference_from_estimate_value === '' ||
+        sectionE.E6.attach_relevant_docs.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step6: {
-          remark_on_difference_from_estimate_value:
-            sectionE.remarksOnDifferenceFromEstimatedValue,
-          attach_relevant_docs: stringExtractor(
-            sectionE.remarksOnDifferenceFromEstimatedValueImages,
-            'fileName'
-          ),
+          remark_on_difference_from_estimate_value,
+          attach_relevant_docs: sectionE.E6.attach_relevant_docs,
+          //attach_relevant_docs: stringExtractor(
+          //  sectionE.remarksOnDifferenceFromEstimatedValueImages,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 6) {
       if (
-        sectionE.actualEmissionReductions === '' ||
-        sectionE.actualEmissionReductionsImages.length === 0
+        actual_emission_reductions === '' ||
+        sectionE.E7.attach_relevant_docs.length === 0
       ) {
         console.log('Code Reachable')
         return
       }
       params = {
         step7: {
-          actual_emission_reductions: sectionE.actualEmissionReductions,
-          attach_relevant_docs: stringExtractor(
-            sectionE.actualEmissionReductionsImages,
-            'fileName'
-          ),
+          actual_emission_reductions,
+          attach_relevant_docs: sectionE.E7.attach_relevant_docs,
+          //attach_relevant_docs: stringExtractor(
+          //  sectionE.actualEmissionReductionsImages,
+          //  'fileName'
+          //),
           completed: true,
         },
       }
@@ -636,8 +642,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setIsApiCalled(true))
     }
   }
 }

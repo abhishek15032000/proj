@@ -1,59 +1,50 @@
+import { equal } from 'assert'
 import _ from 'lodash'
 import { store } from '../redux/store'
-//redux:ref(which wil change when updated)
+// consider isDataModifiedCheckFunc as parent function and it will be passing the values based to different functions based on the datatype
+//reduxData and currentProjectDetails(already saved data) are required to check whether data is modified or not
 export const isDataModifiedCheckFunc = (
   reduxData: any,
   currentProjectDetailData: any,
   sectionIndex: number,
   subSectionIndex: number
 ) => {
-  console.log(
-    'sectionIndex:',
-    sectionIndex,
-    'subSectionIndex: ',
-    subSectionIndex
-  )
   let isDataChanged = false
-  if (sectionIndex === 1) {
-    if (subSectionIndex === 2 || subSectionIndex === 3) {
-      console.log('p')
-      isDataChanged = arrayObjectTypeCheck(reduxData, currentProjectDetailData)
-    } else if (subSectionIndex !== 2 && subSectionIndex !== 3) {
-      console.log('pe')
-      isDataChanged = stringTypeCheck(reduxData, currentProjectDetailData)
-    }
+
+  if (sectionIndex === 1 && (subSectionIndex === 2 || subSectionIndex === 3)) {
+    //in section A methodologies and party_particpants are having array of objects, so conditionally passing it to 'arrayObjectTypeCheck'
+    isDataChanged = arrayObjectTypeCheck(reduxData, currentProjectDetailData)
   } else isDataChanged = stringTypeCheck(reduxData, currentProjectDetailData)
   return isDataChanged
 }
 
+//values of the type string will be passed to stringTypeCheck and if any values are other than string it will be passed to other func based on data type
 export const stringTypeCheck = (
   reduxData?: any,
   currentProjectDetail?: any
 ) => {
-  console.log('reduxData: ', reduxData)
-  console.log('currentProjectDetail: ', currentProjectDetail)
-
-  const makingKeys = Object.keys(reduxData)
+  //iterateKeys is to check only those fields
+  const iterateKeys = Object.keys(reduxData)
   let isStringDataChanged = false
-  console.log('result: ', makingKeys)
-  makingKeys.map((key: any) => {
+
+  iterateKeys.map((key: any) => {
+    // line 60 is to check if issuer entering the data for the 1st time
     if (typeof reduxData[key] === 'string' && !currentProjectDetail[key]) {
-      //console.log('g', key, '\n', isStringDataChanged)
+      //if redux is having some data it will return true
       if (reduxData[key] !== '') {
         isStringDataChanged = true
-        console.log('type string: ', key, '\n', isStringDataChanged)
+        //console.log('type string: ', key, '\n', isStringDataChanged)
       }
     } else if (
+      //this will check when user is coming and modifying the data
       typeof reduxData[key] === 'string' &&
       typeof currentProjectDetail[key] === 'string'
     ) {
       if (reduxData[key] !== currentProjectDetail[key]) {
-        console.log('not empty')
         isStringDataChanged = true
-        console.log('type string: ', key, '\n', isStringDataChanged)
       }
-      //console.log('type string: ', key, '\n', isStringDataChanged)
     }
+    //if condition will check when datatype is array and conditioned with '!isStringDataChanged' which means it will only execute when the above if condition's aren't true
     if (
       !isStringDataChanged &&
       (Array.isArray(reduxData[key]) ||
@@ -64,13 +55,13 @@ export const stringTypeCheck = (
         currentProjectDetail[key]
       )
     }
+    //if condition will check when datatype is object having key and value and call 'objectTypeCheck' func
     if (
       !isStringDataChanged &&
       ((typeof reduxData[key] === 'object' && !Array.isArray(reduxData[key])) ||
         (typeof currentProjectDetail[key] === 'object' &&
           !Array.isArray(currentProjectDetail[key])))
     ) {
-      console.log('running')
       isStringDataChanged = objectTypeCheck(
         reduxData[key],
         currentProjectDetail[key]
@@ -80,52 +71,34 @@ export const stringTypeCheck = (
   return isStringDataChanged
 }
 
+//array will be passed as parameters to arrayTypeCheck
 export const arrayTypeCheck = (ReduxRow?: any, currentDetailsRow?: any) => {
   let isArrayDataChanged = false
-  console.log('l', ReduxRow)
-  console.log('currentDetailsRow', currentDetailsRow)
-
+  //currentDetailsRow.length === 0 means issuer is entering data for 1st time
   if (currentDetailsRow.length === 0) {
     if (ReduxRow.length !== 0) {
       isArrayDataChanged = true
-      console.log('type array: ', ReduxRow, '\n', isArrayDataChanged)
     }
   } else if (ReduxRow.length !== currentDetailsRow.length) {
     isArrayDataChanged = true
-    console.log(
-      'type array: ',
-      'ReduxRow: ',
-      ReduxRow.length,
-      currentDetailsRow.length,
-      '\n',
-      isArrayDataChanged
-    )
+    //if length is not equal then issuer has modified data and else block will run when length is same but the elements are different
   } else {
     ReduxRow.map((i: any) => {
       if (!currentDetailsRow.includes(i)) isArrayDataChanged = true
-      console.log('type array', i, '\n', isArrayDataChanged)
     })
   }
-  //currentDetailsRow.length === 0
-  //  ? ReduxRow !== 0 && (isArrayDataChanged = true)
-  //  : ReduxRow.length !== currentDetailsRow.length
-  //  ? (isArrayDataChanged = true)
-  //  : ReduxRow.map((i: any) => {
-  //      if (!currentDetailsRow.includes(i)) isArrayDataChanged = true
-  //      console.log('type array', i, '\n', isArrayDataChanged)
-  //    })
   return isArrayDataChanged
 }
 
+//array with objects data will be passed as parameters to arrayTypeCheck
 export const arrayObjectTypeCheck = (reduxRow: any, currentDetailsRow: any) => {
-  console.log('reduxRow: ', reduxRow)
-  console.log('currentDetailsRow: ', currentDetailsRow)
   let isArrayObjectDataChanged = false
+  //currentDetailsRow.length === 0 means issuer is entering data for 1st time
   currentDetailsRow.length === 0
     ? Object.keys(reduxRow[0]).map((reduxKey: any) => {
+        //excluded the the value with keys flag, because the flag is used in subsection level and not required to check whether data is modified or not
         if (reduxKey !== 'flag' && reduxRow[0][reduxKey] !== '')
           isArrayObjectDataChanged = true
-        console.log('type string: ', reduxKey, '\n', isArrayObjectDataChanged)
       })
     : reduxRow.length !== currentDetailsRow.length
     ? (isArrayObjectDataChanged = true)
@@ -133,29 +106,23 @@ export const arrayObjectTypeCheck = (reduxRow: any, currentDetailsRow: any) => {
         for (let i = 0; i < reduxRow.length; i++) {
           if (key !== 'flag' && reduxRow[i][key] !== currentDetailsRow[i][key])
             isArrayObjectDataChanged = true
-          console.log('type array', i, key, '\n', isArrayObjectDataChanged)
         }
       })
-
-  console.log('isArrayObjectDataChanged: ', isArrayObjectDataChanged)
 
   return isArrayObjectDataChanged
 }
 
+// object data type will be passed as parameters to arrayTypeCheck
 export const objectTypeCheck = (reduxRow: any, currentDetailsRow: any) => {
-  console.log('ReduxRow: ', reduxRow)
-  console.log('currentDetailsRow: ', currentDetailsRow)
   let isObjectTypeModified = false
   Object.keys(reduxRow).map((key: any) => {
+    //if there is no currentDetailsRow then issuer is entering data for 1st time
     if (!currentDetailsRow) {
       reduxRow[key] !== '' && (isObjectTypeModified = true)
-      console.log('type array', key, '\n', isObjectTypeModified)
     } else if (!currentDetailsRow[key] && reduxRow[key] !== '') {
       isObjectTypeModified = true
-      console.log('type array', key, '\n', isObjectTypeModified)
     } else if (reduxRow[key] !== currentDetailsRow[key]) {
       isObjectTypeModified = true
-      console.log('type array', key, '\n', isObjectTypeModified)
     }
   })
   return isObjectTypeModified

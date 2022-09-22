@@ -15,6 +15,7 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
+
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -37,7 +38,6 @@ const Projects = () => {
   }, [showDashboard])
 
   const listNewProject = () => {
-    //dispatch(setCurrentProjectDetails(null))
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)
