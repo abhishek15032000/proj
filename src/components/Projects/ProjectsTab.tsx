@@ -5,72 +5,51 @@ import React, { FC, useEffect, useState } from 'react'
 import { Grid, Box, Typography, IconButton, Chip, Paper } from '@mui/material'
 
 // Local Imports
-import TabSelector from '../../atoms/TabSelector/TabSelector'
-import CCTable from '../../atoms/CCTable'
-import TextButton from '../../atoms/TextButton/TextButton'
-import WorkOutlineIcon from '@mui/icons-material/WorkOutline'
-import CircleIcon from '@mui/icons-material/Circle'
-import DashboardNewProjectsTable from './DashboardNewProjectsTable'
-import DashboardRegisteredProjectsTable from './DashboardRegisteredProjectsTable'
-//import ProjectsUnderRegistration from './ProjectUnderRegistration'
-//import RegisteredProjects from './RegisteredProjects'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
-import { addSectionPercentages } from '../../utils/newProject.utils'
+import ListOfProjectsDashboard from './ListOfProjectsDashboard'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
-import { isNonNullChain } from 'typescript'
+import { setSectionIndex, setSubSectionIndex } from '../../redux/Slices/issuanceDataCollection'
+import { useDispatch } from 'react-redux'
 
 interface ProjectsTabProps {}
 
 const ProjectsTab: FC<ProjectsTabProps> = (props) => {
   const navigate = useNavigate()
-  const userDetails = getLocalItem('userDetails')
+  const dispatch = useDispatch()
 
-  const [tabIndex, setTabIndex] = useState(1)
-  const [tableRows, setTableRows] = useState<any>([])
-  const [filterProjectDetails, setFilterProjectDetails] =
-    useState<boolean>(false)
+  const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    //will use it when registered projects are true in API res
-    //tabIndex === 1
-    //  ? setFilterProjectDetails(false)
-    //  : setFilterProjectDetails(true)
-    getAllProjects()
-  }, [tabIndex])
-
-  const getAllProjects = () => {
     setLoading(true)
+
+    loadTableData()
+  }, [])
+
+  const loadTableData = () => {
+    setLoading(true)
+
     dataCollectionCalls
-      .getAllProjects(userDetails?.email)
-      .then((res: any) => {
-        if (res?.data?.success) {
-          const modifiedRows = res?.data?.data
-            ?.slice(0, 7)
-            .map((i: any) => addSectionPercentages(i))
-          if (modifiedRows && modifiedRows.length) {
-            const tabRows = modifiedRows.filter((i: any) =>
-              tabIndex === 1
-                ? i?.register === false && i?.project_status <= 3
-                : tabIndex === 2 &&
-                  i?.register === true &&
-                  i?.project_status > 3
-            )
-            setTableRows(tabRows)
-          }
-          setLoading(false)
-        }
+      .getAllProjects(getLocalItem('userDetails')?.email)
+      .then((response) => {
+        setTableData(response.data.data)
+        setLoading(false)
       })
-      .catch((e: any) => {
-        console.log('Error in dataCollectionCalls.getAllProjects api :', e)
+      .catch((e) => {
         setLoading(false)
       })
   }
 
-  // if (loading || (loading === false && tableRows.length > 0)) {
+  const listNewProject = () => {
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+    dispatch(setSectionIndex(0))
+    dispatch(setSubSectionIndex(0))
+  }
+
+  if (loading || (!loading && tableData.length > 0)) {
     return (
       <Paper
         elevation={2}
@@ -104,35 +83,19 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
           </Typography>
         </Box>
 
-        <TabSelector
-          tabArray={['New', 'Registered']}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
-          sx={{ marginBottom: 2 }}
-        />
-        {tabIndex === 1 ? (
-          <DashboardNewProjectsTable tableRows={tableRows} loading={loading} />
-        ) : (
-          tabIndex === 2 && (
-            <DashboardRegisteredProjectsTable
-              tableRows={filterProjectDetails && tableRows}
-              loading={loading}
-            />
-          )
-        )}
+        <ListOfProjectsDashboard data={tableData} loading={loading} />
       </Paper>
     )
-  // } else if (loading === false && tableRows.length === 0) {
-  //   return (
-  //     <EmptyComponent
-  //       photoType={1}
-  //       title="No projects listed yet !"
-  //       listNewProject
-  //     />
-  //   )
-  // } else {
-  //   return null
-  // }
+  } else if (!loading && tableData.length === 0 ) {
+    return (
+      <EmptyComponent
+        photoType={1}
+        title="No projects listed yet !"
+        listNewProject
+        action={() => listNewProject()}
+      />
+    )
+  } else return null
 }
 
 export default ProjectsTab

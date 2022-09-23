@@ -25,6 +25,7 @@ const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
         mt: 2,
         display: 'flex',
         justifyContent: 'space-between',
+        alignItems: 'center'
       }}
     >
       <Box
