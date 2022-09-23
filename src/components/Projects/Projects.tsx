@@ -9,6 +9,7 @@ import { pathNames } from '../../routes/pathNames'
 import CCButton from '../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
+  setCurrentProjectDetails,
   setSectionIndex,
   setSubSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
@@ -22,18 +23,20 @@ const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { wallet_added } = getLocalItem('userDetails2')
+  const { wallet_added = false } = getLocalItem('userDetails2')
 
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
+
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
   useEffect(() => {
-    setMetamask && isConnected && wallet_added
+    setMetamask && isConnected
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
+
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
@@ -41,9 +44,9 @@ const Projects = () => {
   }, [showDashboard])
 
   const listNewProject = () => {
-    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
   }
 
   return (

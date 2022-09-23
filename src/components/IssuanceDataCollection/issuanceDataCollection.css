@@ -7,8 +7,8 @@
 }
 .tabs {
   display: flex;
-  /* width: fit-content; */
-  overflow-x: auto;
+  width: fit-content;
+  overflow-x: hidden;
 }
 .tabs::-webkit-scrollbar {
   height: 8px;
