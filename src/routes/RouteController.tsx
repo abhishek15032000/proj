@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import { shallowEqual } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ROLES } from '../config/roles.config'
 import { useAppSelector } from '../hooks/reduxHooks'
@@ -15,7 +16,7 @@ import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
 const RouteController = ({ localLoggedIn }: any) => {
-  const userData = useAppSelector((state: any) => state.auth.data)
+  const userData = useAppSelector((state: any) => state.auth.data, shallowEqual)
 
   return (
     <Routes>

@@ -4,23 +4,16 @@ import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import SectionE7ActualReductionInFirstEmission from '../../../assets/Images/SampleData/SectionE7ActualReductionInFirstEmission.png'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import {
-  setActualEmissionReductions,
-  setActualEmissionReductionsImages,
-} from '../../../redux/Slices/sectionESlice'
+import { setE7 } from '../../../redux/Slices/sectionESlice'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import Spinner from '../../../atoms/Spinner'
+
 const SectionE7 = () => {
   const dispatch = useAppDispatch()
 
-  const actualEmissionReductions = useAppSelector(
-    ({ sectionE }) => sectionE.actualEmissionReductions
-  )
-  const actualEmissionReductionsImages = useAppSelector(
-    ({ sectionE }) => sectionE.actualEmissionReductionsImages
-  )
+  const E7 = useAppSelector(({ sectionE }) => sectionE.E7)
+  const { attach_relevant_docs } = E7
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -41,8 +34,15 @@ const SectionE7 = () => {
       const { actual_emission_reductions, attach_relevant_docs } =
         currentProjectDetails.section_e.step7
 
-      dispatch(setActualEmissionReductions(actual_emission_reductions))
-      dispatch(setActualEmissionReductionsImages(attach_relevant_docs))
+      dispatch(
+        setE7({
+          name: 'actual_emission_reductions',
+          value: actual_emission_reductions,
+        })
+      )
+      dispatch(
+        setE7({ name: 'attach_relevant_docs', value: attach_relevant_docs })
+      )
     }
   }, [currentProjectDetails])
 
@@ -56,9 +56,10 @@ const SectionE7 = () => {
         <CCMultilineTextArea
           label="Actual emission reductions or net anthropogenic GHG removals during 1st commitment period"
           placeholder="Actual emission reductions or net anthropogenic GHG removals during 1st commitment period, if any"
-          value={actualEmissionReductions}
-          onChange={(e) =>
-            dispatch(setActualEmissionReductions(e.target.value))
+          value={E7.actual_emission_reductions}
+          name={'actual_emission_reductions'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setE7({ name, value }))
           }
         />
       </Grid>
@@ -69,20 +70,21 @@ const SectionE7 = () => {
             'Sample Report - Actual emission reductions in 1st commitment period',
           ]}
           mediaItem={[SectionE7ActualReductionInFirstEmission]}
-          imageArray={actualEmissionReductionsImages}
+          imageArray={E7.attach_relevant_docs}
           onImageUpload={(item: any) => {
             dispatch(
-              setActualEmissionReductionsImages([
-                ...actualEmissionReductionsImages,
-                item,
-              ])
+              setE7({
+                name: 'attach_relevant_docs',
+                value: [...attach_relevant_docs, item],
+              })
             )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setActualEmissionReductionsImages(
-                deleteIndexInArray(actualEmissionReductionsImages, index)
-              )
+              setE7({
+                name: 'attach_relevant_docs',
+                value: deleteIndexInArray(attach_relevant_docs, index),
+              })
             )
           }}
         />

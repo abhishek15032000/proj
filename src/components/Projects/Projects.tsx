@@ -9,18 +9,25 @@ import { pathNames } from '../../routes/pathNames'
 import CCButton from '../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
+  setCurrentProjectDetails,
   setSectionIndex,
   setSubSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
+import { getLocalItem } from '../../utils/Storage'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import { shallowEqual } from 'react-redux'
+
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const { wallet_added = false } = getLocalItem('userDetails2')
+
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
-  //const []
+
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
@@ -29,17 +36,17 @@ const Projects = () => {
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])
+
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
     }, 200)
   }, [showDashboard])
-  console.log('setMetamask: ', setMetamask, 'isConnected: ', isConnected)
 
   const listNewProject = () => {
-    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
   }
 
   return (
@@ -85,7 +92,7 @@ const Projects = () => {
                   </Typography>
                 </CCButton>
               )}
-              <ProfileCompletion walletPercentage={showDashboard} />
+              <ProfileCompletion />
             </Grid>
           </Grid>
         </>

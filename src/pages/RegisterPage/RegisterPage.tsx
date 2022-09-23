@@ -67,15 +67,19 @@ const RegisterPage = (props: RegisterPageProps) => {
     department
       .getDepartment()
       .then((response: any) => {
-        const roles = response?.data.map((department: any, index: number) => {
-          return {
-            value: department.name,
-            label: department._id,
-          }
-        })
+        const roles = response?.data
+          .filter(
+            (department: any) => department.name !== 'super admin department'
+          )
+          .map((department: any, index: number) => {
+            return {
+              value: department.name,
+              label: department._id,
+            }
+          })
         setTypeOptions(roles)
       })
-      .catch((e) => console.log(e))
+      .catch((e) => console.log('Error in department.getDepartment api :', e))
   }
 
   const onBoardingNewUser = async () => {
@@ -113,7 +117,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   }
 
   const { handleChange, values, errors, handleSubmit } = useForm(register)
-  console.log(values)
+
   return (
     <Grid container flexDirection="row" xs={12} sx={{ height: '100vh' }}>
       <Grid
@@ -306,10 +310,11 @@ const RegisterPage = (props: RegisterPageProps) => {
             lg: 'flex',
             xs: 'none',
           },
+          minHeight: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
           backgroundSize: 'cover',
-          backgroundRepeat: 'repeat-y',
+          backgroundRepeat: 'no-repeat',
         }}
       />
     </Grid>

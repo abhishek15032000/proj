@@ -15,6 +15,11 @@ import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { Colors } from '../../theme'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import NoData from '../../atoms/NoData/NoData'
 
 const headings = [
   'Submitted On',
@@ -23,23 +28,25 @@ const headings = [
   'Report Version',
   'Status',
   'Conclusive Report',
-  'CO2e Sequestered',
+  'CO2c Authorised',
   'Action',
 ]
 
 interface ReportsTableProps {
   data?: any
+  loading?: any
 }
 
 const ReportsTable: FC<ReportsTableProps> = (props) => {
+  const navigate = useNavigate()
+
   const [tabIndex, setTabIndex] = useState(1)
   const [rows, setRows] = useState([])
 
   useEffect(() => {
     const reportsData: any = []
 
-    props.data.map((item: any, index: any) => {
-
+    props.data?.map((item: any, index: any) => {
       reportsData.push([
         moment(item.createdAt).format('DD/MM/YYYY'),
         moment(item.next_date).format('DD/MM/YYYY'),
@@ -59,15 +66,18 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
               textAlign: 'left',
             }}
           >
-            Project Issuance
+            -
           </Typography>
           <ArticleIcon
             style={{ color: Colors.lightPrimary1, marginRight: 2 }}
           />
           <DownloadIcon style={{ color: Colors.lightPrimary1 }} />
         </Box>,
-        'V1.0',
-        <ApprovalChip key={'1'} />,
+        '-',
+        <ApprovalChip
+          key={'1'}
+          variant={item.status === 0 ? 'Pending' : 'Verified'}
+        />,
         <Box
           key={'1'}
           sx={{
@@ -84,12 +94,28 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
               textAlign: 'left',
             }}
           >
-            Conclusive Report
+            -
           </Typography>
           <ArticleIcon style={{ color: Colors.lightPrimary1 }} />
         </Box>,
         item.quantity,
-        <TextButton key={'1'} sx={{ width: '90px' }} title="Verify" />,
+        item.status === 0 ? (
+          <TextButton
+            key={'1'}
+            sx={{ width: '90px' }}
+            title="Verify"
+            onClick={() =>
+              navigate(pathNames.VERIFIER_VERIFY_REPORT, {
+                state: {
+                  project: item?.project_id,
+                  pdf: item?.project_id?.project_pdf,
+                },
+              })
+            }
+          />
+        ) : (
+          '-'
+        ),
       ])
     })
 
@@ -121,20 +147,20 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
         Reports Received
       </Typography>
 
-      <CCTable
-        headings={headings}
-        rows={rows}
-        sx={{ minWidth: 100 }}
-        tableSx={{ minWidth: 100 }}
-      />
+      {!props.loading && props.data.length > 0 && (
+        <CCTable
+          headings={headings}
+          rows={rows}
+          sx={{ minWidth: 100 }}
+          tableSx={{ minWidth: 100 }}
+        />
+      )}
+
+      {!props.loading && props.data.length === 0 && (
+        <NoData title="Your project’s review report will show up here" />
+      )}
     </Paper>
   )
 }
 
 export default ReportsTable
-
-const ApprovalChip: FC<ApprovalChipProps> = (props) => {
-  return <Chip icon={<CircleIcon />} label="Verified" />
-}
-
-interface ApprovalChipProps {}

@@ -10,6 +10,7 @@ import TextButton from '../../atoms/TextButton/TextButton'
 import NoSellOrders from '../../assets/Images/illustrations/NoSellOrder.png'
 import { Colors } from '../../theme'
 import EmptySellOrders from './EmptySellOrders'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 interface SellOrdersProps {}
 
@@ -29,7 +30,12 @@ const SellOrders: FC<SellOrdersProps> = (props) => {
       </Typography>
 
       <CCTable headings={headings} rows={rows} maxWidth={900} />
-      {/* <EmptySellOrders /> */}
+
+      {/* <EmptyComponent
+        photoType={2}
+        title="No sell order made yet "
+        subtitle="Sell some tokens to view the sell orders here"
+      /> */}
     </>
   )
 }
@@ -79,12 +85,7 @@ const rowItem = [
   </Box>,
 ]
 
-const rows = [
-  rowItem,
-  rowItem,
-  rowItem,
-  rowItem,
-]
+const rows = [rowItem, rowItem, rowItem, rowItem]
 
 const headings = [
   'Order ID',

@@ -37,22 +37,30 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       setAddress(response?.data?.data?.address)
       setDesignation(response?.data?.data?.designation)
       setOrganisationName(response?.data?.data?.organisationName)
-      setWebsite(response?.data?.data?.organisationName)
+      setWebsite(response?.data?.data?.website)
     })
   }, [])
 
   const onSave = () => {
     // return
+
     if (
       email === '' ||
+      email === undefined ||
       fullName === '' ||
+      fullName === undefined ||
       phone === '' ||
+      phone === undefined ||
       organisationName === '' ||
+      organisationName === undefined ||
       address === '' ||
+      address === undefined ||
       website === '' ||
-      designation === ''
+      website === undefined ||
+      designation === '' ||
+      designation === undefined
     ) {
-      console.log('Code Reachable')
+      alert('Fill all the Fields!')
       return
     }
     setLoading(true)
@@ -68,12 +76,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       designation: designation,
     }
 
-    // console.log('payload')
-    // console.log(JSON.stringify(payload, null, 4))
-
     USER.updateUserInfo(payload)
       .then((response) => {
-        navigate(pathNames.VERIFIER_PROJECTS)
+        navigate(pathNames.DASHBOARD, { replace: true })
         setLoading(false)
       })
       .catch((e) => {

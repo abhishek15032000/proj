@@ -115,23 +115,16 @@ const StepOneTwoFa = (props: TwoFaProps) => {
           flexDirection="column"
           sx={{
             display: {
-              sm: 'none',
-              md: 'flex',
+              lg: 'flex',
               xs: 'none',
             },
-            height: '100%',
-            backgroundImage: `url(${Images.illustration2})`,
-            backgroundSize: 'cover',
+            minHeight: '100%',
+            backgroundImage: `url(${Images.illustration1})`,
             flex: 1,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
           }}
-        >
-          <img
-            src={Images.illustration2}
-            alt="bg iamges"
-            width="auto"
-            style={{ height: '100%' }}
-          />
-        </Grid>
+        />
       </Grid>
     </Box>
   )
