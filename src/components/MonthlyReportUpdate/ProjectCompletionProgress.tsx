@@ -59,7 +59,6 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
     setStepsCompletionPercent(completionPercent)
   }, [stepsCompletionData])
 
-  console.log('ProjectCompletionProgressMonthly', currentProjectDetails)
   useEffect(() => {
     let stepsCompletionPercent
     if (currentProjectDetails) {

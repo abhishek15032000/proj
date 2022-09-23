@@ -96,7 +96,6 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
     setStepsCompletionPercent(completionPercent)
   }, [stepsCompletionData])
 
-  console.log('ProjectCompletionProgress', currentProjectDetails)
   return (
     <Box sx={{ py: 2, px: { md: 3, lg: 4 } }}>
       <Box sx={{ display: 'flex' }}>

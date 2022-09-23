@@ -71,10 +71,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           const modifiedRows = res?.data?.record.map((i: any) =>
             addSectionPercentages(i)
           )
-          console.log('addSectionPercentages', modifiedRows)
+
           const main = res?.data?.main_project?.report
           // const modifiedRows = res?.data?.record
-          console.log('modifiedRows', res)
+
           const rows =
             modifiedRows &&
             modifiedRows.map((i: any, index: number) => {

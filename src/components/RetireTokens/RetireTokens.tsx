@@ -28,53 +28,8 @@ const RetireTokens = (props: RetireTokensProps) => {
   const [explain, setExplain] = useState('')
   const [loading, setLoading] = useState(false)
 
-  // useEffect(() => {
-  //   USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
-  //     setFullName(response?.data?.data?.fullName)
-  //     setPhone(response?.data?.data?.phone)
-  //     setAddress(response?.data?.data?.address)
-  //     setDesignation(response?.data?.data?.designation)
-  //     setOrganisationName(response?.data?.data?.organisationName)
-  //     setWebsite(response?.data?.data?.organisationName)
-  //   })
-  // }, [])
-
   const onSave = () => {
     navigate(pathNames.TOKENS_RETIREMENT)
-    // return
-    // if (
-    //   email === '' ||
-    //   fullName === '' ||
-    //   phone === '' ||
-    //   organisationName === '' ||
-    //   address === '' ||
-    //   website === '' ||
-    //   designation === ''
-    // ) {
-    //   console.log('Code Reachable')
-    //   return
-    // }
-    // setLoading(true)
-    // const payload = {
-    //   uuid: getLocalItem('userDetails').uuid,
-    //   email: email,
-    //   fullName: fullName,
-    //   phone: phone.toString(),
-    //   organisationName: organisationName,
-    //   address: address,
-    //   website: website,
-    //   designation: designation,
-    // }
-    // // console.log('payload')
-    // // console.log(JSON.stringify(payload, null, 4))
-    // USER.updateUserInfo(payload)
-    //   .then((response) => {
-    //     navigate(pathNames.VERIFIER_PROJECTS)
-    //     setLoading(false)
-    //   })
-    //   .catch((e) => {
-    //     setLoading(false)
-    //   })
   }
 
   if (loading) {

@@ -82,11 +82,6 @@ export const moveToNextSection = async (
     const newProjectData = store.getState()?.newProject
     const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
     const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
-    console.log(
-      'sectionA',
-
-      sectionA
-    )
 
     const { purpose_and_description } = sectionA
     console.log(Object.keys(sectionA).map((item) => item))
