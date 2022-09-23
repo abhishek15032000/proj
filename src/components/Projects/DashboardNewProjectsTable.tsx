@@ -38,9 +38,9 @@ const headingItems = [
     style: {
       minWidth: 150,
       position: 'sticky',
-      zindex: 1999,
       top: 0,
       left: 0,
+      zindex: 1999,
       background: '#CCE8E1',
       display: 'block',
     },

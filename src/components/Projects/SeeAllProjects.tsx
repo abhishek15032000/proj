@@ -1,28 +1,109 @@
-import { Paper } from '@mui/material'
-import React, { useState } from 'react'
-import TabSelector from '../../atoms/TabSelector/TabSelector'
-import ProjectsUnderRegistration from './ProjectUnderRegistration'
-import RegisteredProjects from './RegisteredProjects'
+// React Imports
+import React, { useEffect, useState } from 'react'
+
+// MUI Imports
+import { Box, Grid, Paper, Typography } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+
+// Functional Imports
+import { useNavigate } from 'react-router-dom'
+
+// Local Imports
+import BackHeader from '../../atoms/BackHeader/BackHeader'
+import ListOfProjects from './ListOfProjects'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { getLocalItem } from '../../utils/Storage'
+import CCButton from '../../atoms/CCButton'
+import { pathNames } from '../../routes/pathNames'
+import { useDispatch } from 'react-redux'
+import {
+  setSectionIndex,
+  setSubSectionIndex,
+} from '../../redux/Slices/issuanceDataCollection'
 
 const SeeAllProjects = () => {
-  const [tabIndex, setTabIndex] = useState(1)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [tableData, setTableData] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+
+    loadTableData()
+  }, [])
+
+  const loadTableData = () => {
+    setLoading(true)
+
+    dataCollectionCalls
+      .getAllProjects(getLocalItem('userDetails')?.email)
+      .then((response) => {
+        setTableData(response.data.data)
+        setLoading(false)
+      })
+      .catch((e) => {
+        setLoading(false)
+      })
+  }
+
+  const listNewProject = () => {
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+    dispatch(setSectionIndex(0))
+    dispatch(setSubSectionIndex(0))
+  }
 
   return (
-    <>
-      <Paper elevation={2} sx={{ pt: 1, px: 2 }}>
-        <TabSelector
-          tabArray={['New', 'Registered']}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
-          sx={{ marginBottom: 2 }}
-        />
-        {tabIndex === 1 ? (
-          <ProjectsUnderRegistration />
-        ) : (
-          tabIndex === 2 && <RegisteredProjects />
-        )}
-      </Paper>
-    </>
+    <Box sx={{ p: 0 }}>
+      <Grid
+        container
+        xs={12}
+        sx={{ p: 0, border: '0px solid' }}
+        justifyContent={'space-between'}
+      >
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <BackHeader
+            title="Projects"
+            onClick={() => {
+              navigate(-1)
+              console.log('Code Reachable')
+            }}
+          />
+
+          <CCButton
+            variant="contained"
+            sx={{
+              backgroundColor: '#F3BA4D',
+              textTransform: 'none',
+              width: '260px',
+              borderRadius: '100px',
+              padding: '10px 24px 10px 16px',
+            }}
+            startIcon={<AddIcon style={{ color: '#005046' }} />}
+            onClick={() => listNewProject()}
+          >
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 500, color: '#005046' }}
+            >
+              List New Project
+            </Typography>
+          </CCButton>
+        </Grid>
+
+        <Grid item xs={12}>
+          <ListOfProjects data={tableData} loading={loading} />
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 

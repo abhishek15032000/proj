@@ -139,14 +139,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          <ChevronRightIcon
-            key={index}
-            onClick={() => {
-              navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                state: { project_uuid: item.project_id.uuid },
-              })
-            }}
-          />,
+          item.project_status === 1 ||
+            (item.project_status === 2 && (
+              <ChevronRightIcon
+                key={index}
+                onClick={() => {
+                  navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                    state: { project_uuid: item.project_id.uuid },
+                  })
+                }}
+              />
+            )),
         ])
       }
 
@@ -261,8 +264,8 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         newProjects={4}
       />
 
-      {props.loading && <CCTableSkeleton height={40} />}
-      
+      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
+
       {!props.loading &&
         tabIndex === 1 &&
         Object.keys(rowsNew[0]).length > 0 && (

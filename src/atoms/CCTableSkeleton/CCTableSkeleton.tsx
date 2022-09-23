@@ -3,13 +3,13 @@ import React from 'react'
 import { Colors } from '../../theme'
 import { CCTableSkeletonProps } from './CCTableSkeleton.interface'
 
-const CCTableSkeleton = ({ height = 40, items = 10 }: CCTableSkeletonProps) => {
+const CCTableSkeleton = ({ height = 40, items = 10, sx }: CCTableSkeletonProps) => {
   return (
     <Stack data-testid={'cc-table-skeleton'}>
       <Skeleton
         variant="rectangular"
         height={56.5}
-        sx={{ background: '#CCE8E1', marginBottom: 1 }}
+        sx={{ background: '#CCE8E1', marginBottom: 1, ...sx }}
         animation="wave"
       />
 

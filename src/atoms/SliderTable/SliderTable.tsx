@@ -7,9 +7,9 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { CCTableProps } from './CCTable.interface'
 import { TablePagination, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import { SliderTableProps } from './SliderTable.interface'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -30,10 +30,23 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }))
 
-const CCTable = (props: CCTableProps) => {
+const SliderTable = (props: SliderTableProps) => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
   const [page, setPage] = useState<number>(0)
   const [tableRowData, setTableRowData] = useState<any>()
+
+  const [showBorder, setShowBorder] = useState<boolean>(false)
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    if (
+      event.currentTarget.scrollLeft < 474 &&
+      event.currentTarget.scrollLeft >= 2
+    ) {
+      setShowBorder(true)
+    } else if (event.currentTarget.scrollLeft < 2) {
+      setShowBorder(false)
+    }
+  }
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -64,6 +77,7 @@ const CCTable = (props: CCTableProps) => {
   return (
     <>
       <TableContainer
+        onScroll={handleScroll}
         component={Paper}
         sx={{ mt: 1, minWidth: 700, maxWidth: props.maxWidth, ...props.sx }}
       >
@@ -76,7 +90,27 @@ const CCTable = (props: CCTableProps) => {
               {props?.headings &&
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
-                  <StyledTableCell key={index} align="center">
+                  <StyledTableCell
+                    sx={
+                      index === 0
+                        ? {
+                            minWidth: 150,
+                            position: 'sticky',
+                            top: 0,
+                            left: 0,
+                            zindex: 1999,
+                            background: '#CCE8E1',
+                            height: props.tileHeight,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            boxShadow: showBorder ? 5 : 0,
+                          }
+                        : { maxHeight: props.tileHeight }
+                    }
+                    key={index}
+                    align="center"
+                  >
                     {heading}
                   </StyledTableCell>
                 ))}
@@ -89,7 +123,28 @@ const CCTable = (props: CCTableProps) => {
                 <StyledTableRow key={index} data-testid={'cc-table-row'}>
                   {row?.length > 0 &&
                     row.map((tdValue: any, tdIndex: number) => (
-                      <StyledTableCell key={tdIndex} align="center">
+                      <StyledTableCell
+                        sx={
+                          tdIndex === 0
+                            ? {
+                                minWidth: 150,
+                                position: 'sticky',
+                                top: 0,
+                                left: 0,
+                                zindex: 1999,
+                                background:
+                                  index % 2 === 0 ? '#E1EEE8' : '#FFF',
+                                height: props.tileHeight,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                boxShadow: showBorder ? 5 : 0,
+                              }
+                            : { maxHeight: props.tileHeight }
+                        }
+                        key={tdIndex}
+                        align="center"
+                      >
                         {tdValue}
                       </StyledTableCell>
                     ))}
@@ -138,4 +193,4 @@ const CCTable = (props: CCTableProps) => {
     </>
   )
 }
-export default CCTable
+export default SliderTable
