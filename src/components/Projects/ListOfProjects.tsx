@@ -29,7 +29,10 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import { pathNames } from '../../routes/pathNames'
 import { useDispatch } from 'react-redux'
-import { setSectionIndex, setSubSectionIndex } from '../../redux/Slices/MonthlyReportUpdate'
+import {
+  setSectionIndex,
+  setSubSectionIndex,
+} from '../../redux/Slices/MonthlyReportUpdate'
 
 const headingsNew = [
   'Reference ID',
@@ -73,13 +76,19 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(percentageAddedData))
-      
+
       if (redirect === 'Details') {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO, {
+          state: {
+            status: projectDetails?.project_status,
+          },
+        })
       } else if (redirect === 'Monthly') {
         dispatch(setSectionIndex(0))
         dispatch(setSubSectionIndex(0))
         navigate(pathNames.MONTHLY_REPORT_UPDATE)
+      } else if (redirect === 'Verify') {
+        navigate(pathNames.SELECT_VERIFIER)
       }
     }
   }
@@ -89,12 +98,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       registeredData: any = []
 
     props.data.map((item: any, index: any) => {
-
       if (
         item.project_status === 0 ||
         item.project_status === 1 ||
-        item.project_status === 2 ||
-        item.project_status === 3
+        item.project_status === 2
       ) {
         newData.push([
           item._id,
@@ -131,7 +138,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ),
           item.project_status === 0 ? (
             isProjectCompleted(item) ? (
-              <TextButton title="Select Verifier" />
+              <TextButton
+                title="Select Verifier"
+                onClick={() => openProjectDetails(item, 'Verify')}
+              />
             ) : (
               <CreateIcon
                 key="1"
@@ -148,7 +158,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         ])
       }
 
-      if (item.project_status === 4) {
+      if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
           item._id,
           moment(item.createdAt).format('DD/MM/YYYY'),
@@ -171,13 +181,20 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          <ApprovalChip variant="Verified" key={'1'} />,
-          moment(item.report.next_date).format('DD/MM/YYYY'),
-          <TextButton
-            key="1"
-            title="Add Monthly Data"
-            onClick={() => openProjectDetails(item, 'Monthly')}
+          <ApprovalChip
+            variant={item.project_status === 3 ? 'In progress' : 'Verified'}
+            key={'1'}
           />,
+          moment(item.report?.next_date).format('DD/MM/YYYY'),
+          item.project_status === 4 ? (
+            <TextButton
+              key="1"
+              title="Add Monthly Data"
+              onClick={() => openProjectDetails(item, 'Monthly')}
+            />
+          ) : (
+            '-'
+          ),
           <ChevronRightIcon
             key="1"
             onClick={() => openProjectDetails(item, 'Details')}
@@ -235,31 +252,3 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 }
 
 export default ListOfProjects
-
-// const getAllProjects = () => {
-//   setLoading(true)
-//   dataCollectionCalls
-//     .getAllProjects(userDetails?.email)
-//     .then((res: any) => {
-//       if (res?.data?.success) {
-//         const modifiedRows = res?.data?.data
-//           ?.slice(0, 7)
-//           .map((i: any) => addSectionPercentages(i))
-//         if (modifiedRows && modifiedRows.length) {
-//           const tabRows = modifiedRows.filter((i: any) =>
-//             tabIndex === 1
-//               ? i?.register === false && i?.project_status <= 3
-//               : tabIndex === 2 &&
-//                 i?.register === true &&
-//                 i?.project_status > 3
-//           )
-//           setTableRows(tabRows)
-//         }
-//         setLoading(false)
-//       }
-//     })
-//     .catch((e: any) => {
-//       console.log('Error in dataCollectionCalls.getAllProjects api :', e)
-//       setLoading(false)
-//     })
-// }

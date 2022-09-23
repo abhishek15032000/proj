@@ -103,16 +103,7 @@ const headings = [
 
 const RegisteredProjects = () => {
   const userDetails = getLocalItem('userDetails')
-
-  useEffect(() => {
-    dataCollectionCalls.getAllProjects(userDetails?.email).then((response) => {
-      response.data.data.map((item: any) => {
-        console.log('item.project_status')
-        console.log(JSON.stringify(item.project_status, null, 4))
-      })
-    })
-  }, [])
-
+  
   return (
     <Box sx={{ mt: 4 }}>
       <CCTable headings={headings} rows={rows} maxWidth={'100%'} />

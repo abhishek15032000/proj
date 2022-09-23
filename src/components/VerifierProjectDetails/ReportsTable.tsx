@@ -143,21 +143,27 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
         setTabIndex={setTabIndex}
       />
 
-      <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
-        Reports Received
-      </Typography>
-
       {!props.loading && props.data.length > 0 && (
-        <CCTable
-          headings={headings}
-          rows={rows}
-          sx={{ minWidth: 100 }}
-          tableSx={{ minWidth: 100 }}
-        />
+        <>
+          <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
+            Reports Received
+          </Typography>
+          <CCTable
+            headings={headings}
+            rows={rows}
+            sx={{ minWidth: 100 }}
+            tableSx={{ minWidth: 100 }}
+          />
+        </>
       )}
 
       {!props.loading && props.data.length === 0 && (
-        <NoData title="Your project’s review report will show up here" />
+        <>
+          <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
+            Response awaiting from project developer
+          </Typography>
+          <NoData title="Your project’s review report will show up here" />
+        </>
       )}
     </Paper>
   )

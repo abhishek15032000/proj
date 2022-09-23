@@ -110,9 +110,6 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
   }
 
   const openProjectDetails = (projectDetails: any) => {
-    console.log('projectDetails')
-    console.log(JSON.stringify(projectDetails, null, 4))
-
     if (projectDetails) {
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(projectDetails))

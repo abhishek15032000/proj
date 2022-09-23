@@ -60,8 +60,8 @@ const ApprovalChip: FC<ApprovalChipProps> = (props) => {
     return (
       <ApprovalChipTemplate
         title={'Pending'}
-        backgroundColor={Colors.mediumGreyBackground}
-        tintColor={Colors.lightGreyBackground}
+        backgroundColor={Colors.lightGreyBackground}
+        tintColor={Colors.mediumGreyBackground}
         textColor={'#000'}
       />
     )
@@ -69,8 +69,8 @@ const ApprovalChip: FC<ApprovalChipProps> = (props) => {
     return (
       <ApprovalChipTemplate
         title={'Selected'}
-        backgroundColor={Colors.lightGreyBackground}
-        tintColor={Colors.mediumGreyBackground}
+        backgroundColor={Colors.lightCyanBackground}
+        tintColor={Colors.lightBlueBackground2}
         textColor={'#000'}
       />
     )

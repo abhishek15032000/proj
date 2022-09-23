@@ -13,7 +13,7 @@ import { Colors } from '../../theme'
 import { KeyboardArrowLeft } from '@mui/icons-material'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import moment from 'moment'
 import TextButton from '../../atoms/TextButton/TextButton'
@@ -35,6 +35,8 @@ const tabs = ['Issuance Details', 'Verifier & Reports']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
+  const location: any = useLocation()
+
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -46,6 +48,10 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
 
   useEffect(() => {
+    if ( location?.state?.status !== 0 ) {
+      setTabIndex(1)
+    }
+
     if (currentProjectDetails) {
       const issuanceInfoTabData = [
         {

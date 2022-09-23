@@ -28,7 +28,10 @@ import {
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { setSectionIndex, setSubSectionIndex } from '../../redux/Slices/MonthlyReportUpdate'
+import {
+  setSectionIndex,
+  setSubSectionIndex,
+} from '../../redux/Slices/MonthlyReportUpdate'
 
 const headingsNew = [
   'Reference ID',
@@ -73,7 +76,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(percentageAddedData))
       if (redirect === 'Details') {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO, {
+          state: {
+            status: projectDetails?.project_status,
+          },
+        })
       } else if (redirect === 'Monthly') {
         dispatch(setSectionIndex(0))
         dispatch(setSubSectionIndex(0))
@@ -90,8 +97,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       if (
         item.project_status === 0 ||
         item.project_status === 1 ||
-        item.project_status === 2 ||
-        item.project_status === 3
+        item.project_status === 2
       ) {
         newData.push([
           item._id,
@@ -128,7 +134,10 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ),
           item.project_status === 0 ? (
             isProjectCompleted(item) ? (
-              <TextButton title="Select Verifier" />
+              <TextButton
+                title="Select Verifier"
+                onClick={() => openProjectDetails(item, 'Verify')}
+              />
             ) : (
               <CreateIcon
                 key="1"
@@ -145,7 +154,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         ])
       }
 
-      if (item.project_status === 4) {
+      if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
           item._id,
           moment(item.createdAt).format('DD/MM/YYYY'),
@@ -168,13 +177,20 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ) : (
             '-'
           ),
-          <ApprovalChip variant="Verified" key={'1'} />,
-          moment(item.report.next_date).format('DD/MM/YYYY'),
-          <TextButton
-            key="1"
-            title="Add Monthly Data"
-            onClick={() => openProjectDetails(item, 'Monthly')}
+          <ApprovalChip
+            variant={item.project_status === 3 ? 'In progress' : 'Verified'}
+            key={'1'}
           />,
+          moment(item.report?.next_date).format('DD/MM/YYYY'),
+          item.project_status === 4 ? (
+            <TextButton
+              key="1"
+              title="Add Monthly Data"
+              onClick={() => openProjectDetails(item, 'Monthly')}
+            />
+          ) : (
+            '-'
+          ),
           <ChevronRightIcon
             key="1"
             onClick={() => openProjectDetails(item, 'Details')}
