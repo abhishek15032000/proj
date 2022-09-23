@@ -17,6 +17,7 @@ const ReferenceIdTd = ({ referenceId, index }: referenceIdTdProps) => {
     <Box>
       {referenceId && (
         <Typography
+          sx={{ cursor: 'pointer' }}
           onMouseEnter={() => setIndexOfReferenceIdTdToShow(index)}
           onMouseLeave={() => setIndexOfReferenceIdTdToShow(null)}
         >

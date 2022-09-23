@@ -145,6 +145,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
               />
             ) : (
               <CreateIcon
+                sx={{ cursor: 'pointer' }}
                 key="1"
                 onClick={() => openProjectDetails(item, 'Details')}
               />
@@ -153,6 +154,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             '-'
           ),
           <ChevronRightIcon
+            sx={{ cursor: 'pointer' }}
             key="1"
             onClick={() => openProjectDetails(item, 'Details')}
           />,
@@ -197,6 +199,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             '-'
           ),
           <ChevronRightIcon
+            sx={{ cursor: 'pointer' }}
             key="1"
             onClick={() => openProjectDetails(item, 'Details')}
           />,
