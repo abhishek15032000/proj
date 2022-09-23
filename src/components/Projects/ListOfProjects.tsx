@@ -19,10 +19,17 @@ import TextButton from '../../atoms/TextButton/TextButton'
 import moment from 'moment'
 import NoData from '../../atoms/NoData/NoData'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
-import { addSectionPercentages, isProjectCompleted } from '../../utils/newProject.utils'
-import { setCurrentProjectDetails, setCurrentProjectDetailsUUID } from '../../redux/Slices/issuanceDataCollection'
+import {
+  addSectionPercentages,
+  isProjectCompleted,
+} from '../../utils/newProject.utils'
+import {
+  setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
+} from '../../redux/Slices/issuanceDataCollection'
 import { pathNames } from '../../routes/pathNames'
 import { useDispatch } from 'react-redux'
+import { setSectionIndex, setSubSectionIndex } from '../../redux/Slices/MonthlyReportUpdate'
 
 const headingsNew = [
   'Reference ID',
@@ -60,11 +67,20 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const [rowsNew, setRowsNew]: any = useState([{}])
   const [rowsRegistered, setRowsRegistered]: any = useState([{}])
 
-  const openProjectDetails = (projectDetails: any) => {
+  const openProjectDetails = (projectDetails: any, redirect: any) => {
     if (projectDetails) {
+      const percentageAddedData = addSectionPercentages(projectDetails)
+
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
-      dispatch(setCurrentProjectDetails(addSectionPercentages(projectDetails)))
-      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      dispatch(setCurrentProjectDetails(percentageAddedData))
+      
+      if (redirect === 'Details') {
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      } else if (redirect === 'Monthly') {
+        dispatch(setSectionIndex(0))
+        dispatch(setSubSectionIndex(0))
+        navigate(pathNames.MONTHLY_REPORT_UPDATE)
+      }
     }
   }
 
@@ -73,11 +89,6 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       registeredData: any = []
 
     props.data.map((item: any, index: any) => {
-
-      if ( isProjectCompleted(item, index) && item.project_status === 0 ) {
-        console.log('index')
-        console.log(JSON.stringify(index, null, 4))
-      }
 
       if (
         item.project_status === 0 ||
@@ -122,12 +133,18 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             isProjectCompleted(item) ? (
               <TextButton title="Select Verifier" />
             ) : (
-              <CreateIcon key="1" onClick={() => openProjectDetails(item)} />
+              <CreateIcon
+                key="1"
+                onClick={() => openProjectDetails(item, 'Details')}
+              />
             )
           ) : (
             '-'
           ),
-          <ChevronRightIcon key="1" onClick={() => openProjectDetails(item)} />,
+          <ChevronRightIcon
+            key="1"
+            onClick={() => openProjectDetails(item, 'Details')}
+          />,
         ])
       }
 
@@ -155,9 +172,16 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             '-'
           ),
           <ApprovalChip variant="Verified" key={'1'} />,
-          '12/05/21',
-          <TextButton key="1" title="Add Monthly Data" />,
-          <ChevronRightIcon key="1" onClick={() => openProjectDetails(item)} />,
+          moment(item.report.next_date).format('DD/MM/YYYY'),
+          <TextButton
+            key="1"
+            title="Add Monthly Data"
+            onClick={() => openProjectDetails(item, 'Monthly')}
+          />,
+          <ChevronRightIcon
+            key="1"
+            onClick={() => openProjectDetails(item, 'Details')}
+          />,
         ])
       }
     })

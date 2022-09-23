@@ -86,7 +86,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         <ListOfProjectsDashboard data={tableData} loading={loading} />
       </Paper>
     )
-  } else {
+  } else if (!loading && tableData.length === 0 ) {
     return (
       <EmptyComponent
         photoType={1}
@@ -95,7 +95,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         action={() => listNewProject()}
       />
     )
-  }
+  } else return null
 }
 
 export default ProjectsTab

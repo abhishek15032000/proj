@@ -28,6 +28,7 @@ import {
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { setSectionIndex, setSubSectionIndex } from '../../redux/Slices/MonthlyReportUpdate'
 
 const headingsNew = [
   'Reference ID',
@@ -65,13 +66,19 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   const [rowsNew, setRowsNew]: any = useState([{}])
   const [rowsRegistered, setRowsRegistered]: any = useState([{}])
 
-  const openProjectDetails = (projectDetails: any) => {
+  const openProjectDetails = (projectDetails: any, redirect: any) => {
     if (projectDetails) {
       const percentageAddedData = addSectionPercentages(projectDetails)
 
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(percentageAddedData))
-      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      if (redirect === 'Details') {
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      } else if (redirect === 'Monthly') {
+        dispatch(setSectionIndex(0))
+        dispatch(setSubSectionIndex(0))
+        navigate(pathNames.MONTHLY_REPORT_UPDATE)
+      }
     }
   }
 
@@ -123,12 +130,18 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             isProjectCompleted(item) ? (
               <TextButton title="Select Verifier" />
             ) : (
-              <CreateIcon key="1" onClick={() => openProjectDetails(item)} />
+              <CreateIcon
+                key="1"
+                onClick={() => openProjectDetails(item, 'Details')}
+              />
             )
           ) : (
             '-'
           ),
-          <ChevronRightIcon key="1" onClick={() => openProjectDetails(item)} />,
+          <ChevronRightIcon
+            key="1"
+            onClick={() => openProjectDetails(item, 'Details')}
+          />,
         ])
       }
 
@@ -156,9 +169,16 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             '-'
           ),
           <ApprovalChip variant="Verified" key={'1'} />,
-          '12/05/21',
-          <TextButton key="1" title="Add Monthly Data" />,
-          <ChevronRightIcon key="1" onClick={() => openProjectDetails(item)} />,
+          moment(item.report.next_date).format('DD/MM/YYYY'),
+          <TextButton
+            key="1"
+            title="Add Monthly Data"
+            onClick={() => openProjectDetails(item, 'Monthly')}
+          />,
+          <ChevronRightIcon
+            key="1"
+            onClick={() => openProjectDetails(item, 'Details')}
+          />,
         ])
       }
     })
