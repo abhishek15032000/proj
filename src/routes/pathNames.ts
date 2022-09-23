@@ -29,6 +29,8 @@ export const pathNames = {
   REPORT_VIEW_COMMENTS: '/report-view-comments',
   BUYER_ONBOARDING: '/buyer-onboarding',
   ORGANISATIONAL_DETAILS: '/organisational-details',
+  RETIRE_TOKENS: '/retire-tokens',
+  TOKENS_RETIREMENT: '/token-retirement',
 }
 
 export const linkLabels = {
