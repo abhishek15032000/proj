@@ -4,7 +4,6 @@ import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors, Images } from '../../theme'
 
-
 const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
