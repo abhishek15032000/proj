@@ -49,6 +49,7 @@ export const moveToNextSection = async (
         start_date: startDate,
         duration: Number(projectDuration),
         area: projectArea,
+        monthly_update: false,
       }
       try {
         dispatch(setLoading(true))

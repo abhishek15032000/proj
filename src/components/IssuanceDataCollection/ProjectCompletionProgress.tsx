@@ -4,7 +4,6 @@ import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors, Images } from '../../theme'
 
-
 const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -97,6 +96,7 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
     setStepsCompletionPercent(completionPercent)
   }, [stepsCompletionData])
 
+  console.log('ProjectCompletionProgress', currentProjectDetails)
   return (
     <Box sx={{ py: 2, px: { md: 3, lg: 4 } }}>
       <Box sx={{ display: 'flex' }}>
