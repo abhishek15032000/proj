@@ -5,28 +5,26 @@ import { limitTitleFromMiddle } from '../../utils/commonFunctions'
 
 interface referenceIdTdProps {
   referenceId: string
-  index: number
 }
 
-const ReferenceIdTd = ({ referenceId, index }: referenceIdTdProps) => {
-  const [indexOfReferenceIdTdToShow, setIndexOfReferenceIdTdToShow] = useState<
-    number | null
-  >(null)
+const ReferenceIdTd = ({ referenceId }: referenceIdTdProps) => {
+  const [show, setShow] = useState<boolean>(false)
 
   return (
     <Box>
       {referenceId && (
         <Typography
-          sx={{ cursor: 'pointer' }}
-          onMouseEnter={() => setIndexOfReferenceIdTdToShow(index)}
-          onMouseLeave={() => setIndexOfReferenceIdTdToShow(null)}
+          sx={{ cursor: 'pointer', fontSize: 14 }}
+          onMouseEnter={() => setShow(true)}
+          onMouseLeave={() => setShow(false)}
         >
           {limitTitleFromMiddle(referenceId)}
         </Typography>
       )}
-      {index === indexOfReferenceIdTdToShow && (
+      {show && (
         <Paper
           sx={{
+            width: '350px',
             ml: 3,
             p: 1,
             position: 'absolute',
