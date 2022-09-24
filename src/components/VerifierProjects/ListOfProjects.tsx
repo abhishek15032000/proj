@@ -64,6 +64,9 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       registeredData: any = []
 
     props.data.map((item: any, index: any) => {
+      console.log('item.project_status')
+      console.log(JSON.stringify(item.project_status, null, 4))
+
       if (
         item.project_status === 1 ||
         item.project_status === 2 ||
@@ -139,17 +142,16 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          item.project_status === 1 ||
-            (item.project_status === 2 && (
-              <ChevronRightIcon
-                key={index}
-                onClick={() => {
-                  navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                    state: { project_uuid: item.project_id.uuid },
-                  })
-                }}
-              />
-            )),
+          (item.project_status === 1 || item.project_status === 2) && (
+            <ChevronRightIcon
+              key={index}
+              onClick={() => {
+                navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                  state: { project_uuid: item.project_id.uuid },
+                })
+              }}
+            />
+          ),
         ])
       }
 

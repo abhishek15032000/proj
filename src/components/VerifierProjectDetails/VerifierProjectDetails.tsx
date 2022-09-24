@@ -47,6 +47,9 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
           tempObj = [response.data.main_project.report]
         }
 
+        console.log('tempObj')
+        console.log(JSON.stringify(tempObj, null, 4))
+
         setReportDetails(tempObj)
         setLoadingReport(false)
       })
