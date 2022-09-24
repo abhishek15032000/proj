@@ -9,13 +9,17 @@ import {
   setCurrentProjectDetailsUUID,
   setSectionIndex,
   setSubSectionIndex,
-  setIsApiCalled,
+  setShowMandatoryFieldModal,
 } from '../redux/Slices/issuanceDataCollection'
 import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice'
 import { store } from '../redux/store'
 import { stringExtractor } from './commonFunctions'
 import { getLocalItem } from './Storage'
-import { addSectionPercentages } from './newProject.utils'
+import {
+  addSectionPercentages,
+  checkingMandatoryFields,
+  checkMandatoryFieldsArrayObjects,
+} from './newProject.utils'
 
 const dispatch = store.dispatch
 
@@ -63,8 +67,6 @@ export const moveToNextSection = async (
         }
       } catch (e) {
         console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-      } finally {
-        dispatch(setLoading(false))
       }
     } else {
       alert('Please fill all fields!')
@@ -112,15 +114,17 @@ export const moveToNextSection = async (
     let params = {}
     if (subSectionIndex === 0) {
       if (
-        purpose_and_description === '' ||
-        measure_taken_for_gas_emissions === '' ||
-        brief_description_installed_tech === '' ||
-        construction_date === '' ||
-        operation_period === '' ||
-        total_GHG_emission === '' ||
-        project_comissioning_date === ''
+        checkingMandatoryFields([
+          purpose_and_description,
+          measure_taken_for_gas_emissions,
+          brief_description_installed_tech,
+          construction_date,
+          operation_period,
+          project_comissioning_date,
+        ])
       ) {
         console.log('Code Reachable')
+        dispatch(setShowMandatoryFieldModal(true))
         return
       }
       params = {
@@ -137,14 +141,16 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 1) {
       if (
-        country === '' ||
-        state === '' ||
-        city === '' ||
-        pincode === '' ||
-        landmark === '' ||
-        file_attach.length === 0
+        checkingMandatoryFields([
+          country,
+          state,
+          city,
+          pincode,
+          landmark,
+          file_attach,
+        ])
       ) {
-        console.log('Code Reachable')
+        dispatch(setShowMandatoryFieldModal(true))
         return
       }
       params = {
@@ -161,8 +167,8 @@ export const moveToNextSection = async (
         },
       }
     } else if (subSectionIndex === 2) {
-      if (party_and_project_participants.length === 0) {
-        console.log('Code Reachable')
+      if (checkMandatoryFieldsArrayObjects(party_and_project_participants)) {
+        dispatch(setShowMandatoryFieldModal(true))
         return
       }
       params = {
@@ -172,8 +178,8 @@ export const moveToNextSection = async (
         },
       }
     } else if (subSectionIndex === 3) {
-      if (methodologies.length === 0) {
-        console.log('Code Reachable')
+      if (checkMandatoryFieldsArrayObjects(methodologies)) {
+        dispatch(setShowMandatoryFieldModal(true))
         return
       }
       params = {
@@ -184,12 +190,14 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 4) {
       if (
-        credit_start_period === '' ||
-        credit_period.start_date === '' ||
-        credit_period.end_date === '' ||
-        credit_period_description === ''
+        checkingMandatoryFields([
+          credit_start_period,
+          credit_period.start_date,
+          credit_period.end_date,
+          credit_period_description,
+        ])
       ) {
-        console.log('Code Reachable')
+        dispatch(setShowMandatoryFieldModal(true))
         return
       }
       params = {
@@ -204,7 +212,6 @@ export const moveToNextSection = async (
         },
       }
     }
-    dispatch(setLoading(true))
     // Change 'String' to actual values
     const payload = {
       _id: issuanceDataCollection?.currentProjectDetails?.section_a?._id,
@@ -213,7 +220,7 @@ export const moveToNextSection = async (
         issuanceDataCollection?.currentProjectDetails?.section_a?.project_id,
       ...params,
     }
-
+    dispatch(setLoading(true))
     try {
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
       if (res?.success) {
@@ -221,6 +228,7 @@ export const moveToNextSection = async (
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
+        dispatch(setLoading(false))
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
@@ -251,19 +259,17 @@ export const moveToNextSection = async (
         typeOf_changes_specific,
       },
     } = sectionB
-
     let params = {}
     if (subSectionIndex === 0) {
       if (
-        general_description === '' ||
-        technical_description === '' ||
-        operational_description === '' ||
-        data_tables_technical_description_attach.length === 0 ||
-        shut_down_details_attach.length === 0 ||
-        implementation_milestones_attach.length === 0 ||
-        project_timeline_attach.length === 0
+        checkingMandatoryFields([
+          general_description,
+          technical_description,
+          data_tables_technical_description_attach,
+          operational_description,
+        ])
       ) {
-        console.log('Code Reachable')
+        dispatch(setShowMandatoryFieldModal(true))
         return
       }
       params = {
@@ -292,14 +298,14 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 1) {
       if (
-        temporary_deviation === '' ||
-        corrections === '' ||
-        permanent_changes_from_registered_monitoring_plan === '' ||
-        change_project_design === '' ||
-        change_startDate_creditPeriod === '' ||
-        typeOf_changes_specific === ''
+        temporary_deviation.length === 0 &&
+        corrections.length === 0 &&
+        permanent_changes_from_registered_monitoring_plan.length === 0 &&
+        change_project_design.length === 0 &&
+        change_startDate_creditPeriod.length === 0 &&
+        typeOf_changes_specific.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field')
         return
       }
       params = {
@@ -310,7 +316,7 @@ export const moveToNextSection = async (
           change_project_design,
           change_startDate_creditPeriod,
           typeOf_changes_specific,
-          completed: true,
+          //completed: true,
         },
       }
     }
@@ -331,11 +337,10 @@ export const moveToNextSection = async (
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
+        dispatch(setLoading(false))
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setIsApiCalled(true))
     }
   }
 
@@ -351,12 +356,14 @@ export const moveToNextSection = async (
       specific_data_monitored,
     } = sectionC.C1
     if (
-      description === '' ||
-      monitoring_plan === '' ||
-      attach_org_structure_and_responsibilities_chart.length === 0 ||
-      specific_data_monitored === ''
+      checkingMandatoryFields([
+        description,
+        monitoring_plan,
+        attach_org_structure_and_responsibilities_chart,
+        specific_data_monitored,
+      ])
     ) {
-      console.log('Code Reachable')
+      dispatch(setShowMandatoryFieldModal(true))
       return
     }
     // Change 'String' to actual values
@@ -406,10 +413,10 @@ export const moveToNextSection = async (
     let params = {}
     if (subSectionIndex === 0) {
       if (
-        data_and_parameter_fixed_ExAnte === '' ||
+        data_and_parameter_fixed_ExAnte.length === 0 &&
         attach_ex_ante_table.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field')
         return
       }
       params = {
@@ -421,26 +428,22 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 1) {
       if (
-        data_and_parameter_monitored_ExPost === '' ||
+        data_and_parameter_monitored_ExPost.length === 0 &&
         sectionD.D2.attach_ex_ante_table.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field')
         return
       }
       params = {
         step2: {
           data_and_parameter_monitored_ExPost,
-          attach_ex_ante_table: sectionD.D2.attach_ex_post_table,
-          //attach_ex_ante_table: stringExtractor(
-          //  sectionD.D2.attach_ex_post_table,
-          //  'fileName'
-          //),
+          attach_ex_ante_table: sectionD.D2.attach_ex_ante_table,
           completed: true,
         },
       }
     } else if (subSectionIndex === 2) {
-      if (implementation_of_sampling_plan === '') {
-        console.log('Code Reachable')
+      if (implementation_of_sampling_plan.length === 0) {
+        alert('Fill any one field')
         return
       }
       params = {
@@ -467,6 +470,7 @@ export const moveToNextSection = async (
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
+        dispatch(setLoading(false))
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
@@ -490,29 +494,25 @@ export const moveToNextSection = async (
     } = sectionE
     if (subSectionIndex === 0) {
       if (
-        calculation_of_baselineEmissions_or_net_GHG === '' ||
+        calculation_of_baselineEmissions_or_net_GHG === '' &&
         attach_relevant_docs.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field')
         return
       }
       params = {
         step1: {
           calculation_of_baselineEmissions_or_net_GHG,
           attach_relevant_docs,
-          //attach_relevant_docs: stringExtractor(
-          //  sectionE.calculationOfBaselineEmissionsImages,
-          //  'fileName'
-          //),
           completed: true,
         },
       }
     } else if (subSectionIndex === 1) {
       if (
-        calculation_of_projectEmissions_or_net_GHG === '' ||
+        calculation_of_projectEmissions_or_net_GHG === '' &&
         sectionE.E2.attach_relevant_docs.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field to save the data')
         return
       }
       params = {
@@ -528,10 +528,10 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 2) {
       if (
-        calculation_of_leakage === '' ||
+        calculation_of_leakage === '' &&
         sectionE.E3.attach_relevant_docs.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field to save the data')
         return
       }
       params = {
@@ -547,10 +547,10 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 3) {
       if (
-        calculation_of_emissions_reduction === '' ||
+        calculation_of_emissions_reduction === '' &&
         sectionE.E4.attach_relevant_docs.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field to save the data')
         return
       }
       params = {
@@ -566,10 +566,10 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 4) {
       if (
-        comparison_of_actual_emission_reduction === '' ||
+        comparison_of_actual_emission_reduction === '' &&
         sectionE.E5.attach_relevant_docs.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field to save the data')
         return
       }
       params = {
@@ -585,10 +585,10 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 5) {
       if (
-        remark_on_difference_from_estimate_value === '' ||
+        remark_on_difference_from_estimate_value === '' &&
         sectionE.E6.attach_relevant_docs.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field to save the data')
         return
       }
       params = {
@@ -604,10 +604,10 @@ export const moveToNextSection = async (
       }
     } else if (subSectionIndex === 6) {
       if (
-        actual_emission_reductions === '' ||
+        actual_emission_reductions === '' &&
         sectionE.E7.attach_relevant_docs.length === 0
       ) {
-        console.log('Code Reachable')
+        alert('Fill any one field to save the data')
         return
       }
       params = {

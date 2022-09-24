@@ -1,6 +1,4 @@
-import { equal } from 'assert'
 import _ from 'lodash'
-import { store } from '../redux/store'
 // consider isDataModifiedCheckFunc as parent function and it will be passing the values based to different functions based on the datatype
 //reduxData and currentProjectDetails(already saved data) are required to check whether data is modified or not
 export const isDataModifiedCheckFunc = (
@@ -33,7 +31,6 @@ export const stringTypeCheck = (
       //if redux is having some data it will return true
       if (reduxData[key] !== '') {
         isStringDataChanged = true
-        //console.log('type string: ', key, '\n', isStringDataChanged)
       }
     } else if (
       //this will check when user is coming and modifying the data

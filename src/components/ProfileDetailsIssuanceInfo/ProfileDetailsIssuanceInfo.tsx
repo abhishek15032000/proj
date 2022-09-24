@@ -61,7 +61,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               : 'In Progress',
           completionPercent:
             currentProjectDetails?.section_a?.completionPercentage,
-          projectStatus: currentProjectDetails?.project_status,
         },
         {
           title: 'Sec B: Implementation of the project activity',
@@ -104,7 +103,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       setIssuanceInfo(issuanceInfoTabData)
     }
   }, [currentProjectDetails])
-
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -195,7 +193,10 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Box>
 
         {tabIndex === 0 && (
-          <IssuanceInfoList data={issuanceInfo && issuanceInfo} />
+          <IssuanceInfoList
+            data={issuanceInfo && issuanceInfo}
+            projectStatus={currentProjectDetails?.project_status}
+          />
         )}
         {tabIndex === 1 && (
           <VerifierReport

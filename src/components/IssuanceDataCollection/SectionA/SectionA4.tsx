@@ -98,7 +98,7 @@ const SectionA4 = () => {
     <>
       <Typography sx={{ mt: 3 }}>
         The methodologies applied for the project activity under consideration
-        are-
+        are* -
       </Typography>
 
       {methodologies.map((item, index) => (
