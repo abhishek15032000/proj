@@ -1,14 +1,16 @@
 import { jsonSchema } from 'uuidv4'
 import { dataCollectionCalls } from '../api/dataCollectionCalls'
-import {
+import MonthlyReportUpdate, {
   setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
   setSectionIndex,
   setSubSectionIndex,
-} from '../redux/Slices/issuanceDataCollection'
-import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice'
+} from '../redux/Slices/MonthlyReportUpdate'
+import { setLoading } from '../redux/Slices/SelectDateSlice'
 import { setEndDate } from '../redux/Slices/SelectDateSlice'
 import { store } from '../redux/store'
 import { stringExtractor } from './commonFunctions'
+import { addSectionPercentages } from './newProject.utils'
 
 const dispatch = store.dispatch
 
@@ -16,11 +18,11 @@ export const moveToNextSection = async (
   sectionIndex: number,
   subSectionIndex: number
 ) => {
-  //Since List New Project is at 0th index in IssuanceDataCollection
+  //Since List New Project is at 0th index in MonthlyReportUpdate
   if (sectionIndex === 0) {
     const selectDate = store.getState()?.selectDate
     const newProjectData =
-      store.getState()?.issuanceDataCollection?.currentProjectDetails
+      store.getState()?.MonthlyReportUpdate?.mainProjectDetails
 
     const projectName = newProjectData?.company_name
     const projectType = newProjectData?.type
@@ -60,6 +62,7 @@ export const moveToNextSection = async (
         const res = await dataCollectionCalls.createNewProject(payload)
         if (res?.success && res?.data?.uuid) {
           getProjectDetails(res?.data?.uuid)
+          dispatch(setCurrentProjectDetailsUUID(res?.data?.uuid))
         }
         if (!res?.success && res?.error) {
           alert(res?.error)
@@ -77,13 +80,8 @@ export const moveToNextSection = async (
   if (sectionIndex === 1) {
     const sectionA: any = store.getState()?.sectionAMonthly
     const newProjectData = store.getState()?.newProject
-    const issuanceDataCollection = store.getState()?.issuanceDataCollection
-
-    console.log(
-      'sectionA',
-
-      sectionA
-    )
+    const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
+    const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
 
     const { purpose_and_description } = sectionA
     console.log(Object.keys(sectionA).map((item) => item))
@@ -102,34 +100,37 @@ export const moveToNextSection = async (
     }
     // Change 'String' to actual values
     const payload = {
-      _id: issuanceDataCollection?.currentProjectDetails?.section_a?._id,
-      uuid: issuanceDataCollection?.currentProjectDetails?.section_a?.uuid,
+      _id: MonthlyReportUpdate?.currentProjectDetails?.section_a?._id,
+      uuid: MonthlyReportUpdate?.currentProjectDetails?.section_a?.uuid,
       project_id:
-        issuanceDataCollection?.currentProjectDetails?.section_a?.project_id,
+        MonthlyReportUpdate?.currentProjectDetails?.section_a?.project_id,
       monthly_update: true,
       ...params,
     }
     console.log('params<<<<', payload)
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
       if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+        getProjectDetails(currentProjectUUID)
+        //dispatch(setSectionIndex(sectionIndex + 1))
+        // dispatch(setSubSectionIndex(0))
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
   if (sectionIndex === 2) {
     const sectionB: any = store.getState()?.sectionBMonthly
     const newProjectData = store.getState()?.newProject
-    const issuanceDataCollection = store.getState()?.issuanceDataCollection
-
+    const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
+    const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
     const {
       briefOnPurpuse,
       technicalDescription,
@@ -211,34 +212,37 @@ export const moveToNextSection = async (
 
     // Change 'String' to actual values
     const payload = {
-      _id: issuanceDataCollection?.currentProjectDetails?.section_b?._id,
-      uuid: issuanceDataCollection?.currentProjectDetails?.section_b?.uuid,
+      _id: MonthlyReportUpdate?.currentProjectDetails?.section_b?._id,
+      uuid: MonthlyReportUpdate?.currentProjectDetails?.section_b?.uuid,
       project_id:
-        issuanceDataCollection?.currentProjectDetails?.section_b?.project_id,
+        MonthlyReportUpdate?.currentProjectDetails?.section_b?.project_id,
       monthly_update: true,
       ...params,
     }
 
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionBCall(payload)
       if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+        getProjectDetails(currentProjectUUID)
+        //dispatch(setSectionIndex(sectionIndex + 1))
+        // dispatch(setSubSectionIndex(0))
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
   if (sectionIndex === 3) {
     const sectionC: any = store.getState()?.sectionCMonthly
     const newProjectData = store.getState()?.newProject
-    const issuanceDataCollection = store.getState()?.issuanceDataCollection
-
+    const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
+    const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
     if (
       sectionC.monitoringSystem === '' ||
       sectionC.monitoringPlan === '' ||
@@ -250,10 +254,10 @@ export const moveToNextSection = async (
     }
     // Change 'String' to actual values
     const payload = {
-      _id: issuanceDataCollection?.currentProjectDetails?.section_c?._id,
-      uuid: issuanceDataCollection?.currentProjectDetails?.section_c?.uuid,
+      _id: MonthlyReportUpdate?.currentProjectDetails?.section_c?._id,
+      uuid: MonthlyReportUpdate?.currentProjectDetails?.section_c?.uuid,
       project_id:
-        issuanceDataCollection?.currentProjectDetails?.section_c?.project_id,
+        MonthlyReportUpdate?.currentProjectDetails?.section_c?.project_id,
       step1: {
         description: sectionC.monitoringSystem,
         monitoring_plan: sectionC.monitoringPlan,
@@ -267,25 +271,28 @@ export const moveToNextSection = async (
     }
 
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionCCall(payload)
       if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+        getProjectDetails(currentProjectUUID)
+        //dispatch(setSectionIndex(sectionIndex + 1))
+        // dispatch(setSubSectionIndex(0))
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
   if (sectionIndex === 4) {
     const sectionD: any = store.getState()?.sectionDMonthly
     const newProjectData = store.getState()?.newProject
-    const issuanceDataCollection = store.getState()?.issuanceDataCollection
-
+    const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
+    const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
     let params = {}
     if (subSectionIndex === 0) {
       if (
@@ -339,33 +346,37 @@ export const moveToNextSection = async (
     }
     // Change 'String' to actual values
     const payload = {
-      _id: issuanceDataCollection?.currentProjectDetails?.section_d?._id,
-      uuid: issuanceDataCollection?.currentProjectDetails?.section_d?.uuid,
+      _id: MonthlyReportUpdate?.currentProjectDetails?.section_d?._id,
+      uuid: MonthlyReportUpdate?.currentProjectDetails?.section_d?.uuid,
       project_id:
-        issuanceDataCollection?.currentProjectDetails?.section_d?.project_id,
+        MonthlyReportUpdate?.currentProjectDetails?.section_d?.project_id,
       monthly_update: true,
       ...params,
     }
 
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionDCall(payload)
       if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+        getProjectDetails(currentProjectUUID)
+        //dispatch(setSectionIndex(sectionIndex + 1))
+        // dispatch(setSubSectionIndex(0))
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
   if (sectionIndex === 5) {
     const sectionE: any = store.getState()?.sectionEMonthly
     const newProjectData = store.getState()?.newProject
-    const issuanceDataCollection = store.getState()?.issuanceDataCollection
+    const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
+    const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
     console.log(
       ' sectionE.calculationOfProjectEmissionsImages',
       sectionE.calculationOfProjectEmissionsImages
@@ -505,26 +516,29 @@ export const moveToNextSection = async (
     }
     // Change 'String' to actual values
     const payload = {
-      _id: issuanceDataCollection?.currentProjectDetails?.section_e?._id,
-      uuid: issuanceDataCollection?.currentProjectDetails?.section_e?.uuid,
+      _id: MonthlyReportUpdate?.currentProjectDetails?.section_e?._id,
+      uuid: MonthlyReportUpdate?.currentProjectDetails?.section_e?.uuid,
       project_id:
-        issuanceDataCollection?.currentProjectDetails?.section_e?.project_id,
+        MonthlyReportUpdate?.currentProjectDetails?.section_e?.project_id,
       monthly_update: true,
       ...params,
     }
 
     try {
+      dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionECall(payload)
       if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
+        getProjectDetails(currentProjectUUID)
+        //dispatch(setSectionIndex(sectionIndex + 1))
+        // dispatch(setSubSectionIndex(0))
       }
       if (!res?.success && res?.error) {
         alert(res?.error)
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 }
@@ -532,9 +546,13 @@ export const moveToNextSection = async (
 const getProjectDetails = async (projectID: string) => {
   try {
     const res = await dataCollectionCalls.getProjectById(projectID)
+
     if (res?.success && res?.data) {
-      dispatch(setCurrentProjectDetails(res?.data))
+      const modifiedRows = addSectionPercentages(res?.data)
+      console.log('getProjectDetailsMonthly', modifiedRows, res)
+      if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
     }
+
     if (!res?.success && res?.error) {
       alert(res?.error)
     }

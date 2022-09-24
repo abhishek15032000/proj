@@ -32,6 +32,7 @@ import {
   setSectionIndex,
   setSubSectionIndex,
 } from '../../redux/Slices/MonthlyReportUpdate'
+import ReferenceIdTd from './ReferenceIdTd'
 
 const headingsNew = [
   'Reference ID',
@@ -100,7 +101,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         item.project_status === 2
       ) {
         newData.push([
-          item._id,
+          <ReferenceIdTd key={index} referenceId={item.uuid} index={index} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,
@@ -140,6 +141,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               />
             ) : (
               <CreateIcon
+                sx={{ cursor: 'pointer' }}
                 key="1"
                 onClick={() => openProjectDetails(item, 'Details')}
               />
@@ -148,6 +150,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             '-'
           ),
           <ChevronRightIcon
+            sx={{ cursor: 'pointer' }}
             key="1"
             onClick={() => openProjectDetails(item, 'Details')}
           />,
@@ -156,7 +159,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
 
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
-          item._id,
+          <ReferenceIdTd key={index} referenceId={item.uuid} index={index} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,
@@ -192,6 +195,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             '-'
           ),
           <ChevronRightIcon
+            sx={{ cursor: 'pointer' }}
             key="1"
             onClick={() => openProjectDetails(item, 'Details')}
           />,
