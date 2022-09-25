@@ -647,7 +647,7 @@ export const moveToNextSection = async (
   }
 }
 
-const getProjectDetails = async (projectID: string) => {
+export const getProjectDetails = async (projectID: string) => {
   try {
     //dispatch(setLoading(true))
     const res = await dataCollectionCalls.getProjectById(projectID)
