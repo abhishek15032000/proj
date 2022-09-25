@@ -252,6 +252,7 @@ const SectionA4 = () => {
                   value={item?.version}
                   onChange={(e) => handleTextChange(e, index, 'version')}
                   sx={{ background: 'white' }}
+                  type="number"
                 />
               </Grid>
               <Grid
@@ -269,6 +270,7 @@ const SectionA4 = () => {
                   value={item?.tools}
                   onChange={(e) => handleTextChange(e, index, 'tools')}
                   sx={{ background: 'white' }}
+                  type="number"
                 />
               </Grid>
             </>
