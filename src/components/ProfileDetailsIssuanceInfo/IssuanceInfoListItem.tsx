@@ -11,13 +11,20 @@ import { pathNames } from '../../routes/pathNames'
 interface IssuanceInfoListItemProps {
   data: any
   index: number
+  projectStatus: any
 }
 
 const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
   const moveToSection = (index: number) => {
-    if (props?.data?.project_status > 0) return
+    if (props?.projectStatus > 0) {
+      alert(
+        'Potential verifier is already selected, cannot go to issuance data'
+      )
+      return
+    }
 
     dispatch(setSectionIndex(index))
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)

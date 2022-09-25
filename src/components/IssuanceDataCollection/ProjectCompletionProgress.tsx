@@ -38,12 +38,12 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
             currentProjectDetails?.section_c?.completionPercentage,
         },
         {
-          title: 'Section D',
+          title: 'Section D (Optional)',
           completionPercent:
             currentProjectDetails?.section_d?.completionPercentage,
         },
         {
-          title: 'Section E',
+          title: 'Section E (Optional)',
           completionPercent:
             currentProjectDetails?.section_e?.completionPercentage,
         },
@@ -68,11 +68,11 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
           completionPercent: 0,
         },
         {
-          title: 'Section D',
+          title: 'Section D(Optional)',
           completionPercent: 0,
         },
         {
-          title: 'Section E',
+          title: 'Section E(Optional)',
           completionPercent: 0,
         },
       ]

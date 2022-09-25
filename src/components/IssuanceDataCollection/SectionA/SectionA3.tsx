@@ -46,7 +46,7 @@ const SectionA3 = () => {
       dispatch(setProjectParticipants(step3Data))
     }
   }, [currentProjectDetails])
-
+  console.log('current: ', currentProjectDetails)
   const addRow = () => {
     const dataCopy = [...party_and_project_participants]
     dataCopy.push({
@@ -90,14 +90,15 @@ const SectionA3 = () => {
         className="table-with-div-heading"
       >
         <Grid item xs={4}>
-          Party involved ((host) indicates a host Party)
+          Party involved ((host) indicates a host Party) *
         </Grid>
         <Grid item xs={4}>
-          Private and/or public entity(ies) project participants (as applicable)
+          Private and/or public entity(ies) project participants (as
+          applicable)*
         </Grid>
         <Grid item xs={4}>
           Indicate if the Party involved wishes to be considered as project
-          participant{' '}
+          participant *
         </Grid>
       </Grid>
       {party_and_project_participants?.map((item: any, index: number) => (
@@ -127,6 +128,7 @@ const SectionA3 = () => {
               placeholder="Enter host party name"
               value={item?.party_involved}
               onChange={(e) => handleTextChange(e, index, 'party_involved')}
+              required
             />
           </Grid>
           <Grid item xs={4}>

@@ -1,14 +1,4 @@
-import {
-  Box,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  Typography,
-} from '@mui/material'
+import { Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import CCButton from '../../../atoms/CCButton'
@@ -154,7 +144,7 @@ const SectionA2 = () => {
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCDropAndUpload
           mediaTitle={['Sample Report - Implementation of Milestones']}
-          title="Upload location map images"
+          title="Upload location map images *"
           mediaItem={[]}
           imageArray={A2.file_attach}
           onImageUpload={(item: any) => {
