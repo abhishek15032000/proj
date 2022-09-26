@@ -79,7 +79,7 @@ const SectionC1 = () => {
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Description of monitoring system *"
+            label="Description of monitoring system "
             placeholder="Description of the monitoring system,organisational structure of the team, their roles & responsibilities, training and maintenance"
             value={C1.description}
             name={'description'}
@@ -91,7 +91,7 @@ const SectionC1 = () => {
 
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Monitoring Plan *"
+            label="Monitoring Plan"
             placeholder="According to registered and the applied methodology, describe plan of monitoring variables"
             value={C1.monitoring_plan}
             name={'monitoring_plan'}
@@ -105,7 +105,7 @@ const SectionC1 = () => {
               'Sample Report - Organizational Structure & Responsibilities Chart',
             ]}
             mediaItem={[SectionCOrganisationalStructure]}
-            title="Attach organizational structure & responsibilities chart"
+            title="Attach organizational structure & responsibilities chart*"
             imageArray={attach_org_structure_and_responsibilities_chart}
             onImageUpload={(item: any) => {
               dispatch(
@@ -134,7 +134,7 @@ const SectionC1 = () => {
 
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Specific Datas Monitored *"
+            label="Specific Datas Monitored "
             placeholder="According to registered and the applied methodology, specific datas monitored"
             value={C1.specific_data_monitored}
             name={'specific_data_monitored'}

@@ -27,6 +27,7 @@ import { USER } from '../../api/user.api'
 import { setLocalItem } from '../../utils/Storage'
 import isEmail from 'validator/lib/isEmail'
 import isMobilePhone from 'validator/lib/isMobilePhone'
+import LoaderOverlay from '../../components/LoderOverlay'
 
 const RegisterPage = (props: RegisterPageProps) => {
   const [number, setNumber] = useState<string>('')
@@ -41,6 +42,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   const [typeOptions, setTypeOptions] = useState<any>([])
   const [selectedRole, setSelectedRole] = useState<any>()
   const [departmentId, setDepartmentId] = useState<any>()
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -85,6 +87,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   }
 
   const onBoardingNewUser = async () => {
+    setLoading(true)
     const payload = {
       fullName: firstName + ' ' + lastName,
       email: email,
@@ -109,6 +112,7 @@ const RegisterPage = (props: RegisterPageProps) => {
         }
       })
       .catch((e) => console.log(e))
+    setLoading(false)
   }
 
   const register = () => {
@@ -122,6 +126,7 @@ const RegisterPage = (props: RegisterPageProps) => {
 
   return (
     <Grid container flexDirection="row" xs={12} sx={{ height: '100vh' }}>
+      {loading ? <LoaderOverlay /> : null}
       <Grid
         item
         lg={6}

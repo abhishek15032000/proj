@@ -136,7 +136,7 @@ const SectionA1 = () => {
             dispatch(
               setA1({
                 name: 'construction_date',
-                value: newValue.toISOString(),
+                value: newValue?._isValid ? newValue.toISOString() : '',
               })
             )
           }}
@@ -156,7 +156,7 @@ const SectionA1 = () => {
             dispatch(
               setA1({
                 name: 'project_comissioning_date',
-                value: newValue.toISOString(),
+                value: newValue?._isValid ? newValue.toISOString() : '',
               })
             )
           }}
@@ -190,6 +190,7 @@ const SectionA1 = () => {
           onChange={({ target: { name, value } }) =>
             dispatch(setA1({ value, name }))
           }
+          required={false}
         />
       </Grid>
     </Grid>

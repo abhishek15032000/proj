@@ -42,3 +42,10 @@ export const capitaliseFirstLetter = (sentence: string) => {
     .join(' ')
   return capitaliseSentence
 }
+
+export const limitTitleFromMiddle = (title: string) => {
+  if (title?.length) {
+    return title.substring(0, 6) + '...' + title.substring(title.length - 6)
+  }
+  return title
+}

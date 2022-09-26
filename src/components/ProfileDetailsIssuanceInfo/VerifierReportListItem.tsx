@@ -4,16 +4,14 @@ import React, { FC, useState } from 'react'
 // MUI Imports
 import { Box, Grid, Modal, Paper, Stack, Typography } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import LanguageIcon from '@mui/icons-material/Language'
 import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
-import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import CCButton from '../../atoms/CCButton'
 // Local Imports
 import { limitTitle } from '../../utils/commonFunctions'
 import moment from 'moment'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
+import VerifierDetails from './VerifierDetails'
+
 interface VerifierReportListItemListItemProps {
   data: any
   updateVerifierAPI: any
@@ -42,77 +40,22 @@ const VerifierReportListItemListItem: FC<
           columns={15}
           sx={{ flex: 'wrap' }}
         >
-          <Grid
-            item
-            xs={6}
-            onMouseEnter={() => setShowVerifierDetails(true)}
-            onMouseLeave={() => setShowVerifierDetails(false)}
-          >
-            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+          <Grid item xs={6}>
+            <Typography
+              sx={{
+                cursor: 'pointer',
+                width: 'fit-content',
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              onMouseEnter={() => setShowVerifierDetails(true)}
+              onMouseLeave={() => setShowVerifierDetails(false)}
+            >
               {props?.data?.verifier_name}
             </Typography>
             {/*show when hovered on verifier_name*/}
             {showVerifierDetails && (
-              <Paper
-                sx={{
-                  width: '25vw',
-                  ml: 3,
-                  p: 1,
-                  position: 'absolute',
-                  zIndex: '1000',
-                  borderRadius: 2,
-                }}
-              >
-                <Box sx={{ display: 'flex' }}>
-                  <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                    {props?.data?.verifier_address}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <LanguageIcon
-                    sx={{
-                      color: '#006B5E',
-                      mr: 1,
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      fontWeight: 500,
-                      color: '#25BBD2',
-                      textDecoration: 'underline',
-                    }}
-                  >
-                    {props?.data?.website}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PermIdentityOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                    {props?.data?.director}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                    {props?.data?.verifier_number}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      fontWeight: 500,
-                      color: '#25BBD2',
-                      textDecoration: 'underline',
-                    }}
-                  >
-                    {props?.data?.mail}
-                  </Typography>
-                </Box>
-              </Paper>
+              <VerifierDetails verifierId={props?.data?.verifier_id} />
             )}
           </Grid>
           {/* verifier contact number shown when issuer confirmed final verifier */}
@@ -137,34 +80,34 @@ const VerifierReportListItemListItem: FC<
             </Typography>
           </Grid>
           {/* verifier status before issuer confirmed */}
-          <Grid item xs={3} sx={{ display: 'flex' }}>
-            <>
-              <CircleIcon
-                sx={{
-                  color:
-                    props?.data?.project_status === 2 ||
-                    props?.data?.project_status === 3
-                      ? '#7ACB9F'
-                      : props?.data?.project_status === 1
-                      ? '#F7CA56'
-                      : props?.data?.project_status === 5 ||
-                        props?.data?.project_status === 6
-                      ? 'rgba(250,0,0,0.2)'
-                      : 'transparent',
-                  mr: 1,
-                }}
-              />
-              <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-                {props?.data?.project_status === 2 ||
-                props?.data?.project_status === 3
-                  ? 'Verifier Confirmed'
-                  : props?.data?.project_status === 1
-                  ? 'Waiting for Verifier’s Confirmation'
-                  : props?.data?.project_status === 5
-                  ? 'Rejected'
-                  : props?.data?.project_status === 6 && 'Verifier Rejected'}
-              </Typography>
-            </>
+          <Grid item xs={3} sx={{ display: 'flex', alignItems: 'center' }}>
+            <CircleIcon
+              sx={{
+                color:
+                  props?.data?.project_status === 2 ||
+                  props?.data?.project_status === 3 ||
+                  props?.data?.project_status === 4
+                    ? '#7ACB9F'
+                    : props?.data?.project_status === 1
+                    ? '#F7CA56'
+                    : props?.data?.project_status === 5 ||
+                      props?.data?.project_status === 6
+                    ? 'rgba(250,0,0,0.2)'
+                    : 'transparent',
+                mr: 1,
+              }}
+            />
+            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+              {props?.data?.project_status === 2 ||
+              props?.data?.project_status === 3 ||
+              props?.data?.project_status === 4
+                ? 'Verifier Confirmed'
+                : props?.data?.project_status === 1
+                ? 'Waiting for Verifier’s Confirmation'
+                : props?.data?.project_status === 5
+                ? 'Rejected'
+                : props?.data?.project_status === 6 && 'Verifier Rejected'}
+            </Typography>
           </Grid>
           {(props?.data?.project_status !== 3 ||
             props?.data?.project_status !== 4) && (

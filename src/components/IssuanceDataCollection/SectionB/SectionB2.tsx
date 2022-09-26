@@ -86,6 +86,7 @@ const SectionB2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB2({ value, name }))
             }
+            required={false}
           />
         </Grid>
 
@@ -98,6 +99,7 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
+            required={false}
           />
         </Grid>
 
@@ -110,6 +112,7 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
+            required={false}
           />
         </Grid>
 
@@ -122,6 +125,7 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
+            required={false}
           />
         </Grid>
 
@@ -134,6 +138,7 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
+            required={false}
           />
         </Grid>
 
@@ -146,6 +151,7 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
+            required={false}
           />
         </Grid>
       </Grid>
