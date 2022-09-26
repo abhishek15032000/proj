@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
+import { shallowEqual } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ROLES } from '../config/roles.config'
 import { useAppSelector } from '../hooks/reduxHooks'
@@ -15,7 +16,7 @@ import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
 const RouteController = ({ localLoggedIn }: any) => {
-  const userData = useAppSelector((state: any) => state.auth.data)
+  const userData = useAppSelector((state: any) => state.auth.data, shallowEqual)
 
   return (
     <Routes>
@@ -147,14 +148,7 @@ const PublicRoute = ({
     return <RouteComponent />
   }
 
-  if (userDetails?.type === ROLES.ISSUER) {
-    return <Navigate to={pathNames.DASHBOARD} />
-  } else if (userDetails?.type === ROLES.VERIFIER) {
-    return <Navigate to={pathNames.VERIFIER_PROJECTS} />
-  } else {
-    //To send Buyer directly to BUYER_ONBOARDING since when redirecting to /(homepage) getting "access denied"
-    return <Navigate to={pathNames.BUYER_ONBOARDING} />
-  }
+  return <Navigate to={pathNames.DASHBOARD} />
 }
 
 export default RouteController

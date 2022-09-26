@@ -4,18 +4,21 @@ import ProjectsComp from '../../../components/Projects'
 import LoadWallet from '../../../components/LoadWallet'
 import VerifierProjects from '../../../components/VerifierProjects'
 import { getLocalItem } from '../../../utils/Storage'
+import BuyerOnboarding from '../../../components/BuyerOnboarding'
+import { ROLES } from '../../../config/roles.config'
+
 const ProjectsPage = (props: ProjectsPageProps) => {
   const userDetails = getLocalItem('userDetails')
 
-  if (userDetails?.type === 'ISSUER') {
-    return (
-      <>
-        <LoadWallet /> <ProjectsComp />
-      </>
-    )
-  } else if (userDetails?.type === 'VERIFIER') {
-    return <VerifierProjects />
-  }
+  return (
+    <>
+      {console.log('userDetails', userDetails)}
+      <LoadWallet />
+      {userDetails?.type === ROLES.ISSUER && <ProjectsComp />}
+      {userDetails?.type === ROLES.VERIFIER && <VerifierProjects />}
+      {userDetails?.type === ROLES.BUYER && <BuyerOnboarding />}
+    </>
+  )
 }
 
 export default ProjectsPage

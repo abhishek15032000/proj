@@ -1,18 +1,12 @@
 import { SelectChangeEvent, Stack } from '@mui/material'
 import { FormControl, Grid, MenuItem, Select, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useEffect, useState } from 'react'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import React, { useEffect } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setProjectParticipants } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
-interface dataInterface {
-  partyInvolved: string
-  participantType: string
-  isProjectParticipant: string
-}
 
 const SectionA3 = () => {
   const dispatch = useAppDispatch()
@@ -23,8 +17,8 @@ const SectionA3 = () => {
     shallowEqual
   )
 
-  const projectParticipants = useAppSelector(
-    ({ sectionA }) => sectionA.projectParticipants,
+  const party_and_project_participants = useAppSelector(
+    ({ sectionA }) => sectionA.party_and_project_participants,
     shallowEqual
   )
 
@@ -43,17 +37,18 @@ const SectionA3 = () => {
       let step3Data = []
       step3Data = party_and_project_participants.map((item: any) => {
         return {
-          partyInvolved: item?.party_involved,
-          participantType: item?.private_or_public_project_participant,
-          isProjectParticipant: item?.indicate_party_involved,
+          party_involved: item?.party_involved,
+          private_or_public_project_participant:
+            item?.private_or_public_project_participant,
+          indicate_party_involved: item?.indicate_party_involved,
         }
       })
       dispatch(setProjectParticipants(step3Data))
     }
   }, [currentProjectDetails])
-
+  console.log('current: ', currentProjectDetails)
   const addRow = () => {
-    const dataCopy = [...projectParticipants]
+    const dataCopy = [...party_and_project_participants]
     dataCopy.push({
       partyInvolved: '',
       participantType: '',
@@ -63,7 +58,7 @@ const SectionA3 = () => {
   }
 
   const handleTextChange = (e: any, index: number, type: string) => {
-    const dataCopy = [...projectParticipants]
+    const dataCopy = [...party_and_project_participants]
     let objectToChange = dataCopy[index]
     objectToChange = { ...objectToChange, [type]: e.target.value }
     dataCopy[index] = objectToChange
@@ -71,7 +66,7 @@ const SectionA3 = () => {
   }
 
   const handleSelectChange = (e: SelectChangeEvent, index: number) => {
-    const dataCopy = [...projectParticipants]
+    const dataCopy = [...party_and_project_participants]
     dataCopy[index].isProjectParticipant = e.target.value
     dispatch(setProjectParticipants(dataCopy))
   }
@@ -95,17 +90,18 @@ const SectionA3 = () => {
         className="table-with-div-heading"
       >
         <Grid item xs={4}>
-          Party involved ((host) indicates a host Party)
+          Party involved ((host) indicates a host Party) *
         </Grid>
         <Grid item xs={4}>
-          Private and/or public entity(ies) project participants (as applicable)
+          Private and/or public entity(ies) project participants (as
+          applicable)*
         </Grid>
         <Grid item xs={4}>
           Indicate if the Party involved wishes to be considered as project
-          participant{' '}
+          participant *
         </Grid>
       </Grid>
-      {projectParticipants?.map((item, index) => (
+      {party_and_project_participants?.map((item: any, index: number) => (
         <Grid
           key={index}
           className={
@@ -130,8 +126,9 @@ const SectionA3 = () => {
                 paddingRight: '10px',
               }}
               placeholder="Enter host party name"
-              value={item?.partyInvolved}
-              onChange={(e) => handleTextChange(e, index, 'partyInvolved')}
+              value={item?.party_involved}
+              onChange={(e) => handleTextChange(e, index, 'party_involved')}
+              required
             />
           </Grid>
           <Grid item xs={4}>
@@ -144,8 +141,14 @@ const SectionA3 = () => {
                 paddingRight: '10px',
               }}
               placeholder="Enter private/public entity name"
-              value={item?.participantType}
-              onChange={(e) => handleTextChange(e, index, 'participantType')}
+              value={item?.private_or_public_project_participant}
+              onChange={(e) =>
+                handleTextChange(
+                  e,
+                  index,
+                  'private_or_public_project_participant'
+                )
+              }
             />
           </Grid>
           <Grid item xs={4}>
@@ -164,9 +167,9 @@ const SectionA3 = () => {
                 placeholder="Select from dropdown"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={item?.isProjectParticipant}
+                value={item?.indicate_party_involved}
                 onChange={(e) =>
-                  handleTextChange(e, index, 'isProjectParticipant')
+                  handleTextChange(e, index, 'indicate_party_involved')
                 }
               >
                 <MenuItem value={'no'}>No</MenuItem>

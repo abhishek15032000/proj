@@ -25,13 +25,16 @@ import CryptoJS from 'crypto-js'
 import { department } from '../../api/department.api'
 import { USER } from '../../api/user.api'
 import { setLocalItem } from '../../utils/Storage'
+import isEmail from 'validator/lib/isEmail'
+import isMobilePhone from 'validator/lib/isMobilePhone'
+import LoaderOverlay from '../../components/LoderOverlay'
 
 const RegisterPage = (props: RegisterPageProps) => {
-  const [number, setNumber] = useState<number>()
+  const [number, setNumber] = useState<string>('')
   const [password, setPassword] = useState<any>()
   const [firstName, setFirstName] = useState<string>('')
   const [lastName, setLastName] = useState<string>('')
-  const [email, setEmail] = useState()
+  const [email, setEmail] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
   const [captchaInput, setCaptchInput] = useState<string>('')
   const [showPassword, setShowPassword] = useState(false)
@@ -39,6 +42,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   const [typeOptions, setTypeOptions] = useState<any>([])
   const [selectedRole, setSelectedRole] = useState<any>()
   const [departmentId, setDepartmentId] = useState<any>()
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -67,18 +71,23 @@ const RegisterPage = (props: RegisterPageProps) => {
     department
       .getDepartment()
       .then((response: any) => {
-        const roles = response?.data.map((department: any, index: number) => {
-          return {
-            value: department.name,
-            label: department._id,
-          }
-        })
+        const roles = response?.data
+          .filter(
+            (department: any) => department.name !== 'super admin department'
+          )
+          .map((department: any, index: number) => {
+            return {
+              value: department.name,
+              label: department._id,
+            }
+          })
         setTypeOptions(roles)
       })
-      .catch((e) => console.log(e))
+      .catch((e) => console.log('Error in department.getDepartment api :', e))
   }
 
   const onBoardingNewUser = async () => {
+    setLoading(true)
     const payload = {
       fullName: firstName + ' ' + lastName,
       email: email,
@@ -103,6 +112,7 @@ const RegisterPage = (props: RegisterPageProps) => {
         }
       })
       .catch((e) => console.log(e))
+    setLoading(false)
   }
 
   const register = () => {
@@ -113,9 +123,10 @@ const RegisterPage = (props: RegisterPageProps) => {
   }
 
   const { handleChange, values, errors, handleSubmit } = useForm(register)
-  console.log(values)
+
   return (
     <Grid container flexDirection="row" xs={12} sx={{ height: '100vh' }}>
+      {loading ? <LoaderOverlay /> : null}
       <Grid
         item
         lg={6}
@@ -176,6 +187,7 @@ const RegisterPage = (props: RegisterPageProps) => {
               name="email"
               //onChange={handleChange}
               onChange={(e) => setEmail(e.target.value)}
+              error={!isEmail(email)}
               defaultValue={values?.email}
               sx={{ background: '#F5F5F5' }}
             />
@@ -208,11 +220,17 @@ const RegisterPage = (props: RegisterPageProps) => {
               <Grid item xs={12} md={9}>
                 <CCInputField
                   label="Phone Number"
+                  type="tel"
                   variant="outlined"
                   //onChange={handleChange}
-                  onChange={(e) => setNumber(e.target.value)}
-                  defaultValue={values?.phoneNumber}
+                  onChange={(e) => {
+                    // if (Number(e.target.value.replace(/[^0-9]/g, '')) < 0) {
+                    setNumber(e.target.value.toString())
+                    // }
+                  }}
+                  defaultValue={number}
                   sx={{ background: '#F5F5F5' }}
+                  error={!isMobilePhone(number, 'en-IN')}
                 />
               </Grid>
             </Grid>
@@ -306,10 +324,11 @@ const RegisterPage = (props: RegisterPageProps) => {
             lg: 'flex',
             xs: 'none',
           },
+          minHeight: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
           backgroundSize: 'cover',
-          backgroundRepeat: 'repeat-y',
+          backgroundRepeat: 'no-repeat',
         }}
       />
     </Grid>

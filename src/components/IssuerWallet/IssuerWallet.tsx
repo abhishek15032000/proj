@@ -11,6 +11,7 @@ import { Colors } from '../../theme'
 // import DashboardStatistics from '../VerifierProjects/DashboardStatistics'
 import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
 import TransactionHistory from './TransactionHistory'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 const IssuerWallet = (props: IssuerWalletProps) => {
   const [dashboardStatistics, setDashboardStatistics] = useState([
@@ -46,7 +47,13 @@ const IssuerWallet = (props: IssuerWalletProps) => {
         <DashboardStatistics data={dashboardStatistics} />
 
         <Grid item xs={12}>
-          <TransactionHistory />
+          {/* <TransactionHistory /> */}
+          <EmptyComponent
+            photoType={3}
+            title="No transaction history!"
+            // listNewProject
+            exploreMarketplace
+          />
         </Grid>
       </Grid>
     </Box>

@@ -18,18 +18,23 @@ const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
   return (
     <Paper
       sx={{
-        p: 2,
         borderRadius: '8px',
         mb: 2,
         ml: 1,
         width: '100%',
-        pt: 3,
-        pb: 3,
         mt: 2,
         display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}
     >
-      <Box>
+      <Box
+        sx={{
+          p: 2,
+          pt: 3,
+          pb: 3,
+        }}
+      >
         <Typography sx={{ fontSize: 24, fontWeight: 400 }}>
           {props.data?.company_name}
         </Typography>
@@ -77,16 +82,55 @@ const VitalProjectDetails: FC<VitalProjectDetailsProps> = (props) => {
       <Box
         sx={{
           width: '220px',
-          border: '2px solid',
-          // display: ;',
+          height: '220px',
+          display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          position: 'relative',
         }}
       >
-        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-          {props.data?.area} SqKm
-        </Typography>
-        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>Area</Typography>
+        <Box
+          sx={{
+            backgroundColor: '#FFF',
+            width: 'auto',
+            zIndex: 10,
+            p: 0.5,
+            m: 0.5,
+          }}
+        >
+          <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+            {props.data?.area} SqKm
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            backgroundColor: '#FFF',
+            width: 'auto',
+            zIndex: 10,
+            p: 0.5,
+            m: 0.5,
+          }}
+        >
+          <Typography
+            sx={{ fontSize: 14, fontWeight: 400, backgroundColor: '#FFF' }}
+          >
+            Area
+          </Typography>
+        </Box>
+
+        <Box
+          component={'img'}
+          sx={{
+            width: '220px',
+            height: '220px',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+          src={require('../../assets/Images/AreaBackground.png')}
+        />
       </Box>
     </Paper>
   )

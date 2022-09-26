@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import CCInputField from '../../../atoms/CCInputField'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -16,7 +16,6 @@ import { shallowEqual } from 'react-redux'
 import { setMethodologies } from '../../../redux/Slices/sectionASlice'
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import Spinner from '../../../atoms/Spinner'
 
 interface methodologiesInterface {
@@ -40,11 +39,11 @@ const SectionA4 = () => {
       let step4Data = []
       step4Data = methodologies.map((item: any) => {
         return {
-          approvedMethodologies: item.methodology,
-          projectType: item.project_type,
+          methodology: item.methodology,
+          project_type: item.project_type,
           category: item.category,
           version: item.version,
-          toolsReferred: item.tools,
+          tools: item.tools,
           flag: false,
         }
       })
@@ -65,11 +64,11 @@ const SectionA4 = () => {
   const addMethodology = () => {
     const methodologiesCopy = [...methodologies]
     methodologiesCopy.push({
-      approvedMethodologies: '',
-      projectType: '',
+      methodology: '',
+      project_type: '',
       category: '',
       version: '',
-      toolsReferred: '',
+      tools: '',
       flag: false,
     })
     dispatch(setMethodologies(methodologiesCopy))
@@ -99,7 +98,7 @@ const SectionA4 = () => {
     <>
       <Typography sx={{ mt: 3 }}>
         The methodologies applied for the project activity under consideration
-        are-
+        are* -
       </Typography>
 
       {methodologies.map((item, index) => (
@@ -165,14 +164,12 @@ const SectionA4 = () => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Select Methodology *"
-                    value={item?.approvedMethodologies}
-                    onChange={(e) =>
-                      handleTextChange(e, index, 'approvedMethodologies')
-                    }
+                    value={item?.methodology}
+                    onChange={(e) => handleTextChange(e, index, 'methodology')}
                   >
-                    <MenuItem value={'Ten'}>Ten</MenuItem>
-                    <MenuItem value={'Twenty'}>Twenty</MenuItem>
-                    <MenuItem value={'Thirty'}>Thirty</MenuItem>
+                    <MenuItem value={'Ten'}>Methodology 1</MenuItem>
+                    <MenuItem value={'Twenty'}>Methodology 2</MenuItem>
+                    <MenuItem value={'Thirty'}>Methodology 3</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -198,10 +195,9 @@ const SectionA4 = () => {
                     }}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    // value={country}
                     label="Project Type *"
-                    value={item?.projectType}
-                    onChange={(e) => handleTextChange(e, index, 'projectType')}
+                    value={item?.project_type}
+                    onChange={(e) => handleTextChange(e, index, 'project_type')}
                   >
                     <MenuItem
                       value={'AMS-I.A'}
@@ -270,8 +266,8 @@ const SectionA4 = () => {
                 <CCInputField
                   label="Tools referred"
                   placeholder="Enter tools to calculate or determine the baseline and monitoring methodology"
-                  value={item?.toolsReferred}
-                  onChange={(e) => handleTextChange(e, index, 'toolsReferred')}
+                  value={item?.tools}
+                  onChange={(e) => handleTextChange(e, index, 'tools')}
                   sx={{ background: 'white' }}
                 />
               </Grid>

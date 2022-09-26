@@ -13,6 +13,7 @@ import {
   Modal,
   Paper,
   Divider,
+  Skeleton,
 } from '@mui/material'
 import CCButton from '../../atoms/CCButton/CCButton'
 import { KeyboardArrowLeft } from '@mui/icons-material'
@@ -26,7 +27,8 @@ import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
-import Spinner from '../../atoms/Spinner'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
+import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
 
 const SelectVerifier = () => {
   const navigate = useNavigate()
@@ -38,11 +40,19 @@ const SelectVerifier = () => {
     shallowEqual
   )
 
+  const currentProjectDetailsUUID = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetailsUUID,
+    shallowEqual
+  )
+
   const [open, setOpen] = useState<boolean>(false)
+  const [modalData, setModalData] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
   const [verifiers, setVerifiers] = useState<any[]>([])
   const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
+
   const handleClick = () => {
     setOpen(true)
   }
@@ -76,6 +86,7 @@ const SelectVerifier = () => {
 
   const createVerifier = async () => {
     setLoading(true)
+    setOpen(false)
     const payload = selectedVerifiers.map((verifierDetials: any) => {
       if (
         currentProjectDetails &&
@@ -95,9 +106,9 @@ const SelectVerifier = () => {
     try {
       const res = await verifierCalls.createVerifier(payload)
       if (res?.data?.success) {
-        setOpen(false)
-        alert('verifier selected successfully')
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        setModalData(true)
+        setOpen(true)
+        getProjectDetails(currentProjectDetailsUUID)
       }
     } catch (err) {
       console.log(err)
@@ -134,25 +145,174 @@ const SelectVerifier = () => {
     return false
   }
 
-  return loading === true ? (
-    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
-      <Spinner />
-    </Stack>
-  ) : (
+  const renderSkeleton = () => {
+    const temp = new Array(6).fill(1)
+    return (
+      <Grid container spacing={3} sx={{ mt: 3 }}>
+        {temp.map((i, index) => (
+          <Grid item key={index} xs={12} lg={6}>
+            <Paper elevation={4} sx={{ py: 3 }}>
+              <Stack
+                direction="row"
+                justifyContent={'space-between'}
+                alignItems="center"
+              >
+                <Box sx={{ pl: 2, width: '70%' }}>
+                  <Stack direction={'row'} alignItems="center" sx={{ pb: 1 }}>
+                    <Skeleton
+                      variant="rectangular"
+                      width={20}
+                      height={20}
+                      sx={{ mr: 1, borderRadius: 1 }}
+                    />
+                    <Skeleton
+                      width="90%"
+                      sx={{
+                        //fontSize: '1rem',
+                        bgcolor: '#CCE8E1',
+                      }}
+                      variant="rectangular"
+                    />
+                  </Stack>
+                  <Stack
+                    direction={'row'}
+                    alignItems="center"
+                    //key={index}
+                    sx={{ pb: 1 }}
+                  >
+                    <Skeleton
+                      variant="circular"
+                      width={20}
+                      height={20}
+                      sx={{ mr: 1 }}
+                    />
+                    <Skeleton
+                      height="15px"
+                      width="70%"
+                      sx={{
+                        //fontSize: '1rem',
+                        bgcolor: '#CCE8E1',
+                      }}
+                      variant="rectangular"
+                    />
+                  </Stack>
+                  <Stack
+                    direction={'row'}
+                    alignItems="center"
+                    //key={index}
+                    sx={{ pb: 1 }}
+                  >
+                    <Skeleton
+                      variant="circular"
+                      width={20}
+                      height={20}
+                      sx={{ mr: 1 }}
+                    />
+                    <Skeleton
+                      height="15px"
+                      width="70%"
+                      sx={{
+                        //fontSize: '1rem',
+                        bgcolor: '#CCE8E1',
+                      }}
+                      variant="rectangular"
+                    />
+                  </Stack>
+                  <Divider sx={{ my: 2 }} />
+                  <Box sx={{ pt: 1 }}>
+                    <Stack
+                      direction={'row'}
+                      alignItems="center"
+                      //key={index}
+                      sx={{ pb: 1 }}
+                    >
+                      <Skeleton
+                        variant="circular"
+                        width={20}
+                        height={20}
+                        sx={{ mr: 1 }}
+                      />
+                      <Skeleton
+                        height="15px"
+                        width="70%"
+                        sx={{
+                          //fontSize: '1rem',
+                          bgcolor: '#CCE8E1',
+                        }}
+                        variant="rectangular"
+                      />
+                    </Stack>
+                    <Stack direction={'row'} alignItems="center" sx={{ pb: 1 }}>
+                      <Skeleton
+                        variant="circular"
+                        width={20}
+                        height={20}
+                        sx={{ mr: 1 }}
+                      />
+                      <Skeleton
+                        height="15px"
+                        width="70%"
+                        sx={{
+                          bgcolor: '#CCE8E1',
+                        }}
+                        variant="rectangular"
+                      />
+                    </Stack>
+                    <Stack direction={'row'} alignItems="center" sx={{ pb: 1 }}>
+                      <Skeleton
+                        variant="circular"
+                        width={20}
+                        height={20}
+                        sx={{ mr: 1 }}
+                      />
+                      <Skeleton
+                        height="15px"
+                        width="70%"
+                        sx={{
+                          bgcolor: '#CCE8E1',
+                        }}
+                        variant="rectangular"
+                      />
+                    </Stack>
+                  </Box>
+                </Box>
+                <Box>
+                  {' '}
+                  <Skeleton
+                    width="120px"
+                    height="130px"
+                    sx={{
+                      bgcolor: '#CCE8E1',
+                      borderTopLeftRadius: 20,
+                      borderBottomLeftRadius: 20,
+                    }}
+                    variant="rectangular"
+                  />
+                </Box>
+              </Stack>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    )
+  }
+
+  return (
     <>
       <Grid
         container
         justifyContent={'space-between'}
         alignItems="center"
         spacing={3}
+        sx={{ fontSize: 14 }}
       >
         <Grid item xs={6}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <KeyboardArrowLeft />
-            <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
-              List New Project
-            </Typography>
-          </Box>
+          <BackHeader
+            title="Select Verifier"
+            onClick={() => {
+              navigate(-1)
+            }}
+          />
           <Typography sx={{ mt: 2, fontSize: 16, fontWeight: 500 }}>
             Select potential verifiers for your project issuance
           </Typography>
@@ -168,90 +328,134 @@ const SelectVerifier = () => {
           </CCButton>
         </Grid>
       </Grid>
-      <Grid container sx={{ mt: 2 }} spacing={3} xs={12}>
-        {verifiers?.map((verifier: any, index: number) => (
-          <Grid key={index} item container xs={12} lg={6}>
-            <Paper
-              elevation={4}
-              sx={{
-                width: '100%',
-                display: 'flex',
-                borderRadius: 2,
-                borderTop: isThisVerifierSelected(verifier?._id)
-                  ? '6px solid #006B5E'
-                  : '6px solid transparent',
-              }}
-            >
-              <Grid
-                item
-                xs={9}
+      {loading === true ? (
+        renderSkeleton()
+      ) : (
+        <Grid container sx={{ mt: 2 }} spacing={3} xs={12}>
+          {verifiers?.map((verifier: any, index: number) => (
+            <Grid key={index} item container xs={12} lg={6}>
+              <Paper
+                elevation={4}
                 sx={{
-                  p: 2,
+                  width: '100%',
+                  display: 'flex',
+                  borderRadius: 2,
+                  borderTop: isThisVerifierSelected(verifier?._id)
+                    ? '6px solid #006B5E'
+                    : '6px solid transparent',
                 }}
               >
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Checkbox
-                    sx={{
-                      p: 0,
-                      mr: 1,
-                      color: '#006B5E',
-                      '&.Mui-checked': {
-                        color: '#006B5E',
-                      },
-                    }}
-                    onChange={() => selectVerifiers(verifier)}
-                  />
-                  <Typography sx={{ fontSize: 18, textTransform: 'uppercase' }}>
-                    {verifier?.fullName}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.address || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <LanguageIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>
-                    <a
-                      style={{ color: '#25BBD2', textDecoration: 'underline' }}
-                      href={verifier?.website}
+                <Grid
+                  item
+                  xs={9}
+                  sx={{
+                    p: 2,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => selectVerifiers(verifier)}
                     >
-                      {verifier?.website || '-'}
-                    </a>
-                  </Typography>
-                </Box>
-                <Divider sx={{ my: 2 }} />
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PermIdentityOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.director || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.phone || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mt: 1 }}>
-                  <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
-                  <Typography>{verifier?.email || '-'}</Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3} sx={{ my: 'auto' }} justifyContent="end">
-                <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                  <Box
-                    sx={{
-                      background: '#F0FFFB',
-                      width: '100px',
-                      height: '100px',
-                      position: 'relative',
-                    }}
-                  >
-                    <img src={Images.BriefcaseIcon} className="briefcaseImg" />
+                      <Checkbox
+                        sx={{
+                          p: 0,
+                          mr: 1,
+                          color: '#006B5E',
+                          '&.Mui-checked': {
+                            color: '#006B5E',
+                          },
+                        }}
+                        checked={isThisVerifierSelected(verifier?._id)}
+                      />
+                      <Typography
+                        sx={{ fontSize: 18, textTransform: 'uppercase' }}
+                      >
+                        {verifier?.fullName}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
+                  <Box sx={{ display: 'flex', mt: 1 }}>
+                    <PlaceOutlinedIcon
+                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                    />
+                    <Typography sx={{ fontSize: 14 }}>
+                      {verifier?.address || '-'}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', mt: 1 }}>
+                    <LanguageIcon
+                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                    />
+                    <Typography sx={{ fontSize: 14 }}>
+                      <a
+                        style={{
+                          color: '#25BBD2',
+                          textDecoration: 'underline',
+                        }}
+                        href={verifier?.website}
+                      >
+                        {verifier?.website || '-'}
+                      </a>
+                    </Typography>
+                  </Box>
+                  <Divider sx={{ my: 2 }} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                    <PermIdentityOutlinedIcon
+                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                    />
+                    <Box>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {verifier?.designation}
+                      </Typography>
+                      <Typography sx={{ fontSize: 14 }}>
+                        {verifier?.address}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box sx={{ display: 'flex', mt: 1 }}>
+                    <PhoneInTalkOutlinedIcon
+                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                    />
+                    <Typography sx={{ fontSize: 14 }}>
+                      {verifier?.phone || '-'}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', mt: 1 }}>
+                    <MailOutlineIcon
+                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                    />
+                    <Typography sx={{ fontSize: 14 }}>
+                      {verifier?.email || '-'}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={3} sx={{ my: 'auto' }} justifyContent="end">
+                  <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                    <Box
+                      sx={{
+                        background: '#F0FFFB',
+                        width: '100px',
+                        height: '100px',
+                        position: 'relative',
+                      }}
+                    >
+                      <img
+                        src={Images.BriefcaseIcon}
+                        className="briefcaseImg"
+                      />
+                    </Box>
+                  </Box>
+                </Grid>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      )}
       <Modal
         open={open}
         onClose={() => {
@@ -272,45 +476,65 @@ const SelectVerifier = () => {
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 3,
+            outline: 'none',
           }}
         >
-          <Box>
-            <Typography
-              textAlign="center"
-              sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}
-            >
-              Confirm selected Verifiers?
-            </Typography>
-            <Box>
-              <Stack
-                sx={{ mt: 5 }}
-                direction="row"
-                justifyContent={'space-between'}
+          {modalData ? (
+            <Box display={'flex'} alignItems="center" flexDirection="column">
+              <Typography sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}>
+                Verifier selected successfully
+              </Typography>
+              <CCButton
+                sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
+                onClick={() => {
+                  setModalData(false)
+                  setOpen(false)
+                  navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+                }}
               >
-                <CCButtonOutlined
-                  sx={{
-                    minWidth: 0,
-                    padding: '6px 34px',
-                    borderRadius: 10,
-                    mr: 3,
-                  }}
-                  onClick={() => {
-                    setOpen(false)
-                  }}
-                >
-                  Cancel
-                </CCButtonOutlined>
-                <CCButton
-                  sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
-                  onClick={() => {
-                    createVerifier()
-                  }}
-                >
-                  Yes
-                </CCButton>
-              </Stack>
+                Close
+              </CCButton>
             </Box>
-          </Box>
+          ) : (
+            <Box>
+              <Typography
+                textAlign="center"
+                sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}
+              >
+                Confirm selected Verifiers?
+              </Typography>
+              <Box>
+                <Stack
+                  sx={{ mt: 5 }}
+                  direction="row"
+                  justifyContent={'space-between'}
+                >
+                  <CCButtonOutlined
+                    sx={{
+                      minWidth: 0,
+                      padding: '6px 34px',
+                      borderRadius: 10,
+                      mr: 3,
+                    }}
+                    onClick={() => {
+                      setOpen(false)
+                    }}
+                  >
+                    Cancel
+                  </CCButtonOutlined>
+                  <CCButton
+                    sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
+                    onClick={() => {
+                      createVerifier()
+                    }}
+                  >
+                    Yes
+                  </CCButton>
+                </Stack>
+              </Box>
+            </Box>
+          )}
+          {/**/}
         </Paper>
       </Modal>
     </>

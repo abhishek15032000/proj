@@ -3,26 +3,17 @@ import React, { useEffect } from 'react'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import SectionE4CalculationSummaryOfEmissionReductions from '../../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
-import {
-  setActualEmissionReductions,
-  setActualEmissionReductionsImages,
-  setCalculationSummaryOfEmission,
-  setCalculationSummaryOfEmissionImages,
-} from '../../../redux/Slices/sectionESlice'
+import { setE4 } from '../../../redux/Slices/sectionESlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { shallowEqual } from 'react-redux'
 import Spinner from '../../../atoms/Spinner'
 const SectionE4 = () => {
   const dispatch = useAppDispatch()
 
-  const calculationSummaryOfEmission = useAppSelector(
-    ({ sectionE }) => sectionE.calculationSummaryOfEmission
-  )
-  const calculationSummaryOfEmissionImages = useAppSelector(
-    ({ sectionE }) => sectionE.calculationSummaryOfEmissionImages
-  )
+  const E4 = useAppSelector(({ sectionE }) => sectionE.E4)
+  const { attach_relevant_docs } = E4
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
@@ -42,9 +33,12 @@ const SectionE4 = () => {
         currentProjectDetails.section_e.step4
 
       dispatch(
-        setCalculationSummaryOfEmission(calculation_of_emissions_reduction)
+        setE4({
+          name: 'calculation_of_emissions_reduction',
+          value: calculation_of_emissions_reduction,
+        })
       )
-      dispatch(setCalculationSummaryOfEmissionImages(attach_relevant_docs))
+      dispatch(setE4(attach_relevant_docs))
     }
   }, [currentProjectDetails])
 
@@ -60,9 +54,10 @@ const SectionE4 = () => {
             'Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks'
           }
           placeholder="Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks, if any"
-          value={calculationSummaryOfEmission}
-          onChange={(e) =>
-            dispatch(setCalculationSummaryOfEmission(e.target.value))
+          value={E4.calculation_of_emissions_reduction}
+          name={'calculation_of_emissions_reduction'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setE4({ name, value }))
           }
         />
       </Grid>
@@ -73,20 +68,21 @@ const SectionE4 = () => {
             'Sample Report - Calculation summary of emission reductions',
           ]}
           mediaItem={[SectionE4CalculationSummaryOfEmissionReductions]}
-          imageArray={calculationSummaryOfEmissionImages}
+          imageArray={E4.attach_relevant_docs}
           onImageUpload={(item: any) => {
             dispatch(
-              setCalculationSummaryOfEmissionImages([
-                ...calculationSummaryOfEmissionImages,
-                item,
-              ])
+              setE4({
+                name: 'attach_relevant_docs',
+                value: [...attach_relevant_docs, item],
+              })
             )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setCalculationSummaryOfEmissionImages(
-                deleteIndexInArray(calculationSummaryOfEmissionImages, index)
-              )
+              setE4({
+                name: 'attach_relevant_docs',
+                value: deleteIndexInArray(attach_relevant_docs, index),
+              })
             )
           }}
         />

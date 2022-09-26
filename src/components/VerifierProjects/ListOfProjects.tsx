@@ -21,6 +21,8 @@ import { verifierCalls } from '../../api/verifierCalls.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import NoData from '../../atoms/NoData/NoData'
+import ReferenceIdTd from '../Projects/ReferenceIdTd'
 
 interface ListOfProjectsProps {
   data?: any
@@ -55,8 +57,8 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const navigate = useNavigate()
 
   const [tabIndex, setTabIndex] = useState(1)
-  const [rowsRegistered, setRowsRegistered]: any = useState([])
-  const [rowsNew, setRowsNew]: any = useState([])
+  const [rowsRegistered, setRowsRegistered]: any = useState([{}])
+  const [rowsNew, setRowsNew]: any = useState([{}])
 
   useEffect(() => {
     const newData: any = [],
@@ -70,7 +72,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         item.project_status === 6
       ) {
         newData.push([
-          item.project_id._id,
+          <ReferenceIdTd key={index} referenceId={item?.project_id?.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           <Box
             key={index}
@@ -138,22 +140,24 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          <ChevronRightIcon
-            key={index}
-            onClick={() => {
-              navigate(pathNames.VERIFIER_PROJECTS_DETAILS)
-            }}
-          />,
+          item.project_status === 1 ||
+            (item.project_status === 2 && (
+              <ChevronRightIcon
+                sx={{ cursor: 'pointer' }}
+                key={index}
+                onClick={() => {
+                  navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                    state: { project_uuid: item.project_id.uuid },
+                  })
+                }}
+              />
+            )),
         ])
       }
 
-      // , {
-      //   project_uuid: item?.project_id?.uuid,
-      // }
-
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
-          item.project_id._id,
+          <ReferenceIdTd key={index} referenceId={item?.project_id?.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           <Box
             key={index}
@@ -200,8 +204,13 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             '-'
           ),
           <ChevronRightIcon
+            sx={{ cursor: 'pointer' }}
             key={index}
-            onClick={() => navigate(pathNames.VERIFIER_PROJECTS_DETAILS)}
+            onClick={() =>
+              navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                state: { project_uuid: item.project_id.uuid },
+              })
+            }
           />,
         ])
       }
@@ -258,17 +267,41 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         newProjects={4}
       />
 
-      {props.loading && <CCTableSkeleton height={40} />}
-      {!props.loading && (
-        <CCTable
-          headings={tabIndex === 1 ? headingsNew : headingsRegistered}
-          rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-          sx={{ minWidth: 100 }}
-          maxWidth={'100%'}
-          tableSx={{ minWidth: 100 }}
-          loading={true}
-        />
-      )}
+      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
+
+      {!props.loading &&
+        tabIndex === 1 &&
+        Object.keys(rowsNew[0]).length > 0 && (
+          <CCTable
+            headings={headingsNew}
+            rows={rowsNew}
+            sx={{ minWidth: 100 }}
+            maxWidth={'100%'}
+            tableSx={{ minWidth: 100 }}
+            loading={true}
+          />
+        )}
+
+      {!props.loading &&
+        tabIndex === 2 &&
+        Object.keys(rowsRegistered[0]).length > 0 && (
+          <CCTable
+            headings={headingsRegistered}
+            rows={rowsRegistered}
+            sx={{ minWidth: 100 }}
+            maxWidth={'100%'}
+            tableSx={{ minWidth: 100 }}
+            loading={true}
+          />
+        )}
+
+      {!props.loading &&
+        Object.keys(rowsNew[0]).length === 0 &&
+        tabIndex === 1 && <NoData title="No new projects available" />}
+
+      {!props.loading &&
+        Object.keys(rowsRegistered[0]).length === 0 &&
+        tabIndex === 2 && <NoData title="No registered projects available" />}
     </Paper>
   )
 }

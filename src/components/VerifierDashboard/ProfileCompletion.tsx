@@ -1,31 +1,33 @@
-// React Imports
-import React, { FC } from 'react'
+import React from 'react'
+import { Typography, LinearProgress, Paper } from '@mui/material'
+import { Colors } from '../../theme'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import { getLocalItem } from '../../utils/Storage'
+import ProfileCompletionStep from './ProfileCompletionStep'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import { setLoadWallet } from '../../redux/Slices/walletSlice'
 
-// MUI Imports
-import {
-  Grid,
-  Box,
-  Typography,
-  IconButton,
-  Chip,
-  LinearProgress,
-  Paper,
-} from '@mui/material'
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
-import CheckIcon from '@mui/icons-material/Check'
+const ProfileCompletion = () => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-// Local Imports
+  const { wallet_added } = getLocalItem('userDetails2')
 
-interface ProfileCompletionProps {
-  value?: any
-}
+  const profileCompletionPercent = useAppSelector(
+    ({ verifier }) => verifier.profileCompletionPercent,
+    shallowEqual
+  )
+  const profileUpdated = useAppSelector(
+    ({ verifier }) => verifier.profileUpdated,
+    shallowEqual
+  )
 
-const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
   return (
     <Paper
       sx={{
         width: '260px',
-        // height: '330px',
         backgroundColor: '#FFF',
         borderRadius: '8px',
         padding: 1.5,
@@ -39,48 +41,49 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
         sx={{
           fontSize: 14,
           fontWeight: 500,
-          color: '#F15D5F',
+          color:
+            profileCompletionPercent !== 100
+              ? Colors.secondary
+              : Colors.textColorDarkGreen,
           marginTop: 2,
           marginBottom: 0.5,
-
         }}
       >
-        Incomplete!
+        {profileCompletionPercent !== 100 ? 'Incomplete' : 'Complete'}!
       </Typography>
 
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={props.value}
+        value={profileCompletionPercent}
       />
 
       <Typography
-        sx={{ fontSize: 14, fontWeight: 400, marginTop: 1, marginBottom: 2, mt: 2, }}
+        sx={{
+          fontSize: 14,
+          fontWeight: 400,
+          marginTop: 1,
+          marginBottom: 2,
+          mt: 2,
+        }}
       >
         Complete your profile setup!
       </Typography>
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '60px',
-          width: '240px',
-          backgroundColor: '#DAF7F0',
-          padding: 1,
-          borderRadius: '12px',
+      <ProfileCompletionStep
+        stepTitle="Profile Updated"
+        stepCompleted={profileUpdated}
+        onClickWhenIncomplete={() => {
+          navigate(pathNames.VERIFIER_PROFILE_SETUP)
         }}
-      >
-        <Box>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            Profile
-          </Typography>
-          <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#BA1B1B' }}>
-            {props.value}% Complete
-          </Typography>
-        </Box>
-      </Box>
+      />
+      <ProfileCompletionStep
+        stepTitle="Wallet Added"
+        stepCompleted={wallet_added}
+        onClickWhenIncomplete={() => {
+          dispatch(setLoadWallet(true))
+        }}
+      />
     </Paper>
   )
 }

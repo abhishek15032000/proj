@@ -1,24 +1,9 @@
-import React, { FC, useEffect, useState } from 'react'
-import {
-  Box,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-  Stack,
-} from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../../atoms/SampleModal/SampleModal'
-import ImageComponent from '../../../atoms/ImageComponent/ImageComponent'
+import React, { FC, useEffect } from 'react'
+import { Grid, Stack } from '@mui/material'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
-import CCButton from '../../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import {
-  setAttachExAnteTable,
-  setDataAndParameterFixedExAnte,
-} from '../../../redux/Slices/sectionDSlice'
+import { setD1 } from '../../../redux/Slices/sectionDSlice'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import sampleAnteTable from '../../../assets/Images/sample-d1.png'
@@ -26,14 +11,8 @@ import Spinner from '../../../atoms/Spinner'
 
 const SectionD1: FC = () => {
   const dispatch = useAppDispatch()
-  const data_and_parameter_fixed_ExAnte = useAppSelector(
-    ({ sectionD }) => sectionD.data_and_parameter_fixed_ExAnte,
-    shallowEqual
-  )
-  const attach_ex_ante_table = useAppSelector(
-    ({ sectionD }) => sectionD.attach_ex_ante_table,
-    shallowEqual
-  )
+  const D1 = useAppSelector(({ sectionD }) => sectionD.D1, shallowEqual)
+  const { attach_ex_ante_table } = D1
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -54,8 +33,15 @@ const SectionD1: FC = () => {
       const { data_and_parameter_fixed_ExAnte, attach_ex_ante_table } =
         currentProjectDetails.section_d.step1
 
-      dispatch(setDataAndParameterFixedExAnte(data_and_parameter_fixed_ExAnte))
-      dispatch(setAttachExAnteTable(attach_ex_ante_table))
+      dispatch(
+        setD1({
+          name: 'data_and_parameter_fixed_ExAnte',
+          value: data_and_parameter_fixed_ExAnte,
+        })
+      )
+      dispatch(
+        setD1({ name: 'attach_ex_ante_table', value: attach_ex_ante_table })
+      )
     }
   }, [currentProjectDetails])
 
@@ -79,9 +65,10 @@ const SectionD1: FC = () => {
           // aria-label="minimum height"
           label=" Data and parameters fixed ex ante or at renewal of crediting period"
           placeholder="If data for this project is monitored and calculated based on an ex-ante method, please explain."
-          value={data_and_parameter_fixed_ExAnte}
-          onChange={(e) =>
-            dispatch(setDataAndParameterFixedExAnte(e?.target?.value))
+          value={D1.data_and_parameter_fixed_ExAnte}
+          name={'data_and_parameter_fixed_ExAnte'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setD1({ name, value }))
           }
         />
       </Grid>
@@ -101,15 +88,21 @@ const SectionD1: FC = () => {
           mediaTitle={['Check Sample Data']}
           mediaItem={[sampleAnteTable]}
           title="Attach datas & parameters fixed ex-ante table"
-          imageArray={attach_ex_ante_table}
+          imageArray={D1.attach_ex_ante_table}
           onImageUpload={(item: any) => {
-            dispatch(setAttachExAnteTable([item, ...attach_ex_ante_table]))
+            dispatch(
+              setD1({
+                name: 'attach_ex_ante_table',
+                value: [...attach_ex_ante_table, item],
+              })
+            )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setAttachExAnteTable(
-                deleteIndexInArray(attach_ex_ante_table, index)
-              )
+              setD1({
+                name: 'attach_ex_ante_table',
+                value: deleteIndexInArray(attach_ex_ante_table, index),
+              })
             )
           }}
         />

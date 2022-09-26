@@ -124,12 +124,16 @@ const ProjectsUnderRegistration = () => {
                 alignItems="center"
                 justifyContent={'flex-end'}
               >
-                <img src={DataTablesBriefCase} width="35px" height="35px" />
-                <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
-                  {i?.verifier_details_id
-                    ? i?.verifier_details_id?.verifier_name
-                    : '-'}
-                </Typography>
+                {i?.verifier_details_id ? (
+                  <>
+                    <img src={DataTablesBriefCase} width="35px" height="35px" />
+                    <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
+                      {i?.verifier_details_id?.verifier_name}
+                    </Typography>
+                  </>
+                ) : (
+                  '-'
+                )}
               </Stack>,
               <Grid
                 container
@@ -139,7 +143,10 @@ const ProjectsUnderRegistration = () => {
               >
                 <Grid item xs={9} sx={{ pl: 2 }}>
                   {!i?.verifier_details_id && i?.project_status !== 3 && (
-                    <img src={DashboardPencil} />
+                    <img
+                      src={DashboardPencil}
+                      onClick={() => handleProjectDetails(i)}
+                    />
                   )}
                 </Grid>
                 <Grid item xs={3}>
@@ -164,7 +171,7 @@ const ProjectsUnderRegistration = () => {
   return (
     <Box>
       {loading ? (
-        <CCTableSkeleton height={78} />
+        <CCTableSkeleton height={40} />
       ) : (
         <CCTable headings={headings} rows={allProjects} pagination={true} />
       )}
