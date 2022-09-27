@@ -44,6 +44,11 @@ import { setLocalItem } from '../../utils/Storage'
 import { isDataModifiedCheckFunc } from '../../utils/IssuanceDataCollectionModal.utils'
 import { store } from '../../redux/store'
 import CloseIcon from '@mui/icons-material/Close'
+import { resetSectionA } from '../../redux/Slices/sectionASlice'
+import { resetSectionE } from '../../redux/Slices/sectionESlice'
+import { resetSectionD } from '../../redux/Slices/sectionDSlice'
+import { resetSectionB } from '../../redux/Slices/sectionBSlice'
+import { resetSectionC } from '../../redux/Slices/sectionCSlice'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -168,6 +173,17 @@ const IssuanceDataCollection = () => {
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
 
   //console.log('currentProjectDetails:', currentProjectDetails)
+  useEffect(() => {
+    return () => {
+      dispatch(resetSectionA())
+      dispatch(resetSectionB())
+      dispatch(resetSectionC())
+      dispatch(resetSectionD())
+      dispatch(resetSectionE())
+      dispatch(setSubSectionIndex(0))
+    }
+  }, [])
+
   useEffect(() => {
     if (
       currentProjectDetails &&
