@@ -9,18 +9,25 @@ import { Colors } from '../../theme'
 import { capitaliseFirstLetter } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
 import './Projects.css'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { setProfileStatsReload } from '../../redux/Slices/verifierSlice'
+import { useDispatch } from 'react-redux'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
-
+  const dispatch = useDispatch()
   const { type: userType, email, user_id } = getLocalItem('userDetails')
 
   const [stats, setStats] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const projectStatsReload = useAppSelector(
+    ({ verifier }) => verifier.projectStatsReload
+  )
+
   useEffect(() => {
-    getStats()
-  }, [])
+    projectStatsReload && getStats()
+  }, [projectStatsReload])
 
   const getStats = async () => {
     try {
@@ -46,6 +53,7 @@ const ProjectsStats = () => {
     } catch (error) {
       console.log(error)
     } finally {
+      dispatch(setProfileStatsReload(false))
       setLoading(false)
     }
   }

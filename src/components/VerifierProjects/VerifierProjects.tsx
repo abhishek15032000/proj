@@ -17,6 +17,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import {
   setProfileCompletionPercent,
   setProfileUpdated,
+  setProfileStatsReload,
 } from '../../redux/Slices/verifierSlice'
 import ProjectsStats from '../ProjectStats/ProjectsStats'
 
@@ -107,6 +108,7 @@ const VerifierProjects = () => {
     }
 
     verifierCalls.updateVerifier(payload).then((response) => {
+      dispatch(setProfileStatsReload(true))
       loadTableData()
     })
   }
