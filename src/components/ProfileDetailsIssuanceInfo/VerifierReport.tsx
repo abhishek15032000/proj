@@ -225,7 +225,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          alert('successfully confirmed Verifier')
+          alert('Successfully confirmed Verifier')
           getVerifierByProject()
           createProjectContractCall(res?.data?.fileHash)
         }
@@ -272,7 +272,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       </Grid>
       {/* {loading ? <LoaderOverlay /> : null} */}
       <Grid item xs={12}>
-        {loading === true ? (
+        {loading || contractCallLoading ? (
           <Stack
             alignItems="center"
             justifyContent="center"

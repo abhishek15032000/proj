@@ -9,13 +9,19 @@ import IssuanceInfoListItem from './IssuanceInfoListItem'
 
 interface IssuanceInfoListProps {
   data?: Array<any>
+  projectStatus: any
 }
 
 const IssuanceInfoList: FC<IssuanceInfoListProps> = (props) => {
   return (
     <Grid container sx={{ mt: 2 }}>
       {props.data?.map((item, index) => (
-        <IssuanceInfoListItem data={item} key={index} index={index} />
+        <IssuanceInfoListItem
+          data={item}
+          key={index}
+          index={index}
+          projectStatus={props?.projectStatus}
+        />
       ))}
     </Grid>
   )

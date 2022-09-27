@@ -29,9 +29,9 @@ import './issuanceDataCollection.css'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
-  setIsApiCalled,
   setSectionIndex,
   setSubSectionIndex,
+  setShowMandatoryFieldModal,
 } from '../../redux/Slices/issuanceDataCollection'
 import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
@@ -43,7 +43,7 @@ import _ from 'lodash'
 import { setLocalItem } from '../../utils/Storage'
 import { isDataModifiedCheckFunc } from '../../utils/IssuanceDataCollectionModal.utils'
 import { store } from '../../redux/store'
-import { resetSectionA } from '../../redux/Slices/sectionASlice'
+import CloseIcon from '@mui/icons-material/Close'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -134,6 +134,11 @@ const IssuanceDataCollection = () => {
     ({ issuanceDataCollection }) => issuanceDataCollection.subSectionIndex,
     shallowEqual
   )
+  const showMandatoryFieldModal = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.showMandatoryFieldModal,
+    shallowEqual
+  )
 
   const A1 = useAppSelector(({ sectionA }) => sectionA.A1)
   const A2 = useAppSelector(({ sectionA }) => sectionA.A2)
@@ -162,6 +167,7 @@ const IssuanceDataCollection = () => {
   const [sectionIndexState, setSectionIndexState] = useState<number>()
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
 
+  //console.log('currentProjectDetails:', currentProjectDetails)
   useEffect(() => {
     if (
       currentProjectDetails &&
@@ -169,6 +175,9 @@ const IssuanceDataCollection = () => {
       sectionIndex === 5
     )
       setNextBtn(false)
+    else {
+      setNextBtn(true)
+    }
   }, [currentProjectDetails, sectionIndex])
 
   const getSectionName = () => {
@@ -176,7 +185,6 @@ const IssuanceDataCollection = () => {
   }
 
   const handleSave = () => {
-    dispatch(setIsApiCalled(false))
     moveToNextSection(sectionIndex, subSectionIndex)
   }
 
@@ -565,45 +573,102 @@ const IssuanceDataCollection = () => {
             outline: 'none',
           }}
         >
-          <Box>
-            <Typography
-              textAlign="center"
-              sx={{ fontWeight: 500, fontSize: 20 }}
-            >
-              Save Changes?
-            </Typography>
-            <Typography sx={{ fontWeight: 500, fontSize: 14, pt: 3, pb: 5 }}>
-              Your unsaved changes will be lost. Save changes before closing ?
-            </Typography>
-          </Box>
-          <Stack direction="row" justifyContent={'space-between'}>
-            <CCButtonOutlined
-              sx={{
-                minWidth: 0,
-                padding: '6px 17px',
-                borderRadius: 10,
-                mr: 3,
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-              onClick={handleQuitWithoutSave}
-            >
-              Quit without saving
-            </CCButtonOutlined>
-            <CCButton
-              onClick={handleModalSave}
-              sx={{
-                minWidth: 0,
-                padding: '6px 68px',
-                borderRadius: 10,
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              Save
-            </CCButton>
-          </Stack>
+          <>
+            <Box>
+              <Typography
+                textAlign="center"
+                sx={{ fontWeight: 500, fontSize: 20 }}
+              >
+                Save Changes?
+              </Typography>
+              <Typography sx={{ fontWeight: 500, fontSize: 14, pt: 3, pb: 5 }}>
+                Your unsaved changes will be lost. Save changes before closing ?
+              </Typography>
+            </Box>
+            <Stack direction="row" justifyContent={'space-between'}>
+              <CCButtonOutlined
+                sx={{
+                  minWidth: 0,
+                  padding: '6px 17px',
+                  borderRadius: 10,
+                  mr: 3,
+                  fontSize: 14,
+                  fontWeight: 500,
+                }}
+                onClick={handleQuitWithoutSave}
+              >
+                Quit without saving
+              </CCButtonOutlined>
+              <CCButton
+                onClick={handleModalSave}
+                sx={{
+                  minWidth: 0,
+                  padding: '6px 68px',
+                  borderRadius: 10,
+                  fontSize: 14,
+                  fontWeight: 500,
+                }}
+              >
+                Save
+              </CCButton>
+            </Stack>
+          </>
         </Paper>
+      </Modal>
+      {/*Modal 2*/}
+      <Modal
+        open={showMandatoryFieldModal}
+        onClose={() => dispatch(setShowMandatoryFieldModal(false))}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'rgba(56, 142, 129, 0.4)',
+        }}
+      >
+        <>
+          <Box
+            sx={{ position: 'absolute', top: 50, right: 50 }}
+            onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+          >
+            <CloseIcon
+              sx={{ color: '#FFFFFF', fontSize: 30, cursor: 'pointer' }}
+            />
+          </Box>
+          <Paper
+            sx={{
+              px: 9,
+              py: 5,
+              display: 'flex',
+              flexDirection: 'row',
+              borderRadius: 3,
+              outline: 'none',
+            }}
+          >
+            <Stack direction={'column'} alignItems="center">
+              <Typography
+                textAlign="center"
+                sx={{ fontWeight: 500, fontSize: 19 }}
+              >
+                Please Enter All the Mandatory Fields
+              </Typography>
+              <CCButton
+                onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+                sx={{
+                  mt: 3,
+                  minWidth: 0,
+                  padding: '10px 26px',
+                  fontSize: 19,
+                  fontWeight: 500,
+                }}
+              >
+                Ok
+              </CCButton>
+            </Stack>
+          </Paper>
+        </>
       </Modal>
     </>
   )

@@ -37,7 +37,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
   const location: any = useLocation()
 
-
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
@@ -46,13 +45,14 @@ const ProfileDetailsIssuanceInfo: FC = () => {
 
   const [tabIndex, setTabIndex] = useState(0)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
-
+  const [projectStatus, setProjectStatus] = useState<number>()
   useEffect(() => {
-    if ( location?.state?.status !== 0 ) {
+    if (location?.state?.status !== 0) {
       setTabIndex(1)
     }
 
     if (currentProjectDetails) {
+      setProjectStatus(currentProjectDetails?.project_status)
       const issuanceInfoTabData = [
         {
           title: 'Project Introduction',
@@ -67,7 +67,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               : 'In Progress',
           completionPercent:
             currentProjectDetails?.section_a?.completionPercentage,
-          projectStatus: currentProjectDetails?.project_status,
         },
         {
           title: 'Sec B: Implementation of the project activity',
@@ -110,7 +109,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       setIssuanceInfo(issuanceInfoTabData)
     }
   }, [currentProjectDetails])
-
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -201,7 +199,10 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Box>
 
         {tabIndex === 0 && (
-          <IssuanceInfoList data={issuanceInfo && issuanceInfo} />
+          <IssuanceInfoList
+            data={issuanceInfo && issuanceInfo}
+            projectStatus={projectStatus}
+          />
         )}
         {tabIndex === 1 && (
           <VerifierReport

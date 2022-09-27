@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import NoData from '../../atoms/NoData/NoData'
+import ReferenceIdTd from '../Projects/ReferenceIdTd'
 
 interface ListOfProjectsProps {
   data?: any
@@ -74,7 +75,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         item.project_status === 6
       ) {
         newData.push([
-          item.project_id._id,
+          <ReferenceIdTd key={index} referenceId={item?.project_id?.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           <Box
             key={index}
@@ -157,7 +158,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
-          item.project_id._id,
+          <ReferenceIdTd key={index} referenceId={item?.project_id?.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           <Box
             key={index}
@@ -204,6 +205,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             '-'
           ),
           <ChevronRightIcon
+            sx={{ cursor: 'pointer' }}
             key={index}
             onClick={() =>
               navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
@@ -216,13 +218,13 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
     })
 
     if (newData.length !== 0) {
-      setRowsNew(newData)
+      setRowsNew(newData.slice(0, 6))
     } else {
       setRowsNew([{}])
     }
 
     if (registeredData.length !== 0) {
-      setRowsRegistered(registeredData)
+      setRowsRegistered(registeredData.slice(0, 6))
     } else {
       setRowsRegistered([{}])
     }
