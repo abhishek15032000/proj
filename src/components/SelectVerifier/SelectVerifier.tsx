@@ -492,7 +492,7 @@ const SelectVerifier = () => {
                   navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
                 }}
               >
-                Close
+                Ok
               </CCButton>
             </Box>
           ) : (

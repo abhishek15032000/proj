@@ -49,7 +49,7 @@ const ProfileCompletion = () => {
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={profileCompletion}
+        value={profileCompletion || 0}
       />
 
       <Typography

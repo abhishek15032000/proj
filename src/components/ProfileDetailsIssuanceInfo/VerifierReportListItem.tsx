@@ -11,6 +11,9 @@ import { limitTitle } from '../../utils/commonFunctions'
 import moment from 'moment'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import VerifierDetails from './VerifierDetails'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { Colors } from '../../theme'
+import MessageModal from '../../atoms/MessageModal/MessageModal'
 
 interface VerifierReportListItemListItemProps {
   data: any
@@ -20,6 +23,8 @@ interface VerifierReportListItemListItemProps {
 const VerifierReportListItemListItem: FC<
   VerifierReportListItemListItemProps
 > = (props) => {
+  const accountAddress = useAppSelector((state) => state.wallet.accountAddress)
+
   const [showModal, setShowModal] = useState(false)
   const [showVerifierDetails, setShowVerifierDetails] = useState<boolean>(false)
 
@@ -28,7 +33,7 @@ const VerifierReportListItemListItem: FC<
     const result: any = moment(date).format('DD')
     const currentDay: any = moment().format('DD')
     //const currentDay: any = moment().subtract(result, 'days')
-    return 8 - (currentDay - result)
+    return 7 - (currentDay - result)
   }
 
   return (
@@ -129,7 +134,7 @@ const VerifierReportListItemListItem: FC<
                     fontWeight: 500,
                   }}
                 >
-                  {`${daysLeft(props?.data?.createdAt)} days left`}
+                  {`${daysLeft(props?.data?.createdAt)} Day(s) Left`}
                 </Typography>
               ) : (
                 props?.data?.project_status === 2 && (
@@ -155,68 +160,27 @@ const VerifierReportListItemListItem: FC<
         </Grid>
       </Box>
       {/* modal when user clicks on finalise verifier */}
-      <Modal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'rgba(56, 142, 129, 0.4)',
+      <MessageModal
+        message={
+          <Typography sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}>
+            Next step involves making calls with Blockchain. Do you want to
+            continue with{' '}
+            <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+              {accountAddress}
+            </span>{' '}
+            wallet address?
+          </Typography>
+        }
+        btn1Text="Continue"
+        btn1OnClick={() => {
+          setShowModal(false)
+          props?.updateVerifierAPI(props?.data)
         }}
-      >
-        <Paper
-          sx={{
-            px: 10,
-            py: 6,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 3,
-          }}
-        >
-          <Box>
-            <Typography
-              textAlign="center"
-              sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}
-            >
-              Finalize selected Verifier?
-            </Typography>
-            <Box>
-              <Stack
-                sx={{ mt: 5 }}
-                direction="row"
-                justifyContent={'space-between'}
-              >
-                <CCButtonOutlined
-                  sx={{
-                    minWidth: 0,
-                    padding: '6px 34px',
-                    borderRadius: 10,
-                    mr: 3,
-                  }}
-                  onClick={() => {
-                    setShowModal(false)
-                  }}
-                >
-                  Cancel
-                </CCButtonOutlined>
-                <CCButton
-                  sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
-                  onClick={() => {
-                    setShowModal(false)
-                    props?.updateVerifierAPI(props?.data)
-                  }}
-                >
-                  Yes
-                </CCButton>
-              </Stack>
-            </Box>
-          </Box>
-        </Paper>
-      </Modal>
+        btn2OnClick={() => setShowModal(false)}
+        btn2Text="Cancel"
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
     </>
   )
 }
