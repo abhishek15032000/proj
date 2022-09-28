@@ -44,9 +44,10 @@ const sectionB = createSlice({
       const { name, value } = action.payload
       state.B2[name] = value
     },
+    resetSectionB: () => initialState,
   },
 })
 
-export const { setB1, setB2 } = sectionB.actions
+export const { setB1, setB2, resetSectionB } = sectionB.actions
 
 export default sectionB.reducer
