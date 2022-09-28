@@ -65,9 +65,6 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       registeredData: any = []
 
     props.data.map((item: any, index: any) => {
-      console.log('item.project_status')
-      console.log(JSON.stringify(item.project_status, null, 4))
-
       if (
         item.project_status === 1 ||
         item.project_status === 2 ||
@@ -271,28 +268,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
 
       {!props.loading &&
-        tabIndex === 1 &&
-        Object.keys(rowsNew[0]).length > 0 && (
+        ((tabIndex === 2 && Object.keys(rowsRegistered[0]).length > 0) ||
+          (tabIndex === 1 && Object.keys(rowsNew[0]).length > 0)) && (
           <CCTable
-            headings={headingsNew}
-            rows={rowsNew}
+            headings={tabIndex === 1 ? headingsNew : headingsRegistered}
+            rows={tabIndex === 1 ? rowsNew : rowsRegistered}
             sx={{ minWidth: 100 }}
             maxWidth={'100%'}
             tableSx={{ minWidth: 100 }}
-            loading={true}
-          />
-        )}
-
-      {!props.loading &&
-        tabIndex === 2 &&
-        Object.keys(rowsRegistered[0]).length > 0 && (
-          <CCTable
-            headings={headingsRegistered}
-            rows={rowsRegistered}
-            sx={{ minWidth: 100 }}
-            maxWidth={'100%'}
-            tableSx={{ minWidth: 100 }}
-            loading={true}
           />
         )}
 
