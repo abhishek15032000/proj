@@ -25,14 +25,16 @@ import CryptoJS from 'crypto-js'
 import { department } from '../../api/department.api'
 import { USER } from '../../api/user.api'
 import { setLocalItem } from '../../utils/Storage'
+import isEmail from 'validator/lib/isEmail'
+import isMobilePhone from 'validator/lib/isMobilePhone'
 import LoaderOverlay from '../../components/LoderOverlay'
 
 const RegisterPage = (props: RegisterPageProps) => {
-  const [number, setNumber] = useState<number>()
+  const [number, setNumber] = useState<string>('')
   const [password, setPassword] = useState<any>()
   const [firstName, setFirstName] = useState<string>('')
   const [lastName, setLastName] = useState<string>('')
-  const [email, setEmail] = useState()
+  const [email, setEmail] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
   const [captchaInput, setCaptchInput] = useState<string>('')
   const [showPassword, setShowPassword] = useState(false)
@@ -185,6 +187,7 @@ const RegisterPage = (props: RegisterPageProps) => {
               name="email"
               //onChange={handleChange}
               onChange={(e) => setEmail(e.target.value)}
+              error={!isEmail(email)}
               defaultValue={values?.email}
               sx={{ background: '#F5F5F5' }}
             />
@@ -217,11 +220,17 @@ const RegisterPage = (props: RegisterPageProps) => {
               <Grid item xs={12} md={9}>
                 <CCInputField
                   label="Phone Number"
+                  type="tel"
                   variant="outlined"
                   //onChange={handleChange}
-                  onChange={(e) => setNumber(e.target.value)}
-                  defaultValue={values?.phoneNumber}
+                  onChange={(e) => {
+                    // if (Number(e.target.value.replace(/[^0-9]/g, '')) < 0) {
+                    setNumber(e.target.value.toString())
+                    // }
+                  }}
+                  defaultValue={number}
                   sx={{ background: '#F5F5F5' }}
+                  error={!isMobilePhone(number, 'en-IN')}
                 />
               </Grid>
             </Grid>
