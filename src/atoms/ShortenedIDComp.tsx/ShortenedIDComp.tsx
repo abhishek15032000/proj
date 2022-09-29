@@ -3,11 +3,12 @@ import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { limitTitleFromMiddle } from '../../utils/commonFunctions'
 
-interface referenceIdTdProps {
+interface ShortenedIDCompProps {
   referenceId: string
+  width?: string
 }
 
-const ReferenceIdTd = ({ referenceId }: referenceIdTdProps) => {
+const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
   const [show, setShow] = useState<boolean>(false)
 
   return (
@@ -24,7 +25,7 @@ const ReferenceIdTd = ({ referenceId }: referenceIdTdProps) => {
       {show && (
         <Paper
           sx={{
-            width: '350px',
+            width: width ? width : '350px',
             ml: 3,
             p: 1,
             position: 'absolute',
@@ -40,4 +41,4 @@ const ReferenceIdTd = ({ referenceId }: referenceIdTdProps) => {
   )
 }
 
-export default ReferenceIdTd
+export default ShortenedIDComp

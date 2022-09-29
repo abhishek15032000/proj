@@ -33,7 +33,7 @@ import {
   setSectionIndex,
   setSubSectionIndex,
 } from '../../redux/Slices/MonthlyReportUpdate'
-import ReferenceIdTd from './ReferenceIdTd'
+import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 
 const headingsNew = [
   'Reference ID',
@@ -105,7 +105,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         item.project_status === 2
       ) {
         newData.push([
-          <ReferenceIdTd key={index} referenceId={item.uuid} />,
+          <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,
@@ -163,7 +163,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
-          <ReferenceIdTd key={index} referenceId={item.uuid} />,
+          <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,

@@ -156,11 +156,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
 
         <Grid item xs={12}>
           <TransactionHistory />
-          {/* <EmptyComponent
-            photoType={3}
-            title="No transaction history!"
-            exploreMarketplace
-          /> */}
         </Grid>
       </Grid>
     </Box>
