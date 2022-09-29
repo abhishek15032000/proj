@@ -14,7 +14,7 @@ import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { DatePicker } from '@mui/x-date-pickers'
 import CCInputField from '../../atoms/CCInputField'
-import PDFViewer from './PDFViewer'
+import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
 import moment from 'moment'
 import {
   deleteIndexInArray,

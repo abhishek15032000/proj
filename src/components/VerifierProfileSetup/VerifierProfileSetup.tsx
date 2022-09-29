@@ -16,6 +16,9 @@ import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { getLocalItem } from '../../utils/Storage'
 import Spinner from '../../atoms/Spinner'
+import isAlpha from 'validator/lib/isAlpha'
+import isMobilePhone from 'validator/lib/isMobilePhone'
+import isURL from 'validator/lib/isURL'
 
 const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
   const navigate = useNavigate()
@@ -63,6 +66,15 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       alert('Fill all the Fields!')
       return
     }
+
+    if ( 
+      !isMobilePhone(phone.toString()) ||
+      !isURL(website)
+    ) {
+      alert('Correct the errors!')
+      return 
+    }
+
     setLoading(true)
 
     const payload = {
@@ -164,6 +176,15 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required={false}
+                inputProps={{
+                  maxLength: 10,
+                }}
+                error={phone !== '' && !isMobilePhone(phone.toString(), 'en-IN')}
+                helperText={
+                  phone !== '' &&
+                  !isMobilePhone(phone.toString(), 'en-IN') &&
+                  'Enter valid Mobile Number'
+                }
               />
 
               <CCInputField
@@ -188,6 +209,12 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 sx={{ mb: 1.5 }}
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
+                error={website !== '' && !isURL(website)}
+                helperText={
+                  website !== '' &&
+                  !isURL(website) &&
+                  'Enter valid URL'
+                }
               />
 
               <Box

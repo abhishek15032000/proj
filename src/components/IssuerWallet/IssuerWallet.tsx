@@ -1,17 +1,15 @@
 // React Imports
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { IssuerWalletProps } from './IssuerWallet.interface'
 import { Colors } from '../../theme'
-// import DashboardStatistics from '../VerifierProjects/DashboardStatistics'
 import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
 import TransactionHistory from './TransactionHistory'
-import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
@@ -43,6 +41,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     ({ wallet }) => wallet.accountBalance,
     shallowEqual
   )
+
   const [dashboardStatistics, setDashboardStatistics] = useState<null | any>(
     null
   )
@@ -100,12 +99,11 @@ const IssuerWallet = (props: IssuerWalletProps) => {
 
         <Grid item xs={12}>
           <TransactionHistory />
-          <EmptyComponent
+          {/* <EmptyComponent
             photoType={3}
             title="No transaction history!"
-            // listNewProject
             exploreMarketplace
-          />
+          /> */}
         </Grid>
       </Grid>
     </Box>
