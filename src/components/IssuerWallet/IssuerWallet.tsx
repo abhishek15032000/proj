@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Paper, Typography } from '@mui/material'
@@ -12,25 +12,77 @@ import { Colors } from '../../theme'
 import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
 import TransactionHistory from './TransactionHistory'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import BlockchainCalls from '../../blockchain/Blockchain'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import { WalletStats } from '../../config/constants.config'
+
+const stats = [
+  {
+    title: WalletStats.WALLET_BALANCE,
+    value: 'MATIC 0',
+  },
+  {
+    title: WalletStats.VCO_ON_SALE,
+    value: '0',
+    color: Colors.lightPinkBackground,
+  },
+  {
+    title: WalletStats.VCO_AVAILABLE_FOR_SALE,
+    value: '0',
+    color: Colors.lightGreenBackground3,
+  },
+]
 
 const IssuerWallet = (props: IssuerWalletProps) => {
-  const [dashboardStatistics, setDashboardStatistics] = useState([
-    {
-      title: 'Wallet Balance',
-      value: 'INR 0.00',
-      color: Colors.lightPinkBackground,
-    },
-    {
-      title: 'Number of tokens available for sale',
-      value: '10',
-      color: Colors.lightGreenBackground3,
-    },
-    {
-      title: 'Total number of tokens on sale',
-      value: '05',
-      color: Colors.lightGreenBackground4,
-    },
-  ])
+  const accountAddress = useAppSelector(
+    ({ wallet }) => wallet.accountAddress,
+    shallowEqual
+  )
+  const accountBalance = useAppSelector(
+    ({ wallet }) => wallet.accountBalance,
+    shallowEqual
+  )
+  const [dashboardStatistics, setDashboardStatistics] = useState<null | any>(
+    null
+  )
+  const [vcoOnSale, setVCOOnSale] = useState(0)
+
+  useEffect(() => {
+    setDashboardStatistics(stats)
+    tokenContractCalls()
+  }, [])
+
+  useEffect(() => {
+    if (dashboardStatistics && vcoOnSale) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[1].value = vcoOnSale
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [vcoOnSale])
+  useEffect(() => {
+    if (dashboardStatistics && accountBalance) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[0].value =
+        'MATIC ' + Math.round(Number(accountBalance) * 1000) / 1000
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [accountBalance])
+
+  const tokenContractCalls = async () => {
+    try {
+      const tokenContractFunctions = await BlockchainCalls.token_caller()
+      await tokenContractFunctions.estimateGas.balanceOf(accountAddress)
+      const createProjectRes = await tokenContractFunctions.balanceOf(
+        accountAddress
+      )
+      const bal = Number(createProjectRes.toString()) * 10 ** -18
+      console.log(createProjectRes, bal)
+      setVCOOnSale(bal)
+    } catch (error) {
+      console.log('Error : ', error)
+    }
+  }
 
   return (
     <Box sx={{ p: 0 }}>
@@ -47,7 +99,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
         <DashboardStatistics data={dashboardStatistics} />
 
         <Grid item xs={12}>
-          {/* <TransactionHistory /> */}
+          <TransactionHistory />
           <EmptyComponent
             photoType={3}
             title="No transaction history!"

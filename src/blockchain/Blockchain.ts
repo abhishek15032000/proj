@@ -3,6 +3,7 @@ import {
   SHINE_CONTRACTS_ABI,
   SHINE_CONTRACT_ADDRESS,
 } from '../config/blockchain.config'
+import { TOKEN_ABI, TOKEN_CONTRACT_ADDRESS } from '../config/token.config'
 
 declare let window: any
 
@@ -75,7 +76,22 @@ const BlockchainCalls = {
     )
     return shine_Contract
   },
+  token_caller: async (address?: string) => {
+    const ethereum = (window as any).ethereum
+    const accounts = await ethereum.request({
+      method: 'eth_requestAccounts',
+    })
 
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const walletAddress = accounts[0] // first account in MetaMask
+    const signer = provider.getSigner(walletAddress)
+    const tokenContract = new ethers.Contract(
+      TOKEN_CONTRACT_ADDRESS,
+      TOKEN_ABI,
+      signer
+    )
+    return tokenContract
+  },
   requestMethodCalls: async (method: string, params: any) => {
     try {
       const res = await window.ethereum.request({ method, params })
@@ -84,7 +100,7 @@ const BlockchainCalls = {
       console.log('Error in Blockchain.ts - requestMethodCalls :', e)
     }
   },
-  toHexConvert: (number: any) => ethers.utils.hexlify(number)
+  toHexConvert: (number: any) => ethers.utils.hexlify(number),
 }
 
 export default BlockchainCalls

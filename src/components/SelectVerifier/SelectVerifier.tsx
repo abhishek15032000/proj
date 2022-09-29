@@ -18,7 +18,7 @@ import {
 import CCButton from '../../atoms/CCButton/CCButton'
 import { KeyboardArrowLeft } from '@mui/icons-material'
 import { department } from '../../api/department.api'
-import { ROLES } from '../../config/roles.config'
+import { ROLES } from '../../config/constants.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'

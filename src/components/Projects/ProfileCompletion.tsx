@@ -12,12 +12,20 @@ import { Colors } from '../../theme'
 
 const ProfileCompletion = () => {
   const [profileCompletion, setProfileCompletion] = useState<number>()
-  const { wallet_added = false } = getLocalItem('userDetails2')
+  const [walletAdded, setWalletAdded] = useState(false)
 
   useEffect(() => {
-    const completionPercent = wallet_added ? 100 : 0
-    setProfileCompletion(completionPercent)
+    const userDetails2 = getLocalItem('userDetails2')
+    if (userDetails2) {
+      const { wallet_added = false } = userDetails2
+      setWalletAdded(wallet_added)
+    }
   }, [])
+
+  useEffect(() => {
+    const completionPercent = walletAdded ? 100 : 0
+    setProfileCompletion(completionPercent)
+  }, [walletAdded])
 
   return (
     <Box
@@ -93,10 +101,10 @@ const ProfileCompletion = () => {
             height: '40px',
             width: '40px',
             borderRadius: '20px',
-            backgroundColor: wallet_added ? Colors.white : Colors.lightPrimary1,
+            backgroundColor: walletAdded ? Colors.white : Colors.lightPrimary1,
           }}
         >
-          {wallet_added ? (
+          {walletAdded ? (
             <CheckIcon style={{ color: Colors.lightPrimary1 }} />
           ) : (
             <ArrowRightAltIcon style={{ color: '#FFF' }} />
