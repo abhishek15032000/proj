@@ -65,4 +65,11 @@ export const URL_PATH = {
   fileupload: {
     getFile: ENDPOINTS.carbonServiceURL + '/fileupload/getFile',
   },
+  transaction: {
+    getTransactionByUser:
+      ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
+  },
+  issuer: {
+    getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
+  },
 }

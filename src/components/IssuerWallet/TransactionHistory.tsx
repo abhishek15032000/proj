@@ -1,14 +1,25 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Grid, Box, Typography, Paper, Select, MenuItem } from '@mui/material'
+import {
+  Grid,
+  Box,
+  Typography,
+  Paper,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+} from '@mui/material'
 import { Colors } from '../../theme'
 import CCTable from '../../atoms/CCTable'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import { DatePicker } from '@mui/x-date-pickers'
 import CCInputField from '../../atoms/CCInputField'
 import TextButton from '../../atoms/TextButton/TextButton'
+import { transactionCalls } from '../../api/transactionCalls.api'
 
 // Local Imports
 
@@ -18,6 +29,36 @@ const TransactionHistory: FC<TransactionHistoryProps> = (props) => {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [dropdown, setDropdown] = useState('All')
+  const [transactionLoading, setTransactionLoading] = useState(false)
+  const [transactions, setTransactions] = useState<any>(null)
+  const [tableData, setTableData] = useState<any>(null)
+
+  console.log('transactions', transactions)
+
+  useEffect(() => {
+    getTransactions()
+  }, [])
+  // useEffect(() => {
+  //   if (accountAddress) {
+  //     getTransactions()
+  //   }
+  // }, [accountAddress])
+
+  const getTransactions = async () => {
+    try {
+      setTransactionLoading(true)
+      const res: any = await transactionCalls.getTransactionByUser(
+        '0x5885A90Aa805548FcF1B1C2B164DB68fFf3db6Fd'
+      )
+      if (res?.success) {
+        setTransactions(res?.data)
+      }
+    } catch (error) {
+      console.log('Error : ', error)
+    } finally {
+      setTransactionLoading(false)
+    }
+  }
 
   return (
     <Paper
@@ -36,17 +77,36 @@ const TransactionHistory: FC<TransactionHistoryProps> = (props) => {
       </Typography>
 
       <Box sx={{ display: 'flex', alignItems: 'center', pt: 2, pb: 2 }}>
-        <Select
-          sx={{ width: '180px', mr: 4 }}
-          value={dropdown}
-          label="Buy/Sell"
-          onChange={(e) => setDropdown(e.target.value)}
-        >
-          <MenuItem value={'All'}>All</MenuItem>
-          <MenuItem value={'Buy'}>Buy</MenuItem>
-          <MenuItem value={'Sell'}>Sell</MenuItem>
-        </Select>
-
+        <FormControl>
+          <InputLabel
+            sx={{
+              color: '#006B5E',
+            }}
+          >
+            Project Type
+          </InputLabel>
+          <Select
+            sx={{
+              width: '180px',
+              mr: 4,
+              color: '#006B5E',
+            }}
+            value={dropdown}
+            onChange={(e) => setDropdown(e.target.value)}
+            input={
+              <OutlinedInput
+                sx={{
+                  color: '#006B5E',
+                }}
+                label="Project Type"
+              />
+            }
+          >
+            <MenuItem value={'All'}>All</MenuItem>
+            <MenuItem value={'Buy'}>Buy</MenuItem>
+            <MenuItem value={'Sell'}>Sell</MenuItem>
+          </Select>
+        </FormControl>
         <Box sx={{ width: '180px', mr: 4 }}>
           <DatePicker
             label="Start Date"
