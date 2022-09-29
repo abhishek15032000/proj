@@ -16,6 +16,9 @@ import { useIdleTimer } from 'react-idle-timer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from './routes/pathNames'
 
+declare let window: any
+const { ethereum } = window
+
 const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
 
 type AppProps = {
@@ -77,7 +80,7 @@ const App: FC<AppProps> = () => {
     onIdle,
     onActive,
     onAction,
-    timeout: 1000 * 60 * 15,
+    timeout: 1000 * 60 * 60,
     promptTimeout: 0,
     events: [
       'mousemove',
@@ -109,6 +112,18 @@ const App: FC<AppProps> = () => {
 
   const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
+
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on('chainChanged', () => {
+        //logic for modal accordingly
+        window.location.reload()
+      })
+      window.ethereum.on('accountsChanged', () => {
+        window.location.reload()
+      })
+    }
+  })
 
   useEffect(() => {
     //const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
