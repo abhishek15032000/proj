@@ -75,7 +75,6 @@ const SeeAllProjects = () => {
             title="Projects"
             onClick={() => {
               navigate(-1)
-              console.log('Code Reachable')
             }}
           />
 
