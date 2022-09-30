@@ -15,11 +15,14 @@ import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { Colors } from '../../theme'
 import moment from 'moment'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import NoData from '../../atoms/NoData/NoData'
+import { fileUploadCalls } from '../../api/fileUpload.api'
+import { getLocalItem } from '../../utils/Storage'
+import { downloadFile } from '../../utils/commonFunctions'
 
 const headings = [
   'Submitted On',
@@ -35,6 +38,8 @@ const headings = [
 interface ReportsTableProps {
   data?: any
   loading?: any
+  pdfCall?: any
+  attachDownload?: any
 }
 
 const ReportsTable: FC<ReportsTableProps> = (props) => {
@@ -51,7 +56,7 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
         moment(item.createdAt).format('DD/MM/YYYY'),
         moment(item.next_date).format('DD/MM/YYYY'),
         <Box
-          key={'1'}
+          key={index}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -62,24 +67,24 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
             sx={{
               fontSize: 14,
               fontWeight: 500,
-              ml: 1,
+              mr: 1,
               textAlign: 'left',
             }}
           >
-            -
+            Report
           </Typography>
-          <ArticleIcon
-            style={{ color: Colors.lightPrimary1, marginRight: 2 }}
+          <DownloadIcon
+            onClick={() => downloadFile(item.file_attach?.[0])}
+            style={{ color: Colors.lightPrimary1 }}
           />
-          <DownloadIcon style={{ color: Colors.lightPrimary1 }} />
         </Box>,
-        '-',
+        'V1.0',
         <ApprovalChip
-          key={'1'}
+          key={index}
           variant={item.status === 0 ? 'Pending' : 'Verified'}
         />,
         <Box
-          key={'1'}
+          key={index}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -90,18 +95,21 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
             sx={{
               fontSize: 14,
               fontWeight: 500,
-              ml: 1,
+              mr: 1,
               textAlign: 'left',
             }}
           >
-            -
+            Conclusive Report
           </Typography>
-          <ArticleIcon style={{ color: Colors.lightPrimary1 }} />
+          <ArticleIcon
+            onClick={() => props.pdfCall(item)}
+            style={{ color: Colors.lightPrimary1 }}
+          />
         </Box>,
         item.quantity,
         item.status === 0 ? (
           <TextButton
-            key={'1'}
+            key={index}
             sx={{ width: '90px' }}
             title="Verify"
             onClick={() =>

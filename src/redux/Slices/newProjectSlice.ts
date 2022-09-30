@@ -52,6 +52,7 @@ const newProject = createSlice({
     setLoading: (state, action: PayloadAction<any>) => {
       state.loading = action.payload
     },
+    resetSectionNewProjectDetails: () => initialState,
   },
 })
 
@@ -64,6 +65,7 @@ export const {
   setProjectArea,
   setNewProjectUUID,
   setLoading,
+  resetSectionNewProjectDetails,
 } = newProject.actions
 
 export default newProject.reducer

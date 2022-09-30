@@ -91,4 +91,12 @@ export const dataCollectionCalls = {
       return res.data
     })
   },
+  //stats in token and contract
+  getStats: () => {
+    return AxiosHelper(URL_PATH.project.getTokenAndContractStats, 'GET').then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }

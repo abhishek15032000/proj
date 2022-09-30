@@ -18,6 +18,7 @@ import LoaderOverlay from '../LoderOverlay'
 import { getLocalItem } from '../../utils/Storage'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import { shallowEqual } from 'react-redux'
+import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 
 const Projects = () => {
   const navigate = useNavigate()
@@ -43,7 +44,10 @@ const Projects = () => {
     }, 200)
   }, [showDashboard])
 
+  //useEffect(()=>{return resetSectionNewProjectDetails},[])
   const listNewProject = () => {
+    dispatch(resetSectionNewProjectDetails())
+    dispatch(setCurrentProjectDetails(null))
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)

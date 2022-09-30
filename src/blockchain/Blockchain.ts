@@ -84,7 +84,24 @@ const BlockchainCalls = {
       console.log('Error in Blockchain.ts - requestMethodCalls :', e)
     }
   },
-  toHexConvert: (number: any) => ethers.utils.hexlify(number)
+  toHexConvert: (number: any) => ethers.utils.hexlify(number),
+  getConnectionStatusAndAddress: async () => {
+    const accounts = await ethereum.request({ method: 'eth_accounts' })
+
+    let payload = {
+      address: '',
+      connected: false,
+    }
+
+    if (accounts.length) {
+      payload = {
+        address: accounts[0],
+        connected: true,
+      }
+    }
+
+    return payload
+  },
 }
 
 export default BlockchainCalls
