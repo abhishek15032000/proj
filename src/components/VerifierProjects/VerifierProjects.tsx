@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
   setProfileCompletionPercent,
   setProfileUpdated,
+  setVerifierStatsReload,
 } from '../../redux/Slices/verifierSlice'
 import ProjectsStats from '../ProjectStats/ProjectsStats'
 import BlockchainCalls from '../../blockchain/Blockchain'
@@ -53,6 +54,9 @@ const VerifierProjects = () => {
       })
       .catch((e) => {
         setLoadingTable(false)
+      })
+      .finally(() => {
+        dispatch(setVerifierStatsReload(true))
       })
   }
 
@@ -114,6 +118,8 @@ const VerifierProjects = () => {
     }
 
     verifierCalls.updateVerifier(payload).then((response) => {
+      //setVerifierStatsReload action making false to make the project stats to run again when it is becoming true in loadTableData() so that when verifier make the action in verifier dahsboard the stats will be updated
+      dispatch(setVerifierStatsReload(false))
       loadTableData()
     })
   }
