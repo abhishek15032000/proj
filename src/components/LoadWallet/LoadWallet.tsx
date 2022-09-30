@@ -67,7 +67,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   useEffect(() => {
     onManualConnectClick()
       .then((res) => {
-        console.log(res)
+        // console.log(res)
       })
       .catch((e: any) => {
         setError(e)
@@ -145,7 +145,6 @@ const LoadWallet = (props: LoadWalletProps) => {
       })
     } catch (error: any) {
       dispatch(setConnected(false))
-      console.log('Code Reachable')
       setError(error.toString())
     }
   }
@@ -159,7 +158,6 @@ const LoadWallet = (props: LoadWalletProps) => {
       })
     } catch (error) {
       dispatch(setConnected(false))
-      console.log('Code Reachable')
     }
   }
 

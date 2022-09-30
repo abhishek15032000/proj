@@ -9,18 +9,25 @@ import { Colors } from '../../theme'
 import { capitaliseFirstLetter } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
 import './Projects.css'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { useLocation } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
+  const location = useLocation()
 
   const { type: userType, email, user_id } = getLocalItem('userDetails')
-
   const [stats, setStats] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const verifierStatsReload = useAppSelector(
+    ({ verifier }) => verifier.verifierStatsReload
+  )
+
   useEffect(() => {
-    getStats()
-  }, [])
+    verifierStatsReload && getStats()
+  }, [verifierStatsReload])
 
   const getStats = async () => {
     try {
@@ -28,6 +35,10 @@ const ProjectsStats = () => {
       let res
       if (userType === ROLES.VERIFIER) {
         res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
+      }
+      //using this for token and contract stats
+      else if (location.pathname === pathNames.TOKEN_CONTRACT) {
+        res = await dataCollectionCalls.getStats()
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
       }

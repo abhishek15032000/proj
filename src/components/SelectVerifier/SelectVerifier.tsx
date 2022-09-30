@@ -1,13 +1,11 @@
+// React Imports
 import React, { useEffect, useState } from 'react'
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import LanguageIcon from '@mui/icons-material/Language'
-import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
-import MailOutlineIcon from '@mui/icons-material/MailOutline'
-import { Box } from '@mui/system'
+
+// MUI Imports
 import {
   Checkbox,
   Grid,
+  Box,
   Stack,
   Typography,
   Modal,
@@ -15,20 +13,30 @@ import {
   Divider,
   Skeleton,
 } from '@mui/material'
-import CCButton from '../../atoms/CCButton/CCButton'
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
+import LanguageIcon from '@mui/icons-material/Language'
+import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
+import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import { KeyboardArrowLeft } from '@mui/icons-material'
+
+// Functional Imports
+import { useLocation, useNavigate } from 'react-router-dom'
+import { shallowEqual } from 'react-redux'
+
+// Local Imports
+import CCButton from '../../atoms/CCButton/CCButton'
 import { department } from '../../api/department.api'
 import { ROLES } from '../../config/constants.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
-import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
+import SelectVerifierSkeleton from './SelectVerifierSkeleton'
 
 const SelectVerifier = () => {
   const navigate = useNavigate()
@@ -87,33 +95,29 @@ const SelectVerifier = () => {
   const createVerifier = async () => {
     setLoading(true)
     setOpen(false)
-    const payload = selectedVerifiers.map((verifierDetials: any) => {
-      if (
-        currentProjectDetails &&
-        selectedVerifiers &&
-        selectedVerifiers?.length
-      ) {
-        return {
-          project_id: currentProjectDetails?._id,
-          project_status: 1,
-          verifier_id: verifierDetials?._id,
-          verifier_name: verifierDetials?.fullName,
-          verifier_address: verifierDetials?.address,
-          verifier_number: verifierDetials?.phone.toString(),
-        }
+    const payload: any = selectedVerifiers.map((verifierDetials: any) => {
+      return {
+        project_id: currentProjectDetails?._id,
+        project_status: 1,
+        verifier_id: verifierDetials?._id,
+        verifier_name: verifierDetials?.fullName,
+        verifier_address: verifierDetials?.address,
+        verifier_number: verifierDetials?.phone.toString(),
       }
     })
+
     try {
       const res = await verifierCalls.createVerifier(payload)
       if (res?.data?.success) {
         setModalData(true)
         setOpen(true)
         getProjectDetails(currentProjectDetailsUUID)
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
       }
     } catch (err) {
       console.log(err)
     } finally {
-      setLoading(false)
+      setLoading(false)    
     }
   }
 
@@ -146,153 +150,14 @@ const SelectVerifier = () => {
   }
 
   const renderSkeleton = () => {
-    const temp = new Array(6).fill(1)
     return (
       <Grid container spacing={3} sx={{ mt: 3 }}>
-        {temp.map((i, index) => (
-          <Grid item key={index} xs={12} lg={6}>
-            <Paper elevation={4} sx={{ py: 3 }}>
-              <Stack
-                direction="row"
-                justifyContent={'space-between'}
-                alignItems="center"
-              >
-                <Box sx={{ pl: 2, width: '70%' }}>
-                  <Stack direction={'row'} alignItems="center" sx={{ pb: 1 }}>
-                    <Skeleton
-                      variant="rectangular"
-                      width={20}
-                      height={20}
-                      sx={{ mr: 1, borderRadius: 1 }}
-                    />
-                    <Skeleton
-                      width="90%"
-                      sx={{
-                        //fontSize: '1rem',
-                        bgcolor: '#CCE8E1',
-                      }}
-                      variant="rectangular"
-                    />
-                  </Stack>
-                  <Stack
-                    direction={'row'}
-                    alignItems="center"
-                    //key={index}
-                    sx={{ pb: 1 }}
-                  >
-                    <Skeleton
-                      variant="circular"
-                      width={20}
-                      height={20}
-                      sx={{ mr: 1 }}
-                    />
-                    <Skeleton
-                      height="15px"
-                      width="70%"
-                      sx={{
-                        //fontSize: '1rem',
-                        bgcolor: '#CCE8E1',
-                      }}
-                      variant="rectangular"
-                    />
-                  </Stack>
-                  <Stack
-                    direction={'row'}
-                    alignItems="center"
-                    //key={index}
-                    sx={{ pb: 1 }}
-                  >
-                    <Skeleton
-                      variant="circular"
-                      width={20}
-                      height={20}
-                      sx={{ mr: 1 }}
-                    />
-                    <Skeleton
-                      height="15px"
-                      width="70%"
-                      sx={{
-                        //fontSize: '1rem',
-                        bgcolor: '#CCE8E1',
-                      }}
-                      variant="rectangular"
-                    />
-                  </Stack>
-                  <Divider sx={{ my: 2 }} />
-                  <Box sx={{ pt: 1 }}>
-                    <Stack
-                      direction={'row'}
-                      alignItems="center"
-                      //key={index}
-                      sx={{ pb: 1 }}
-                    >
-                      <Skeleton
-                        variant="circular"
-                        width={20}
-                        height={20}
-                        sx={{ mr: 1 }}
-                      />
-                      <Skeleton
-                        height="15px"
-                        width="70%"
-                        sx={{
-                          //fontSize: '1rem',
-                          bgcolor: '#CCE8E1',
-                        }}
-                        variant="rectangular"
-                      />
-                    </Stack>
-                    <Stack direction={'row'} alignItems="center" sx={{ pb: 1 }}>
-                      <Skeleton
-                        variant="circular"
-                        width={20}
-                        height={20}
-                        sx={{ mr: 1 }}
-                      />
-                      <Skeleton
-                        height="15px"
-                        width="70%"
-                        sx={{
-                          bgcolor: '#CCE8E1',
-                        }}
-                        variant="rectangular"
-                      />
-                    </Stack>
-                    <Stack direction={'row'} alignItems="center" sx={{ pb: 1 }}>
-                      <Skeleton
-                        variant="circular"
-                        width={20}
-                        height={20}
-                        sx={{ mr: 1 }}
-                      />
-                      <Skeleton
-                        height="15px"
-                        width="70%"
-                        sx={{
-                          bgcolor: '#CCE8E1',
-                        }}
-                        variant="rectangular"
-                      />
-                    </Stack>
-                  </Box>
-                </Box>
-                <Box>
-                  {' '}
-                  <Skeleton
-                    width="120px"
-                    height="130px"
-                    sx={{
-                      bgcolor: '#CCE8E1',
-                      borderTopLeftRadius: 20,
-                      borderBottomLeftRadius: 20,
-                    }}
-                    variant="rectangular"
-                  />
-                </Box>
-              </Stack>
-            </Paper>
-          </Grid>
-        ))}
+        <SelectVerifierSkeleton />
+        <SelectVerifierSkeleton />
+        <SelectVerifierSkeleton />
+        <SelectVerifierSkeleton />
+        <SelectVerifierSkeleton />
+        <SelectVerifierSkeleton />
       </Grid>
     )
   }

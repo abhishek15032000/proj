@@ -30,6 +30,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/project/getIssuerProjectDashboardStats',
     getReportByProjectId:
       ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
+    getTokenAndContractStats:
+      ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
   },
   projectSections: {
     updateProjectSectionA:

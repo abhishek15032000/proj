@@ -4,6 +4,12 @@ import React, { FC, useEffect, useState } from 'react'
 // MUI Imports
 import { Box, Grid, Paper, Stack, Typography } from '@mui/material'
 
+// Functional Imports
+import { useNavigate } from 'react-router-dom'
+import isAlpha from 'validator/lib/isAlpha'
+import isMobilePhone from 'validator/lib/isMobilePhone'
+import isURL from 'validator/lib/isURL'
+
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { Colors } from '../../theme'
@@ -12,13 +18,9 @@ import VerifierProfileIllustration from '../../assets/Images/illustrations/Verif
 import CCInputField from '../../atoms/CCInputField'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { USER } from '../../api/user.api'
-import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { getLocalItem } from '../../utils/Storage'
 import Spinner from '../../atoms/Spinner'
-import isAlpha from 'validator/lib/isAlpha'
-import isMobilePhone from 'validator/lib/isMobilePhone'
-import isURL from 'validator/lib/isURL'
 
 const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
   const navigate = useNavigate()
@@ -136,7 +138,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                   alignItems: 'center',
                 }}
               >
-                <BackHeader title="Profile" />
+                <BackHeader title="Profile" onClick={() => navigate(-1)} />
                 <TextButton title="Save" onClick={onSave} />
               </Box>
 
