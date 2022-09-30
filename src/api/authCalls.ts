@@ -3,13 +3,11 @@ import { AxiosHelper } from './configs/AxiosHelper'
 
 export const authCalls = {
   loginCall: (payload: any) => {
-    return AxiosHelper(
-      URL_PATH.authRoutes.login,
-      'POST',
-      payload
-    ).then((res: any) => {
-      return res.data
-    })
+    return AxiosHelper(URL_PATH.authRoutes.login, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
   },
   getCaptcha: (token: string) => {
     return AxiosHelper(
@@ -20,12 +18,17 @@ export const authCalls = {
     })
   },
   verifyOtp: (payload: any) => {
-    return AxiosHelper(
-      URL_PATH.authRoutes.verifyNewUser,
-      'POST',
-      payload
-    ).then((res: any) => {
-      return res.data
-    })
+    return AxiosHelper(URL_PATH.authRoutes.verifyNewUser, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
+  resendOTP: (payload: any) => {
+    return AxiosHelper(URL_PATH.authRoutes.resendOTP, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
   },
 }

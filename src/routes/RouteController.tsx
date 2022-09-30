@@ -9,6 +9,7 @@ import LoginPage from '../pages/LoginPage/LoginPage'
 import MaintenancePage from '../pages/MaintenancePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
+import ResetPassword from '../pages/ResetPassword/ResetPassword'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import { getLocalItem } from '../utils/Storage'
@@ -78,6 +79,22 @@ const RouteController = ({ localLoggedIn }: any) => {
           />
         }
       />
+      {/* <PublicRoute
+        path={pathNames.RESET_PASSWORD}
+        // authenticated={loggedIn}
+        component={ResetPassword}
+      ></PublicRoute> */}
+      {/* <Route
+        path={pathNames.RESET_PASSWORD}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={ResetPassword}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      /> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

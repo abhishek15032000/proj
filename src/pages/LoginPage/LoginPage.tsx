@@ -17,6 +17,8 @@ import LoaderOverlay from '../../components/LoderOverlay'
 import { USER } from '../../api/user.api'
 import isEmail from 'validator/lib/isEmail'
 import { setLocalItem } from '../../utils/Storage'
+import ForgotPasswordModal from './ForgotPasswordModal'
+
 declare let window: any
 
 const Login = () => {
@@ -28,12 +30,14 @@ const Login = () => {
   const [captchaToken, setCaptchaToken] = useState('')
   const [pwdCopy, setPwdCopy] = useState('')
   const [loading, setLoading] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
   }, [])
 
   const setCaptchaTokenFromUUID = () => {
+    console.log('loginn page setCaptchaTokenFromUUID')
     setCaptchaToken(uuidv4())
   }
 
@@ -197,7 +201,10 @@ const Login = () => {
               pt: 1,
             }}
           >
-            <Typography sx={{ fontWeight: '500', color: '#335844' }}>
+            <Typography
+              sx={{ fontWeight: '500', color: '#335844', cursor: 'pointer' }}
+              onClick={() => setOpenModal(true)}
+            >
               Forgot password?
             </Typography>
           </Box>
@@ -274,6 +281,11 @@ const Login = () => {
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
         }}
+      />
+      <ForgotPasswordModal
+        showModal={openModal}
+        setShowModal={setOpenModal}
+        setLoading={setLoading}
       />
     </Grid>
   )

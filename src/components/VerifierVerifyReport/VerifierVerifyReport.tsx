@@ -55,7 +55,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState<null | number>(null)
   const [selectMonth, setSelectMonth] = useState(new Date())
-  const [nextSubmissionDate, setNextSubmissionDate] = useState(new Date())
+  const [nextSubmissionDate, setNextSubmissionDate] = useState<any>(
+    moment().add(1, 'd')
+  )
   const [relevantDocs, setRelevantDocs]: any = useState([])
   const [nonce, setNonce] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -351,7 +353,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,
               }}
-              // renderInput={(pa)}
+              minDate={moment().add(1, 'd')}
               renderInput={(params) => {
                 return (
                   <CCInputField
