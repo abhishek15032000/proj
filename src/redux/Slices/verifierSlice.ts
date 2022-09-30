@@ -3,12 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface VerifierReducerInterface {
   profileCompletionPercent: number
   profileUpdated: boolean
-  projectStatsReload: boolean
+  verifierStatsReload: boolean
 }
 const initialState: VerifierReducerInterface = {
   profileCompletionPercent: 0,
   profileUpdated: false,
-  projectStatsReload: true,
+  verifierStatsReload: true,
 }
 const verifier = createSlice({
   name: 'verifier',
@@ -20,8 +20,8 @@ const verifier = createSlice({
     setProfileUpdated: (state, action: PayloadAction<any>) => {
       state.profileUpdated = action.payload
     },
-    setProfileStatsReload: (state, action: PayloadAction<any>) => {
-      state.projectStatsReload = action.payload
+    setVerifierStatsReload: (state, action: PayloadAction<any>) => {
+      state.verifierStatsReload = action.payload
     },
   },
 })
@@ -29,7 +29,7 @@ const verifier = createSlice({
 export const {
   setProfileCompletionPercent,
   setProfileUpdated,
-  setProfileStatsReload,
+  setVerifierStatsReload,
 } = verifier.actions
 
 export default verifier.reducer

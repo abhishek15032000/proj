@@ -10,24 +10,24 @@ import { capitaliseFirstLetter } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
 import './Projects.css'
 import { useAppSelector } from '../../hooks/reduxHooks'
-import { setProfileStatsReload } from '../../redux/Slices/verifierSlice'
-import { useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
-  const dispatch = useDispatch()
-  const { type: userType, email, user_id } = getLocalItem('userDetails')
+  const location = useLocation()
 
+  const { type: userType, email, user_id } = getLocalItem('userDetails')
   const [stats, setStats] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const projectStatsReload = useAppSelector(
-    ({ verifier }) => verifier.projectStatsReload
+  const verifierStatsReload = useAppSelector(
+    ({ verifier }) => verifier.verifierStatsReload
   )
 
   useEffect(() => {
-    projectStatsReload && getStats()
-  }, [projectStatsReload])
+    verifierStatsReload && getStats()
+  }, [verifierStatsReload])
 
   const getStats = async () => {
     try {
@@ -35,6 +35,10 @@ const ProjectsStats = () => {
       let res
       if (userType === ROLES.VERIFIER) {
         res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
+      }
+      //use this for token and contract stats
+      else if (location.pathname === pathNames.TOKEN_CONTRACT) {
+        res = await dataCollectionCalls.getStats()
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
       }
@@ -53,7 +57,6 @@ const ProjectsStats = () => {
     } catch (error) {
       console.log(error)
     } finally {
-      dispatch(setProfileStatsReload(false))
       setLoading(false)
     }
   }

@@ -43,7 +43,7 @@ const ProfileCompletion = () => {
           marginBottom: 0.5,
         }}
       >
-        {profileCompletion === 100 ? 'Complete!' : 'Incomplete!qq'}
+        {profileCompletion === 100 ? 'Complete!' : 'Incomplete!'}
       </Typography>
 
       <LinearProgress
