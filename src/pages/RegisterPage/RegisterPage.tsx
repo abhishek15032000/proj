@@ -26,6 +26,7 @@ import { department } from '../../api/department.api'
 import { USER } from '../../api/user.api'
 import { setLocalItem } from '../../utils/Storage'
 import isEmail from 'validator/lib/isEmail'
+import isAlpha from 'validator/lib/isAlpha'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import LoaderOverlay from '../../components/LoderOverlay'
 
@@ -40,7 +41,7 @@ const RegisterPage = (props: RegisterPageProps) => {
   const [showPassword, setShowPassword] = useState(false)
   const [countryCode, setCountryCode] = useState<any>()
   const [typeOptions, setTypeOptions] = useState<any>([])
-  const [selectedRole, setSelectedRole] = useState<any>()
+  const [selectedRole, setSelectedRole] = useState<any>('')
   const [departmentId, setDepartmentId] = useState<any>()
   const [loading, setLoading] = useState(false)
 
@@ -87,6 +88,34 @@ const RegisterPage = (props: RegisterPageProps) => {
   }
 
   const onBoardingNewUser = async () => {
+    if (
+      number === '' ||
+      number === undefined ||
+      password === '' ||
+      password === undefined ||
+      firstName === '' ||
+      firstName === undefined ||
+      lastName === '' ||
+      lastName === undefined ||
+      email === '' ||
+      email === undefined ||
+      selectedRole === '' ||
+      selectedRole === undefined
+    ) {
+      alert('Fill all the fields!')
+      return
+    }
+
+    if (
+      !isAlpha(firstName) ||
+      !isAlpha(lastName) ||
+      !isEmail(email) ||
+      !isMobilePhone(number, 'en-IN')
+    ) {
+      alert('Correct the errors!')
+      return
+    }
+
     setLoading(true)
     const payload = {
       fullName: firstName + ' ' + lastName,
@@ -163,6 +192,12 @@ const RegisterPage = (props: RegisterPageProps) => {
                   name="firstName"
                   //onChange={handleChange}
                   onChange={(e) => setFirstName(e.target.value)}
+                  error={firstName !== '' && !isAlpha(firstName)}
+                  helperText={
+                    firstName !== '' &&
+                    !isAlpha(firstName) &&
+                    'Enter valid Name'
+                  }
                   defaultValue={values?.firstName}
                   sx={{ background: '#F5F5F5' }}
                 />
@@ -174,6 +209,10 @@ const RegisterPage = (props: RegisterPageProps) => {
                   name="firstName"
                   //onChange={handleChange}
                   onChange={(e) => setLastName(e.target.value)}
+                  error={lastName !== '' && !isAlpha(lastName)}
+                  helperText={
+                    lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
+                  }
                   defaultValue={values?.lastName}
                   sx={{ background: '#F5F5F5' }}
                 />
@@ -185,9 +224,11 @@ const RegisterPage = (props: RegisterPageProps) => {
               label="Work Email ID"
               variant="outlined"
               name="email"
-              //onChange={handleChange}
               onChange={(e) => setEmail(e.target.value)}
-              error={!isEmail(email)}
+              error={email !== '' && !isEmail(email)}
+              helperText={
+                email !== '' && !isEmail(email) && 'Enter valid Email ID'
+              }
               defaultValue={values?.email}
               sx={{ background: '#F5F5F5' }}
             />
@@ -223,6 +264,15 @@ const RegisterPage = (props: RegisterPageProps) => {
                   type="tel"
                   variant="outlined"
                   //onChange={handleChange}
+                  inputProps={{
+                    maxLength: 10,
+                  }}
+                  error={number !== '' && !isMobilePhone(number, 'en-IN')}
+                  helperText={
+                    number !== '' &&
+                    !isMobilePhone(number, 'en-IN') &&
+                    'Enter valid Mobile Number'
+                  }
                   onChange={(e) => {
                     // if (Number(e.target.value.replace(/[^0-9]/g, '')) < 0) {
                     setNumber(e.target.value.toString())
@@ -230,7 +280,6 @@ const RegisterPage = (props: RegisterPageProps) => {
                   }}
                   defaultValue={number}
                   sx={{ background: '#F5F5F5' }}
-                  error={!isMobilePhone(number, 'en-IN')}
                 />
               </Grid>
             </Grid>
