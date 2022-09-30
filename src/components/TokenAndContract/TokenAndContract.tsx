@@ -31,7 +31,7 @@ const TokenAndContract = () => {
     dataCollectionCalls
       .getAllProjects(email)
       .then((res: any) => {
-        if (res?.success) {
+        if (res?.data?.success) {
           setProjects(res.data.data)
         }
       })

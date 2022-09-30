@@ -108,17 +108,16 @@ const SectionA5 = () => {
             value={A5.credit_period.end_date}
             onChange={(newValue) => {
               if (
-                moment(newValue).format('DD/MM/YYYY') <=
-                moment(A5.credit_period.start_date).format('DD/MM/YYYY')
+                moment(newValue).diff(moment(A5.credit_period.start_date)) > 0
               ) {
-                alert('End date shoud be greater than start date')
-              } else {
                 dispatch(
                   setA5({
                     name: ['credit_period', 'end_date'],
                     value: newValue?._isValid ? newValue.toISOString() : '',
                   })
                 )
+              } else {
+                alert('End date shoud be greater than start date')
               }
             }}
             components={{

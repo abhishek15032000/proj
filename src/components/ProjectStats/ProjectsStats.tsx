@@ -36,7 +36,7 @@ const ProjectsStats = () => {
       if (userType === ROLES.VERIFIER) {
         res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
       }
-      //use this for token and contract stats
+      //using this for token and contract stats
       else if (location.pathname === pathNames.TOKEN_CONTRACT) {
         res = await dataCollectionCalls.getStats()
       } else {
