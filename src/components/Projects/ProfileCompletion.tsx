@@ -5,19 +5,28 @@ import React, { useEffect, useState } from 'react'
 import { Box, Typography, IconButton, LinearProgress } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+
+// Functional Imports
+import { shallowEqual, useDispatch } from 'react-redux'
+
+// Local Imports
 import { getLocalItem } from '../../utils/Storage'
 import { Colors } from '../../theme'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { setLoadWallet } from '../../redux/Slices/walletSlice'
 
 // Local Imports
 
 const ProfileCompletion = () => {
-  const [profileCompletion, setProfileCompletion] = useState<number>()
-  const { wallet_added = false } = getLocalItem('userDetails2')
+  const dispatch = useDispatch()
+  const walletAdded = getLocalItem('userDetails2')?.wallet_added
 
-  useEffect(() => {
-    const completionPercent = wallet_added ? 100 : 0
-    setProfileCompletion(completionPercent)
-  }, [])
+  const isConnected = useAppSelector(
+    ({ wallet }) => wallet.isConnected,
+    shallowEqual
+  )
+
+  const walletIsConnected = walletAdded && isConnected
 
   return (
     <Box
@@ -37,19 +46,18 @@ const ProfileCompletion = () => {
         sx={{
           fontSize: 14,
           fontWeight: 500,
-          color:
-            profileCompletion === 100 ? Colors.lightPrimary1 : Colors.secondary,
+          color: walletIsConnected ? Colors.lightPrimary1 : Colors.secondary,
           marginTop: 0.5,
           marginBottom: 0.5,
         }}
       >
-        {profileCompletion === 100 ? 'Complete!' : 'Incomplete!qq'}
+        {walletIsConnected ? 'Complete!' : 'Incomplete!'}
       </Typography>
 
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={profileCompletion}
+        value={walletIsConnected === true ? 100 : 0}
       />
 
       <Typography
@@ -77,11 +85,10 @@ const ProfileCompletion = () => {
             sx={{
               fontSize: 14,
               fontWeight: 400,
-              color:
-                profileCompletion === 100 ? Colors.lightPrimary1 : '#BA1B1B',
+              color: walletIsConnected ? Colors.lightPrimary1 : '#BA1B1B',
             }}
           >
-            {`${profileCompletion === 100 ? '100' : '0'}% Complete`}
+            {`${walletIsConnected ? '100' : '0'}% Complete`}
           </Typography>
         </Box>
 
@@ -93,13 +100,16 @@ const ProfileCompletion = () => {
             height: '40px',
             width: '40px',
             borderRadius: '20px',
-            backgroundColor: wallet_added ? Colors.white : Colors.lightPrimary1,
+            backgroundColor: walletIsConnected ? Colors.white : Colors.lightPrimary1,
           }}
         >
-          {wallet_added ? (
+          {walletIsConnected ? (
             <CheckIcon style={{ color: Colors.lightPrimary1 }} />
           ) : (
-            <ArrowRightAltIcon style={{ color: '#FFF' }} />
+            <ArrowRightAltIcon
+              style={{ color: '#FFF' }}
+              onClick={() => dispatch(setLoadWallet(true))}
+            />
           )}
         </IconButton>
       </Box>

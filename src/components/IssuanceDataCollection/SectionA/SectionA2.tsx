@@ -135,6 +135,7 @@ const SectionA2 = () => {
             sx={{ backgroundColor: ' #FFFFFF' }}
             value={A2.pincode}
             name={'pincode'}
+            type="number"
             onChange={({ target: { value, name } }) =>
               dispatch(setA2({ value, name }))
             }
