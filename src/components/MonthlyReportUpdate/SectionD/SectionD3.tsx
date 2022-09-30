@@ -1,47 +1,42 @@
-import React, { FC, useEffect, useState } from 'react'
-import {
-  Box,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-  Stack,
-} from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../../atoms/SampleModal/SampleModal'
-import ImageComponent from '../../../atoms/ImageComponent/ImageComponent'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import React, { FC, useEffect } from 'react'
+import { Grid, Typography, Stack } from '@mui/material'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setBriefDescription } from '../../../redux/Slices/MonthlyReport/sectionDMonthly'
+import { setD3 } from '../../../redux/Slices/MonthlyReport/sectionDMonthly'
 import Spinner from '../../../atoms/Spinner'
 
 const SectionD3: FC = () => {
-  const [showModal, setShowModal] = useState(false)
   const dispatch = useAppDispatch()
-  const briefDescription = useAppSelector(
-    ({ sectionDMonthly }) => sectionDMonthly.briefDescription,
-    shallowEqual
-  )
+
+  const D3 = useAppSelector(({ sectionD }) => sectionD.D3, shallowEqual)
 
   const currentProjectDetails = useAppSelector(
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  useEffect(() => {
-    if (currentProjectDetails.section_d.step3.completed) {
-      const { implementation_of_sampling_plan } =
-        currentProjectDetails.section_d.step3
-
-      dispatch(setBriefDescription(implementation_of_sampling_plan))
-    }
-  }, [])
 
   const loading = useAppSelector(
     ({ selectDate }) => selectDate.loading,
     shallowEqual
   )
+
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_d.step3.completed
+    ) {
+      const { implementation_of_sampling_plan } =
+        currentProjectDetails.section_d.step3
+
+      dispatch(
+        setD3({
+          name: 'implementation_of_sampling_plan',
+          value: implementation_of_sampling_plan,
+        })
+      )
+    }
+  }, [currentProjectDetails])
 
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
@@ -58,12 +53,16 @@ const SectionD3: FC = () => {
       lg={12}
       xl={12}
     >
+      <Typography sx={{ marginTop: '64px' }}></Typography>
       <CCMultilineTextArea
         // aria-label="minimum height"
         label={'Implementation of sampling plan'}
         placeholder="Process of Implementation of sampling plan, if applicable"
-        value={briefDescription}
-        onChange={(e) => dispatch(setBriefDescription(e?.target?.value))}
+        name={'implementation_of_sampling_plan'}
+        value={D3.implementation_of_sampling_plan}
+        onChange={({ target: { name, value } }) =>
+          dispatch(setD3({ name, value }))
+        }
       />
     </Grid>
   )

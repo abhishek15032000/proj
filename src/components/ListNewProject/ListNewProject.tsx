@@ -1,5 +1,7 @@
 import {
+  Button,
   Checkbox,
+  Chip,
   FormControl,
   Grid,
   InputLabel,
@@ -11,7 +13,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DatePicker } from '@mui/x-date-pickers'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation'
@@ -26,9 +28,10 @@ import {
   setProjectName,
   setProjectType,
   setStartDate,
+  setEndDate,
 } from '../../redux/Slices/newProjectSlice'
 import Spinner from '../../atoms/Spinner'
-
+import _without from 'lodash/without'
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 
@@ -42,17 +45,25 @@ const MenuProps = {
 }
 
 const projectTypes = [
-  'Methane Destruction- Landfill gas',
-  'Methane Destruction- Livestock',
-  'Methane Destruction- Coal mine methane',
-  'Methane Avoidance',
-  'Methane capture',
-  'Industrial gases- ODS',
-  'Forestry- Avoided conversion/ deforestation',
-  'Forestry- Improved forest management',
-  'Forestry- Wetland restoration',
+  'Agriculture',
+  'Chemical industries',
+  'Construction',
+  'Energy distribution',
+  'Energy demand',
+  ' Energy industries (renewable - / non-renewable sources)',
+  'Fugitive emissions from fuels (solid, oil and gas)',
+  ' Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
+  ' Livestock, enteric fermentation, and manure management',
+  ' Manufacturing industries',
+  ' Metal production',
+  'Mining/mineral production',
+  'Solvent use',
+  ' Transport',
+  'Waste handling and disposal',
   'Afforestation and reforestation',
-  'Regenerative agriculture',
+  'Forestry and Other Land Use',
+  'Forest conservation (REDD+)',
+  ' Blue carbon',
 ]
 
 const ListNewProject = () => {
@@ -87,6 +98,15 @@ const ListNewProject = () => {
     shallowEqual
   )
 
+  const endDate = useAppSelector(
+    ({ newProject }) => newProject.endDate,
+    shallowEqual
+  )
+
+  useEffect(() => {
+    dispatch(setProjectType([]))
+  }, [])
+
   const handleChange = (event: SelectChangeEvent<typeof projectType>) => {
     const {
       target: { value },
@@ -97,6 +117,13 @@ const ListNewProject = () => {
         typeof value === 'string' ? value.split(',') : value
       )
     )
+  }
+
+  const handleDelete = (e: React.MouseEvent, value: string) => {
+    const projectTypes = [...projectType]
+    const filterTypes = projectTypes.filter((item) => item !== value && item)
+    console.log('clicked delete', value, filterTypes)
+    dispatch(setProjectType(filterTypes))
   }
 
   const handleTextChange = (
@@ -163,9 +190,8 @@ const ListNewProject = () => {
             }}
             renderValue={(selected) => (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Box
-                    key={value}
+                {(selected as string[]).map((value) => (
+                  <Chip
                     sx={{
                       display: 'flex',
                       backgroundColor: '#1D4B44',
@@ -175,10 +201,18 @@ const ListNewProject = () => {
                       py: 1,
                       px: 2,
                     }}
-                  >
-                    <Typography>{value}</Typography>
-                    <CancelPresentationIcon sx={{ ml: 1 }} />
-                  </Box>
+                    key={value}
+                    label={value}
+                    clickable
+                    deleteIcon={
+                      <CancelPresentationIcon
+                        style={{ color: 'white', marginLeft: 1 }}
+                        onMouseDown={(event) => event.stopPropagation()}
+                      />
+                    }
+                    onDelete={(e) => handleDelete(e, value)}
+                    onClick={() => console.log('clicked chip')}
+                  />
                 ))}
               </Box>
             )}
@@ -207,6 +241,19 @@ const ListNewProject = () => {
           value={startDate}
           onChange={(newValue) => {
             dispatch(setStartDate(newValue?.toISOString()))
+          }}
+          components={{
+            OpenPickerIcon: CalendarMonthOutlinedIcon,
+          }}
+          renderInput={(params) => <CCInputField {...params} />}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <DatePicker
+          label="End Date"
+          value={endDate}
+          onChange={(newValue) => {
+            dispatch(setEndDate(newValue?.toISOString()))
           }}
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,

@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface SectionAInterface {
   // A1
 
-  total_GHG_emission: string
+  A1: any
 }
 
 const initialState: SectionAInterface = {
   // A1
 
-  total_GHG_emission: '',
+  A1: { total_GHG_emission: '' },
 }
 
 const sectionAMonthly = createSlice({
@@ -18,12 +18,14 @@ const sectionAMonthly = createSlice({
   reducers: {
     // A1 Handlers
 
-    setTotalGHGEmission: (state, action: PayloadAction<any>) => {
-      state.total_GHG_emission = action.payload
+    setA1: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.A1[name] = value
     },
+    resetSectionA: () => initialState,
   },
 })
 
-export const { setTotalGHGEmission } = sectionAMonthly.actions
+export const { setA1, resetSectionA } = sectionAMonthly.actions
 
 export default sectionAMonthly.reducer

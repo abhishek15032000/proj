@@ -15,48 +15,50 @@ import CCButton from '../../../atoms/CCButton'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import {
-  setAttachExPostTable,
-  setDataAndParameterFixedExAnte,
-  setDataAndParameterMonitoredExPost,
-} from '../../../redux/Slices/MonthlyReport/sectionDMonthly'
+import { setD2 } from '../../../redux/Slices/MonthlyReport/sectionDMonthly'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import sampleD2 from '../../../assets/Images/sample-d2.png'
 import sampleD3 from '../../../assets/Images/sample-d3.png'
 import sampleD4 from '../../../assets/Images/sample-d4.png'
 import Spinner from '../../../atoms/Spinner'
+
 const SectionD2: FC = () => {
   const dispatch = useAppDispatch()
-  const data_and_parameter_monitored_ExPost = useAppSelector(
-    ({ sectionDMonthly }) =>
-      sectionDMonthly.data_and_parameter_monitored_ExPost,
-    shallowEqual
-  )
-  const attach_ex_post_table = useAppSelector(
-    ({ sectionDMonthly }) => sectionDMonthly.attach_ex_post_table,
-    shallowEqual
-  )
+
+  const D2 = useAppSelector(({ sectionD }) => sectionD.D2, shallowEqual)
 
   const currentProjectDetails = useAppSelector(
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  useEffect(() => {
-    if (currentProjectDetails.section_d.step2.completed) {
-      const { data_and_parameter_monitored_ExPost, attach_ex_ante_table } =
-        currentProjectDetails.section_d.step2
 
-      dispatch(
-        setDataAndParameterMonitoredExPost(data_and_parameter_monitored_ExPost)
-      )
-      dispatch(setAttachExPostTable(attach_ex_ante_table))
-    }
-  }, [])
   const loading = useAppSelector(
     ({ selectDate }) => selectDate.loading,
     shallowEqual
   )
+
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_d.step2.completed
+    ) {
+      const { data_and_parameter_monitored_ExPost, attach_ex_ante_table } =
+        currentProjectDetails.section_d.step2
+
+      dispatch(
+        setD2({
+          name: 'data_and_parameter_monitored_ExPost',
+          value: data_and_parameter_monitored_ExPost,
+        })
+      )
+      dispatch(
+        setD2({ name: 'attach_ex_ante_table', value: attach_ex_ante_table })
+      )
+    }
+  }, [currentProjectDetails])
+
+  const { attach_ex_ante_table } = D2
 
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
@@ -77,9 +79,10 @@ const SectionD2: FC = () => {
         // aria-label="minimum height"
         label={'Data and parameters monitored ex-post (actuals)'}
         placeholder="If data for this project is monitored and calculated based on an ex-post method, please explain."
-        value={data_and_parameter_monitored_ExPost}
-        onChange={(e) =>
-          dispatch(setDataAndParameterMonitoredExPost(e?.target?.value))
+        value={D2.data_and_parameter_monitored_ExPost}
+        name={'data_and_parameter_monitored_ExPost'}
+        onChange={({ target: { value, name } }) =>
+          dispatch(setD2({ name, value }))
         }
       />
 
@@ -102,15 +105,21 @@ const SectionD2: FC = () => {
           ]}
           mediaItem={[sampleD2, sampleD3, sampleD4]}
           title=" Attach datas & parameters fixed ex-ante table"
-          imageArray={attach_ex_post_table}
+          imageArray={D2.attach_ex_ante_table}
           onImageUpload={(item: any) => {
-            dispatch(setAttachExPostTable([item, ...attach_ex_post_table]))
+            dispatch(
+              setD2({
+                name: 'attach_ex_ante_table',
+                value: [...attach_ex_ante_table, item],
+              })
+            )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setAttachExPostTable(
-                deleteIndexInArray(attach_ex_post_table, index)
-              )
+              setD2({
+                name: 'attach_ex_ante_table',
+                value: deleteIndexInArray(attach_ex_ante_table, index),
+              })
             )
           }}
         />

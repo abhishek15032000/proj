@@ -30,6 +30,7 @@ export const addSectionPercentages = (row: any) => {
 }
 
 export const checkingMandatoryFields = (mandatoryFields: any) => {
+  console.log('mandatoryFields', mandatoryFields)
   const isFilled = mandatoryFields.some((value: any) => !value.length)
   return isFilled
 }

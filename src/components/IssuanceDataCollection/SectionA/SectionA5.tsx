@@ -65,59 +65,70 @@ const SectionA5 = () => {
     <>
       <Typography sx={{ mt: 3 }}> Renewable crediting period:</Typography>
       <Grid container sx={{ mt: 2 }} spacing={1}>
-        <Grid item xs={12} md={12} lg={12} xl={12}>
-          <DatePicker
-            label="Start date of 1st crediting period "
-            value={A5.credit_start_period}
-            onChange={(newValue) => {
-              dispatch(
-                setA5({
-                  name: 'credit_start_period',
-                  value: newValue?._isValid ? newValue.toISOString() : '',
-                })
-              )
-            }}
-            components={{
-              OpenPickerIcon: CalendarMonthOutlinedIcon,
-            }}
-            renderInput={(params) => <CCInputField {...params} />}
-          />
-        </Grid>
-        <Grid item xs={12} md={12} lg={6} xl={6}>
-          <DatePicker
-            label="Crediting from "
-            value={A5.credit_period.start_date}
-            onChange={(newValue) => {
-              dispatch(
-                setA5({
-                  name: ['credit_period', 'start_date'],
-                  value: newValue?._isValid ? newValue.toISOString() : '',
-                })
-              )
-            }}
-            components={{
-              OpenPickerIcon: CalendarMonthOutlinedIcon,
-            }}
-            renderInput={(params) => <CCInputField {...params} />}
-          />
-        </Grid>
-        <Grid item xs={12} md={12} lg={6} xl={6}>
-          <DatePicker
-            label="Crediting end "
-            value={A5.credit_period.end_date}
-            onChange={(newValue) => {
-              dispatch(
-                setA5({
-                  name: ['credit_period', 'end_date'],
-                  value: newValue?._isValid ? newValue.toISOString() : '',
-                })
-              )
-            }}
-            components={{
-              OpenPickerIcon: CalendarMonthOutlinedIcon,
-            }}
-            renderInput={(params) => <CCInputField {...params} />}
-          />
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Grid item xs={12} md={12} lg={12} xl={12}>
+            <DatePicker
+              label="Start date of 1st crediting period "
+              value={A5.credit_start_period}
+              onChange={(newValue) => {
+                dispatch(
+                  setA5({
+                    name: 'credit_start_period',
+                    value: newValue?._isValid ? newValue.toISOString() : '',
+                  })
+                )
+              }}
+              components={{
+                OpenPickerIcon: CalendarMonthOutlinedIcon,
+              }}
+              renderInput={(params) => <CCInputField {...params} />}
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={6} xl={6} sx={{ ml: 1 }}>
+            <DatePicker
+              label="Crediting from "
+              value={A5.credit_period.start_date}
+              onChange={(newValue) => {
+                dispatch(
+                  setA5({
+                    name: ['credit_period', 'start_date'],
+                    value: newValue?._isValid ? newValue.toISOString() : '',
+                  })
+                )
+              }}
+              components={{
+                OpenPickerIcon: CalendarMonthOutlinedIcon,
+              }}
+              renderInput={(params) => <CCInputField {...params} />}
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={6} xl={6} sx={{ ml: 1 }}>
+            <DatePicker
+              label="Crediting end "
+              value={A5.credit_period.end_date}
+              onChange={(newValue) => {
+                dispatch(
+                  setA5({
+                    name: ['credit_period', 'end_date'],
+                    value: newValue?._isValid ? newValue.toISOString() : '',
+                  })
+                )
+              }}
+              components={{
+                OpenPickerIcon: CalendarMonthOutlinedIcon,
+              }}
+              renderInput={(params) => <CCInputField {...params} />}
+            />
+          </Grid>
         </Grid>
         <Grid item xs={12} md={12} lg={12} xl={12} sx={{ mt: 3 }}>
           <CCMultilineTextArea

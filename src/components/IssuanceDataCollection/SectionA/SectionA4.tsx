@@ -1,9 +1,13 @@
 import {
   Box,
+  Checkbox,
+  Chip,
   FormControl,
   Grid,
   InputLabel,
+  ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   Stack,
   Typography,
@@ -17,6 +21,7 @@ import { setMethodologies } from '../../../redux/Slices/sectionASlice'
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
 import Spinner from '../../../atoms/Spinner'
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation'
 
 interface methodologiesInterface {
   approvedMethodologies: string
@@ -65,7 +70,7 @@ const SectionA4 = () => {
     const methodologiesCopy = [...methodologies]
     methodologiesCopy.push({
       methodology: '',
-      project_type: '',
+      project_type: [],
       category: '',
       version: '',
       tools: '',
@@ -90,6 +95,56 @@ const SectionA4 = () => {
     dispatch(setMethodologies(methodologiesCopy))
   }
 
+  const handleDelete = (
+    e: React.MouseEvent,
+    value: string,
+    index: number,
+    type: string
+  ) => {
+    const methodologiesCopy = [...methodologies]
+
+    const filterTypes = methodologiesCopy[index]?.project_type.filter(
+      (item: any) => item !== value && item
+    )
+    let objectToChange = methodologiesCopy[index]
+    objectToChange = { ...objectToChange, [type]: filterTypes }
+    methodologiesCopy[index] = objectToChange
+    dispatch(setMethodologies(methodologiesCopy))
+  }
+
+  const ITEM_HEIGHT = 48
+  const ITEM_PADDING_TOP = 8
+
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  }
+
+  const projectTypes = [
+    'Agriculture',
+    'Chemical industries',
+    'Construction',
+    'Energy distribution',
+    'Energy demand',
+    ' Energy industries (renewable - / non-renewable sources)',
+    'Fugitive emissions from fuels (solid, oil and gas)',
+    ' Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
+    ' Livestock, enteric fermentation, and manure management',
+    ' Manufacturing industries',
+    ' Metal production',
+    'Mining/mineral production',
+    'Solvent use',
+    ' Transport',
+    'Waste handling and disposal',
+    'Afforestation and reforestation',
+    'Forestry and Other Land Use',
+    'Forest conservation (REDD+)',
+    ' Blue carbon',
+  ]
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -167,38 +222,6 @@ const SectionA4 = () => {
                     value={item?.methodology}
                     onChange={(e) => handleTextChange(e, index, 'methodology')}
                   >
-                    <MenuItem value={'Ten'}>Methodology 1</MenuItem>
-                    <MenuItem value={'Twenty'}>Methodology 2</MenuItem>
-                    <MenuItem value={'Thirty'}>Methodology 3</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid
-                item
-                sx={{ mt: 1 }}
-                xs={12}
-                md={12}
-                lg={12}
-                xl={12}
-                rowSpacing={1}
-              >
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Project Type *
-                  </InputLabel>
-                  <Select
-                    placeholder="Select Project Types"
-                    sx={{
-                      background: 'white',
-                      color: '#006B5E',
-                      borderRadius: '4px 4px 0 0',
-                    }}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Project Type *"
-                    value={item?.project_type}
-                    onChange={(e) => handleTextChange(e, index, 'project_type')}
-                  >
                     <MenuItem
                       value={'AMS-I.A'}
                       sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
@@ -217,6 +240,78 @@ const SectionA4 = () => {
                     >
                       AMS-I.C
                     </MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid
+                item
+                sx={{ mt: 1 }}
+                xs={12}
+                md={12}
+                lg={12}
+                xl={12}
+                rowSpacing={1}
+              >
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Project Type *
+                  </InputLabel>
+                  <Select
+                    multiple
+                    value={item?.project_type}
+                    onChange={(e) => handleTextChange(e, index, 'project_type')}
+                    input={
+                      <OutlinedInput
+                        sx={{
+                          color: '#006B5E',
+                        }}
+                        label="Project Type"
+                      />
+                    }
+                    sx={{
+                      color: '#006B5E',
+                      borderRadius: '4px 4px 0 0',
+                    }}
+                    renderValue={(selected: any) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((value: any) => (
+                          <Chip
+                            sx={{
+                              display: 'flex',
+                              backgroundColor: '#1D4B44',
+                              color: '#fff',
+                              borderRadius: '16px',
+                              fontSize: 14,
+                              py: 1,
+                              px: 2,
+                            }}
+                            key={value}
+                            label={value}
+                            clickable
+                            deleteIcon={
+                              <CancelPresentationIcon
+                                style={{ color: 'white', marginLeft: 1 }}
+                                onMouseDown={(event) => event.stopPropagation()}
+                              />
+                            }
+                            onDelete={(e) =>
+                              handleDelete(e, value, index, 'project_type')
+                            }
+                            onClick={() => console.log('clicked chip')}
+                          />
+                        ))}
+                      </Box>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+                    {projectTypes.map((item2) => (
+                      <MenuItem key={item2} value={item2}>
+                        <Checkbox
+                          checked={item?.project_type?.includes(item2)}
+                        />
+                        <ListItemText primary={item2} />
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>

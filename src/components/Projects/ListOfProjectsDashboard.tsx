@@ -31,6 +31,7 @@ import { useDispatch } from 'react-redux'
 import {
   setSectionIndex,
   setSubSectionIndex,
+  setMainProjectDetails,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import ReferenceIdTd from './ReferenceIdTd'
 
@@ -85,6 +86,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       } else if (redirect === 'Monthly') {
         dispatch(setSectionIndex(0))
         dispatch(setSubSectionIndex(0))
+        dispatch(setMainProjectDetails(projectDetails))
         navigate(pathNames.MONTHLY_REPORT_UPDATE)
       }
     }

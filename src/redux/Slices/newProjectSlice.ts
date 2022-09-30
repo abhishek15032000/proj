@@ -8,7 +8,7 @@ interface NewProjectReducerInterface {
   projectDuration: string
   projectArea: string
   loading: boolean
-
+  endDate: Date | null
   //Will get from create new project call
   newProjectUUID: string
 }
@@ -20,6 +20,7 @@ const initialState: NewProjectReducerInterface = {
   projectDuration: '',
   projectArea: '',
   loading: false,
+  endDate: null,
 
   //Will get from create new project call
   newProjectUUID: '',
@@ -52,6 +53,9 @@ const newProject = createSlice({
     setLoading: (state, action: PayloadAction<any>) => {
       state.loading = action.payload
     },
+    setEndDate: (state, action: PayloadAction<any>) => {
+      state.endDate = action.payload
+    },
   },
 })
 
@@ -64,6 +68,7 @@ export const {
   setProjectArea,
   setNewProjectUUID,
   setLoading,
+  setEndDate,
 } = newProject.actions
 
 export default newProject.reducer

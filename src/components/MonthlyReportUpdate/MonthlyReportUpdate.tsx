@@ -26,8 +26,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setSectionIndex,
+  setShowMandatoryFieldModal,
   setSubSectionIndex,
-  setIsApiCalled,
 } from '../../redux/Slices/MonthlyReportUpdate'
 // import { moveToNextSection } from '../../utils/MonthlyReportUpdate.utils'
 import CCButton from '../../atoms/CCButton'
@@ -36,6 +36,14 @@ import { pathNames } from '../../routes/pathNames'
 import SelectDate from '../SelectDate'
 import { moveToNextSection } from '../../utils/monthlyReportUpdate.utils'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
+import { isDataModifiedCheckFunc } from '../../utils/IssuanceDataCollectionModal.utils'
+import CloseIcon from '@mui/icons-material/Close'
+import { resetSectionA } from '../../redux/Slices/MonthlyReport/sectionAMonthly'
+import { resetSectionB } from '../../redux/Slices/MonthlyReport/sectionBMonthly'
+import { resetSectionC } from '../../redux/Slices/MonthlyReport/sectionCMonthly'
+import { resetSectionD } from '../../redux/Slices/MonthlyReport/sectionDMonthly'
+import { resetSectionE } from '../../redux/Slices/MonthlyReport/sectionEMonthly'
+import { resetSelectDate } from '../../redux/Slices/SelectDateSlice'
 
 const sections = [
   { name: 'Select Time Period' },
@@ -99,6 +107,65 @@ const sectionATabs = [
 ]
 
 const MonthlyReportUpdate = () => {
+  const A1 = useAppSelector(
+    ({ sectionAMonthly }) => sectionAMonthly.A1,
+    shallowEqual
+  )
+  const B1 = useAppSelector(
+    ({ sectionBMonthly }) => sectionBMonthly.B1,
+    shallowEqual
+  )
+  const B2 = useAppSelector(
+    ({ sectionBMonthly }) => sectionBMonthly.B2,
+    shallowEqual
+  )
+  const C1 = useAppSelector(
+    ({ sectionCMonthly }) => sectionCMonthly.C1,
+    shallowEqual
+  )
+  const D1 = useAppSelector(
+    ({ sectionDMonthly }) => sectionDMonthly.D1,
+    shallowEqual
+  )
+  const D2 = useAppSelector(
+    ({ sectionDMonthly }) => sectionDMonthly.D2,
+    shallowEqual
+  )
+  const D3 = useAppSelector(
+    ({ sectionDMonthly }) => sectionDMonthly.D3,
+    shallowEqual
+  )
+  const E1 = useAppSelector(
+    ({ sectionEMonthly }) => sectionEMonthly.E1,
+    shallowEqual
+  )
+  const E2 = useAppSelector(
+    ({ sectionEMonthly }) => sectionEMonthly.E2,
+    shallowEqual
+  )
+  const E3 = useAppSelector(
+    ({ sectionEMonthly }) => sectionEMonthly.E3,
+    shallowEqual
+  )
+  const E4 = useAppSelector(
+    ({ sectionEMonthly }) => sectionEMonthly.E4,
+    shallowEqual
+  )
+  const E5 = useAppSelector(
+    ({ sectionEMonthly }) => sectionEMonthly.E5,
+    shallowEqual
+  )
+  const E6 = useAppSelector(
+    ({ sectionEMonthly }) => sectionEMonthly.E6,
+    shallowEqual
+  )
+  const E7 = useAppSelector(
+    ({ sectionEMonthly }) => sectionEMonthly.E7,
+    shallowEqual
+  )
+
+  console.log('B1><<<<<<<<<<<<<', B1)
+
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [nextBtn, setNextBtn] = useState(true)
@@ -106,6 +173,11 @@ const MonthlyReportUpdate = () => {
   const [subSectionIndexState, setSubSectionIndexState] = useState<number>()
   const [sectionIndexState, setSectionIndexState] = useState<number>()
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
+
+  const showMandatoryFieldModal = useAppSelector(
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.showMandatoryFieldModal,
+    shallowEqual
+  )
 
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
@@ -121,10 +193,22 @@ const MonthlyReportUpdate = () => {
     shallowEqual
   )
 
-  const IsApiCalled = useAppSelector(
-    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.isApiCalled,
+  const subSectionIndex = useAppSelector(
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.subSectionIndex,
     shallowEqual
   )
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetSelectDate())
+      dispatch(resetSectionA())
+      dispatch(resetSectionB())
+      dispatch(resetSectionC())
+      dispatch(resetSectionD())
+      dispatch(resetSectionE())
+      dispatch(setSubSectionIndex(0))
+    }
+  }, [])
 
   useEffect(() => {
     if (
@@ -133,12 +217,10 @@ const MonthlyReportUpdate = () => {
       sectionIndex === 5
     )
       setNextBtn(false)
+    else {
+      setNextBtn(true)
+    }
   }, [currentProjectDetails, sectionIndex])
-
-  const subSectionIndex = useAppSelector(
-    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.subSectionIndex,
-    shallowEqual
-  )
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
@@ -147,50 +229,182 @@ const MonthlyReportUpdate = () => {
   const handleSave = () => {
     moveToNextSection(sectionIndex, subSectionIndex)
   }
+
   const handlePrevious = () => {
     if (sectionIndex > 0) {
-      if (!IsApiCalled) {
+      const isDataModified = handleDataCheck()
+
+      if (isDataModified) {
         setModal(true)
         setChangeInSection(true)
         setSectionIndexState(sectionIndex - 1)
         setSubSectionIndexState(0)
-        //return
-      } else if (IsApiCalled) {
-        dispatch(setIsApiCalled(false))
+      } else if (!isDataModified) {
         dispatch(setSectionIndex(sectionIndex - 1))
         dispatch(setSubSectionIndex(0))
       }
     }
   }
 
+  const handleNextBtnFromSectionE = () => {
+    if (nextBtn) {
+      navigate(-1)
+    }
+    // else if (!nextBtn) {
+    //   if (currentProjectDetails?.project_status === 0) {
+    //     navigate(pathNames.SELECT_VERIFIER)
+    //   } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+    // }
+  }
+
   const handleNext = () => {
-    if (sectionIndex === 0) dispatch(setSectionIndex(sectionIndex + 1))
-    if (sectionIndex > 0 && !IsApiCalled) {
-      setModal(true)
-      setChangeInSection(true)
-      setSectionIndexState(sectionIndex + 1)
-      setSubSectionIndexState(0)
-    } else if (IsApiCalled) {
-      dispatch(setIsApiCalled(false))
-      dispatch(setSectionIndex(sectionIndex + 1))
-      dispatch(setSubSectionIndex(0))
-    }
-    //handling next btn as per section data collection percentage
-    if (sectionIndex === 5) {
-      if (nextBtn) {
-        navigate(pathNames.DASHBOARD)
+    if (sectionIndex > 0) {
+      // console.log('sectionIndex', sectionIndex)
+      const isDataModified = handleDataCheck()
+      console.log('isDataModified', isDataModified)
+      if (isDataModified) {
+        setModal(true)
+        setChangeInSection(true)
+        setSectionIndexState(sectionIndex + 1)
+        setSubSectionIndexState(0)
+      } else if (!isDataModified) {
+        dispatch(setSectionIndex(sectionIndex + 1))
+        dispatch(setSubSectionIndex(0))
       }
+      //handling next btn as per section data collection percentage
+      !isDataModified && sectionIndex === 5 && handleNextBtnFromSectionE()
+    } else if (sectionIndex === 0) dispatch(setSectionIndex(sectionIndex + 1))
+  }
+
+  const handleDataCheck = () => {
+    console.log('currentProjectDetails', currentProjectDetails)
+    const paramsData = [
+      {
+        sectionName: A1,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
+        section: 1,
+        subSection: 0,
+      },
+
+      {
+        sectionName: B1,
+        subSectionRow:
+          currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
+        section: 2,
+        subSection: 0,
+      },
+      {
+        sectionName: B2,
+        subSectionRow:
+          currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
+        section: 2,
+        subSection: 1,
+      },
+      {
+        sectionName: C1,
+        subSectionRow:
+          currentProjectDetails['section_c'][`step${subSectionIndex + 1}`],
+        section: 3,
+        subSection: 0,
+      },
+      {
+        sectionName: D1,
+        subSectionRow:
+          currentProjectDetails['section_d'][`step${subSectionIndex + 1}`],
+        section: 4,
+        subSection: 0,
+      },
+      {
+        sectionName: D2,
+        subSectionRow:
+          currentProjectDetails['section_d'][`step${subSectionIndex + 1}`],
+        section: 4,
+        subSection: 1,
+      },
+      {
+        sectionName: D3,
+        subSectionRow:
+          currentProjectDetails['section_d'][`step${subSectionIndex + 1}`],
+        section: 4,
+        subSection: 2,
+      },
+      {
+        sectionName: E1,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 0,
+      },
+      {
+        sectionName: E2,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 1,
+      },
+      {
+        sectionName: E3,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 2,
+      },
+      {
+        sectionName: E4,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 3,
+      },
+      {
+        sectionName: E5,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 4,
+      },
+      {
+        sectionName: E6,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 5,
+      },
+      {
+        sectionName: E7,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 6,
+      },
+    ]
+    let dataModified = false
+    console.log('paramsData', paramsData)
+    //filtering the params from data to pass to function
+    const params = paramsData.filter((i: any) => {
+      return i?.section === sectionIndex && i?.subSection === subSectionIndex
+    })
+    console.log('params', params)
+    if (params.length) {
+      dataModified = isDataModifiedCheckFunc(
+        params[0].sectionName,
+        params[0].subSectionRow,
+        sectionIndex,
+        subSectionIndex
+      )
     }
+    return dataModified
   }
 
   const handleSubSectionClick = (index?: number) => {
-    if (subSectionIndex !== index) {
-      if (sectionIndex > 0 && !IsApiCalled) {
+    //will only check if issuer is clicking on other subsection
+    if (index !== subSectionIndex) {
+      const dataModified = handleDataCheck()
+      if (dataModified) {
         setModal(true)
         setSubSectionIndexState(index)
-        return
-      } else if (IsApiCalled) {
-        dispatch(setIsApiCalled(false))
+      } else if (!dataModified) {
         dispatch(setSubSectionIndex(index))
       }
     }
@@ -198,10 +412,14 @@ const MonthlyReportUpdate = () => {
 
   const handleQuitWithoutSave = () => {
     setModal(false)
-    //ChangeInSection is to know whether the issuer has clicked on section level next or he is changing in subSection level
-    changeInSection && dispatch(setSectionIndex(sectionIndexState))
-    dispatch(setSubSectionIndex(subSectionIndexState))
-    setChangeInSection(false)
+    if (sectionIndex === 5) {
+      handleNextBtnFromSectionE()
+    } else {
+      //ChangeInSection is to know whether the issuer has clicked on section level next or he is clicked on subSection level
+      changeInSection && dispatch(setSectionIndex(sectionIndexState))
+      dispatch(setSubSectionIndex(subSectionIndexState))
+      setChangeInSection(false)
+    }
   }
 
   const handleModalSave = () => {
@@ -410,6 +628,60 @@ const MonthlyReportUpdate = () => {
             </CCButton>
           </Stack>
         </Paper>
+      </Modal>
+      <Modal
+        open={showMandatoryFieldModal}
+        onClose={() => dispatch(setShowMandatoryFieldModal(false))}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'rgba(56, 142, 129, 0.4)',
+        }}
+      >
+        <>
+          <Box
+            sx={{ position: 'absolute', top: 50, right: 50 }}
+            onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+          >
+            <CloseIcon
+              sx={{ color: '#FFFFFF', fontSize: 30, cursor: 'pointer' }}
+            />
+          </Box>
+          <Paper
+            sx={{
+              px: 9,
+              py: 5,
+              display: 'flex',
+              flexDirection: 'row',
+              borderRadius: 3,
+              outline: 'none',
+            }}
+          >
+            <Stack direction={'column'} alignItems="center">
+              <Typography
+                textAlign="center"
+                sx={{ fontWeight: 500, fontSize: 19 }}
+              >
+                Please Enter All the Mandatory Fields
+              </Typography>
+              <CCButton
+                onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+                sx={{
+                  mt: 3,
+                  minWidth: 0,
+                  padding: '10px 26px',
+                  fontSize: 19,
+                  fontWeight: 500,
+                }}
+              >
+                Ok
+              </CCButton>
+            </Stack>
+          </Paper>
+        </>
       </Modal>
     </>
   )
