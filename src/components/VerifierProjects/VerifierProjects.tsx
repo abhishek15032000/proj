@@ -2,7 +2,11 @@
 import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Paper, Skeleton, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, Skeleton, Typography } from '@mui/material'
+
+// Functional Imports
+import { useNavigate } from 'react-router-dom'
+import { shallowEqual } from 'react-redux'
 
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
@@ -10,29 +14,32 @@ import ListOfProjects from './ListOfProjects'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { getLocalItem } from '../../utils/Storage'
 import { USER } from '../../api/user.api'
-import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
-import { useAppDispatch } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
   setProfileCompletionPercent,
   setProfileUpdated,
 } from '../../redux/Slices/verifierSlice'
 import ProjectsStats from '../ProjectStats/ProjectsStats'
+import BlockchainCalls from '../../blockchain/Blockchain'
 
 const VerifierProjects = () => {
   const navigate = useNavigate()
-
   const dispatch = useAppDispatch()
 
   const [tableData, setTableData] = useState([])
-
   const [loadingTable, setLoadingTable] = useState(false)
+
+  const isConnected = useAppSelector(
+    ({ wallet }) => wallet.isConnected,
+    shallowEqual
+  )
 
   useEffect(() => {
     loadTableData()
-    checkForUserDetailsAndWalletAdded()
     // checkForUserDetails()
+    checkForUserDetailsAndWalletAdded()
   }, [])
 
   const loadTableData = () => {
@@ -135,15 +142,7 @@ const VerifierProjects = () => {
             />
           )}
 
-          {tableData.length > 0 && loadingTable === false && (
-            <ListOfProjects
-              data={tableData}
-              loading={loadingTable}
-              updateStatus={updateVerifierStatus}
-            />
-          )}
-
-          {loadingTable === true && (
+          {((tableData.length > 0 && !loadingTable) || loadingTable) && (
             <ListOfProjects
               data={tableData}
               loading={loadingTable}

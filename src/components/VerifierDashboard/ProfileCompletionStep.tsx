@@ -7,7 +7,7 @@ import { Colors } from '../../theme'
 
 interface ProfileCompletionProps {
   stepTitle: string
-  stepCompleted: boolean
+  stepCompleted: any
   onClickWhenIncomplete?: any
 }
 
@@ -34,12 +34,12 @@ const ProfileCompletionStep = (props: ProfileCompletionProps) => {
           sx={{
             fontSize: 14,
             fontWeight: 400,
-            color: props?.stepCompleted
+            color: props?.stepCompleted === 100
               ? Colors.textColorDarkGreen
               : Colors.secondary,
           }}
         >
-          {props?.stepCompleted ? '100' : '0'}% Complete
+          {props?.stepCompleted}% Complete
         </Typography>
       </Box>
       <IconButton
@@ -50,12 +50,12 @@ const ProfileCompletionStep = (props: ProfileCompletionProps) => {
           height: '40px',
           width: '40px',
           borderRadius: '20px',
-          backgroundColor: props?.stepCompleted
+          backgroundColor: props?.stepCompleted === 100
             ? Colors.white
             : Colors.lightPrimary1,
         }}
       >
-        {props?.stepCompleted ? (
+        {props?.stepCompleted === 100 ? (
           <CheckIcon style={{ color: Colors.lightPrimary1 }} />
         ) : (
           <ArrowRightAltIcon

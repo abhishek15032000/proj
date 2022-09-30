@@ -21,12 +21,12 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       color: Colors.lightPinkBackground,
     },
     {
-      title: 'Number of tokens available for sale',
+      title: 'Number of VCOs on sale',
       value: '10',
       color: Colors.lightGreenBackground3,
     },
     {
-      title: 'Total number of tokens on sale',
+      title: 'Number of VCOs available for sale',
       value: '05',
       color: Colors.lightGreenBackground4,
     },
@@ -47,13 +47,12 @@ const IssuerWallet = (props: IssuerWalletProps) => {
         <DashboardStatistics data={dashboardStatistics} />
 
         <Grid item xs={12}>
-          {/* <TransactionHistory /> */}
-          <EmptyComponent
+          <TransactionHistory />
+          {/* <EmptyComponent
             photoType={3}
             title="No transaction history!"
-            // listNewProject
             exploreMarketplace
-          />
+          /> */}
         </Grid>
       </Grid>
     </Box>

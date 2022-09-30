@@ -9,6 +9,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 // Functional Imports
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 // Local Imports
 import TabSelector from '../../atoms/TabSelector/TabSelector'
@@ -26,8 +28,6 @@ import {
   setCurrentProjectDetailsUUID,
 } from '../../redux/Slices/issuanceDataCollection'
 import { pathNames } from '../../routes/pathNames'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import {
   setSectionIndex,
   setSubSectionIndex,
@@ -70,13 +70,14 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   const [tabIndex, setTabIndex] = useState(1)
   const [rowsNew, setRowsNew]: any = useState([{}])
   const [rowsRegistered, setRowsRegistered]: any = useState([{}])
-
+  
   const openProjectDetails = (projectDetails: any, redirect: any) => {
     if (projectDetails) {
       const percentageAddedData = addSectionPercentages(projectDetails)
 
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(percentageAddedData))
+
       if (redirect === 'Details') {
         navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO, {
           state: {
@@ -88,6 +89,8 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         dispatch(setSubSectionIndex(0))
         dispatch(setMainProjectDetails(projectDetails))
         navigate(pathNames.MONTHLY_REPORT_UPDATE)
+      } else if (redirect === 'Verify') {
+        navigate(pathNames.SELECT_VERIFIER)
       }
     }
   }

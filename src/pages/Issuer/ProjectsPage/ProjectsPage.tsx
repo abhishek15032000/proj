@@ -12,7 +12,6 @@ const ProjectsPage = (props: ProjectsPageProps) => {
 
   return (
     <>
-      {console.log('userDetails', userDetails)}
       <LoadWallet />
       {userDetails?.type === ROLES.ISSUER && <ProjectsComp />}
       {userDetails?.type === ROLES.VERIFIER && <VerifierProjects />}

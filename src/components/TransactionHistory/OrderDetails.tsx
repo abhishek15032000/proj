@@ -24,7 +24,16 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
         mt: 2,
       }}
     >
-      <Box sx={{ width: '50%', height: '100%', p: 3 }}>
+      <Box
+        sx={{
+          width: {
+            xs: '100%',
+            lg: '50%',
+          },
+          height: '100%',
+          p: 3,
+        }}
+      >
         <Box>
           <Typography
             sx={{
@@ -138,7 +147,17 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
           </Box>
         </Box>
       </Box>
-      <Box component="img" sx={{ width: '50%' }} src={TransactionHistoryImg} />
+      <Box
+        component="img"
+        sx={{
+          width: '50%',
+          display: {
+            xs: 'none',
+            lg: 'block',
+          },
+        }}
+        src={TransactionHistoryImg}
+      />
     </Paper>
   )
 }
@@ -146,11 +165,10 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
 export default OrderDetails
 
 const styles = {
-    TitleValue: {
-      marginTop: 2,
-      width: '250px',
-      pr: 2,
-      // pl: 1,
-    },
-  }
-  
+  TitleValue: {
+    marginTop: 2,
+    maxWidth: '250px',
+    pr: 2,
+    // pl: 1,
+  },
+}

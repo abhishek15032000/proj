@@ -15,7 +15,8 @@ import TextButton from '../../atoms/TextButton/TextButton'
 interface TransactionHistoryProps {}
 
 const TransactionHistory: FC<TransactionHistoryProps> = (props) => {
-  const [date, setDate] = useState(new Date())
+  const [startDate, setStartDate] = useState(new Date())
+  const [endDate, setEndDate] = useState(new Date())
   const [dropdown, setDropdown] = useState('All')
 
   return (
@@ -48,22 +49,47 @@ const TransactionHistory: FC<TransactionHistoryProps> = (props) => {
 
         <Box sx={{ width: '180px', mr: 4 }}>
           <DatePicker
-            // PaperProps={sx: {{ width: '180px' }}}
-            value={date}
+            label="Start Date"
+            value={startDate}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,
             }}
-            renderInput={(params) => {
+            renderInput={(params: any) => {
               return (
                 <CCInputField
                   {...params}
                   style={{ backgroundColor: 'white' }}
+                  required={false}
                 />
               )
             }}
             onChange={(e) => {
               if (e !== null) {
-                setDate(e)
+                setStartDate(e)
+              }
+            }}
+          />
+        </Box>
+
+        <Box sx={{ width: '180px', mr: 4 }}>
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            components={{
+              OpenPickerIcon: CalendarMonthOutlinedIcon,
+            }}
+            renderInput={(params: any) => {
+              return (
+                <CCInputField
+                  {...params}
+                  style={{ backgroundColor: 'white' }}
+                  required={false}
+                />
+              )
+            }}
+            onChange={(e) => {
+              if (e !== null) {
+                setEndDate(e)
               }
             }}
           />
@@ -87,6 +113,7 @@ const rowItem = [
   '200',
   'Sell',
   '11/07/2022',
+  '11/07/2022',
   '17:41:20',
   '10',
   '3',
@@ -109,10 +136,11 @@ const rows = [rowItem, rowItem, rowItem, rowItem]
 const headings = [
   'Order ID',
   'Buy/Sell',
-  'Date',
+  'Start Date',
+  'End Date',
   'Time',
-  'Quantity',
-  'Unit Price',
+  'Quantity(VCOs T)',
+  'Unit Price(USD)',
   'Total Amount',
   'Details',
 ]

@@ -56,6 +56,7 @@ const newProject = createSlice({
     setEndDate: (state, action: PayloadAction<any>) => {
       state.endDate = action.payload
     },
+    resetSectionNewProjectDetails: () => initialState,
   },
 })
 
@@ -69,6 +70,7 @@ export const {
   setNewProjectUUID,
   setLoading,
   setEndDate,
+  resetSectionNewProjectDetails,
 } = newProject.actions
 
 export default newProject.reducer

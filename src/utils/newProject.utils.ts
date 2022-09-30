@@ -67,3 +67,15 @@ export const isProjectCompleted = (row: any, index?: any) => {
     return false
   }
 }
+
+export const totalCompletion = (row: any, index?: any) => {
+  row.section_a.completionPercentage = calSectionPercent(row.section_a)
+  row.section_b.completionPercentage = calSectionPercent(row.section_b)
+  row.section_c.completionPercentage = calSectionPercent(row.section_c)
+  row.section_d.completionPercentage = calSectionPercent(row.section_d)
+  row.section_e.completionPercentage = calSectionPercent(row.section_e)
+
+  const total = row.section_a.completionPercentage + row.section_b.completionPercentage + row.section_c.completionPercentage + row.section_d.completionPercentage + row.section_e.completionPercentage 
+
+  return total
+}
