@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setA5 } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
+import moment from 'moment'
 
 const SectionA5 = () => {
   const dispatch = useAppDispatch()
@@ -106,12 +107,18 @@ const SectionA5 = () => {
             label="Crediting end "
             value={A5.credit_period.end_date}
             onChange={(newValue) => {
-              dispatch(
-                setA5({
-                  name: ['credit_period', 'end_date'],
-                  value: newValue?._isValid ? newValue.toISOString() : '',
-                })
-              )
+              if (
+                moment(newValue).diff(moment(A5.credit_period.start_date)) > 0
+              ) {
+                dispatch(
+                  setA5({
+                    name: ['credit_period', 'end_date'],
+                    value: newValue?._isValid ? newValue.toISOString() : '',
+                  })
+                )
+              } else {
+                alert('End date shoud be greater than start date')
+              }
             }}
             components={{
               OpenPickerIcon: CalendarMonthOutlinedIcon,

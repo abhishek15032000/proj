@@ -15,6 +15,7 @@ import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
 import LoaderOverlay from '../../components/LoderOverlay'
 import { USER } from '../../api/user.api'
+import isEmail from 'validator/lib/isEmail'
 import { setLocalItem } from '../../utils/Storage'
 declare let window: any
 
@@ -152,7 +153,17 @@ const Login = () => {
                 type="email"
                 name="email"
                 onChange={handleChange}
-                error={errors?.email}
+                error={
+                  values?.email !== '' &&
+                  values?.email !== undefined &&
+                  !isEmail(values?.email)
+                }
+                helperText={
+                  values?.email !== '' &&
+                  values?.email !== undefined &&
+                  !isEmail(values?.email) &&
+                  'Enter valid Email ID'
+                }
                 defaultValue={values?.email}
                 clearFn={() => handleChange({ target: { value: '' } })}
               />
