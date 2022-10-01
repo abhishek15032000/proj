@@ -49,6 +49,7 @@ import { resetSectionE } from '../../redux/Slices/sectionESlice'
 import { resetSectionD } from '../../redux/Slices/sectionDSlice'
 import { resetSectionB } from '../../redux/Slices/sectionBSlice'
 import { resetSectionC } from '../../redux/Slices/sectionCSlice'
+import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -181,6 +182,7 @@ const IssuanceDataCollection = () => {
       dispatch(resetSectionD())
       dispatch(resetSectionE())
       dispatch(setSubSectionIndex(0))
+      dispatch(resetSectionNewProjectDetails())
     }
   }, [])
 
@@ -233,6 +235,10 @@ const IssuanceDataCollection = () => {
   }
 
   const handleNext = () => {
+    //Restrct issuer from going to next Sections if New Project hasn't been created
+    if (!currentProjectDetails) {
+      return
+    }
     if (sectionIndex > 0) {
       const isDataModified = handleDataCheck()
       if (isDataModified) {
@@ -505,6 +511,8 @@ const IssuanceDataCollection = () => {
                     alignItems: 'center',
                     p: 1,
                     cursor: 'pointer',
+                    opacity: currentProjectDetails ? 1 : 0.5,
+                    pointerEvents: currentProjectDetails ? 'all' : 'none',
                   }}
                   onClick={handleNext}
                 >
