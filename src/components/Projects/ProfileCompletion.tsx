@@ -100,7 +100,9 @@ const ProfileCompletion = () => {
             height: '40px',
             width: '40px',
             borderRadius: '20px',
-            backgroundColor: walletIsConnected ? Colors.white : Colors.lightPrimary1,
+            backgroundColor: walletIsConnected
+              ? Colors.white
+              : Colors.lightPrimary1,
           }}
         >
           {walletIsConnected ? (

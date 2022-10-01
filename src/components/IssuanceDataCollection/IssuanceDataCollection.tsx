@@ -206,7 +206,9 @@ const IssuanceDataCollection = () => {
   }
 
   const handlePrevious = () => {
+    //console.log('run')
     if (sectionIndex > 0) {
+      //console.log('not runn')
       const isDataModified = handleDataCheck()
 
       if (isDataModified) {

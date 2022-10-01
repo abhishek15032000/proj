@@ -63,7 +63,7 @@ export const checkMandatoryFieldsArrayObjects = (mandatoryFields: any) => {
   let isFilled = false
   Object.keys(mandatoryFields[0]).map((key) => {
     for (let i = 0; i < mandatoryFields.length; i++) {
-      if (!mandatoryFields[i][key]) {
+      if (key !== 'flag' && !mandatoryFields[i][key]) {
         isFilled = true
         return
       }

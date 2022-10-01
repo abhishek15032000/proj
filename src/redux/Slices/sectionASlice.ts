@@ -90,7 +90,6 @@ const sectionA = createSlice({
     // A5
     setA5: (state, action: PayloadAction<any>) => {
       const { name, value } = action.payload
-      console.log('value: ', value)
       typeof name === 'string'
         ? (state.A5[name] = value)
         : (state.A5[name[0]][name[1]] = value)

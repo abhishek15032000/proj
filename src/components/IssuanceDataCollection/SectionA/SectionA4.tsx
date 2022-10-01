@@ -60,7 +60,6 @@ const SectionA4 = () => {
     ({ sectionA }) => sectionA.methodologies,
     shallowEqual
   )
-
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -239,6 +238,60 @@ const SectionA4 = () => {
                       sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
                     >
                       AMS-I.C
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.D'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.D
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.E'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.E
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.F'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.F
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.G'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.G
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.H'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.H
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.I'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.I
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.J'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.J
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.K'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.K
+                    </MenuItem>
+                    <MenuItem
+                      value={'AMS-I.L'}
+                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
+                    >
+                      AMS-I.L
                     </MenuItem>
                   </Select>
                 </FormControl>
