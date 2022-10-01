@@ -174,6 +174,7 @@ const IssuanceDataCollection = () => {
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
 
   //console.log('currentProjectDetails:', currentProjectDetails)
+
   useEffect(() => {
     return () => {
       dispatch(resetSectionA())
@@ -393,6 +394,7 @@ const IssuanceDataCollection = () => {
     const params = paramsData.filter((i: any) => {
       return i?.section === sectionIndex && i?.subSection === subSectionIndex
     })
+    console.log('params', params)
     if (params.length) {
       dataModified = isDataModifiedCheckFunc(
         params[0].sectionName,

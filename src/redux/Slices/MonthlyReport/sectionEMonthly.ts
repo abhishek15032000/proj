@@ -2,43 +2,44 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface sectionEMonthlyInterface {
   //E1
-  calculationOfBaselineEmissions: string
-  calculationOfBaselineEmissionsImages: []
-  //E2
-  calculationOfProjectEmissions: string
-  calculationOfProjectEmissionsImages: []
-  //E3
-  calculationOfLeakage: string
-  calculationOfLeakageImages: []
-  //E4
-  calculationSummaryOfEmission: string
-  calculationSummaryOfEmissionImages: []
-  //E5
-  comparisionOfActualEmissionReductions: string
-  comparisionOfActualEmissionReductionsImages: []
-  //E6
-  remarksOnDifferenceFromEstimatedValue: string
-  remarksOnDifferenceFromEstimatedValueImages: []
-  //E7
-  actualEmissionReductions: string
-  actualEmissionReductionsImages: []
+  E1: any
+  E2: any
+  E3: any
+  E4: any
+  E5: any
+  E6: any
+  E7: any
 }
 
 const initialState: sectionEMonthlyInterface = {
-  calculationOfBaselineEmissions: '',
-  calculationOfBaselineEmissionsImages: [],
-  calculationOfProjectEmissions: '',
-  calculationOfProjectEmissionsImages: [],
-  calculationOfLeakage: '',
-  calculationOfLeakageImages: [],
-  calculationSummaryOfEmission: '',
-  calculationSummaryOfEmissionImages: [],
-  comparisionOfActualEmissionReductions: '',
-  comparisionOfActualEmissionReductionsImages: [],
-  remarksOnDifferenceFromEstimatedValue: '',
-  remarksOnDifferenceFromEstimatedValueImages: [],
-  actualEmissionReductions: '',
-  actualEmissionReductionsImages: [],
+  E1: {
+    calculation_of_baselineEmissions_or_net_GHG: '',
+    attach_relevant_docs: [],
+  },
+  E2: {
+    calculation_of_projectEmissions_or_net_GHG: '',
+    attach_relevant_docs: [],
+  },
+  E3: {
+    calculation_of_leakage: '',
+    attach_relevant_docs: [],
+  },
+  E4: {
+    calculation_of_emissions_reduction: '',
+    attach_relevant_docs: [],
+  },
+  E5: {
+    comparison_of_actual_emission_reduction: '',
+    attach_relevant_docs: [],
+  },
+  E6: {
+    remark_on_difference_from_estimate_value: '',
+    attach_relevant_docs: [],
+  },
+  E7: {
+    actual_emission_reductions: '',
+    attach_relevant_docs: [],
+  },
 }
 
 const sectionEMonthly = createSlice({
@@ -46,92 +47,52 @@ const sectionEMonthly = createSlice({
   initialState,
   reducers: {
     //E1
-    setCalculationOfBaselineEmissions: (state, action: PayloadAction<any>) => {
-      state.calculationOfBaselineEmissions = action.payload
-    },
-    setCalculationOfBaselineEmissionsImages: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      state.calculationOfBaselineEmissionsImages = action.payload
+    setE1: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E1[name] = value
     },
     //E2
-    setCalculationOfProjectEmissions: (state, action: PayloadAction<any>) => {
-      state.calculationOfProjectEmissions = action.payload
-    },
-    setCalculationOfProjectEmissionsImages: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      state.calculationOfProjectEmissionsImages = action.payload
+    setE2: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E2[name] = value
     },
     //E3
-    setCalculationOfLeakage: (state, action: PayloadAction<any>) => {
-      state.calculationOfLeakage = action.payload
-    },
-    setCalculationOfLeakageImages: (state, action: PayloadAction<any>) => {
-      state.calculationOfLeakageImages = action.payload
+    setE3: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E3[name] = value
     },
     //E4
-    setCalculationSummaryOfEmission: (state, action: PayloadAction<any>) => {
-      state.calculationSummaryOfEmission = action.payload
-    },
-    setCalculationSummaryOfEmissionImages: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      state.calculationSummaryOfEmissionImages = action.payload
+    setE4: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E4[name] = value
     },
     //E5
-    setComparisionOfActualEmissionReductions: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      state.comparisionOfActualEmissionReductions = action.payload
-    },
-    setComparisionOfActualEmissionReductionsImages: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      state.comparisionOfActualEmissionReductionsImages = action.payload
+    setE5: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E5[name] = value
     },
     //E6
-    setRemarksOnDifferenceFromEstimatedValue: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      state.remarksOnDifferenceFromEstimatedValue = action.payload
+    setE6: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E6[name] = value
     },
-    setRemarksOnDifferenceFromEstimatedValueImages: (
-      state,
-      action: PayloadAction<any>
-    ) => {
-      state.remarksOnDifferenceFromEstimatedValueImages = action.payload
+    setE7: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E7[name] = value
     },
-    setActualEmissionReductions: (state, action: PayloadAction<any>) => {
-      state.actualEmissionReductions = action.payload
-    },
-    setActualEmissionReductionsImages: (state, action: PayloadAction<any>) => {
-      state.actualEmissionReductionsImages = action.payload
-    },
+    resetSectionE: () => initialState,
   },
 })
 
 export const {
-  setCalculationOfBaselineEmissions,
-  setCalculationOfBaselineEmissionsImages,
-  setCalculationOfProjectEmissions,
-  setCalculationOfProjectEmissionsImages,
-  setCalculationOfLeakage,
-  setCalculationOfLeakageImages,
-  setCalculationSummaryOfEmission,
-  setCalculationSummaryOfEmissionImages,
-  setComparisionOfActualEmissionReductions,
-  setComparisionOfActualEmissionReductionsImages,
-  setRemarksOnDifferenceFromEstimatedValue,
-  setRemarksOnDifferenceFromEstimatedValueImages,
-  setActualEmissionReductions,
-  setActualEmissionReductionsImages,
+  setE1,
+  setE2,
+  setE3,
+  setE4,
+  setE5,
+  setE6,
+  setE7,
+  resetSectionE,
 } = sectionEMonthly.actions
 
 export default sectionEMonthly.reducer
