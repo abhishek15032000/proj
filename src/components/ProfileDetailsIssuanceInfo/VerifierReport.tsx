@@ -23,6 +23,8 @@ import AddIcon from '@mui/icons-material/Add'
 import MonthlyReportUpdate, {
   setCurrentProjectDetails,
   setMainProjectDetails,
+  setSectionIndex,
+  setSubSectionIndex,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import BlockchainCalls from '../../blockchain/Blockchain'
@@ -157,21 +159,25 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 //   View
                 // </Typography>,
                 '-',
-                <CCButton
-                  key={index}
-                  sx={{
-                    backgroundColor: Colors.darkPrimary1,
-                    padding: '8px 24px',
-                    minWidth: '50px',
-                    color: '#fff',
-                    borderRadius: 10,
-                    fontSize: 14,
-                    mr: 1,
-                  }}
-                  onClick={() => addMonthlyData(i, res?.data?.main_project)}
-                >
-                  Resume
-                </CCButton>,
+                i.project_status === 0 ? (
+                  <CCButton
+                    key={index}
+                    sx={{
+                      backgroundColor: Colors.darkPrimary1,
+                      padding: '8px 24px',
+                      minWidth: '50px',
+                      color: '#fff',
+                      borderRadius: 10,
+                      fontSize: 14,
+                      mr: 1,
+                    }}
+                    onClick={() => addMonthlyData(i, res?.data?.main_project)}
+                  >
+                    Resume
+                  </CCButton>
+                ) : (
+                  '-'
+                ),
               ]
             })
           setMonthlyReportsList(rows)
@@ -187,6 +193,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const addMonthlyData = (item: any, main: any) => {
     dispatch(setCurrentProjectDetails(item))
     dispatch(setMainProjectDetails(main))
+    dispatch(setSectionIndex(0))
+    dispatch(setSubSectionIndex(0))
     navigate(pathNames.MONTHLY_REPORT_UPDATE)
   }
 

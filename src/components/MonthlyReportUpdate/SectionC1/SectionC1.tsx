@@ -14,7 +14,6 @@ import {
 import { Box } from '@mui/system'
 
 // Asset Imports
-import DataIssuanceAdd from '../../../assets/Images/Icons/DataIssuanceAdd.png'
 import SectionCOrganisationalStructure from '../../../assets/Images/SampleData/SectionCOrganisationalStructure.png'
 
 // Local Components
@@ -22,14 +21,8 @@ import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import {
-  setDatasMonitored,
-  setMonioringSystem,
-  setMonitoringPlan,
-  setOrganizationalChartImage,
-} from '../../../redux/Slices/MonthlyReport/sectionCMonthly'
+import { setC1 } from '../../../redux/Slices/MonthlyReport/sectionCMonthly'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import Spinner from '../../../atoms/Spinner'
 
 const SectionC1 = () => {
@@ -39,9 +32,22 @@ const SectionC1 = () => {
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+
+  const C1 = useAppSelector(
+    ({ sectionCMonthly }) => sectionCMonthly.C1,
+    shallowEqual
+  )
+  const { attach_org_structure_and_responsibilities_chart } = C1
 
   useEffect(() => {
-    if (currentProjectDetails.section_c.step1.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_c.step1.completed
+    ) {
       const {
         description,
         monitoring_plan,
@@ -49,40 +55,22 @@ const SectionC1 = () => {
         specific_data_monitored,
       } = currentProjectDetails.section_c.step1
 
-      dispatch(setDatasMonitored(description))
-      dispatch(setMonioringSystem(specific_data_monitored))
-      dispatch(setMonitoringPlan(monitoring_plan))
+      dispatch(setC1({ name: 'description', value: description }))
       dispatch(
-        setOrganizationalChartImage(
-          attach_org_structure_and_responsibilities_chart
-        )
+        setC1({
+          name: 'specific_data_monitored',
+          value: specific_data_monitored,
+        })
+      )
+      dispatch(setC1({ name: 'monitoring_plan', value: monitoring_plan }))
+      dispatch(
+        setC1({
+          name: 'attach_org_structure_and_responsibilities_chart',
+          value: attach_org_structure_and_responsibilities_chart,
+        })
       )
     }
-  }, [])
-
-  const monitoringSystem = useAppSelector(
-    ({ sectionCMonthly }) => sectionCMonthly.monitoringSystem,
-    shallowEqual
-  )
-
-  const monitoringPlan = useAppSelector(
-    ({ sectionCMonthly }) => sectionCMonthly.monitoringPlan,
-    shallowEqual
-  )
-
-  const organizationalChartImage = useAppSelector(
-    ({ sectionCMonthly }) => sectionCMonthly.organizationalChartImage,
-    shallowEqual
-  )
-
-  const datasMonitored = useAppSelector(
-    ({ sectionCMonthly }) => sectionCMonthly.datasMonitored,
-    shallowEqual
-  )
-  const loading = useAppSelector(
-    ({ selectDate }) => selectDate.loading,
-    shallowEqual
-  )
+  }, [currentProjectDetails])
 
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
@@ -93,22 +81,24 @@ const SectionC1 = () => {
       <Grid container sx={{ mt: 4 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Description of monitoring system *"
+            label="Description of monitoring system "
             placeholder="Description of the monitoring system,organisational structure of the team, their roles & responsibilities, training and maintenance"
-            value={monitoringSystem}
-            onChange={(event) =>
-              dispatch(setMonioringSystem(event.target.value))
+            value={C1.description}
+            name={'description'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setC1({ value, name }))
             }
           />
         </Grid>
 
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Monitoring Plan *"
+            label="Monitoring Plan"
             placeholder="According to registered and the applied methodology, describe plan of monitoring variables"
-            value={monitoringPlan}
-            onChange={(event) =>
-              dispatch(setMonitoringPlan(event.target.value))
+            value={C1.monitoring_plan}
+            name={'monitoring_plan'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setC1({ value, name }))
             }
           />
 
@@ -117,18 +107,28 @@ const SectionC1 = () => {
               'Sample Report - Organizational Structure & Responsibilities Chart',
             ]}
             mediaItem={[SectionCOrganisationalStructure]}
-            title="Attach organizational structure & responsibilities chart"
-            imageArray={organizationalChartImage}
+            title="Attach organizational structure & responsibilities chart*"
+            imageArray={attach_org_structure_and_responsibilities_chart}
             onImageUpload={(item: any) => {
               dispatch(
-                setOrganizationalChartImage([item, ...organizationalChartImage])
+                setC1({
+                  name: 'attach_org_structure_and_responsibilities_chart',
+                  value: [
+                    item,
+                    ...attach_org_structure_and_responsibilities_chart,
+                  ],
+                })
               )
             }}
             onDeleteImage={(index: number) => {
               dispatch(
-                setOrganizationalChartImage(
-                  deleteIndexInArray(organizationalChartImage, index)
-                )
+                setC1({
+                  name: 'attach_org_structure_and_responsibilities_chart',
+                  value: deleteIndexInArray(
+                    attach_org_structure_and_responsibilities_chart,
+                    index
+                  ),
+                })
               )
             }}
           />
@@ -136,11 +136,12 @@ const SectionC1 = () => {
 
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Specific Datas Monitored *"
+            label="Specific Datas Monitored "
             placeholder="According to registered and the applied methodology, specific datas monitored"
-            value={datasMonitored}
-            onChange={(event) =>
-              dispatch(setDatasMonitored(event.target.value))
+            value={C1.specific_data_monitored}
+            name={'specific_data_monitored'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setC1({ value, name }))
             }
           />
         </Grid>
