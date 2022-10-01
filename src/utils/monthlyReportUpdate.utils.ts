@@ -14,6 +14,7 @@ import { stringExtractor } from './commonFunctions'
 
 import {
   addSectionPercentages,
+  addSectionPercentagesMonthly,
   checkingMandatoryFields,
   checkMandatoryFieldsArrayObjects,
 } from './newProject.utils'
@@ -37,13 +38,7 @@ export const moveToNextSection = async (
     const startDate = selectDate?.startDate?.toISOString()
     const endDate = selectDate?.endDate?.toISOString()
     const project_uuid = newProjectData?.uuid
-    console.log(
-      'newProjectData',
-      newProjectData,
-      newProjectData?.currentProjectDetails,
-      startDate,
-      endDate
-    )
+
     if (
       startDate == null ||
       (startDate == undefined && endDate == null) ||
@@ -89,8 +84,7 @@ export const moveToNextSection = async (
     const {
       A1: { total_GHG_emission },
     } = sectionA
-    console.log('total_GHG_emission', total_GHG_emission)
-    console.log(Object.keys(sectionA).map((item) => item))
+
     let params = {}
     if (subSectionIndex === 0) {
       if (checkingMandatoryFields([total_GHG_emission])) {
@@ -113,7 +107,7 @@ export const moveToNextSection = async (
       monthly_update: true,
       ...params,
     }
-    console.log('params<<<<', payload)
+
     try {
       dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
@@ -549,11 +543,12 @@ export const moveToNextSection = async (
 
 const getProjectDetails = async (projectID: string) => {
   try {
+    dispatch(setLoading(true))
     const res = await dataCollectionCalls.getProjectById(projectID)
 
     if (res?.success && res?.data) {
-      const modifiedRows = addSectionPercentages(res?.data)
-      console.log('getProjectDetailsMonthly', modifiedRows, res)
+      const modifiedRows = addSectionPercentagesMonthly(res?.data)
+
       if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
     }
 
@@ -562,5 +557,7 @@ const getProjectDetails = async (projectID: string) => {
     }
   } catch (e) {
     console.log('Error in dataCollectionCalls.getProjectById api ~ ', e)
+  } finally {
+    dispatch(setLoading(false))
   }
 }

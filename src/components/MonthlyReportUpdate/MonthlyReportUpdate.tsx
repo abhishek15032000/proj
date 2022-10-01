@@ -164,8 +164,6 @@ const MonthlyReportUpdate = () => {
     shallowEqual
   )
 
-  console.log('E1><<<<<<<<<<<<<', E1)
-
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [nextBtn, setNextBtn] = useState(true)
@@ -259,9 +257,8 @@ const MonthlyReportUpdate = () => {
 
   const handleNext = () => {
     if (sectionIndex > 0) {
-      // console.log('sectionIndex', sectionIndex)
       const isDataModified = handleDataCheck()
-      console.log('isDataModified', isDataModified)
+
       if (isDataModified) {
         setModal(true)
         setChangeInSection(true)
@@ -277,7 +274,6 @@ const MonthlyReportUpdate = () => {
   }
 
   const handleDataCheck = () => {
-    console.log('currentProjectDetails', currentProjectDetails)
     const paramsData = [
       {
         sectionName: A1,
@@ -380,12 +376,12 @@ const MonthlyReportUpdate = () => {
       },
     ]
     let dataModified = false
-    console.log('paramsData', paramsData)
+
     //filtering the params from data to pass to function
     const params = paramsData.filter((i: any) => {
       return i?.section === sectionIndex && i?.subSection === subSectionIndex
     })
-    console.log('params', params)
+
     if (params.length) {
       dataModified = isDataModifiedCheckFunc(
         params[0].sectionName,

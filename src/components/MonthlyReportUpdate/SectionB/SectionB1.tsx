@@ -73,7 +73,7 @@ const SectionB1 = () => {
         implementation_milestones_attach,
         project_timeline_attach,
       } = currentProjectDetails.section_b.step1
-      console.log('currentProjectDetails.section_b.step1', general_description)
+
       dispatch(
         setB1({ name: 'general_description', value: general_description })
       )
