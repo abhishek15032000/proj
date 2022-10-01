@@ -44,7 +44,10 @@ const SectionB1 = () => {
     shallowEqual
   )
 
-  const B1 = useAppSelector(({ sectionB }) => sectionB.B1, shallowEqual)
+  const B1 = useAppSelector(
+    ({ sectionBMonthly }) => sectionBMonthly.B1,
+    shallowEqual
+  )
 
   const {
     general_description,

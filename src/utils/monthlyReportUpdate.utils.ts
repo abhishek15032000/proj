@@ -117,7 +117,7 @@ export const moveToNextSection = async (
     try {
       dispatch(setLoading(true))
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
-      if (res?.success && res?.data?.uuid) {
+      if (res?.success) {
         getProjectDetails(currentProjectUUID)
       }
       if (!res?.success && res?.error) {
@@ -131,7 +131,7 @@ export const moveToNextSection = async (
   }
 
   if (sectionIndex === 2) {
-    const sectionB: any = store.getState()?.sectionB
+    const sectionB: any = store.getState()?.sectionBMonthly
     const newProjectData = store.getState()?.newProject
     const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
     const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
@@ -241,7 +241,7 @@ export const moveToNextSection = async (
   }
 
   if (sectionIndex === 3) {
-    const sectionC: any = store.getState()?.sectionC
+    const sectionC: any = store.getState()?.sectionCMonthly
     const newProjectData = store.getState()?.newProject
     const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
     const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
@@ -299,7 +299,7 @@ export const moveToNextSection = async (
   }
 
   if (sectionIndex === 4) {
-    const sectionD: any = store.getState()?.sectionD
+    const sectionD: any = store.getState()?.sectionDMonthly
     const newProjectData = store.getState()?.newProject
     const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
     const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID
@@ -377,7 +377,7 @@ export const moveToNextSection = async (
   }
 
   if (sectionIndex === 5) {
-    const sectionE: any = store.getState()?.sectionE
+    const sectionE: any = store.getState()?.sectionEMonthly
     const newProjectData = store.getState()?.newProject
     const MonthlyReportUpdate = store.getState()?.MonthlyReportUpdate
     const currentProjectUUID = MonthlyReportUpdate?.currentProjectDetailsUUID

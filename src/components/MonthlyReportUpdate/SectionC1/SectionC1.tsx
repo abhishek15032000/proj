@@ -37,7 +37,10 @@ const SectionC1 = () => {
     shallowEqual
   )
 
-  const C1 = useAppSelector(({ sectionC }) => sectionC.C1, shallowEqual)
+  const C1 = useAppSelector(
+    ({ sectionCMonthly }) => sectionCMonthly.C1,
+    shallowEqual
+  )
   const { attach_org_structure_and_responsibilities_chart } = C1
 
   useEffect(() => {

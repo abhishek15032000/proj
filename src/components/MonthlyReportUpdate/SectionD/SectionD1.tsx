@@ -11,7 +11,10 @@ import Spinner from '../../../atoms/Spinner'
 
 const SectionD1: FC = () => {
   const dispatch = useAppDispatch()
-  const D1 = useAppSelector(({ sectionD }) => sectionD.D1, shallowEqual)
+  const D1 = useAppSelector(
+    ({ sectionDMonthly }) => sectionDMonthly.D1,
+    shallowEqual
+  )
   const { attach_ex_ante_table } = D1
 
   const currentProjectDetails = useAppSelector(

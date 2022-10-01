@@ -12,7 +12,7 @@ import Spinner from '../../../atoms/Spinner'
 const SectionE5 = () => {
   const dispatch = useAppDispatch()
 
-  const E5 = useAppSelector(({ sectionE }) => sectionE.E5)
+  const E5 = useAppSelector(({ sectionEMonthly }) => sectionEMonthly.E5)
   const { attach_relevant_docs } = E5
   const currentProjectDetails = useAppSelector(
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,

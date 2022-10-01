@@ -26,6 +26,7 @@ const SectionA1 = () => {
   )
 
   useEffect(() => {
+    console.log('SEctionA?????????????', currentProjectDetails)
     if (
       currentProjectDetails &&
       currentProjectDetails.section_a.step1.completed

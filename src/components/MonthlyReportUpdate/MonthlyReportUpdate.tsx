@@ -164,7 +164,7 @@ const MonthlyReportUpdate = () => {
     shallowEqual
   )
 
-  console.log('B1><<<<<<<<<<<<<', B1)
+  console.log('E1><<<<<<<<<<<<<', E1)
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -248,7 +248,7 @@ const MonthlyReportUpdate = () => {
 
   const handleNextBtnFromSectionE = () => {
     if (nextBtn) {
-      navigate(-1)
+      navigate(pathNames.DASHBOARD)
     }
     // else if (!nextBtn) {
     //   if (currentProjectDetails?.project_status === 0) {
@@ -412,14 +412,11 @@ const MonthlyReportUpdate = () => {
 
   const handleQuitWithoutSave = () => {
     setModal(false)
-    if (sectionIndex === 5) {
-      handleNextBtnFromSectionE()
-    } else {
-      //ChangeInSection is to know whether the issuer has clicked on section level next or he is clicked on subSection level
-      changeInSection && dispatch(setSectionIndex(sectionIndexState))
-      dispatch(setSubSectionIndex(subSectionIndexState))
-      setChangeInSection(false)
-    }
+
+    //ChangeInSection is to know whether the issuer has clicked on section level next or he is clicked on subSection level
+    changeInSection && dispatch(setSectionIndex(sectionIndexState))
+    dispatch(setSubSectionIndex(subSectionIndexState))
+    setChangeInSection(false)
   }
 
   const handleModalSave = () => {

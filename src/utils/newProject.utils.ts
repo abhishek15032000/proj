@@ -12,9 +12,19 @@ export const calSectionPercent = (data: any, optionalField?: any) => {
   const calPercentage = (filteringTrue.length / tempChild.length) * 100
   return Math.round(calPercentage)
 }
+export const calSectionPercentSpecificStep = (data: any) => {
+  //Sections with only steps object
+  const filteringTrue = data.filter((i: any) => i?.completed === true)
+  const calPercentage = (filteringTrue.length / data.length) * 100
+  console.log(' Math.round(calPercentage)', Math.round(calPercentage))
+  return Math.round(calPercentage)
+}
 
 export const addSectionPercentages = (row: any) => {
-  row.section_a.completionPercentage = calSectionPercent(row.section_a)
+  console.log('==================Row======================', row.section_a)
+  row.section_a.completionPercentage = calSectionPercentSpecificStep([
+    row.section_a.step1,
+  ])
   row.section_b.completionPercentage = calSectionPercent(row.section_b)
   row.section_c.completionPercentage = calSectionPercent(row.section_c)
   row.section_d.completionPercentage = calSectionPercent(row.section_d)
@@ -75,7 +85,12 @@ export const totalCompletion = (row: any, index?: any) => {
   row.section_d.completionPercentage = calSectionPercent(row.section_d)
   row.section_e.completionPercentage = calSectionPercent(row.section_e)
 
-  const total = row.section_a.completionPercentage + row.section_b.completionPercentage + row.section_c.completionPercentage + row.section_d.completionPercentage + row.section_e.completionPercentage 
+  const total =
+    row.section_a.completionPercentage +
+    row.section_b.completionPercentage +
+    row.section_c.completionPercentage +
+    row.section_d.completionPercentage +
+    row.section_e.completionPercentage
 
   return total
 }

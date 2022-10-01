@@ -20,7 +20,10 @@ const SectionB2 = () => {
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  const B2 = useAppSelector(({ sectionB }) => sectionB.B2, shallowEqual)
+  const B2 = useAppSelector(
+    ({ sectionBMonthly }) => sectionBMonthly.B2,
+    shallowEqual
+  )
 
   const loading = useAppSelector(
     ({ selectDate }) => selectDate.loading,

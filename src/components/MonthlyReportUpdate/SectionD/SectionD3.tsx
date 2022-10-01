@@ -9,7 +9,10 @@ import Spinner from '../../../atoms/Spinner'
 const SectionD3: FC = () => {
   const dispatch = useAppDispatch()
 
-  const D3 = useAppSelector(({ sectionD }) => sectionD.D3, shallowEqual)
+  const D3 = useAppSelector(
+    ({ sectionDMonthly }) => sectionDMonthly.D3,
+    shallowEqual
+  )
 
   const currentProjectDetails = useAppSelector(
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
