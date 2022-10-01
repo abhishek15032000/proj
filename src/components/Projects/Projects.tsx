@@ -46,7 +46,7 @@ const Projects = () => {
 
   //useEffect(()=>{return resetSectionNewProjectDetails},[])
   const listNewProject = () => {
-    dispatch(resetSectionNewProjectDetails())
+    // dispatch(resetSectionNewProjectDetails())
     dispatch(setCurrentProjectDetails(null))
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
