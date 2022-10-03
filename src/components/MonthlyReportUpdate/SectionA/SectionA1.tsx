@@ -10,7 +10,7 @@ import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 // Redux Imports
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setTotalGHGEmission } from '../../../redux/Slices/MonthlyReport/sectionAMonthly'
+import { setA1 } from '../../../redux/Slices/MonthlyReport/sectionAMonthly'
 import { setCurrentProjectDetails } from '../../../redux/Slices/MonthlyReportUpdate'
 import Spinner from '../../../atoms/Spinner'
 const SectionA1 = () => {
@@ -20,19 +20,27 @@ const SectionA1 = () => {
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-
-  useEffect(() => {
-    if (currentProjectDetails?.section_a?.step1?.completed) {
-      const { total_GHG_emission } = currentProjectDetails.section_a.step1
-
-      dispatch(setTotalGHGEmission(total_GHG_emission))
-    }
-  }, [])
-
-  const total_GHG_emission = useAppSelector(
-    ({ sectionAMonthly }) => sectionAMonthly.total_GHG_emission,
+  const A1 = useAppSelector(
+    ({ sectionAMonthly }) => sectionAMonthly.A1,
     shallowEqual
   )
+
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_a.step1.completed
+    ) {
+      const { total_GHG_emission } = currentProjectDetails.section_a.step1
+
+      dispatch(
+        setA1({
+          name: 'total_GHG_emission',
+          value: total_GHG_emission,
+        })
+      )
+    }
+  }, [currentProjectDetails])
+
   const loading = useAppSelector(
     ({ selectDate }) => selectDate.loading,
     shallowEqual
@@ -50,8 +58,11 @@ const SectionA1 = () => {
             '   Total GHG emission reductions or net anthropogenic GHG removals by sinks achieved in this monitoring period'
           }
           placeholder="(Total GHG emission reductions or net anthropogenic GHG removals by sinks achieved during this monitoring period.)"
-          value={total_GHG_emission}
-          onChange={(e) => dispatch(setTotalGHGEmission(e.target.value))}
+          name={'total_GHG_emission'}
+          value={A1.total_GHG_emission}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ name, value }))
+          }
         />
       </Grid>
     </Grid>

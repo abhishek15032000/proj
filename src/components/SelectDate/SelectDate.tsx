@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setEndDate, setStartDate } from '../../redux/Slices/SelectDateSlice'
 import Spinner from '../../atoms/Spinner'
-
+import moment from 'moment'
 const SelectDate = () => {
   const dispatch = useAppDispatch()
 
@@ -46,8 +46,9 @@ const SelectDate = () => {
   )
 
   useEffect(() => {
-    if (currentProjectDetails?.section_a?.step1?.completed) {
-      const { end_date, createdAt } = currentProjectDetails.section_a.step1
+    console.log('currentProjectDetails', currentProjectDetails)
+    if (currentProjectDetails) {
+      const { end_date, createdAt } = currentProjectDetails
 
       dispatch(setStartDate(createdAt))
       dispatch(setEndDate(end_date))
@@ -76,6 +77,7 @@ const SelectDate = () => {
       <Grid item xs={6} md={6}>
         <DatePicker
           label="End Date"
+          minDate={startDate ? startDate : undefined}
           value={endDate}
           onChange={(newValue) => {
             dispatch(setEndDate(newValue))
