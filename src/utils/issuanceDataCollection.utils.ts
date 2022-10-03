@@ -124,7 +124,6 @@ export const moveToNextSection = async (
           project_comissioning_date,
         ])
       ) {
-        console.log('Code Reachable')
         dispatch(setShowMandatoryFieldModal(true))
         return
       }
