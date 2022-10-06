@@ -15,6 +15,10 @@ import { shallowEqual } from 'react-redux'
 import { useIdleTimer } from 'react-idle-timer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from './routes/pathNames'
+import { BlockchainListener } from './utils/blockchain.util'
+import { setLoadWallet } from './redux/Slices/walletSlice'
+import LoadWallet from './components/LoadWallet'
+import BlockchainAlert from './components/BlockchainAlert'
 
 declare let window: any
 const { ethereum } = window
@@ -114,15 +118,7 @@ const App: FC<AppProps> = () => {
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
 
   useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('chainChanged', () => {
-        //logic for modal accordingly
-        window.location.reload()
-      })
-      window.ethereum.on('accountsChanged', () => {
-        window.location.reload()
-      })
-    }
+    BlockchainListener()
   })
 
   useEffect(() => {
@@ -146,12 +142,18 @@ const App: FC<AppProps> = () => {
       <LocalizationProvider dateAdapter={AdapterMoment}>
         {userData && showDrawer && (
           <AppDrawer>
+            <BlockchainAlert />
+            <LoadWallet />
             <RouteController />
           </AppDrawer>
         )}
         {userData && !showDrawer && (
           // <AppDrawer>
-          <RouteController />
+          <>
+            <BlockchainAlert />
+            <LoadWallet />
+            <RouteController />
+          </>
           // </AppDrawer>
         )}
         {!userData && (
