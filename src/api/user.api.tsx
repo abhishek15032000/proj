@@ -45,4 +45,11 @@ export const USER = {
       return response.data
     })
   },
+  resetPassword: (payload: any) => {
+    return AxiosHelper(URL_PATH.userRoutes.resetPassword, 'POST', payload).then(
+      (response: any) => {
+        return response.data
+      }
+    )
+  },
 }

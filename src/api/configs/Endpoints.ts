@@ -20,6 +20,7 @@ export const URL_PATH = {
     getCaptcha: ENDPOINTS.authServiceURL + '/auth/getCaptcha',
     verifyNewUser: ENDPOINTS.authServiceURL + '/auth/verifyNewUser',
     resendOTP: ENDPOINTS.authServiceURL + '/auth/resend-otp',
+    verifyToken: ENDPOINTS.authServiceURL + '/auth/verifyToken',
   },
   project: {
     projectCreate: ENDPOINTS.carbonServiceURL + '/project/create',

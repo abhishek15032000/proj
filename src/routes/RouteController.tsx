@@ -84,7 +84,7 @@ const RouteController = ({ localLoggedIn }: any) => {
         // authenticated={loggedIn}
         component={ResetPassword}
       ></PublicRoute> */}
-      {/* <Route
+      <Route
         path={pathNames.RESET_PASSWORD}
         element={
           <PublicRoute
@@ -94,7 +94,7 @@ const RouteController = ({ localLoggedIn }: any) => {
             userData={userData}
           />
         }
-      /> */}
+      />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

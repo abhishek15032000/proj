@@ -94,7 +94,7 @@ const ForgotPasswordModal = ({
             Forgot Password
           </Typography>
           <Typography sx={{ fontSize: 14, mt: 3 }}>
-            Please enter your email and press next to start the recovery process
+            Please verify your email to start the recovery process
           </Typography>
           <Box sx={{ width: '80%', mt: 3 }}>
             <CCInputField
@@ -122,7 +122,7 @@ const ForgotPasswordModal = ({
               setCaptchaToken={setCaptchaToken}
             />
           </Box>
-          <Box>
+          <Box sx={{ width: '80%' }}>
             <CCButton
               type="submit"
               fullWidth

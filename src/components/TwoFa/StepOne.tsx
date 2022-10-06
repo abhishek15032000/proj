@@ -86,7 +86,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
               <OtpInput
                 value={otp}
                 onChange={handleChange}
-                numInputs={5}
+                numInputs={6}
                 containerStyle={{
                   justifyContent: 'flex-start',
                 }}

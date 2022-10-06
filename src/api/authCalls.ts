@@ -31,4 +31,11 @@ export const authCalls = {
       }
     )
   },
+  verifyToken: (payload: any) => {
+    return AxiosHelper(URL_PATH.authRoutes.verifyToken, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }
