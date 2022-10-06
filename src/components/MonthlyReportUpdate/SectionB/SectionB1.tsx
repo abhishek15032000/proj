@@ -6,8 +6,8 @@ import {
   Button,
   Grid,
   TextareaAutosize,
-  Typography,
   Stack,
+  Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
 
@@ -15,6 +15,7 @@ import { Box } from '@mui/system'
 import SectionB1UploadImages from '../SectionB1Upload/SectionB1Upload'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import Spinner from '../../../atoms/Spinner'
 
 // Asset Imports
 import SectionB1TechnicalDescription from '../../../assets/Images/SampleData/SectionB1TechnicalDescription.png'
@@ -25,22 +26,12 @@ import SectionB1EventDescription from '../../../assets/Images/SampleData/Section
 // Redux Imports
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import {
-  setBriefOnPurpuse,
-  setImplementationMilestoneImage,
-  setMajorShutDownImage,
-  setOperationalDetails,
-  setProjectTimelineImage,
-  setTechnicalDescription,
-  setTechnicalDescriptionImage,
-} from '../../../redux/Slices/MonthlyReport/sectionBMonthly'
-import Spinner from '../../../atoms/Spinner'
+import { setB1 } from '../../../redux/Slices/MonthlyReport/sectionBMonthly'
+
 // Functional Imports
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 
 const SectionB1 = () => {
-  // const [briefOnPurpuse, setBriefOnPurpuse] = useState('')
   const dispatch = useAppDispatch()
 
   const currentProjectDetails = useAppSelector(
@@ -48,8 +39,31 @@ const SectionB1 = () => {
     shallowEqual
   )
 
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+
+  const B1 = useAppSelector(
+    ({ sectionBMonthly }) => sectionBMonthly.B1,
+    shallowEqual
+  )
+
+  const {
+    general_description,
+    data_tables_technical_description_attach,
+    shut_down_details_attach,
+    implementation_milestones_attach,
+    project_timeline_attach,
+    technical_description,
+    operational_description,
+  } = B1
+
   useEffect(() => {
-    if (currentProjectDetails.section_b.step1.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_b.step1.completed
+    ) {
       const {
         general_description,
         technical_description,
@@ -60,58 +74,45 @@ const SectionB1 = () => {
         project_timeline_attach,
       } = currentProjectDetails.section_b.step1
 
-      dispatch(setBriefOnPurpuse(general_description))
       dispatch(
-        setImplementationMilestoneImage(implementation_milestones_attach)
+        setB1({ name: 'general_description', value: general_description })
       )
-      dispatch(setMajorShutDownImage(shut_down_details_attach))
-      dispatch(setOperationalDetails(operational_description))
-      dispatch(setProjectTimelineImage(project_timeline_attach))
-      dispatch(setTechnicalDescription(technical_description))
       dispatch(
-        setTechnicalDescriptionImage(data_tables_technical_description_attach)
+        setB1({ name: 'technical_description', value: technical_description })
+      )
+      dispatch(
+        setB1({
+          name: 'data_tables_technical_description_attach',
+          value: data_tables_technical_description_attach,
+        })
+      )
+      dispatch(
+        setB1({
+          name: 'operational_description',
+          value: operational_description,
+        })
+      )
+      dispatch(
+        setB1({
+          name: 'shut_down_details_attach',
+          value: shut_down_details_attach,
+        })
+      )
+      dispatch(
+        setB1({
+          name: 'implementation_milestones_attach',
+          value: implementation_milestones_attach,
+        })
+      )
+      dispatch(
+        setB1({
+          name: 'project_timeline_attach',
+          value: project_timeline_attach,
+        })
       )
     }
-  }, [])
+  }, [currentProjectDetails])
 
-  const briefOnPurpuse = useAppSelector(
-    ({ sectionBMonthly }) => sectionBMonthly.briefOnPurpuse,
-    shallowEqual
-  )
-
-  const technicalDescription = useAppSelector(
-    ({ sectionBMonthly }) => sectionBMonthly.technicalDescription,
-    shallowEqual
-  )
-
-  const technicalDescriptionImage = useAppSelector(
-    ({ sectionBMonthly }) => sectionBMonthly.technicalDescriptionImage,
-    shallowEqual
-  )
-
-  const operationalDetails = useAppSelector(
-    ({ sectionBMonthly }) => sectionBMonthly.operationalDetails,
-    shallowEqual
-  )
-
-  const majorShutDownImage = useAppSelector(
-    ({ sectionBMonthly }) => sectionBMonthly.majorShutDownImage,
-    shallowEqual
-  )
-
-  const implementationMilestoneImage = useAppSelector(
-    ({ sectionBMonthly }) => sectionBMonthly.implementationMilestoneImage,
-    shallowEqual
-  )
-
-  const projectTimelineImage = useAppSelector(
-    ({ sectionBMonthly }) => sectionBMonthly.projectTimelineImage,
-    shallowEqual
-  )
-  const loading = useAppSelector(
-    ({ selectDate }) => selectDate.loading,
-    shallowEqual
-  )
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -123,9 +124,10 @@ const SectionB1 = () => {
           <CCMultilineTextArea
             label="Brief on purpose and general description of project activity "
             placeholder="Write a brief of the implemented registered project activity"
-            value={briefOnPurpuse}
-            onChange={(event) =>
-              dispatch(setBriefOnPurpuse(event.target.value))
+            value={general_description}
+            name={'general_description'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setB1({ name, value }))
             }
           />
         </Grid>
@@ -138,30 +140,35 @@ const SectionB1 = () => {
           <CCMultilineTextArea
             label="Technical Description"
             placeholder="Write the technical description of the equipment, its specification, supplier name, installed by the project activity"
-            value={technicalDescription}
-            onChange={(event) =>
-              dispatch(setTechnicalDescription(event.target.value))
+            value={technical_description}
+            name={'technical_description'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setB1({ value, name }))
             }
           />
 
           <CCDropAndUpload
             mediaTitle={['Sample Report - Technical Details']}
             mediaItem={[SectionB1TechnicalDescription]}
-            title="Attach Data Tables for Technical Description"
-            imageArray={technicalDescriptionImage}
+            title="Attach Data Tables for Technical Description *"
+            imageArray={data_tables_technical_description_attach}
             onImageUpload={(item: any) => {
               dispatch(
-                setTechnicalDescriptionImage([
-                  item,
-                  ...technicalDescriptionImage,
-                ])
+                setB1({
+                  name: 'data_tables_technical_description_attach',
+                  value: [item, ...data_tables_technical_description_attach],
+                })
               )
             }}
             onDeleteImage={(index: number) => {
               dispatch(
-                setTechnicalDescriptionImage(
-                  deleteIndexInArray(technicalDescriptionImage, index)
-                )
+                setB1({
+                  name: 'data_tables_technical_description_attach',
+                  value: deleteIndexInArray(
+                    data_tables_technical_description_attach,
+                    index
+                  ),
+                })
               )
             }}
           />
@@ -175,9 +182,10 @@ const SectionB1 = () => {
           <CCMultilineTextArea
             label="Operational Details"
             placeholder="Write a brief about the events during the monitoring period,logs, major shut down details, timings, reasons"
-            value={operationalDetails}
-            onChange={(event) =>
-              dispatch(setOperationalDetails(event.target.value))
+            value={operational_description}
+            name={'operational_description'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setB1({ value, name }))
             }
           />
 
@@ -185,15 +193,21 @@ const SectionB1 = () => {
             mediaTitle={['Sample Report - Shut Down Details']}
             title="Attach Data Tables for  Major shut down details"
             mediaItem={[SectionB1ShutDownDetails]}
-            imageArray={majorShutDownImage}
+            imageArray={shut_down_details_attach}
             onImageUpload={(item: any) => {
-              dispatch(setMajorShutDownImage([item, ...majorShutDownImage]))
+              dispatch(
+                setB1({
+                  name: 'shut_down_details_attach',
+                  value: [item, ...shut_down_details_attach],
+                })
+              )
             }}
             onDeleteImage={(index: number) => {
               dispatch(
-                setMajorShutDownImage(
-                  deleteIndexInArray(majorShutDownImage, index)
-                )
+                setB1({
+                  name: 'shut_down_details_attach',
+                  value: deleteIndexInArray(shut_down_details_attach, index),
+                })
               )
             }}
           />
@@ -202,20 +216,24 @@ const SectionB1 = () => {
             mediaTitle={['Sample Report - Implementation of Milestones']}
             title="Attach Data Tables for  implementation of milestones"
             mediaItem={[SectionB1ImplementationOfMilestones]}
-            imageArray={implementationMilestoneImage}
+            imageArray={implementation_milestones_attach}
             onImageUpload={(item: any) => {
               dispatch(
-                setImplementationMilestoneImage([
-                  item,
-                  ...implementationMilestoneImage,
-                ])
+                setB1({
+                  name: 'implementation_milestones_attach',
+                  value: [item, ...implementation_milestones_attach],
+                })
               )
             }}
             onDeleteImage={(index: number) => {
               dispatch(
-                setImplementationMilestoneImage(
-                  deleteIndexInArray(implementationMilestoneImage, index)
-                )
+                setB1({
+                  name: 'implementation_milestones_attach',
+                  value: deleteIndexInArray(
+                    implementation_milestones_attach,
+                    index
+                  ),
+                })
               )
             }}
           />
@@ -224,15 +242,21 @@ const SectionB1 = () => {
             mediaTitle={['Sample Report - Project Timeline Event Description']}
             title="Attach Data Tables for  Project timeline event description"
             mediaItem={[SectionB1EventDescription]}
-            imageArray={projectTimelineImage}
+            imageArray={project_timeline_attach}
             onImageUpload={(item: any) => {
-              dispatch(setProjectTimelineImage([item, ...projectTimelineImage]))
+              dispatch(
+                setB1({
+                  name: 'project_timeline_attach',
+                  value: [item, ...project_timeline_attach],
+                })
+              )
             }}
             onDeleteImage={(index: number) => {
               dispatch(
-                setProjectTimelineImage(
-                  deleteIndexInArray(projectTimelineImage, index)
-                )
+                setB1({
+                  name: 'project_timeline_attach',
+                  value: deleteIndexInArray(project_timeline_attach, index),
+                })
               )
             }}
           />

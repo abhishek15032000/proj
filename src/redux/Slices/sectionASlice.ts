@@ -47,7 +47,7 @@ const initialState: SectionAInterface = {
   methodologies: [
     {
       methodology: '',
-      project_type: '',
+      project_type: [],
       category: '',
       version: '',
       tools: '',
@@ -94,7 +94,6 @@ const sectionA = createSlice({
         ? (state.A5[name] = value)
         : (state.A5[name[0]][name[1]] = value)
     },
-    //to reset all values
     resetSectionA: () => initialState,
   },
 })

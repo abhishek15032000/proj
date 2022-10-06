@@ -132,10 +132,10 @@ const SectionA2 = () => {
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label="Pincode"
+            type="number"
             sx={{ backgroundColor: ' #FFFFFF' }}
             value={A2.pincode}
             name={'pincode'}
-            type="number"
             onChange={({ target: { value, name } }) =>
               dispatch(setA2({ value, name }))
             }

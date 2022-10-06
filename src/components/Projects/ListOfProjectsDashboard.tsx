@@ -31,6 +31,7 @@ import { pathNames } from '../../routes/pathNames'
 import {
   setSectionIndex,
   setSubSectionIndex,
+  setMainProjectDetails,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 
@@ -86,6 +87,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       } else if (redirect === 'Monthly') {
         dispatch(setSectionIndex(0))
         dispatch(setSubSectionIndex(0))
+        dispatch(setMainProjectDetails(projectDetails))
         navigate(pathNames.MONTHLY_REPORT_UPDATE)
       } else if (redirect === 'Verify') {
         navigate(pathNames.SELECT_VERIFIER)

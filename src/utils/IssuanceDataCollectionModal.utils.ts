@@ -8,7 +8,7 @@ export const isDataModifiedCheckFunc = (
   subSectionIndex: number
 ) => {
   let isDataChanged = false
-
+  console.log('reduxData', reduxData, '   ', currentProjectDetailData)
   if (sectionIndex === 1 && (subSectionIndex === 2 || subSectionIndex === 3)) {
     //in section A methodologies and party_particpants are having array of objects, so conditionally passing it to 'arrayObjectTypeCheck'
     isDataChanged = arrayObjectTypeCheck(reduxData, currentProjectDetailData)

@@ -57,17 +57,22 @@ export const moveToNextSection = async (
       }
       try {
         dispatch(setLoading(true))
-
         const res = await dataCollectionCalls.createNewProject(payload)
         if (res?.success && res?.data?.uuid) {
           getProjectDetails(res?.data?.uuid)
           dispatch(setCurrentProjectDetailsUUID(res?.data?.uuid))
-        }
-        if (!res?.success && res?.error) {
-          alert(res?.error)
+        } else {
+          //In case call fails but no error comes fron backend
+          if (res?.error && res?.error?.length) {
+            alert(res?.error)
+          } else {
+            alert('Something went wrong. Please try again later.')
+          }
         }
       } catch (e) {
+        alert('Something went wrong. Please try again later.')
         console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+        dispatch(setLoading(false))
       }
     } else {
       alert('Please fill all fields!')
@@ -226,13 +231,21 @@ export const moveToNextSection = async (
       const res = await dataCollectionCalls.updateProjectSectionACall(payload)
       if (res?.success) {
         getProjectDetails(currentProjectUUID)
-      }
-      if (!res?.success && res?.error) {
-        alert(res?.error)
-        dispatch(setLoading(false))
+      } else {
+        //In case call fails but no error comes fron backend
+        if (res?.error && res?.error?.length) {
+          alert(res?.error)
+        } else {
+          alert('Something went wrong. Please try again later.')
+        }
       }
     } catch (e) {
-      console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+      alert('Something went wrong. Please try again later')
+      console.log(
+        'Error in dataCollectionCalls.updateProjectSectionACall api ~ ',
+        e
+      )
+      dispatch(setLoading(false))
     }
   }
 
@@ -335,13 +348,20 @@ export const moveToNextSection = async (
       const res = await dataCollectionCalls.updateProjectSectionBCall(payload)
       if (res?.success) {
         getProjectDetails(currentProjectUUID)
-      }
-      if (!res?.success && res?.error) {
-        alert(res?.error)
-        dispatch(setLoading(false))
+      } else {
+        //In case call fails but no error comes fron backend
+        if (res?.error && res?.error?.length) {
+          alert(res?.error)
+        } else {
+          alert('Something went wrong. Please try again later.')
+        }
       }
     } catch (e) {
-      console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+      console.log(
+        'Error in dataCollectionCalls.updateProjectSectionBCall api ~ ',
+        e
+      )
+      dispatch(setLoading(false))
     }
   }
 
@@ -388,16 +408,26 @@ export const moveToNextSection = async (
       if (res?.success) {
         getProjectDetails(currentProjectUUID)
       }
-      if (res?.success && res?.data?.uuid) {
-        dispatch(setNewProjectUUID(res?.data?.uuid))
-        dispatch(setSectionIndex(sectionIndex + 1))
-        dispatch(setSubSectionIndex(0))
-      }
-      if (!res?.success && res?.error) {
-        alert(res?.error)
+      // if (res?.success && res?.data?.uuid) {
+      //   dispatch(setNewProjectUUID(res?.data?.uuid))
+      //   dispatch(setSectionIndex(sectionIndex + 1))
+      //   dispatch(setSubSectionIndex(0))
+      // }
+      else {
+        //In case call fails but no error comes fron backend
+        if (res?.error && res?.error?.length) {
+          alert(res?.error)
+        } else {
+          alert('Something went wrong. Please try again later.')
+        }
       }
     } catch (e) {
-      console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+      alert('Something went wrong. Please try again later.')
+      console.log(
+        'Error in dataCollectionCalls.updateProjectSectionCCall api ~ ',
+        e
+      )
+      dispatch(setLoading(false))
     }
   }
 
@@ -468,13 +498,21 @@ export const moveToNextSection = async (
       const res = await dataCollectionCalls.updateProjectSectionDCall(payload)
       if (res?.success) {
         getProjectDetails(currentProjectUUID)
-      }
-      if (!res?.success && res?.error) {
-        alert(res?.error)
-        dispatch(setLoading(false))
+      } else {
+        //In case call fails but no error comes fron backend
+        if (res?.error && res?.error?.length) {
+          alert(res?.error)
+        } else {
+          alert('Something went wrong. Please try again later.')
+        }
       }
     } catch (e) {
-      console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+      alert('Something went wrong. Please try again later.')
+      console.log(
+        'Error in dataCollectionCalls.updateProjectSectionDCall api ~ ',
+        e
+      )
+      dispatch(setLoading(false))
     }
   }
 
@@ -637,12 +675,21 @@ export const moveToNextSection = async (
       const res = await dataCollectionCalls.updateProjectSectionECall(payload)
       if (res?.success) {
         getProjectDetails(currentProjectUUID)
-      }
-      if (!res?.success && res?.error) {
-        alert(res?.error)
+      } else {
+        //In case call fails but no error comes fron backend
+        if (res?.error && res?.error?.length) {
+          alert(res?.error)
+        } else {
+          alert('Something went wrong. Please try again later.')
+        }
       }
     } catch (e) {
-      console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
+      alert('Something went wrong. Please try again later.')
+      console.log(
+        'Error in dataCollectionCalls.updateProjectSectionECall api ~ ',
+        e
+      )
+      dispatch(setLoading(false))
     }
   }
 }
@@ -654,11 +701,18 @@ export const getProjectDetails = async (projectID: string) => {
     if (res?.success && res?.data) {
       const modifiedRows = addSectionPercentages(res?.data)
       if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
-    }
-    if (!res?.success && res?.error) {
-      alert(res?.error)
+    } else {
+      //In case call fails but no error comes fron backend
+      if (res?.error && res?.error?.length) {
+        alert(res?.error)
+      } else {
+        alert('Something went wrong. Please try again later.')
+      }
     }
   } catch (e) {
+    alert(
+      'Something went wrong in getting Project details. Please try again later'
+    )
     console.log('Error in dataCollectionCalls.getProjectById api ~ ', e)
   } finally {
     dispatch(setLoading(false))
