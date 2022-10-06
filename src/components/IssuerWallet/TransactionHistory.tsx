@@ -1,32 +1,28 @@
-// React Imports
-import React, { FC, useEffect, useState } from 'react'
-
-// MUI Imports
+import React, { useEffect, useState } from 'react'
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import {
-  Grid,
   Box,
-  Typography,
-  Paper,
-  Select,
+  FormControl,
+  InputLabel,
   MenuItem,
   OutlinedInput,
-  InputLabel,
-  FormControl,
+  Paper,
+  Select,
+  Typography,
 } from '@mui/material'
-import { Colors } from '../../theme'
-import CCTable from '../../atoms/CCTable'
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import { DatePicker } from '@mui/x-date-pickers'
-import CCInputField from '../../atoms/CCInputField'
-import TextButton from '../../atoms/TextButton/TextButton'
-import { transactionCalls } from '../../api/transactionCalls.api'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
-import { pathNames } from '../../routes/pathNames'
-import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
+import { transactionCalls } from '../../api/transactionCalls.api'
+import CCInputField from '../../atoms/CCInputField'
+import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import Spinner from '../../atoms/Spinner'
+import TextButton from '../../atoms/TextButton/TextButton'
+import { pathNames } from '../../routes/pathNames'
+import { Colors } from '../../theme'
 
 const headings = [
   'Transaction ID',
@@ -65,12 +61,22 @@ const TransactionHistory = () => {
     if (transactions && transactions.length) {
       const rows = transactions.map((transaction: any, index: number) => {
         const {
-          transaction_data: { name, timestamp },
+          transaction_data: {
+            name,
+            timestamp,
+            values: { amountFilled = '', amountTaken = '' },
+          },
           transaction_id,
         } = transaction
         const action = name === 'Make' ? 'Sell' : 'Buy'
         const date = moment.unix(timestamp).format('L')
         const time = moment.unix(timestamp).format('HH:mm:ss')
+        const quantity = amountTaken
+        const total = amountFilled
+        const unitPrice =
+          amountFilled && amountTaken
+            ? Number(amountFilled) / Number(amountTaken)
+            : ''
         return [
           <ShortenedIDComp
             key={index}
@@ -80,9 +86,9 @@ const TransactionHistory = () => {
           action,
           time,
           date,
-          'quantity',
-          'unit',
-          'total',
+          quantity,
+          unitPrice,
+          total,
           <Typography
             key={1}
             sx={{

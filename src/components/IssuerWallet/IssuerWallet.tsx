@@ -1,20 +1,15 @@
-// React Imports
-import React, { useEffect, useState } from 'react'
-
-// MUI Imports
 import { Box, Grid } from '@mui/material'
-
-// Local Imports
-import BackHeader from '../../atoms/BackHeader/BackHeader'
-import { IssuerWalletProps } from './IssuerWallet.interface'
-import { Colors } from '../../theme'
-import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
-import TransactionHistory from './TransactionHistory'
-import BlockchainCalls from '../../blockchain/Blockchain'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { WalletStats } from '../../config/constants.config'
 import { issuerCalls } from '../../api/issuerCalls.api'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
+import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
+import BlockchainCalls from '../../blockchain/Blockchain'
+import { WalletStats } from '../../config/constants.config'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { Colors } from '../../theme'
+import { IssuerWalletProps } from './IssuerWallet.interface'
+import TransactionHistoryTable from './TransactionHistory'
 
 const stats = [
   {
@@ -53,41 +48,42 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     useState(false)
 
   useEffect(() => {
-    // tokenContractCalls()
+    tokenContractCalls()
     getVCOAvailabelForSale()
   }, [])
 
-  // useEffect(() => {
-  //   console.log('vcoonsale useEffect')
-  //   if (dashboardStatistics && vcoOnSale) {
-  //     const dashboardStatisticsCopy = [...dashboardStatistics]
-  //     dashboardStatisticsCopy[1].value = vcoOnSale
-  //     setDashboardStatistics(dashboardStatisticsCopy)
-  //   }
-  // }, [vcoOnSale])
-  // useEffect(() => {
-  //   console.log('vcoAvailableFoSale useEffect')
-  //   if (dashboardStatistics && vcoAvailableFoSale) {
-  //     const dashboardStatisticsCopy = [...dashboardStatistics]
-  //     dashboardStatisticsCopy[2].value = vcoAvailableFoSale
-  //     setDashboardStatistics(dashboardStatisticsCopy)
-  //   }
-  // }, [vcoAvailableFoSale])
-  // console.log('vcoAvailableFoSale', vcoAvailableFoSale)
+  useEffect(() => {
+    console.log('vcoonsale useEffect')
+    if (dashboardStatistics && vcoOnSale) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[1].value = vcoOnSale
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [vcoOnSale])
 
-  // useEffect(() => {
-  //   // console.log('accountBalance useEffect')
-  //   // console.log('accountBalance above if', accountBalance)
-  //   if (dashboardStatistics && accountBalance) {
-  //     // console.log('accountBalance useEffect in if')
-  //     const dashboardStatisticsCopy = [...dashboardStatistics]
-  //     const bal = 'MATIC ' + Math.round(Number(accountBalance) * 1000) / 1000
-  //     // console.log('accountBalance', accountBalance)
-  //     // console.log('bal', bal)
-  //     dashboardStatisticsCopy[0].value = bal
-  //     setDashboardStatistics(dashboardStatisticsCopy)
-  //   }
-  // }, [accountBalance])
+  useEffect(() => {
+    console.log('vcoAvailableFoSale useEffect')
+    if (dashboardStatistics && vcoAvailableFoSale) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[2].value = vcoAvailableFoSale
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [vcoAvailableFoSale])
+  console.log('vcoAvailableFoSale', vcoAvailableFoSale)
+
+  useEffect(() => {
+    // console.log('accountBalance useEffect')
+    // console.log('accountBalance above if', accountBalance)
+    if (dashboardStatistics && accountBalance) {
+      // console.log('accountBalance useEffect in if')
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      const bal = 'MATIC ' + Math.round(Number(accountBalance) * 1000) / 1000
+      // console.log('accountBalance', accountBalance)
+      // console.log('bal', bal)
+      dashboardStatisticsCopy[0].value = bal
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [accountBalance])
 
   const tokenContractCalls = async () => {
     try {
@@ -105,7 +101,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       )
       console.log('after  res', createProjectRes)
       const bal = Number(createProjectRes.toString()) * 10 ** -18
-      // console.log(createProjectRes, bal)
+      console.log('bal', bal)
       setVCOOnSale(bal)
     } catch (error) {
       console.log('Error : ', error)
@@ -155,7 +151,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
         />
 
         <Grid item xs={12}>
-          <TransactionHistory />
+          <TransactionHistoryTable />
         </Grid>
       </Grid>
     </Box>
