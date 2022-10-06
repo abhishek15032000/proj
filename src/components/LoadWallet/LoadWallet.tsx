@@ -32,7 +32,6 @@ const LoadWallet = (props: LoadWalletProps) => {
   const loadWallet = useAppSelector((state) => state.wallet.loadWallet)
 
   const { user_id } = getLocalItem('userDetails')
-  const { wallet_added } = getLocalItem('userDetails2')
 
   const closeModal = () => dispatch(setLoadWallet(false))
 
@@ -43,6 +42,8 @@ const LoadWallet = (props: LoadWalletProps) => {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [walletAdded, setWalletAdded] = useState(false)
+
   // const handleOpen = () => setOpen(loadWallet)
   const handleClose = () => closeModal()
 
@@ -71,6 +72,12 @@ const LoadWallet = (props: LoadWalletProps) => {
       .catch((e: any) => {
         setError(e)
       })
+
+    const userDetails2 = getLocalItem('userDetails2')
+    if (userDetails2) {
+      const { wallet_added = false } = userDetails2
+      setWalletAdded(wallet_added)
+    }
   }, [])
 
   useEffect(() => {
@@ -130,7 +137,7 @@ const LoadWallet = (props: LoadWalletProps) => {
       BlockchainCalls.connectWallet().then((res: any) => {
         dispatch(setAccountAddress(res.accountAddress))
         dispatch(setConnected(res.isConnected))
-        if (!wallet_added) {
+        if (!walletAdded) {
           updateUserWithShineKey(res.accountAddress)
         }
 

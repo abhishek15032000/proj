@@ -1,7 +1,7 @@
 import { Box, LinearProgress, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { SECTION_NAMES } from '../../config/roles.config'
+import { SECTION_NAMES } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors, Images } from '../../theme'
 

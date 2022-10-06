@@ -27,7 +27,7 @@ import { shallowEqual } from 'react-redux'
 // Local Imports
 import CCButton from '../../atoms/CCButton/CCButton'
 import { department } from '../../api/department.api'
-import { ROLES } from '../../config/roles.config'
+import { ROLES } from '../../config/constants.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
@@ -357,7 +357,7 @@ const SelectVerifier = () => {
                   navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
                 }}
               >
-                Close
+                Ok
               </CCButton>
             </Box>
           ) : (

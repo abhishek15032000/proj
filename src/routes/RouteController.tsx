@@ -2,13 +2,14 @@ import _ from 'lodash'
 import React from 'react'
 import { shallowEqual } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { ROLES } from '../config/roles.config'
+import { ROLES } from '../config/constants.config'
 import { useAppSelector } from '../hooks/reduxHooks'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import MaintenancePage from '../pages/MaintenancePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
+import ResetPassword from '../pages/ResetPassword/ResetPassword'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import { getLocalItem } from '../utils/Storage'
@@ -73,6 +74,22 @@ const RouteController = ({ localLoggedIn }: any) => {
           <PublicRoute
             roles={[]}
             component={MaintenancePage}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      {/* <PublicRoute
+        path={pathNames.RESET_PASSWORD}
+        // authenticated={loggedIn}
+        component={ResetPassword}
+      ></PublicRoute> */}
+      <Route
+        path={pathNames.RESET_PASSWORD}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={ResetPassword}
             authenticated={userData}
             userData={userData}
           />
