@@ -7,6 +7,7 @@ import { Box, Grid, Paper, Skeleton, Typography } from '@mui/material'
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { Colors } from '../../theme'
+import { WalletStats } from '../../config/constants.config'
 
 interface DashboardStatisticsProps {
   data?: any
@@ -29,6 +30,7 @@ const DashboardStatistics: FC<DashboardStatisticsProps> = (props) => {
         ))}
 
       {!props.loading &&
+        props.data &&
         props.data.map((item: any, index: any) => (
           <DashboardStatisticTile
             key={index}
@@ -63,7 +65,14 @@ const DashboardStatisticTile: FC<DashboardStatisticTileProps> = (props) => {
         mr: 2,
       }}
     >
-      <Box>
+      <Box
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+        }}
+      >
         <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
           {props.title}
         </Typography>
@@ -78,15 +87,17 @@ const DashboardStatisticTile: FC<DashboardStatisticTileProps> = (props) => {
           {props.value}
         </Typography>
       </Box>
-      <Box
-        sx={{
-          height: '80px',
-          width: '80px',
-          borderRadius: '20px',
-          boxShadow: '1px 1px 2px 2px #EEE',
-          backgroundColor: props.color,
-        }}
-      ></Box>
+      {props.title !== WalletStats.WALLET_BALANCE && (
+        <Box
+          sx={{
+            height: '80px',
+            minWidth: '80px',
+            borderRadius: '20px',
+            boxShadow: '1px 1px 2px 2px #EEE',
+            backgroundColor: props.color,
+          }}
+        ></Box>
+      )}
     </Paper>
   )
 }

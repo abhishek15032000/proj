@@ -1,63 +1,52 @@
-import {
-  Button,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-  Stack,
-} from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useEffect, useState } from 'react'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../../atoms/AttachMore/AttachMore'
+import { Grid, Stack } from '@mui/material'
+import React, { useEffect } from 'react'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import SectionE2CalculationOfProjectEmission from '../../../assets/Images/SampleData/SectionE2CalculationOfProjectEmission.png'
 import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
-import {
-  setCalculationOfProjectEmissions,
-  setCalculationOfProjectEmissionsImages,
-} from '../../../redux/Slices/MonthlyReport/sectionEMonthly'
+import { setE2 } from '../../../redux/Slices/MonthlyReport/sectionEMonthly'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { shallowEqual } from 'react-redux'
 import Spinner from '../../../atoms/Spinner'
 
 const SectionE2 = () => {
   const dispatch = useAppDispatch()
 
-  const calculationOfProjectEmissions = useAppSelector(
-    ({ sectionEMonthly }) => sectionEMonthly.calculationOfProjectEmissions
-  )
-
-  const calculationOfProjectEmissionsImages = useAppSelector(
-    ({ sectionEMonthly }) => sectionEMonthly.calculationOfProjectEmissionsImages
-  )
+  const E2 = useAppSelector(({ sectionEMonthly }) => sectionEMonthly.E2)
+  const { attach_relevant_docs } = E2
 
   const currentProjectDetails = useAppSelector(
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
+
+  const loading = useAppSelector(
+    ({ selectDate }) => selectDate.loading,
+    shallowEqual
+  )
+
   useEffect(() => {
-    if (currentProjectDetails.section_e.step2.completed) {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_e.step2.completed
+    ) {
       const {
         calculation_of_projectEmissions_or_net_GHG,
         attach_relevant_docs,
       } = currentProjectDetails.section_e.step2
 
       dispatch(
-        setCalculationOfProjectEmissions(
-          calculation_of_projectEmissions_or_net_GHG
-        )
+        setE2({
+          name: 'calculation_of_projectEmissions_or_net_GHG',
+          value: calculation_of_projectEmissions_or_net_GHG,
+        })
       )
-      dispatch(setCalculationOfProjectEmissionsImages(attach_relevant_docs))
+      dispatch(
+        setE2({ name: 'attach_relevant_docs', value: attach_relevant_docs })
+      )
     }
-  }, [])
-  const loading = useAppSelector(
-    ({ selectDate }) => selectDate.loading,
-    shallowEqual
-  )
+  }, [currentProjectDetails])
+
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -68,9 +57,10 @@ const SectionE2 = () => {
         <CCMultilineTextArea
           label="Calculation of project emissions or actual net GHG removals by sinks"
           placeholder="Calculation of project emissions or actual net GHG removals by sinks, if any"
-          value={calculationOfProjectEmissions}
-          onChange={(event) =>
-            dispatch(setCalculationOfProjectEmissions(event.target.value))
+          value={E2.calculation_of_projectEmissions_or_net_GHG}
+          name={'calculation_of_projectEmissions_or_net_GHG'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setE2({ name, value }))
           }
         />
       </Grid>
@@ -79,20 +69,21 @@ const SectionE2 = () => {
           title={'Attach relevant datas & docs'}
           mediaTitle={['Sample Report - Calculation of project emissions']}
           mediaItem={[SectionE2CalculationOfProjectEmission]}
-          imageArray={calculationOfProjectEmissionsImages}
+          imageArray={E2.attach_relevant_docs}
           onImageUpload={(item: any) => {
             dispatch(
-              setCalculationOfProjectEmissionsImages([
-                ...calculationOfProjectEmissionsImages,
-                item,
-              ])
+              setE2({
+                name: 'attach_relevant_docs',
+                value: [...attach_relevant_docs, item],
+              })
             )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setCalculationOfProjectEmissionsImages(
-                deleteIndexInArray(calculationOfProjectEmissionsImages, index)
-              )
+              setE2({
+                name: 'attach_relevant_docs',
+                value: deleteIndexInArray(attach_relevant_docs, index),
+              })
             )
           }}
         />

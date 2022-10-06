@@ -12,9 +12,34 @@ export const calSectionPercent = (data: any, optionalField?: any) => {
   const calPercentage = (filteringTrue.length / tempChild.length) * 100
   return Math.round(calPercentage)
 }
+export const calSectionPercentSpecificStep = (data: any) => {
+  //Sections with only steps object
+  const filteringTrue = data.filter((i: any) => i?.completed === true)
+  const calPercentage = (filteringTrue.length / data.length) * 100
+
+  return Math.round(calPercentage)
+}
 
 export const addSectionPercentages = (row: any) => {
   row.section_a.completionPercentage = calSectionPercent(row.section_a)
+  row.section_b.completionPercentage = calSectionPercent(row.section_b)
+  row.section_c.completionPercentage = calSectionPercent(row.section_c)
+  row.section_d.completionPercentage = calSectionPercent(row.section_d)
+  row.section_e.completionPercentage = calSectionPercent(row.section_e)
+
+  if (
+    row?.section_a?.completionPercentage === 100 &&
+    row?.section_b?.completionPercentage === 100 &&
+    row?.section_c?.completionPercentage === 100
+  )
+    row.projectCompleted = true
+  return row
+}
+
+export const addSectionPercentagesMonthly = (row: any) => {
+  row.section_a.completionPercentage = calSectionPercentSpecificStep([
+    row.section_a.step1,
+  ])
   row.section_b.completionPercentage = calSectionPercent(row.section_b)
   row.section_c.completionPercentage = calSectionPercent(row.section_c)
   row.section_d.completionPercentage = calSectionPercent(row.section_d)
@@ -38,7 +63,7 @@ export const checkMandatoryFieldsArrayObjects = (mandatoryFields: any) => {
   let isFilled = false
   Object.keys(mandatoryFields[0]).map((key) => {
     for (let i = 0; i < mandatoryFields.length; i++) {
-      if (!mandatoryFields[i][key]) {
+      if (key !== 'flag' && !mandatoryFields[i][key]) {
         isFilled = true
         return
       }
@@ -65,4 +90,21 @@ export const isProjectCompleted = (row: any, index?: any) => {
   } else {
     return false
   }
+}
+
+export const totalCompletion = (row: any, index?: any) => {
+  row.section_a.completionPercentage = calSectionPercent(row.section_a)
+  row.section_b.completionPercentage = calSectionPercent(row.section_b)
+  row.section_c.completionPercentage = calSectionPercent(row.section_c)
+  row.section_d.completionPercentage = calSectionPercent(row.section_d)
+  row.section_e.completionPercentage = calSectionPercent(row.section_e)
+
+  const total =
+    row.section_a.completionPercentage +
+    row.section_b.completionPercentage +
+    row.section_c.completionPercentage +
+    row.section_d.completionPercentage +
+    row.section_e.completionPercentage
+
+  return total
 }

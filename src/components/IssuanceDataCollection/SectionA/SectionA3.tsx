@@ -46,7 +46,7 @@ const SectionA3 = () => {
       dispatch(setProjectParticipants(step3Data))
     }
   }, [currentProjectDetails])
-  console.log('current: ', currentProjectDetails)
+
   const addRow = () => {
     const dataCopy = [...party_and_project_participants]
     dataCopy.push({

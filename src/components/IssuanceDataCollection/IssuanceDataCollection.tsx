@@ -49,6 +49,7 @@ import { resetSectionE } from '../../redux/Slices/sectionESlice'
 import { resetSectionD } from '../../redux/Slices/sectionDSlice'
 import { resetSectionB } from '../../redux/Slices/sectionBSlice'
 import { resetSectionC } from '../../redux/Slices/sectionCSlice'
+import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -173,6 +174,7 @@ const IssuanceDataCollection = () => {
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
 
   //console.log('currentProjectDetails:', currentProjectDetails)
+
   useEffect(() => {
     return () => {
       dispatch(resetSectionA())
@@ -181,6 +183,7 @@ const IssuanceDataCollection = () => {
       dispatch(resetSectionD())
       dispatch(resetSectionE())
       dispatch(setSubSectionIndex(0))
+      dispatch(resetSectionNewProjectDetails())
     }
   }, [])
 
@@ -205,7 +208,9 @@ const IssuanceDataCollection = () => {
   }
 
   const handlePrevious = () => {
+    //console.log('run')
     if (sectionIndex > 0) {
+      //console.log('not runn')
       const isDataModified = handleDataCheck()
 
       if (isDataModified) {
@@ -221,16 +226,20 @@ const IssuanceDataCollection = () => {
   }
 
   const handleNextBtnFromSectionE = () => {
-    if (nextBtn) {
-      navigate(pathNames.DASHBOARD)
-    } else if (!nextBtn) {
-      if (currentProjectDetails?.project_status === 0) {
-        navigate(pathNames.SELECT_VERIFIER)
-      } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
-    }
+    // if (nextBtn) {
+    //   navigate(pathNames.DASHBOARD)
+    // } else if (!nextBtn) {
+    //   if (currentProjectDetails?.project_status === 0) {
+    navigate(pathNames.SELECT_VERIFIER)
+    //   } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+    // }
   }
 
   const handleNext = () => {
+    //Restrct issuer from going to next Sections if New Project hasn't been created
+    if (!currentProjectDetails) {
+      return
+    }
     if (sectionIndex > 0) {
       const isDataModified = handleDataCheck()
       if (isDataModified) {
@@ -385,6 +394,7 @@ const IssuanceDataCollection = () => {
     const params = paramsData.filter((i: any) => {
       return i?.section === sectionIndex && i?.subSection === subSectionIndex
     })
+    console.log('params', params)
     if (params.length) {
       dataModified = isDataModifiedCheckFunc(
         params[0].sectionName,
@@ -503,6 +513,8 @@ const IssuanceDataCollection = () => {
                     alignItems: 'center',
                     p: 1,
                     cursor: 'pointer',
+                    opacity: currentProjectDetails ? 1 : 0.5,
+                    pointerEvents: currentProjectDetails ? 'all' : 'none',
                   }}
                   onClick={handleNext}
                 >

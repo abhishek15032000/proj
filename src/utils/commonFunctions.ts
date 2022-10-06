@@ -1,5 +1,5 @@
-import { fileUploadCalls } from "../api/fileUpload.api"
-import { getLocalItem } from "./Storage"
+import { fileUploadCalls } from '../api/fileUpload.api'
+import { getLocalItem } from './Storage'
 
 export const deleteIndexInArray = (array: Array<any>, index: number) => {
   const modifiedArray = array.filter((item: any, i: number) => i !== index)
@@ -53,7 +53,6 @@ export const limitTitleFromMiddle = (title: string) => {
   return title
 }
 
-
 export const downloadFile = async (fileName: any) => {
   const File = await fileUploadCalls.getFile(
     fileName,
@@ -73,4 +72,13 @@ export const downloadFile = async (fileName: any) => {
 
   // Clean up and remove the link
   link?.parentNode?.removeChild(link)
+}
+
+export const getUrlVars = (url: string) => {
+  const urlVarObj: any = {}
+  const queryParams: any = new URLSearchParams(location?.search)
+  for (const [key, value] of queryParams) {
+    urlVarObj[key] = value
+  }
+  return urlVarObj
 }

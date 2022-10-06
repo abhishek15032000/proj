@@ -31,6 +31,7 @@ import LoaderOverlay from '../../components/LoderOverlay'
 import Spinner from '../../atoms/Spinner'
 import { USER } from '../../api/user.api'
 import { pathNames } from '../../routes/pathNames'
+import MessageModal from '../../atoms/MessageModal/MessageModal'
 
 const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const navigate = useNavigate()
@@ -54,13 +55,20 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState<null | number>(null)
   const [selectMonth, setSelectMonth] = useState(new Date())
-  const [nextSubmissionDate, setNextSubmissionDate] = useState(new Date())
+  const [nextSubmissionDate, setNextSubmissionDate] = useState<any>(
+    moment().add(1, 'd')
+  )
   const [relevantDocs, setRelevantDocs]: any = useState([])
   const [nonce, setNonce] = useState(1)
   const [loading, setLoading] = useState(false)
   const [pdfLoading, setPDFLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
   const [issuerShineKey, setIssuerShineKey] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  //Action = getSignatureHash api call + verifyPDF call
+  const [showActionSuccessModal, setShowActionSuccessModal] = useState(false)
+  const [showAddressNotMatchingModal, setShowAddressNotMatchingModal] =
+    useState(false)
 
   useEffect(() => {
     getPDF()
@@ -103,6 +111,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   }
 
   const signAndVerify = async () => {
+    const { shineKey = '' } = getLocalItem('userDetails2')
+
     if (!isConnected) {
       alert('Please connect Wallet before continuing!!!')
       return
@@ -111,11 +121,20 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       alert("Couldn't get issuer shine key. Please try again!!!")
       return
     }
+    if (
+      !accountAddress ||
+      !shineKey ||
+      accountAddress?.toLowerCase() !== shineKey?.toLowerCase()
+    ) {
+      setShowAddressNotMatchingModal(true)
+      return
+    }
     if (nextSubmissionDate && selectMonth && quantity) {
       setLoading(true)
       getSignatureHash()
     } else {
       alert('Please enter all fields!!!')
+      return
     }
   }
 
@@ -173,8 +192,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         //If verifer wants to make some more /report/submit (blockchain) calls then different nonce needs to be passed to indicate different transaction
         incrementNonce()
         if (verifyPDFAndMintTokenRes?.data?.data.success) {
-          alert('PDF veriferd and token minted successfully')
-          navigate(pathNames.DASHBOARD, { replace: true })
+          setShowActionSuccessModal(true)
         } else {
           alert(verifyPDFAndMintTokenRes?.data?.data.error)
         }
@@ -223,7 +241,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             </Typography>
 
             <TextButton
-              onClick={signAndVerify}
+              onClick={() => setShowModal(true)}
               sx={{ ml: 4 }}
               title="Sign & Mark Verified"
             />
@@ -301,7 +319,15 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 variant="outlined"
                 // sx={{ mt: 1 }}
                 value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                onChange={(e) => {
+                  const regexp = /^\d+(\.\d{0,3})?$/
+                  if (
+                    regexp.test(e?.target?.value) ||
+                    e?.target?.value === ''
+                  ) {
+                    setQuantity(e?.target?.value)
+                  }
+                }}
               />
             </Box>
           </Box>
@@ -327,7 +353,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,
               }}
-              // renderInput={(pa)}
+              minDate={moment().add(1, 'd')}
               renderInput={(params) => {
                 return (
                   <CCInputField
@@ -383,6 +409,47 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           )}
         </Paper>
       </Grid>
+      <MessageModal
+        message={
+          <Typography sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}>
+            Next step involves making calls with Blockchain. Do you want to
+            continue with{' '}
+            <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+              {accountAddress}
+            </span>{' '}
+            wallet address?
+          </Typography>
+        }
+        btn1Text="Continue"
+        btn1OnClick={() => {
+          console.log('show modal onlcick')
+          setShowModal(false)
+          signAndVerify()
+        }}
+        btn2OnClick={() => setShowModal(false)}
+        btn2Text="Cancel"
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
+      <MessageModal
+        message={
+          'Please use the same Wallet address submitted at the start while completing the Profile!!!'
+        }
+        btn1Text="Ok"
+        btn1OnClick={() => setShowAddressNotMatchingModal(false)}
+        showModal={showAddressNotMatchingModal}
+        setShowModal={setShowAddressNotMatchingModal}
+      />
+      <MessageModal
+        message={'PDF Verified and Token Minted Successfully!!!'}
+        btn1Text="Ok"
+        btn1OnClick={() => {
+          setShowActionSuccessModal(false)
+          navigate(pathNames.DASHBOARD, { replace: true })
+        }}
+        showModal={showActionSuccessModal}
+        setShowModal={setShowActionSuccessModal}
+      />
     </Box>
   )
 }

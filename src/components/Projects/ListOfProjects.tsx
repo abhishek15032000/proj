@@ -9,6 +9,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 // Functional Imports
 import { useNavigate } from 'react-router-dom'
+import moment from 'moment'
+import { useDispatch } from 'react-redux'
 
 // Local Imports
 import TabSelector from '../../atoms/TabSelector/TabSelector'
@@ -16,24 +18,23 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCTable from '../../atoms/CCTable'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import TextButton from '../../atoms/TextButton/TextButton'
-import moment from 'moment'
 import NoData from '../../atoms/NoData/NoData'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import {
   addSectionPercentages,
   isProjectCompleted,
+  totalCompletion,
 } from '../../utils/newProject.utils'
 import {
   setCurrentProjectDetails,
   setCurrentProjectDetailsUUID,
 } from '../../redux/Slices/issuanceDataCollection'
 import { pathNames } from '../../routes/pathNames'
-import { useDispatch } from 'react-redux'
 import {
   setSectionIndex,
   setSubSectionIndex,
 } from '../../redux/Slices/MonthlyReportUpdate'
-import ReferenceIdTd from './ReferenceIdTd'
+import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 
 const headingsNew = [
   'Reference ID',
@@ -105,7 +106,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         item.project_status === 2
       ) {
         newData.push([
-          <ReferenceIdTd key={index} referenceId={item.uuid} />,
+          <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,
@@ -144,14 +145,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 onClick={() => openProjectDetails(item, 'Verify')}
               />
             ) : (
-              <CreateIcon
-                sx={{ cursor: 'pointer' }}
-                key="1"
-                onClick={() => openProjectDetails(item, 'Details')}
-              />
+              <>
+                <div> {totalCompletion(item)} </div>
+                <CreateIcon
+                  sx={{ cursor: 'pointer' }}
+                  key="1"
+                  onClick={() => openProjectDetails(item, 'Details')}
+                />
+              </>
             )
           ) : (
-            '-'
+            totalCompletion(item)
           ),
           <ChevronRightIcon
             sx={{ cursor: 'pointer' }}
@@ -163,7 +167,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
-          <ReferenceIdTd key={index} referenceId={item.uuid} />,
+          <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,

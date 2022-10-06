@@ -16,7 +16,7 @@ const LogoutPage = (props: LogoutPageProps) => {
   }, [])
 
   const callLogout = (payload: any) => {
-    dispatch(logoutAction(payload))
+    dispatch(logoutAction())
   }
   return (
     <Grid
