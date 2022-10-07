@@ -3,45 +3,44 @@ import React, { useEffect } from 'react'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import SectionE4CalculationSummaryOfEmissionReductions from '../../../assets/Images/SampleData/SectionE4CalculationSummaryOfEmissionReductions.png'
-import {
-  setActualEmissionReductions,
-  setActualEmissionReductionsImages,
-  setCalculationSummaryOfEmission,
-  setCalculationSummaryOfEmissionImages,
-} from '../../../redux/Slices/MonthlyReport/sectionEMonthly'
+import { setE4 } from '../../../redux/Slices/MonthlyReport/sectionEMonthly'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { shallowEqual } from 'react-redux'
 import Spinner from '../../../atoms/Spinner'
 const SectionE4 = () => {
   const dispatch = useAppDispatch()
 
-  const calculationSummaryOfEmission = useAppSelector(
-    ({ sectionEMonthly }) => sectionEMonthly.calculationSummaryOfEmission
-  )
-  const calculationSummaryOfEmissionImages = useAppSelector(
-    ({ sectionEMonthly }) => sectionEMonthly.calculationSummaryOfEmissionImages
-  )
+  const E4 = useAppSelector(({ sectionEMonthly }) => sectionEMonthly.E4)
+  const { attach_relevant_docs } = E4
+
   const currentProjectDetails = useAppSelector(
     ({ MonthlyReportUpdate }) => MonthlyReportUpdate.currentProjectDetails,
     shallowEqual
   )
-  useEffect(() => {
-    if (currentProjectDetails.section_e.step4.completed) {
-      const { calculation_of_emissions_reduction, attach_relevant_docs } =
-        currentProjectDetails.section_e.step4
-
-      dispatch(
-        setCalculationSummaryOfEmission(calculation_of_emissions_reduction)
-      )
-      dispatch(setCalculationSummaryOfEmissionImages(attach_relevant_docs))
-    }
-  }, [])
   const loading = useAppSelector(
     ({ selectDate }) => selectDate.loading,
     shallowEqual
   )
+
+  useEffect(() => {
+    if (
+      currentProjectDetails &&
+      currentProjectDetails.section_e.step4.completed
+    ) {
+      const { calculation_of_emissions_reduction, attach_relevant_docs } =
+        currentProjectDetails.section_e.step4
+
+      dispatch(
+        setE4({
+          name: 'calculation_of_emissions_reduction',
+          value: calculation_of_emissions_reduction,
+        })
+      )
+      dispatch(setE4(attach_relevant_docs))
+    }
+  }, [currentProjectDetails])
+
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -54,9 +53,10 @@ const SectionE4 = () => {
             'Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks'
           }
           placeholder="Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks, if any"
-          value={calculationSummaryOfEmission}
-          onChange={(e) =>
-            dispatch(setCalculationSummaryOfEmission(e.target.value))
+          value={E4.calculation_of_emissions_reduction}
+          name={'calculation_of_emissions_reduction'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setE4({ name, value }))
           }
         />
       </Grid>
@@ -67,20 +67,21 @@ const SectionE4 = () => {
             'Sample Report - Calculation summary of emission reductions',
           ]}
           mediaItem={[SectionE4CalculationSummaryOfEmissionReductions]}
-          imageArray={calculationSummaryOfEmissionImages}
+          imageArray={E4.attach_relevant_docs}
           onImageUpload={(item: any) => {
             dispatch(
-              setCalculationSummaryOfEmissionImages([
-                ...calculationSummaryOfEmissionImages,
-                item,
-              ])
+              setE4({
+                name: 'attach_relevant_docs',
+                value: [...attach_relevant_docs, item],
+              })
             )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setCalculationSummaryOfEmissionImages(
-                deleteIndexInArray(calculationSummaryOfEmissionImages, index)
-              )
+              setE4({
+                name: 'attach_relevant_docs',
+                value: deleteIndexInArray(attach_relevant_docs, index),
+              })
             )
           }}
         />

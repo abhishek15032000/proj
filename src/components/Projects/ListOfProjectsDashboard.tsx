@@ -31,8 +31,9 @@ import { pathNames } from '../../routes/pathNames'
 import {
   setSectionIndex,
   setSubSectionIndex,
+  setMainProjectDetails,
 } from '../../redux/Slices/MonthlyReportUpdate'
-import ReferenceIdTd from './ReferenceIdTd'
+import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 
 const headingsNew = [
   'Reference ID',
@@ -86,6 +87,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       } else if (redirect === 'Monthly') {
         dispatch(setSectionIndex(0))
         dispatch(setSubSectionIndex(0))
+        dispatch(setMainProjectDetails(projectDetails))
         navigate(pathNames.MONTHLY_REPORT_UPDATE)
       } else if (redirect === 'Verify') {
         navigate(pathNames.SELECT_VERIFIER)
@@ -104,7 +106,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         item.project_status === 2
       ) {
         newData.push([
-          <ReferenceIdTd key={index} referenceId={item.uuid} />,
+          <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,
@@ -162,7 +164,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
 
       if (item.project_status === 3 || item.project_status === 4) {
         registeredData.push([
-          <ReferenceIdTd key={index} referenceId={item.uuid} />,
+          <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,

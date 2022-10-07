@@ -15,16 +15,12 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
-import { getLocalItem } from '../../utils/Storage'
-import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
-import { shallowEqual } from 'react-redux'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
+import { Colors } from '../../theme'
 
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-
-  const { wallet_added = false } = getLocalItem('userDetails2')
 
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
@@ -46,7 +42,7 @@ const Projects = () => {
 
   //useEffect(()=>{return resetSectionNewProjectDetails},[])
   const listNewProject = () => {
-    dispatch(resetSectionNewProjectDetails())
+    // dispatch(resetSectionNewProjectDetails())
     dispatch(setCurrentProjectDetails(null))
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
@@ -59,7 +55,13 @@ const Projects = () => {
         <LoaderOverlay />
       ) : (
         <>
-          <Typography sx={{ color: '#F15D5F', fontSize: 28, fontWeight: 400 }}>
+          <Typography sx={{ color: Colors.error }}>
+            {!isConnected &&
+              'Metamask not connected. Please Connect Metamask before proceeding!!!'}
+          </Typography>
+          <Typography
+            sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400 }}
+          >
             Dashboard
           </Typography>
           <Grid container>

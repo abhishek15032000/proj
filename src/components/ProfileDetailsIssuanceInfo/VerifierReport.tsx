@@ -23,6 +23,8 @@ import AddIcon from '@mui/icons-material/Add'
 import MonthlyReportUpdate, {
   setCurrentProjectDetails,
   setMainProjectDetails,
+  setSectionIndex,
+  setSubSectionIndex,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import BlockchainCalls from '../../blockchain/Blockchain'
@@ -30,6 +32,7 @@ import { getLocalItem } from '../../utils/Storage'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import LoaderOverlay from '../../components/LoderOverlay'
+import MessageModal from '../../atoms/MessageModal/MessageModal'
 
 interface VerifierReportListProps {
   //data?: any
@@ -50,6 +53,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
   const [mainProjectData, setMainProjectData] = useState<any>([])
   const [contractCallLoading, setContractCallLoading] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  //Action =  updateVerifier api call + createProject contract call + updateTx api call
+  const [showActionSuccessModal, setShowActionSuccessModal] = useState(false)
 
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -157,21 +163,25 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 //   View
                 // </Typography>,
                 '-',
-                <CCButton
-                  key={index}
-                  sx={{
-                    backgroundColor: Colors.darkPrimary1,
-                    padding: '8px 24px',
-                    minWidth: '50px',
-                    color: '#fff',
-                    borderRadius: 10,
-                    fontSize: 14,
-                    mr: 1,
-                  }}
-                  onClick={() => addMonthlyData(i, res?.data?.main_project)}
-                >
-                  Resume
-                </CCButton>,
+                i.project_status === 0 ? (
+                  <CCButton
+                    key={index}
+                    sx={{
+                      backgroundColor: Colors.darkPrimary1,
+                      padding: '8px 24px',
+                      minWidth: '50px',
+                      color: '#fff',
+                      borderRadius: 10,
+                      fontSize: 14,
+                      mr: 1,
+                    }}
+                    onClick={() => addMonthlyData(i, res?.data?.main_project)}
+                  >
+                    Resume
+                  </CCButton>
+                ) : (
+                  '-'
+                ),
               ]
             })
           setMonthlyReportsList(rows)
@@ -187,6 +197,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const addMonthlyData = (item: any, main: any) => {
     dispatch(setCurrentProjectDetails(item))
     dispatch(setMainProjectDetails(main))
+    dispatch(setSectionIndex(0))
+    dispatch(setSubSectionIndex(0))
     navigate(pathNames.MONTHLY_REPORT_UPDATE)
   }
 
@@ -211,6 +223,13 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   }
 
   const updateVerifier = (confirmedVerifier: any) => {
+    const { shineKey = '' } = getLocalItem('userDetails2')
+
+    if (wallet_address !== shineKey) {
+      setShowModal(true)
+      return
+    }
+
     setLoading(true)
     const payload = {
       _id: confirmedVerifier?._id,
@@ -225,7 +244,6 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          alert('Successfully confirmed Verifier')
           getVerifierByProject()
           createProjectContractCall(res?.data?.fileHash)
         }
@@ -242,7 +260,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     try {
       setContractCallLoading(true)
       const toPassParam = [wallet_address, email]
-      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
+      // await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
       const contractRes = await BlockchainCalls.contract_caller()
       await contractRes.estimateGas.createProject(uuid, fileHash)
       const createProjectRes = await contractRes.createProject(uuid, fileHash)
@@ -254,7 +272,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
             tx_data: createProjectRes,
           },
         }
-        await dataCollectionCalls.updateTx(updateTxPayload)
+        const updateTxRes = await dataCollectionCalls.updateTx(updateTxPayload)
+        if (updateTxRes.success) {
+          setShowActionSuccessModal(true)
+        }
       }
     } catch (e) {
       console.log('Error in contract_caller().createProject call ~ ', e)
@@ -264,94 +285,114 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   }
 
   return (
-    <Grid container>
-      <Grid item xs={12} sx={{ mt: 3, mb: 2 }}>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          Verifiers Selected
-        </Typography>
-      </Grid>
-      {/* {loading ? <LoaderOverlay /> : null} */}
-      <Grid item xs={12}>
-        {loading || contractCallLoading ? (
-          <Stack
-            alignItems="center"
-            justifyContent="center"
-            sx={{ minHeight: 250 }}
-          >
-            <Spinner />
-          </Stack>
-        ) : (
-          <Grid container rowSpacing={3}>
-            {verifierReports &&
-              verifierReports?.length > 0 &&
-              verifierReports?.map((verifier: any, index: number) => (
-                <Grid item key={index} xs={12}>
-                  <VerifierReportListItem
-                    data={verifier}
-                    updateVerifierAPI={updateVerifier}
-                  />
-                </Grid>
-              ))}
-          </Grid>
-        )}
-      </Grid>
-      <Grid item xs={12} sx={{ mt: 2 }}>
-        {showTable ? (
-          <>
-            <Grid
-              item
-              xs={12}
+    <>
+      <Grid container>
+        <Grid item xs={12} sx={{ mt: 3, mb: 2 }}>
+          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+            Verifiers Selected
+          </Typography>
+        </Grid>
+        {/* {loading ? <LoaderOverlay /> : null} */}
+        <Grid item xs={12}>
+          {loading || contractCallLoading ? (
+            <Stack
+              alignItems="center"
+              justifyContent="center"
+              sx={{ minHeight: 250 }}
+            >
+              <Spinner />
+            </Stack>
+          ) : (
+            <Grid container rowSpacing={3}>
+              {verifierReports &&
+                verifierReports?.length > 0 &&
+                verifierReports?.map((verifier: any, index: number) => (
+                  <Grid item key={index} xs={12}>
+                    <VerifierReportListItem
+                      data={verifier}
+                      updateVerifierAPI={updateVerifier}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
+          )}
+        </Grid>
+        <Grid item xs={12} sx={{ mt: 2 }}>
+          {showTable ? (
+            <>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: 500, color: '#005046' }}
+                >
+                  Reports Submitted
+                </Typography>
+
+                <CCButton
+                  variant="contained"
+                  sx={{
+                    backgroundColor: '#F3BA4D',
+                    textTransform: 'none',
+                    width: '150px',
+                    borderRadius: '100px',
+
+                    padding: '10px ',
+                    fontSize: '12px',
+                  }}
+                  startIcon={<AddIcon style={{ color: '#005046' }} />}
+                  onClick={() => addMonthlyData(null, mainProjectData)}
+                >
+                  Add Monthly Data
+                </CCButton>
+              </Grid>
+              <CCTable headings={headings} rows={monthlyReportsList} />
+            </>
+          ) : (
+            <Box
               sx={{
+                height: '330px',
                 display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
+                flexDirection: 'column',
+                justifyContent: 'center',
                 alignItems: 'center',
+                backgroundColor: '#E8F3EF',
               }}
             >
-              <Typography
-                sx={{ fontSize: 16, fontWeight: 500, color: '#005046' }}
-              >
-                Reports Submitted
+              <Typography sx={{ mb: 3, fontSize: 16, fontWeight: 500 }}>
+                Your project’s review report will show up here
               </Typography>
-
-              <CCButton
-                variant="contained"
-                sx={{
-                  backgroundColor: '#F3BA4D',
-                  textTransform: 'none',
-                  width: '150px',
-                  borderRadius: '100px',
-
-                  padding: '10px ',
-                  fontSize: '12px',
-                }}
-                startIcon={<AddIcon style={{ color: '#005046' }} />}
-                onClick={() => addMonthlyData(null, mainProjectData)}
-              >
-                Add Monthly Data
-              </CCButton>
-            </Grid>
-            <CCTable headings={headings} rows={monthlyReportsList} />
-          </>
-        ) : (
-          <Box
-            sx={{
-              height: '330px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#E8F3EF',
-            }}
-          >
-            <Typography sx={{ mb: 3, fontSize: 16, fontWeight: 500 }}>
-              Your project’s review report will show up here
-            </Typography>
-            <img src={illustration4} />
-          </Box>
-        )}
+              <img src={illustration4} />
+            </Box>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+      <MessageModal
+        message={
+          'Please use the same Wallet address submitted at the start while completing the Profile!!!'
+        }
+        btn1Text="Ok"
+        btn1OnClick={() => setShowModal(false)}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
+      <MessageModal
+        message={
+          'Successfully finalized Verifier and Project added in Blockchain!!!'
+        }
+        btn1Text="Ok"
+        btn1OnClick={() => setShowActionSuccessModal(false)}
+        showModal={showActionSuccessModal}
+        setShowModal={setShowActionSuccessModal}
+      />
+    </>
   )
 }
 

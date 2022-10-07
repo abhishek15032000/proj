@@ -1,4 +1,4 @@
-import { ROLES } from '../config/roles.config'
+import { ROLES } from '../config/constants.config'
 import DashboardPage from '../pages/DashboardPage/DashboardPage'
 import IssuanceDataCollection from '../pages/IssuanceDataCollection'
 import MaintenancePage from '../pages/MaintenancePage'
@@ -147,6 +147,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUER_WALLET,
     component: IssuerWallet,
+    sidebarName: linkLabels.Wallet,
     roles: [ROLES.ISSUER],
   },
   {

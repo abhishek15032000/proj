@@ -31,6 +31,7 @@ export const pathNames = {
   ORGANISATIONAL_DETAILS: '/organisational-details',
   RETIRE_TOKENS: '/retire-tokens',
   TOKENS_RETIREMENT: '/token-retirement',
+  RESET_PASSWORD: '/reset-password',
 }
 
 export const linkLabels = {
