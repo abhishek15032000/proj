@@ -23,11 +23,12 @@ import Spinner from '../../atoms/Spinner'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { pathNames } from '../../routes/pathNames'
 import { Colors } from '../../theme'
+import NoData from '../../atoms/NoData/NoData'
 
 const headings = [
   'Transaction ID',
   'Buy/Sell',
-  'Start Date',
+  'Date',
   'Time',
   'Quantity(VCOs T)',
   'Unit Price(USD)',
@@ -35,7 +36,9 @@ const headings = [
   'Details',
 ]
 
-const TransactionHistory = () => {
+interface TransactionHistoryProps {}
+
+const TransactionHistory = (props: TransactionHistoryProps) => {
   const navigate = useNavigate()
 
   const [startDate, setStartDate] = useState(new Date())
@@ -46,73 +49,94 @@ const TransactionHistory = () => {
   const [tableHeading, setTableHeading] = useState<any>(headings)
   const [tableRow, setTableRow] = useState<any>(null)
 
-  console.log('transactions', transactions)
-
   useEffect(() => {
     getTransactions()
   }, [])
-  // useEffect(() => {
-  //   if (accountAddress) {
-  //     getTransactions()
-  //   }
-  // }, [accountAddress])
 
-  useEffect(() => {
-    if (transactions && transactions.length) {
-      const rows = transactions.map((transaction: any, index: number) => {
-        const {
-          transaction_data: {
-            name,
-            timestamp,
-            values: { amountFilled = '', amountTaken = '' },
-          },
-          transaction_id,
-        } = transaction
-        const action = name === 'Make' ? 'Sell' : 'Buy'
-        const date = moment.unix(timestamp).format('L')
-        const time = moment.unix(timestamp).format('HH:mm:ss')
-        const quantity = amountTaken
-        const total = amountFilled
-        const unitPrice =
-          amountFilled && amountTaken
-            ? Number(amountFilled) / Number(amountTaken)
-            : ''
-        return [
-          <ShortenedIDComp
-            key={index}
-            referenceId={transaction_id}
-            width="fit-content"
-          />,
-          action,
-          time,
-          date,
-          quantity,
-          unitPrice,
-          total,
-          <Typography
-            key={1}
-            sx={{
-              fontSize: 14,
-              fontWeight: 600,
-              textDecoration: 'underline',
-              color: Colors.textColorLightGreen,
-              cursor: 'pointer',
-            }}
-            onClick={() =>
-              navigate(pathNames.TRANSACTION_HISTORY, {
-                state: {
-                  transactionDetails: transaction,
-                },
-              })
-            }
-          >
-            View
-          </Typography>,
-        ]
-      })
-      setTableRow(rows)
+  const loadTableData = (transactionsData: any) => {
+    const tableData: any = []
+
+    transactionsData.map((item: any, index: number) => {
+      const amountTaken =
+        item.transaction_data?.values?.amountTaken !== undefined
+          ? item.transaction_data?.values?.amountTaken
+          : '-'
+
+      const amountFilled =
+        item.transaction_data?.values?.amountFilled !== undefined
+          ? item.transaction_data?.values?.amountFilled
+          : '-'
+
+      const unitPrice =
+        Number(item.transaction_data?.values?.amountFilled) /
+        Number(item.transaction_data?.values?.amountTaken)
+
+      tableData.push([
+        <ShortenedIDComp
+          key={index}
+          referenceId={item.transaction_id}
+          width="fit-content"
+        />,
+        item.transaction_data?.name === 'Make' ? 'Sell' : 'Buy',
+        moment.unix(item.transaction_data?.timestamp).format('DD/MM/YYYY'),
+        moment.unix(item.transaction_data?.timestamp).format('HH:mm:ss'),
+        amountTaken,
+        isNaN(unitPrice) ? '-' : unitPrice,
+        amountFilled,
+        <Typography
+          key={1}
+          sx={{
+            fontSize: 14,
+            fontWeight: 600,
+            textDecoration: 'underline',
+            color: Colors.textColorLightGreen,
+            cursor: 'pointer',
+          }}
+          onClick={() =>
+            navigate(pathNames.TRANSACTION_HISTORY, {
+              state: {
+                transactionDetails: item,
+              },
+            })
+          }
+        >
+          View
+        </Typography>,
+      ])
+    })
+
+    if (tableData.length > 0) {
+      setTableRow(tableData)
+    } else {
+      setTableRow([{}])
     }
-  }, [transactions])
+  }
+
+  const filterTable = () => {
+    const filteredData: any = []
+
+    transactions.map((item: any, index: number) => {
+      const dateFilter = moment(
+        moment.unix(item.transaction_data.timestamp).toISOString()
+      ).isBetween(startDate, endDate)
+
+      let dropDownFilter
+
+      if (dropdown === 'Sell') {
+        dropDownFilter = item.transaction_data.name === 'Make'
+      } else if (dropdown === 'Buy') {
+        dropDownFilter = item.transaction_data.name === 'Fill'
+      } else if (dropdown === 'All') {
+        dropDownFilter = true
+      }
+
+      if (dropDownFilter && dateFilter) {
+        filteredData.push(item)
+      }
+    })
+
+    loadTableData(filteredData)
+  }
 
   const getTransactions = async () => {
     try {
@@ -121,6 +145,7 @@ const TransactionHistory = () => {
         '0x5885A90Aa805548FcF1B1C2B164DB68fFf3db6Fd'
       )
       if (res?.success) {
+        loadTableData(res?.data)
         setTransactions(res?.data)
       }
     } catch (error) {
@@ -134,149 +159,136 @@ const TransactionHistory = () => {
   }
 
   return (
-    <>
-      {transactionLoading ? (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '60vh',
-          }}
-        >
-          <Spinner />
-        </Box>
-      ) : tableRow && tableRow.length > 0 ? (
-        <Paper
-          sx={{
-            width: '100%',
-            borderRadius: '8px',
-            mt: 5,
-            p: 2,
-          }}
-        >
-          <Typography
+    <Paper
+      sx={{
+        width: '100%',
+        borderRadius: '8px',
+        mt: 5,
+        p: 2,
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: 18,
+          fontWeight: 400,
+          color: Colors.textColorDarkGreen,
+        }}
+      >
+        Transaction History
+      </Typography>
+
+      <Box sx={{ display: 'flex', alignItems: 'center', pt: 2, pb: 2 }}>
+        <FormControl>
+          <InputLabel
             sx={{
-              fontSize: 18,
-              fontWeight: 400,
-              color: Colors.textColorDarkGreen,
+              color: '#006B5E',
             }}
           >
-            Transaction History
-          </Typography>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', pt: 2, pb: 2 }}>
-            <FormControl>
-              <InputLabel
+            Project Type
+          </InputLabel>
+          <Select
+            sx={{
+              width: '180px',
+              mr: 4,
+              color: '#006B5E',
+            }}
+            value={dropdown}
+            onChange={(e) => setDropdown(e.target.value)}
+            input={
+              <OutlinedInput
                 sx={{
                   color: '#006B5E',
                 }}
-              >
-                Project Type
-              </InputLabel>
-              <Select
-                sx={{
-                  width: '180px',
-                  mr: 4,
-                  color: '#006B5E',
-                }}
-                value={dropdown}
-                onChange={(e) => setDropdown(e.target.value)}
-                input={
-                  <OutlinedInput
-                    sx={{
-                      color: '#006B5E',
-                    }}
-                    label="Project Type"
-                  />
-                }
-              >
-                <MenuItem value={'All'}>All</MenuItem>
-                <MenuItem value={'Buy'}>Buy</MenuItem>
-                <MenuItem value={'Sell'}>Sell</MenuItem>
-              </Select>
-            </FormControl>
-            <Box sx={{ width: '180px', mr: 4 }}>
-              <DatePicker
-                label="Start Date"
-                value={startDate}
-                components={{
-                  OpenPickerIcon: CalendarMonthOutlinedIcon,
-                }}
-                renderInput={(params: any) => {
-                  return (
-                    <CCInputField
-                      {...params}
-                      style={{ backgroundColor: 'white' }}
-                      required={false}
-                    />
-                  )
-                }}
-                onChange={(e) => {
-                  if (e !== null) {
-                    setStartDate(e)
-                  }
-                }}
+                label="Project Type"
               />
-            </Box>
+            }
+          >
+            <MenuItem value={'All'}>All</MenuItem>
+            <MenuItem value={'Buy'}>Buy</MenuItem>
+            <MenuItem value={'Sell'}>Sell</MenuItem>
+          </Select>
+        </FormControl>
+        <Box sx={{ width: '180px', mr: 4 }}>
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            components={{
+              OpenPickerIcon: CalendarMonthOutlinedIcon,
+            }}
+            renderInput={(params: any) => {
+              return (
+                <CCInputField
+                  {...params}
+                  style={{ backgroundColor: 'white' }}
+                  required={false}
+                />
+              )
+            }}
+            onChange={(e) => {
+              if (e !== null) {
+                setStartDate(e)
+              }
+            }}
+          />
+        </Box>
 
-            <Box sx={{ width: '180px', mr: 4 }}>
-              <DatePicker
-                label="End Date"
-                value={endDate}
-                components={{
-                  OpenPickerIcon: CalendarMonthOutlinedIcon,
-                }}
-                renderInput={(params: any) => {
-                  return (
-                    <CCInputField
-                      {...params}
-                      style={{ backgroundColor: 'white' }}
-                      required={false}
-                    />
-                  )
-                }}
-                onChange={(e) => {
-                  if (e !== null) {
-                    setEndDate(e)
-                  }
-                }}
-              />
-            </Box>
+        <Box sx={{ width: '180px', mr: 4 }}>
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            components={{
+              OpenPickerIcon: CalendarMonthOutlinedIcon,
+            }}
+            renderInput={(params: any) => {
+              return (
+                <CCInputField
+                  {...params}
+                  style={{ backgroundColor: 'white' }}
+                  required={false}
+                />
+              )
+            }}
+            onChange={(e) => {
+              if (e !== null) {
+                setEndDate(e)
+              }
+            }}
+          />
+        </Box>
 
-            <TextButton
-              title="Search"
-              sx={{
-                backgroundColor: Colors.darkOrangeBackground,
-                boxShadow: 3,
-              }}
-              textStyle={{ color: Colors.textColorDarkGreen }}
-            />
-          </Box>
+        <TextButton
+          title="Search"
+          sx={{
+            backgroundColor: Colors.darkOrangeBackground,
+            boxShadow: 3,
+          }}
+          textStyle={{ color: Colors.textColorDarkGreen }}
+          onClick={filterTable}
+        />
+      </Box>
 
-          {transactionLoading ? (
-            <CCTableSkeleton sx={{ mt: 2 }} height={40} />
-          ) : (
-            tableRow &&
-            (tableRow.length ? (
-              <CCTable
-                headings={tableHeading}
-                rows={tableRow}
-                maxWidth={'100%'}
-              />
-            ) : (
-              <>No data</>
-            ))
-          )}
-        </Paper>
-      ) : (
+      {transactionLoading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
+
+      {!transactionLoading &&
+        transactions?.length > 0 &&
+        Object.keys(tableRow[0]).length > 0 && (
+          <CCTable headings={tableHeading} rows={tableRow} maxWidth={'100%'} />
+        )}
+
+      {!transactionLoading &&
+        transactions?.length > 0 &&
+        Object.keys(tableRow[0]).length === 0 && (
+          <NoData title="Try using different filters" />
+        )}
+
+      {!transactionLoading && transactions?.length === 0 && (
         <EmptyComponent
           photoType={3}
           title="No transaction history!"
           exploreMarketplace
         />
       )}
-    </>
+    </Paper>
   )
 }
 
