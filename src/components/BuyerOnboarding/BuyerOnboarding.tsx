@@ -64,7 +64,7 @@ const BuyerOnboarding = () => {
           <ProfileCompletion />
         </Grid>
       </Grid>
-      <LoadWallet />
+      {/* <LoadWallet /> */}
     </>
   )
 }

@@ -15,6 +15,13 @@ import { shallowEqual } from 'react-redux'
 import { useIdleTimer } from 'react-idle-timer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from './routes/pathNames'
+import { BlockchainListener } from './utils/blockchain.util'
+import { setLoadWallet } from './redux/Slices/walletSlice'
+import LoadWallet from './components/LoadWallet'
+import BlockchainAlert from './components/BlockchainAlert'
+
+declare let window: any
+const { ethereum } = window
 
 const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
 
@@ -77,7 +84,7 @@ const App: FC<AppProps> = () => {
     onIdle,
     onActive,
     onAction,
-    timeout: 1000 * 60 * 15,
+    timeout: 1000 * 60 * 60,
     promptTimeout: 0,
     events: [
       'mousemove',
@@ -111,6 +118,10 @@ const App: FC<AppProps> = () => {
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
 
   useEffect(() => {
+    BlockchainListener()
+  })
+
+  useEffect(() => {
     //const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
     try {
       if (getloginStatusFromLocalStorage) {
@@ -131,12 +142,18 @@ const App: FC<AppProps> = () => {
       <LocalizationProvider dateAdapter={AdapterMoment}>
         {userData && showDrawer && (
           <AppDrawer>
+            <BlockchainAlert />
+            <LoadWallet />
             <RouteController />
           </AppDrawer>
         )}
         {userData && !showDrawer && (
           // <AppDrawer>
-          <RouteController />
+          <>
+            <BlockchainAlert />
+            <LoadWallet />
+            <RouteController />
+          </>
           // </AppDrawer>
         )}
         {!userData && (

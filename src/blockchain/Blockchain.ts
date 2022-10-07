@@ -56,6 +56,20 @@ const BlockchainCalls = {
       return { connected: false }
     }
   },
+  getWalletNetwork: async () => {
+    try {
+      const getNetwork = await provider.getNetwork()
+      console.log("🚀 ~ file: Blockchain.ts ~ line 62 ~ getWalletNetwork: ~ getNetwork", getNetwork)
+      // const balance = ethers.utils.formatEther(getBalance)
+
+      return getNetwork
+    } catch (error) {
+      console.log("🚀 ~ file: Blockchain.ts ~ line 126 ~ getWalletNetwork: ~ error", error)
+
+      //   setIsConnected(false)
+      return { connected: false }
+    }
+  },
   contract_caller: async (address?: string) => {
     const ethereum = (window as any).ethereum
     const accounts = await ethereum.request({

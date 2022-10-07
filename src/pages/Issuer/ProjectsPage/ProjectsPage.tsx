@@ -12,7 +12,7 @@ const ProjectsPage = (props: ProjectsPageProps) => {
 
   return (
     <>
-      <LoadWallet />
+      {/* <LoadWallet /> */}
       {userDetails?.type === ROLES.ISSUER && <ProjectsComp />}
       {userDetails?.type === ROLES.VERIFIER && <VerifierProjects />}
       {userDetails?.type === ROLES.BUYER && <BuyerOnboarding />}

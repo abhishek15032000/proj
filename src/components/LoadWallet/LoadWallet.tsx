@@ -9,6 +9,7 @@ import {
   setLoadWallet,
   setMetamask,
   setGuide,
+  setWalletNetwork,
 } from '../../redux/Slices/walletSlice'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { LoadWalletProps } from './LoadWallet.interface'
@@ -21,6 +22,7 @@ import InfoIcon from '@mui/icons-material/Info'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { USER } from '../../api/user.api'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
+import { onManualConnectClick } from '../../utils/blockchain.util'
 
 // let window: any
 declare let window: any
@@ -31,7 +33,7 @@ const LoadWallet = (props: LoadWalletProps) => {
   const dispatch = useAppDispatch()
   const loadWallet = useAppSelector((state) => state.wallet.loadWallet)
 
-  const { user_id } = getLocalItem('userDetails')
+  // const { user_id } = getLocalItem('userDetails')
 
   const closeModal = () => dispatch(setLoadWallet(false))
 
@@ -55,6 +57,10 @@ const LoadWallet = (props: LoadWalletProps) => {
   const { ethereum } = window
 
   const walletReducer = useAppSelector((state) => state.wallet)
+  // console.log(
+  //   '🚀 ~ file: LoadWallet.tsx ~ line 59 ~ LoadWal ~ walletReducer',
+  //   walletReducer
+  // )
 
   const {
     haveMetamask,
@@ -62,9 +68,11 @@ const LoadWallet = (props: LoadWalletProps) => {
     accountAddress,
     accountBalance,
     guideOpen,
+    walletNetwork,
   } = walletReducer
 
   useEffect(() => {
+    console.log('load wallet useffec oopen')
     onManualConnectClick()
       .then((res) => {
         // console.log(res)
@@ -78,76 +86,14 @@ const LoadWallet = (props: LoadWalletProps) => {
       const { wallet_added = false } = userDetails2
       setWalletAdded(wallet_added)
     }
-  }, [])
+  }, [loadWallet])
 
   useEffect(() => {
-    if (accountAddress) {
+    if (accountAddress && loadWallet) {
       getWalletBalance()
+      getWalletNetwork()
     }
-  }, [accountAddress])
-
-  const checkMetamaskAvailability = async () => {
-    return new Promise<boolean>((resolve, reject) => {
-      try {
-        setLoading(true)
-        if (!ethereum) {
-          dispatch(setMetamask(false))
-          reject(new Error('Metamask not available'))
-        }
-        // sethaveMetamask(true)
-        dispatch(setMetamask(true))
-        connectWallet().then((res: any) => {
-          resolve(res)
-        })
-      } catch (e: any) {
-        reject(new Error(e.toString()))
-        console.log('checkMetamaskAvailability fn :', e)
-      }
-    })
-  }
-  const onManualConnectClick = async () => {
-    // checkMetamaskAvailability().then((res) => {
-    const metamaskAvailabilityRes = await checkMetamaskAvailability()
-    if (metamaskAvailabilityRes) {
-      //call userUpdateApi
-      const user_data = getLocalItem('userDetails')
-      return USER.updateUserInfo(user_data)
-        .then((res: any) => {
-          console.log(
-            '🚀 ~ file: LoadWallet.tsx ~ line 105 ~ USER.updateUserInfo ~ res',
-            res
-          )
-          if (res?.data?.success && res?.data?.data) {
-            // setLocalItem('uuid', res?.data?.data?.uuid)
-            // navigate(pathNames.TWOFA)
-            return res
-          } else if (!res?.data?.success) {
-            alert(res?.data?.error)
-          }
-        })
-        .catch((e) =>
-          console.log('error checkMetamaskAvailability promise :', e)
-        )
-    }
-    // })
-  }
-
-  const connectWallet = async () => {
-    try {
-      BlockchainCalls.connectWallet().then((res: any) => {
-        dispatch(setAccountAddress(res.accountAddress))
-        dispatch(setConnected(res.isConnected))
-        if (!walletAdded) {
-          updateUserWithShineKey(res.accountAddress)
-        }
-
-        return true
-      })
-    } catch (error: any) {
-      dispatch(setConnected(false))
-      setError(error.toString())
-    }
-  }
+  }, [accountAddress, loadWallet])
 
   const getWalletBalance = async () => {
     try {
@@ -160,27 +106,19 @@ const LoadWallet = (props: LoadWalletProps) => {
       dispatch(setConnected(false))
     }
   }
-
-  const updateUserWithShineKey = async (shineKey: string) => {
+  const getWalletNetwork = async () => {
     try {
-      const user_data = getLocalItem('userDetails2')
-      user_data.phone = user_data.phone.toString()
-      delete user_data._id
-      const updateUserRes = await USER.updateUserInfo({
-        ...user_data,
-        shineKey,
+      // console.log(accountAddress)
+      BlockchainCalls.getWalletNetwork().then((res: any) => {
+        console.log(
+          '🚀 ~ file: blockchain.util.ts ~ line 117 ~ BlockchainCalls.getWalletNetwork ~ res',
+          res
+        )
+        dispatch(setWalletNetwork(res))
+        return true
       })
-      if (updateUserRes?.data?.success) {
-        if (user_id) {
-          const userResponse = await USER.getUsersById(user_id)
-          setLocalItem('userDetails2', userResponse?.data)
-        } else {
-          //Couldn't get userId from localStorage
-          alert('User id not found')
-        }
-      }
     } catch (error) {
-      console.log('error USER.updateUserInfo api :', error)
+      dispatch(setConnected(false))
     }
   }
 
@@ -295,6 +233,18 @@ const LoadWallet = (props: LoadWalletProps) => {
                           justifyContent={'flex-start'}
                           sx={{ padding: 2 }}
                         >
+                          <Grid item sx={{ mt: 1 }} xs={12}>
+                            <Typography
+                              sx={{
+                                fontWeight: 400,
+                                fontSize: 16,
+                                textAlign: 'center',
+                              }}
+                            >
+                              <strong>Wallet Network</strong>:{' '}
+                              {walletNetwork.name}
+                            </Typography>
+                          </Grid>
                           <Grid item sx={{ mt: 1 }} xs={12}>
                             <Typography
                               sx={{
