@@ -1,115 +1,106 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 
 // MUI Imports
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import { Box, Grid, Paper } from '@mui/material'
 
 // Local Imports
-import CCTitleValue from '../../atoms/CCTitleValue/CCTitleValue'
-import TextButton from '../../atoms/TextButton/TextButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { Colors } from '../../theme'
+import CCButton from '../../atoms/CCButton'
+import CardRow from './CardRow'
 
 interface PurchaseCompProps {}
 
 const PurchaseComp: FC<PurchaseCompProps> = (props) => {
   return (
-    <Box
-      sx={{
-        height: '300px',
-        width: '100%',
-        minWidth: '800px',
-        borderRadius: '12px',
-        marginTop: 2,
-        display: 'flex',
-        // margin: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-      }}
-    >
-      <Paper
-        sx={{
-          height: '100%',
-          width: '50%',
-          position: 'relative',
-          borderRadius: '4px',
-          marginRight: 2,
-          paddingBottom: 10,
-        }}
-      >
-        <CCTitleValue
-          title="Tokens Available for Purchase :"
-          value="04"
-          fontWeight={600}
-          fontSize={16}
-          titleFontColor={Colors.lightPrimary1}
+    <Grid container mt={2} columnSpacing={2}>
+      <Grid item xs={6}>
+        <Paper
           sx={{
-            marginTop: 1,
-            padding: 1,
-            paddingLeft: 2,
-            paddingRight: 10,
+            height: '100%',
+            borderRadius: '4px',
+            p: 2,
           }}
-        />
-
-        <LabelInput
-          label="Quantity"
-          sx={{ marginRight: 2, marginLeft: 2, marginBottom: 2 }}
-          textFieldSx={{ width: '85%' }}
-        />
-
-        <CCTitleValue
-          title="Unit Price"
-          value="144"
-          titleFontColor={Colors.darkPrimary1}
-          sx={{ padding: 1, paddingLeft: 2, paddingRight: 10 }}
-        />
-
-        <CCTitleValue
-          title="Total amount to be paid:"
-          value="288"
-          titleFontColor={Colors.darkPrimary1}
-          sx={{ padding: 1, paddingLeft: 2, paddingRight: 10 }}
-        />
-
-        <TextButton
-          title="Buy"
-          sx={{ position: 'absolute', bottom: 25, right: 30 }}
-        />
-      </Paper>
-
-      <Paper sx={{ height: '100%', width: '50%', position: 'relative', borderRadius: '4px' }}>
-        <CCTitleValue
-          title="Tokens Available for Sale :"
-          value="04"
-          fontWeight={600}
-          titleFontColor={Colors.lightPrimary1}
-          fontSize={16}
+        >
+          <CardRow
+            title="Tokens Available for Purchase :"
+            titleStyle={{
+              color: Colors.lightPrimary1,
+              fontSize: 16,
+              fontWeight: 600,
+            }}
+            valueStyle={{
+              fontSize: 16,
+              fontWeight: 600,
+            }}
+            value="04 VCOT"
+          />
+          <LabelInput label="Quantity" sx={{ width: '100%' }} />
+          <CardRow title="Unit Price :" value="04 USD" />
+          <CardRow title="Total amount to be paid :" value="24 USD" />
+          <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+            <CCButton
+              sx={{
+                mt: 3,
+                alignSelf: 'end',
+                bgcolor: Colors.darkPrimary1,
+                color: Colors.white,
+                padding: '8px 24px',
+                borderRadius: '30px',
+                fontSize: 14,
+                minWidth: '120px',
+              }}
+            >
+              Buy
+            </CCButton>
+          </Box>
+        </Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper
           sx={{
-            marginTop: 1,
-            padding: 1,
-            paddingLeft: 2,
-            paddingRight: 10,
+            height: '100%',
+            borderRadius: '4px',
+            p: 2,
           }}
-        />
+        >
+          <CardRow
+            title="Tokens Available for Sale :"
+            titleStyle={{
+              color: Colors.lightPrimary1,
+              fontSize: 16,
+              fontWeight: 600,
+            }}
+            valueStyle={{
+              fontSize: 16,
+              fontWeight: 600,
+            }}
+            value="04 VCOT"
+          />
+          <LabelInput label="Quantity" />
 
-        <LabelInput
-          label="Quantity"
-          sx={{ marginRight: 2, marginLeft: 2, marginBottom: 2 }}
-          textFieldSx={{ width: '85%' }}
-        />
+          <LabelInput label="Unit Price" />
 
-        <LabelInput
-          label="Unit Price"
-          sx={{ marginRight: 2, marginLeft: 2, marginBottom: 2 }}
-          textFieldSx={{ width: '85%' }}
-        />
-
-        <TextButton
-          title="Sell"
-          sx={{ position: 'absolute', bottom: 25, right: 30 }}
-        />
-      </Paper>
-    </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+            <CCButton
+              sx={{
+                mt: 3,
+                alignSelf: 'end',
+                bgcolor: Colors.darkPrimary1,
+                color: Colors.white,
+                padding: '8px 24px',
+                borderRadius: '30px',
+                fontSize: 14,
+                minWidth: '120px',
+              }}
+            >
+              Sell
+            </CCButton>
+          </Box>
+        </Paper>
+      </Grid>
+    </Grid>
   )
 }
 
