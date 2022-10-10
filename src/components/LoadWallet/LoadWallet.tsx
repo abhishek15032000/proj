@@ -10,6 +10,7 @@ import {
   setMetamask,
   setGuide,
   setWalletNetwork,
+  resetWallet,
 } from '../../redux/Slices/walletSlice'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { LoadWalletProps } from './LoadWallet.interface'
@@ -75,17 +76,24 @@ const LoadWallet = (props: LoadWalletProps) => {
     console.log('load wallet useffec oopen')
     onManualConnectClick()
       .then((res) => {
-        // console.log(res)
+        console.log(res)
+        if (!res) {
+          dispatch(resetWallet())
+          return
+        } else {
+          return true
+        }
+      })
+      .then((res) => {
+        const userDetails2 = getLocalItem('userDetails2')
+        if (userDetails2) {
+          const { wallet_added = false } = userDetails2
+          setWalletAdded(wallet_added)
+        }
       })
       .catch((e: any) => {
         setError(e)
       })
-
-    const userDetails2 = getLocalItem('userDetails2')
-    if (userDetails2) {
-      const { wallet_added = false } = userDetails2
-      setWalletAdded(wallet_added)
-    }
   }, [loadWallet])
 
   useEffect(() => {
