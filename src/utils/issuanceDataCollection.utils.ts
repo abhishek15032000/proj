@@ -702,11 +702,11 @@ export const moveToNextSection = async (
 
 export const getProjectDetails = async (projectID: string) => {
   const issuanceDataCollection: any = store.getState()?.issuanceDataCollection
-  const { toMoveToNextSection } = issuanceDataCollection
+  const { toMoveSectionIndex } = issuanceDataCollection
   try {
     const res = await dataCollectionCalls.getProjectById(projectID)
     if (res?.success && res?.data) {
-      toMoveToNextSection && dispatch(setIsApiCallSuccess(true))
+      toMoveSectionIndex && dispatch(setIsApiCallSuccess(true))
       const modifiedRows = addSectionPercentages(res?.data)
       if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
     } else {

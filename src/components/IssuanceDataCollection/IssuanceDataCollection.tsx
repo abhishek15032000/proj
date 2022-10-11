@@ -151,6 +151,10 @@ const IssuanceDataCollection = () => {
     ({ issuanceDataCollection }) => issuanceDataCollection.isApiCallSuccess,
     shallowEqual
   )
+  const toMoveSectionIndex = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.toMoveSectionIndex,
+    shallowEqual
+  )
 
   const A1 = useAppSelector(({ sectionA }) => sectionA.A1)
   const A2 = useAppSelector(({ sectionA }) => sectionA.A2)
@@ -698,7 +702,11 @@ const IssuanceDataCollection = () => {
                 Please Enter All the Mandatory Fields
               </Typography>
               <CCButton
-                onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+                onClick={() => {
+                  dispatch(setShowMandatoryFieldModal(false))
+                  //below line will make the triggered redux to false if the mandatory fields in sections so that the section or subsection wont' change when clicks on save from out of modal
+                  toMoveSectionIndex && dispatch(setToMoveSectionIndex(false))
+                }}
                 sx={{
                   mt: 3,
                   minWidth: 0,
