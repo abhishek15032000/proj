@@ -55,6 +55,9 @@ const wallet = createSlice({
         },
         setLoadWalletAlert: (state, action: PayloadAction<any>) => {
             state.loadWalletAlert = action.payload
+        },
+        resetWallet: (state) => {
+            state = initialState
         }
     },
 })
@@ -66,6 +69,7 @@ export const { setLoadWallet, setMetamask,
     setWalletNetwork,
     setAlertMessage,
     setLoadWalletAlert,
+    resetWallet,
     setGuide } = wallet.actions
 
 export default wallet.reducer

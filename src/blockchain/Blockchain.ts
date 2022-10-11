@@ -17,6 +17,7 @@ const { ethereum } = window
 
 const BlockchainCalls = {
   connectWallet: async () => {
+    console.log("BlockchainCalls.connectWallet called")
     let isConnected = false
     let haveMetamask = false
     let accountAddress = undefined
@@ -28,8 +29,13 @@ const BlockchainCalls = {
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts',
       })
+      console.log("🚀 ~ file: Blockchain.ts ~ line 31 ~ connectWallet: ~ accounts", accounts)
+      if (accounts.length > 0) {
+        accountAddress = accounts[0]
+      } else {
 
-      accountAddress = accounts[0]
+        accountAddress = null
+      }
       isConnected = true
 
       return {
