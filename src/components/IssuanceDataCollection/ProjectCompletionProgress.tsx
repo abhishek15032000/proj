@@ -113,7 +113,9 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
       </Box>
       <Box sx={{ mt: 2 }}>
         <Typography sx={{ fontSize: 12, color: '#F15D5F' }}>
-          In Progress
+          {currentProjectDetails && currentProjectDetails.projectCompleted
+            ? 'Completed'
+            : 'In Progress'}
         </Typography>
         <LinearProgress
           variant="determinate"

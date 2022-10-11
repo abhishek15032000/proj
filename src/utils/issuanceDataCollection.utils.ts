@@ -10,6 +10,8 @@ import {
   setSectionIndex,
   setSubSectionIndex,
   setShowMandatoryFieldModal,
+  setToMoveSectionIndex,
+  setIsApiCallSuccess,
 } from '../redux/Slices/issuanceDataCollection'
 import { setLoading, setNewProjectUUID } from '../redux/Slices/newProjectSlice'
 import { store } from '../redux/store'
@@ -35,9 +37,9 @@ export const moveToNextSection = async (
     const projectType = newProjectData?.projectType
     const projectLocation = newProjectData?.projectLocation
     const startDate = newProjectData?.startDate
+    const endDate: any = newProjectData?.endDate
     const projectDuration = newProjectData?.projectDuration
     const projectArea = newProjectData?.projectArea
-
     if (
       projectName &&
       projectType &&
@@ -46,7 +48,7 @@ export const moveToNextSection = async (
       projectDuration &&
       projectArea
     ) {
-      const payload = {
+      const payload: any = {
         company_name: projectName,
         type: projectType,
         location: projectLocation,
@@ -55,6 +57,10 @@ export const moveToNextSection = async (
         area: projectArea,
         monthly_update: false,
       }
+      if (endDate) {
+        payload['end_date'] = endDate
+      }
+
       try {
         dispatch(setLoading(true))
         const res = await dataCollectionCalls.createNewProject(payload)
@@ -65,6 +71,7 @@ export const moveToNextSection = async (
           //In case call fails but no error comes fron backend
           if (res?.error && res?.error?.length) {
             alert(res?.error)
+            dispatch(setLoading(false))
           } else {
             alert('Something went wrong. Please try again later.')
           }
@@ -210,7 +217,7 @@ export const moveToNextSection = async (
           credit_start_period,
           credit_period: {
             start_date: credit_period.start_date,
-            end_date: credit_period.start_date,
+            end_date: credit_period.end_date,
           },
           credit_period_description,
           completed: true,
@@ -694,10 +701,12 @@ export const moveToNextSection = async (
 }
 
 export const getProjectDetails = async (projectID: string) => {
+  const issuanceDataCollection: any = store.getState()?.issuanceDataCollection
+  const { toMoveToNextSection } = issuanceDataCollection
   try {
-    //dispatch(setLoading(true))
     const res = await dataCollectionCalls.getProjectById(projectID)
     if (res?.success && res?.data) {
+      toMoveToNextSection && dispatch(setIsApiCallSuccess(true))
       const modifiedRows = addSectionPercentages(res?.data)
       if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
     } else {
@@ -715,5 +724,6 @@ export const getProjectDetails = async (projectID: string) => {
     console.log('Error in dataCollectionCalls.getProjectById api ~ ', e)
   } finally {
     dispatch(setLoading(false))
+    dispatch(setToMoveSectionIndex(false))
   }
 }
