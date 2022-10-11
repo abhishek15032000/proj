@@ -1,29 +1,28 @@
-import React from "react";
+import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import CCSelectBox from './CCSelectBox'
-import { ROLES } from '../../config/roles.config'
+import { ROLES } from '../../config/constants.config'
 
 const typeOptions = [
   { name: 'Issuer', value: ROLES.ISSUER },
   { name: 'Verifier', value: ROLES.VERIFIER },
 ]
 test('renders CCSelectBox', () => {
-//   render(
-//     <CCSelectBox
-//       native={true}
-//       label="Particpant Type"
-//       items={typeOptions}
-//       // onChange={(e) => setSelectedRole(e.target.value)}
-//     />
-//   )
-//   const elem = screen.getByRole('option', {
-//     name: 'Issuer',
-//   }) as HTMLSelectElement
-
-//   // expect(
-//   //   screen.getByRole('option', { name: 'Select a country' }).selected
-//   // ).toBe(true)
-//   // if (elem) expect(elem.selected).toBe(true)
+  //   render(
+  //     <CCSelectBox
+  //       native={true}
+  //       label="Particpant Type"
+  //       items={typeOptions}
+  //       // onChange={(e) => setSelectedRole(e.target.value)}
+  //     />
+  //   )
+  //   const elem = screen.getByRole('option', {
+  //     name: 'Issuer',
+  //   }) as HTMLSelectElement
+  //   // expect(
+  //   //   screen.getByRole('option', { name: 'Select a country' }).selected
+  //   // ).toBe(true)
+  //   // if (elem) expect(elem.selected).toBe(true)
 })
 // it('should display the correct number of options', () => {
 //   render(

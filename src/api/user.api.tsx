@@ -26,7 +26,8 @@ export const USER = {
       'GET'
     ).then((res: any) => {
       return res.data
-    })},
+    })
+  },
   getUserInfo: (payload: any) => {
     return AxiosHelper(
       URL_PATH.userRoutes.userInfo + '/' + payload,
@@ -34,5 +35,21 @@ export const USER = {
     ).then((response: any) => {
       return response
     })
+  },
+  forgotPassword: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.userRoutes.forgotPassword,
+      'POST',
+      payload
+    ).then((response: any) => {
+      return response.data
+    })
+  },
+  resetPassword: (payload: any) => {
+    return AxiosHelper(URL_PATH.userRoutes.resetPassword, 'POST', payload).then(
+      (response: any) => {
+        return response.data
+      }
+    )
   },
 }

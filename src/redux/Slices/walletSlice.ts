@@ -6,7 +6,10 @@ interface WalletReducerInterface {
     isConnected: boolean
     accountAddress: string
     accountBalance: string
+    alertMessage: string
+    walletNetwork: any
     guideOpen: boolean
+    loadWalletAlert: boolean
 }
 const initialState: WalletReducerInterface = {
     loadWallet: false,
@@ -14,7 +17,10 @@ const initialState: WalletReducerInterface = {
     isConnected: false,
     accountAddress: "",
     accountBalance: "",
-    guideOpen: false
+    guideOpen: false,
+    loadWalletAlert: false,
+    walletNetwork: "",
+    alertMessage: "",
 
 }
 const wallet = createSlice({
@@ -38,8 +44,20 @@ const wallet = createSlice({
         setAccountBalance: (state, action: PayloadAction<any>) => {
             state.accountBalance = action.payload
         },
+        setAlertMessage: (state, action: PayloadAction<any>) => {
+            state.alertMessage = action.payload
+        },
+        setWalletNetwork: (state, action: PayloadAction<any>) => {
+            state.walletNetwork = action.payload
+        },
         setGuide: (state, action: PayloadAction<any>) => {
             state.guideOpen = action.payload
+        },
+        setLoadWalletAlert: (state, action: PayloadAction<any>) => {
+            state.loadWalletAlert = action.payload
+        },
+        resetWallet: (state) => {
+            state = initialState
         }
     },
 })
@@ -48,6 +66,10 @@ export const { setLoadWallet, setMetamask,
     setConnected,
     setAccountAddress,
     setAccountBalance,
+    setWalletNetwork,
+    setAlertMessage,
+    setLoadWalletAlert,
+    resetWallet,
     setGuide } = wallet.actions
 
 export default wallet.reducer

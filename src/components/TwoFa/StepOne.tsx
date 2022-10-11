@@ -8,11 +8,15 @@ import CCButton from '../../atoms/CCButton'
 import { Images } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 import { authCalls } from '../../api/authCalls'
+import ResendOTPModal from './ResendOTPModal'
+import LoaderOverlay from '../../components/LoderOverlay'
 
 const StepOneTwoFa = (props: TwoFaProps) => {
   const uuid = getLocalItem('uuid')
 
   const [otp, setOtp] = useState<any>()
+  const [openModal, setOpenModal] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (event: React.ChangeEvent<HTMLButtonElement>) => {
     setOtp(event)
@@ -23,17 +27,28 @@ const StepOneTwoFa = (props: TwoFaProps) => {
       uuid: uuid,
       otp: otp,
     }
-    authCalls.verifyOtp(payload).then((res: any) => {
-      if (res?.success && res?.data === 'verified') {
-        props.setStep(2)
-      } else {
-        alert('Please enter valid OTP')
-      }
-    })
+
+    authCalls
+      .verifyOtp(payload)
+      .then((res: any) => {
+        setLoading(true)
+        if (res?.success && res?.data === 'verified') {
+          props.setStep(2)
+        } else {
+          alert('Please enter valid OTP')
+        }
+      })
+      .catch((err) => {
+        console.log('Error in authCalls.verifyOtp api : ', err)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
     <Box>
+      {loading ? <LoaderOverlay /> : null}
       <Grid
         container
         justifyContent="center"
@@ -71,7 +86,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
               <OtpInput
                 value={otp}
                 onChange={handleChange}
-                numInputs={5}
+                numInputs={6}
                 containerStyle={{
                   justifyContent: 'flex-start',
                 }}
@@ -91,7 +106,15 @@ const StepOneTwoFa = (props: TwoFaProps) => {
                 sx={{ py: 3, fontWeight: 500, fontSize: 14 }}
               >
                 Didn’t receive code yet?{' '}
-                <Typography display={'inline'} color={'lightPrimary1'}>
+                <Typography
+                  sx={{ cursor: 'pointer' }}
+                  display={'inline'}
+                  color={'lightPrimary1'}
+                  onClick={() => {
+                    setOtp('')
+                    setOpenModal(true)
+                  }}
+                >
                   Resend
                 </Typography>
               </Typography>
@@ -126,6 +149,11 @@ const StepOneTwoFa = (props: TwoFaProps) => {
           }}
         />
       </Grid>
+      <ResendOTPModal
+        showModal={openModal}
+        setShowModal={setOpenModal}
+        setLoading={setLoading}
+      />
     </Box>
   )
 }

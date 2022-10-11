@@ -12,11 +12,15 @@ export const URL_PATH = {
     updateUserInfo: ENDPOINTS.userServiceURL + '/users/updateUserInfo',
     getUsersById: ENDPOINTS.userServiceURL + '/users/getUsersById',
     userInfo: ENDPOINTS.userServiceURL + '/users/user/',
+    forgotPassword: ENDPOINTS.userServiceURL + '/users/forgotPassword',
+    resetPassword: ENDPOINTS.userServiceURL + '/users/resetPassword',
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + '/auth/login',
     getCaptcha: ENDPOINTS.authServiceURL + '/auth/getCaptcha',
     verifyNewUser: ENDPOINTS.authServiceURL + '/auth/verifyNewUser',
+    resendOTP: ENDPOINTS.authServiceURL + '/auth/resend-otp',
+    verifyToken: ENDPOINTS.authServiceURL + '/auth/verifyToken',
   },
   project: {
     projectCreate: ENDPOINTS.carbonServiceURL + '/project/create',
@@ -66,5 +70,12 @@ export const URL_PATH = {
   },
   fileupload: {
     getFile: ENDPOINTS.carbonServiceURL + '/fileupload/getFile',
+  },
+  transaction: {
+    getTransactionByUser:
+      ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
+  },
+  issuer: {
+    getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
   },
 }

@@ -68,7 +68,7 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
           </Box>
         </Paper>
       </Grid>
-      <LoadWallet />
+      {/* <LoadWallet /> */}
     </>
   )
 }

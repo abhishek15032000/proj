@@ -28,6 +28,11 @@ const ProfileCompletion = () => {
 
   const walletIsConnected = walletAdded && isConnected
 
+  // useEffect(() => {
+  //   const completionPercent = walletAdded ? 100 : 0
+  //   setProfileCompletion(completionPercent)
+  // }, [walletAdded])
+
   return (
     <Box
       sx={{
