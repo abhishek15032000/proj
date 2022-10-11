@@ -29,6 +29,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setLoadWallet } from '../../../redux/Slices/walletSlice'
 import { Colors } from '../../../theme'
+import NotificationList from '../../../atoms/NotificationList'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -75,13 +76,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function AppNavBar({ handleDrawerToggle }: any) {
   const dispatch = useAppDispatch()
   const openWallet = () => {
-    console.log('loda wallet')
+    console.log('load wallet')
     dispatch(setLoadWallet(true))
     console.log('done')
   }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
+  const [showNotifications, setShowNotifications] = React.useState(false)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -212,7 +214,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                     />
                 </Search> */}
         <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
           {/* <SelectDropdown /> */}
 
           <Box
@@ -264,6 +266,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             size="large"
             aria-label="show 17 new notifications"
             color="primary"
+            onClick={() => setShowNotifications(!showNotifications)}
           >
             <Badge
               // badgeContent={17}
@@ -272,6 +275,8 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
               <NotificationsOutlinedIcon />
             </Badge>
           </IconButton>
+
+          {showNotifications && <NotificationList />}
 
           <IconButton
             size="large"

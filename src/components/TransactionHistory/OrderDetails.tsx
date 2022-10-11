@@ -28,6 +28,7 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: '8px',
+        minWidth: '520px',
         mt: 2,
       }}
     >

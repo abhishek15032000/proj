@@ -263,7 +263,7 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
             boxShadow: 3,
           }}
           textStyle={{ color: Colors.textColorDarkGreen }}
-          onClick={filterTable}
+          // onClick={filterTable}
         />
       </Box>
 

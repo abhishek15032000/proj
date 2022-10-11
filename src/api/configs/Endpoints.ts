@@ -4,6 +4,7 @@ export const ENDPOINTS = {
   authServiceURL: BASE_URL + 'auth/api/v1',
   carbonServiceURL: BASE_URL + 'carbon/api/v1',
   userServiceURL: BASE_URL + 'user/api/v1',
+  notificationServiceURL: BASE_URL + 'notification/api/v1',
 }
 
 export const URL_PATH = {
@@ -77,5 +78,9 @@ export const URL_PATH = {
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
+  },
+  notification: {
+    getNotification:
+      ENDPOINTS.notificationServiceURL + '/notification/getNotifications',
   },
 }
