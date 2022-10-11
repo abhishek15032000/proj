@@ -3,6 +3,10 @@ import {
   SHINE_CONTRACTS_ABI,
   SHINE_CONTRACT_ADDRESS,
 } from '../config/blockchain.config'
+import {
+  EXCHANGE_ABI,
+  EXCHANGE_CONTRACT_ADDRESS,
+} from '../config/exchange.config'
 import { TOKEN_ABI, TOKEN_CONTRACT_ADDRESS } from '../config/token.config'
 
 declare let window: any
@@ -59,12 +63,18 @@ const BlockchainCalls = {
   getWalletNetwork: async () => {
     try {
       const getNetwork = await provider.getNetwork()
-      console.log("🚀 ~ file: Blockchain.ts ~ line 62 ~ getWalletNetwork: ~ getNetwork", getNetwork)
+      console.log(
+        '🚀 ~ file: Blockchain.ts ~ line 62 ~ getWalletNetwork: ~ getNetwork',
+        getNetwork
+      )
       // const balance = ethers.utils.formatEther(getBalance)
 
       return getNetwork
     } catch (error) {
-      console.log("🚀 ~ file: Blockchain.ts ~ line 126 ~ getWalletNetwork: ~ error", error)
+      console.log(
+        '🚀 ~ file: Blockchain.ts ~ line 126 ~ getWalletNetwork: ~ error',
+        error
+      )
 
       //   setIsConnected(false)
       return { connected: false }
@@ -105,6 +115,22 @@ const BlockchainCalls = {
       signer
     )
     return tokenContract
+  },
+  exchange_caller: async (address?: string) => {
+    const ethereum = (window as any).ethereum
+    const accounts = await ethereum.request({
+      method: 'eth_requestAccounts',
+    })
+
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const walletAddress = accounts[0] // first account in MetaMask
+    const signer = provider.getSigner(walletAddress)
+    const exchangeContract = new ethers.Contract(
+      EXCHANGE_CONTRACT_ADDRESS,
+      EXCHANGE_ABI,
+      signer
+    )
+    return exchangeContract
   },
   requestMethodCalls: async (method: string, params: any) => {
     try {

@@ -20,6 +20,7 @@ import sectionDMonthly from './MonthlyReport/sectionDMonthly'
 import sectionEMonthly from './MonthlyReport/sectionEMonthly'
 import verifier from './verifierSlice'
 import reportsViewComments from './reportsViewCommentsSlice'
+import marketplace from './marketplaceSlice'
 
 // TODO: rename names
 export default {
@@ -42,4 +43,5 @@ export default {
   sectionEMonthly,
   verifier,
   reportsViewComments,
+  marketplace,
 }

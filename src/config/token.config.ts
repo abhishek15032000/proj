@@ -1,3 +1,6 @@
+export const IND_USD_TOKEN_ADDRESS =
+  '0x073f48175872c42819a9430edd482261de3422be'
+
 export const TOKEN_CONTRACT_ADDRESS =
   '0x28c8C1EFA491e38D530958A1c216c6b134c6Fb28'
 export const TOKEN_ABI = [
@@ -195,6 +198,7 @@ export const TOKEN_ABI = [
         type: 'address',
       },
     ],
+    //ongoing approve
     name: 'allowance',
     outputs: [
       {

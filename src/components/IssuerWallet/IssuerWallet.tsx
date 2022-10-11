@@ -53,7 +53,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   }, [])
 
   useEffect(() => {
-    console.log('vcoonsale useEffect')
     if (dashboardStatistics && vcoOnSale) {
       const dashboardStatisticsCopy = [...dashboardStatistics]
       dashboardStatisticsCopy[1].value = vcoOnSale
@@ -62,24 +61,17 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   }, [vcoOnSale])
 
   useEffect(() => {
-    console.log('vcoAvailableFoSale useEffect')
     if (dashboardStatistics && vcoAvailableFoSale) {
       const dashboardStatisticsCopy = [...dashboardStatistics]
       dashboardStatisticsCopy[2].value = vcoAvailableFoSale
       setDashboardStatistics(dashboardStatisticsCopy)
     }
   }, [vcoAvailableFoSale])
-  console.log('vcoAvailableFoSale', vcoAvailableFoSale)
 
   useEffect(() => {
-    // console.log('accountBalance useEffect')
-    // console.log('accountBalance above if', accountBalance)
     if (dashboardStatistics && accountBalance) {
-      // console.log('accountBalance useEffect in if')
       const dashboardStatisticsCopy = [...dashboardStatistics]
       const bal = 'MATIC ' + Math.round(Number(accountBalance) * 1000) / 1000
-      // console.log('accountBalance', accountBalance)
-      // console.log('bal', bal)
       dashboardStatisticsCopy[0].value = bal
       setDashboardStatistics(dashboardStatisticsCopy)
     }
@@ -87,26 +79,18 @@ const IssuerWallet = (props: IssuerWalletProps) => {
 
   const tokenContractCalls = async () => {
     try {
-      console.log('vcoLoading made true')
       setVCOLoading(true)
-      console.log('above contract function')
       const tokenContractFunctions = await BlockchainCalls.token_caller()
-      const abc = await tokenContractFunctions.estimateGas.balanceOf(
+      await tokenContractFunctions.estimateGas.balanceOf(accountAddress)
+      const balanceCallRes = await tokenContractFunctions.balanceOf(
         accountAddress
       )
-      console.log('tokenContractFunctions', tokenContractFunctions)
-      console.log('abc', abc)
-      const createProjectRes = await tokenContractFunctions.balanceOf(
-        accountAddress
-      )
-      console.log('after  res', createProjectRes)
-      const bal = Number(createProjectRes.toString()) * 10 ** -18
-      console.log('bal', bal)
+      const bal =
+        Math.round(Number(balanceCallRes.toString()) * 10 ** -18 * 1000) / 1000
       setVCOOnSale(bal)
     } catch (error) {
       console.log('Error : ', error)
     } finally {
-      console.log('made false')
       setVCOLoading(false)
     }
   }
@@ -115,7 +99,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     try {
       setVCOAvailableFoSaleLoading(true)
       const res = await issuerCalls.getIssuerTokenStats()
-      console.log('res', res)
       if (res?.success && res?.data) {
         const token = res?.data?.totalQuantityForSales
         if (token !== undefined) {
@@ -129,9 +112,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     }
   }
 
-  // console.log('balanceLoading || vcoLoading', balanceLoading, vcoLoading)
-  // console.log('vcoOnSale', vcoOnSale)
-  // console.log('vcoLoading', vcoLoading)
   return (
     <Box sx={{ p: 0 }}>
       <Grid
