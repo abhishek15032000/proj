@@ -113,7 +113,7 @@ const App: FC<AppProps> = () => {
 
   const dispatch = useAppDispatch()
   const getloginStatusFromLocalStorage = getLocalItem('userDetails')
-  const loadWallet = useAppSelector((state) => state.wallet.loadWallet)
+  // const loadWallet = useAppSelector((state) => state.wallet.loadWallet)
 
   const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
