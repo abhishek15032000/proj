@@ -14,6 +14,7 @@ export const calSectionPercent = (data: any, optionalField?: any) => {
 }
 export const calSectionPercentSpecificStep = (data: any) => {
   //Sections with only steps object
+
   const filteringTrue = data.filter((i: any) => i?.completed === true)
   const calPercentage = (filteringTrue.length / data.length) * 100
 

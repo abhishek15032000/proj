@@ -22,6 +22,7 @@ import NoData from '../../atoms/NoData/NoData'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import {
   addSectionPercentages,
+  addSectionPercentagesMonthly,
   isProjectCompleted,
   totalCompletion,
 } from '../../utils/newProject.utils'
