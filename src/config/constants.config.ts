@@ -16,3 +16,6 @@ export const SECTION_NAMES = {
   SECTION_D: 'Section D(Optional)',
   SECTION_E: 'Section E(Optional)',
 }
+
+//Mumbai testnet network/chain id
+export const MUMBAI_TESTNET_NETWORK_ID = 80001
