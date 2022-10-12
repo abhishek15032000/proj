@@ -155,28 +155,28 @@ const SellToken: FC<SellTokenProps> = ({ walletBal, exchangeBal }) => {
         titleStyle={{
           color: Colors.lightPrimary1,
           fontSize: 16,
-          fontWeight: 600,
+          fontWeight: 500,
         }}
         valueStyle={{
           fontSize: 16,
-          fontWeight: 600,
+          fontWeight: 500,
         }}
-        value={`${walletBal} VCOT`}
+        value={`${walletBal || 0} VCOT`}
       />
       <CardRow
         title="Balance on Exchange :"
         titleStyle={{
           color: Colors.lightPrimary1,
           fontSize: 16,
-          fontWeight: 600,
+          fontWeight: 500,
         }}
         valueStyle={{
           fontSize: 16,
-          fontWeight: 600,
+          fontWeight: 500,
         }}
-        value={`${exchangeBal} VCOT`}
+        value={`${exchangeBal || 0} VCOT`}
       />
-      <Box sx={{ position: 'relative' }}>
+      <Box sx={{ position: 'relative', pt: 1 }}>
         <Box>
           <LabelInput
             label="Quantity"
@@ -194,7 +194,7 @@ const SellToken: FC<SellTokenProps> = ({ walletBal, exchangeBal }) => {
           sx={{
             color: '#3F4946',
             position: 'absolute',
-            top: 16,
+            top: '50%',
             right: 10,
           }}
         >
