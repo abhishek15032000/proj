@@ -57,11 +57,11 @@ const SellToken: FC<SellTokenProps> = ({ walletBal, exchangeBal }) => {
 
       await tokenContractFunctions.estimateGas.approve(
         EXCHANGE_CONTRACT_ADDRESS,
-        sellQuantity
+        Number(sellQuantity)
       )
       const approveFnRes = await tokenContractFunctions.approve(
         EXCHANGE_CONTRACT_ADDRESS, // exchangeAddress
-        sellQuantity
+        Number(sellQuantity)
       )
       if (approveFnRes) {
         depositERC20(sellQuantity)
@@ -79,8 +79,10 @@ const SellToken: FC<SellTokenProps> = ({ walletBal, exchangeBal }) => {
     }
     try {
       const depositERC20Res = await marketplaceCalls.depositERC20(payload)
-      if (depositERC20Res) {
+      if (depositERC20Res.success) {
         createOrderCall()
+      } else {
+        alert(depositERC20Res.error)
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.depositERC20 api : ' + err)
@@ -116,7 +118,7 @@ const SellToken: FC<SellTokenProps> = ({ walletBal, exchangeBal }) => {
 
   async function getHashAndVRS() {
     const nonce: any = await provider.getTransactionCount(accountAddress)
-    //Explicitly needed to make them any since typescript was giving type errors when assigining these values "Value" key in "hash" generation(SoliditySHA3 fn)
+    //Explicitly needed to make them any since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
     const feeAmount: any = 1
     const sellQuantityCopy: any = Number(sellQuantity)
     const sellUnitPriceCopy: any = Number(sellUnitPrice)
