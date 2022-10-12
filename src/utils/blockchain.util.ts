@@ -1,16 +1,19 @@
 import { ethers } from 'ethers'
+import { disposeEmitNodes } from 'typescript'
 import { USER } from '../api/user.api'
 import BlockchainCalls from '../blockchain/Blockchain'
-import { setAccountAddress, setConnected, setLoadWallet, setMetamask, setAlertMessage, setLoadWalletAlert } from '../redux/Slices/walletSlice'
+import { setAccountAddress, setConnected, setLoadWallet, setMetamask, setAlertMessage, setLoadWalletAlert, resetWallet } from '../redux/Slices/walletSlice'
 import { store } from '../redux/store'
 import { getLocalItem, setLocalItem } from './Storage'
 declare let window: any
 
 export const BlockchainListener = () => {
-    console.log("🚀 ~ file: blockchain.util.ts ~ line 23 ~ BlockchainListener ~ BlockchainListener")
 
     let check = false
     if (window.ethereum) {
+
+
+        console.log("🚀 ~ file: blockchain.util.ts ~ line 23 ~ BlockchainListener ~ BlockchainListener")
         window.ethereum.on('chainChanged', () => {
             console.log("🚀 ~ file: blockchain.util.ts ~ line 7 ~ window.ethereum.on ~ chainChanged")
             //logic for modal accordingly
@@ -30,14 +33,22 @@ export const BlockchainListener = () => {
             console.log("🚀 ~ file: blockchain.util.ts ~ line 12 ~ window.ethereum.on ~ accountsChanged")
             check = true
             // store.dispatch(setWalletNetwork(res))
+            // store.dispatch(resetWallet())
+            store.dispatch(setLoadWalletAlert(true))
+            store.dispatch(setAlertMessage('Account is changed. The page will be reloaded in 2 seconds.'))
+
             store.dispatch(setLoadWallet(false))
 
+
             setTimeout(() => {
+                window.location.reload()
+
                 store.dispatch(setLoadWallet(check))
             }, 2000);
 
             // window.location.reload()
         })
+
         console.log("🚀 ~ file: blockchain.util.ts ~ line 16 ~ window.ethereum.on ~ check", check)
 
         store.dispatch(setLoadWallet(check))
@@ -72,6 +83,7 @@ export const checkMetamaskAvailability = async () => {
 export const onManualConnectClick = async () => {
     // checkMetamaskAvailability().then((res) => {
     const metamaskAvailabilityRes = await checkMetamaskAvailability()
+    console.log("🚀 ~ file: blockchain.util.ts ~ line 87 ~ //checkMetamaskAvailability ~ metamaskAvailabilityRes", metamaskAvailabilityRes)
     if (metamaskAvailabilityRes) {
         //call userUpdateApi
         const user_data = getLocalItem('userDetails')
@@ -92,6 +104,8 @@ export const onManualConnectClick = async () => {
             .catch((e) =>
                 console.log('error checkMetamaskAvailability promise :', e)
             )
+    } else {
+        return false
     }
     // })
 }
