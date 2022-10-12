@@ -14,10 +14,9 @@ import CCInputField from '../../atoms/CCInputField'
 import { Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
 import LoaderOverlay from '../../components/LoderOverlay'
-import { ROLES } from '../../config/roles.config'
 import { USER } from '../../api/user.api'
+import isEmail from 'validator/lib/isEmail'
 import { setLocalItem } from '../../utils/Storage'
-
 declare let window: any
 
 const Login = () => {
@@ -76,12 +75,12 @@ const Login = () => {
           const userResponse = await USER.getUsersById(res?.data?.user_id)
           setLocalItem('userDetails2', userResponse?.data)
           const profileCompleted = userResponse?.data?.orgName ? true : false
-            setLocalItem('profileCompleted', profileCompleted)
+          setLocalItem('profileCompleted', profileCompleted)
           dispatch(loginAction(res?.data)) //calling action from redux
           if (res.data.type === 'ISSUER' || res.data.type === 'VERIFIER') {
             navigate(pathNames.DASHBOARD, { replace: true })
           }
-          
+
           window.location.reload()
         } else {
           alert(res?.data)
@@ -111,7 +110,8 @@ const Login = () => {
       xs={12}
       height={'100vh'}
       justifyContent="center"
-      alignItems={'center'}
+      alignItems={'stretch'}
+      display="flex"
     >
       {loading ? <LoaderOverlay /> : null}
       <Grid
@@ -121,7 +121,9 @@ const Login = () => {
         display="flex"
         sx={{
           width: '100%',
+          minHeight: '100%',
           px: 20,
+          flex: 1,
         }}
       >
         <Box
@@ -151,7 +153,17 @@ const Login = () => {
                 type="email"
                 name="email"
                 onChange={handleChange}
-                error={errors?.email}
+                error={
+                  values?.email !== '' &&
+                  values?.email !== undefined &&
+                  !isEmail(values?.email)
+                }
+                helperText={
+                  values?.email !== '' &&
+                  values?.email !== undefined &&
+                  !isEmail(values?.email) &&
+                  'Enter valid Email ID'
+                }
                 defaultValue={values?.email}
                 clearFn={() => handleChange({ target: { value: '' } })}
               />
@@ -256,7 +268,7 @@ const Login = () => {
             lg: 'flex',
             xs: 'none',
           },
-          height: '100%',
+          minHeight: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
           backgroundSize: 'cover',

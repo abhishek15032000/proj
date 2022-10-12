@@ -100,7 +100,7 @@ const CCTable = (props: CCTableProps) => {
         <Box sx={{ borderBottom: '1px solid rgba(0, 0, 2, 0.3)' }}></Box>
         {props?.pagination && props?.rows && (
           <TablePagination
-            rowsPerPageOptions={[10, 20]}
+            rowsPerPageOptions={[5, 10, 20]}
             labelRowsPerPage={
               <Typography
                 sx={{ color: '#1D4B44', fontSize: 12, fontWeight: 400 }}

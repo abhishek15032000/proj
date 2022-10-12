@@ -1,78 +1,66 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { strictEqual } from 'assert'
 
 interface SectionAInterface {
-  // A1
-  purpose_and_description: string
-  measure_taken_for_gas_emissions: string
-  brief_description_installed_tech: string
-  construction_date: string
-  operation_period: string
-  total_GHG_emission: string
-  commissioning_date: string
-
-  // A2
-  country: string
-  state: string
-  city: string
-  pincode: string
-  landmark: string
-  file_attach: any[]
-
   // A3
-  projectParticipants: any[]
+  party_and_project_participants: any[]
 
   // A4
   methodologies: any[]
 
-  // A5
-  startDate: string
-  fromDate: string
-  toDate: string
-  brief_on_crediting_period: string
+  A1: any
+  A2: any
+  A5: any
 }
 
 const initialState: SectionAInterface = {
   // A1
-  purpose_and_description: '',
-  measure_taken_for_gas_emissions: '',
-  brief_description_installed_tech: '',
-  construction_date: '',
-  operation_period: '',
-  total_GHG_emission: '',
-  commissioning_date: '',
-
+  A1: {
+    purpose_and_description: '',
+    measure_taken_for_gas_emissions: '',
+    brief_description_installed_tech: '',
+    construction_date: '',
+    operation_period: '',
+    total_GHG_emission: '',
+    project_comissioning_date: '',
+  },
   // A2
-  country: '',
-  state: '',
-  city: '',
-  pincode: '',
-  landmark: '',
-  file_attach: [],
+  A2: {
+    country: '',
+    state: '',
+    city: '',
+    pincode: '',
+    landmark: '',
+    file_attach: [],
+  },
 
   // A3
-  projectParticipants: [
+  party_and_project_participants: [
     {
-      partyInvolved: '',
-      participantType: '',
-      isProjectParticipant: 'Select from dropdown',
+      party_involved: '',
+      private_or_public_project_participant: '',
+      indicate_party_involved: '',
     },
   ],
+
   // A4
   methodologies: [
     {
-      approvedMethodologies: '',
-      projectType: '',
+      methodology: '',
+      project_type: [],
       category: '',
       version: '',
-      toolsReferred: '',
+      tools: '',
       flag: false,
     },
   ],
+
   // A5
-  startDate: '',
-  fromDate: '',
-  toDate: '',
-  brief_on_crediting_period: '',
+  A5: {
+    credit_start_period: '',
+    credit_period: { start_date: '', end_date: '' },
+    credit_period_description: '',
+  },
 }
 
 const sectionA = createSlice({
@@ -80,51 +68,19 @@ const sectionA = createSlice({
   initialState,
   reducers: {
     // A1 Handlers
-    setPurposeAndDescription: (state, action: PayloadAction<any>) => {
-      state.purpose_and_description = action.payload
-    },
-    setMeasureTakenForGasEmissions: (state, action: PayloadAction<any>) => {
-      state.measure_taken_for_gas_emissions = action.payload
-    },
-    setBriefDescriptionInstalledTech: (state, action: PayloadAction<any>) => {
-      state.brief_description_installed_tech = action.payload
-    },
-    setConstructionDate: (state, action: PayloadAction<any>) => {
-      state.construction_date = action.payload
-    },
-    setOperationPeriod: (state, action: PayloadAction<any>) => {
-      state.operation_period = action.payload
-    },
-    setTotalGHGEmission: (state, action: PayloadAction<any>) => {
-      state.total_GHG_emission = action.payload
-    },
-    setCommissioningDate: (state, action: PayloadAction<any>) => {
-      state.commissioning_date = action.payload
+    setA1: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.A1[name] = value
     },
 
     // A2
-    setCountry: (state, action: PayloadAction<any>) => {
-      state.country = action.payload
+    setA2: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.A2[name] = value
     },
-    setState: (state, action: PayloadAction<any>) => {
-      state.state = action.payload
-    },
-    setCity: (state, action: PayloadAction<any>) => {
-      state.city = action.payload
-    },
-    setPincode: (state, action: PayloadAction<any>) => {
-      state.pincode = action.payload
-    },
-    setLandmark: (state, action: PayloadAction<any>) => {
-      state.landmark = action.payload
-    },
-    setFileAttach: (state, action: PayloadAction<any>) => {
-      state.file_attach = action.payload
-    },
-
     // A3
     setProjectParticipants: (state, action: PayloadAction<any>) => {
-      state.projectParticipants = action.payload
+      state.party_and_project_participants = action.payload
     },
 
     // A4
@@ -132,41 +88,23 @@ const sectionA = createSlice({
       state.methodologies = action.payload
     },
     // A5
-    setStartDate: (state, action: PayloadAction<any>) => {
-      state.startDate = action.payload
+    setA5: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      typeof name === 'string'
+        ? (state.A5[name] = value)
+        : (state.A5[name[0]][name[1]] = value)
     },
-    setFromDate: (state, action: PayloadAction<any>) => {
-      state.fromDate = action.payload
-    },
-    setToDate: (state, action: PayloadAction<any>) => {
-      state.toDate = action.payload
-    },
-    setBriefOnCreditingPeriod: (state, action: PayloadAction<any>) => {
-      state.brief_on_crediting_period = action.payload
-    },
+    resetSectionA: () => initialState,
   },
 })
 
 export const {
-  setPurposeAndDescription,
-  setBriefDescriptionInstalledTech,
-  setConstructionDate,
-  setMeasureTakenForGasEmissions,
-  setOperationPeriod,
-  setTotalGHGEmission,
-  setCommissioningDate,
-  setCountry,
-  setCity,
-  setFileAttach,
-  setFromDate,
-  setLandmark,
-  setMethodologies,
-  setPincode,
+  setA1,
+  setA2,
   setProjectParticipants,
-  setStartDate,
-  setState,
-  setToDate,
-  setBriefOnCreditingPeriod,
+  setMethodologies,
+  setA5,
+  resetSectionA,
 } = sectionA.actions
 
 export default sectionA.reducer

@@ -1,3 +1,6 @@
+import { fileUploadCalls } from "../api/fileUpload.api"
+import { getLocalItem } from "./Storage"
+
 export const deleteIndexInArray = (array: Array<any>, index: number) => {
   const modifiedArray = array.filter((item: any, i: number) => i !== index)
 
@@ -41,4 +44,33 @@ export const capitaliseFirstLetter = (sentence: string) => {
     })
     .join(' ')
   return capitaliseSentence
+}
+
+export const limitTitleFromMiddle = (title: string) => {
+  if (title?.length) {
+    return title.substring(0, 6) + '...' + title.substring(title.length - 6)
+  }
+  return title
+}
+
+
+export const downloadFile = async (fileName: any) => {
+  const File = await fileUploadCalls.getFile(
+    fileName,
+    getLocalItem('userDetails')?.jwtToken
+  )
+  const objectURL = URL.createObjectURL(File)
+
+  const link = document.createElement('a')
+  link.href = objectURL
+  link.setAttribute('download', fileName)
+
+  // Append to html link element page
+  document.body.appendChild(link)
+
+  // Start download
+  link.click()
+
+  // Clean up and remove the link
+  link?.parentNode?.removeChild(link)
 }

@@ -2,24 +2,17 @@ import { Grid, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
-import {
-  setRemarksOnDifferenceFromEstimatedValue,
-  setRemarksOnDifferenceFromEstimatedValueImages,
-} from '../../../redux/Slices/sectionESlice'
+import { setE6 } from '../../../redux/Slices/sectionESlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import Spinner from '../../../atoms/Spinner'
+
 const SectionE6 = () => {
   const dispatch = useAppDispatch()
 
-  const remarksOnDifferenceFromEstimatedValue = useAppSelector(
-    ({ sectionE }) => sectionE.remarksOnDifferenceFromEstimatedValue
-  )
-  const remarksOnDifferenceFromEstimatedValueImages = useAppSelector(
-    ({ sectionE }) => sectionE.remarksOnDifferenceFromEstimatedValueImages
-  )
+  const E6 = useAppSelector(({ sectionE }) => sectionE.E6)
+  const { attach_relevant_docs } = E6
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -41,12 +34,13 @@ const SectionE6 = () => {
         currentProjectDetails.section_e.step6
 
       dispatch(
-        setRemarksOnDifferenceFromEstimatedValue(
-          remark_on_difference_from_estimate_value
-        )
+        setE6({
+          name: 'remark_on_difference_from_estimate_value',
+          value: remark_on_difference_from_estimate_value,
+        })
       )
       dispatch(
-        setRemarksOnDifferenceFromEstimatedValueImages(attach_relevant_docs)
+        setE6({ name: 'attach_relevant_docs', value: attach_relevant_docs })
       )
     }
   }, [currentProjectDetails])
@@ -61,9 +55,10 @@ const SectionE6 = () => {
         <CCMultilineTextArea
           label="Remarks on difference from estimated value"
           placeholder="Remarks on difference from estimated value, if any"
-          value={remarksOnDifferenceFromEstimatedValue}
-          onChange={(e) =>
-            dispatch(setRemarksOnDifferenceFromEstimatedValue(e.target.value))
+          value={E6.remark_on_difference_from_estimate_value}
+          name={'remark_on_difference_from_estimate_value'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setE6({ name, value }))
           }
         />
       </Grid>
@@ -72,23 +67,21 @@ const SectionE6 = () => {
           title="Attach relevant datas & docs"
           mediaItem={[]}
           mediaTitle={[]}
-          imageArray={remarksOnDifferenceFromEstimatedValueImages}
+          imageArray={E6.attach_relevant_docs}
           onImageUpload={(item: any) => {
             dispatch(
-              setRemarksOnDifferenceFromEstimatedValueImages([
-                ...remarksOnDifferenceFromEstimatedValueImages,
-                item,
-              ])
+              setE6({
+                name: 'attach_relevant_docs',
+                value: [...attach_relevant_docs, item],
+              })
             )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setRemarksOnDifferenceFromEstimatedValueImages(
-                deleteIndexInArray(
-                  remarksOnDifferenceFromEstimatedValueImages,
-                  index
-                )
-              )
+              setE6({
+                name: 'attach_relevant_docs',
+                value: deleteIndexInArray(attach_relevant_docs, index),
+              })
             )
           }}
         />

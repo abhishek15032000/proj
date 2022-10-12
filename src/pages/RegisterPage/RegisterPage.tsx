@@ -25,20 +25,25 @@ import CryptoJS from 'crypto-js'
 import { department } from '../../api/department.api'
 import { USER } from '../../api/user.api'
 import { setLocalItem } from '../../utils/Storage'
+import isEmail from 'validator/lib/isEmail'
+import isAlpha from 'validator/lib/isAlpha'
+import isMobilePhone from 'validator/lib/isMobilePhone'
+import LoaderOverlay from '../../components/LoderOverlay'
 
 const RegisterPage = (props: RegisterPageProps) => {
-  const [number, setNumber] = useState<number>()
+  const [number, setNumber] = useState<string>('')
   const [password, setPassword] = useState<any>()
   const [firstName, setFirstName] = useState<string>('')
   const [lastName, setLastName] = useState<string>('')
-  const [email, setEmail] = useState()
+  const [email, setEmail] = useState('')
   const [captchaToken, setCaptchaToken] = useState('')
   const [captchaInput, setCaptchInput] = useState<string>('')
   const [showPassword, setShowPassword] = useState(false)
   const [countryCode, setCountryCode] = useState<any>()
   const [typeOptions, setTypeOptions] = useState<any>([])
-  const [selectedRole, setSelectedRole] = useState<any>()
+  const [selectedRole, setSelectedRole] = useState<any>('')
   const [departmentId, setDepartmentId] = useState<any>()
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -67,18 +72,51 @@ const RegisterPage = (props: RegisterPageProps) => {
     department
       .getDepartment()
       .then((response: any) => {
-        const roles = response?.data.map((department: any, index: number) => {
-          return {
-            value: department.name,
-            label: department._id,
-          }
-        })
+        const roles = response?.data
+          .filter(
+            (department: any) => department.name !== 'super admin department'
+          )
+          .map((department: any, index: number) => {
+            return {
+              value: department.name,
+              label: department._id,
+            }
+          })
         setTypeOptions(roles)
       })
-      .catch((e) => console.log(e))
+      .catch((e) => console.log('Error in department.getDepartment api :', e))
   }
 
   const onBoardingNewUser = async () => {
+    if (
+      number === '' ||
+      number === undefined ||
+      password === '' ||
+      password === undefined ||
+      firstName === '' ||
+      firstName === undefined ||
+      lastName === '' ||
+      lastName === undefined ||
+      email === '' ||
+      email === undefined ||
+      selectedRole === '' ||
+      selectedRole === undefined
+    ) {
+      alert('Fill all the fields!')
+      return
+    }
+
+    if (
+      !isAlpha(firstName) ||
+      !isAlpha(lastName) ||
+      !isEmail(email) ||
+      !isMobilePhone(number, 'en-IN')
+    ) {
+      alert('Correct the errors!')
+      return
+    }
+
+    setLoading(true)
     const payload = {
       fullName: firstName + ' ' + lastName,
       email: email,
@@ -103,6 +141,7 @@ const RegisterPage = (props: RegisterPageProps) => {
         }
       })
       .catch((e) => console.log(e))
+    setLoading(false)
   }
 
   const register = () => {
@@ -113,9 +152,10 @@ const RegisterPage = (props: RegisterPageProps) => {
   }
 
   const { handleChange, values, errors, handleSubmit } = useForm(register)
-  console.log(values)
+
   return (
     <Grid container flexDirection="row" xs={12} sx={{ height: '100vh' }}>
+      {loading ? <LoaderOverlay /> : null}
       <Grid
         item
         lg={6}
@@ -152,6 +192,12 @@ const RegisterPage = (props: RegisterPageProps) => {
                   name="firstName"
                   //onChange={handleChange}
                   onChange={(e) => setFirstName(e.target.value)}
+                  error={firstName !== '' && !isAlpha(firstName)}
+                  helperText={
+                    firstName !== '' &&
+                    !isAlpha(firstName) &&
+                    'Enter valid Name'
+                  }
                   defaultValue={values?.firstName}
                   sx={{ background: '#F5F5F5' }}
                 />
@@ -163,6 +209,10 @@ const RegisterPage = (props: RegisterPageProps) => {
                   name="firstName"
                   //onChange={handleChange}
                   onChange={(e) => setLastName(e.target.value)}
+                  error={lastName !== '' && !isAlpha(lastName)}
+                  helperText={
+                    lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
+                  }
                   defaultValue={values?.lastName}
                   sx={{ background: '#F5F5F5' }}
                 />
@@ -174,8 +224,11 @@ const RegisterPage = (props: RegisterPageProps) => {
               label="Work Email ID"
               variant="outlined"
               name="email"
-              //onChange={handleChange}
               onChange={(e) => setEmail(e.target.value)}
+              error={email !== '' && !isEmail(email)}
+              helperText={
+                email !== '' && !isEmail(email) && 'Enter valid Email ID'
+              }
               defaultValue={values?.email}
               sx={{ background: '#F5F5F5' }}
             />
@@ -208,10 +261,24 @@ const RegisterPage = (props: RegisterPageProps) => {
               <Grid item xs={12} md={9}>
                 <CCInputField
                   label="Phone Number"
+                  type="tel"
                   variant="outlined"
                   //onChange={handleChange}
-                  onChange={(e) => setNumber(e.target.value)}
-                  defaultValue={values?.phoneNumber}
+                  inputProps={{
+                    maxLength: 10,
+                  }}
+                  error={number !== '' && !isMobilePhone(number, 'en-IN')}
+                  helperText={
+                    number !== '' &&
+                    !isMobilePhone(number, 'en-IN') &&
+                    'Enter valid Mobile Number'
+                  }
+                  onChange={(e) => {
+                    // if (Number(e.target.value.replace(/[^0-9]/g, '')) < 0) {
+                    setNumber(e.target.value.toString())
+                    // }
+                  }}
+                  defaultValue={number}
                   sx={{ background: '#F5F5F5' }}
                 />
               </Grid>
@@ -306,10 +373,11 @@ const RegisterPage = (props: RegisterPageProps) => {
             lg: 'flex',
             xs: 'none',
           },
+          minHeight: '100%',
           backgroundImage: `url(${Images.illustration1})`,
           flex: 1,
           backgroundSize: 'cover',
-          backgroundRepeat: 'repeat-y',
+          backgroundRepeat: 'no-repeat',
         }}
       />
     </Grid>

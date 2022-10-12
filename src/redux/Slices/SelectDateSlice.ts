@@ -7,6 +7,7 @@ interface SelectDateSliceReducerInterface {
 
   //Will get from create new project call
   selectDateSliceUUID: string
+  newProjectUUID: string
 }
 const initialState: SelectDateSliceReducerInterface = {
   startDate: null,
@@ -15,6 +16,7 @@ const initialState: SelectDateSliceReducerInterface = {
 
   //Will get from create new project call
   selectDateSliceUUID: '',
+  newProjectUUID: '',
 }
 const selectDate = createSlice({
   name: 'selectDateSlice',
@@ -29,9 +31,19 @@ const selectDate = createSlice({
     setLoading: (state, action: PayloadAction<any>) => {
       state.loading = action.payload
     },
+    setNewProjectUUID: (state, action: PayloadAction<any>) => {
+      state.newProjectUUID = action.payload
+    },
+    resetSelectDate: () => initialState,
   },
 })
 
-export const { setStartDate, setEndDate, setLoading } = selectDate.actions
+export const {
+  setStartDate,
+  setEndDate,
+  setLoading,
+  setNewProjectUUID,
+  resetSelectDate,
+} = selectDate.actions
 
 export default selectDate.reducer

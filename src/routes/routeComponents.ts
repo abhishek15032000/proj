@@ -28,6 +28,9 @@ import IssuerWallet from '../pages/IssuerWallet'
 import TransactionHistory from '../pages/TransactionHistory'
 import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
 import BuyerOnboarding from '../pages/BuyerOnboarding'
+import OrganisationalDetails from '../pages/OrganisationalDetails'
+import RetireTokens from '../pages/RetireTokens'
+import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPage'
 
 export const privateRouteComponents = [
   {
@@ -36,7 +39,7 @@ export const privateRouteComponents = [
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
   {
     path: pathNames.TOKEN_CONTRACT,
@@ -165,6 +168,21 @@ export const privateRouteComponents = [
   {
     path: pathNames.BUYER_ONBOARDING,
     component: BuyerOnboarding,
+    roles: [ROLES.BUYER],
+  },
+  {
+    path: pathNames.ORGANISATIONAL_DETAILS,
+    component: OrganisationalDetails,
+    roles: [ROLES.BUYER],
+  },
+  {
+    path: pathNames.RETIRE_TOKENS,
+    component: RetireTokens,
+    roles: [ROLES.BUYER],
+  },
+  {
+    path: pathNames.TOKENS_RETIREMENT,
+    component: TokenRetirementPage,
     roles: [ROLES.BUYER],
   },
 ]

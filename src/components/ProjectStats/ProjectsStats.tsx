@@ -5,28 +5,40 @@ import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { ROLES } from '../../config/roles.config'
 import { useHorizontalScroll } from '../../hooks/useHorizontalScroll'
+import { Colors } from '../../theme'
 import { capitaliseFirstLetter } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
 import './Projects.css'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { useLocation } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
+  const location = useLocation()
 
-  const { type: userType, email, _id: userID } = getLocalItem('userDetails')
-
+  const { type: userType, email, user_id } = getLocalItem('userDetails')
   const [stats, setStats] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const verifierStatsReload = useAppSelector(
+    ({ verifier }) => verifier.verifierStatsReload
+  )
+
   useEffect(() => {
-    getStats()
-  }, [])
+    verifierStatsReload && getStats()
+  }, [verifierStatsReload])
 
   const getStats = async () => {
     try {
       setLoading(true)
       let res
       if (userType === ROLES.VERIFIER) {
-        res = await verifierCalls.getVerifierProjectDashboardStats(userID)
+        res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
+      }
+      //using this for token and contract stats
+      else if (location.pathname === pathNames.TOKEN_CONTRACT) {
+        res = await dataCollectionCalls.getStats()
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
       }
@@ -51,17 +63,16 @@ const ProjectsStats = () => {
 
   const getColoredDivColor = (index: number) => {
     // For dynamic color for colored div in stats
-    // const num = index % 4
-    const num = index % 3
+    const num = index % 4
     switch (num) {
       case 0:
-        return '#FFDDD5'
+        return Colors.lightPinkBackground
       case 1:
-        return '#BCE2D2'
+        return Colors.lightPrimary2
       case 2:
-        return '#B9E7E0'
-      // case 3:
-      //   return "BCE2D2"
+        return Colors.lightGreenBackground4
+      case 3:
+        return Colors.lightOrangeBackground
     }
   }
   const renderSkeleton = () => {

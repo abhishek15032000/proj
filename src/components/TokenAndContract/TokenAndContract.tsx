@@ -11,9 +11,34 @@ import CCButton from '../../atoms/CCButton'
 import TokenAndContractProjectList from './TokenAndContractProjectList'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { getLocalItem } from '../../utils/Storage'
+import moment from 'moment'
 
 const TokenAndContract = () => {
   const navigate = useNavigate()
+
+  const { email } = getLocalItem('userDetails')
+
+  const [projects, setProjects] = useState<any>()
+
+  useEffect(() => {
+    getAllProjects()
+  }, [])
+
+  const getAllProjects = () => {
+    dataCollectionCalls
+      .getAllProjects(email)
+      .then((res: any) => {
+        if (res?.data?.success) {
+          setProjects(res.data.data)
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
 
   return (
     <Grid container>
@@ -77,38 +102,27 @@ const TokenAndContract = () => {
               </Typography>
             </Grid>
           </Grid>
-          {data.map((i: any, index: number) => (
-            <TokenAndContractProjectList
-              data={i}
-              key={index}
-              background={index % 2 ? '#edf5f2' : '#fff'}
-            />
-          ))}
+          {projects &&
+            projects.length > 0 &&
+            projects.map((i: any, index: number) => (
+              <TokenAndContractProjectList
+                data={i}
+                key={index}
+                background={index % 2 ? '#edf5f2' : '#fff'}
+              />
+            ))}
         </Paper>
       </Grid>
+
+      {/* <Grid item xs={12} sx={{ mt: 4 }}>
+        <EmptyComponent
+          photoType={1}
+          title="No Reports & Contracts to show yet !"
+          listNewProject
+        />
+      </Grid> */}
     </Grid>
   )
 }
 
 export default TokenAndContract
-const data = [
-  {
-    date: 'reference Id',
-    name: '3.66 MW poultry litter based power ...',
-    type: 'Agricultural Land Management',
-    Location: 'Mumbai, India',
-    //action: ,
-  },
-  {
-    date: 'reference Id',
-    name: '3.66 MW poultry litter based power ...',
-    type: 'Agricultural Land Management',
-    Location: 'Mumbai, India',
-  },
-  {
-    date: 'reference Id',
-    name: '3.66 MW poultry litter based power ...',
-    type: 'Agricultural Land Management',
-    Location: 'Mumbai, India',
-  },
-]

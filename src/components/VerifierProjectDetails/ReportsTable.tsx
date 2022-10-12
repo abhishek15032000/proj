@@ -15,6 +15,14 @@ import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { Colors } from '../../theme'
 import moment from 'moment'
+import { Link, useNavigate } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
+import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import NoData from '../../atoms/NoData/NoData'
+import { fileUploadCalls } from '../../api/fileUpload.api'
+import { getLocalItem } from '../../utils/Storage'
+import { downloadFile } from '../../utils/commonFunctions'
 
 const headings = [
   'Submitted On',
@@ -23,28 +31,32 @@ const headings = [
   'Report Version',
   'Status',
   'Conclusive Report',
-  'CO2e Sequestered',
+  'CO2c Authorised',
   'Action',
 ]
 
 interface ReportsTableProps {
   data?: any
+  loading?: any
+  pdfCall?: any
+  attachDownload?: any
 }
 
 const ReportsTable: FC<ReportsTableProps> = (props) => {
+  const navigate = useNavigate()
+
   const [tabIndex, setTabIndex] = useState(1)
   const [rows, setRows] = useState([])
 
   useEffect(() => {
     const reportsData: any = []
 
-    props.data.map((item: any, index: any) => {
-
+    props.data?.map((item: any, index: any) => {
       reportsData.push([
         moment(item.createdAt).format('DD/MM/YYYY'),
         moment(item.next_date).format('DD/MM/YYYY'),
         <Box
-          key={'1'}
+          key={index}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -55,21 +67,24 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
             sx={{
               fontSize: 14,
               fontWeight: 500,
-              ml: 1,
+              mr: 1,
               textAlign: 'left',
             }}
           >
-            Project Issuance
+            Report
           </Typography>
-          <ArticleIcon
-            style={{ color: Colors.lightPrimary1, marginRight: 2 }}
+          <DownloadIcon
+            onClick={() => downloadFile(item.file_attach?.[0])}
+            style={{ color: Colors.lightPrimary1 }}
           />
-          <DownloadIcon style={{ color: Colors.lightPrimary1 }} />
         </Box>,
         'V1.0',
-        <ApprovalChip key={'1'} />,
+        <ApprovalChip
+          key={index}
+          variant={item.status === 0 ? 'Pending' : 'Verified'}
+        />,
         <Box
-          key={'1'}
+          key={index}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -80,16 +95,35 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
             sx={{
               fontSize: 14,
               fontWeight: 500,
-              ml: 1,
+              mr: 1,
               textAlign: 'left',
             }}
           >
             Conclusive Report
           </Typography>
-          <ArticleIcon style={{ color: Colors.lightPrimary1 }} />
+          <ArticleIcon
+            onClick={() => props.pdfCall(item)}
+            style={{ color: Colors.lightPrimary1 }}
+          />
         </Box>,
         item.quantity,
-        <TextButton key={'1'} sx={{ width: '90px' }} title="Verify" />,
+        item.status === 0 ? (
+          <TextButton
+            key={index}
+            sx={{ width: '90px' }}
+            title="Verify"
+            onClick={() =>
+              navigate(pathNames.VERIFIER_VERIFY_REPORT, {
+                state: {
+                  project: item?.project_id,
+                  pdf: item?.project_id?.project_pdf,
+                },
+              })
+            }
+          />
+        ) : (
+          '-'
+        ),
       ])
     })
 
@@ -117,24 +151,30 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
         setTabIndex={setTabIndex}
       />
 
-      <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
-        Reports Received
-      </Typography>
+      {!props.loading && props.data.length > 0 && (
+        <>
+          <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
+            Reports Received
+          </Typography>
+          <CCTable
+            headings={headings}
+            rows={rows}
+            sx={{ minWidth: 100 }}
+            tableSx={{ minWidth: 100 }}
+          />
+        </>
+      )}
 
-      <CCTable
-        headings={headings}
-        rows={rows}
-        sx={{ minWidth: 100 }}
-        tableSx={{ minWidth: 100 }}
-      />
+      {!props.loading && props.data.length === 0 && (
+        <>
+          <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
+            Response awaiting from project developer
+          </Typography>
+          <NoData title="Your project’s review report will show up here" />
+        </>
+      )}
     </Paper>
   )
 }
 
 export default ReportsTable
-
-const ApprovalChip: FC<ApprovalChipProps> = (props) => {
-  return <Chip icon={<CircleIcon />} label="Verified" />
-}
-
-interface ApprovalChipProps {}

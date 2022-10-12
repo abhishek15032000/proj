@@ -1,39 +1,19 @@
-import {
-  Button,
-  Grid,
-  TextareaAutosize,
-  Typography,
-  Input,
-  Stack,
-} from '@mui/material'
-import { Box } from '@mui/system'
-import React, { useEffect, useState } from 'react'
-import AddIcon from '@mui/icons-material/Add'
-import SampleModal from '../../../atoms/SampleModal/SampleModal'
-import AttachMore from '../../../atoms/AttachMore/AttachMore'
+import { Grid, Stack } from '@mui/material'
+import React, { useEffect } from 'react'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import SectionE5ComparisonOfActualEmissionReductions from '../../../assets/Images/SampleData/SectionE5ComparisonOfActualEmissionReductions.png'
-import {
-  setComparisionOfActualEmissionReductions,
-  setComparisionOfActualEmissionReductionsImages,
-} from '../../../redux/Slices/sectionESlice'
+import { setE5 } from '../../../redux/Slices/sectionESlice'
 import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import Spinner from '../../../atoms/Spinner'
 
 const SectionE5 = () => {
   const dispatch = useAppDispatch()
 
-  const comparisionOfActualEmissionReductions = useAppSelector(
-    ({ sectionE }) => sectionE.comparisionOfActualEmissionReductions
-  )
-  const comparisionOfActualEmissionReductionsimages = useAppSelector(
-    ({ sectionE }) => sectionE.comparisionOfActualEmissionReductionsImages
-  )
-
+  const E5 = useAppSelector(({ sectionE }) => sectionE.E5)
+  const { attach_relevant_docs } = E5
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
@@ -53,12 +33,13 @@ const SectionE5 = () => {
         currentProjectDetails.section_e.step5
 
       dispatch(
-        setComparisionOfActualEmissionReductions(
-          comparison_of_actual_emission_reduction
-        )
+        setE5({
+          name: 'comparison_of_actual_emission_reduction',
+          value: comparison_of_actual_emission_reduction,
+        })
       )
       dispatch(
-        setComparisionOfActualEmissionReductionsImages(attach_relevant_docs)
+        setE5({ name: 'attach_relevant_docs', value: attach_relevant_docs })
       )
     }
   }, [currentProjectDetails])
@@ -73,9 +54,10 @@ const SectionE5 = () => {
         <CCMultilineTextArea
           label="Comparison of actual emission reductions or net anthropogenic GHG removals by sinks with estimates in registered PDD"
           placeholder="Comparison of actual emission reductions or net anthropogenic GHG removals by sinks with estimates in registered PDD, if any"
-          value={comparisionOfActualEmissionReductions}
-          onChange={(e) =>
-            dispatch(setComparisionOfActualEmissionReductions(e.target.value))
+          value={E5.comparison_of_actual_emission_reduction}
+          name={'comparison_of_actual_emission_reduction'}
+          onChange={({ target: { value, name } }) =>
+            dispatch(setE5({ name, value }))
           }
         />
       </Grid>
@@ -86,23 +68,21 @@ const SectionE5 = () => {
             'Sample Report - Comparison of actual emission reductions',
           ]}
           mediaItem={[SectionE5ComparisonOfActualEmissionReductions]}
-          imageArray={comparisionOfActualEmissionReductionsimages}
+          imageArray={E5.attach_relevant_docs}
           onImageUpload={(item: any) => {
             dispatch(
-              setComparisionOfActualEmissionReductionsImages([
-                ...comparisionOfActualEmissionReductionsimages,
-                item,
-              ])
+              setE5({
+                name: 'attach_relevant_docs',
+                value: [...attach_relevant_docs, item],
+              })
             )
           }}
           onDeleteImage={(index: number) => {
             dispatch(
-              setComparisionOfActualEmissionReductionsImages(
-                deleteIndexInArray(
-                  comparisionOfActualEmissionReductionsimages,
-                  index
-                )
-              )
+              setE5({
+                name: 'attach_relevant_docs',
+                value: deleteIndexInArray(attach_relevant_docs, index),
+              })
             )
           }}
         />

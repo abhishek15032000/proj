@@ -1,38 +1,37 @@
 // React Imports
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // MUI Imports
-import {
-  Grid,
-  Box,
-  Typography,
-  IconButton,
-  Chip,
-  LinearProgress,
-} from '@mui/material'
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+import { Box, Typography, IconButton, LinearProgress } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
-import { ProjectsProps } from './Projects.interface'
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+
+// Functional Imports
+import { shallowEqual, useDispatch } from 'react-redux'
+
+// Local Imports
+import { getLocalItem } from '../../utils/Storage'
+import { Colors } from '../../theme'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { setLoadWallet } from '../../redux/Slices/walletSlice'
 
 // Local Imports
 
-//interface ProfileCompletionProps {}
+const ProfileCompletion = () => {
+  const dispatch = useDispatch()
+  const walletAdded = getLocalItem('userDetails2')?.wallet_added
 
-const ProfileCompletion = (props: ProjectsProps) => {
-  const [profileCompletion, setProfileCompletion] = useState<number>()
+  const isConnected = useAppSelector(
+    ({ wallet }) => wallet.isConnected,
+    shallowEqual
+  )
 
-  useEffect(() => {
-    if (props?.walletPercentage) {
-      setProfileCompletion(50)
-    }
-  }),
-    [props?.walletPercentage]
+  const walletIsConnected = walletAdded && isConnected
 
   return (
     <Box
       sx={{
         width: '260px',
-        // height: '330px',
         backgroundColor: '#FFF',
         boxShadow: '1px 1px 2px 2px #CCC',
         borderRadius: '8px',
@@ -47,18 +46,18 @@ const ProfileCompletion = (props: ProjectsProps) => {
         sx={{
           fontSize: 14,
           fontWeight: 500,
-          color: '#F15D5F',
+          color: walletIsConnected ? Colors.lightPrimary1 : Colors.secondary,
           marginTop: 0.5,
           marginBottom: 0.5,
         }}
       >
-        Incomplete!
+        {walletIsConnected ? 'Complete!' : 'Incomplete!'}
       </Typography>
 
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={profileCompletion}
+        value={walletIsConnected === true ? 100 : 0}
       />
 
       <Typography
@@ -86,10 +85,10 @@ const ProfileCompletion = (props: ProjectsProps) => {
             sx={{
               fontSize: 14,
               fontWeight: 400,
-              color: props?.walletPercentage ? '#388E81' : '#BA1B1B',
+              color: walletIsConnected ? Colors.lightPrimary1 : '#BA1B1B',
             }}
           >
-            {`${props?.walletPercentage ? '100%' : '0%'} Complete`}
+            {`${walletIsConnected ? '100' : '0'}% Complete`}
           </Typography>
         </Box>
 
@@ -101,14 +100,23 @@ const ProfileCompletion = (props: ProjectsProps) => {
             height: '40px',
             width: '40px',
             borderRadius: '20px',
-            backgroundColor: '#388E81',
+            backgroundColor: walletIsConnected
+              ? Colors.white
+              : Colors.lightPrimary1,
           }}
         >
-          <ArrowRightAltIcon style={{ color: '#FFF' }} />
+          {walletIsConnected ? (
+            <CheckIcon style={{ color: Colors.lightPrimary1 }} />
+          ) : (
+            <ArrowRightAltIcon
+              style={{ color: '#FFF' }}
+              onClick={() => dispatch(setLoadWallet(true))}
+            />
+          )}
         </IconButton>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -140,9 +148,9 @@ const ProfileCompletion = (props: ProjectsProps) => {
             backgroundColor: '#FFF',
           }}
         >
-          <CheckIcon style={{ color: '#388E81' }} />
+          <CheckIcon style={{ color: Colors.lightPrimary1 }} />
         </IconButton>
-      </Box>
+      </Box> */}
     </Box>
   )
 }

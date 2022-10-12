@@ -23,7 +23,9 @@ const BackHeader: FC<BackHeaderProps> = (props) => {
         ...props.sx,
       }}
     >
-      {!props.iconDisable && <KeyboardArrowLeft onClick={props.onClick} />}
+      {!props.iconDisable && (
+        <KeyboardArrowLeft sx={{ cursor: 'pointer' }} onClick={props.onClick} />
+      )}
       <Typography
         sx={{
           fontSize: 28,

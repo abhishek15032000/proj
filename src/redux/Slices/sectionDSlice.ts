@@ -1,25 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface SectionDInterface {
-  // D1
-  data_and_parameter_fixed_ExAnte: string
-  attach_ex_ante_table: any[]
-  // D2
-  data_and_parameter_monitored_ExPost: ''
-  attach_ex_post_table: any[]
-  // D3
-  briefDescription: string
+  D1: any
+  D2: any
+  D3: any
 }
 
 const initialState: SectionDInterface = {
-  // D1
-  data_and_parameter_fixed_ExAnte: '',
-  attach_ex_ante_table: [],
+  D1: {
+    data_and_parameter_fixed_ExAnte: '',
+    attach_ex_ante_table: [],
+  },
   // D2
-  data_and_parameter_monitored_ExPost: '',
-  attach_ex_post_table: [],
-  // D3
-  briefDescription: '',
+  D2: {
+    data_and_parameter_monitored_ExPost: '',
+    attach_ex_ante_table: [],
+  },
+  D3: { implementation_of_sampling_plan: '' },
 }
 
 const sectionD = createSlice({
@@ -27,34 +24,24 @@ const sectionD = createSlice({
   initialState,
   reducers: {
     // D1 Handlers
-    setDataAndParameterFixedExAnte: (state, action: PayloadAction<any>) => {
-      state.data_and_parameter_fixed_ExAnte = action.payload
+    setD1: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.D1[name] = value
     },
-    setAttachExAnteTable: (state, action: PayloadAction<any>) => {
-      state.attach_ex_ante_table = action.payload
-    },
-
-    // D2 Handlers
-    setDataAndParameterMonitoredExPost: (state, action: PayloadAction<any>) => {
-      state.data_and_parameter_monitored_ExPost = action.payload
-    },
-    setAttachExPostTable: (state, action: PayloadAction<any>) => {
-      state.attach_ex_post_table = action.payload
+    setD2: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.D2[name] = value
     },
 
     // D3 Handlers
-    setBriefDescription: (state, action: PayloadAction<any>) => {
-      state.briefDescription = action.payload
+    setD3: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.D3[name] = value
     },
+    resetSectionD: () => initialState,
   },
 })
 
-export const {
-  setAttachExAnteTable,
-  setDataAndParameterFixedExAnte,
-  setAttachExPostTable,
-  setBriefDescription,
-  setDataAndParameterMonitoredExPost,
-} = sectionD.actions
+export const { setD1, setD2, setD3, resetSectionD } = sectionD.actions
 
 export default sectionD.reducer

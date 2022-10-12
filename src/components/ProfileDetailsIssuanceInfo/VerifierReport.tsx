@@ -22,13 +22,16 @@ import { Colors } from '../../theme'
 import AddIcon from '@mui/icons-material/Add'
 import MonthlyReportUpdate, {
   setCurrentProjectDetails,
+  setMainProjectDetails,
+  setSectionIndex,
+  setSubSectionIndex,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import { useAppDispatch } from '../../hooks/reduxHooks'
-
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { getLocalItem } from '../../utils/Storage'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import LoaderOverlay from '../../components/LoderOverlay'
 
 interface VerifierReportListProps {
   //data?: any
@@ -44,9 +47,12 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   )
 
   const [verifierReports, setVerifierReports] = useState<any>([])
-  const [showTable, setShowTable] = useState<boolean>(true)
+  const [showTable, setShowTable] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
+  const [mainProjectData, setMainProjectData] = useState<any>([])
+  const [contractCallLoading, setContractCallLoading] = useState(false)
+
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -61,7 +67,15 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .getAllMonthlyData(props?.currentProjectUUID)
       .then((res: any) => {
         if (res?.success) {
-          const modifiedRows = res?.data
+          if (res?.data?.record.length > 0) {
+            setShowTable(true)
+          }
+          const modifiedRows = res?.data?.record.map((i: any) =>
+            addSectionPercentages(i)
+          )
+
+          const main = res?.data?.main_project?.report
+          // const modifiedRows = res?.data?.record
 
           const rows =
             modifiedRows &&
@@ -72,14 +86,14 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                   textAlign="start"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
-                  {'28 May 2020'}
+                  {moment(main?.createdAt).format(`DD/MM/YY`)}
                 </Typography>,
                 <Typography
                   key={index}
                   textAlign="start"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
-                  {'28 May 2020'}
+                  {moment(main?.next_date).format(`DD/MM/YY`)}
                 </Typography>,
 
                 <Box
@@ -91,7 +105,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                     alignItems: 'center',
                   }}
                 >
-                  <TextSnippetOutlinedIcon style={{ color: '#667080' }} />
+                  {/* <TextSnippetOutlinedIcon style={{ color: '#667080' }} /> */}
                   <Typography
                     sx={{
                       fontFamily: 'Poppins',
@@ -101,66 +115,73 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                       color: '#2B2B2B',
                     }}
                   >
-                    {'Project Issuance '}
+                    {'-'}
                   </Typography>
                 </Box>,
                 'V1.0',
-                <Chip
-                  sx={{ backgroundColor: '#75F8E4' }}
-                  key="1"
-                  icon={
-                    <CircleNotifications
-                      fontSize="small"
-                      style={{ color: '#00A392' }}
-                    />
-                  }
-                  label={'Finalised'}
-                />,
-                '420',
-                <Box
-                  key={'1'}
-                  sx={{
-                    flexDirection: 'row',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    borderBottom: '2px solid black',
-                  }}
-                >
-                  <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
-                  <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
-                  <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
-                </Box>,
-                <Typography
-                  key="1"
-                  sx={{
-                    color: '#006B5E',
-                    fontSize: 16,
-                    fontWeight: 600,
-                    textDecoration: 'underline',
-                  }}
-                >
-                  View
-                </Typography>,
-
-                <CCButton
-                  key={index}
-                  sx={{
-                    backgroundColor: Colors.darkPrimary1,
-                    padding: '8px 24px',
-                    minWidth: '50px',
-                    color: '#fff',
-                    borderRadius: 10,
-                    fontSize: 14,
-                    mr: 1,
-                  }}
-                  onClick={() => addMonthlyData(i)}
-                >
-                  Resume
-                </CCButton>,
+                // <Chip
+                //   sx={{ backgroundColor: '#75F8E4' }}
+                //   key="1"
+                //   icon={
+                //     <CircleNotifications
+                //       fontSize="small"
+                //       style={{ color: '#00A392' }}
+                //     />
+                //   }
+                //   label={'-'}
+                // />,
+                '-',
+                '-',
+                // <Box
+                //   key={'1'}
+                //   sx={{
+                //     flexDirection: 'row',
+                //     display: 'flex',
+                //     justifyContent: 'space-between',
+                //     alignItems: 'center',
+                //     borderBottom: '2px solid black',
+                //   }}
+                // >
+                //   <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+                //   <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
+                //   <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />,
+                // </Box >
+                '-',
+                // <Typography
+                //   key="1"
+                //   sx={{
+                //     color: '#006B5E',
+                //     fontSize: 16,
+                //     fontWeight: 600,
+                //     textDecoration: 'underline',
+                //   }}
+                // >
+                //   View
+                // </Typography>,
+                '-',
+                i.project_status === 0 ? (
+                  <CCButton
+                    key={index}
+                    sx={{
+                      backgroundColor: Colors.darkPrimary1,
+                      padding: '8px 24px',
+                      minWidth: '50px',
+                      color: '#fff',
+                      borderRadius: 10,
+                      fontSize: 14,
+                      mr: 1,
+                    }}
+                    onClick={() => addMonthlyData(i, res?.data?.main_project)}
+                  >
+                    Resume
+                  </CCButton>
+                ) : (
+                  '-'
+                ),
               ]
             })
           setMonthlyReportsList(rows)
+          setMainProjectData(res?.data?.main_project)
         }
       })
       .catch((err) => console.log(err))
@@ -169,10 +190,12 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       })
   }
 
-  const addMonthlyData = (item: any) => {
-    navigate(pathNames.MONTHLY_REPORT_UPDATE)
-
+  const addMonthlyData = (item: any, main: any) => {
     dispatch(setCurrentProjectDetails(item))
+    dispatch(setMainProjectDetails(main))
+    dispatch(setSectionIndex(0))
+    dispatch(setSubSectionIndex(0))
+    navigate(pathNames.MONTHLY_REPORT_UPDATE)
   }
 
   const getVerifierByProject = () => {
@@ -210,7 +233,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          alert('successfully confirmed Verifier')
+          alert('Successfully confirmed Verifier')
           getVerifierByProject()
           createProjectContractCall(res?.data?.fileHash)
         }
@@ -223,12 +246,14 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
 
   const createProjectContractCall = async (fileHash: string) => {
     const { email, uuid } = getLocalItem('userDetails')
+
     try {
+      setContractCallLoading(true)
+      const toPassParam = [wallet_address, email]
+      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
       const contractRes = await BlockchainCalls.contract_caller()
       await contractRes.estimateGas.createProject(uuid, fileHash)
       const createProjectRes = await contractRes.createProject(uuid, fileHash)
-      const toPassParam = [wallet_address, email]
-      await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
       if (createProjectRes) {
         const updateTxPayload = {
           uuid: uuid,
@@ -241,6 +266,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       }
     } catch (e) {
       console.log('Error in contract_caller().createProject call ~ ', e)
+    } finally {
+      setContractCallLoading(false)
     }
   }
 
@@ -251,8 +278,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           Verifiers Selected
         </Typography>
       </Grid>
+      {/* {loading ? <LoaderOverlay /> : null} */}
       <Grid item xs={12}>
-        {loading === true ? (
+        {loading || contractCallLoading ? (
           <Stack
             alignItems="center"
             justifyContent="center"
@@ -277,14 +305,15 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
         {showTable ? (
-          <Grid item xs={12}>
-            <Box
+          <>
+            <Grid
+              item
+              xs={12}
               sx={{
-                flex: 'display',
-                flexDirection: 'row',
+                display: 'flex',
                 justifyContent: 'space-between',
+                flexDirection: 'row',
                 alignItems: 'center',
-                width: '100%',
               }}
             >
               <Typography
@@ -298,21 +327,20 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 sx={{
                   backgroundColor: '#F3BA4D',
                   textTransform: 'none',
-                  width: '260px',
+                  width: '150px',
                   borderRadius: '100px',
 
-                  padding: '10px 24px 10px 16px',
+                  padding: '10px ',
+                  fontSize: '12px',
                 }}
                 startIcon={<AddIcon style={{ color: '#005046' }} />}
-                onClick={() =>
-                  navigate(pathNames.MONTHLY_REPORT_UPDATE, { replace: true })
-                }
+                onClick={() => addMonthlyData(null, mainProjectData)}
               >
                 Add Monthly Data
               </CCButton>
-            </Box>
+            </Grid>
             <CCTable headings={headings} rows={monthlyReportsList} />
-          </Grid>
+          </>
         ) : (
           <Box
             sx={{

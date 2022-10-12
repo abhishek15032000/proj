@@ -4,6 +4,12 @@ import React, { FC, useEffect, useState } from 'react'
 // MUI Imports
 import { Box, Grid, Paper, Stack, Typography } from '@mui/material'
 
+// Functional Imports
+import { useNavigate } from 'react-router-dom'
+import isAlpha from 'validator/lib/isAlpha'
+import isMobilePhone from 'validator/lib/isMobilePhone'
+import isURL from 'validator/lib/isURL'
+
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { Colors } from '../../theme'
@@ -12,7 +18,6 @@ import VerifierProfileIllustration from '../../assets/Images/illustrations/Verif
 import CCInputField from '../../atoms/CCInputField'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { USER } from '../../api/user.api'
-import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { getLocalItem } from '../../utils/Storage'
 import Spinner from '../../atoms/Spinner'
@@ -37,24 +42,41 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       setAddress(response?.data?.data?.address)
       setDesignation(response?.data?.data?.designation)
       setOrganisationName(response?.data?.data?.organisationName)
-      setWebsite(response?.data?.data?.organisationName)
+      setWebsite(response?.data?.data?.website)
     })
   }, [])
 
   const onSave = () => {
     // return
+
     if (
       email === '' ||
+      email === undefined ||
       fullName === '' ||
+      fullName === undefined ||
       phone === '' ||
+      phone === undefined ||
       organisationName === '' ||
+      organisationName === undefined ||
       address === '' ||
+      address === undefined ||
       website === '' ||
-      designation === ''
+      website === undefined ||
+      designation === '' ||
+      designation === undefined
     ) {
-      console.log('Code Reachable')
+      alert('Fill all the Fields!')
       return
     }
+
+    if ( 
+      !isMobilePhone(phone.toString()) ||
+      !isURL(website)
+    ) {
+      alert('Correct the errors!')
+      return 
+    }
+
     setLoading(true)
 
     const payload = {
@@ -68,12 +90,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       designation: designation,
     }
 
-    // console.log('payload')
-    // console.log(JSON.stringify(payload, null, 4))
-
     USER.updateUserInfo(payload)
       .then((response) => {
-        navigate(pathNames.VERIFIER_PROJECTS)
+        navigate(pathNames.DASHBOARD, { replace: true })
         setLoading(false)
       })
       .catch((e) => {
@@ -119,7 +138,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                   alignItems: 'center',
                 }}
               >
-                <BackHeader title="Profile" />
+                <BackHeader title="Profile" onClick={() => navigate(-1)} />
                 <TextButton title="Save" onClick={onSave} />
               </Box>
 
@@ -159,6 +178,15 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required={false}
+                inputProps={{
+                  maxLength: 10,
+                }}
+                error={phone !== '' && !isMobilePhone(phone.toString(), 'en-IN')}
+                helperText={
+                  phone !== '' &&
+                  !isMobilePhone(phone.toString(), 'en-IN') &&
+                  'Enter valid Mobile Number'
+                }
               />
 
               <CCInputField
@@ -183,6 +211,12 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 sx={{ mb: 1.5 }}
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
+                error={website !== '' && !isURL(website)}
+                helperText={
+                  website !== '' &&
+                  !isURL(website) &&
+                  'Enter valid URL'
+                }
               />
 
               <Box

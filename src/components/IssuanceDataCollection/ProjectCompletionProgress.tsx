@@ -1,9 +1,9 @@
 import { Box, LinearProgress, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import { SECTION_NAMES } from '../../config/roles.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors, Images } from '../../theme'
-
 
 const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
   const currentProjectDetails = useAppSelector(
@@ -14,37 +14,36 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
 
   const [stepsCompletionData, setStepsCompletionData] = useState<any | null>()
   const [stepsCompletionPercent, setStepsCompletionPercent] = useState(0)
-
   useEffect(() => {
     let stepsCompletionPercent
     if (currentProjectDetails) {
       stepsCompletionPercent = [
         {
-          title: 'Project Introduction',
+          title: SECTION_NAMES.PROJECT_INTRODUCTION,
           completionPercent: 100,
         },
         {
-          title: 'Section A',
+          title: SECTION_NAMES.SECTION_A,
           completionPercent:
             currentProjectDetails?.section_a?.completionPercentage,
         },
         {
-          title: 'Section B',
+          title: SECTION_NAMES.SECTION_B,
           completionPercent:
             currentProjectDetails?.section_b?.completionPercentage,
         },
         {
-          title: 'Section C',
+          title: SECTION_NAMES.SECTION_C,
           completionPercent:
             currentProjectDetails?.section_c?.completionPercentage,
         },
         {
-          title: 'Section D',
+          title: SECTION_NAMES.SECTION_D,
           completionPercent:
             currentProjectDetails?.section_d?.completionPercentage,
         },
         {
-          title: 'Section E',
+          title: SECTION_NAMES.SECTION_E,
           completionPercent:
             currentProjectDetails?.section_e?.completionPercentage,
         },
@@ -53,27 +52,27 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
     } else {
       stepsCompletionPercent = [
         {
-          title: 'Project Introduction',
+          title: SECTION_NAMES.PROJECT_INTRODUCTION,
           completionPercent: 0,
         },
         {
-          title: 'Section A',
+          title: SECTION_NAMES.SECTION_A,
           completionPercent: 0,
         },
         {
-          title: 'Section B',
+          title: SECTION_NAMES.SECTION_B,
           completionPercent: 0,
         },
         {
-          title: 'Section C',
+          title: SECTION_NAMES.SECTION_C,
           completionPercent: 0,
         },
         {
-          title: 'Section D',
+          title: SECTION_NAMES.SECTION_D,
           completionPercent: 0,
         },
         {
-          title: 'Section E',
+          title: SECTION_NAMES.SECTION_E,
           completionPercent: 0,
         },
       ]
@@ -82,15 +81,22 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
   }, [currentProjectDetails])
 
   useEffect(() => {
-    const totalStepsCount = 6
+    const totalStepsCount = 4
     let completedStepsCount = 0
     if (stepsCompletionData && stepsCompletionData.length) {
       stepsCompletionData.forEach((step: any) => {
-        if (step?.completionPercent === 100) {
-          completedStepsCount += 1
+        if (
+          ![SECTION_NAMES.SECTION_D, SECTION_NAMES.SECTION_E].includes(
+            step?.title
+          )
+        ) {
+          if (step?.completionPercent === 100) {
+            completedStepsCount += 1
+          }
         }
       })
     }
+
     const completionPercent = Math.floor(
       (completedStepsCount / totalStepsCount) * 100
     )

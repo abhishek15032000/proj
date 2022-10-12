@@ -18,6 +18,9 @@ import sectionBMonthly from './MonthlyReport/sectionBMonthly'
 import sectionCMonthly from './MonthlyReport/sectionCMonthly'
 import sectionDMonthly from './MonthlyReport/sectionDMonthly'
 import sectionEMonthly from './MonthlyReport/sectionEMonthly'
+import verifier from './verifierSlice'
+import reportsViewComments from './reportsViewCommentsSlice'
+
 // TODO: rename names
 export default {
   auth,
@@ -37,4 +40,6 @@ export default {
   sectionCMonthly,
   sectionDMonthly,
   sectionEMonthly,
+  verifier,
+  reportsViewComments,
 }

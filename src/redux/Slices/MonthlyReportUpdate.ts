@@ -4,13 +4,17 @@ interface MonthlyReportUpdateReducerInterface {
   sectionIndex: number
   subSectionIndex: number
   currentProjectDetails: any
-  isApiCalled: boolean
+  currentProjectDetailsUUID: string
+  mainProjectDetails: any
+  showMandatoryFieldModal: boolean
 }
 const initialState: MonthlyReportUpdateReducerInterface = {
   sectionIndex: 0,
   subSectionIndex: 0,
   currentProjectDetails: null,
-  isApiCalled: false,
+  currentProjectDetailsUUID: '',
+  mainProjectDetails: null,
+  showMandatoryFieldModal: false,
 }
 const MonthlyReportUpdate = createSlice({
   name: 'MonthlyReportUpdate',
@@ -25,8 +29,14 @@ const MonthlyReportUpdate = createSlice({
     setCurrentProjectDetails: (state, action: PayloadAction<any>) => {
       state.currentProjectDetails = action.payload
     },
-    setIsApiCalled: (state, action: PayloadAction<any>) => {
-      state.isApiCalled = action.payload
+    setCurrentProjectDetailsUUID: (state, action: PayloadAction<any>) => {
+      state.currentProjectDetailsUUID = action.payload
+    },
+    setMainProjectDetails: (state, action: PayloadAction<any>) => {
+      state.mainProjectDetails = action.payload
+    },
+    setShowMandatoryFieldModal: (state, action: PayloadAction<any>) => {
+      state.showMandatoryFieldModal = action.payload
     },
   },
 })
@@ -35,7 +45,9 @@ export const {
   setSectionIndex,
   setSubSectionIndex,
   setCurrentProjectDetails,
-  setIsApiCalled,
+  setShowMandatoryFieldModal,
+  setCurrentProjectDetailsUUID,
+  setMainProjectDetails,
 } = MonthlyReportUpdate.actions
 
 export default MonthlyReportUpdate.reducer

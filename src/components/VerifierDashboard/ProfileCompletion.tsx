@@ -1,31 +1,105 @@
-// React Imports
-import React, { FC } from 'react'
+// Import React
+import React, { useEffect, useState } from 'react'
 
 // MUI Imports
-import {
-  Grid,
-  Box,
-  Typography,
-  IconButton,
-  Chip,
-  LinearProgress,
-  Paper,
-} from '@mui/material'
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
-import CheckIcon from '@mui/icons-material/Check'
+import { Typography, LinearProgress, Paper } from '@mui/material'
+
+// Functional Imports
+import { shallowEqual } from 'react-redux'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 // Local Imports
+import { Colors } from '../../theme'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { getLocalItem } from '../../utils/Storage'
+import ProfileCompletionStep from './ProfileCompletionStep'
+import { pathNames } from '../../routes/pathNames'
+import { setLoadWallet } from '../../redux/Slices/walletSlice'
+import { USER } from '../../api/user.api'
+import BlockchainCalls from '../../blockchain/Blockchain'
 
-interface ProfileCompletionProps {
-  value?: any
-}
+const ProfileCompletion = () => {
+  const navigate = useNavigate()
 
-const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
+  const [profileCompletion, setProfileCompletion] = useState(0)
+  const [linearProgressValue, setLinearProgressValue] = useState(0)
+
+  const isConnected = useAppSelector(
+    ({ wallet }) => wallet.isConnected,
+    shallowEqual
+  )
+
+  useEffect(() => {
+    USER.getUserInfo(getLocalItem('userDetails')?.uuid).then((response) => {
+      let count = 0
+
+      if (
+        response?.data?.data?.fullName !== '' &&
+        response?.data?.data?.fullName !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.phone !== '' &&
+        response?.data?.data?.phone !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.address !== '' &&
+        response?.data?.data?.address !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.designation !== '' &&
+        response?.data?.data?.designation !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.organisationName !== '' &&
+        response?.data?.data?.organisationName !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.website !== '' &&
+        response?.data?.data?.website !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.email !== '' &&
+        response?.data?.data?.email !== undefined
+      ) {
+        count++
+      }
+
+      setProfileCompletion(Math.round((count / 7) * 100))
+
+      // Linear Progress
+      let lpValue = (count / 7) * 50
+
+      BlockchainCalls.getConnectionStatusAndAddress().then((response) => {
+        if (response.connected) {
+          lpValue = lpValue + 50
+        }
+
+        if (response.connected && count === 7) {
+          navigate(pathNames.DASHBOARD)
+        }
+      })
+
+      setLinearProgressValue(lpValue)
+    })
+
+  }, [isConnected])
+
   return (
     <Paper
       sx={{
         width: '260px',
-        // height: '330px',
         backgroundColor: '#FFF',
         borderRadius: '8px',
         padding: 1.5,
@@ -39,48 +113,45 @@ const ProfileCompletion: FC<ProfileCompletionProps> = (props) => {
         sx={{
           fontSize: 14,
           fontWeight: 500,
-          color: '#F15D5F',
+          color:
+            linearProgressValue !== 100
+              ? Colors.secondary
+              : Colors.textColorDarkGreen,
           marginTop: 2,
           marginBottom: 0.5,
-
         }}
       >
-        Incomplete!
+        {profileCompletion === 100 && isConnected ? 'Complete' : 'Incomplete'}!
       </Typography>
 
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={props.value}
+        value={linearProgressValue}
       />
 
       <Typography
-        sx={{ fontSize: 14, fontWeight: 400, marginTop: 1, marginBottom: 2, mt: 2, }}
+        sx={{
+          fontSize: 14,
+          fontWeight: 400,
+          marginTop: 1,
+          marginBottom: 2,
+          mt: 2,
+        }}
       >
         Complete your profile setup!
       </Typography>
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '60px',
-          width: '240px',
-          backgroundColor: '#DAF7F0',
-          padding: 1,
-          borderRadius: '12px',
-        }}
-      >
-        <Box>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            Profile
-          </Typography>
-          <Typography sx={{ fontSize: 14, fontWeight: 400, color: '#BA1B1B' }}>
-            {props.value}% Complete
-          </Typography>
-        </Box>
-      </Box>
+      <ProfileCompletionStep
+        stepTitle="Profile Updated"
+        stepCompleted={profileCompletion}
+        onClickWhenIncomplete={() => navigate(pathNames.VERIFIER_PROFILE_SETUP)}
+      />
+      <ProfileCompletionStep
+        stepTitle="Wallet Added"
+        stepCompleted={isConnected ? 100 : 0}
+        onClickWhenIncomplete={() => undefined}
+      />
     </Paper>
   )
 }

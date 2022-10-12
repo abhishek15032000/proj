@@ -7,15 +7,7 @@ import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 // Redux Imports
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import {
-  setPurposeAndDescription,
-  setBriefDescriptionInstalledTech,
-  setConstructionDate,
-  setMeasureTakenForGasEmissions,
-  setOperationPeriod,
-  setTotalGHGEmission,
-  setCommissioningDate,
-} from '../../../redux/Slices/sectionASlice'
+import { setA1 } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
 
 const SectionA1 = () => {
@@ -32,6 +24,8 @@ const SectionA1 = () => {
     shallowEqual
   )
 
+  const A1 = useAppSelector(({ sectionA }) => sectionA.A1)
+
   useEffect(() => {
     if (
       currentProjectDetails &&
@@ -47,52 +41,50 @@ const SectionA1 = () => {
         total_GHG_emission,
       } = currentProjectDetails.section_a.step1
 
-      dispatch(setPurposeAndDescription(purpose_and_description))
-      dispatch(setMeasureTakenForGasEmissions(measure_taken_for_gas_emissions))
       dispatch(
-        setBriefDescriptionInstalledTech(brief_description_installed_tech)
+        setA1({
+          name: 'purpose_and_description',
+          value: purpose_and_description,
+        })
       )
-      dispatch(setCommissioningDate(project_comissioning_date))
-      dispatch(setConstructionDate(construction_date))
-      dispatch(setOperationPeriod(operation_period))
-      dispatch(setTotalGHGEmission(total_GHG_emission))
+      dispatch(
+        setA1({
+          name: 'measure_taken_for_gas_emissions',
+          value: measure_taken_for_gas_emissions,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'brief_description_installed_tech',
+          value: brief_description_installed_tech,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'project_comissioning_date',
+          value: project_comissioning_date,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'construction_date',
+          value: construction_date,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'operation_period',
+          value: operation_period,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'total_GHG_emission',
+          value: total_GHG_emission,
+        })
+      )
     }
   }, [currentProjectDetails])
-
-  const purpose_and_description = useAppSelector(
-    ({ sectionA }) => sectionA.purpose_and_description,
-    shallowEqual
-  )
-
-  const measure_taken_for_gas_emissions = useAppSelector(
-    ({ sectionA }) => sectionA.measure_taken_for_gas_emissions,
-    shallowEqual
-  )
-
-  const brief_description_installed_tech = useAppSelector(
-    ({ sectionA }) => sectionA.brief_description_installed_tech,
-    shallowEqual
-  )
-
-  const construction_date = useAppSelector(
-    ({ sectionA }) => sectionA.construction_date,
-    shallowEqual
-  )
-  const operation_period = useAppSelector(
-    ({ sectionA }) => sectionA.operation_period,
-    shallowEqual
-  )
-
-  const total_GHG_emission = useAppSelector(
-    ({ sectionA }) => sectionA.total_GHG_emission,
-    shallowEqual
-  )
-
-  const commissioning_date = useAppSelector(
-    ({ sectionA }) => sectionA.commissioning_date,
-    shallowEqual
-  )
-
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -103,8 +95,11 @@ const SectionA1 = () => {
         <CCMultilineTextArea
           label=" Brief on purpose and general description of project activity "
           placeholder="(Write a brief on the purpose of development of project and general description of project activity"
-          value={purpose_and_description}
-          onChange={(e) => dispatch(setPurposeAndDescription(e.target.value))}
+          value={A1.purpose_and_description}
+          name={'purpose_and_description'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
+          }
         />
       </Grid>
       <Grid item sx={{ mt: 1 }} xs={12}>
@@ -112,9 +107,10 @@ const SectionA1 = () => {
           label=" Purpose of the project activity and the measures taken to reduce
           greenhouse gas emission "
           placeholder="(Write the purpose of the project activity in details & the measures taken to reduce greenhouse gas emissions and their results, if any)"
-          value={measure_taken_for_gas_emissions}
-          onChange={(e) =>
-            dispatch(setMeasureTakenForGasEmissions(e.target.value))
+          value={A1.measure_taken_for_gas_emissions}
+          name={'measure_taken_for_gas_emissions'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
           }
         />
       </Grid>
@@ -122,9 +118,10 @@ const SectionA1 = () => {
         <CCMultilineTextArea
           label={' Brief description of the installed technology and equipment'}
           placeholder="(Brief description of the installed technology and equipment, its purpose for installation)"
-          value={brief_description_installed_tech}
-          onChange={(e) =>
-            dispatch(setBriefDescriptionInstalledTech(e.target.value))
+          value={A1.brief_description_installed_tech}
+          name={'brief_description_installed_tech'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
           }
         />
       </Grid>
@@ -134,9 +131,14 @@ const SectionA1 = () => {
       <Grid item xs={6} md={6}>
         <DatePicker
           label="Construction Date"
-          value={construction_date}
+          value={A1.construction_date}
           onChange={(newValue) => {
-            dispatch(setConstructionDate(newValue))
+            dispatch(
+              setA1({
+                name: 'construction_date',
+                value: newValue?._isValid ? newValue.toISOString() : '',
+              })
+            )
           }}
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -149,9 +151,14 @@ const SectionA1 = () => {
       <Grid item xs={12} md={6}>
         <DatePicker
           label="Project Commissioning Date"
-          value={commissioning_date}
+          value={A1.project_comissioning_date}
           onChange={(newValue) => {
-            dispatch(setCommissioningDate(newValue))
+            dispatch(
+              setA1({
+                name: 'project_comissioning_date',
+                value: newValue?._isValid ? newValue.toISOString() : '',
+              })
+            )
           }}
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -165,8 +172,11 @@ const SectionA1 = () => {
         <CCMultilineTextArea
           label="Operation Period"
           placeholder="Enter the period of project operation & details if any"
-          value={operation_period}
-          onChange={(e) => dispatch(setOperationPeriod(e.target.value))}
+          value={A1.operation_period}
+          name={'operation_period'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
+          }
         />
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
@@ -175,8 +185,12 @@ const SectionA1 = () => {
             '   Total GHG emission reductions or net anthropogenic GHG removals by sinks achieved in this monitoring period'
           }
           placeholder="(Total GHG emission reductions or net anthropogenic GHG removals by sinks achieved during this monitoring period.)"
-          value={total_GHG_emission}
-          onChange={(e) => dispatch(setTotalGHGEmission(e.target.value))}
+          value={A1.total_GHG_emission}
+          name={'total_GHG_emission'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
+          }
+          required={false}
         />
       </Grid>
     </Grid>

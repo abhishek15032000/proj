@@ -134,7 +134,7 @@ const DashboardRegisteredProjectsTable = (
   return (
     <>
       {props?.loading ? (
-        <CCTableSkeleton height={78} />
+        <CCTableSkeleton height={40} />
       ) : (
         <TableContainer
           onScroll={handleScroll}
@@ -151,6 +151,8 @@ const DashboardRegisteredProjectsTable = (
                     key={i?.index}
                     sx={{
                       ...i?.style,
+                      boxShadow:
+                        showBorder && i?.index === 'referenceId' ? 5 : 0,
                       background: '#CCE8E1',
                     }}
                   >
@@ -169,15 +171,20 @@ const DashboardRegisteredProjectsTable = (
                   >
                     <TableCell
                       sx={{
+                        minWidth: 150,
                         position: 'sticky',
                         top: 0,
                         left: 0,
                         background: index % 2 === 0 ? '#FFFFFF' : '#E1EEE8',
+                        display: 'block',
+                        boxShadow: showBorder ? 5 : 0,
+                        zIndex: 1000,
+                        height: '65px',
                       }}
                     >
                       <Typography
                         textAlign="start"
-                        sx={{ fontSize: 15, fontWeight: 500 }}
+                        sx={{ fontSize: 15, fontWeight: 500, pt: 0.5 }}
                       >
                         {limitTitle(data?.uuid, 10)}
                       </Typography>

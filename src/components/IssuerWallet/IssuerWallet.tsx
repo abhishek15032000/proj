@@ -11,6 +11,7 @@ import { Colors } from '../../theme'
 // import DashboardStatistics from '../VerifierProjects/DashboardStatistics'
 import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
 import TransactionHistory from './TransactionHistory'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 const IssuerWallet = (props: IssuerWalletProps) => {
   const [dashboardStatistics, setDashboardStatistics] = useState([
@@ -20,12 +21,12 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       color: Colors.lightPinkBackground,
     },
     {
-      title: 'Number of tokens available for sale',
+      title: 'Number of VCOs on sale',
       value: '10',
       color: Colors.lightGreenBackground3,
     },
     {
-      title: 'Total number of tokens on sale',
+      title: 'Number of VCOs available for sale',
       value: '05',
       color: Colors.lightGreenBackground4,
     },
@@ -47,6 +48,11 @@ const IssuerWallet = (props: IssuerWalletProps) => {
 
         <Grid item xs={12}>
           <TransactionHistory />
+          {/* <EmptyComponent
+            photoType={3}
+            title="No transaction history!"
+            exploreMarketplace
+          /> */}
         </Grid>
       </Grid>
     </Box>
