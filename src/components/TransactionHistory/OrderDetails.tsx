@@ -24,140 +24,148 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
         mt: 2,
       }}
     >
-      <Box
-        sx={{
-          width: {
-            xs: '100%',
-            lg: '50%',
-          },
-          height: '100%',
-          p: 3,
-        }}
-      >
-        <Box>
-          <Typography
-            sx={{
-              fontSize: 18,
-              fontWeight: 400,
-              color: Colors.textColorDarkGreen,
-              mt: 1,
-            }}
-          >
-            Order Details
-          </Typography>
+      <Grid container>
+        <Grid item md={7}>
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              // alignItems: 'center',
+              width: {
+                xs: '95%',
+              },
+              height: '100%',
+              p: 3,
             }}
           >
-            <Box sx={{ width: '50%' }}>
-              <CCTitleValue
-                title="Transaction ID:"
-                value="21220"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
-              <CCTitleValue
-                title="Sell Order  ID:"
-                value="1234"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
-              <CCTitleValue
-                title="Order Match Date:"
-                value="11/07/2022"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
-              <CCTitleValue
-                title="Order Match Time:"
-                value="17:41:20"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 400,
+                  color: Colors.textColorDarkGreen,
+                  mt: 1,
+                }}
+              >
+                Order Details
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  // alignItems: 'center',
+                }}
+              >
+                <Box sx={{ width: '50%' }}>
+                  <CCTitleValue
+                    title="Transaction ID:"
+                    value="21220"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                  <CCTitleValue
+                    title="Sell Order  ID:"
+                    value="1234"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                  <CCTitleValue
+                    title="Order Match Date:"
+                    value="11/07/2022"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                  <CCTitleValue
+                    title="Order Match Time:"
+                    value="17:41:20"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                </Box>
+                <Box sx={{ width: '50%' }}>
+                  <CCTitleValue
+                    title="Unit Price:"
+                    value="214"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                  <CCTitleValue
+                    title="Quantity:"
+                    value="3"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                  <CCTitleValue
+                    title="Total Amount:"
+                    value="214"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                </Box>
+              </Box>
             </Box>
-            <Box sx={{ width: '50%' }}>
-              <CCTitleValue
-                title="Unit Price:"
-                value="214"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
-              <CCTitleValue
-                title="Quantity:"
-                value="3"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
-              <CCTitleValue
-                title="Total Amount:"
-                value="214"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
+
+            <Divider sx={{ mt: 3, mb: 2 }} />
+
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 400,
+                  color: Colors.textColorDarkGreen,
+                  mt: 1,
+                }}
+              >
+                Purchase Details
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  // alignItems: 'center',
+                }}
+              >
+                <Box sx={{ width: '50%' }}>
+                  <CCTitleValue
+                    title="Sold to:"
+                    value="XYZ"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                  <CCTitleValue
+                    title="Sold by:"
+                    value="ABC"
+                    fontWeight={400}
+                    fontSize={14}
+                    sx={styles.TitleValue}
+                  />
+                </Box>
+              </Box>
             </Box>
           </Box>
-        </Box>
-
-        <Divider sx={{ mt: 3, mb: 2 }} />
-
-        <Box>
-          <Typography
-            sx={{
-              fontSize: 18,
-              fontWeight: 400,
-              color: Colors.textColorDarkGreen,
-              mt: 1,
-            }}
-          >
-            Purchase Details
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              // alignItems: 'center',
-            }}
-          >
-            <Box sx={{ width: '50%' }}>
-              <CCTitleValue
-                title="Sold to:"
-                value="XYZ"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
-              <CCTitleValue
-                title="Sold by:"
-                value="ABC"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
-              />
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        component="img"
-        sx={{
-          width: '50%',
-          display: {
-            xs: 'none',
-            lg: 'block',
-          },
-        }}
-        src={TransactionHistoryImg}
-      />
+        </Grid>
+        <Grid
+          item
+          md={5}
+          flexDirection="column"
+          sx={{
+            display: {
+              lg: 'flex',
+              xs: 'none',
+            },
+            minHeight: '100%',
+            backgroundImage: `url(${TransactionHistoryImg})`,
+            flex: 1,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+      </Grid>
     </Paper>
   )
 }

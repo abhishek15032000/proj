@@ -4,6 +4,7 @@ import { shallowEqual } from 'react-redux'
 import { marketplaceCalls } from '../../api/marketplaceCalls.api'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import { useAppSelector } from '../../hooks/reduxHooks'
 
 declare let window: any
@@ -76,8 +77,15 @@ const SellOrder = () => {
     <>
       {loading ? (
         <CCTableSkeleton sx={{ mt: 2 }} />
+      ) : rows && rows.length ? (
+        <CCTable headings={headings} rows={rows} />
       ) : (
-        rows && rows.length && <CCTable headings={headings} rows={rows} />
+        <EmptyComponent
+          photoType={2}
+          title="No orders made yet"
+          exploreMarketplace
+          elevation={0}
+        />
       )}
     </>
   )
