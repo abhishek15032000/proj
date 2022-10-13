@@ -27,7 +27,7 @@ import { onManualConnectClick } from '../../utils/blockchain.util'
 import { MUMBAI_TESTNET_NETWORK_ID } from '../../config/constants.config'
 
 // let window: any
-// declare let window: any
+declare let window: any
 
 // const provider = new ethers.providers.Web3Provider(window.ethereum)
 
@@ -56,7 +56,7 @@ const LoadWallet = (props: LoadWalletProps) => {
     setOpen(loadWallet)
   }, [loadWallet])
 
-  // const { ethereum } = window
+  const { ethereum } = window
 
   const walletReducer = useAppSelector((state) => state.wallet)
   // console.log(

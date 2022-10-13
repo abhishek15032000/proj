@@ -71,6 +71,14 @@ const SellToken: FC<SellTokenProps> = () => {
     ({ marketplace }) => marketplace.onGoingApproveRedux,
     shallowEqual
   )
+
+  useEffect(() => {
+    const sellQuantityInLocalStorage = getLocalItem(
+      LOCAL_STORAGE_VARS.SELL_QUANTITY
+    )
+    dispatch(setSellQuantity(sellQuantityInLocalStorage))
+  }, [])
+
   useEffect(() => {
     if (accountAddress) {
       getApprovedTokensBalance()

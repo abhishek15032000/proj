@@ -194,6 +194,7 @@ export async function depositERC20(_token: any) {
 
 export async function createSellOrder() {
   const sellQuantity = store.getState()?.marketplace?.sellQuantity
+  console.log("🚀 ~ file: marketplace.utils.ts ~ line 197 ~ createSellOrder ~ sellQuantity", sellQuantity)
   const accountAddress = store.getState()?.wallet?.accountAddress
 
   const nonce = await provider.getTransactionCount(accountAddress)
