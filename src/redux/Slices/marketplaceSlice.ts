@@ -10,6 +10,7 @@ interface MarketplaceReducerInterface {
   dataToMakeBuyCall: any
   dataToMakeDepositCall: any
   dataToMakeCreateSellOrderCall: any
+  dataToMakeCreateBuyOrderCall: any
   walletBal: any
   exchangeBal: any
   approvedTokensBal: any
@@ -24,6 +25,7 @@ const initialState: MarketplaceReducerInterface = {
   dataToMakeBuyCall: null,
   dataToMakeDepositCall: null,
   dataToMakeCreateSellOrderCall: null,
+  dataToMakeCreateBuyOrderCall: null,
   walletBal: null,
   exchangeBal: null,
   approvedTokensBal: null,
@@ -59,6 +61,9 @@ const marketplace = createSlice({
     setDataToMakeCreateSellOrderCall: (state, action: PayloadAction<any>) => {
       state.dataToMakeCreateSellOrderCall = action.payload
     },
+    setDataToMakeCreateBuyOrderCall: (state, action: PayloadAction<any>) => {
+      state.dataToMakeCreateBuyOrderCall = action.payload
+    },
     setWalletBal: (state, action: PayloadAction<any>) => {
       state.walletBal = action.payload
     },
@@ -83,6 +88,7 @@ export const {
   setExchangeBal,
   setApprovedTokensBal,
   setDataToMakeCreateSellOrderCall,
+  setDataToMakeCreateBuyOrderCall,
 } = marketplace.actions
 
 export default marketplace.reducer

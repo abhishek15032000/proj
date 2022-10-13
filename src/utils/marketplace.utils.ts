@@ -193,87 +193,166 @@ export async function depositERC20(_token: any) {
 }
 
 export async function createSellOrder() {
-  const sellQuantity = store.getState()?.marketplace?.sellQuantity
-  console.log("🚀 ~ file: marketplace.utils.ts ~ line 197 ~ createSellOrder ~ sellQuantity", sellQuantity)
-  const accountAddress = store.getState()?.wallet?.accountAddress
-
-  const nonce = await provider.getTransactionCount(accountAddress)
-  const hashAndVRS = await getHashAndVRS()
-  const { hash, v, r, s } = hashAndVRS
-
-  const payload = {
-    _maker: accountAddress, //wallet address
-    _offerAsset: TOKEN_CONTRACT_ADDRESS, // Carbon Token address
-    _wantAsset: INR_USD_TOKEN_ADDRESS, // INR/USD Token address
-    // _offerAmount: Number(sellQuantity), //quantity
-    // _wantAmount: Number(sellUnitPrice), //unit
-    _offerAmount: Number(sellQuantity), //quantity
-    _wantAmount: Number(sellQuantity), //unit
-    _feeAsset: TOKEN_CONTRACT_ADDRESS, //carbon token address
-    _feeAmount: 1, //1
-    _nonce: nonce, //like in submit see getnonce()
-    hash: hash,
-    _v: v,
-    _r: r,
-    _s: s,
-  }
-  // console.log('payload', payload)
   try {
-    const createOrderRes = await marketplaceCalls.createOrder(payload)
-    if (createOrderRes.success) {
-      getBalanceOnExchange()
-      //clear "Create Sell Order" tab data
-      store.dispatch(setDataToMakeCreateSellOrderCall(null))
-      setLocalItem(LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL, null)
-      alert('Sell order created')
-    } else {
-      alert(createOrderRes.error)
+    const sellQuantity = store.getState()?.marketplace?.sellQuantity
+    console.log("🚀 ~ file: marketplace.utils.ts ~ line 197 ~ createSellOrder ~ sellQuantity", sellQuantity)
+    const accountAddress = store.getState()?.wallet?.accountAddress
+
+    const nonce = await provider.getTransactionCount(accountAddress)
+    const hashAndVRS = await getHashAndVRS('sell')
+    if (hashAndVRS) {
+
+      const { hash, v, r, s } = hashAndVRS
+
+      const payload = {
+        _maker: accountAddress, //wallet address
+        _offerAsset: TOKEN_CONTRACT_ADDRESS, // Carbon Token address
+        _wantAsset: INR_USD_TOKEN_ADDRESS, // INR/USD Token address
+        // _offerAmount: Number(sellQuantity), //quantity
+        // _wantAmount: Number(sellUnitPrice), //unit
+        _offerAmount: Number(sellQuantity), //quantity
+        _wantAmount: Number(sellQuantity), //unit
+        _feeAsset: TOKEN_CONTRACT_ADDRESS, //carbon token address
+        _feeAmount: 1, //1
+        _nonce: nonce, //like in submit see getnonce()
+        hash: hash,
+        _v: v,
+        _r: r,
+        _s: s,
+      }
+      // console.log('payload', payload)
+
+      const createOrderRes = await marketplaceCalls.createOrder(payload)
+      if (createOrderRes.success) {
+        getBalanceOnExchange()
+        //clear "Create Sell Order" tab data
+        store.dispatch(setDataToMakeCreateSellOrderCall(null))
+        setLocalItem(LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL, null)
+        alert('Sell order created')
+      } else {
+        alert(createOrderRes.error)
+      }
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.createOrder api : ' + err)
   }
 }
 
-async function getHashAndVRS() {
-  const sellQuantity = store.getState()?.marketplace?.sellQuantity
-  const sellUnitPrice = store.getState()?.marketplace?.sellUnitPrice
-  const accountAddress = store.getState()?.wallet?.accountAddress
+export async function createBuyOrder() {
+  try {
+    const sellQuantity = store.getState()?.marketplace?.sellQuantity
+    console.log("🚀 ~ file: marketplace.utils.ts ~ line 197 ~ createBuyOrder ~ sellQuantity", sellQuantity)
+    const accountAddress = store.getState()?.wallet?.accountAddress
 
-  const nonce: any = await provider.getTransactionCount(accountAddress)
-  //Explicitly needed to make them any since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
-  const feeAmount: any = 1
-  const sellQuantityCopy: any = Number(sellQuantity)
-  const sellUnitPriceCopy: any = Number(sellUnitPrice)
-  const hash: any = new Web3().utils.soliditySha3(
-    { type: 'string', value: 'makeOffer' },
-    { type: 'address', value: accountAddress },
-    { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
-    { type: 'address', value: INR_USD_TOKEN_ADDRESS },
-    { type: 'uint256', value: sellQuantityCopy },
-    { type: 'uint256', value: sellQuantityCopy },
-    { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
-    { type: 'uint256', value: feeAmount },
-    { type: 'uint64', value: nonce }
-  )
-  // console.log('hashPayload', [
-  //   { type: 'string', value: 'makeOffer' },
-  //   { type: 'address', value: accountAddress },
-  //   { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
-  //   { type: 'address', value: INR_USD_TOKEN_ADDRESS },
-  //   { type: 'uint256', value: sellQuantityCopy },
-  //   { type: 'uint256', value: sellQuantityCopy },
-  //   { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
-  //   { type: 'uint256', value: feeAmount },
-  //   { type: 'uint64', value: nonce },
-  // ])
-  const toPassParam = [accountAddress, hash]
-  const signature = await BlockchainCalls.requestMethodCalls(
-    'personal_sign',
-    toPassParam
-  )
-  const sig = signature.slice(2)
-  const v = new Web3().utils.toDecimal(`0x${sig.slice(128, 130)}`)
-  const r = `0x${sig.slice(0, 64)}`
-  const s = `0x${sig.slice(64, 128)}`
-  return { v, r, s, hash }
+    const nonce = await provider.getTransactionCount(accountAddress)
+    const hashAndVRS = await getHashAndVRS('buy')
+    if (hashAndVRS) {
+
+      const { hash, v, r, s } = hashAndVRS
+
+      const payload = {
+        "uuid": "string", //!todo
+        "filler": accountAddress, //!todo
+        "_offerHashes": [ //!todo
+          "string"
+        ],
+        "_amountsToTake": [
+          0
+        ],
+
+        _feeAsset: TOKEN_CONTRACT_ADDRESS, //carbon token address
+        _feeAmount: 0, //1
+        _nonce: nonce, //like in submit see getnonce()
+        hash: hash,
+        _v: v,
+        _r: r,
+        _s: s,
+      }
+      // console.log('payload', payload)
+
+      const createOrderRes = await marketplaceCalls.createOrder(payload)
+      if (createOrderRes.success) {
+        getBalanceOnExchange()
+        //clear "Create Sell Order" tab data
+        store.dispatch(setDataToMakeCreateSellOrderCall(null))
+        setLocalItem(LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL, null)
+        alert('Sell order created')
+      } else {
+        alert(createOrderRes.error)
+      }
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.createOrder api : ' + err)
+  }
+}
+
+async function getHashAndVRS(type: string) {
+  try {
+    let hash: any
+    const accountAddress = store.getState()?.wallet?.accountAddress
+    if (type === 'sell') {
+      const sellQuantity = store.getState()?.marketplace?.sellQuantity
+      const sellUnitPrice = store.getState()?.marketplace?.sellUnitPrice
+
+
+      const nonce: any = await provider.getTransactionCount(accountAddress)
+      //Explicitly needed to make them any since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
+      const feeAmount: any = 1
+      const sellQuantityCopy: any = Number(sellQuantity)
+      const sellUnitPriceCopy: any = Number(sellUnitPrice)
+      hash = new Web3().utils.soliditySha3(
+        { type: 'string', value: 'makeOffer' },
+        { type: 'address', value: accountAddress },
+        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'address', value: INR_USD_TOKEN_ADDRESS },
+        { type: 'uint256', value: sellQuantityCopy },
+        { type: 'uint256', value: sellQuantityCopy },
+        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'uint256', value: feeAmount },
+        { type: 'uint64', value: nonce }
+      )
+    } else {
+      //for buy order
+      const buyQuantity = store.getState()?.marketplace?.buyQuantity
+      const buyUnitPrice = store.getState()?.marketplace?.buyUnitPrice
+
+
+      const nonce: any = await provider.getTransactionCount(accountAddress)
+      // const _offerHashes: any = //!todo
+      //Explicitly needed to make them any since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
+      const feeAmount: any = 1
+      const buyQuantityCopy: any = Number(buyQuantity)
+      const buyUnitPriceCopy: any = Number(buyUnitPrice)
+      hash = new Web3().utils.soliditySha3(
+        { type: 'string', value: 'fillOffers' },
+        { type: 'address', value: accountAddress },
+        // { type: 'bytes32[]', value: data._offerHashes }, //!todo
+        { type: 'uint256[]', value: buyQuantityCopy },
+        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'uint256', value: feeAmount },
+        { type: 'uint64', value: nonce })
+    }
+    // console.log('hashPayload', [
+    //   { type: 'string', value: 'makeOffer' },
+    //   { type: 'address', value: accountAddress },
+    //   { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+    //   { type: 'address', value: INR_USD_TOKEN_ADDRESS },
+    //   { type: 'uint256', value: sellQuantityCopy },
+    //   { type: 'uint256', value: sellQuantityCopy },
+    //   { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+    //   { type: 'uint256', value: feeAmount },
+    //   { type: 'uint64', value: nonce },
+    // ])
+    if (!hash) throw new Error("No hash generated")
+    const toPassParam = [accountAddress, hash]
+    const signature = await BlockchainCalls.requestMethodCalls(
+      'personal_sign',
+      toPassParam
+    )
+    const sig = signature.slice(2)
+    const v = new Web3().utils.toDecimal(`0x${sig.slice(128, 130)}`)
+    const r = `0x${sig.slice(0, 64)}`
+    const s = `0x${sig.slice(64, 128)}`
+    return { v, r, s, hash }
+  } catch (e) { console.log(e) }
 }

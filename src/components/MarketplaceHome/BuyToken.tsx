@@ -1,19 +1,29 @@
 import { Paper } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../atoms/CCButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
+import { LOCAL_STORAGE_VARS } from '../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { setBuyQuantity } from '../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../theme'
-import { requestApprovalForTokenBuy } from '../../utils/marketplace.utils'
+import {
+  getApprovedTokensBalance,
+  requestApprovalForTokenBuy,
+} from '../../utils/marketplace.utils'
+import { getLocalItem } from '../../utils/Storage'
 import CardRow from './CardRow'
 
 interface BuyTokenProps {}
 
 const BuyToken: FC<BuyTokenProps> = () => {
   const dispatch = useAppDispatch()
+
+  const accountAddress = useAppSelector(
+    ({ wallet }) => wallet.accountAddress,
+    shallowEqual
+  )
 
   const buyQuantity = useAppSelector(
     ({ marketplace }) => marketplace.buyQuantity,
@@ -36,12 +46,60 @@ const BuyToken: FC<BuyTokenProps> = () => {
     shallowEqual
   )
 
+  const dataForBuyCallLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.DATA_FOR_BUY_CALL
+  )
+  const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
+  )
+  const onGoingApproveLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA
+  )
+
+  const dataToMakeBuyCall = useAppSelector(
+    ({ marketplace }) => marketplace.dataToMakeBuyCall,
+    shallowEqual
+  )
+  const dataToMakeCreateBuyOrderCall = useAppSelector(
+    ({ marketplace }) => marketplace.dataToMakeCreateBuyOrderCall,
+    shallowEqual
+  )
+  const onGoingApproveRedux = useAppSelector(
+    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    shallowEqual
+  )
+
+  useEffect(() => {
+    const sellQuantityInLocalStorage = getLocalItem(
+      LOCAL_STORAGE_VARS.SELL_QUANTITY
+    )
+    dispatch(setBuyQuantity(sellQuantityInLocalStorage))
+  }, [])
+
+  useEffect(() => {
+    if (accountAddress) {
+      getApprovedTokensBalance()
+    }
+  }, [accountAddress])
+
   return (
     <Paper
       sx={{
         height: '100%',
         borderRadius: '4px',
         p: 2,
+        pointerEvents:
+          dataForBuyCallLocalStorage ||
+          dataToMakeCreateSellOrderCallLocalStorage ||
+          onGoingApproveLocalStorage
+            ? 'none'
+            : 'all',
+        opacity:
+          dataForBuyCallLocalStorage ||
+          dataToMakeCreateSellOrderCallLocalStorage ||
+          onGoingApproveLocalStorage
+            ? 0.5
+            : 1,
       }}
     >
       <CardRow
@@ -113,7 +171,13 @@ const BuyToken: FC<BuyTokenProps> = () => {
             fontSize: 14,
             minWidth: '120px',
           }}
-          onClick={requestApprovalForTokenBuy}
+          onClick={() => {
+            dataForBuyCallLocalStorage ||
+            dataToMakeCreateSellOrderCallLocalStorage ||
+            onGoingApproveLocalStorage
+              ? null
+              : requestApprovalForTokenBuy()
+          }}
         >
           Buy
         </CCButton>
