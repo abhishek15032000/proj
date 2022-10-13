@@ -9,12 +9,9 @@ import { setBuyQuantity } from '../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../theme'
 import CardRow from './CardRow'
 
-interface BuyTokenProps {
-  walletBal?: any
-  exchangeBal?: any
-}
+interface BuyTokenProps {}
 
-const BuyToken: FC<BuyTokenProps> = ({ walletBal, exchangeBal }) => {
+const BuyToken: FC<BuyTokenProps> = () => {
   const dispatch = useAppDispatch()
 
   const buyQuantity = useAppSelector(
@@ -29,6 +26,15 @@ const BuyToken: FC<BuyTokenProps> = ({ walletBal, exchangeBal }) => {
     ({ marketplace }) => marketplace.totalAmountForBuying,
     shallowEqual
   )
+  const walletBal = useAppSelector(
+    ({ marketplace }) => marketplace.walletBal,
+    shallowEqual
+  )
+  const exchangeBal = useAppSelector(
+    ({ marketplace }) => marketplace.exchangeBal,
+    shallowEqual
+  )
+
   return (
     <Paper
       sx={{

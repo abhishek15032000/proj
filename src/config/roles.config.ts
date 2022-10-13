@@ -12,3 +12,10 @@ export const SECTION_NAMES = {
   SECTION_D: 'Section D(Optional)',
   SECTION_E: 'Section E(Optional)',
 }
+
+export const LOCAL_STORAGE_VARS = {
+  ON_GOING_APPROVE_DATA: 'onGoingApprove',
+  SELL_QUANTITY: 'sellQuantity',
+  DATA_FOR_DEPOSIT_CALL: 'dataForDepositCall',
+  DATA_FOR_CREATE_SELL_ORDER_CALL: 'dataForCreateSellOrderCall',
+}

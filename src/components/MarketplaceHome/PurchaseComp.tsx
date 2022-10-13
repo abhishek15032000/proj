@@ -1,12 +1,17 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Grid } from '@mui/material'
-import { ethers } from 'ethers'
+import { Grid, Paper } from '@mui/material'
 import { shallowEqual } from 'react-redux'
-import BlockchainCalls from '../../blockchain/Blockchain'
-import { EXCHANGE_CONTRACT_ADDRESS } from '../../config/exchange.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import BuyToken from './BuyToken'
 import SellToken from './SellToken'
+import TabSelector from '../../atoms/TabSelector/TabSelector'
+import OngoingApprove from './OngoingApprove'
+import ToDeposit from './ToDeposit'
+import {
+  getBalanceOnExchange,
+  getWalletBalance,
+} from '../../utils/marketplace.utils'
+import CreateSellOrder from './CreateSellOrder'
 
 interface PurchaseCompProps {}
 
@@ -16,60 +21,41 @@ const PurchaseComp: FC<PurchaseCompProps> = (props) => {
     shallowEqual
   )
 
-  const [walletBal, setWalletBal] = useState<any>()
-  const [exchangeBal, setExchangeBal] = useState<any>()
+  const [tabIndex, setTabIndex] = useState(1)
 
   useEffect(() => {
-    getWalletBalance()
-    getBalanceOnExchange()
-  }, [])
-
-  async function getWalletBalance() {
-    try {
-      const tokenContractFunctions = await BlockchainCalls.token_caller()
-      await tokenContractFunctions.estimateGas.balanceOf(accountAddress)
-      const balanceCallRes = await tokenContractFunctions.balanceOf(
-        accountAddress
-      )
-      if (balanceCallRes) {
-        const bal =
-          Math.round(Number(balanceCallRes.toString()) * 10 ** -18 * 1000) /
-          1000
-        setWalletBal(bal)
-      }
-    } catch (err) {
-      console.log(err)
+    if (accountAddress) {
+      getWalletBalance()
+      getBalanceOnExchange()
     }
-  }
-
-  async function getBalanceOnExchange() {
-    try {
-      const exchangeContractFunctions = await BlockchainCalls.exchange_caller()
-      await exchangeContractFunctions.estimateGas.balances(
-        accountAddress,
-        EXCHANGE_CONTRACT_ADDRESS
-      )
-
-      const exchangeBal = await exchangeContractFunctions.balances(
-        accountAddress,
-        EXCHANGE_CONTRACT_ADDRESS
-      )
-      const bigNumExchangeBal = ethers.BigNumber.from(exchangeBal)
-      setExchangeBal(bigNumExchangeBal.toNumber())
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  }, [accountAddress])
 
   return (
-    <Grid container mt={2} columnSpacing={2}>
-      <Grid item xs={6}>
-        <BuyToken walletBal={walletBal} exchangeBal={exchangeBal} />
+    <>
+      <Grid container mt={2} columnSpacing={2}>
+        <Grid item xs={6}>
+          <BuyToken />
+        </Grid>
+        <Grid item xs={6}>
+          <SellToken />
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <SellToken walletBal={walletBal} exchangeBal={exchangeBal} />
-      </Grid>
-    </Grid>
+      <Paper
+        sx={{
+          borderRadius: '4px',
+          p: 2,
+        }}
+      >
+        <TabSelector
+          tabArray={['Ongoing Approve', 'To Deposit', 'Create Sell Order']}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+        />
+        {tabIndex === 1 && <OngoingApprove />}
+        {tabIndex === 2 && <ToDeposit />}
+        {tabIndex === 3 && <CreateSellOrder />}
+      </Paper>
+    </>
   )
 }
 
