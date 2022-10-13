@@ -8,6 +8,7 @@ import {
   EXCHANGE_CONTRACT_ADDRESS,
 } from '../config/exchange.config'
 import { TOKEN_ABI, TOKEN_CONTRACT_ADDRESS } from '../config/token.config'
+import { getLocalItem } from '../utils/Storage'
 
 declare let window: any
 
@@ -20,27 +21,50 @@ const provider =
 const { ethereum } = window
 
 const BlockchainCalls = {
+  isMetamaskInstalled: () => {
+    return Boolean(window.ethereum);
+  },
+  readAddress: async () => {
+    const method = "eth_requestAccounts";
+
+    const accounts = await window.ethereum.request({
+      method
+    });
+
+    return accounts[0];
+  },
+  getSelectedAddress: () => {
+    return window.ethereum?.selectedAddress;
+  },
+  compareShinekeyAndAddress: (address: string) => {
+    if (getLocalItem('userDetails2')?.shineKey !== address) {
+      return false
+    } return true
+  },
   connectWallet: async () => {
     console.log("BlockchainCalls.connectWallet called")
     let isConnected = false
-    let haveMetamask = false
-    let accountAddress = undefined
-    try {
-      if (!ethereum) {
-        haveMetamask = false
-        throw new Error('metamask not available')
-      }
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-      })
-      console.log("🚀 ~ file: Blockchain.ts ~ line 31 ~ connectWallet: ~ accounts", accounts)
-      if (accounts.length > 0) {
-        accountAddress = accounts[0]
-      } else {
+    const haveMetamask = BlockchainCalls.isMetamaskInstalled()
+    const accountAddress = await BlockchainCalls.readAddress() || undefined
 
-        accountAddress = null
+    // let accountAddress =undefined
+    try {
+      // if (!ethereum) {
+      //   haveMetamask = false
+      //   throw new Error('metamask not available')
+      // }
+      // console.log("🚀 ~ file: Blockchain.ts ~ line 31 ~ connectWallet: ~ accounts", accounts)
+      // if (accounts.length > 0) {
+      //   accountAddress = accounts[0]
+      // } else {
+
+      //   accountAddress = null
+      // }
+
+      if (accountAddress) {
+
+        isConnected = true
       }
-      isConnected = true
 
       return {
         haveMetamask,
@@ -167,3 +191,15 @@ const BlockchainCalls = {
 }
 
 export default BlockchainCalls
+
+
+// declare global {
+//   interface Window {
+//     ethereum: {
+//       request<T>(params: { method: string }): Promise<T>
+//       on<T>(event: string, cb: (params: T) => void): void
+//       removeListener<T>(event: string, cb: (params: T) => void): void
+//       selectedAddress: string | undefined
+//     }
+//   }
+// }

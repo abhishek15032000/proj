@@ -11,6 +11,7 @@ import {
   setMetamask,
   setGuide,
   setWalletNetwork,
+  setLoadWalletAlert,
 } from '../../redux/Slices/walletSlice'
 import BlockchainCalls from '../../blockchain/Blockchain'
 
@@ -134,12 +135,12 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
                   {alertMessage}
                 </Typography>
 
-                <CCButton
+                {/* <CCButton
                   sx={{ mt: 2 }}
-                  onClick={() => dispatch(setLoadWallet(false))}
+                  onClick={() => dispatch(setLoadWalletAlert(false))}
                 >
                   Okay
-                </CCButton>
+                </CCButton> */}
               </Box>
             </>
           </Grid>

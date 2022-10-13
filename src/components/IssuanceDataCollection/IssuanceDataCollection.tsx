@@ -32,6 +32,8 @@ import {
   setSectionIndex,
   setSubSectionIndex,
   setShowMandatoryFieldModal,
+  setIsApiCallSuccess,
+  setToMoveSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
 import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
@@ -145,6 +147,14 @@ const IssuanceDataCollection = () => {
       issuanceDataCollection.showMandatoryFieldModal,
     shallowEqual
   )
+  const isApiCallSuccess = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.isApiCallSuccess,
+    shallowEqual
+  )
+  const toMoveSectionIndex = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.toMoveSectionIndex,
+    shallowEqual
+  )
 
   const A1 = useAppSelector(({ sectionA }) => sectionA.A1)
   const A2 = useAppSelector(({ sectionA }) => sectionA.A2)
@@ -173,8 +183,6 @@ const IssuanceDataCollection = () => {
   const [sectionIndexState, setSectionIndexState] = useState<number>()
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
 
-  //console.log('currentProjectDetails:', currentProjectDetails)
-
   useEffect(() => {
     return () => {
       dispatch(resetSectionA())
@@ -199,6 +207,12 @@ const IssuanceDataCollection = () => {
     }
   }, [currentProjectDetails, sectionIndex])
 
+  useEffect(() => {
+    if (isApiCallSuccess) {
+      handleSectionIndexFromModal()
+    }
+  }, [isApiCallSuccess])
+
   const getSectionName = () => {
     return sections[sectionIndex]?.name
   }
@@ -208,9 +222,7 @@ const IssuanceDataCollection = () => {
   }
 
   const handlePrevious = () => {
-    //console.log('run')
     if (sectionIndex > 0) {
-      //console.log('not runn')
       const isDataModified = handleDataCheck()
 
       if (isDataModified) {
@@ -394,7 +406,6 @@ const IssuanceDataCollection = () => {
     const params = paramsData.filter((i: any) => {
       return i?.section === sectionIndex && i?.subSection === subSectionIndex
     })
-    console.log('params', params)
     if (params.length) {
       dataModified = isDataModifiedCheckFunc(
         params[0].sectionName,
@@ -411,8 +422,8 @@ const IssuanceDataCollection = () => {
     if (index !== subSectionIndex) {
       const dataModified = handleDataCheck()
       if (dataModified) {
-        setModal(true)
         setSubSectionIndexState(index)
+        setModal(true)
       } else if (!dataModified) {
         dispatch(setSubSectionIndex(index))
       }
@@ -424,16 +435,24 @@ const IssuanceDataCollection = () => {
     if (sectionIndex === 5) {
       handleNextBtnFromSectionE()
     } else {
-      //ChangeInSection is to know whether the issuer has clicked on section level next or he is clicked on subSection level
-      changeInSection && dispatch(setSectionIndex(sectionIndexState))
-      dispatch(setSubSectionIndex(subSectionIndexState))
-      setChangeInSection(false)
+      handleSectionIndexFromModal()
     }
   }
 
   const handleModalSave = () => {
     setModal(false)
+    dispatch(setToMoveSectionIndex(true))
     handleSave()
+  }
+
+  const handleSectionIndexFromModal = () => {
+    dispatch(setSubSectionIndex(subSectionIndexState))
+    //ChangeInSection is to know whether the issuer has clicked on section level next or he clicked on subSection level
+    if (changeInSection) {
+      dispatch(setSectionIndex(sectionIndexState))
+      setChangeInSection(false)
+    }
+    dispatch(setIsApiCallSuccess(false))
   }
 
   const renderTab = () => {
@@ -683,7 +702,11 @@ const IssuanceDataCollection = () => {
                 Please Enter All the Mandatory Fields
               </Typography>
               <CCButton
-                onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+                onClick={() => {
+                  dispatch(setShowMandatoryFieldModal(false))
+                  //below line will make the triggered redux to false if the mandatory fields in sections so that the section or subsection wont' change when clicks on save from out of modal
+                  toMoveSectionIndex && dispatch(setToMoveSectionIndex(false))
+                }}
                 sx={{
                   mt: 3,
                   minWidth: 0,
