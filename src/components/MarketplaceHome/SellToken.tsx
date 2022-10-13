@@ -100,6 +100,18 @@ const SellToken: FC<SellTokenProps> = () => {
           height: '100%',
           borderRadius: '4px',
           p: 2,
+          pointerEvents:
+            dataForDepositCallLocalStorage ||
+            dataToMakeCreateSellOrderCallLocalStorage ||
+            onGoingApproveLocalStorage
+              ? 'none'
+              : 'all',
+          opacity:
+            dataForDepositCallLocalStorage ||
+            dataToMakeCreateSellOrderCallLocalStorage ||
+            onGoingApproveLocalStorage
+              ? 0.5
+              : 1,
         }}
       >
         <CardRow
@@ -204,7 +216,13 @@ const SellToken: FC<SellTokenProps> = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={requestApprovalForTokenSelling}
+            onClick={() => {
+              dataForDepositCallLocalStorage ||
+              dataToMakeCreateSellOrderCallLocalStorage ||
+              onGoingApproveLocalStorage
+                ? null
+                : requestApprovalForTokenSelling()
+            }}
             // disabled={
             //   dataForDepositCallLocalStorage ||
             //   dataToMakeCreateSellOrderCallLocalStorage ||
