@@ -17,7 +17,7 @@ import {
 } from '../../utils/marketplace.utils'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
 
-const headings = ['txId', 'Quantity', 'Status']
+const headings = ['Transaction ID', 'Quantity', 'Status']
 
 const OngoingApprove = () => {
   const dispatch = useAppDispatch()

@@ -11,7 +11,7 @@ import { limitTitleFromMiddle } from '../../utils/commonFunctions'
 import { depositERC20 } from '../../utils/marketplace.utils'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
 
-const headings = ['txId', 'Quantity', 'Status', 'action']
+const headings = ['Transaction ID', 'Quantity', 'Status', 'Action']
 
 const ToDeposit = () => {
   const dispatch = useAppDispatch()
@@ -57,14 +57,15 @@ const ToDeposit = () => {
         <CCButton
           key={1}
           sx={{
-            mt: 3,
-            alignSelf: 'end',
+            // mt: 3,
+            position: 'relative',
+            left: '33%',
             bgcolor: Colors.darkPrimary1,
             color: Colors.white,
             padding: '8px 24px',
             borderRadius: '30px',
             fontSize: 14,
-            minWidth: '120px',
+            // minWidth: '120px',
           }}
           onClick={depositERC20}
           disabled={!receipt?.blockHash}

@@ -44,12 +44,15 @@ const PurchaseComp: FC<PurchaseCompProps> = (props) => {
         sx={{
           borderRadius: '4px',
           p: 2,
+
+          mt: 2,
         }}
       >
         <TabSelector
           tabArray={['Ongoing Approve', 'To Deposit', 'Create Sell Order']}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
+          tabStyle={{ width: 'auto' }}
         />
         {tabIndex === 1 && <OngoingApprove />}
         {tabIndex === 2 && <ToDeposit />}

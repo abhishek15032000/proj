@@ -12,6 +12,7 @@ interface TabSelectorProps {
   tabIndex?: number
   setTabIndex?: any
   sx?: any
+  tabStyle?: any
 }
 
 const TabSelector: FC<TabSelectorProps> = (props) => {
@@ -29,7 +30,12 @@ const TabSelector: FC<TabSelectorProps> = (props) => {
         {props.tabArray?.map((tab, index) => (
           <Tab
             data-testid="tab-selector-tab"
-            sx={{ textTransform: 'unset', height: '50px', width: '80px' }}
+            sx={{
+              textTransform: 'unset',
+              height: '50px',
+              width: '80px',
+              ...props.tabStyle,
+            }}
             key={index}
             value={index + 1}
             label={tab}

@@ -128,7 +128,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   )
@@ -173,7 +173,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      {/* <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -184,7 +184,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           <PersonOutlineOutlinedIcon />
         </IconButton>
         <p>Profile</p>
-      </MenuItem>
+      </MenuItem> */}
     </Menu>
   )
 

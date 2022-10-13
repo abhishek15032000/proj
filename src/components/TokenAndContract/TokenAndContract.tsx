@@ -15,11 +15,14 @@ import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
 import moment from 'moment'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 const TokenAndContract = () => {
   const navigate = useNavigate()
 
   const { email } = getLocalItem('userDetails')
+
+  const [loading, setLoading] = useState(true)
 
   const [projects, setProjects] = useState<any>()
 
@@ -37,6 +40,9 @@ const TokenAndContract = () => {
       })
       .catch((e) => {
         console.log(e)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -102,7 +108,9 @@ const TokenAndContract = () => {
               </Typography>
             </Grid>
           </Grid>
-          {projects &&
+          {loading && <CCTableSkeleton sx={{ mt: 2 }} />}
+          {!loading &&
+            projects &&
             projects.length > 0 &&
             projects.map((i: any, index: number) => (
               <TokenAndContractProjectList

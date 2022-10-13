@@ -15,7 +15,7 @@ import { limitTitleFromMiddle } from '../../utils/commonFunctions'
 import { createSellOrder } from '../../utils/marketplace.utils'
 import { getLocalItem } from '../../utils/Storage'
 
-const headings = ['txId', 'Quantity', 'Status', 'action']
+const headings = ['Transaction ID', 'Quantity', 'Status', 'Action']
 
 const CreateSellOrder = () => {
   const dispatch = useAppDispatch()
@@ -60,8 +60,9 @@ const CreateSellOrder = () => {
         <CCButton
           key={1}
           sx={{
-            mt: 3,
-            alignSelf: 'end',
+            // mt: 3,
+            position: 'relative',
+            left: '33%',
             bgcolor: Colors.darkPrimary1,
             color: Colors.white,
             padding: '6px 20px',

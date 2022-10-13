@@ -1,5 +1,6 @@
 import {
   Box,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -16,11 +17,13 @@ import { useNavigate } from 'react-router-dom'
 import CCTable from '../../atoms/CCTable'
 import { setReportDetails } from '../../redux/Slices/reportsViewCommentsSlice'
 import { useDispatch } from 'react-redux'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 const TokenAndContractReportTable = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const [loading, setLoading] = useState(true)
   const [rows, setRows] = useState<any>()
 
   const headings = [
@@ -82,6 +85,9 @@ const TokenAndContractReportTable = () => {
           }
         }
       })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
@@ -89,37 +95,44 @@ const TokenAndContractReportTable = () => {
       <Typography sx={{ pl: 2, fontWeight: 500, fontSize: 14 }}>
         Reports
       </Typography>
-      <TableContainer sx={{ pl: 2, pb: 2, pt: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow sx={{ background: '#CCE8E1' }}>
-              {headings &&
-                headings.length &&
-                headings.map((tdCell: any, index: number) => (
-                  <TableCell key={index} sx={{ fontSize: 14, fontWeight: 500 }}>
-                    {tdCell}
-                  </TableCell>
-                ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows &&
-              rows.length &&
-              rows.map((row: any, index: number) => (
-                <TableRow key={index} sx={{ background: '#FAFDFA' }}>
-                  {row.map((tdValue: any, index: number) => (
+      {loading && <CCTableSkeleton items={1} sx={{ mt: 2 }} />}
+      {!loading && (
+        <TableContainer sx={{ pl: 2, pb: 2, pt: 2 }}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ background: '#CCE8E1' }}>
+                {headings &&
+                  headings.length &&
+                  headings.map((tdCell: any, index: number) => (
                     <TableCell
                       key={index}
-                      sx={{ border: 'none', fontSize: 14, fontWeight: 400 }}
+                      sx={{ fontSize: 14, fontWeight: 500 }}
                     >
-                      {tdValue}
+                      {tdCell}
                     </TableCell>
                   ))}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {!loading &&
+                rows &&
+                rows.length &&
+                rows.map((row: any, index: number) => (
+                  <TableRow key={index} sx={{ background: '#FAFDFA' }}>
+                    {row.map((tdValue: any, index: number) => (
+                      <TableCell
+                        key={index}
+                        sx={{ border: 'none', fontSize: 14, fontWeight: 400 }}
+                      >
+                        {tdValue}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       {/*{rows && rows.length > 0 && <CCTable headings={headings} rows={rows} />}*/}
     </Box>
   )

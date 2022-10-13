@@ -319,12 +319,6 @@ const LoadWallet = (props: LoadWalletProps) => {
 
                     <Box sx={{ display: 'flex' }}>
                       <CCButton
-                        sx={{ mt: 2 }}
-                        onClick={() => dispatch(setLoadWallet(false))}
-                      >
-                        Okay
-                      </CCButton>
-                      <CCButton
                         sx={{ mt: 2, ml: 2 }}
                         onClick={addMumbaiNetwork}
                         variant="contained"
@@ -334,6 +328,14 @@ const LoadWallet = (props: LoadWalletProps) => {
                         }
                       >
                         Add Mumbai n/w
+                      </CCButton>
+                    </Box>
+                    <Box sx={{ display: 'flex' }}>
+                      <CCButton
+                        sx={{ mt: 2 }}
+                        onClick={() => dispatch(setLoadWallet(false))}
+                      >
+                        Okay
                       </CCButton>
                     </Box>
                   </Box>
