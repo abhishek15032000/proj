@@ -29,9 +29,11 @@ import {
   setProjectType,
   setStartDate,
   setEndDate,
+  resetSectionNewProjectDetails,
 } from '../../redux/Slices/newProjectSlice'
 import Spinner from '../../atoms/Spinner'
 import _without from 'lodash/without'
+import moment from 'moment'
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 
@@ -102,11 +104,38 @@ const ListNewProject = () => {
     ({ newProject }) => newProject.endDate,
     shallowEqual
   )
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
   useEffect(() => {
-    dispatch(setProjectType([]))
+    dispatch(resetSectionNewProjectDetails())
   }, [])
 
+  useEffect(() => {
+    if (currentProjectDetails) {
+      const {
+        company_name,
+        type,
+        location,
+        start_date,
+        end_date,
+        duration,
+        area,
+      } = currentProjectDetails
+      dispatch(setProjectName(company_name))
+      dispatch(setProjectType(type))
+      dispatch(setProjectLocation(location))
+      dispatch(setStartDate(start_date))
+      end_date && dispatch(setEndDate(end_date))
+      dispatch(setProjectDuration(duration))
+      dispatch(setProjectArea(area))
+    }
+  }, [currentProjectDetails])
+
+  console.log(currentProjectDetails)
   const handleChange = (event: SelectChangeEvent<typeof projectType>) => {
     const {
       target: { value },
@@ -240,7 +269,11 @@ const ListNewProject = () => {
           label="Start Date"
           value={startDate}
           onChange={(newValue) => {
-            dispatch(setStartDate(newValue?.toISOString()))
+            if (endDate && moment(newValue) > moment(endDate)) {
+              alert('start date should not be greater than end date')
+            } else {
+              dispatch(setStartDate(newValue?.toISOString()))
+            }
           }}
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -252,13 +285,17 @@ const ListNewProject = () => {
         <DatePicker
           label="End Date"
           value={endDate}
+          disabled={!startDate ? true : false}
+          minDate={moment(startDate)}
           onChange={(newValue) => {
             dispatch(setEndDate(newValue?.toISOString()))
           }}
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,
           }}
-          renderInput={(params) => <CCInputField {...params} />}
+          renderInput={(params) => (
+            <CCInputField {...params} required={false} />
+          )}
         />
       </Grid>
       <Grid item xs={12}>

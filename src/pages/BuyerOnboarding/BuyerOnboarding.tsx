@@ -7,7 +7,7 @@ import { Grid } from '@mui/material'
 const BuyerOnboarding = (props: BuyerOnboardingProps) => {
   return (
     <>
-      <LoadWallet />
+      {/* <LoadWallet /> */}
       <BuyerOnboardingComp />
     </>
   )

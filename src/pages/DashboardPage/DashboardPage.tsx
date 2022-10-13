@@ -10,7 +10,7 @@ const DashboardPage = (props: DashboardPageProps) => {
       <Typography variant="h5" sx={{ paddingY: 3 }}>
         Projects
       </Typography>
-      <LoadWallet />
+      {/* <LoadWallet /> */}
       <IssuerProjectWelcomePage />
     </Grid>
   )

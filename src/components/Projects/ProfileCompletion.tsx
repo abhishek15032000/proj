@@ -28,6 +28,11 @@ const ProfileCompletion = () => {
 
   const walletIsConnected = walletAdded && isConnected
 
+  // useEffect(() => {
+  //   const completionPercent = walletAdded ? 100 : 0
+  //   setProfileCompletion(completionPercent)
+  // }, [walletAdded])
+
   return (
     <Box
       sx={{
@@ -63,7 +68,7 @@ const ProfileCompletion = () => {
       <Typography
         sx={{ fontSize: 14, fontWeight: 400, marginTop: 1, marginBottom: 2 }}
       >
-        Go back & complete your profile setup!
+        {!walletIsConnected ? 'Go back & complete your profile setup!' : null}
       </Typography>
 
       <Box

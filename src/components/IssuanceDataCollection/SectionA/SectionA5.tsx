@@ -24,6 +24,15 @@ const SectionA5 = () => {
     ({ newProject }) => newProject.loading,
     shallowEqual
   )
+
+  const [disableEndDate, setDisableEndDate] = useState<boolean>(true)
+
+  useEffect(() => {
+    A5.credit_period.start_date.length
+      ? setDisableEndDate(false)
+      : setDisableEndDate(true)
+  }, [A5.credit_period.start_date])
+
   useEffect(() => {
     if (
       currentProjectDetails &&
@@ -99,12 +108,19 @@ const SectionA5 = () => {
               label="Crediting from "
               value={A5.credit_period.start_date}
               onChange={(newValue) => {
-                dispatch(
-                  setA5({
-                    name: ['credit_period', 'start_date'],
-                    value: newValue?._isValid ? newValue.toISOString() : '',
-                  })
-                )
+                if (
+                  !A5.credit_period.end_date ||
+                  moment(newValue) < moment(A5.credit_period.end_date)
+                ) {
+                  dispatch(
+                    setA5({
+                      name: ['credit_period', 'start_date'],
+                      value: newValue?._isValid ? newValue.toISOString() : '',
+                    })
+                  )
+                } else {
+                  alert('start date should not be greater than end date')
+                }
               }}
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,
@@ -116,13 +132,20 @@ const SectionA5 = () => {
             <DatePicker
               label="Crediting end "
               value={A5.credit_period.end_date}
+              disabled={disableEndDate}
               onChange={(newValue) => {
-                dispatch(
-                  setA5({
-                    name: ['credit_period', 'end_date'],
-                    value: newValue?._isValid ? newValue.toISOString() : '',
-                  })
-                )
+                if (
+                  moment(newValue).diff(moment(A5.credit_period.start_date)) > 0
+                ) {
+                  dispatch(
+                    setA5({
+                      name: ['credit_period', 'end_date'],
+                      value: newValue?._isValid ? newValue.toISOString() : '',
+                    })
+                  )
+                } else {
+                  alert('End date shoud be greater than start date')
+                }
               }}
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,

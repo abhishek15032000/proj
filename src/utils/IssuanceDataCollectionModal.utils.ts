@@ -8,7 +8,6 @@ export const isDataModifiedCheckFunc = (
   subSectionIndex: number
 ) => {
   let isDataChanged = false
-  console.log('reduxData', reduxData, '   ', currentProjectDetailData)
   if (sectionIndex === 1 && (subSectionIndex === 2 || subSectionIndex === 3)) {
     //in section A methodologies and party_particpants are having array of objects, so conditionally passing it to 'arrayObjectTypeCheck'
     isDataChanged = arrayObjectTypeCheck(reduxData, currentProjectDetailData)
@@ -94,15 +93,35 @@ export const arrayObjectTypeCheck = (reduxRow: any, currentDetailsRow: any) => {
   currentDetailsRow.length === 0
     ? Object.keys(reduxRow[0]).map((reduxKey: any) => {
         //excluded the the value with keys flag, because the flag is used in subsection level and not required to check whether data is modified or not
-        if (reduxKey !== 'flag' && reduxRow[0][reduxKey] !== '')
+        if (reduxKey !== 'flag' && typeof reduxRow[0][reduxKey] === 'string') {
+          if (reduxRow[0][reduxKey] !== '') {
+            isArrayObjectDataChanged = true
+          }
+        }
+        if (
+          reduxKey !== 'flag' &&
+          Array.isArray(reduxRow[0][reduxKey]) &&
+          reduxRow[0][reduxKey].length
+        ) {
           isArrayObjectDataChanged = true
+        }
       })
     : reduxRow.length !== currentDetailsRow.length
     ? (isArrayObjectDataChanged = true)
     : Object.keys(reduxRow[0]).map((key: any) => {
         for (let i = 0; i < reduxRow.length; i++) {
-          if (key !== 'flag' && reduxRow[i][key] !== currentDetailsRow[i][key])
-            isArrayObjectDataChanged = true
+          if (key !== 'flag' && typeof reduxRow[i][key] === 'string') {
+            if (reduxRow[i][key] !== currentDetailsRow[i][key]) {
+              isArrayObjectDataChanged = true
+            }
+          }
+          if (key !== 'flag' && Array.isArray(reduxRow[i][key])) {
+            reduxRow[i][key].map((value: any) => {
+              if (!currentDetailsRow[i][key].includes(value)) {
+                isArrayObjectDataChanged = true
+              }
+            })
+          }
         }
       })
 

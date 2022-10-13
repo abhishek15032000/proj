@@ -15,7 +15,6 @@ import { getLocalItem } from '../../utils/Storage'
 interface BuySellComponentProps {}
 
 const BuySellComponent: FC<BuySellComponentProps> = (props) => {
-
   return (
     <Grid container>
       <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
@@ -28,7 +27,6 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
         item
         lg={3}
         sx={{
-          position: 'relative',
           padding: 1,
           display: {
             xs: 'none',

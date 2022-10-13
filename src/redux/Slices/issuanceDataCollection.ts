@@ -6,6 +6,8 @@ interface IssuanceDataCollectionReducerInterface {
   currentProjectDetails: any
   currentProjectDetailsUUID: string
   showMandatoryFieldModal: boolean
+  isApiCallSuccess: boolean
+  toMoveSectionIndex: boolean
 }
 
 const initialState: IssuanceDataCollectionReducerInterface = {
@@ -14,6 +16,8 @@ const initialState: IssuanceDataCollectionReducerInterface = {
   currentProjectDetails: null,
   currentProjectDetailsUUID: '',
   showMandatoryFieldModal: false,
+  isApiCallSuccess: false,
+  toMoveSectionIndex: false,
 }
 
 const issuanceDataCollection = createSlice({
@@ -35,6 +39,12 @@ const issuanceDataCollection = createSlice({
     setShowMandatoryFieldModal: (state, action: PayloadAction<any>) => {
       state.showMandatoryFieldModal = action.payload
     },
+    setIsApiCallSuccess: (state, action: PayloadAction<any>) => {
+      state.isApiCallSuccess = action.payload
+    },
+    setToMoveSectionIndex: (state, action: PayloadAction<any>) => {
+      state.toMoveSectionIndex = action.payload
+    },
   },
 })
 
@@ -44,6 +54,8 @@ export const {
   setCurrentProjectDetails,
   setCurrentProjectDetailsUUID,
   setShowMandatoryFieldModal,
+  setIsApiCallSuccess,
+  setToMoveSectionIndex,
 } = issuanceDataCollection.actions
 
 export default issuanceDataCollection.reducer

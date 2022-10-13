@@ -138,6 +138,8 @@ const RegisterPage = (props: RegisterPageProps) => {
           }
         } else if (!res?.data?.success) {
           alert(res?.data?.error)
+          setCaptchaToken(uuidv4())
+          setCaptchInput('')
         }
       })
       .catch((e) => console.log(e))

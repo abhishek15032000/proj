@@ -1,7 +1,7 @@
 import { Box, LinearProgress, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { SECTION_NAMES } from '../../config/roles.config'
+import { SECTION_NAMES } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors, Images } from '../../theme'
 
@@ -113,7 +113,9 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
       </Box>
       <Box sx={{ mt: 2 }}>
         <Typography sx={{ fontSize: 12, color: '#F15D5F' }}>
-          In Progress
+          {currentProjectDetails && currentProjectDetails.projectCompleted
+            ? 'Completed'
+            : 'In Progress'}
         </Typography>
         <LinearProgress
           variant="determinate"
