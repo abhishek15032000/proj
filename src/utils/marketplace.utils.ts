@@ -113,7 +113,35 @@ export async function requestApprovalForTokenSelling() {
     // alert("JSON.stringify(err)")
   }
 }
+export async function requestApprovalForTokenBuy() {
+  const buyQuantity = store.getState()?.marketplace?.buyQuantity
 
+  try {
+    store.dispatch(setOnGoingApproveRedux(null))
+    setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA, null)
+    setLocalItem(LOCAL_STORAGE_VARS?.SELL_QUANTITY, null)
+    // return
+    const tokenContractFunctions = await BlockchainCalls.token_caller()
+    const approveFnGas = await tokenContractFunctions.estimateGas.approve(
+      INR_USD_TOKEN_ADDRESS,
+      Number(buyQuantity)
+    )
+    const approveFnRes = await tokenContractFunctions.approve(
+      INR_USD_TOKEN_ADDRESS, // exchangeAddress
+      Number(buyQuantity)
+    )
+
+    if (approveFnRes) {
+      setLocalItem(LOCAL_STORAGE_VARS?.ON_GOING_APPROVE_DATA, approveFnRes)
+      setLocalItem(LOCAL_STORAGE_VARS?.SELL_QUANTITY, buyQuantity)
+      store.dispatch(setOnGoingApproveRedux(approveFnRes))
+    }
+  } catch (err) {
+    // show proper error message
+    console.log('Error: ' + JSON.stringify(err))
+    // alert("JSON.stringify(err)")
+  }
+}
 export const getTransaction = async (txId: string) => {
   try {
     const res: any = await provider.getTransaction(txId)

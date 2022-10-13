@@ -7,6 +7,7 @@ interface MarketplaceReducerInterface {
   sellQuantity: number
   sellUnitPrice: number
   onGoingApproveRedux: any
+  dataToMakeBuyCall: any
   dataToMakeDepositCall: any
   dataToMakeCreateSellOrderCall: any
   walletBal: any
@@ -20,6 +21,7 @@ const initialState: MarketplaceReducerInterface = {
   sellQuantity: 0,
   sellUnitPrice: 0,
   onGoingApproveRedux: null,
+  dataToMakeBuyCall: null,
   dataToMakeDepositCall: null,
   dataToMakeCreateSellOrderCall: null,
   walletBal: null,

@@ -18,4 +18,6 @@ export const LOCAL_STORAGE_VARS = {
   SELL_QUANTITY: 'sellQuantity',
   DATA_FOR_DEPOSIT_CALL: 'dataForDepositCall',
   DATA_FOR_CREATE_SELL_ORDER_CALL: 'dataForCreateSellOrderCall',
+  BUY_QUANTITY: 'buyQuantity',
+  DATA_FOR_BUY_CALL: 'dataForBuyCall',
 }

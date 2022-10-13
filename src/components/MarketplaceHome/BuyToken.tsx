@@ -7,6 +7,7 @@ import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { setBuyQuantity } from '../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../theme'
+import { requestApprovalForTokenBuy } from '../../utils/marketplace.utils'
 import CardRow from './CardRow'
 
 interface BuyTokenProps {}
@@ -112,6 +113,7 @@ const BuyToken: FC<BuyTokenProps> = () => {
             fontSize: 14,
             minWidth: '120px',
           }}
+          onClick={requestApprovalForTokenBuy}
         >
           Buy
         </CCButton>
