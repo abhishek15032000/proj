@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react'
 import {
   Checkbox,
   FormControl,
@@ -11,7 +12,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React, { useEffect } from 'react'
 import { DatePicker } from '@mui/x-date-pickers'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation'
@@ -64,6 +64,7 @@ const SelectDate = () => {
         <DatePicker
           label="Start Date"
           value={startDate}
+          maxDate={endDate ? endDate : undefined}
           onChange={(newValue) => {
             dispatch(setStartDate(newValue))
           }}
