@@ -117,13 +117,22 @@ export const connectWallet = async () => {
                 '🚀 ~ file: LoadWallet.tsx ~ line 138 ~ BlockchainCalls.connectWallet ~ res',
                 res
             )
-
+            //! uncomment the below line for testing and add your shineKey
+            //! DON'T PUSH THE CHANGE AFTER TESTING/DEVELOPMENT
+            // res.accountAddress = '0xbde38db937bb7a0ae5b4c82831cfb768c7f9acd7'
             store.dispatch(setAccountAddress(res.accountAddress))
             store.dispatch(setConnected(res.isConnected))
+            if (getLocalItem('userDetails2')?.shineKey) {
+                if (!BlockchainCalls.compareShinekeyAndAddress(res.accountAddress)) {
+                    store.dispatch(setLoadWalletAlert(true))
+                    store.dispatch(setAlertMessage("Your ShineKey and your current Wallet Address does not match. Please select the correct address"))
+                }
+            } else {
 
-            // if (!walletAdded) {
-            updateUserWithShineKey(res.accountAddress)
-            // }
+                // if (!walletAdded) {
+                updateUserWithShineKey(res.accountAddress)
+                // }
+            }
             return true
 
         })
