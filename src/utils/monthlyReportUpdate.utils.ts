@@ -61,6 +61,7 @@ export const moveToNextSection = async (
     try {
       dispatch(setLoading(true))
       const res = await dataCollectionCalls.createNewProject(payload)
+
       if (res?.success && res?.data?.uuid) {
         getProjectDetails(res?.data?.uuid)
         dispatch(setCurrentProjectDetailsUUID(res?.data?.uuid))
@@ -70,8 +71,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
     }
   }
 
@@ -119,8 +118,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
     }
   }
 
@@ -229,8 +226,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
     }
   }
 
@@ -287,8 +282,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
     }
   }
 
@@ -365,8 +358,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
     }
   }
 
@@ -535,8 +526,6 @@ export const moveToNextSection = async (
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
     }
   }
 }

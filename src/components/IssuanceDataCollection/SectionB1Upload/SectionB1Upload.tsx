@@ -61,7 +61,7 @@ const SectionB1UploadImages = (props: sectionB1UploadInterface) => {
                 onChange={(event) => {
                   if (event?.target?.files?.length) {
                     const selectedFile = event.target.files[0]
-                    console.log('selectedFile', selectedFile)
+
                     const objectUrl = URL.createObjectURL(selectedFile)
                     if (objectUrl) {
                       const selectedImagesCopy = [...selectedImages]
