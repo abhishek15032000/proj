@@ -1,9 +1,10 @@
 import { Paper } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
+import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setBuyQuantity } from '../../../redux/Slices/marketplaceSlice'
@@ -14,11 +15,13 @@ import {
 } from '../../../utils/marketplace.utils'
 import { getLocalItem } from '../../../utils/Storage'
 import CardRow from '../CardRow'
+import TabBuyApprove from './TabBuyApprove'
 
 interface BuyTokenProps {}
 
 const BuyToken: FC<BuyTokenProps> = () => {
   const dispatch = useAppDispatch()
+  const [tabIndex, setTabIndex] = useState(1)
 
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
@@ -128,60 +131,13 @@ const BuyToken: FC<BuyTokenProps> = () => {
         }}
         value={`${exchangeBalBuyFlow || 0} INR`}
       />
-      <Box sx={{ position: 'relative', pt: 1 }}>
-        <Box>
-          <LabelInput
-            label="Quantity "
-            sx={{ width: '100%' }}
-            value={buyQuantity}
-            setValue={(e: any) => {
-              //Allow only no.s upto 3 decimal places
-              const regexp = /^\d+(\.\d{0,3})?$/
-              if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                dispatch(setBuyQuantity(e?.target?.value))
-              }
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            color: '#3F4946',
-            position: 'absolute',
-            top: '50%',
-            right: 10,
-          }}
-        >
-          VCOT
-        </Box>
-      </Box>
-      <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} USD`} />
-      <CardRow
-        title="Total amount to be paid :"
-        value={`${totalAmountForBuying || 0} USD`}
+      <TabSelector
+        tabArray={[' Approve', 'Deposit', 'Sell Order']}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        tabStyle={{ width: 'auto' }}
       />
-      <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-        <CCButton
-          sx={{
-            mt: 3,
-            alignSelf: 'end',
-            bgcolor: Colors.darkPrimary1,
-            color: Colors.white,
-            padding: '8px 24px',
-            borderRadius: '30px',
-            fontSize: 14,
-            minWidth: '120px',
-          }}
-          onClick={() => {
-            dataForBuyCallLocalStorage ||
-            dataToMakeCreateSellOrderCallLocalStorage ||
-            onGoingApproveLocalStorage
-              ? null
-              : requestApprovalForTokenBuy()
-          }}
-        >
-          Buy
-        </CCButton>
-      </Box>
+      {tabIndex === 1 && <TabBuyApprove />}
     </Paper>
   )
 }

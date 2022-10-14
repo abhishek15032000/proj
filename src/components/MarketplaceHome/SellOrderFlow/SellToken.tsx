@@ -1,9 +1,10 @@
 import { Paper } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
+import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
@@ -19,11 +20,16 @@ import {
 } from '../../../utils/marketplace.utils'
 import { getLocalItem } from '../../../utils/Storage'
 import CardRow from '../CardRow'
+import TabSellApprove from './TabSellApprove'
+import TabSellCreateSellOrder from './TabSellCreateSellOrder'
+import TabSellDeposit from './TabSellDeposit'
 
 interface SellTokenProps {}
 
 const SellToken: FC<SellTokenProps> = () => {
   const dispatch = useAppDispatch()
+
+  const [tabIndex, setTabIndex] = useState(1)
 
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
@@ -93,6 +99,7 @@ const SellToken: FC<SellTokenProps> = () => {
     <>
       <Paper
         sx={{
+          mt: 1,
           height: '100%',
           borderRadius: '4px',
           p: 2,
@@ -149,88 +156,15 @@ const SellToken: FC<SellTokenProps> = () => {
           }}
           value={`${exchangeBal || 0} VCOT`}
         />
-        <Box sx={{ position: 'relative', pt: 1 }}>
-          <Box>
-            <LabelInput
-              label="Quantity"
-              value={sellQuantity}
-              setValue={(e: any) => {
-                //Allow only no.s upto 3 decimal places
-                const regexp = /^\d+(\.\d{0,3})?$/
-                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellQuantity(e?.target?.value))
-                }
-              }}
-            />
-          </Box>
-          <Box
-            sx={{
-              color: '#3F4946',
-              position: 'absolute',
-              top: '50%',
-              right: 10,
-            }}
-          >
-            VCOT
-          </Box>
-        </Box>
-        <Box sx={{ position: 'relative' }}>
-          <Box>
-            <LabelInput
-              label="Unit Price"
-              value={sellUnitPrice}
-              setValue={(e: any) => {
-                //Allow only no.s upto 3 decimal places
-                const regexp = /^\d+(\.\d{0,3})?$/
-                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellUnitPrice(e?.target?.value))
-                }
-              }}
-            />
-          </Box>
-          <Box
-            sx={{
-              color: '#3F4946',
-              position: 'absolute',
-              top: 16,
-              right: 10,
-            }}
-          >
-            USD
-          </Box>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-          <CCButton
-            sx={{
-              mt: 3,
-              alignSelf: 'end',
-              bgcolor: Colors.darkPrimary1,
-              color: Colors.white,
-              padding: '8px 24px',
-              borderRadius: '30px',
-              fontSize: 14,
-              minWidth: '120px',
-            }}
-            variant="contained"
-            onClick={() => {
-              dataForDepositCallLocalStorage ||
-              dataToMakeCreateSellOrderCallLocalStorage ||
-              onGoingApproveLocalStorage
-                ? null
-                : requestApprovalForTokenSelling()
-            }}
-            // disabled={
-            //   dataForDepositCallLocalStorage ||
-            //   dataToMakeCreateSellOrderCallLocalStorage ||
-            //   dataToMakeDepositCall ||
-            //   dataToMakeCreateSellOrderCall ||
-            //   onGoingApproveLocalStorage ||
-            //   onGoingApproveRedux
-            // }
-          >
-            Approve
-          </CCButton>
-        </Box>
+        <TabSelector
+          tabArray={[' Approve', 'Deposit', 'Sell Order']}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          tabStyle={{ width: 'auto' }}
+        />
+        {tabIndex === 1 && <TabSellApprove />}
+        {tabIndex === 2 && <TabSellDeposit />}
+        {tabIndex === 3 && <TabSellCreateSellOrder />}
       </Paper>
     </>
   )

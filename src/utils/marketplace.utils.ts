@@ -226,7 +226,7 @@ export const getTransaction = async (txId: string) => {
   }
 }
 
-export async function depositERC20(_token: any) {
+export async function depositERC20(_token?: any) {
   const accountAddress = store.getState()?.wallet?.accountAddress
   const sellQuantity = store.getState()?.marketplace?.sellQuantity
   const dataToMakeDepositCall =
