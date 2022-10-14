@@ -2,22 +2,22 @@ import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import CCButton from '../../atoms/CCButton'
-import CCTable from '../../atoms/CCTable'
-import { LOCAL_STORAGE_VARS } from '../../config/roles.config'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import CCButton from '../../../atoms/CCButton'
+import CCTable from '../../../atoms/CCTable'
+import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setDataToMakeCreateSellOrderCall,
   setDataToMakeDepositCall,
-} from '../../redux/Slices/marketplaceSlice'
-import { Colors } from '../../theme'
-import { limitTitleFromMiddle } from '../../utils/commonFunctions'
-import { createSellOrder } from '../../utils/marketplace.utils'
-import { getLocalItem } from '../../utils/Storage'
+} from '../../../redux/Slices/marketplaceSlice'
+import { Colors } from '../../../theme'
+import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
+import { createSellOrder } from '../../../utils/marketplace.utils'
+import { getLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status', 'Action']
 
-const CreateSellOrder = () => {
+const CreateBuyOrder = () => {
   const dispatch = useAppDispatch()
   const dataToMakeCreateSellOrderCall = useAppSelector(
     ({ marketplace }) => marketplace.dataToMakeCreateSellOrderCall,
@@ -102,4 +102,4 @@ const CreateSellOrder = () => {
   )
 }
 
-export default CreateSellOrder
+export default CreateBuyOrder

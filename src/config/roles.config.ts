@@ -14,10 +14,15 @@ export const SECTION_NAMES = {
 }
 
 export const LOCAL_STORAGE_VARS = {
-  ON_GOING_APPROVE_DATA: 'onGoingApprove',
+  //Buy Flow
+  ON_GOING_APPROVE_DATA_SELL_FLOW: 'onGoingApproveSellFlow',
   SELL_QUANTITY: 'sellQuantity',
-  DATA_FOR_DEPOSIT_CALL: 'dataForDepositCall',
+  DATA_FOR_DEPOSIT_CALL_SELL_FLOW: 'dataForDepositCallSellFlow',
   DATA_FOR_CREATE_SELL_ORDER_CALL: 'dataForCreateSellOrderCall',
+  //Sell Flow
+  ON_GOING_APPROVE_DATA_BUY_FLOW: 'onGoingApproveForBuyFlow',
+  DATA_FOR_DEPOSIT_CALL_BUY_FLOW: 'dataForDepositCallForBuyFlow',
+  DATA_FOR_CREATE_BUY_ORDER_CALL: 'dataForCreateBuyOrderCall',
   BUY_QUANTITY: 'buyQuantity',
   DATA_FOR_BUY_CALL: 'dataForBuyCall',
 }

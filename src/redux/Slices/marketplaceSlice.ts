@@ -7,13 +7,18 @@ interface MarketplaceReducerInterface {
   sellQuantity: number
   sellUnitPrice: number
   onGoingApproveRedux: any
+  onGoingApproveReduxBuyFlow: any
   dataToMakeBuyCall: any
   dataToMakeDepositCall: any
+  dataToMakeDepositCallBuyFlow: any
   dataToMakeCreateSellOrderCall: any
   dataToMakeCreateBuyOrderCall: any
   walletBal: any
   exchangeBal: any
   approvedTokensBal: any
+  walletBalBuyFlow: any
+  exchangeBalBuyFlow: any
+  approvedTokensBalBuyFlow: any
 }
 const initialState: MarketplaceReducerInterface = {
   buyQuantity: 0,
@@ -22,13 +27,18 @@ const initialState: MarketplaceReducerInterface = {
   sellQuantity: 0,
   sellUnitPrice: 0,
   onGoingApproveRedux: null,
+  onGoingApproveReduxBuyFlow: null,
   dataToMakeBuyCall: null,
   dataToMakeDepositCall: null,
+  dataToMakeDepositCallBuyFlow: null,
   dataToMakeCreateSellOrderCall: null,
   dataToMakeCreateBuyOrderCall: null,
   walletBal: null,
   exchangeBal: null,
   approvedTokensBal: null,
+  walletBalBuyFlow: null,
+  exchangeBalBuyFlow: null,
+  approvedTokensBalBuyFlow: null,
 }
 const marketplace = createSlice({
   name: 'marketplace',
@@ -55,8 +65,14 @@ const marketplace = createSlice({
     setOnGoingApproveRedux: (state, action: PayloadAction<any>) => {
       state.onGoingApproveRedux = action.payload
     },
+    setOnGoingApproveReduxBuyFlow: (state, action: PayloadAction<any>) => {
+      state.onGoingApproveReduxBuyFlow = action.payload
+    },
     setDataToMakeDepositCall: (state, action: PayloadAction<any>) => {
       state.dataToMakeDepositCall = action.payload
+    },
+    setDataToMakeDepositCallBuyFlow: (state, action: PayloadAction<any>) => {
+      state.dataToMakeDepositCallBuyFlow = action.payload
     },
     setDataToMakeCreateSellOrderCall: (state, action: PayloadAction<any>) => {
       state.dataToMakeCreateSellOrderCall = action.payload
@@ -73,6 +89,15 @@ const marketplace = createSlice({
     setApprovedTokensBal: (state, action: PayloadAction<any>) => {
       state.approvedTokensBal = action.payload
     },
+    setWalletBalBuyFlow: (state, action: PayloadAction<any>) => {
+      state.walletBalBuyFlow = action.payload
+    },
+    setExchangeBalBuyFlow: (state, action: PayloadAction<any>) => {
+      state.exchangeBalBuyFlow = action.payload
+    },
+    setApprovedTokensBalBuyFlow: (state, action: PayloadAction<any>) => {
+      state.approvedTokensBalBuyFlow = action.payload
+    },
   },
 })
 
@@ -83,10 +108,15 @@ export const {
   setSellQuantity,
   setSellUnitPrice,
   setOnGoingApproveRedux,
+  setOnGoingApproveReduxBuyFlow,
   setDataToMakeDepositCall,
+  setDataToMakeDepositCallBuyFlow,
   setWalletBal,
   setExchangeBal,
   setApprovedTokensBal,
+  setWalletBalBuyFlow,
+  setExchangeBalBuyFlow,
+  setApprovedTokensBalBuyFlow,
   setDataToMakeCreateSellOrderCall,
   setDataToMakeCreateBuyOrderCall,
 } = marketplace.actions

@@ -2,18 +2,18 @@ import { Paper } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { FC, useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
-import CCButton from '../../atoms/CCButton'
-import LabelInput from '../../atoms/LabelInput/LabelInput'
-import { LOCAL_STORAGE_VARS } from '../../config/roles.config'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { setBuyQuantity } from '../../redux/Slices/marketplaceSlice'
-import { Colors } from '../../theme'
+import CCButton from '../../../atoms/CCButton'
+import LabelInput from '../../../atoms/LabelInput/LabelInput'
+import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { setBuyQuantity } from '../../../redux/Slices/marketplaceSlice'
+import { Colors } from '../../../theme'
 import {
   getApprovedTokensBalance,
   requestApprovalForTokenBuy,
-} from '../../utils/marketplace.utils'
-import { getLocalItem } from '../../utils/Storage'
-import CardRow from './CardRow'
+} from '../../../utils/marketplace.utils'
+import { getLocalItem } from '../../../utils/Storage'
+import CardRow from '../CardRow'
 
 interface BuyTokenProps {}
 
@@ -37,12 +37,12 @@ const BuyToken: FC<BuyTokenProps> = () => {
     ({ marketplace }) => marketplace.totalAmountForBuying,
     shallowEqual
   )
-  const walletBal = useAppSelector(
-    ({ marketplace }) => marketplace.walletBal,
+  const walletBalBuyFlow = useAppSelector(
+    ({ marketplace }) => marketplace.walletBalBuyFlow,
     shallowEqual
   )
-  const exchangeBal = useAppSelector(
-    ({ marketplace }) => marketplace.exchangeBal,
+  const exchangeBalBuyFlow = useAppSelector(
+    ({ marketplace }) => marketplace.exchangeBalBuyFlow,
     shallowEqual
   )
 
@@ -53,7 +53,7 @@ const BuyToken: FC<BuyTokenProps> = () => {
     LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
   )
   const onGoingApproveLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA
+    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW
   )
 
   const dataToMakeBuyCall = useAppSelector(
@@ -70,10 +70,10 @@ const BuyToken: FC<BuyTokenProps> = () => {
   )
 
   useEffect(() => {
-    const sellQuantityInLocalStorage = getLocalItem(
-      LOCAL_STORAGE_VARS.SELL_QUANTITY
+    const buyQuantityInLocalStorage = getLocalItem(
+      LOCAL_STORAGE_VARS.BUY_QUANTITY
     )
-    dispatch(setBuyQuantity(sellQuantityInLocalStorage))
+    dispatch(setBuyQuantity(buyQuantityInLocalStorage))
   }, [])
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const BuyToken: FC<BuyTokenProps> = () => {
   return (
     <Paper
       sx={{
-        height: '100%',
+        mt: 1,
         borderRadius: '4px',
         p: 2,
         pointerEvents:
@@ -113,7 +113,7 @@ const BuyToken: FC<BuyTokenProps> = () => {
           fontSize: 16,
           fontWeight: 500,
         }}
-        value={`${walletBal || 0} VCOT`}
+        value={`${walletBalBuyFlow || 0} INR`}
       />
       <CardRow
         title="Balance on Exchange :"
@@ -126,7 +126,7 @@ const BuyToken: FC<BuyTokenProps> = () => {
           fontSize: 16,
           fontWeight: 500,
         }}
-        value={`${exchangeBal || 0} VCOT`}
+        value={`${exchangeBalBuyFlow || 0} INR`}
       />
       <Box sx={{ position: 'relative', pt: 1 }}>
         <Box>

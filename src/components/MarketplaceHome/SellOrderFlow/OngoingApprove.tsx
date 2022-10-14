@@ -2,20 +2,20 @@ import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import CCTable from '../../atoms/CCTable'
-import { LOCAL_STORAGE_VARS } from '../../config/roles.config'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import CCTable from '../../../atoms/CCTable'
+import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setDataToMakeDepositCall,
   setOnGoingApproveRedux,
-} from '../../redux/Slices/marketplaceSlice'
-import { Colors } from '../../theme'
-import { limitTitleFromMiddle } from '../../utils/commonFunctions'
+} from '../../../redux/Slices/marketplaceSlice'
+import { Colors } from '../../../theme'
+import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
 import {
   getApprovedTokensBalance,
   getTransaction,
-} from '../../utils/marketplace.utils'
-import { getLocalItem, setLocalItem } from '../../utils/Storage'
+} from '../../../utils/marketplace.utils'
+import { getLocalItem, setLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
@@ -23,7 +23,7 @@ const OngoingApprove = () => {
   const dispatch = useAppDispatch()
 
   const onGoingApproveLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA
+    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
   )
 
   const onGoingApproveRedux = useAppSelector(
@@ -35,7 +35,7 @@ const OngoingApprove = () => {
   useEffect(() => {
     if (onGoingApproveLocalStorage && onGoingApproveRedux) {
       dispatch(setOnGoingApproveRedux(onGoingApproveLocalStorage))
-      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA, null)
+      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
       setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY, null)
     } else {
       setRows(null)
@@ -71,7 +71,8 @@ const OngoingApprove = () => {
         if (newReceipt?.blockHash) {
           dispatch(setDataToMakeDepositCall(newReceipt))
           dispatch(setOnGoingApproveRedux(null))
-          setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA, null)
+          setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
+          getApprovedTokensBalance()
         }
         makeRows(receipt)
         getApprovedTokensBalance()

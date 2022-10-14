@@ -2,25 +2,33 @@
 import React, { FC, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 
 // Local Imports
-import PurchaseComp from './PurchaseComp'
-import SellOrders from './SellOrders'
 import MarketDepth from './MarketDepth'
 import CancelModal from './CancelModal'
 import ModifyOrderModal from './ModifyOrderModal'
-import { getLocalItem } from '../../utils/Storage'
+import TabSelector from '../../atoms/TabSelector/TabSelector'
+import BuyOrderFlow from './BuyOrderFlow/BuyOrderFlow'
+import SellOrderFlow from './SellOrderFlow/SellOrderFlow'
 
 interface BuySellComponentProps {}
 
 const BuySellComponent: FC<BuySellComponentProps> = (props) => {
+  const [tabIndex, setTabIndex] = useState(1)
+
   return (
     <Grid container>
       <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
-        <PurchaseComp />
-
-        <SellOrders />
+        <TabSelector
+          tabArray={['Buy', 'Sell', 'Withdraw/Deposit']}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          tabStyle={{ width: 'auto' }}
+          sx={{ mt: 0 }}
+        />
+        {tabIndex === 1 && <BuyOrderFlow />}
+        {tabIndex === 2 && <SellOrderFlow />}
       </Grid>
 
       <Grid

@@ -1,15 +1,15 @@
 import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import CCButton from '../../atoms/CCButton'
-import CCTable from '../../atoms/CCTable'
-import { LOCAL_STORAGE_VARS } from '../../config/roles.config'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { setDataToMakeDepositCall } from '../../redux/Slices/marketplaceSlice'
-import { Colors } from '../../theme'
-import { limitTitleFromMiddle } from '../../utils/commonFunctions'
-import { depositERC20 } from '../../utils/marketplace.utils'
-import { getLocalItem, setLocalItem } from '../../utils/Storage'
+import CCButton from '../../../atoms/CCButton'
+import CCTable from '../../../atoms/CCTable'
+import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { setDataToMakeDepositCall } from '../../../redux/Slices/marketplaceSlice'
+import { Colors } from '../../../theme'
+import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
+import { depositERC20 } from '../../../utils/marketplace.utils'
+import { getLocalItem, setLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status', 'Action']
 
@@ -21,7 +21,7 @@ const ToDeposit = () => {
   )
 
   const dataForDepositCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL
+    LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL_BUY_FLOW
   )
 
   const dataToMakeDepositCall = useAppSelector(

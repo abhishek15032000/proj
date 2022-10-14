@@ -2,39 +2,39 @@ import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import CCButton from '../../atoms/CCButton'
-import CCTable from '../../atoms/CCTable'
-import { LOCAL_STORAGE_VARS } from '../../config/roles.config'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import CCButton from '../../../atoms/CCButton'
+import CCTable from '../../../atoms/CCTable'
+import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
-  setDataToMakeCreateBuyOrderCall,
+  setDataToMakeCreateSellOrderCall,
   setDataToMakeDepositCall,
-} from '../../redux/Slices/marketplaceSlice'
-import { Colors } from '../../theme'
-import { limitTitleFromMiddle } from '../../utils/commonFunctions'
-import { createBuyOrder } from '../../utils/marketplace.utils'
-import { getLocalItem } from '../../utils/Storage'
+} from '../../../redux/Slices/marketplaceSlice'
+import { Colors } from '../../../theme'
+import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
+import { createSellOrder } from '../../../utils/marketplace.utils'
+import { getLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status', 'Action']
 
-const CreateBuyOrder = () => {
+const CreateSellOrder = () => {
   const dispatch = useAppDispatch()
-  const dataToMakeCreateBuyOrderCall = useAppSelector(
-    ({ marketplace }) => marketplace.dataToMakeCreateBuyOrderCall,
+  const dataToMakeCreateSellOrderCall = useAppSelector(
+    ({ marketplace }) => marketplace.dataToMakeCreateSellOrderCall,
     shallowEqual
   )
 
-  const dataToMakeCreateBuyOrderCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_BUY_ORDER_CALL
+  const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
   )
 
   const [rows, setRows] = useState<any>()
 
   useEffect(() => {
-    if (dataToMakeCreateBuyOrderCallLocalStorage) {
+    if (dataToMakeCreateSellOrderCallLocalStorage) {
       dispatch(
-        setDataToMakeCreateBuyOrderCall(
-          dataToMakeCreateBuyOrderCallLocalStorage
+        setDataToMakeCreateSellOrderCall(
+          dataToMakeCreateSellOrderCallLocalStorage
         )
       )
       // setLocalItem(LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL, null)
@@ -44,17 +44,17 @@ const CreateBuyOrder = () => {
   }, [])
 
   useEffect(() => {
-    if (dataToMakeCreateBuyOrderCall) {
-      makeRows(dataToMakeCreateBuyOrderCall)
+    if (dataToMakeCreateSellOrderCall) {
+      makeRows(dataToMakeCreateSellOrderCall)
     } else {
       setRows(null)
     }
-  }, [dataToMakeCreateBuyOrderCall])
+  }, [dataToMakeCreateSellOrderCall])
 
   const makeRows = (receipt: any) => {
     const rows = [
       [
-        limitTitleFromMiddle(dataToMakeCreateBuyOrderCall?.transactionHash),
+        limitTitleFromMiddle(dataToMakeCreateSellOrderCall?.transactionHash),
         '-',
         receipt?.blockHash ? 'Completed' : 'In-progress',
         <CCButton
@@ -70,7 +70,7 @@ const CreateBuyOrder = () => {
             fontSize: 14,
             minWidth: '80px',
           }}
-          onClick={createBuyOrder}
+          onClick={createSellOrder}
           disabled={!receipt?.blockHash}
           variant="contained"
         >
@@ -102,4 +102,4 @@ const CreateBuyOrder = () => {
   )
 }
 
-export default CreateBuyOrder
+export default CreateSellOrder

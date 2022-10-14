@@ -1,11 +1,13 @@
+import { Paper, Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { marketplaceCalls } from '../../api/marketplaceCalls.api'
-import CCTable from '../../atoms/CCTable'
-import CCTableSkeleton from '../../atoms/CCTableSkeleton'
-import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { marketplaceCalls } from '../../../api/marketplaceCalls.api'
+import CCTable from '../../../atoms/CCTable'
+import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
+import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { Colors } from '../../../theme'
 
 declare let window: any
 
@@ -25,7 +27,7 @@ const headings = [
   'Action',
 ]
 
-const SellOrder = () => {
+const SellOrdersList = () => {
   const [rows, setRows] = useState<any>(null)
   const [loading, setLoading] = useState(false)
 
@@ -75,20 +77,25 @@ const SellOrder = () => {
 
   return (
     <>
-      {loading ? (
-        <CCTableSkeleton sx={{ mt: 2 }} />
-      ) : rows && rows.length ? (
-        <CCTable headings={headings} rows={rows} />
-      ) : (
-        <EmptyComponent
-          photoType={2}
-          title="No orders made yet"
-          exploreMarketplace
-          elevation={0}
-        />
-      )}
+      <Paper sx={{ p: 2, mt: 2 }}>
+        <Typography sx={{ color: Colors.darkPrimary1, fontWeight: 500 }}>
+          Sell Orders
+        </Typography>
+        {loading ? (
+          <CCTableSkeleton sx={{ mt: 2 }} />
+        ) : rows && rows.length ? (
+          <CCTable headings={headings} rows={rows} />
+        ) : (
+          <EmptyComponent
+            photoType={2}
+            title="No orders made yet"
+            exploreMarketplace
+            elevation={0}
+          />
+        )}
+      </Paper>
     </>
   )
 }
 
-export default SellOrder
+export default SellOrdersList

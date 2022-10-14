@@ -2,21 +2,23 @@ import { Paper } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { FC, useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
-import CCButton from '../../atoms/CCButton'
-import LabelInput from '../../atoms/LabelInput/LabelInput'
-import { LOCAL_STORAGE_VARS } from '../../config/roles.config'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import CCButton from '../../../atoms/CCButton'
+import LabelInput from '../../../atoms/LabelInput/LabelInput'
+import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setSellQuantity,
   setSellUnitPrice,
-} from '../../redux/Slices/marketplaceSlice'
-import { Colors } from '../../theme'
+} from '../../../redux/Slices/marketplaceSlice'
+import { Colors } from '../../../theme'
 import {
   getApprovedTokensBalance,
+  getBalanceOnExchange,
+  getWalletBalance,
   requestApprovalForTokenSelling,
-} from '../../utils/marketplace.utils'
-import { getLocalItem } from '../../utils/Storage'
-import CardRow from './CardRow'
+} from '../../../utils/marketplace.utils'
+import { getLocalItem } from '../../../utils/Storage'
+import CardRow from '../CardRow'
 
 interface SellTokenProps {}
 
@@ -50,13 +52,13 @@ const SellToken: FC<SellTokenProps> = () => {
   )
 
   const dataForDepositCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL
+    LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL_SELL_FLOW
   )
   const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
   )
   const onGoingApproveLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA
+    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
   )
 
   const dataToMakeDepositCall = useAppSelector(
@@ -81,18 +83,12 @@ const SellToken: FC<SellTokenProps> = () => {
 
   useEffect(() => {
     if (accountAddress) {
+      getWalletBalance()
       getApprovedTokensBalance()
+      getBalanceOnExchange()
     }
   }, [accountAddress])
 
-  console.log({
-    dataForDepositCallLocalStorage,
-    dataToMakeCreateSellOrderCallLocalStorage,
-    dataToMakeDepositCall,
-    dataToMakeCreateSellOrderCall,
-    onGoingApproveLocalStorage,
-    onGoingApproveRedux,
-  })
   return (
     <>
       <Paper
