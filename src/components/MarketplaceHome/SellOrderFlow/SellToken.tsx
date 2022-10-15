@@ -1,22 +1,15 @@
 import { Paper } from '@mui/material'
-import { Box } from '@mui/system'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import CCButton from '../../../atoms/CCButton'
-import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import {
-  setSellQuantity,
-  setSellUnitPrice,
-} from '../../../redux/Slices/marketplaceSlice'
+import { setSellQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import {
   getApprovedTokensBalance,
   getBalanceOnExchange,
   getWalletBalance,
-  requestApprovalForTokenSelling,
 } from '../../../utils/marketplace.utils'
 import { getLocalItem } from '../../../utils/Storage'
 import CardRow from '../CardRow'
@@ -36,14 +29,6 @@ const SellToken: FC<SellTokenProps> = () => {
     shallowEqual
   )
 
-  const sellQuantity = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantity,
-    shallowEqual
-  )
-  const sellUnitPrice = useAppSelector(
-    ({ marketplace }) => marketplace.sellUnitPrice,
-    shallowEqual
-  )
   const walletBal = useAppSelector(
     ({ marketplace }) => marketplace.walletBal,
     shallowEqual
@@ -57,34 +42,15 @@ const SellToken: FC<SellTokenProps> = () => {
     shallowEqual
   )
 
-  const dataForDepositCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL_SELL_FLOW
-  )
-  const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
-  )
   const onGoingApproveLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
   )
 
-  const dataToMakeDepositCall = useAppSelector(
-    ({ marketplace }) => marketplace.dataToMakeDepositCall,
-    shallowEqual
-  )
-  const dataToMakeCreateSellOrderCall = useAppSelector(
-    ({ marketplace }) => marketplace.dataToMakeCreateSellOrderCall,
-    shallowEqual
-  )
-  const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
-    shallowEqual
-  )
-
   useEffect(() => {
-    const sellQuantityInLocalStorage = getLocalItem(
-      LOCAL_STORAGE_VARS.SELL_QUANTITY
+    const sellQuantityForApproveInLocalStorage = getLocalItem(
+      LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE
     )
-    dispatch(setSellQuantity(sellQuantityInLocalStorage))
+    dispatch(setSellQuantityForApprove(sellQuantityForApproveInLocalStorage))
   }, [])
 
   useEffect(() => {
@@ -103,18 +69,8 @@ const SellToken: FC<SellTokenProps> = () => {
           height: '100%',
           borderRadius: '4px',
           p: 2,
-          pointerEvents:
-            dataForDepositCallLocalStorage ||
-            dataToMakeCreateSellOrderCallLocalStorage ||
-            onGoingApproveLocalStorage
-              ? 'none'
-              : 'all',
-          opacity:
-            dataForDepositCallLocalStorage ||
-            dataToMakeCreateSellOrderCallLocalStorage ||
-            onGoingApproveLocalStorage
-              ? 0.5
-              : 1,
+          pointerEvents: onGoingApproveLocalStorage ? 'none' : 'all',
+          opacity: onGoingApproveLocalStorage ? 0.5 : 1,
         }}
       >
         <CardRow
@@ -131,7 +87,7 @@ const SellToken: FC<SellTokenProps> = () => {
           value={`${walletBal || 0} VCOT`}
         />
         <CardRow
-          title="Approved Token Balance :"
+          title="Approved Token(Carbon) Balance :"
           titleStyle={{
             color: Colors.lightPrimary1,
             fontSize: 16,

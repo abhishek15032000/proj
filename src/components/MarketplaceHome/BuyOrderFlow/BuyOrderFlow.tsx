@@ -3,9 +3,7 @@ import React, { useState } from 'react'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import BuyOrdersList from './BuyOrdersList'
 import BuyToken from './BuyToken'
-import CreateBuyOrder from './CreateBuyOrder'
 import OngoingApprove from './OngoingApprove'
-import ToDeposit from './ToDeposit'
 
 const BuyOrderFlow = () => {
   const [tabIndex, setTabIndex] = useState(1)
@@ -25,14 +23,12 @@ const BuyOrderFlow = () => {
           }}
         >
           <TabSelector
-            tabArray={['Ongoing Approve', 'To Deposit', 'Create Sell Order']}
+            tabArray={['Ongoing Approve']}
             tabIndex={tabIndex}
             setTabIndex={setTabIndex}
             tabStyle={{ width: 'auto' }}
           />
           {tabIndex === 1 && <OngoingApprove />}
-          {tabIndex === 2 && <ToDeposit />}
-          {tabIndex === 3 && <CreateBuyOrder />}
         </Paper>
       </Grid>
       <Grid item xs={12}>

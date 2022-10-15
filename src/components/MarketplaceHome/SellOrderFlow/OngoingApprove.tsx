@@ -36,7 +36,7 @@ const OngoingApprove = () => {
     if (onGoingApproveLocalStorage && onGoingApproveRedux) {
       dispatch(setOnGoingApproveRedux(onGoingApproveLocalStorage))
       setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
-      setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY, null)
+      setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE, null)
     } else {
       setRows(null)
     }
@@ -69,10 +69,11 @@ const OngoingApprove = () => {
         //This means approve call is done and put in blockchain
         const newReceipt: any = await receipt?.res.wait()
         if (newReceipt?.blockHash) {
-          dispatch(setDataToMakeDepositCall(newReceipt))
+          getApprovedTokensBalance()
+          // dispatch(setDataToMakeDepositCall(newReceipt))
           dispatch(setOnGoingApproveRedux(null))
           setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
-          getApprovedTokensBalance()
+          setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE, 0)
         }
         makeRows(receipt)
         getApprovedTokensBalance()

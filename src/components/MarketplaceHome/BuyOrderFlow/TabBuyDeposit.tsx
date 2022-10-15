@@ -5,19 +5,19 @@ import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setSellQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
+import { setBuyQuantityForDeposit } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
-import { requestApprovalForTokenSelling } from '../../../utils/marketplace.utils'
+import { depositERC20 } from '../../../utils/marketplace.utils'
 
-const TabSellApprove = () => {
+const TabBuyDeposit = () => {
   const dispatch = useAppDispatch()
 
-  const sellQuantityForApprove = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantityForApprove,
+  const buyQuantityForDeposit = useAppSelector(
+    ({ marketplace }) => marketplace.buyQuantityForDeposit,
     shallowEqual
   )
-  const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+  const onGoingApproveReduxBuyFlow = useAppSelector(
+    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 
@@ -28,12 +28,12 @@ const TabSellApprove = () => {
           <Box>
             <LabelInput
               label="Quantity"
-              value={sellQuantityForApprove}
+              value={buyQuantityForDeposit}
               setValue={(e: any) => {
                 //Allow only no.s upto 3 decimal places
                 const regexp = /^\d+(\.\d{0,3})?$/
                 if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellQuantityForApprove(e?.target?.value))
+                  dispatch(setBuyQuantityForDeposit(e?.target?.value))
                 }
               }}
             />
@@ -62,10 +62,10 @@ const TabSellApprove = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={requestApprovalForTokenSelling}
-            disabled={onGoingApproveRedux || !sellQuantityForApprove}
+            onClick={depositERC20}
+            disabled={onGoingApproveReduxBuyFlow || !buyQuantityForDeposit}
           >
-            Approve
+            Deposit
           </CCButton>
         </Box>
       </Grid>
@@ -73,4 +73,4 @@ const TabSellApprove = () => {
   )
 }
 
-export default TabSellApprove
+export default TabBuyDeposit

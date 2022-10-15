@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface MarketplaceReducerInterface {
-  buyQuantity: number
+  buyQuantityForApprove: number
+  buyQuantityForDeposit: number
+  buyQuantityForBuyOrder: number
   buyUnitPrice: number
   totalAmountForBuying: number
-  sellQuantity: number
-  sellUnitPrice: number
+  sellQuantityForApprove: number
+  sellQuantityForDeposit: number
+  sellQuantityForSellOrder: number
+  sellUnitPriceForSellOrder: number
   onGoingApproveRedux: any
   onGoingApproveReduxBuyFlow: any
   dataToMakeBuyCall: any
@@ -21,11 +25,15 @@ interface MarketplaceReducerInterface {
   approvedTokensBalBuyFlow: any
 }
 const initialState: MarketplaceReducerInterface = {
-  buyQuantity: 0,
+  buyQuantityForApprove: 0,
+  buyQuantityForDeposit: 0,
+  buyQuantityForBuyOrder: 0,
   buyUnitPrice: 0,
   totalAmountForBuying: 0,
-  sellQuantity: 0,
-  sellUnitPrice: 0,
+  sellQuantityForApprove: 0,
+  sellQuantityForDeposit: 0,
+  sellQuantityForSellOrder: 0,
+  sellUnitPriceForSellOrder: 0,
   onGoingApproveRedux: null,
   onGoingApproveReduxBuyFlow: null,
   dataToMakeBuyCall: null,
@@ -44,8 +52,14 @@ const marketplace = createSlice({
   name: 'marketplace',
   initialState,
   reducers: {
-    setBuyQuantity: (state, action: PayloadAction<any>) => {
-      state.buyQuantity = action.payload
+    setBuyQuantityForApprove: (state, action: PayloadAction<any>) => {
+      state.buyQuantityForApprove = action.payload
+    },
+    setBuyQuantityForDeposit: (state, action: PayloadAction<any>) => {
+      state.buyQuantityForDeposit = action.payload
+    },
+    setBuyQuantityForBuyOrder: (state, action: PayloadAction<any>) => {
+      state.buyQuantityForBuyOrder = action.payload
     },
     setBuyUnitPrice: (state, action: PayloadAction<any>) => {
       state.buyUnitPrice = action.payload
@@ -53,14 +67,17 @@ const marketplace = createSlice({
     setTotalAmountForBuying: (state, action: PayloadAction<any>) => {
       state.totalAmountForBuying = action.payload
     },
-    // setBuyQuantity: (state, action: PayloadAction<any>) => {
-    //   state.buyQuantity = action.payload
-    // },
-    setSellQuantity: (state, action: PayloadAction<any>) => {
-      state.sellQuantity = action.payload
+    setSellQuantityForApprove: (state, action: PayloadAction<any>) => {
+      state.sellQuantityForApprove = action.payload
     },
-    setSellUnitPrice: (state, action: PayloadAction<any>) => {
-      state.sellUnitPrice = action.payload
+    setSellQuantityForDeposit: (state, action: PayloadAction<any>) => {
+      state.sellQuantityForDeposit = action.payload
+    },
+    setSellQuantityForSellOrder: (state, action: PayloadAction<any>) => {
+      state.sellQuantityForSellOrder = action.payload
+    },
+    setSellUnitPriceForSellOrder: (state, action: PayloadAction<any>) => {
+      state.sellUnitPriceForSellOrder = action.payload
     },
     setOnGoingApproveRedux: (state, action: PayloadAction<any>) => {
       state.onGoingApproveRedux = action.payload
@@ -102,11 +119,15 @@ const marketplace = createSlice({
 })
 
 export const {
-  setBuyQuantity,
+  setBuyQuantityForApprove,
+  setBuyQuantityForDeposit,
+  setBuyQuantityForBuyOrder,
   setBuyUnitPrice,
   setTotalAmountForBuying,
-  setSellQuantity,
-  setSellUnitPrice,
+  setSellQuantityForApprove,
+  setSellQuantityForDeposit,
+  setSellQuantityForSellOrder,
+  setSellUnitPriceForSellOrder,
   setOnGoingApproveRedux,
   setOnGoingApproveReduxBuyFlow,
   setDataToMakeDepositCall,

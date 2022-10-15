@@ -4,42 +4,26 @@ import React from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
-import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setBuyQuantity } from '../../../redux/Slices/marketplaceSlice'
+import { setBuyQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import { requestApprovalForTokenBuy } from '../../../utils/marketplace.utils'
-import { getLocalItem } from '../../../utils/Storage'
-import CardRow from '../CardRow'
 
-interface Props {}
-
-const TabBuyApprove = (props: Props) => {
+const TabBuyApprove = () => {
   const dispatch = useAppDispatch()
 
-  const buyQuantity = useAppSelector(
-    ({ marketplace }) => marketplace.buyQuantity,
+  const buyQuantityForApprove = useAppSelector(
+    ({ marketplace }) => marketplace.buyQuantityForApprove,
     shallowEqual
   )
-  const buyUnitPrice = useAppSelector(
-    ({ marketplace }) => marketplace.buyUnitPrice,
-    shallowEqual
-  )
-
-  const totalAmountForBuying = useAppSelector(
-    ({ marketplace }) => marketplace.totalAmountForBuying,
+  const onGoingApproveReduxBuyFlow = useAppSelector(
+    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 
-  const dataForBuyCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_BUY_CALL
-  )
-  const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
-  )
-  const onGoingApproveLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW
-  )
+  const isThereApproveObject = () => {
+    return onGoingApproveReduxBuyFlow ? true : false
+  }
 
   return (
     <Grid container xs={12} justifyContent="center">
@@ -49,12 +33,12 @@ const TabBuyApprove = (props: Props) => {
             <LabelInput
               label="Quantity "
               sx={{ width: '100%' }}
-              value={buyQuantity}
+              value={buyQuantityForApprove}
               setValue={(e: any) => {
                 //Allow only no.s upto 3 decimal places
                 const regexp = /^\d+(\.\d{0,3})?$/
                 if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setBuyQuantity(e?.target?.value))
+                  dispatch(setBuyQuantityForApprove(e?.target?.value))
                 }
               }}
             />
@@ -70,11 +54,6 @@ const TabBuyApprove = (props: Props) => {
             VCOT
           </Box>
         </Box>
-        <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} USD`} />
-        <CardRow
-          title="Total amount to be paid :"
-          value={`${totalAmountForBuying || 0} USD`}
-        />
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <CCButton
             sx={{
@@ -87,15 +66,11 @@ const TabBuyApprove = (props: Props) => {
               fontSize: 14,
               minWidth: '120px',
             }}
-            onClick={() => {
-              dataForBuyCallLocalStorage ||
-              dataToMakeCreateSellOrderCallLocalStorage ||
-              onGoingApproveLocalStorage
-                ? null
-                : requestApprovalForTokenBuy()
-            }}
+            onClick={requestApprovalForTokenBuy}
+            disabled={isThereApproveObject() || !buyQuantityForApprove}
+            variant="contained"
           >
-            Buy
+            Approve
           </CCButton>
         </Box>
       </Grid>

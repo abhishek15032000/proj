@@ -6,13 +6,14 @@ import CCTable from '../../../atoms/CCTable'
 import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
-  setDataToMakeDepositCall,
+  setDataToMakeDepositCallBuyFlow,
   setOnGoingApproveRedux,
+  setOnGoingApproveReduxBuyFlow,
 } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
 import {
-  getApprovedTokensBalance,
+  getApprovedTokensBalanceBuyFlow,
   getTransaction,
 } from '../../../utils/marketplace.utils'
 import { getLocalItem, setLocalItem } from '../../../utils/Storage'
@@ -22,39 +23,39 @@ const headings = ['Transaction ID', 'Quantity', 'Status']
 const OngoingApprove = () => {
   const dispatch = useAppDispatch()
 
-  const onGoingApproveLocalStorage = getLocalItem(
+  const onGoingApproveBuyFlowLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW
   )
 
-  const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+  const onGoingApproveReduxBuyFlow = useAppSelector(
+    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 
   const [rows, setRows] = useState<any>()
   useEffect(() => {
-    if (onGoingApproveLocalStorage && onGoingApproveRedux) {
-      dispatch(setOnGoingApproveRedux(onGoingApproveLocalStorage))
+    if (onGoingApproveBuyFlowLocalStorage && onGoingApproveReduxBuyFlow) {
+      dispatch(setOnGoingApproveRedux(onGoingApproveBuyFlowLocalStorage))
       setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
-      setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY, null)
+      setLocalItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE, null)
     } else {
       setRows(null)
     }
   }, [])
 
   useEffect(() => {
-    if (onGoingApproveRedux) {
-      makeRows(onGoingApproveRedux)
+    if (onGoingApproveReduxBuyFlow) {
+      makeRows(onGoingApproveReduxBuyFlow)
       checkForPendingTransactions()
     } else {
       setRows(null)
     }
-  }, [onGoingApproveRedux])
+  }, [onGoingApproveReduxBuyFlow])
 
   const makeRows = (receipt: any) => {
     const rows = [
       [
-        limitTitleFromMiddle(onGoingApproveRedux?.hash),
+        limitTitleFromMiddle(onGoingApproveReduxBuyFlow?.hash),
         '-',
         receipt?.blockHash ? 'Completed' : 'In-progress',
       ],
@@ -64,18 +65,20 @@ const OngoingApprove = () => {
 
   const checkForPendingTransactions = async () => {
     try {
-      const receipt: any = await getTransaction(onGoingApproveRedux?.hash)
+      const receipt: any = await getTransaction(
+        onGoingApproveReduxBuyFlow?.hash
+      )
       if (!receipt?.success) {
         //This means approve call is done and put in blockchain
         const newReceipt: any = await receipt?.res.wait()
         if (newReceipt?.blockHash) {
-          dispatch(setDataToMakeDepositCall(newReceipt))
-          dispatch(setOnGoingApproveRedux(null))
+          dispatch(setDataToMakeDepositCallBuyFlow(newReceipt))
+          dispatch(setOnGoingApproveReduxBuyFlow(null))
           setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
-          getApprovedTokensBalance()
+          getApprovedTokensBalanceBuyFlow()
         }
         makeRows(receipt)
-        getApprovedTokensBalance()
+        getApprovedTokensBalanceBuyFlow()
       }
     } catch (err) {
       console.log('Error ', err)

@@ -1,11 +1,9 @@
 import { Grid, Paper } from '@mui/material'
 import React, { useState } from 'react'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
-import SellOrdersList from './SellOrdersList'
-import CreateSellOrder from './CreateSellOrder'
 import OngoingApprove from './OngoingApprove'
+import SellOrdersList from './SellOrdersList'
 import SellToken from './SellToken'
-import ToDeposit from './ToDeposit'
 
 const SellOrderFlow = () => {
   const [tabIndex, setTabIndex] = useState(1)
@@ -25,14 +23,12 @@ const SellOrderFlow = () => {
           }}
         >
           <TabSelector
-            tabArray={['Ongoing Approve', 'To Deposit', 'Create Sell Order']}
+            tabArray={['Ongoing Approve']}
             tabIndex={tabIndex}
             setTabIndex={setTabIndex}
             tabStyle={{ width: 'auto' }}
           />
           {tabIndex === 1 && <OngoingApprove />}
-          {tabIndex === 2 && <ToDeposit />}
-          {tabIndex === 3 && <CreateSellOrder />}
         </Paper>
       </Grid>
       <Grid item xs={12}>

@@ -84,5 +84,7 @@ export const URL_PATH = {
     createOrder: ENDPOINTS.orderServiceURL + '/marketplace/createOrder',
     getSellOrder: ENDPOINTS.orderServiceURL + '/marketplace/getSellOrder',
     getBuyOrder: ENDPOINTS.orderServiceURL + '/marketplace/getBuyOrder',
+    checkForFullFillOrder:
+      ENDPOINTS.orderServiceURL + '/marketplace/checkForFullFillOrder',
   },
 }

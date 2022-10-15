@@ -4,38 +4,28 @@ import React from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
-import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
-  setSellQuantity,
-  setSellUnitPrice,
+  setSellQuantityForSellOrder,
+  setSellUnitPriceForSellOrder,
 } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import { createSellOrder } from '../../../utils/marketplace.utils'
-import { getLocalItem } from '../../../utils/Storage'
 
-interface Props {}
-
-const TabSellCreateSellOrder = (props: Props) => {
+const TabSellCreateSellOrder = () => {
   const dispatch = useAppDispatch()
 
-  const sellQuantity = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantity,
+  const sellQuantityForSellOrder = useAppSelector(
+    ({ marketplace }) => marketplace.sellQuantityForSellOrder,
     shallowEqual
   )
-  const sellUnitPrice = useAppSelector(
-    ({ marketplace }) => marketplace.sellUnitPrice,
+  const sellUnitPriceForSellOrder = useAppSelector(
+    ({ marketplace }) => marketplace.sellUnitPriceForSellOrder,
     shallowEqual
   )
-
-  const dataForDepositCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL_SELL_FLOW
-  )
-  const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
-  )
-  const onGoingApproveLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
+  const onGoingApproveRedux = useAppSelector(
+    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    shallowEqual
   )
 
   return (
@@ -45,12 +35,12 @@ const TabSellCreateSellOrder = (props: Props) => {
           <Box>
             <LabelInput
               label="Quantity"
-              value={sellQuantity}
+              value={sellQuantityForSellOrder}
               setValue={(e: any) => {
                 //Allow only no.s upto 3 decimal places
                 const regexp = /^\d+(\.\d{0,3})?$/
                 if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellQuantity(e?.target?.value))
+                  dispatch(setSellQuantityForSellOrder(e?.target?.value))
                 }
               }}
             />
@@ -70,12 +60,12 @@ const TabSellCreateSellOrder = (props: Props) => {
           <Box>
             <LabelInput
               label="Unit Price"
-              value={sellUnitPrice}
+              value={sellUnitPriceForSellOrder}
               setValue={(e: any) => {
                 //Allow only no.s upto 3 decimal places
                 const regexp = /^\d+(\.\d{0,3})?$/
                 if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellUnitPrice(e?.target?.value))
+                  dispatch(setSellUnitPriceForSellOrder(e?.target?.value))
                 }
               }}
             />
@@ -88,7 +78,7 @@ const TabSellCreateSellOrder = (props: Props) => {
               right: 10,
             }}
           >
-            USD
+            INR
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
@@ -104,22 +94,12 @@ const TabSellCreateSellOrder = (props: Props) => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={() => {
-              dataForDepositCallLocalStorage ||
-              dataToMakeCreateSellOrderCallLocalStorage ||
-              onGoingApproveLocalStorage
-                ? null
-                : createSellOrder()
-            }}
-
-            // disabled={
-            //   dataForDepositCallLocalStorage ||
-            //   dataToMakeCreateSellOrderCallLocalStorage ||
-            //   dataToMakeDepositCall ||
-            //   dataToMakeCreateSellOrderCall ||
-            //   onGoingApproveLocalStorage ||
-            //   onGoingApproveRedux
-            // }
+            onClick={createSellOrder}
+            disabled={
+              onGoingApproveRedux ||
+              !sellQuantityForSellOrder ||
+              !sellUnitPriceForSellOrder
+            }
           >
             Sell
           </CCButton>

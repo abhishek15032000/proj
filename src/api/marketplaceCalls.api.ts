@@ -31,4 +31,12 @@ export const marketplaceCalls = {
       return res.data
     })
   },
+  checkForFullFillOrder: (asking: any) => {
+    return AxiosHelper(
+      URL_PATH.marketplace.checkForFullFillOrder + `?asking=${asking}`,
+      'GET'
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }

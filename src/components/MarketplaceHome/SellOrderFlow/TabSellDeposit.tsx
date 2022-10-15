@@ -4,38 +4,21 @@ import React from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
-import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import {
-  setSellQuantity,
-  setSellUnitPrice,
-} from '../../../redux/Slices/marketplaceSlice'
+import { setSellQuantityForDeposit } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import { depositERC20 } from '../../../utils/marketplace.utils'
-import { getLocalItem } from '../../../utils/Storage'
 
-interface Props {}
-
-const TabSellDeposit = (props: Props) => {
+const TabSellDeposit = () => {
   const dispatch = useAppDispatch()
 
-  const sellQuantity = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantity,
+  const sellQuantityForDeposit = useAppSelector(
+    ({ marketplace }) => marketplace.sellQuantityForDeposit,
     shallowEqual
   )
-  const sellUnitPrice = useAppSelector(
-    ({ marketplace }) => marketplace.sellUnitPrice,
+  const onGoingApproveRedux = useAppSelector(
+    ({ marketplace }) => marketplace.onGoingApproveRedux,
     shallowEqual
-  )
-
-  const dataForDepositCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_DEPOSIT_CALL_SELL_FLOW
-  )
-  const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
-  )
-  const onGoingApproveLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
   )
 
   return (
@@ -45,12 +28,12 @@ const TabSellDeposit = (props: Props) => {
           <Box>
             <LabelInput
               label="Quantity"
-              value={sellQuantity}
+              value={sellQuantityForDeposit}
               setValue={(e: any) => {
                 //Allow only no.s upto 3 decimal places
                 const regexp = /^\d+(\.\d{0,3})?$/
                 if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellQuantity(e?.target?.value))
+                  dispatch(setSellQuantityForDeposit(e?.target?.value))
                 }
               }}
             />
@@ -66,31 +49,6 @@ const TabSellDeposit = (props: Props) => {
             VCOT
           </Box>
         </Box>
-        <Box sx={{ position: 'relative' }}>
-          <Box>
-            <LabelInput
-              label="Unit Price"
-              value={sellUnitPrice}
-              setValue={(e: any) => {
-                //Allow only no.s upto 3 decimal places
-                const regexp = /^\d+(\.\d{0,3})?$/
-                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellUnitPrice(e?.target?.value))
-                }
-              }}
-            />
-          </Box>
-          <Box
-            sx={{
-              color: '#3F4946',
-              position: 'absolute',
-              top: 16,
-              right: 10,
-            }}
-          >
-            USD
-          </Box>
-        </Box>
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <CCButton
             sx={{
@@ -104,22 +62,8 @@ const TabSellDeposit = (props: Props) => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={() => {
-              dataForDepositCallLocalStorage ||
-              dataToMakeCreateSellOrderCallLocalStorage ||
-              onGoingApproveLocalStorage
-                ? null
-                : depositERC20()
-            }}
-
-            // disabled={
-            //   dataForDepositCallLocalStorage ||
-            //   dataToMakeCreateSellOrderCallLocalStorage ||
-            //   dataToMakeDepositCall ||
-            //   dataToMakeCreateSellOrderCall ||
-            //   onGoingApproveLocalStorage ||
-            //   onGoingApproveRedux
-            // }
+            onClick={depositERC20}
+            disabled={onGoingApproveRedux || !sellQuantityForDeposit}
           >
             Deposit
           </CCButton>
