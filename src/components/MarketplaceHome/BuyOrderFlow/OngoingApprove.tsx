@@ -6,6 +6,7 @@ import CCTable from '../../../atoms/CCTable'
 import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
+  setBuyQuantityForApprove,
   setDataToMakeDepositCallBuyFlow,
   setOnGoingApproveRedux,
   setOnGoingApproveReduxBuyFlow,
@@ -26,6 +27,9 @@ const OngoingApprove = () => {
   const onGoingApproveBuyFlowLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW
   )
+  const buyQuantityForApproveLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE
+  )
 
   const onGoingApproveReduxBuyFlow = useAppSelector(
     ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
@@ -36,10 +40,6 @@ const OngoingApprove = () => {
   useEffect(() => {
     if (onGoingApproveBuyFlowLocalStorage && onGoingApproveReduxBuyFlow) {
       dispatch(setOnGoingApproveRedux(onGoingApproveBuyFlowLocalStorage))
-      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
-      setLocalItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE, null)
-    } else {
-      setRows(null)
     }
   }, [])
 
@@ -56,7 +56,7 @@ const OngoingApprove = () => {
     const rows = [
       [
         limitTitleFromMiddle(onGoingApproveReduxBuyFlow?.hash),
-        '-',
+        buyQuantityForApproveLocalStorage,
         receipt?.blockHash ? 'Completed' : 'In-progress',
       ],
     ]
@@ -74,7 +74,9 @@ const OngoingApprove = () => {
         if (newReceipt?.blockHash) {
           dispatch(setDataToMakeDepositCallBuyFlow(newReceipt))
           dispatch(setOnGoingApproveReduxBuyFlow(null))
+          dispatch(setBuyQuantityForApprove(0))
           setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
+          setLocalItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE, null)
           getApprovedTokensBalanceBuyFlow()
         }
         makeRows(receipt)

@@ -113,10 +113,11 @@ const SellToken: FC<SellTokenProps> = () => {
           value={`${exchangeBal || 0} VCOT`}
         />
         <TabSelector
-          tabArray={[' Approve', 'Deposit', 'Sell Order']}
+          tabArray={['Approve Tokens', 'Deposit Tokens', 'Sell Order']}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
           tabStyle={{ width: 'auto' }}
+          sx={{ mt: 0 }}
         />
         {tabIndex === 1 && <TabSellApprove />}
         {tabIndex === 2 && <TabSellDeposit />}

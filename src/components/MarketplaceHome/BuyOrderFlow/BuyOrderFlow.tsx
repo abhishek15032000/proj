@@ -18,7 +18,6 @@ const BuyOrderFlow = () => {
           sx={{
             borderRadius: '4px',
             p: 2,
-
             mt: 2,
           }}
         >
@@ -27,6 +26,7 @@ const BuyOrderFlow = () => {
             tabIndex={tabIndex}
             setTabIndex={setTabIndex}
             tabStyle={{ width: 'auto' }}
+            sx={{ mt: 0 }}
           />
           {tabIndex === 1 && <OngoingApprove />}
         </Paper>

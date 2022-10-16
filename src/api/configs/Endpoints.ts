@@ -82,6 +82,7 @@ export const URL_PATH = {
   marketplace: {
     depositERC20: ENDPOINTS.orderServiceURL + '/marketplace/depositERC20',
     createOrder: ENDPOINTS.orderServiceURL + '/marketplace/createOrder',
+    fillOrder: ENDPOINTS.orderServiceURL + '/marketplace/fillOrder',
     getSellOrder: ENDPOINTS.orderServiceURL + '/marketplace/getSellOrder',
     getBuyOrder: ENDPOINTS.orderServiceURL + '/marketplace/getBuyOrder',
     checkForFullFillOrder:

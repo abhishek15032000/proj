@@ -124,10 +124,11 @@ const BuyToken: FC<BuyTokenProps> = () => {
         value={`${exchangeBalBuyFlow || 0} INR`}
       />
       <TabSelector
-        tabArray={[' Approve', 'Deposit', 'Buy Order']}
+        tabArray={['Approve Tokens', 'Deposit Tokens', 'Buy Order']}
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
         tabStyle={{ width: 'auto' }}
+        sx={{ mt: 0 }}
       />
       {tabIndex === 1 && <TabBuyApprove />}
       {tabIndex === 2 && <TabBuyDeposit />}

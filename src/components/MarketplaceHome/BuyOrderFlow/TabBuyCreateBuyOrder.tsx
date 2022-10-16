@@ -6,9 +6,15 @@ import { marketplaceCalls } from '../../../api/marketplaceCalls.api'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setBuyQuantityForBuyOrder } from '../../../redux/Slices/marketplaceSlice'
+import {
+  setBuyOrderPayloadAmountsToTake,
+  setBuyOrderPayloadOfferHashes,
+  setBuyQuantityForBuyOrder,
+  setBuyUnitPrice,
+  setTotalAmountForBuying,
+} from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
-import { createSellOrder } from '../../../utils/marketplace.utils'
+import { createBuyOrder } from '../../../utils/marketplace.utils'
 import CardRow from '../CardRow'
 
 const TabBuyCreateBuyOrder = () => {
@@ -18,13 +24,18 @@ const TabBuyCreateBuyOrder = () => {
     ({ marketplace }) => marketplace.buyQuantityForBuyOrder,
     shallowEqual
   )
+  const buyUnitPrice = useAppSelector(
+    ({ marketplace }) => marketplace.buyUnitPrice,
+    shallowEqual
+  )
+  const totalAmountForBuying = useAppSelector(
+    ({ marketplace }) => marketplace.totalAmountForBuying,
+    shallowEqual
+  )
   const onGoingApproveReduxBuyFlow = useAppSelector(
     ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
-
-  const [unitPrice, setUnitPrice] = useState(0)
-  const [total, setTotal] = useState(0)
 
   const checkForFullFillOrder = async () => {
     try {
@@ -32,17 +43,27 @@ const TabBuyCreateBuyOrder = () => {
         buyQuantityForBuyOrder
       )
       if (res?.success && res?.data && res?.data?.length) {
+        const offerHashes: any = []
+        const amountsToTake: any = []
         const total = res?.data.reduce((prev: any, curr: any) => {
+          offerHashes.push(curr.hash)
+          amountsToTake.push(curr.cab)
           return (prev += curr.cab * curr.rate)
         }, 0)
         const unitPriceLocal =
           Math.round((total / Number(buyQuantityForBuyOrder)) * 1000) / 1000
-        setTotal(total)
-        setUnitPrice(unitPriceLocal)
+        dispatch(setTotalAmountForBuying(total))
+        dispatch(setBuyUnitPrice(unitPriceLocal))
+        dispatch(setBuyOrderPayloadOfferHashes(offerHashes))
+        dispatch(setBuyOrderPayloadAmountsToTake(amountsToTake))
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.checkForFullFillOrder api :', err)
     }
+  }
+
+  const isThereApproveObject = () => {
+    return onGoingApproveReduxBuyFlow ? true : false
   }
 
   return (
@@ -92,10 +113,10 @@ const TabBuyCreateBuyOrder = () => {
         >
           Click to check for Token and Unit Price
         </Typography>
-        <CardRow title="Unit Price :" value={`${unitPrice || 0} INR`} />
+        <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} INR`} />
         <CardRow
           title="Total amount to be paid :"
-          value={`${total || 0} INR`}
+          value={`${totalAmountForBuying || 0} INR`}
         />
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <CCButton
@@ -110,8 +131,13 @@ const TabBuyCreateBuyOrder = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={createSellOrder}
-            disabled={onGoingApproveReduxBuyFlow || !buyQuantityForBuyOrder}
+            onClick={createBuyOrder}
+            disabled={
+              isThereApproveObject() ||
+              !buyQuantityForBuyOrder ||
+              !buyUnitPrice ||
+              !totalAmountForBuying
+            }
           >
             Buy
           </CCButton>

@@ -6,6 +6,8 @@ interface MarketplaceReducerInterface {
   buyQuantityForBuyOrder: number
   buyUnitPrice: number
   totalAmountForBuying: number
+  buyOrderPayloadOfferHashes: any
+  buyOrderPayloadAmountsToTake: any
   sellQuantityForApprove: number
   sellQuantityForDeposit: number
   sellQuantityForSellOrder: number
@@ -30,6 +32,8 @@ const initialState: MarketplaceReducerInterface = {
   buyQuantityForBuyOrder: 0,
   buyUnitPrice: 0,
   totalAmountForBuying: 0,
+  buyOrderPayloadOfferHashes: null,
+  buyOrderPayloadAmountsToTake: null,
   sellQuantityForApprove: 0,
   sellQuantityForDeposit: 0,
   sellQuantityForSellOrder: 0,
@@ -66,6 +70,12 @@ const marketplace = createSlice({
     },
     setTotalAmountForBuying: (state, action: PayloadAction<any>) => {
       state.totalAmountForBuying = action.payload
+    },
+    setBuyOrderPayloadOfferHashes: (state, action: PayloadAction<any>) => {
+      state.buyOrderPayloadOfferHashes = action.payload
+    },
+    setBuyOrderPayloadAmountsToTake: (state, action: PayloadAction<any>) => {
+      state.buyOrderPayloadAmountsToTake = action.payload
     },
     setSellQuantityForApprove: (state, action: PayloadAction<any>) => {
       state.sellQuantityForApprove = action.payload
@@ -124,6 +134,8 @@ export const {
   setBuyQuantityForBuyOrder,
   setBuyUnitPrice,
   setTotalAmountForBuying,
+  setBuyOrderPayloadOfferHashes,
+  setBuyOrderPayloadAmountsToTake,
   setSellQuantityForApprove,
   setSellQuantityForDeposit,
   setSellQuantityForSellOrder,

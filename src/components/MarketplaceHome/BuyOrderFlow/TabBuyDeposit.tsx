@@ -7,7 +7,7 @@ import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setBuyQuantityForDeposit } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
-import { depositERC20 } from '../../../utils/marketplace.utils'
+import { depositERC20BuyFlow } from '../../../utils/marketplace.utils'
 
 const TabBuyDeposit = () => {
   const dispatch = useAppDispatch()
@@ -20,6 +20,10 @@ const TabBuyDeposit = () => {
     ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
+
+  const isThereApproveObject = () => {
+    return onGoingApproveReduxBuyFlow ? true : false
+  }
 
   return (
     <Grid container xs={12} justifyContent="center">
@@ -62,8 +66,8 @@ const TabBuyDeposit = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={depositERC20}
-            disabled={onGoingApproveReduxBuyFlow || !buyQuantityForDeposit}
+            onClick={depositERC20BuyFlow}
+            disabled={isThereApproveObject() || !buyQuantityForDeposit}
           >
             Deposit
           </CCButton>

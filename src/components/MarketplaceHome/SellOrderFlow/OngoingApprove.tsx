@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setDataToMakeDepositCall,
   setOnGoingApproveRedux,
+  setSellQuantityForApprove,
 } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
@@ -25,6 +26,9 @@ const OngoingApprove = () => {
   const onGoingApproveLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
   )
+  const sellQuantityForApproveLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE
+  )
 
   const onGoingApproveRedux = useAppSelector(
     ({ marketplace }) => marketplace.onGoingApproveRedux,
@@ -33,12 +37,8 @@ const OngoingApprove = () => {
 
   const [rows, setRows] = useState<any>()
   useEffect(() => {
-    if (onGoingApproveLocalStorage && onGoingApproveRedux) {
+    if (onGoingApproveLocalStorage) {
       dispatch(setOnGoingApproveRedux(onGoingApproveLocalStorage))
-      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
-      setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE, null)
-    } else {
-      setRows(null)
     }
   }, [])
 
@@ -55,7 +55,7 @@ const OngoingApprove = () => {
     const rows = [
       [
         limitTitleFromMiddle(onGoingApproveRedux?.hash),
-        '-',
+        sellQuantityForApproveLocalStorage,
         receipt?.blockHash ? 'Completed' : 'In-progress',
       ],
     ]
@@ -72,6 +72,7 @@ const OngoingApprove = () => {
           getApprovedTokensBalance()
           // dispatch(setDataToMakeDepositCall(newReceipt))
           dispatch(setOnGoingApproveRedux(null))
+          dispatch(setSellQuantityForApprove(0))
           setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
           setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE, 0)
         }
