@@ -37,12 +37,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
 
   useEffect(() => {
     USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
-      setFullName(response?.data?.data?.fullName)
-      setPhone(response?.data?.data?.phone)
-      setAddress(response?.data?.data?.address)
-      setDesignation(response?.data?.data?.designation)
-      setOrganisationName(response?.data?.data?.organisationName)
-      setWebsite(response?.data?.data?.website)
+      console.log('user', response)
     })
   }, [])
 
@@ -69,12 +64,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       return
     }
 
-    if ( 
-      !isMobilePhone(phone.toString()) ||
-      !isURL(website)
-    ) {
+    if (!isMobilePhone(phone.toString()) || !isURL(website)) {
       alert('Correct the errors!')
-      return 
+      return
     }
 
     setLoading(true)
@@ -181,7 +173,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 inputProps={{
                   maxLength: 10,
                 }}
-                error={phone !== '' && !isMobilePhone(phone.toString(), 'en-IN')}
+                error={
+                  phone !== '' && !isMobilePhone(phone.toString(), 'en-IN')
+                }
                 helperText={
                   phone !== '' &&
                   !isMobilePhone(phone.toString(), 'en-IN') &&
@@ -213,9 +207,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 onChange={(e) => setWebsite(e.target.value)}
                 error={website !== '' && !isURL(website)}
                 helperText={
-                  website !== '' &&
-                  !isURL(website) &&
-                  'Enter valid URL'
+                  website !== '' && !isURL(website) && 'Enter valid URL'
                 }
               />
 
