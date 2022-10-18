@@ -18,7 +18,8 @@ const LabelInput: FC<LabelInputProps> = (props) => {
   return (
     <Box
       sx={{
-        margin: 1,
+        mt: 1,
+        width: '100%',
         ...props.sx,
       }}
     >
@@ -30,7 +31,7 @@ const LabelInput: FC<LabelInputProps> = (props) => {
         id="outlined-basic"
         label={props.label}
         variant="outlined"
-        sx={{ ...props.textFieldSx }}
+        sx={{ width: '100%', ...props.textFieldSx }}
         onChange={
           props?.setValue
             ? props?.setValue

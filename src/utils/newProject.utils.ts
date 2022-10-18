@@ -14,6 +14,7 @@ export const calSectionPercent = (data: any, optionalField?: any) => {
 }
 export const calSectionPercentSpecificStep = (data: any) => {
   //Sections with only steps object
+
   const filteringTrue = data.filter((i: any) => i?.completed === true)
   const calPercentage = (filteringTrue.length / data.length) * 100
 
@@ -63,7 +64,7 @@ export const checkMandatoryFieldsArrayObjects = (mandatoryFields: any) => {
   let isFilled = false
   Object.keys(mandatoryFields[0]).map((key) => {
     for (let i = 0; i < mandatoryFields.length; i++) {
-      if (key !== 'flag' && !mandatoryFields[i][key]) {
+      if (key !== 'flag' && mandatoryFields[i][key].length === 0) {
         isFilled = true
         return
       }

@@ -46,7 +46,6 @@ const SelectDate = () => {
   )
 
   useEffect(() => {
-    console.log('currentProjectDetails', currentProjectDetails)
     if (currentProjectDetails) {
       const { end_date, createdAt } = currentProjectDetails
 

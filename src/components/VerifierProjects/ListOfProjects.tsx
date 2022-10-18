@@ -77,14 +77,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 
     props.data.map((item: any, index: any) => {
       if (
-        item.project_status === 1 ||
-        item.project_status === 2 ||
-        item.project_status === 5 ||
-        item.project_status === 6
+        item?.project_status === 1 ||
+        item?.project_status === 2 ||
+        item?.project_status === 5 ||
+        item?.project_status === 6
       ) {
         newData.push([
           <ShortenedIDComp key={index} referenceId={item?.project_id?.uuid} />,
-          moment(item.createdAt).format('DD/MM/YYYY'),
+          moment(item?.createdAt).format('DD/MM/YYYY'),
           <Box
             key={index}
             sx={{
@@ -101,19 +101,19 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 ml: 1,
               }}
             >
-              {item.project_id.company_name}
+              {item?.project_id?.company_name}
             </Typography>
           </Box>,
-          item.verifier_name,
-          item.verifier_address,
-          item.project_status === 1 ? (
+          item?.verifier_name,
+          item?.verifier_address,
+          item?.project_status === 1 ? (
             <ApprovalChip key={index} variant={'Pending'} />
-          ) : item.project_status === 2 ? (
+          ) : item?.project_status === 2 ? (
             <ApprovalChip key={index} variant={'Approved'} />
           ) : (
             <ApprovalChip key={index} variant={'Rejected'} />
           ),
-          item.project_status === 1 ? (
+          item?.project_status === 1 ? (
             <Box
               key={index}
               sx={{
@@ -151,12 +151,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          (item.project_status === 1 || item.project_status === 2) && (
+          (item?.project_status === 1 || item?.project_status === 2) && (
             <ChevronRightIcon
               key={index}
               onClick={() => {
                 navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                  state: { project_uuid: item.project_id.uuid },
+                  state: { project_uuid: item?.project_id.uuid },
                 })
               }}
             />
@@ -164,10 +164,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         ])
       }
 
-      if (item.project_status === 3 || item.project_status === 4) {
+      if (item?.project_status === 3 || item?.project_status === 4) {
         registeredData.push([
           <ShortenedIDComp key={index} referenceId={item?.project_id?.uuid} />,
-          moment(item.createdAt).format('DD/MM/YYYY'),
+          moment(item?.createdAt).format('DD/MM/YYYY'),
           <Box
             key={index}
             sx={{
@@ -184,18 +184,18 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 ml: 1,
               }}
             >
-              {item.project_id.company_name}
+              {item?.project_id?.company_name}
             </Typography>
           </Box>,
-          item.verifier_name,
-          item.verifier_address,
-          moment(item.createdAt).format('DD/MM/YYYY'),
-          item.project_status === 3 ? (
+          item?.verifier_name,
+          item?.verifier_address,
+          moment(item?.createdAt).format('DD/MM/YYYY'),
+          item?.project_status === 3 ? (
             <ApprovalChip key={index} variant={'Pending'} />
           ) : (
             <ApprovalChip key={index} variant={'Verified'} />
           ),
-          item.project_status === 3 ? (
+          item?.project_status === 3 ? (
             <TextButton
               key={index}
               sx={{ width: '90px' }}
@@ -217,7 +217,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             key={index}
             onClick={() =>
               navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                state: { project_uuid: item.project_id.uuid },
+                state: { project_uuid: item?.project_id.uuid },
               })
             }
           />,
