@@ -167,11 +167,20 @@ const RegisterPage = (props: RegisterPageProps) => {
         sx={{
           marginTop: 5,
           //width: '100%',
-          px: 20,
+          // px: 20,
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'center',
           flex: 1,
         }}
       >
-        <Grid container rowSpacing={2}>
+        <Grid
+          container
+          rowSpacing={2}
+          sx={{
+            maxWidth: '450px',
+          }}
+        >
           <Grid item xs={12}>
             <Logo1 />
           </Grid>
@@ -263,7 +272,7 @@ const RegisterPage = (props: RegisterPageProps) => {
               <Grid item xs={12} md={9}>
                 <CCInputField
                   label="Phone Number"
-                  type="tel"
+                  type="number"
                   variant="outlined"
                   //onChange={handleChange}
                   inputProps={{
@@ -276,9 +285,16 @@ const RegisterPage = (props: RegisterPageProps) => {
                     'Enter valid Mobile Number'
                   }
                   onChange={(e) => {
-                    // if (Number(e.target.value.replace(/[^0-9]/g, '')) < 0) {
                     setNumber(e.target.value.toString())
-                    // }
+                  }}
+                  onInput={(e) => {
+                    const InputElement = e.target as HTMLInputElement
+                    InputElement.value = Math.max(
+                      0,
+                      parseInt(InputElement.value)
+                    )
+                      .toString()
+                      .slice(0, 10)
                   }}
                   defaultValue={number}
                   sx={{ background: '#F5F5F5' }}

@@ -69,6 +69,9 @@ const Login = () => {
     try {
       setLoading(true)
       const res = await authCalls.loginCall(payload)
+      console.log('res')
+      console.log(JSON.stringify(res, null, 4))
+
       if (res?.success && res?.data) {
         if (res?.status === 204) {
           alert('Retry login with new Captch')
@@ -126,7 +129,10 @@ const Login = () => {
         sx={{
           width: '100%',
           minHeight: '100%',
-          px: 20,
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          // px: 20,
           flex: 1,
         }}
       >
@@ -135,7 +141,7 @@ const Login = () => {
           onSubmit={handleSubmit}
           // noValidate
           sx={{
-            width: '100%',
+            maxWidth: '450px'
           }}
         >
           <Box py={1}>
@@ -149,7 +155,7 @@ const Login = () => {
           <Typography sx={{ fontWeight: '500', fontSize: 16, mt: 1, mb: 5 }}>
             Login by providing the information below
           </Typography>
-          <Grid container sx={{}} rowSpacing={3} columnSpacing={3}>
+          <Grid container sx={{ }} rowSpacing={3} columnSpacing={3}>
             <Grid item xs={12}>
               <CCInputField
                 label="Email ID"

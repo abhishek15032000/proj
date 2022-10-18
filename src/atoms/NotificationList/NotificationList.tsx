@@ -27,11 +27,6 @@ const NotificationList: FC<NotificationListProps> = (props) => {
       (response) => {
         setLoading(false)
         setNotifications(response.data?.data)
-
-        response.data?.data?.map((item: any) => {
-          console.log('item')
-          console.log(JSON.stringify(item.read, null, 4))
-        })
       }
     )
   }, [])
