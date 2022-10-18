@@ -35,57 +35,55 @@ export default function Captcha({
   return (
     <Box
       sx={{
-        mt: 1,
         display: 'flex',
+        // flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        width: '100%',
+        px: 2,
+        mt: 2
       }}
     >
+      <img
+        src={captchaImg}
+        style={{
+          width: 120,
+          height: 30,
+          marginTop: 10
+        }}
+      />
       <Box
         sx={{
+          alignSelf: 'center',
+          cursor: 'pointer',
+          fontSize: 12,
+          color: Colors.darkPrimary1,
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
           alignItems: 'center',
+          justifyContent: 'center',
+          mt: 1,
         }}
+        onClick={() => setCaptchaToken(uuidv4())}
       >
-        <img
-          src={captchaImg}
+        <RefreshIcon
           style={{
-            width: 150,
-            height: 30,
-          }}
-        />
-        <Box
-          sx={{
-            alignSelf: 'center',
-            cursor: 'pointer',
-            fontSize: 12,
+            fontSize: 16,
+            marginRight: 20,
+            marginLeft: 20,
             color: Colors.darkPrimary1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mt: 1,
+            fontWeight: '500',
           }}
-          onClick={() => setCaptchaToken(uuidv4())}
-        >
-          Refresh
-          <RefreshIcon
-            style={{
-              fontSize: 16,
-              color: Colors.darkPrimary1,
-              fontWeight: '500',
-            }}
-          />
-        </Box>
-        <CCInputField
-          label="Captcha"
-          variant="filled"
-          sx={{ width: 150, mt: 1 }}
-          value={captchaInput}
-          onChange={(e) => setCaptchaInput(e.target.value)}
         />
       </Box>
+
+      <CCInputField
+        placeholder="Captcha"
+        size="small"
+        variant="outlined"
+        sx={{ width: 120, mt: 1 }}
+        value={captchaInput}
+        onChange={(e) => setCaptchaInput(e.target.value)}
+      />
     </Box>
   )
 }
