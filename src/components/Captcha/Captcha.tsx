@@ -13,6 +13,7 @@ export default function Captcha({
   setCaptchaInput,
   setCaptchaToken,
   token,
+  sx
 }: CaptchaProps) {
   const [captchaImg, setCaptchaImg] = useState<any>()
 
@@ -41,7 +42,8 @@ export default function Captcha({
         alignItems: 'center',
         width: '100%',
         px: 2,
-        mt: 2
+        mt: 2,
+        ...sx
       }}
     >
       <img

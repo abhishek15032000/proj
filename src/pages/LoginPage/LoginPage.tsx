@@ -238,7 +238,6 @@ const Login = () => {
           >
             <CCButton
               type="submit"
-              // fullWidth
               sx={{
                 height: '40px',
                 width: '320px',
@@ -246,7 +245,6 @@ const Login = () => {
                 marginTop: 4,
               }}
               variant="contained"
-              // disabled={Object.values(errors).length > 0}
             >
               {loading ? 'Logging in...' : 'Login'}
             </CCButton>
@@ -297,6 +295,7 @@ const Login = () => {
         sx={{
           display: {
             sm: 'none',
+            xs: 'none',
             lg: 'flex',
           },
           width: '50%',
