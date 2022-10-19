@@ -30,29 +30,31 @@ const BuyOrdersList = () => {
   )
 
   useEffect(() => {
-    getBuyOrders()
-  }, [])
+    if (accountAddress) {
+      getBuyOrders()
+    }
+  }, [accountAddress])
 
   async function getBuyOrders() {
-    const buyer = getLocalItem('userDetails')?.user_id
     try {
-      const buyOrderRes = await marketplaceCalls.getBuyOrder(buyer)
+      const buyOrderRes = await marketplaceCalls.getBuyOrder(accountAddress)
       if (buyOrderRes.success && buyOrderRes.data.length) {
         const rowValues = buyOrderRes.data.map((row: any) => {
           const orderId = row?.uuid
           const quantity = row?._offerAmount
           const unitPrice = row?._wantAmount
           const totalAmount = quantity * unitPrice
-          return [
-            orderId,
-            'Date',
-            'Time',
-            quantity,
-            unitPrice,
-            totalAmount,
-            'Qty Left',
-            'Action',
-          ]
+          return [orderId, '-', '-', quantity, unitPrice, totalAmount, '-', '-']
+          // return [
+          //   orderId,
+          //   'Date',
+          //   'Time',
+          //   quantity,
+          //   unitPrice,
+          //   totalAmount,
+          //   'Qty Left',
+          //   'Action',
+          // ]
         })
         setRows(rowValues)
       }

@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setBuyOrderPayloadAmountsToTake,
   setBuyOrderPayloadOfferHashes,
+  setBuyOrderPayloadUUID,
   setBuyQuantityForBuyOrder,
   setBuyUnitPrice,
   setTotalAmountForBuying,
@@ -45,9 +46,11 @@ const TabBuyCreateBuyOrder = () => {
       if (res?.success && res?.data && res?.data?.length) {
         const offerHashes: any = []
         const amountsToTake: any = []
+        const uuid: any = []
         const total = res?.data.reduce((prev: any, curr: any) => {
           offerHashes.push(curr.hash)
           amountsToTake.push(curr.cab)
+          uuid.push(curr.uuid)
           return (prev += curr.cab * curr.rate)
         }, 0)
         const unitPriceLocal =
@@ -56,6 +59,7 @@ const TabBuyCreateBuyOrder = () => {
         dispatch(setBuyUnitPrice(unitPriceLocal))
         dispatch(setBuyOrderPayloadOfferHashes(offerHashes))
         dispatch(setBuyOrderPayloadAmountsToTake(amountsToTake))
+        dispatch(setBuyOrderPayloadUUID(uuid))
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.checkForFullFillOrder api :', err)

@@ -2,12 +2,13 @@ import { Paper } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
-import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setBuyQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import {
   getApprovedTokensBalanceBuyFlow,
+  getBalanceOnExchangeBuyFlow,
   getWalletBalanceBuyFlow,
 } from '../../../utils/marketplace.utils'
 import { getLocalItem } from '../../../utils/Storage'
@@ -40,12 +41,6 @@ const BuyToken: FC<BuyTokenProps> = () => {
     shallowEqual
   )
 
-  const dataForBuyCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_BUY_CALL
-  )
-  const dataToMakeCreateSellOrderCallLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.DATA_FOR_CREATE_SELL_ORDER_CALL
-  )
   const onGoingApproveLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW
   )
@@ -61,6 +56,7 @@ const BuyToken: FC<BuyTokenProps> = () => {
     if (accountAddress) {
       getWalletBalanceBuyFlow()
       getApprovedTokensBalanceBuyFlow()
+      getBalanceOnExchangeBuyFlow()
     }
   }, [accountAddress])
 
@@ -70,18 +66,8 @@ const BuyToken: FC<BuyTokenProps> = () => {
         mt: 1,
         borderRadius: '4px',
         p: 2,
-        pointerEvents:
-          dataForBuyCallLocalStorage ||
-          dataToMakeCreateSellOrderCallLocalStorage ||
-          onGoingApproveLocalStorage
-            ? 'none'
-            : 'all',
-        opacity:
-          dataForBuyCallLocalStorage ||
-          dataToMakeCreateSellOrderCallLocalStorage ||
-          onGoingApproveLocalStorage
-            ? 0.5
-            : 1,
+        pointerEvents: onGoingApproveLocalStorage ? 'none' : 'all',
+        opacity: onGoingApproveLocalStorage ? 0.5 : 1,
       }}
     >
       <CardRow

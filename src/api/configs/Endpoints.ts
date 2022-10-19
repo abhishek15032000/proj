@@ -75,6 +75,8 @@ export const URL_PATH = {
   transaction: {
     getTransactionByUser:
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
+    getTransactionById:
+      ENDPOINTS.carbonServiceURL + '/transaction/getTransactionById',
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',

@@ -3,7 +3,10 @@ import Web3 from 'web3'
 import { marketplaceCalls } from '../api/marketplaceCalls.api'
 import BlockchainCalls from '../blockchain/Blockchain'
 import { EXCHANGE_CONTRACT_ADDRESS } from '../config/exchange.config'
-import { LOCAL_STORAGE_VARS } from '../config/roles.config'
+import {
+  LOCAL_STORAGE_VARS,
+  MARKETPLACE_CALL_TYPES,
+} from '../config/constants.config'
 import {
   INR_USD_TOKEN_ADDRESS,
   TOKEN_CONTRACT_ADDRESS,
@@ -15,20 +18,28 @@ import {
   setBuyOrderPayloadOfferHashes,
   setBuyQuantityForApprove,
   setBuyQuantityForBuyOrder,
-  setBuyUnitPrice,
+  setBuyQuantityForDeposit,
   setExchangeBal,
   setExchangeBalBuyFlow,
   setOnGoingApproveRedux,
   setOnGoingApproveReduxBuyFlow,
+  setOngoingBuyOrderTransaction,
+  setOnGoingBuyOrderTxIdRedux,
+  setOngoingDepositTransactionBuyFlow,
+  setOngoingDepositTransactionSellFlow,
+  setOnGoingDepositTxIdReduxBuyFlow,
+  setOnGoingDepositTxIdReduxSellFlow,
+  setOngoingSellOrderTransaction,
   setSellQuantityForApprove,
   setSellQuantityForDeposit,
   setSellQuantityForSellOrder,
-  setTotalAmountForBuying,
+  setSellUnitPriceForSellOrder,
   setWalletBal,
   setWalletBalBuyFlow,
 } from '../redux/Slices/marketplaceSlice'
 import { store } from '../redux/store'
 import { setLocalItem } from './Storage'
+import { transactionCalls } from '../api/transactionCalls.api'
 
 declare let window: any
 
@@ -39,91 +50,103 @@ const provider =
 
 export async function getWalletBalance() {
   const accountAddress = store.getState()?.wallet?.accountAddress
-  try {
-    const tokenContractFunctions = await BlockchainCalls.token_caller()
-    const balanceCallRes = await tokenContractFunctions.balanceOf(
-      accountAddress
-    )
-    if (balanceCallRes) {
-      const bal =
-        Math.round(Number(balanceCallRes.toString()) * 10 ** -18 * 1000) / 1000
-      store.dispatch(setWalletBal(bal))
+  if (accountAddress) {
+    try {
+      const tokenContractFunctions = await BlockchainCalls.token_caller()
+      const balanceCallRes = await tokenContractFunctions.balanceOf(
+        accountAddress
+      )
+      if (balanceCallRes) {
+        const bal =
+          Math.round(Number(balanceCallRes.toString()) * 10 ** -18 * 1000) /
+          1000
+        store.dispatch(setWalletBal(bal))
+      }
+    } catch (err) {
+      console.log(err)
     }
-  } catch (err) {
-    console.log(err)
   }
 }
 
 export async function getBalanceOnExchange() {
   const accountAddress = store.getState()?.wallet?.accountAddress
-  try {
-    const exchangeContractFunctions = await BlockchainCalls.exchange_caller()
-    const exchangeBal = await exchangeContractFunctions.balances(
-      accountAddress,
-      TOKEN_CONTRACT_ADDRESS
-    )
-    const bigNumExchangeBal = ethers.BigNumber.from(exchangeBal)
-    store.dispatch(setExchangeBal(bigNumExchangeBal.toNumber()))
-  } catch (err) {
-    console.log(err)
+  if (accountAddress) {
+    try {
+      const exchangeContractFunctions = await BlockchainCalls.exchange_caller()
+      const exchangeBal = await exchangeContractFunctions.balances(
+        accountAddress,
+        TOKEN_CONTRACT_ADDRESS
+      )
+      const bigNumExchangeBal = ethers.BigNumber.from(exchangeBal)
+      store.dispatch(setExchangeBal(bigNumExchangeBal.toNumber()))
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 
 export async function getApprovedTokensBalance() {
   const accountAddress = store.getState()?.wallet?.accountAddress
-  try {
-    const tokenContractFunctions = await BlockchainCalls.token_caller()
-    const approvedTokensBalRes = await tokenContractFunctions.allowance(
-      accountAddress,
-      EXCHANGE_CONTRACT_ADDRESS
-    )
-    if (approvedTokensBalRes) {
-      const bigNumExchangeBal = ethers.BigNumber.from(approvedTokensBalRes)
-      store.dispatch(setApprovedTokensBal(bigNumExchangeBal.toNumber()))
+  if (accountAddress) {
+    try {
+      const tokenContractFunctions = await BlockchainCalls.token_caller()
+      const approvedTokensBalRes = await tokenContractFunctions.allowance(
+        accountAddress,
+        EXCHANGE_CONTRACT_ADDRESS
+      )
+      if (approvedTokensBalRes) {
+        const bigNumExchangeBal = ethers.BigNumber.from(approvedTokensBalRes)
+        store.dispatch(setApprovedTokensBal(bigNumExchangeBal.toNumber()))
+      }
+    } catch (err) {
+      console.log(err)
     }
-  } catch (err) {
-    console.log(err)
   }
 }
 
 export async function getWalletBalanceBuyFlow() {
   const accountAddress = store.getState()?.wallet?.accountAddress
-  try {
-    const tokenContractFunctions = await BlockchainCalls.inr_usd_token_caller()
-    const balanceCallRes = await tokenContractFunctions.balanceOf(
-      accountAddress
-    )
-    if (balanceCallRes) {
-      const bigNumExchangeBal = ethers.BigNumber.from(balanceCallRes)
-      store.dispatch(setWalletBalBuyFlow(bigNumExchangeBal.toNumber()))
+  if (accountAddress) {
+    try {
+      const tokenContractFunctions =
+        await BlockchainCalls.inr_usd_token_caller()
+      const balanceCallRes = await tokenContractFunctions.balanceOf(
+        accountAddress
+      )
+      if (balanceCallRes) {
+        const bigNumExchangeBal = ethers.BigNumber.from(balanceCallRes)
+        store.dispatch(setWalletBalBuyFlow(bigNumExchangeBal.toNumber()))
+      }
+    } catch (err) {
+      console.log(err)
     }
-  } catch (err) {
-    console.log(err)
   }
 }
 
 export async function getBalanceOnExchangeBuyFlow() {
   const accountAddress = store.getState()?.wallet?.accountAddress
-  try {
-    const exchangeContractFunctions = await BlockchainCalls.exchange_caller()
-    const exchangeBal = await exchangeContractFunctions.balances(
-      accountAddress,
-      TOKEN_CONTRACT_ADDRESS
-    )
-    const bigNumExchangeBal = ethers.BigNumber.from(exchangeBal)
-    store.dispatch(setExchangeBalBuyFlow(bigNumExchangeBal.toNumber()))
-  } catch (err) {
-    console.log(err)
+  if (accountAddress) {
+    try {
+      const exchangeContractFunctions = await BlockchainCalls.exchange_caller()
+      const exchangeBal = await exchangeContractFunctions.balances(
+        accountAddress,
+        INR_USD_TOKEN_ADDRESS
+      )
+      const bigNumExchangeBal = ethers.BigNumber.from(exchangeBal)
+      store.dispatch(setExchangeBalBuyFlow(bigNumExchangeBal.toNumber()))
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 
 export async function getApprovedTokensBalanceBuyFlow() {
   const accountAddress = store.getState()?.wallet?.accountAddress
   try {
-    const tokenContractFunctions = await BlockchainCalls.token_caller()
+    const tokenContractFunctions = await BlockchainCalls.inr_usd_token_caller()
     const approvedTokensBalRes = await tokenContractFunctions.allowance(
       accountAddress,
-      INR_USD_TOKEN_ADDRESS
+      EXCHANGE_CONTRACT_ADDRESS
     )
     if (approvedTokensBalRes) {
       const bigNumExchangeBal = ethers.BigNumber.from(approvedTokensBalRes)
@@ -174,9 +197,9 @@ export async function requestApprovalForTokenBuy() {
     store.dispatch(setOnGoingApproveRedux(null))
     setLocalItem(LOCAL_STORAGE_VARS?.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
     setLocalItem(LOCAL_STORAGE_VARS?.BUY_QUANTITY_FOR_APPROVE, null)
-    const inrContractFunctions = await BlockchainCalls.token_caller()
+    const inrContractFunctions = await BlockchainCalls.inr_usd_token_caller()
     const approveFnRes = await inrContractFunctions.approve(
-      INR_USD_TOKEN_ADDRESS, // exchangeAddress
+      EXCHANGE_CONTRACT_ADDRESS, // exchangeAddress
       Number(buyQuantityForApprove)
     )
     if (approveFnRes) {
@@ -198,17 +221,22 @@ export async function requestApprovalForTokenBuy() {
   }
 }
 export const getTransaction = async (txId: string) => {
-  try {
-    const res: any = await provider.getTransaction(txId)
-    if (res) {
-      let success = false
-      if (res?.blockHash) {
-        success = true
+  if (txId) {
+    try {
+      const res: any = await provider.getTransaction(txId)
+      if (res) {
+        let success = false
+        if (res?.blockHash) {
+          success = true
+        }
+        return { res, success }
       }
-      return { res, success }
+    } catch (error) {
+      console.log(
+        'Error in transactionCalls.getTransactionByUser api : ',
+        error
+      )
     }
-  } catch (error) {
-    console.log('Error in transactionCalls.getTransactionByUser api : ', error)
   }
 }
 
@@ -225,10 +253,25 @@ export async function depositERC20() {
   }
   try {
     const depositERC20Res = await marketplaceCalls.depositERC20(payload)
+    console.log('depositERC20Res', depositERC20Res)
+
     if (depositERC20Res.success) {
+      // return
+      const txId = depositERC20Res?.data?.transactionId
       getApprovedTokensBalance()
       getBalanceOnExchange()
+      store.dispatch(setOnGoingDepositTxIdReduxSellFlow(txId))
       store.dispatch(setSellQuantityForDeposit(0))
+      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_SELL_FLOW, txId)
+      setLocalItem(
+        LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_DEPOSIT,
+        sellQuantityForDeposit
+      )
+      checkBlockchainTransactionComplete(
+        txId,
+        MARKETPLACE_CALL_TYPES.DEPOSIT_SELL_FLOW,
+        setOngoingDepositTransactionSellFlow
+      )
       alert('amount deposited')
     } else {
       alert(depositERC20Res?.error)
@@ -251,9 +294,22 @@ export async function depositERC20BuyFlow() {
   try {
     const depositERC20Res = await marketplaceCalls.depositERC20(payload)
     if (depositERC20Res.success) {
-      getApprovedTokensBalance()
-      getBalanceOnExchange()
-      store.dispatch(setBuyQuantityForApprove(0))
+      const txId = depositERC20Res?.data?.transactionId
+
+      getApprovedTokensBalanceBuyFlow()
+      getBalanceOnExchangeBuyFlow()
+      store.dispatch(setBuyQuantityForDeposit(0))
+      store.dispatch(setOnGoingDepositTxIdReduxBuyFlow(txId))
+      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_BUY_FLOW, txId)
+      setLocalItem(
+        LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_DEPOSIT,
+        buyQuantityForDeposit
+      )
+      checkBlockchainTransactionComplete(
+        txId,
+        MARKETPLACE_CALL_TYPES.DEPOSIT_BUY_FLOW,
+        setOngoingDepositTransactionBuyFlow
+      )
       alert('amount deposited')
     } else {
       alert(depositERC20Res?.error)
@@ -271,8 +327,9 @@ export async function createSellOrder() {
       store.getState()?.marketplace?.sellUnitPriceForSellOrder
     const accountAddress = store.getState()?.wallet?.accountAddress
 
-    const nonce = await provider.getTransactionCount(accountAddress)
-    const hashAndVRS = await getHashAndVRS('sell')
+    // const nonce = await provider.getTransactionCount(accountAddress)
+    const randomNumber = new Date().getTime()
+    const hashAndVRS = await getHashAndVRS('sell', randomNumber)
     if (hashAndVRS) {
       const { hash, v, r, s } = hashAndVRS
 
@@ -280,14 +337,12 @@ export async function createSellOrder() {
         _maker: accountAddress, //wallet address
         _offerAsset: TOKEN_CONTRACT_ADDRESS, // Carbon Token address
         _wantAsset: INR_USD_TOKEN_ADDRESS, // INR/USD Token address
-        // _offerAmount: Number(sellQuantityForSellOrder), //quantity
-        // _wantAmount: Number(sellUnitPrice), //unit
         _offerAmount: Number(sellQuantityForSellOrder), //quantity
-        // _wantAmount: Number(sellQuantityForSellOrder), //unit
         _wantAmount: Number(sellUnitPriceForSellOrder), //unit
         _feeAsset: TOKEN_CONTRACT_ADDRESS, //carbon token address
         _feeAmount: 1, //1
-        _nonce: nonce, //like in submit see getnonce()
+        // _nonce: nonce, //like in submit see getnonce()
+        _nonce: randomNumber, //like in submit see getnonce()
         hash: hash,
         _v: v,
         _r: r,
@@ -295,10 +350,23 @@ export async function createSellOrder() {
       }
 
       const createOrderRes = await marketplaceCalls.createOrder(payload)
+
       if (createOrderRes.success) {
+        const txId =
+          createOrderRes?.data?.transactions?.create[0]?.transactionHash
         getBalanceOnExchange()
         getApprovedTokensBalance()
-        store.dispatch(setSellQuantityForSellOrder(0))
+
+        setLocalItem(
+          LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_DEPOSIT,
+          sellQuantityForSellOrder
+        )
+        setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_SELL_ORDER_TX_ID, txId)
+        checkBlockchainTransactionComplete(
+          txId,
+          MARKETPLACE_CALL_TYPES.CREATE_SELL_ORDER,
+          setOngoingSellOrderTransaction
+        )
         alert('Sell order created')
       } else {
         alert(createOrderRes?.error)
@@ -316,36 +384,57 @@ export async function createBuyOrder() {
       store.getState()?.marketplace?.buyOrderPayloadOfferHashes
     const buyOrderPayloadAmountsToTake =
       store.getState()?.marketplace?.buyOrderPayloadAmountsToTake
+    const buyOrderPayloadUUID =
+      store.getState()?.marketplace?.buyOrderPayloadUUID
 
-    const nonce = await provider.getTransactionCount(accountAddress)
-    const hashAndVRS = await getHashAndVRS('buy')
+    // const nonce = await provider.getTransactionCount(accountAddress)
+    const randomNumber = new Date().getTime()
+    const hashAndVRS = await getHashAndVRS('buy', randomNumber)
 
     if (hashAndVRS) {
       const { hash, v, r, s } = hashAndVRS
       const payload = {
-        // uuid: 'string', //!todo
+        uuid: buyOrderPayloadUUID, //!todo
         filler: accountAddress, //!todo
         _offerHashes: buyOrderPayloadOfferHashes,
         _amountsToTake: buyOrderPayloadAmountsToTake,
         _feeAsset: INR_USD_TOKEN_ADDRESS, //inr_usd token address
         _feeAmount: 1, //1
-        _nonce: nonce, //like in submit see getnonce()
+        _nonce: randomNumber, //like in submit see getnonce()
         hash: hash,
         _v: v,
         _r: r,
         _s: s,
       }
-      console.log('payload', payload)
-
       const createOrderRes = await marketplaceCalls.fillOrder(payload)
       if (createOrderRes.success) {
+        // store.dispatch(setIntervalTime(4))`
+
         getBalanceOnExchange()
         getApprovedTokensBalanceBuyFlow()
-        store.dispatch(setBuyQuantityForBuyOrder(0))
-        store.dispatch(setBuyUnitPrice(0))
-        store.dispatch(setTotalAmountForBuying(0))
+
         store.dispatch(setBuyOrderPayloadOfferHashes(null))
         store.dispatch(setBuyOrderPayloadAmountsToTake(null))
+
+        const txId =
+          createOrderRes?.data?.transactions?.create[0]?.transactionHash
+        const totalBuyQuantity = buyOrderPayloadAmountsToTake.reduce(
+          (prev: any, curr: any) => {
+            return (prev += curr)
+          },
+          0
+        )
+        store.dispatch(setOnGoingBuyOrderTxIdRedux(txId))
+        setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_BUY_ORDER_TX_ID, txId)
+        setLocalItem(
+          LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_BUY_ORDER,
+          totalBuyQuantity
+        )
+        checkBlockchainTransactionComplete(
+          txId,
+          MARKETPLACE_CALL_TYPES.CREATE_BUY_ORDER,
+          setOngoingBuyOrderTransaction
+        )
         alert('Buy order created')
       } else {
         alert(createOrderRes.error)
@@ -356,7 +445,7 @@ export async function createBuyOrder() {
   }
 }
 
-async function getHashAndVRS(type: string) {
+async function getHashAndVRS(type: string, randomNumber: any) {
   try {
     let hash: any
     const accountAddress = store.getState()?.wallet?.accountAddress
@@ -380,7 +469,8 @@ async function getHashAndVRS(type: string) {
         { type: 'uint256', value: sellUnitPriceForSellOrderCopy },
         { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
         { type: 'uint256', value: feeAmount },
-        { type: 'uint64', value: nonce }
+        // { type: 'uint64', value: nonce }
+        { type: 'uint64', value: randomNumber }
       )
       // console.log('hashPayload', {
       //   '': { type: 'string', value: 'makeOffer' },
@@ -404,17 +494,6 @@ async function getHashAndVRS(type: string) {
       const nonce: any = await provider.getTransactionCount(accountAddress)
       const feeAmount: any = 1
 
-      // console.log(
-      //   'hash payload',
-      //   'fillOffers',
-      //   accountAddress,
-      //   buyOrderPayloadOfferHashes,
-      //   buyOrderPayloadAmountsToTake,
-      //   INR_USD_TOKEN_ADDRESS,
-      //   feeAmount,
-      //   nonce
-      // )
-
       hash = new Web3().utils.soliditySha3(
         { type: 'string', value: 'fillOffers' },
         { type: 'address', value: accountAddress },
@@ -422,7 +501,7 @@ async function getHashAndVRS(type: string) {
         { type: 'uint256[]', value: buyOrderPayloadAmountsToTake },
         { type: 'address', value: INR_USD_TOKEN_ADDRESS },
         { type: 'uint256', value: feeAmount },
-        { type: 'uint64', value: nonce }
+        { type: 'uint64', value: randomNumber }
       )
     }
 
@@ -439,5 +518,140 @@ async function getHashAndVRS(type: string) {
     return { v, r, s, hash }
   } catch (e) {
     console.log(e)
+  }
+}
+
+export function checkBlockchainTransactionComplete(
+  txId: string,
+  callType: string,
+  setOngoingTransaction: any
+) {
+  if (txId && callType && setOngoingTransaction) {
+    const intervalId = setInterval(() => {
+      getTransactionsAPI(txId, callType, setOngoingTransaction, intervalId)
+    }, 3000)
+    checkForPendingTransactions(
+      txId,
+      callType,
+      setOngoingTransaction,
+      intervalId
+    )
+  }
+}
+
+const checkForPendingTransactions = async (
+  txId: string,
+  callType: string,
+  setOngoingTransaction: any,
+  intervalId: any
+) => {
+  console.log('Web3 check started', txId)
+  try {
+    const receipt: any = await getTransaction(txId)
+    if (receipt) {
+      //This means approve call is done and put in blockchain
+      const newReceipt: any = await receipt?.res.wait()
+      if (newReceipt?.blockHash && txId) {
+        console.log('web3 tx complete')
+        callsToMakeAfterBlockchainSuccess(
+          callType,
+          setOngoingTransaction,
+          intervalId
+        )
+      } else {
+        store.dispatch(setOngoingTransaction({ txId, complete: false }))
+      }
+      getApprovedTokensBalance()
+    }
+  } catch (err) {
+    console.log('Error ', err)
+  }
+}
+
+const getTransactionsAPI = async (
+  txId: string,
+  callType: string,
+  setOngoingTransaction: any,
+  intervalId: any
+) => {
+  if (txId) {
+    try {
+      const res = await transactionCalls.getTransactionById(txId)
+      if (res?.success) {
+        store.dispatch(
+          setOngoingTransaction({
+            txId,
+            complete: res?.data?.confirm ? true : false,
+          })
+        )
+        if (res?.data?.confirm && txId) {
+          callsToMakeAfterBlockchainSuccess(
+            callType,
+            setOngoingTransaction,
+            intervalId
+          )
+        } else {
+          store.dispatch(setOngoingTransaction({ txId, complete: false }))
+        }
+      }
+    } catch (err) {
+      console.log('Error ', err)
+    }
+  }
+}
+
+const callsToMakeAfterBlockchainSuccess = (
+  callType: string,
+  setOngoingTransaction: any,
+
+  intervalId: any
+) => {
+  switch (callType) {
+    case MARKETPLACE_CALL_TYPES.DEPOSIT_SELL_FLOW: {
+      clearInterval(intervalId)
+
+      store.dispatch(setOngoingTransaction(null))
+      store.dispatch(setSellQuantityForDeposit(0))
+
+      getWalletBalance()
+      getApprovedTokensBalance()
+      getBalanceOnExchange()
+
+      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_SELL_FLOW, null)
+
+      return
+    }
+    case MARKETPLACE_CALL_TYPES.DEPOSIT_BUY_FLOW: {
+      return
+    }
+    case MARKETPLACE_CALL_TYPES.CREATE_BUY_ORDER: {
+      clearInterval(intervalId)
+
+      store.dispatch(setBuyQuantityForBuyOrder(0))
+      store.dispatch(setOngoingTransaction(null))
+
+      getWalletBalanceBuyFlow()
+      getApprovedTokensBalanceBuyFlow()
+      getBalanceOnExchangeBuyFlow()
+
+      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_BUY_ORDER_TX_ID, null)
+
+      return
+    }
+    case MARKETPLACE_CALL_TYPES.CREATE_SELL_ORDER: {
+      clearInterval(intervalId)
+
+      store.dispatch(setOngoingTransaction(null))
+      store.dispatch(setSellQuantityForSellOrder(0))
+      store.dispatch(setSellUnitPriceForSellOrder(0))
+
+      getWalletBalance()
+      getApprovedTokensBalance()
+      getBalanceOnExchange()
+
+      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_SELL_ORDER_TX_ID, null)
+
+      return
+    }
   }
 }

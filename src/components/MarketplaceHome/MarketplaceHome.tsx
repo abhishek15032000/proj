@@ -32,6 +32,7 @@ const MarketplaceHome: FC<MarketplaceHomeProps> = (props) => {
           tabArray={['Buy/Sell', 'Projects']}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
+          sx={{ mt: 0 }}
         />
 
         {tabIndex === 1 && <BuySellComponent />}

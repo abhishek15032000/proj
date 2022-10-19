@@ -195,15 +195,11 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       const verifyPDFAndMintTokenRes =
         await verifierCalls.verifyPDFAndMintToken(verifyPDFAndMintTokenpayload)
       if (verifyPDFAndMintTokenRes?.data.success) {
-        //If verifer wants to make some more /report/submit (blockchain) calls then different nonce needs to be passed to indicate different transaction
         if (verifyPDFAndMintTokenRes?.data?.data.success) {
           setShowActionSuccessModal(true)
         } else {
           alert(verifyPDFAndMintTokenRes?.data?.data.error)
         }
-      }
-      if (!verifyPDFAndMintTokenRes?.success) {
-        alert(verifyPDFAndMintTokenRes?.error)
       }
     } catch (err) {
       alert(`Something went wrong : ${err}`)

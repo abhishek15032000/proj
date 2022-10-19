@@ -3,7 +3,7 @@ import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import CCTable from '../../../atoms/CCTable'
-import { LOCAL_STORAGE_VARS } from '../../../config/roles.config'
+import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setBuyQuantityForApprove,
