@@ -256,5 +256,4 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   )
 }
 
-
 export default ListOfProjectsDashboard

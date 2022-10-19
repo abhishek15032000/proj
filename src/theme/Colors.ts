@@ -45,4 +45,5 @@ export const AllColors = {
   lightCyanBackground: '#3DF3BA',
   darkOrangeBackground: '#E6A603',
   lightOrangeBackground2: '#f2bc4b',
+  notificationRead: '#F7F8F9',
 }

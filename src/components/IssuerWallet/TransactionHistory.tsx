@@ -24,6 +24,7 @@ import TextButton from '../../atoms/TextButton/TextButton'
 import { pathNames } from '../../routes/pathNames'
 import { Colors } from '../../theme'
 import NoData from '../../atoms/NoData/NoData'
+import BlockchainCalls from '../../blockchain/Blockchain'
 
 const headings = [
   'Transaction ID',
@@ -138,24 +139,48 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
     loadTableData(filteredData)
   }
 
-  const getTransactions = async () => {
-    try {
-      setTransactionLoading(true)
-      const res: any = await transactionCalls.getTransactionByUser(
-        '0x5885A90Aa805548FcF1B1C2B164DB68fFf3db6Fd'
+  const getFilterResults = async () => {
+    const userAddress =
+      await BlockchainCalls.getConnectionStatusAndAddress().then(
+        (response) => response.address
       )
-      if (res?.success) {
-        loadTableData(res?.data)
-        setTransactions(res?.data)
+    // const userAddress = '0x5885A90Aa805548FcF1B1C2B164DB68fFf3db6Fd'
+
+    let payload =
+      'user_address=' +
+      userAddress +
+      '&start_date=' +
+      moment(startDate).toISOString() +
+      '&end_date=' +
+      moment(endDate).toISOString()
+
+    if (dropdown !== 'All') {
+      if (dropdown === 'Sell') {
+        payload = payload + '&type=Make'
+      } else {
+        payload = payload + '&type=Fill'
       }
-    } catch (error) {
-      console.log(
-        'Error in transactionCalls.getTransactionByUser api : ',
-        error
-      )
-    } finally {
-      setTransactionLoading(false)
     }
+
+    transactionCalls.getTransactionByUser(payload).then((response) => {
+      loadTableData(response.data)
+    })
+  }
+
+  const getTransactions = async () => {
+    setTransactionLoading(true)
+
+    BlockchainCalls.getConnectionStatusAndAddress().then((response) => {
+      transactionCalls
+        .getTransactionByUser('user_address=' + response.address)
+        // .getTransactionByUser('user_address=' + '0x5885A90Aa805548FcF1B1C2B164DB68fFf3db6Fd')
+        .then((response) => {
+          loadTableData(response.data)
+          setTransactions(response.data)
+          setTransactionLoading(false)
+        })
+        .catch((e) => setTransactionLoading(false))
+    })
   }
 
   return (
@@ -177,95 +202,97 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
         Transaction History
       </Typography>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', pt: 2, pb: 2 }}>
-        <FormControl>
-          <InputLabel
-            sx={{
-              color: '#006B5E',
-            }}
-          >
-            Project Type
-          </InputLabel>
-          <Select
-            sx={{
-              width: '180px',
-              mr: 4,
-              color: '#006B5E',
-            }}
-            value={dropdown}
-            onChange={(e) => setDropdown(e.target.value)}
-            input={
-              <OutlinedInput
-                sx={{
-                  color: '#006B5E',
-                }}
-                label="Project Type"
-              />
-            }
-          >
-            <MenuItem value={'All'}>All</MenuItem>
-            <MenuItem value={'Buy'}>Buy</MenuItem>
-            <MenuItem value={'Sell'}>Sell</MenuItem>
-          </Select>
-        </FormControl>
-        <Box sx={{ width: '180px', mr: 4 }}>
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            components={{
-              OpenPickerIcon: CalendarMonthOutlinedIcon,
-            }}
-            renderInput={(params: any) => {
-              return (
-                <CCInputField
-                  {...params}
-                  style={{ backgroundColor: 'white' }}
-                  required={false}
+      {!transactionLoading && transactions?.length > 0 && (
+        <Box sx={{ display: 'flex', alignItems: 'center', pt: 2, pb: 2 }}>
+          <FormControl>
+            <InputLabel
+              sx={{
+                color: '#006B5E',
+              }}
+            >
+              Project Type
+            </InputLabel>
+            <Select
+              sx={{
+                width: '180px',
+                mr: 4,
+                color: '#006B5E',
+              }}
+              value={dropdown}
+              onChange={(e) => setDropdown(e.target.value)}
+              input={
+                <OutlinedInput
+                  sx={{
+                    color: '#006B5E',
+                  }}
+                  label="Project Type"
                 />
-              )
-            }}
-            onChange={(e) => {
-              if (e !== null) {
-                setStartDate(e)
               }
+            >
+              <MenuItem value={'All'}>All</MenuItem>
+              <MenuItem value={'Buy'}>Buy</MenuItem>
+              <MenuItem value={'Sell'}>Sell</MenuItem>
+            </Select>
+          </FormControl>
+          <Box sx={{ width: '180px', mr: 4 }}>
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              components={{
+                OpenPickerIcon: CalendarMonthOutlinedIcon,
+              }}
+              renderInput={(params: any) => {
+                return (
+                  <CCInputField
+                    {...params}
+                    style={{ backgroundColor: 'white' }}
+                    required={false}
+                  />
+                )
+              }}
+              onChange={(e) => {
+                if (e !== null) {
+                  setStartDate(e)
+                }
+              }}
+            />
+          </Box>
+
+          <Box sx={{ width: '180px', mr: 4 }}>
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              components={{
+                OpenPickerIcon: CalendarMonthOutlinedIcon,
+              }}
+              renderInput={(params: any) => {
+                return (
+                  <CCInputField
+                    {...params}
+                    style={{ backgroundColor: 'white' }}
+                    required={false}
+                  />
+                )
+              }}
+              onChange={(e) => {
+                if (e !== null) {
+                  setEndDate(e)
+                }
+              }}
+            />
+          </Box>
+
+          <TextButton
+            title="Search"
+            sx={{
+              backgroundColor: Colors.darkOrangeBackground,
+              boxShadow: 3,
             }}
+            textStyle={{ color: Colors.textColorDarkGreen }}
+            onClick={getFilterResults}
           />
         </Box>
-
-        <Box sx={{ width: '180px', mr: 4 }}>
-          <DatePicker
-            label="End Date"
-            value={endDate}
-            components={{
-              OpenPickerIcon: CalendarMonthOutlinedIcon,
-            }}
-            renderInput={(params: any) => {
-              return (
-                <CCInputField
-                  {...params}
-                  style={{ backgroundColor: 'white' }}
-                  required={false}
-                />
-              )
-            }}
-            onChange={(e) => {
-              if (e !== null) {
-                setEndDate(e)
-              }
-            }}
-          />
-        </Box>
-
-        <TextButton
-          title="Search"
-          sx={{
-            backgroundColor: Colors.darkOrangeBackground,
-            boxShadow: 3,
-          }}
-          textStyle={{ color: Colors.textColorDarkGreen }}
-          // onClick={filterTable}
-        />
-      </Box>
+      )}
 
       {transactionLoading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
 

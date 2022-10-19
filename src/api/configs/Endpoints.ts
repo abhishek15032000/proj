@@ -82,5 +82,6 @@ export const URL_PATH = {
   notification: {
     getNotification:
       ENDPOINTS.notificationServiceURL + '/notification/getNotifications',
+      updateRead: ENDPOINTS.notificationServiceURL + '/notification/updateInAppNotification'
   },
 }

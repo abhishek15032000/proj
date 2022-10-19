@@ -69,6 +69,8 @@ const NotificationList: FC<NotificationListProps> = (props) => {
               status={item.extra_data?.action}
               title={'XYZ accepted the project for verification'}
               time={item.createdAt}
+              read={item.inAppRead}
+              id={item.id}
             />
           ))}
 

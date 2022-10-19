@@ -7,6 +7,7 @@ import { Colors } from '../../theme'
 import CircleIcon from '@mui/icons-material/Circle'
 import ScheduleIcon from '@mui/icons-material/Schedule'
 import moment from 'moment'
+import { NOTIFICATION } from '../../api/notifications.api'
 
 // Local Imports
 
@@ -14,21 +15,40 @@ interface NotificationTileProps {
   status?: any
   title?: any
   time?: any
+  read?: any
+  id?: any
 }
 
 const NotificationTile: FC<NotificationTileProps> = (props) => {
+  const updateRead = () => {
+    const payload = {
+      id: props.id,
+      inAppRead: true,
+    }
+
+    NOTIFICATION.updateRead(payload)
+  }
+
   return (
-    <>
+    <Box onClick={updateRead}>
       <Box
         sx={{
           // border: '2px solid',
+          backgroundColor: props.read ? Colors.notificationRead : Colors.white,
           height: '110px',
           width: '100%',
           p: 2,
           display: 'flex',
         }}
       >
-        <CircleIcon style={{ height: 18, color: Colors.textButtonColor }} />
+        <CircleIcon
+          style={{
+            height: 18,
+            color: props.read
+              ? Colors.lightGreenBackground3
+              : Colors.textButtonColor,
+          }}
+        />
         <Box>
           <Typography
             sx={{
@@ -69,7 +89,7 @@ const NotificationTile: FC<NotificationTileProps> = (props) => {
         </Box>
       </Box>
       <Divider />
-    </>
+    </Box>
   )
 }
 
