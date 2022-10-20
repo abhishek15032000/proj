@@ -142,7 +142,7 @@ const Login = () => {
           <Box
             component="img"
             src={Images.logo}
-            sx={{ height: '50px', marginLeft: -2, mb: 2 }}
+            sx={{ height: '50px', marginLeft: -2, mb: 2, mt: 2 }}
           />
 
           <Box sx={{ mb: 3 }}>

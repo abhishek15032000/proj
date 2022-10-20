@@ -14,7 +14,7 @@ import LoaderOverlay from '../../components/LoderOverlay'
 const StepOneTwoFa = (props: TwoFaProps) => {
   const uuid = getLocalItem('uuid')
 
-  const [otp, setOtp] = useState<any>()
+  const [otp, setOtp] = useState<any>('')
   const [openModal, setOpenModal] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -90,7 +90,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
               lineHeight: '24px',
             }}
           >
-            {'Please enter the verification code sent to your registered email id below.'}
+            {'Please enter the verification code sent to your registered '}
           </Typography>
           <Typography
             sx={{
@@ -99,7 +99,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
               lineHeight: '24px',
             }}
           >
-              {'This code is valid for 90 secs.'}
+              {'email id below. This code is valid for 90 secs.'}
           </Typography>
         </Box>
 
@@ -119,7 +119,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
             border: 'none',
             borderRadius: 8,
             backgroundColor: '#E9EEEC',
-            marginRight: 25,
+            marginRight: 5,
           }}
         />
         <Typography align="right" sx={{ py: 3, fontWeight: 500, fontSize: 14 }}>
