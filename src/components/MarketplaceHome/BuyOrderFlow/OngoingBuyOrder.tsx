@@ -49,7 +49,7 @@ const OngoingBuyOrder = () => {
             textAlign: 'center',
           }}
         >
-          <Typography>No Ongoing Transactions Pending for Approve</Typography>
+          <Typography>No Ongoing Transactions Pending for Buy Order</Typography>
         </Box>
       )}
     </>

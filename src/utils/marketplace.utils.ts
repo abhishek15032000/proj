@@ -16,6 +16,7 @@ import {
   setApprovedTokensBalBuyFlow,
   setBuyOrderPayloadAmountsToTake,
   setBuyOrderPayloadOfferHashes,
+  setBuyOrderPayloadUUID,
   setBuyQuantityForApprove,
   setBuyQuantityForBuyOrder,
   setBuyQuantityForDeposit,
@@ -416,16 +417,18 @@ export async function createBuyOrder() {
         store.dispatch(setBuyOrderPayloadOfferHashes(null))
         store.dispatch(setBuyOrderPayloadAmountsToTake(null))
 
-        const txId =
-          createOrderRes?.data?.transactions?.create[0]?.transactionHash
+        const txId = createOrderRes?.data?.transactionHash
         const totalBuyQuantity = buyOrderPayloadAmountsToTake.reduce(
           (prev: any, curr: any) => {
             return (prev += curr)
           },
           0
         )
+        store.dispatch(setBuyOrderPayloadUUID(null))
+        store.dispatch(setBuyOrderPayloadOfferHashes(null))
+        store.dispatch(setBuyOrderPayloadAmountsToTake(null))
         store.dispatch(setOnGoingBuyOrderTxIdRedux(txId))
-        setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_BUY_ORDER_TX_ID, txId)
+        setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_BUY_ORDER_TX_ID, txId || '')
         setLocalItem(
           LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_BUY_ORDER,
           totalBuyQuantity

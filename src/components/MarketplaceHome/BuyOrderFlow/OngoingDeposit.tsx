@@ -49,7 +49,7 @@ const OngoingDeposit = () => {
             textAlign: 'center',
           }}
         >
-          <Typography>No Ongoing Transactions Pending for Approve</Typography>
+          <Typography>No Ongoing Transactions Pending for Deposit</Typography>
         </Box>
       )}
     </>
