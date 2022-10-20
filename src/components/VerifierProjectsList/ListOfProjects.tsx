@@ -23,6 +23,8 @@ import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import NoData from '../../atoms/NoData/NoData'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
+import { getLocalItem } from '../../utils/Storage'
+import TabSelector from '../../atoms/TabSelector/TabSelector'
 
 const headingsNew = [
   'Reference ID',
@@ -59,6 +61,15 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const [tabIndex, setTabIndex] = useState(1)
   const [rowsNew, setRowsNew]: any = useState([{}])
   const [rowsRegistered, setRowsRegistered]: any = useState([{}])
+  const [newRequests, setNewRequests] = useState(0)
+
+  useEffect(() => {
+    verifierCalls
+      .getVerifierProjectDashboardStats(getLocalItem('userDetails')?.user_id)
+      .then((response) => {
+        setNewRequests(response.data?.new_requests)
+      })
+  }, [])
 
   useEffect(() => {
     const newData: any = [],
@@ -232,16 +243,26 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       sx={{
         width: '100%',
         borderRadius: '8px',
-        mt: 4,
+        mt: 2,
         p: 2,
       }}
     >
-      <TabSelectorVerifier
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-        newProjects={4}
-      />
+      {newRequests === 0 && (
+        <TabSelector
+          sx={{ marginTop: 0 }}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          tabArray={['New', 'Registered']}
+        />
+      )}
 
+      {newRequests > 0 && (
+        <TabSelectorVerifier
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          newProjects={newRequests}
+        />
+      )}
       {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={60} />}
 
       {!props.loading &&

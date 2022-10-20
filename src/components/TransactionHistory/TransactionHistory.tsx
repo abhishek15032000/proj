@@ -1,5 +1,5 @@
 // React Imports
-import React from 'react'
+import React, { useEffect } from 'react'
 
 // MUI Imports
 import { Grid, Box, Typography, Paper, Divider } from '@mui/material'
@@ -11,8 +11,17 @@ import TransactionHistoryImg from '../../assets/Images/illustrations/Transaction
 import { Colors } from '../../theme'
 import CCTitleValue from '../../atoms/CCTitleValue/CCTitleValue'
 import OrderDetails from './OrderDetails'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const TransactionHistory = (props: TransactionHistoryProps) => {
+  const navigate = useNavigate()
+  const location: any = useLocation()
+
+  useEffect(() => {
+    console.log('location')
+    console.log(JSON.stringify(location, null, 4))
+  }, [])
+
   return (
     <Box sx={{ p: 0 }}>
       <Grid
@@ -22,11 +31,11 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader title="Transaction History" />
+          <BackHeader title="Transaction History" onClick={() => navigate(-1)} />
         </Grid>
 
         <Grid item xs={12}>
-          <OrderDetails />
+          <OrderDetails data={location.state?.transactionDetails} />
         </Grid>
       </Grid>
     </Box>

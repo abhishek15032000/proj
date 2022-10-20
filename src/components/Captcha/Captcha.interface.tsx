@@ -3,4 +3,5 @@ export interface CaptchaProps {
   token: string
   setCaptchaInput: (arg: any) => void
   setCaptchaToken: (arg: any) => void
+  sx?: any
 }

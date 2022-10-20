@@ -31,6 +31,7 @@ import BuyerOnboarding from '../pages/BuyerOnboarding'
 import OrganisationalDetails from '../pages/OrganisationalDetails'
 import RetireTokens from '../pages/RetireTokens'
 import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPage'
+import BankDetails from '../pages/BankDetails'
 
 export const privateRouteComponents = [
   {
@@ -153,6 +154,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.TRANSACTION_HISTORY,
     component: TransactionHistory,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.BANK_DETAILS,
+    component: BankDetails,
     roles: [ROLES.ISSUER],
   },
   {
