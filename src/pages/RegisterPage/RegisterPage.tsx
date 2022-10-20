@@ -55,6 +55,13 @@ const RegisterPage = (props: RegisterPageProps) => {
     setCaptchaTokenFromUUID()
   }, [])
 
+  useEffect(() => {
+    setPassword(null)
+    setNumber('')
+    setFirstName('')
+    setLastName('')
+    setEmail('')
+  }, [])
   const setCaptchaTokenFromUUID = () => {
     setCaptchaToken(uuidv4())
   }
