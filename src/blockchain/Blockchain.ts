@@ -129,6 +129,27 @@ const BlockchainCalls = {
     )
     return shine_Contract
   },
+  //Temporary Use for burn
+  temp_contract_caller: async (address?: string) => {
+    const ethereum = (window as any).ethereum
+    const accounts = await ethereum.request({
+      method: 'eth_requestAccounts',
+    })
+
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const walletAddress = accounts[0] // first account in MetaMask
+    const signer = provider.getSigner(walletAddress)
+    const shine_Contract = new ethers.Contract(
+      '0x92e8DA2ca27997e0FC6286e7B252cb9175d2BD37',
+      SHINE_CONTRACTS_ABI,
+      signer
+    )
+    console.log(
+      '🚀 ~ file: blockchain.ts ~ line 60 ~ contract_caller: ~ shine_Contract',
+      shine_Contract
+    )
+    return shine_Contract
+  },
   token_caller: async (address?: string) => {
     const ethereum = (window as any).ethereum
     const accounts = await ethereum.request({

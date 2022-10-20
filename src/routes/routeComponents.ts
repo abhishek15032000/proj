@@ -189,6 +189,7 @@ export const privateRouteComponents = [
   },
   {
     path: pathNames.TOKENS_RETIREMENT,
+    sidebarName: linkLabels.TokenRetirement,
     component: TokenRetirementPage,
     roles: [ROLES.BUYER],
   },
