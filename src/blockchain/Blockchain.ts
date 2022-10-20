@@ -33,7 +33,10 @@ const BlockchainCalls = {
     return window.ethereum?.selectedAddress
   },
   compareShinekeyAndAddress: (address: string) => {
-    if (getLocalItem('userDetails2')?.shineKey !== address) {
+    if (
+      getLocalItem('userDetails2')?.shineKey.toLowerCase() !==
+      address.toLowerCase()
+    ) {
       return false
     }
     return true
