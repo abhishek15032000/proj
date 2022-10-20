@@ -109,7 +109,7 @@ const VerifierProjects = () => {
 
     const payload = {
       _id: data._id,
-      project_id: data.project_id._id,
+      project_id: data.project_id?._id,
       project_status: status,
       verifier_id: data.verifier_id,
       verifier_name: data.verifier_name,

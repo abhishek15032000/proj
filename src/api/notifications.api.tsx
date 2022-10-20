@@ -10,4 +10,13 @@ export const NOTIFICATION = {
       return response
     })
   },
+  updateRead: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.notification.updateRead,
+      'POST',
+      payload
+    ).then((response: any) => {
+      return response
+    })
+  },
 }

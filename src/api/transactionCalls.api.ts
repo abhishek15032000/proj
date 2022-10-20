@@ -4,7 +4,7 @@ import { URL_PATH } from './configs/Endpoints'
 export const transactionCalls = {
   getTransactionByUser: (payload: any) => {
     return AxiosHelper(
-      URL_PATH.transaction.getTransactionByUser + '?user_address=' + payload,
+      URL_PATH.transaction.getTransactionByUser + '?' + payload,
       'GET',
       payload
     ).then((res: any) => {

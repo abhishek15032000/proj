@@ -9,6 +9,7 @@ import BlockchainCalls from '../../blockchain/Blockchain'
 import { WalletStats } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
+import DashboardStatisticsCustom from './DashboardStatisticsCustom'
 import { IssuerWalletProps } from './IssuerWallet.interface'
 import TransactionHistoryTable from './TransactionHistory'
 
@@ -127,7 +128,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
           <BackHeader title="Wallet" iconDisable />
         </Grid>
 
-        <DashboardStatistics
+        <DashboardStatisticsCustom
           data={dashboardStatistics}
           // loading={balanceLoading || vcoLoading}
           loading={balanceLoading || vcoAvailableFoSaleLoading}

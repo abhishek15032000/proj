@@ -88,7 +88,15 @@ export default function ResponsiveDrawer(props: any) {
       case linkLabels.Wallet:
         IconComponent = SquareIcon
         break
-
+      case linkLabels.TokenRetirement:
+        // PlayArrowIcon
+        // eslint-disable-next-line react/display-name
+        IconComponent = (props: any) => (
+          <SvgIcon {...props}>
+            <TriangleIcon />
+          </SvgIcon>
+        )
+        break
       default:
         IconComponent = null
     }
