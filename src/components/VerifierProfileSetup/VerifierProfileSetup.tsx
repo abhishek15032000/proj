@@ -37,7 +37,13 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
 
   useEffect(() => {
     USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
-      console.log('user', response)
+      const userData = response?.data?.data
+      setFullName(userData?.fullName || '')
+      setPhone(userData?.phone || '')
+      setAddress(userData?.address || '')
+      setDesignation(userData?.designation || '')
+      setOrganisationName(userData?.organisationName || '')
+      setWebsite(userData?.website || '')
     })
   }, [])
 
@@ -114,12 +120,13 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
           <Grid item xs={9} sx={{ pr: 1 }}>
             <Paper
               sx={{
-                height: '750px',
+                // height: '750px',
                 width: '100%',
                 borderRadius: '8px',
                 // border: '2px solid',
                 backgroundColor: Colors.white,
                 p: 2,
+                pb: 1,
                 position: 'relative',
               }}
             >
@@ -215,10 +222,10 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 component="img"
                 sx={{
                   width: '100%',
-                  position: 'absolute',
+                  // position: 'absolute',
                   bottom: 0,
                   right: 0,
-                  zIndex: 10
+                  // zIndex: 10,
                 }}
                 src={VerifierProfileIllustration}
               />
