@@ -6,7 +6,7 @@ import { Box, Grid, Typography, Paper } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 
 // Local Imports
-import NoProjectsListed from '../../assets/Images/illustrations/NoProjectsListed.png'
+import noTokenRetire from '../../assets/Images/illustrations/noTokenRetire.png'
 import { Colors } from '../../theme'
 import CCButton from '../../atoms/CCButton'
 
@@ -27,7 +27,7 @@ const EmptyRetireTokens: FC<EmptyRetireTokensProps> = (props) => {
         pl: 3,
       }}
     >
-      <Box sx={{ height: '50%' }} component={'img'} src={NoProjectsListed} />
+      <Box sx={{ height: '50%' }} component={'img'} src={noTokenRetire} />
     </Paper>
   )
 }

@@ -41,4 +41,5 @@ export const linkLabels = {
   // My_Portfolio: 'My Portfolio',
   Marketplace: 'Marketplace',
   Wallet: 'Wallet',
+  TokenRetirement: 'Token Retirement',
 }

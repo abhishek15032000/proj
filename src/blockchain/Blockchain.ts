@@ -18,30 +18,31 @@ const { ethereum } = window
 
 const BlockchainCalls = {
   isMetamaskInstalled: () => {
-    return Boolean(window.ethereum);
+    return Boolean(window.ethereum)
   },
   readAddress: async () => {
-    const method = "eth_requestAccounts";
+    const method = 'eth_requestAccounts'
 
     const accounts = await window.ethereum.request({
-      method
-    });
+      method,
+    })
 
-    return accounts[0];
+    return accounts[0]
   },
   getSelectedAddress: () => {
-    return window.ethereum?.selectedAddress;
+    return window.ethereum?.selectedAddress
   },
   compareShinekeyAndAddress: (address: string) => {
     if (getLocalItem('userDetails2')?.shineKey !== address) {
       return false
-    } return true
+    }
+    return true
   },
   connectWallet: async () => {
-    console.log("BlockchainCalls.connectWallet called")
+    console.log('BlockchainCalls.connectWallet called')
     let isConnected = false
     const haveMetamask = BlockchainCalls.isMetamaskInstalled()
-    const accountAddress = await BlockchainCalls.readAddress() || undefined
+    const accountAddress = (await BlockchainCalls.readAddress()) || undefined
 
     // let accountAddress =undefined
     try {
@@ -58,7 +59,6 @@ const BlockchainCalls = {
       // }
 
       if (accountAddress) {
-
         isConnected = true
       }
 
@@ -89,12 +89,18 @@ const BlockchainCalls = {
   getWalletNetwork: async () => {
     try {
       const getNetwork = await provider.getNetwork()
-      console.log("🚀 ~ file: Blockchain.ts ~ line 62 ~ getWalletNetwork: ~ getNetwork", getNetwork)
+      console.log(
+        '🚀 ~ file: Blockchain.ts ~ line 62 ~ getWalletNetwork: ~ getNetwork',
+        getNetwork
+      )
       // const balance = ethers.utils.formatEther(getBalance)
 
       return getNetwork
     } catch (error) {
-      console.log("🚀 ~ file: Blockchain.ts ~ line 126 ~ getWalletNetwork: ~ error", error)
+      console.log(
+        '🚀 ~ file: Blockchain.ts ~ line 126 ~ getWalletNetwork: ~ error',
+        error
+      )
 
       //   setIsConnected(false)
       return { connected: false }
@@ -111,6 +117,27 @@ const BlockchainCalls = {
     const signer = provider.getSigner(walletAddress)
     const shine_Contract = new ethers.Contract(
       SHINE_CONTRACT_ADDRESS,
+      SHINE_CONTRACTS_ABI,
+      signer
+    )
+    console.log(
+      '🚀 ~ file: blockchain.ts ~ line 60 ~ contract_caller: ~ shine_Contract',
+      shine_Contract
+    )
+    return shine_Contract
+  },
+  //Temporary Use for burn
+  temp_contract_caller: async (address?: string) => {
+    const ethereum = (window as any).ethereum
+    const accounts = await ethereum.request({
+      method: 'eth_requestAccounts',
+    })
+
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const walletAddress = accounts[0] // first account in MetaMask
+    const signer = provider.getSigner(walletAddress)
+    const shine_Contract = new ethers.Contract(
+      '0x92e8DA2ca27997e0FC6286e7B252cb9175d2BD37',
       SHINE_CONTRACTS_ABI,
       signer
     )
@@ -165,7 +192,6 @@ const BlockchainCalls = {
 }
 
 export default BlockchainCalls
-
 
 // declare global {
 //   interface Window {
