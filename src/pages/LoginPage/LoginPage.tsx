@@ -167,7 +167,8 @@ const Login = () => {
             }}
           >
             <CCInputField
-              placeholder="Email ID"
+              label="Work Email ID"
+              // placeholder="Work Email ID"
               variant="outlined"
               type="email"
               name="email"
@@ -178,7 +179,8 @@ const Login = () => {
             />
             <CCInputField
               type="password"
-              placeholder="Password"
+              label="Password"
+              // placeholder="Password"
               defaultValue={values?.password}
               name="password"
               variant="outlined"
