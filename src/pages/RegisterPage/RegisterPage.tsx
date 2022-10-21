@@ -158,7 +158,9 @@ const RegisterPage = (props: RegisterPageProps) => {
         }
       })
       .catch((e) => console.log(e))
-    setLoading(false)
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const register = () => {
