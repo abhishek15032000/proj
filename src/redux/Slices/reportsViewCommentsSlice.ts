@@ -1,23 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface reportsViewCommentsReducerInterface {
-  reportDetails: any
+  viewCommentsData: any
 }
 
 const initialState: reportsViewCommentsReducerInterface = {
-  reportDetails: null,
+  viewCommentsData: {},
 }
 
 const reportsViewComments = createSlice({
   name: 'reportsViewComments',
   initialState,
   reducers: {
-    setReportDetails: (state, action: PayloadAction<any>) => {
-      state.reportDetails = action.payload
+    setViewCommentsData: (state, action: PayloadAction<any>) => {
+      state.viewCommentsData = action.payload
     },
   },
 })
 
-export const { setReportDetails } = reportsViewComments.actions
+export const { setViewCommentsData } = reportsViewComments.actions
 
 export default reportsViewComments.reducer
