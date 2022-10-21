@@ -20,7 +20,7 @@ import sectionDMonthly from './MonthlyReport/sectionDMonthly'
 import sectionEMonthly from './MonthlyReport/sectionEMonthly'
 import verifier from './verifierSlice'
 import reportsViewComments from './reportsViewCommentsSlice'
-
+import tokenRetire from './tokenRetireSlice'
 // TODO: rename names
 export default {
   auth,
@@ -42,4 +42,5 @@ export default {
   sectionEMonthly,
   verifier,
   reportsViewComments,
+  tokenRetire,
 }

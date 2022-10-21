@@ -30,6 +30,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setLoadWallet } from '../../../redux/Slices/walletSlice'
 import { Colors } from '../../../theme'
 import NotificationList from '../../../atoms/NotificationList'
+import NotificationIcon from './NotificationIcon'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -83,7 +84,6 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
-  const [showNotifications, setShowNotifications] = React.useState(false)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -262,23 +262,9 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             </Badge>
           </IconButton>
 
-          <IconButton
-            size="large"
-            aria-label="show 17 new notifications"
-            color="primary"
-            onClick={() => setShowNotifications(!showNotifications)}
-          >
-            <Badge
-              // badgeContent={17}
-              color="error"
-            >
-              <NotificationsOutlinedIcon />
-            </Badge>
-          </IconButton>
+          <NotificationIcon />
 
-          {showNotifications && <NotificationList />}
-
-          <IconButton
+         <IconButton
             size="large"
             edge="end"
             aria-label="account of current user"

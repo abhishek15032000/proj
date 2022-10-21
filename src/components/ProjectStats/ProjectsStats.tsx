@@ -12,6 +12,8 @@ import './Projects.css'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { useLocation } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import { buyerCalls } from '../../api/buyerCalls.api'
+import BlockchainCalls from '../../blockchain/Blockchain'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
@@ -20,7 +22,8 @@ const ProjectsStats = () => {
   const { type: userType, email, user_id } = getLocalItem('userDetails')
   const [stats, setStats] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
-
+  const [balance, setBalance] = useState<any>(null)
+  const accountAddress = useAppSelector(({ wallet }) => wallet.accountAddress)
   const verifierStatsReload = useAppSelector(
     ({ verifier }) => verifier.verifierStatsReload
   )
@@ -39,6 +42,23 @@ const ProjectsStats = () => {
       //using this for token and contract stats
       else if (location.pathname === pathNames.TOKEN_CONTRACT) {
         res = await dataCollectionCalls.getStats()
+      } else if (location.pathname === pathNames.TOKENS_RETIREMENT) {
+        const tokenContractFunctions = await BlockchainCalls.token_caller()
+        await tokenContractFunctions
+          .balanceOf(accountAddress)
+          .then(async (balance: any) => {
+            const data = await buyerCalls.getStats({ address: user_id })
+
+            res = {
+              data: {
+                Total_active_VCOs: Number(balance?._hex),
+                Total_retired_VCOs: data?.data?.burn_token_count?.total,
+                Total_VCOs_purchased_so_far: data?.data?.purchased_token_count,
+                Total_footprint_offset: data?.data?.burn_token_count?.total,
+              },
+              success: true,
+            }
+          })
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
       }
