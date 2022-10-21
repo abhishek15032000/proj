@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TwoFaProps } from './TwoFa.interface'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import { Typography } from '@mui/material'
 import OtpInput from 'react-otp-input'
 import CCButton from '../../atoms/CCButton'
-import { Images } from '../../theme'
+import { Colors, Images } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 import { authCalls } from '../../api/authCalls'
 import ResendOTPModal from './ResendOTPModal'
@@ -17,13 +17,28 @@ const StepOneTwoFa = (props: TwoFaProps) => {
   const [otp, setOtp] = useState<any>('')
   const [openModal, setOpenModal] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [seconds, setSeconds] = useState(90)
+
+  useEffect(() => {
+    const myInterval: any = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1)
+      }
+      if (seconds === 0) {
+        clearInterval(myInterval)
+      }
+    }, 1000)
+    return () => {
+      clearInterval(myInterval)
+    }
+  })
 
   const handleChange = (event: React.ChangeEvent<HTMLButtonElement>) => {
     setOtp(event)
   }
 
   const handleVerify = () => {
-    if ( otp.length < 6 ) {
+    if (otp.length < 6) {
       alert('Enter all the digits!')
       return
     }
@@ -70,7 +85,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '500px'
+          height: '500px',
         }}
       >
         <Box sx={{ mb: 3 }}>
@@ -99,29 +114,45 @@ const StepOneTwoFa = (props: TwoFaProps) => {
               lineHeight: '24px',
             }}
           >
-              {'email id below. This code is valid for 90 secs.'}
+            {'email id below. This code is valid for 90 secs.'}
           </Typography>
         </Box>
-
-        <OtpInput
-          value={otp}
-          isInputNum
-          onChange={handleChange}
-          numInputs={6}
-          containerStyle={{
-            justifyContent: 'flex-start',
-          }}
-          inputStyle={{
-            width: 64,
-            height: 56,
-            color: '#000',
-            fontSize: 20,
-            border: 'none',
-            borderRadius: 8,
-            backgroundColor: '#E9EEEC',
-            marginRight: 5,
-          }}
-        />
+        <Box>
+          <OtpInput
+            value={otp}
+            isInputNum
+            onChange={handleChange}
+            numInputs={6}
+            containerStyle={{
+              justifyContent: 'flex-start',
+            }}
+            inputStyle={{
+              width: 64,
+              height: 56,
+              color: '#000',
+              fontSize: 20,
+              border: 'none',
+              borderRadius: 8,
+              backgroundColor: '#E9EEEC',
+              marginRight: 5,
+            }}
+          />
+          <Box>
+            <Typography
+              sx={{
+                mt: 1,
+                width: '100%',
+                color: seconds === 0 ? Colors.lightPrimary1 : Colors.tertiary,
+                textAlign: 'right',
+                fontSize: 14,
+              }}
+            >
+              {seconds === 0
+                ? 'Code Expired'
+                : `Code expires in : ${seconds} seconds`}
+            </Typography>
+          </Box>
+        </Box>
         <Typography align="right" sx={{ py: 3, fontWeight: 500, fontSize: 14 }}>
           Didn’t receive code yet?{' '}
           <Typography
@@ -175,6 +206,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
         showModal={openModal}
         setShowModal={setOpenModal}
         setLoading={setLoading}
+        setSeconds={setSeconds}
       />
     </Box>
   )

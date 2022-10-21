@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { KeyboardArrowLeft } from '@mui/icons-material'
-import { Colors } from '../../theme'
+import { Colors, Images } from '../../theme'
 import { Box } from '@mui/system'
 import SectionA1 from './SectionA/SectionA1'
 import SectionA2 from './SectionA/SectionA2'
@@ -263,7 +263,10 @@ const IssuanceDataCollection = () => {
         setSectionIndexState(sectionIndex + 1)
         setSubSectionIndexState(0)
       } else if (!isDataModified) {
-        dispatch(setSectionIndex(sectionIndex + 1))
+        //Don't increase section index in case user is in Section E - (CC-210 bug fix)
+        if (sectionIndex !== 5) {
+          dispatch(setSectionIndex(sectionIndex + 1))
+        }
         dispatch(setSubSectionIndex(0))
       }
       //handling next btn as per section data collection percentage
@@ -731,6 +734,38 @@ const IssuanceDataCollection = () => {
           </Paper>
         </>
       </Modal>
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 30,
+          right: 20,
+        }}
+      >
+        <Paper
+          sx={{
+            px: 2,
+            py: 1,
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: Colors.darkPrimary2,
+            borderRadius: '16px',
+          }}
+        >
+          <Box sx={{ display: 'flex', height: '100%' }}>
+            <img src={Images.HelpIcon} width="24px" height={'24px'} />
+          </Box>
+          <Typography
+            sx={{
+              ml: 1,
+              color: Colors.lightPrimary1,
+              fontSize: 14,
+              fontWeight: 500,
+            }}
+          >
+            Help
+          </Typography>
+        </Paper>
+      </Box>
     </>
   )
 }
