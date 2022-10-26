@@ -275,6 +275,9 @@ const IssuanceDataCollection = () => {
   }
 
   const handleDataCheck = () => {
+    if (!currentProjectDetails) {
+      return
+    }
     const paramsData = [
       {
         sectionName: A1,
@@ -749,6 +752,10 @@ const IssuanceDataCollection = () => {
             alignItems: 'center',
             backgroundColor: Colors.darkPrimary2,
             borderRadius: '16px',
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            navigate(pathNames.ISSUANCE_DATA_COLLECTION_HELP)
           }}
         >
           <Box sx={{ display: 'flex', height: '100%' }}>
