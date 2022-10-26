@@ -272,6 +272,9 @@ const IssuanceDataCollection = () => {
   }
 
   const handleDataCheck = () => {
+    if (!currentProjectDetails) {
+      return
+    }
     const paramsData = [
       {
         sectionName: A1,
