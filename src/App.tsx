@@ -23,7 +23,10 @@ import BlockchainAlert from './components/BlockchainAlert'
 declare let window: any
 const { ethereum } = window
 
-const drawerExemptList = [pathNames.VERIFIER_VERIFY_REPORT]
+const drawerExemptList = [
+  pathNames.VERIFIER_VERIFY_REPORT,
+  pathNames.ISSUANCE_DATA_COLLECTION_HELP,
+]
 
 type AppProps = {
   appName?: string
