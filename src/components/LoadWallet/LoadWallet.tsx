@@ -187,7 +187,7 @@ const LoadWallet = (props: LoadWalletProps) => {
             maxWidth: '80%',
           }}
         >
-          <Grid container justifyContent={'flex-end'} p={3}>
+          <Grid container justifyContent={'flex-end'} p={3} pb={0}>
             <Grid item alignItems="center" justifyContent="flex-end">
               <Button
                 startIcon={<InfoIcon />}

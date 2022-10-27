@@ -55,6 +55,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
   )
+  const accountBalance = useAppSelector(
+    ({ wallet }) => wallet.accountBalance,
+    shallowEqual
+  )
   const isConnected = useAppSelector(
     ({ wallet }) => wallet.isConnected,
     shallowEqual
@@ -416,14 +420,22 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       </Grid>
       <MessageModal
         message={
-          <Typography sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}>
-            Next step involves making calls with Blockchain. Do you want to
-            continue with{' '}
-            <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
-              {accountAddress}
-            </span>{' '}
-            wallet address?
-          </Typography>
+          <>
+            <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
+              Next step involves making calls with Blockchain. Do you want to
+              continue with{' '}
+              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+                {accountAddress}
+              </span>{' '}
+              wallet address?
+            </Typography>
+            <Typography sx={{ mt: 2, fontSize: 18, fontWeight: 500, pb: 2 }}>
+              Wallet Balance :{' '}
+              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+                {accountBalance}
+              </span>{' '}
+            </Typography>
+          </>
         }
         btn1Text="Continue"
         btn1OnClick={() => {
