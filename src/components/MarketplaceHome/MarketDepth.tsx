@@ -39,7 +39,7 @@ const MarketDepth: FC<MarketDepthProps> = (props) => {
             Price (USD)
           </Grid>
           <Grid item xs={6}>
-            Quantity (VCOsT)
+            Quantity (VCOT)
           </Grid>
         </Grid>
         {rows &&

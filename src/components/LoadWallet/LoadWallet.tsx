@@ -107,6 +107,7 @@ const LoadWallet = (props: LoadWalletProps) => {
     try {
       // console.log(accountAddress)
       BlockchainCalls.getWalletBalance(accountAddress).then((res: any) => {
+        console.log("es.balance",res.balance)
         dispatch(setAccountBalance(res.balance))
         setLoading(false)
       })

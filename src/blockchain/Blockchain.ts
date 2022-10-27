@@ -47,6 +47,8 @@ const BlockchainCalls = {
     const haveMetamask = BlockchainCalls.isMetamaskInstalled()
     const accountAddress = (await BlockchainCalls.readAddress()) || undefined
 
+    let accountBalanceRes: any
+
     // let accountAddress =undefined
     try {
       // if (!ethereum) {
@@ -63,12 +65,14 @@ const BlockchainCalls = {
 
       if (accountAddress) {
         isConnected = true
+        accountBalanceRes = (await BlockchainCalls.getWalletBalance(accountAddress)) || undefined
       }
 
       return {
         haveMetamask,
         accountAddress,
         isConnected,
+        accountBalance:accountBalanceRes?.balance || 0
       }
     } catch (error) {
       console.log(
