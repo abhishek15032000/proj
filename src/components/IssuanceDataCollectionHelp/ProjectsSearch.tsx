@@ -26,6 +26,18 @@ import {
 import { Colors } from '../../theme'
 import { data, projectTypes } from './data'
 
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 800,
+    },
+  },
+}
+
 const ProjectsSearch = () => {
   const dispatch = useAppDispatch()
 
@@ -146,13 +158,11 @@ const ProjectsSearch = () => {
           value={projectType}
           label="Project Type"
           onChange={handleChange}
+          sx={{ whiteSpace: 'normal' }}
+          MenuProps={MenuProps}
         >
           {projectTypes.map((item: any) => (
-            <MenuItem
-              key={item}
-              value={item}
-              sx={{ maxWidth: '150px', wordBreak: 'break-word' }}
-            >
+            <MenuItem key={item} value={item}>
               {item}
             </MenuItem>
           ))}

@@ -12,7 +12,7 @@ export const headings = [
 export const data = [
   {
     title: 'BK Energia Itacoatiara Project',
-    projectType: 'Energy industries (renewable - / non-renewable sources',
+    projectType: 'Energy industries (renewable - / non-renewable sources)',
     country: 'Brazil',
     methodology: 'AMS-I.D. ver. 6 AMS-III.E. ver. 6',
     standard: 'CDM',
