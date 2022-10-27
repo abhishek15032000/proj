@@ -21,6 +21,8 @@ import sectionEMonthly from './MonthlyReport/sectionEMonthly'
 import verifier from './verifierSlice'
 import reportsViewComments from './reportsViewCommentsSlice'
 import marketplace from './marketplaceSlice'
+import tokenRetire from './tokenRetireSlice'
+import issuanceDataCollectionHelp from './issuanceDataCollectionHelpSlice'
 
 // TODO: rename names
 export default {
@@ -44,4 +46,6 @@ export default {
   verifier,
   reportsViewComments,
   marketplace,
+  tokenRetire,
+  issuanceDataCollectionHelp,
 }

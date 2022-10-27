@@ -99,6 +99,7 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
             data={reportDetails}
             loading={loadingReport}
             pdfCall={pdfReady}
+            projectDetails={projectDetails}
           />
         </Grid>
 

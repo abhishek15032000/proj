@@ -31,6 +31,8 @@ import BuyerOnboarding from '../pages/BuyerOnboarding'
 import OrganisationalDetails from '../pages/OrganisationalDetails'
 import RetireTokens from '../pages/RetireTokens'
 import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPage'
+import BankDetails from '../pages/BankDetails'
+import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
 
 export const privateRouteComponents = [
   {
@@ -55,6 +57,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUANCE_DATA_COLLECTION,
     component: IssuanceDataCollection,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.ISSUANCE_DATA_COLLECTION_HELP,
+    component: IssuanceDataCollectionHelp,
     roles: [ROLES.ISSUER],
   },
   {
@@ -156,6 +163,11 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
+    path: pathNames.BANK_DETAILS,
+    component: BankDetails,
+    roles: [ROLES.ISSUER],
+  },
+  {
     path: pathNames.MONTHLY_REPORT_UPDATE,
     component: MonthlyReportUpdate,
 
@@ -183,6 +195,7 @@ export const privateRouteComponents = [
   },
   {
     path: pathNames.TOKENS_RETIREMENT,
+    sidebarName: linkLabels.TokenRetirement,
     component: TokenRetirementPage,
     roles: [ROLES.BUYER],
   },

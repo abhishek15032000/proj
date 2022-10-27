@@ -16,15 +16,14 @@ const CCSelectBox = (props: CCSelectBoxProps) => {
   return (
     <FormControl
       variant="outlined"
-      fullWidth
       sx={{
-        background: '#DAE5E1',
         color: '#006B5E',
         borderRadius: '4px 4px 0 0',
+        // pb: 1
       }}
     >
       {props.label && (
-        <InputLabel id="demo-simple-select-label" sx={{ color: '#006B5E' }}>
+        <InputLabel id="demo-simple-select-label" sx={{ color: '#006B5E', paddingBottom: 1 }}>
           {props.label}
         </InputLabel>
       )}

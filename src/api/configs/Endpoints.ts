@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   carbonServiceURL: BASE_URL + 'carbon/api/v1',
   userServiceURL: BASE_URL + 'user/api/v1',
   orderServiceURL: BASE_URL + 'order/api/v1',
+  notificationServiceURL: BASE_URL + 'notification/api/v1',
 }
 
 export const URL_PATH = {
@@ -89,5 +90,17 @@ export const URL_PATH = {
     getBuyOrder: ENDPOINTS.orderServiceURL + '/marketplace/getBuyOrder',
     checkForFullFillOrder:
       ENDPOINTS.orderServiceURL + '/marketplace/checkForFullFillOrder',
+  },
+  buyers: {
+    saveRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/retire-token',
+    getAllRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
+    getTokenAndRetirementStats: ENDPOINTS.carbonServiceURL + '/buyer/getStats',
+  },
+  notification: {
+    getNotification:
+      ENDPOINTS.notificationServiceURL + '/notification/getNotifications',
+    updateRead:
+      ENDPOINTS.notificationServiceURL +
+      '/notification/updateInAppNotification',
   },
 }

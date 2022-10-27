@@ -1,9 +1,9 @@
 import { Grid, Modal, Paper, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { KeyboardArrowLeft } from '@mui/icons-material'
-import { Colors } from '../../theme'
+import { Colors, Images } from '../../theme'
 import { Box } from '@mui/system'
 import SectionA1 from './SectionA/SectionA1'
 import SectionA2 from './SectionA/SectionA2'
@@ -52,6 +52,7 @@ import { resetSectionD } from '../../redux/Slices/sectionDSlice'
 import { resetSectionB } from '../../redux/Slices/sectionBSlice'
 import { resetSectionC } from '../../redux/Slices/sectionCSlice'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
+import { usePrompt } from '../../hooks/useCustomBlocker'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -123,6 +124,7 @@ const sectionATabs = [
 const IssuanceDataCollection = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const ref = useRef()
   const sectionA = store.getState()?.sectionA
 
   const loading = useAppSelector(
@@ -182,6 +184,7 @@ const IssuanceDataCollection = () => {
   const [subSectionIndexState, setSubSectionIndexState] = useState<number>()
   const [sectionIndexState, setSectionIndexState] = useState<number>()
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
+  const [blockRouting, setBlockRouting] = useState<boolean>(false)
 
   useEffect(() => {
     return () => {
@@ -260,7 +263,10 @@ const IssuanceDataCollection = () => {
         setSectionIndexState(sectionIndex + 1)
         setSubSectionIndexState(0)
       } else if (!isDataModified) {
-        dispatch(setSectionIndex(sectionIndex + 1))
+        //Don't increase section index in case user is in Section E - (CC-210 bug fix)
+        if (sectionIndex !== 5) {
+          dispatch(setSectionIndex(sectionIndex + 1))
+        }
         dispatch(setSubSectionIndex(0))
       }
       //handling next btn as per section data collection percentage
@@ -269,6 +275,9 @@ const IssuanceDataCollection = () => {
   }
 
   const handleDataCheck = () => {
+    if (!currentProjectDetails) {
+      return
+    }
     const paramsData = [
       {
         sectionName: A1,
@@ -416,6 +425,13 @@ const IssuanceDataCollection = () => {
     }
     return dataModified
   }
+
+  useEffect(() => {
+    //kept no dependency to check the dat is modified and make blockRouting state to true or false
+    handleDataCheck() ? setBlockRouting(true) : setBlockRouting(false)
+  })
+  //calling custom hook to block route if necessary and passing message and when param
+  usePrompt('This page have unsaved data', blockRouting)
 
   const handleSubSectionClick = (index?: number) => {
     //will only check if issuer is clicking on other subsection
@@ -721,6 +737,42 @@ const IssuanceDataCollection = () => {
           </Paper>
         </>
       </Modal>
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 30,
+          right: 20,
+        }}
+      >
+        <Paper
+          sx={{
+            px: 2,
+            py: 1,
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: Colors.darkPrimary2,
+            borderRadius: '16px',
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            navigate(pathNames.ISSUANCE_DATA_COLLECTION_HELP)
+          }}
+        >
+          <Box sx={{ display: 'flex', height: '100%' }}>
+            <img src={Images.HelpIcon} width="24px" height={'24px'} />
+          </Box>
+          <Typography
+            sx={{
+              ml: 1,
+              color: Colors.lightPrimary1,
+              fontSize: 14,
+              fontWeight: 500,
+            }}
+          >
+            Help
+          </Typography>
+        </Paper>
+      </Box>
     </>
   )
 }

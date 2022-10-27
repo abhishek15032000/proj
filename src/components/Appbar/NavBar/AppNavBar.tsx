@@ -29,6 +29,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setLoadWallet } from '../../../redux/Slices/walletSlice'
 import { Colors } from '../../../theme'
+import NotificationList from '../../../atoms/NotificationList'
+import NotificationIcon from './NotificationIcon'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -75,7 +77,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function AppNavBar({ handleDrawerToggle }: any) {
   const dispatch = useAppDispatch()
   const openWallet = () => {
-    console.log('loda wallet')
+    console.log('load wallet')
     dispatch(setLoadWallet(true))
     console.log('done')
   }
@@ -212,7 +214,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                     />
                 </Search> */}
         <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
           {/* <SelectDropdown /> */}
 
           <Box
@@ -260,20 +262,9 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             </Badge>
           </IconButton>
 
-          <IconButton
-            size="large"
-            aria-label="show 17 new notifications"
-            color="primary"
-          >
-            <Badge
-              // badgeContent={17}
-              color="error"
-            >
-              <NotificationsOutlinedIcon />
-            </Badge>
-          </IconButton>
+          <NotificationIcon />
 
-          <IconButton
+         <IconButton
             size="large"
             edge="end"
             aria-label="account of current user"

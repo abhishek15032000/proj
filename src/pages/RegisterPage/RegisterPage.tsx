@@ -7,6 +7,9 @@ import {
   Typography,
   Grid,
   InputAdornment,
+  Select,
+  MenuItem,
+  InputLabel,
 } from '@mui/material'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
@@ -55,6 +58,13 @@ const RegisterPage = (props: RegisterPageProps) => {
     setCaptchaTokenFromUUID()
   }, [])
 
+  useEffect(() => {
+    setPassword(null)
+    setNumber('')
+    setFirstName('')
+    setLastName('')
+    setEmail('')
+  }, [])
   const setCaptchaTokenFromUUID = () => {
     setCaptchaToken(uuidv4())
   }
@@ -106,13 +116,18 @@ const RegisterPage = (props: RegisterPageProps) => {
       return
     }
 
-    if (
-      !isAlpha(firstName) ||
-      !isAlpha(lastName) ||
-      !isEmail(email) ||
-      !isMobilePhone(number, 'en-IN')
-    ) {
-      alert('Correct the errors!')
+    if (!isAlpha(firstName) || !isAlpha(lastName)) {
+      alert('Names cannot contain numbers!')
+      return
+    }
+
+    if (!isEmail(email)) {
+      alert('Enter valid email')
+      return
+    }
+
+    if (!isMobilePhone(number, 'en-IN')) {
+      alert('Enter valid mobile number')
       return
     }
 
@@ -143,7 +158,9 @@ const RegisterPage = (props: RegisterPageProps) => {
         }
       })
       .catch((e) => console.log(e))
-    setLoading(false)
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const register = () => {
@@ -156,233 +173,249 @@ const RegisterPage = (props: RegisterPageProps) => {
   const { handleChange, values, errors, handleSubmit } = useForm(register)
 
   return (
-    <Grid container flexDirection="row" xs={12} sx={{ height: '100vh' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
       {loading ? <LoaderOverlay /> : null}
-      <Grid
-        item
-        lg={6}
-        xs={12}
-        display="flex"
-        flexDirection="column"
+      <Box
         sx={{
-          marginTop: 5,
-          //width: '100%',
-          px: 20,
-          flex: 1,
+          width: {
+            sm: '100%',
+            lg: '50%',
+          },
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <Grid container rowSpacing={2}>
-          <Grid item xs={12}>
-            <Logo1 />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography
-              sx={{ fontWeight: '700', fontSize: 32, color: '#1C4A43', mt: 3 }}
-            >
-              Register
-            </Typography>
-            <Typography sx={{ fontWeight: '500', fontSize: 16 }}>
-              Register by providing the information below
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container columnSpacing={2}>
-              <Grid item xs={12} md={6}>
-                <CCInputField
-                  label="First Name"
-                  variant="outlined"
-                  name="firstName"
-                  //onChange={handleChange}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  error={firstName !== '' && !isAlpha(firstName)}
-                  helperText={
-                    firstName !== '' &&
-                    !isAlpha(firstName) &&
-                    'Enter valid Name'
-                  }
-                  defaultValue={values?.firstName}
-                  sx={{ background: '#F5F5F5' }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} pt={{ xs: 2, md: 0 }}>
-                <CCInputField
-                  label="Last Name"
-                  variant="outlined"
-                  name="firstName"
-                  //onChange={handleChange}
-                  onChange={(e) => setLastName(e.target.value)}
-                  error={lastName !== '' && !isAlpha(lastName)}
-                  helperText={
-                    lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
-                  }
-                  defaultValue={values?.lastName}
-                  sx={{ background: '#F5F5F5' }}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <CCInputField
-              label="Work Email ID"
-              variant="outlined"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              error={email !== '' && !isEmail(email)}
-              helperText={
-                email !== '' && !isEmail(email) && 'Enter valid Email ID'
-              }
-              defaultValue={values?.email}
-              sx={{ background: '#F5F5F5' }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <CCSelectBox
-              //fullWidth
-              //variant="outlined"
-              label="Participant Type"
-              items={typeOptions}
-              onChange={(e) => setSelectedRole(e.target.value)}
-              sx={{ background: '#F5F5F5' }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container columnSpacing={2}>
-              <Grid item xs={12} md={3} pb={{ xs: 2, md: 0 }}>
-                <CCSelectBox
-                  variant="outlined"
-                  sx={{ background: '#F5F5F5' }}
-                  // label="Country Code"
-                  name="country_code"
-                  //onChange={handleChange}
-                  //onChange={(e) => console.log('e.target.value')}
-                  value={'+91'}
-                  autoWidth={false}
-                  items={[{ label: '+91', value: '+91' }]}
-                />
-              </Grid>
-              <Grid item xs={12} md={9}>
-                <CCInputField
-                  label="Phone Number"
-                  type="tel"
-                  variant="outlined"
-                  //onChange={handleChange}
-                  inputProps={{
-                    maxLength: 10,
-                  }}
-                  error={number !== '' && !isMobilePhone(number, 'en-IN')}
-                  helperText={
-                    number !== '' &&
-                    !isMobilePhone(number, 'en-IN') &&
-                    'Enter valid Mobile Number'
-                  }
-                  onChange={(e) => {
-                    // if (Number(e.target.value.replace(/[^0-9]/g, '')) < 0) {
-                    setNumber(e.target.value.toString())
-                    // }
-                  }}
-                  defaultValue={number}
-                  sx={{ background: '#F5F5F5' }}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <CCInputField
-              label="Password"
-              variant="outlined"
-              name="password"
-              sx={{ background: '#F5F5F5' }}
-              //onChange={handleChange}
-              onChange={(e) => setPassword(e.target.value)}
-              defaultValue={values?.password}
-              type={showPassword ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    {!showPassword ? (
-                      <VisibilityOffIcon
-                        onClick={() => setShowPassword(!showPassword)}
-                      />
-                    ) : (
-                      <VisibilityIcon
-                        onClick={() => setShowPassword(!showPassword)}
-                      />
-                    )}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Captcha
-              token={captchaToken}
-              captchaInput={captchaInput}
-              setCaptchaInput={setCaptchInput}
-              setCaptchaToken={setCaptchaToken}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <CCButton
-              fullWidth
-              type="submit"
-              onClick={onBoardingNewUser}
-              sx={{
-                height: '50px',
-                borderRadius: '6px',
-                //marginTop: 4,
-              }}
-              variant="contained"
-            >
-              Register
-            </CCButton>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container alignItems="center">
-              <Typography textAlign={'center'}>
-                {`Don't have an account?`}
-              </Typography>
-              <Typography
-                onClick={() => navigate(pathNames.LOGIN)}
-                sx={{
-                  fontWeight: '500',
-                  fontSize: 20,
-                  px: 1,
-                  cursor: 'pointer',
-                }}
-              >
-                {' '}
-                Login{' '}
-              </Typography>
-              <Typography
-                sx={{
-                  textAlign: 'center',
-                  fontWeight: '400',
-                  fontSize: 16,
-                }}
-              >
-                {`here`}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid
-        item
-        md={6}
-        flexDirection="column"
+        <Box sx={{ mb: 2, width: '400px' }}>
+          <Typography
+            sx={{ fontWeight: '700', fontSize: 24, color: '#1C4A43', mt: 3 }}
+          >
+            Register
+          </Typography>
+          <Typography sx={{ fontWeight: '500', fontSize: 14 }}>
+            Register by providing the information below
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            width: '400px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mb: 2,
+          }}
+        >
+          <CCInputField
+            label="First Name"
+            variant="outlined"
+            name="firstName"
+            size="small"
+            onChange={(e) => setFirstName(e.target.value)}
+            // error={firstName !== '' && !isAlpha(firstName)}
+            // helperText={
+            //   firstName !== '' && !isAlpha(firstName) && 'Enter valid Name'
+            // }
+            defaultValue={values?.firstName}
+            sx={{ background: '#F5F5F5', mr: 1.5 }}
+          />
+
+          <CCInputField
+            label="Last Name"
+            variant="outlined"
+            name="firstName"
+            size="small"
+            onChange={(e) => setLastName(e.target.value)}
+            // error={lastName !== '' && !isAlpha(lastName)}
+            // helperText={
+            //   lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
+            // }
+            defaultValue={values?.lastName}
+            sx={{ background: '#F5F5F5' }}
+          />
+        </Box>
+
+        <CCInputField
+          label="Work Email ID"
+          variant="outlined"
+          name="email"
+          size="small"
+          onChange={(e) => setEmail(e.target.value)}
+          // error={email !== '' && !isEmail(email)}
+          // helperText={email !== '' && !isEmail(email) && 'Enter valid Email ID'}
+          defaultValue={values?.email}
+          sx={{ width: '400px', mb: 2 }}
+        />
+
+        <CCSelectBox
+          label="Participant Type"
+          // placeholder='Participant Type'
+          items={typeOptions}
+          onChange={(e) => setSelectedRole(e.target.value)}
+          sx={{ width: '400px', mb: 2, background: '#F5F5F5' }}
+          fullWidth={false}
+          size="small"
+        />
+
+        <Box
+          sx={{
+            width: '400px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: 2,
+          }}
+        >
+          <CCSelectBox
+            variant="outlined"
+            sx={{ background: '#F5F5F5', mr: 1, width: '80px' }}
+            name="country_code"
+            value={'+91'}
+            autoWidth={false}
+            items={[{ label: '+91', value: '+91' }]}
+            size="small"
+          />
+
+          <CCInputField
+            label="Phone Number"
+            type="number"
+            variant="outlined"
+            size="small"
+            inputProps={{
+              maxLength: 10,
+            }}
+            // error={number !== '' && !isMobilePhone(number, 'en-IN')}
+            // helperText={
+            //   number !== '' &&
+            //   !isMobilePhone(number, 'en-IN') &&
+            //   'Enter valid Mobile Number'
+            // }
+            onChange={(e) => {
+              setNumber(e.target.value.toString())
+            }}
+            onInput={(e) => {
+              const InputElement = e.target as HTMLInputElement
+              InputElement.value = Math.max(0, parseInt(InputElement.value))
+                .toString()
+                .slice(0, 10)
+            }}
+            defaultValue={number}
+            sx={{ background: '#F5F5F5', ml: 1.5, pl: 1 }}
+          />
+        </Box>
+
+        <CCInputField
+          label="Password"
+          variant="outlined"
+          name="password"
+          size="small"
+          onChange={(e) => setPassword(e.target.value)}
+          defaultValue={values?.password}
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="start">
+                {!showPassword ? (
+                  <VisibilityOffIcon
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                ) : (
+                  <VisibilityIcon
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                )}
+              </InputAdornment>
+            ),
+          }}
+          sx={{ width: '400px', mb: 2 }}
+        />
+
+        <Captcha
+          token={captchaToken}
+          captchaInput={captchaInput}
+          setCaptchaInput={setCaptchInput}
+          setCaptchaToken={setCaptchaToken}
+          sx={{ mt: 1 }}
+        />
+
+        <CCButton
+          // fullWidth=
+          type="submit"
+          onClick={onBoardingNewUser}
+          sx={{
+            height: '40px',
+            width: '320px',
+            borderRadius: '6px',
+            marginTop: 2,
+          }}
+          variant="contained"
+        >
+          Register
+        </CCButton>
+
+        <Box
+          justifyContent={'center'}
+          display="flex"
+          alignItems={'center'}
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Typography
+            textAlign={'center'}
+          >{`Don't have an account?`}</Typography>
+          <Typography
+            onClick={() => navigate(pathNames.LOGIN)}
+            sx={{
+              fontWeight: '500',
+              fontSize: 20,
+              px: 1,
+              cursor: 'pointer',
+            }}
+          >
+            {' '}
+            Login{' '}
+          </Typography>
+          <Typography
+            sx={{
+              textAlign: 'center',
+              fontWeight: '400',
+              fontSize: 16,
+            }}
+          >
+            {`here`}
+          </Typography>
+        </Box>
+      </Box>
+      <Box
         sx={{
           display: {
-            lg: 'flex',
+            sm: 'none',
             xs: 'none',
+            lg: 'flex',
           },
-          minHeight: '100%',
-          backgroundImage: `url(${Images.illustration1})`,
-          flex: 1,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
+          width: '50%',
+          height: '100vh',
+          overflow: 'hidden',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
-      />
-    </Grid>
+      >
+        <Box
+          flexDirection="column"
+          component="img"
+          src={Images.illustration1}
+          sx={{
+            width: '100%',
+          }}
+        />
+      </Box>
+    </Box>
   )
 }
 

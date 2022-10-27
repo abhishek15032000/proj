@@ -37,12 +37,13 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
 
   useEffect(() => {
     USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
-      setFullName(response?.data?.data?.fullName)
-      setPhone(response?.data?.data?.phone)
-      setAddress(response?.data?.data?.address)
-      setDesignation(response?.data?.data?.designation)
-      setOrganisationName(response?.data?.data?.organisationName)
-      setWebsite(response?.data?.data?.website)
+      const userData = response?.data?.data
+      setFullName(userData?.fullName || '')
+      setPhone(userData?.phone || '')
+      setAddress(userData?.address || '')
+      setDesignation(userData?.designation || '')
+      setOrganisationName(userData?.organisationName || '')
+      setWebsite(userData?.website || '')
     })
   }, [])
 
@@ -69,12 +70,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
       return
     }
 
-    if ( 
-      !isMobilePhone(phone.toString()) ||
-      !isURL(website)
-    ) {
+    if (!isMobilePhone(phone.toString()) || !isURL(website)) {
       alert('Correct the errors!')
-      return 
+      return
     }
 
     setLoading(true)
@@ -122,12 +120,13 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
           <Grid item xs={9} sx={{ pr: 1 }}>
             <Paper
               sx={{
-                height: '750px',
+                // height: '750px',
                 width: '100%',
                 borderRadius: '8px',
                 // border: '2px solid',
                 backgroundColor: Colors.white,
                 p: 2,
+                pb: 1,
                 position: 'relative',
               }}
             >
@@ -148,7 +147,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               <CCInputField
                 label="Participant Name"
                 placeholder="Enter Participant Name"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, zIndex: 20 }}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -156,7 +155,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               <CCInputField
                 label="Designation"
                 placeholder="Enter Designation"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, zIndex: 20 }}
                 value={designation}
                 onChange={(e) => setDesignation(e.target.value)}
               />
@@ -164,7 +163,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               <CCInputField
                 label="Email ID"
                 placeholder="Enter Email ID"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, zIndex: 20 }}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled
@@ -174,14 +173,16 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               <CCInputField
                 label="Contact Number"
                 placeholder="Enter Contact Number"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, zIndex: 20 }}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required={false}
                 inputProps={{
                   maxLength: 10,
                 }}
-                error={phone !== '' && !isMobilePhone(phone.toString(), 'en-IN')}
+                error={
+                  phone !== '' && !isMobilePhone(phone.toString(), 'en-IN')
+                }
                 helperText={
                   phone !== '' &&
                   !isMobilePhone(phone.toString(), 'en-IN') &&
@@ -192,7 +193,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               <CCInputField
                 label="Organisation Name"
                 placeholder="Enter Organisation Name"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, zIndex: 20 }}
                 value={organisationName}
                 onChange={(e) => setOrganisationName(e.target.value)}
               />
@@ -200,7 +201,7 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               <CCInputField
                 label="Organisation Address"
                 placeholder="Enter Organisation Address"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, zIndex: 20 }}
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
@@ -208,14 +209,12 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
               <CCInputField
                 label="Official Website"
                 placeholder="Enter Official Website"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, zIndex: 20 }}
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
                 error={website !== '' && !isURL(website)}
                 helperText={
-                  website !== '' &&
-                  !isURL(website) &&
-                  'Enter valid URL'
+                  website !== '' && !isURL(website) && 'Enter valid URL'
                 }
               />
 
@@ -223,9 +222,10 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 component="img"
                 sx={{
                   width: '100%',
-                  position: 'absolute',
+                  // position: 'absolute',
                   bottom: 0,
                   right: 0,
+                  // zIndex: 10,
                 }}
                 src={VerifierProfileIllustration}
               />

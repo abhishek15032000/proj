@@ -15,6 +15,7 @@ export const SECTION_NAMES = {
   SECTION_C: 'Section C',
   SECTION_D: 'Section D(Optional)',
   SECTION_E: 'Section E(Optional)',
+  SELECT_DATE: 'Select Date',
 }
 
 //Mumbai testnet network/chain id

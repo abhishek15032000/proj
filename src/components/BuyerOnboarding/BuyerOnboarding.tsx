@@ -49,7 +49,7 @@ const BuyerOnboarding = () => {
                   <ProfileCard
                     title="Organisational Details"
                     content="Complete filling your organisational details to complete the onboarding process"
-                    buttonText="Resume"
+                    buttonText="Start"
                     onClickFn={() => navigate(pathNames.ORGANISATIONAL_DETAILS)}
                   />
                 </Grid>

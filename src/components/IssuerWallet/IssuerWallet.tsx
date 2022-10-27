@@ -4,10 +4,12 @@ import { shallowEqual } from 'react-redux'
 import { issuerCalls } from '../../api/issuerCalls.api'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import DashboardStatistics from '../../atoms/DashboardStatistics/DashboardStatistics'
+import NotificationList from '../../atoms/NotificationList'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { WalletStats } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
+import DashboardStatisticsCustom from './DashboardStatisticsCustom'
 import { IssuerWalletProps } from './IssuerWallet.interface'
 import TransactionHistoryTable from './TransactionHistory'
 
@@ -85,8 +87,10 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       const balanceCallRes = await tokenContractFunctions.balanceOf(
         accountAddress
       )
-      const bal =
-        Math.round(Number(balanceCallRes.toString()) * 10 ** -18 * 1000) / 1000
+      const createProjectRes = await tokenContractFunctions.balanceOf(
+        accountAddress
+      )
+      const bal = Number(createProjectRes.toString()) * 10 ** -18
       setVCOOnSale(bal)
     } catch (error) {
       console.log('Error : ', error)
@@ -124,7 +128,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
           <BackHeader title="Wallet" iconDisable />
         </Grid>
 
-        <DashboardStatistics
+        <DashboardStatisticsCustom
           data={dashboardStatistics}
           // loading={balanceLoading || vcoLoading}
           loading={balanceLoading || vcoAvailableFoSaleLoading}

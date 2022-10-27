@@ -245,9 +245,8 @@ const MonthlyReportUpdate = () => {
   }
 
   const handleNextBtnFromSectionE = () => {
-    if (nextBtn) {
-      navigate(pathNames.DASHBOARD)
-    }
+    navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+
     // else if (!nextBtn) {
     //   if (currentProjectDetails?.project_status === 0) {
     //     navigate(pathNames.SELECT_VERIFIER)
@@ -497,6 +496,8 @@ const MonthlyReportUpdate = () => {
                     alignItems: 'center',
                     p: 1,
                     cursor: 'pointer',
+                    opacity: currentProjectDetails ? 1 : 0.5,
+                    pointerEvents: currentProjectDetails ? 'all' : 'none',
                   }}
                   onClick={handleNext}
                 >
