@@ -1,14 +1,24 @@
 import { KeyboardArrowLeft } from '@mui/icons-material'
 import { Grid, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { resetIssuanceDataCollectionHelpReducer } from '../../redux/Slices/issuanceDataCollectionHelpSlice'
 import { Colors } from '../../theme'
 import ProjectsSearch from './ProjectsSearch'
 import ProjectsTable from './ProjectsTable'
 
 const IssuanceDataCollectionHelp = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetIssuanceDataCollectionHelpReducer())
+    }
+  }, [])
+
   return (
     <>
       <Box sx={{ px: 3, py: 2, bgcolor: '#fbfdfa', display: 'flex' }}>

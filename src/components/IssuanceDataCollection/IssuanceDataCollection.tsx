@@ -477,6 +477,13 @@ const IssuanceDataCollection = () => {
     return <SelectedSubSectionComp />
   }
 
+  const disableSave = () => {
+    if (sectionIndex === 0 && currentProjectDetails) {
+      return true
+    }
+    return false
+  }
+
   return (
     <>
       <Grid container>
@@ -501,6 +508,7 @@ const IssuanceDataCollection = () => {
               </Grid>
               <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end' }}>
                 <CCButton
+                  variant="contained"
                   sx={{
                     backgroundColor: Colors.darkPrimary1,
                     padding: '8px 24px',
@@ -511,6 +519,7 @@ const IssuanceDataCollection = () => {
                     mr: 1,
                   }}
                   onClick={handleSave}
+                  disabled={disableSave()}
                 >
                   Save
                 </CCButton>
