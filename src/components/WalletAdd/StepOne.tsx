@@ -8,7 +8,7 @@ const StepOne = (props: Props) => {
     <img
       onClick={() => window.open('https://metamask.io', '_blank')}
       src={stepOneImage}
-      width="100%"
+      width="60%"
     />
   )
 }

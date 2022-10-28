@@ -73,7 +73,7 @@ export const privateRouteComponents = [
     path: pathNames.MARKETPLACE,
     component: MarketplaceHome,
     sidebarName: linkLabels.Marketplace,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
     path: pathNames.MARKETPLACE_PROJECT_DETAILS,

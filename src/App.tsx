@@ -19,6 +19,7 @@ import { BlockchainListener } from './utils/blockchain.util'
 import { setLoadWallet } from './redux/Slices/walletSlice'
 import LoadWallet from './components/LoadWallet'
 import BlockchainAlert from './components/BlockchainAlert'
+import AddMetaMaskAccountModal from './components/AddMetaMaskAccountModal/AddMetaMaskAccountModal'
 
 declare let window: any
 const { ethereum } = window
@@ -148,6 +149,7 @@ const App: FC<AppProps> = () => {
           <AppDrawer>
             <BlockchainAlert />
             <LoadWallet />
+            <AddMetaMaskAccountModal />
             <RouteController />
           </AppDrawer>
         )}
@@ -156,6 +158,7 @@ const App: FC<AppProps> = () => {
           <>
             <BlockchainAlert />
             <LoadWallet />
+            <AddMetaMaskAccountModal />
             <RouteController />
           </>
           // </AppDrawer>

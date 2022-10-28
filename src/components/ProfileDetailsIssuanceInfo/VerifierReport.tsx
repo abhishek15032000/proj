@@ -411,7 +411,7 @@ const headings = [
   'Report',
   'Version',
   'Status',
-  'CO2c Sequestered',
+  'VCOT Sequestered',
   'Report Received',
   'comment Received',
   'Action',

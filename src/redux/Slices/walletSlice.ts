@@ -10,6 +10,8 @@ interface WalletReducerInterface {
     walletNetwork: any
     guideOpen: boolean
     loadWalletAlert: boolean
+    accountAddressToConnectWith: string
+    showAddMetaMaskAccountModal: boolean
 }
 const initialState: WalletReducerInterface = {
     loadWallet: false,
@@ -21,7 +23,8 @@ const initialState: WalletReducerInterface = {
     loadWalletAlert: false,
     walletNetwork: "",
     alertMessage: "",
-
+    accountAddressToConnectWith: "",
+    showAddMetaMaskAccountModal: false,
 }
 const wallet = createSlice({
     name: 'wallet',
@@ -56,6 +59,12 @@ const wallet = createSlice({
         setLoadWalletAlert: (state, action: PayloadAction<any>) => {
             state.loadWalletAlert = action.payload
         },
+        setAccountAddressToConnectWith: (state, action: PayloadAction<any>) => {
+            state.accountAddressToConnectWith = action.payload
+        },
+        setShowAddMetaMaskAccountModal: (state, action: PayloadAction<any>) => {
+            state.showAddMetaMaskAccountModal = action.payload
+        },
         resetWallet: (state) => {
             state = initialState
         }
@@ -70,6 +79,9 @@ export const { setLoadWallet, setMetamask,
     setAlertMessage,
     setLoadWalletAlert,
     resetWallet,
-    setGuide } = wallet.actions
+    setGuide,
+    setAccountAddressToConnectWith,
+    setShowAddMetaMaskAccountModal,
+} = wallet.actions
 
 export default wallet.reducer

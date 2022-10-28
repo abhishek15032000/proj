@@ -24,9 +24,10 @@ import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { USER } from '../../api/user.api'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
 import { onManualConnectClick } from '../../utils/blockchain.util'
+import { MUMBAI_TESTNET_NETWORK_ID } from '../../config/constants.config'
 
 // let window: any
-// declare let window: any
+declare let window: any
 
 // const provider = new ethers.providers.Web3Provider(window.ethereum)
 
@@ -55,7 +56,7 @@ const LoadWallet = (props: LoadWalletProps) => {
     setOpen(loadWallet)
   }, [loadWallet])
 
-  // const { ethereum } = window
+  const { ethereum } = window
 
   const walletReducer = useAppSelector((state) => state.wallet)
   // console.log(
@@ -107,6 +108,7 @@ const LoadWallet = (props: LoadWalletProps) => {
     try {
       // console.log(accountAddress)
       BlockchainCalls.getWalletBalance(accountAddress).then((res: any) => {
+        console.log("es.balance",res.balance)
         dispatch(setAccountBalance(res.balance))
         setLoading(false)
       })
@@ -127,6 +129,40 @@ const LoadWallet = (props: LoadWalletProps) => {
       })
     } catch (error) {
       dispatch(setConnected(false))
+    }
+  }
+
+  const addMumbaiNetwork = async () => {
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x13881' }],
+      })
+    } catch (switchError: any) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError?.code === 4902) {
+        try {
+          await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: '0x13881',
+                chainName: 'Mumbai Testnet',
+                rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
+                blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+                nativeCurrency: {
+                  name: 'MATIC',
+                  symbol: 'MATIC',
+                  decimals: 18,
+                },
+              },
+            ],
+          })
+        } catch (addError) {
+          alert('Some issue in adding network')
+        }
+      }
+      // handle other "switch" errors
     }
   }
 
@@ -151,7 +187,7 @@ const LoadWallet = (props: LoadWalletProps) => {
             maxWidth: '80%',
           }}
         >
-          <Grid container justifyContent={'flex-end'} p={3}>
+          <Grid container justifyContent={'flex-end'} p={3} pb={0}>
             <Grid item alignItems="center" justifyContent="flex-end">
               <Button
                 startIcon={<InfoIcon />}
@@ -282,12 +318,27 @@ const LoadWallet = (props: LoadWalletProps) => {
                       </>
                     )}
 
-                    <CCButton
-                      sx={{ mt: 2 }}
-                      onClick={() => dispatch(setLoadWallet(false))}
-                    >
-                      Okay
-                    </CCButton>
+                    <Box sx={{ display: 'flex' }}>
+                      <CCButton
+                        sx={{ mt: 2, ml: 2 }}
+                        onClick={addMumbaiNetwork}
+                        variant="contained"
+                        disabled={
+                          !walletNetwork ||
+                          walletNetwork?.chainId === MUMBAI_TESTNET_NETWORK_ID
+                        }
+                      >
+                        Add Mumbai n/w
+                      </CCButton>
+                    </Box>
+                    <Box sx={{ display: 'flex' }}>
+                      <CCButton
+                        sx={{ mt: 2 }}
+                        onClick={() => dispatch(setLoadWallet(false))}
+                      >
+                        Okay
+                      </CCButton>
+                    </Box>
                   </Box>
                 }
               </>

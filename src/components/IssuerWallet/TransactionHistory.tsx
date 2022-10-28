@@ -31,7 +31,7 @@ const headings = [
   'Buy/Sell',
   'Date',
   'Time',
-  'Quantity(VCOs T)',
+  'Quantity(VCOT)',
   'Unit Price(USD)',
   'Total Amount',
   'Details',

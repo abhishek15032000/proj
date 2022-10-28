@@ -39,10 +39,10 @@ const IssuanceDataCollectionHelp = () => {
               Project Search
             </Box>
             <Grid container>
-              <Grid item xs={4}>
+              <Grid item xs={3} sx={{ borderRight: '1px solid #BFC9C6' }}>
                 <ProjectsSearch />
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={9}>
                 <ProjectsTable />
               </Grid>
             </Grid>

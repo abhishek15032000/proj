@@ -2,36 +2,44 @@
 import React, { useEffect, useState } from 'react'
 
 // MUI Imports
-import { Grid, Box, Typography, Divider, Paper } from '@mui/material'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
 
 // Local Imports
-import { VerifierVerifyReportProps } from './VerifierVerifyReport.interface'
-import { Colors } from '../../theme'
-import BackHeader from '../../atoms/BackHeader/BackHeader'
-import TextButton from '../../atoms/TextButton/TextButton'
-import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { DatePicker } from '@mui/x-date-pickers'
-import CCInputField from '../../atoms/CCInputField'
-import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
+import { ethers } from 'ethers'
 import moment from 'moment'
+import { shallowEqual } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { fileUploadCalls } from '../../api/fileUpload.api'
+import { USER } from '../../api/user.api'
+import { verifierCalls } from '../../api/verifierCalls.api'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import CCInputField from '../../atoms/CCInputField'
+import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import MessageModal from '../../atoms/MessageModal/MessageModal'
+import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
+import Spinner from '../../atoms/Spinner'
+import TextButton from '../../atoms/TextButton/TextButton'
+import BlockchainCalls from '../../blockchain/Blockchain'
+import LoaderOverlay from '../../components/LoderOverlay'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { pathNames } from '../../routes/pathNames'
+import { Colors } from '../../theme'
 import {
   deleteIndexInArray,
   stringExtractor,
 } from '../../utils/commonFunctions'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { fileUploadCalls } from '../../api/fileUpload.api'
 import { getLocalItem } from '../../utils/Storage'
-import { useAppSelector } from '../../hooks/reduxHooks'
-import { shallowEqual } from 'react-redux'
-import { verifierCalls } from '../../api/verifierCalls.api'
-import BlockchainCalls from '../../blockchain/Blockchain'
-import LoaderOverlay from '../../components/LoderOverlay'
-import Spinner from '../../atoms/Spinner'
-import { USER } from '../../api/user.api'
-import { pathNames } from '../../routes/pathNames'
-import MessageModal from '../../atoms/MessageModal/MessageModal'
+import { VerifierVerifyReportProps } from './VerifierVerifyReport.interface'
+
+declare let window: any
+
+const provider =
+  window.ethereum != null
+    ? new ethers.providers.Web3Provider(window.ethereum)
+    : ethers.getDefaultProvider()
 
 const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const navigate = useNavigate()
@@ -47,6 +55,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
   )
+  const accountBalance = useAppSelector(
+    ({ wallet }) => wallet.accountBalance,
+    shallowEqual
+  )
   const isConnected = useAppSelector(
     ({ wallet }) => wallet.isConnected,
     shallowEqual
@@ -59,7 +71,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     moment().add(1, 'd')
   )
   const [relevantDocs, setRelevantDocs]: any = useState([])
-  const [nonce, setNonce] = useState(1)
   const [loading, setLoading] = useState(false)
   const [pdfLoading, setPDFLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
@@ -106,10 +117,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     }
   }
 
-  const incrementNonce = () => {
-    setNonce((nonce) => nonce + 1)
-  }
-
   const signAndVerify = async () => {
     const { shineKey = '' } = getLocalItem('userDetails2')
 
@@ -139,6 +146,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   }
 
   const getSignatureHash = async () => {
+    const nonce = await provider.getTransactionCount(accountAddress)
     const signatureHashPayload = {
       recipient: issuerShineKey,
       _amount: Number(quantity),
@@ -174,6 +182,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       state: { project },
     } = location
 
+    const nonce = await provider.getTransactionCount(accountAddress)
+
     const verifyPDFAndMintTokenpayload = {
       project_id: project?.uuid,
       current_month: selectMonth,
@@ -183,14 +193,12 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       signature_hash: signatureHash,
       signer: accountAddress,
       file_attach: stringExtractor(relevantDocs, 'fileName'),
-      nonce: nonce,
+      nonce,
     }
     try {
       const verifyPDFAndMintTokenRes =
         await verifierCalls.verifyPDFAndMintToken(verifyPDFAndMintTokenpayload)
       if (verifyPDFAndMintTokenRes?.data.success) {
-        //If verifer wants to make some more /report/submit (blockchain) calls then different nonce needs to be passed to indicate different transaction
-        incrementNonce()
         if (verifyPDFAndMintTokenRes?.data?.data.success) {
           setShowActionSuccessModal(true)
         } else {
@@ -198,6 +206,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         }
       }
     } catch (err) {
+      alert(`Something went wrong : ${err}`)
       console.log('Error in verifierCalls.getPDFHash api :', err)
     } finally {
       setLoading(false)
@@ -411,14 +420,22 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       </Grid>
       <MessageModal
         message={
-          <Typography sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}>
-            Next step involves making calls with Blockchain. Do you want to
-            continue with{' '}
-            <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
-              {accountAddress}
-            </span>{' '}
-            wallet address?
-          </Typography>
+          <>
+            <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
+              Next step involves making calls with Blockchain. Do you want to
+              continue with{' '}
+              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+                {accountAddress}
+              </span>{' '}
+              wallet address?
+            </Typography>
+            <Typography sx={{ mt: 2, fontSize: 18, fontWeight: 500, pb: 2 }}>
+              Wallet Balance :{' '}
+              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+                {accountBalance}
+              </span>{' '}
+            </Typography>
+          </>
         }
         btn1Text="Continue"
         btn1OnClick={() => {

@@ -17,3 +17,39 @@ export const SECTION_NAMES = {
   SECTION_E: 'Section E(Optional)',
   SELECT_DATE: 'Select Date',
 }
+
+//Mumbai testnet network/chain id
+export const MUMBAI_TESTNET_NETWORK_ID = 80001
+
+export const MARKETPLACE_CALL_TYPES = {
+  APPROVE_SELL_FLOW: 'approveSellFlow',
+  DEPOSIT_SELL_FLOW: 'depositSellFlow',
+  CREATE_SELL_ORDER: 'createSellOrder',
+  APPROVE_BUY_FLOW: 'approveBuyFlow',
+  DEPOSIT_BUY_FLOW: 'depositBuyFlow',
+  CREATE_BUY_ORDER: 'createBuyOrder',
+}
+
+export const LOCAL_STORAGE_VARS = {
+  //Sell Flow
+  // ON_GOING_DEPOSIT_DATA_SELL_FLOW: 'onGoingDepositSellFlow',
+  // DATA_FOR_DEPOSIT_CALL_SELL_FLOW: 'dataForDepositCallSellFlow',
+  // DATA_FOR_CREATE_SELL_ORDER_CALL: 'dataForCreateSellOrderCall',
+  ON_GOING_APPROVE_DATA_SELL_FLOW: 'onGoingApproveSellFlow',
+  ON_GOING_SELL_ORDER_TX_ID: 'onGoingSellOrderData',
+  ON_GOING_DEPOSIT_TX_ID_SELL_FLOW: 'onGoingDepositTxIdSellFlow',
+  SELL_QUANTITY_FOR_APPROVE: 'sellQuantityForApprove',
+  SELL_QUANTITY_FOR_DEPOSIT: 'sellQuantityForDeposit',
+  SELL_QUANTITY_FOR_SELL_ORDER: 'sellQuantityForSellOrder',
+  //Buy Flow
+  ON_GOING_APPROVE_DATA_BUY_FLOW: 'onGoingApproveForBuyFlow',
+  ON_GOING_BUY_ORDER_TX_ID: 'onGoingBuyOrderData',
+  ON_GOING_DEPOSIT_TX_ID_BUY_FLOW: 'onGoingDepositTxIdBuyFlow',
+  BUY_QUANTITY_FOR_APPROVE: 'buyQuantityForApprove',
+  BUY_QUANTITY_FOR_DEPOSIT: 'buyQuantityForDeposit',
+  BUY_QUANTITY_FOR_BUY_ORDER: 'buyQuantityForBuyOrder',
+  // ON_GOING_DEPOSIT_DATA_BUY_FLOW: 'onGoingDepositBuyFlow',
+  // DATA_FOR_CREATE_BUY_ORDER_CALL: 'dataForCreateBuyOrderCall',
+  // DATA_FOR_DEPOSIT_CALL_BUY_FLOW: 'dataForDepositCallForBuyFlow',
+  // DATA_FOR_BUY_CALL: 'dataForBuyCall',
+}

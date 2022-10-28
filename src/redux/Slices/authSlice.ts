@@ -20,7 +20,11 @@ const auth = createSlice({
       setLocalItem('userDetails', action.payload)
     },
     logoutAction: () => {
-      removeAllItem()
+      // removeAllItem()
+      localStorage.removeItem('userDetails')
+      localStorage.removeItem('profileCompleted')
+      localStorage.removeItem('userDetails2')
+      localStorage.removeItem('loggedIn')
       setTimeout(() => {
         window.location.reload()
       }, 1000)

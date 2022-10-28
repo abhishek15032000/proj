@@ -74,7 +74,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     if (dashboardStatistics && accountBalance) {
       const dashboardStatisticsCopy = [...dashboardStatistics]
       const bal = 'MATIC ' + Math.round(Number(accountBalance) * 1000) / 1000
-      
       dashboardStatisticsCopy[0].value = bal
       setDashboardStatistics(dashboardStatisticsCopy)
     }
@@ -84,7 +83,8 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     try {
       setVCOLoading(true)
       const tokenContractFunctions = await BlockchainCalls.token_caller()
-      const abc = await tokenContractFunctions.estimateGas.balanceOf(
+      await tokenContractFunctions.estimateGas.balanceOf(accountAddress)
+      const balanceCallRes = await tokenContractFunctions.balanceOf(
         accountAddress
       )
       const createProjectRes = await tokenContractFunctions.balanceOf(
