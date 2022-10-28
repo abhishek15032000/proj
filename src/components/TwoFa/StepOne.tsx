@@ -156,27 +156,31 @@ const StepOneTwoFa = (props: TwoFaProps) => {
         <Typography align="right" sx={{ py: 3, fontWeight: 500, fontSize: 14 }}>
           Didn’t receive code yet?{' '}
           <Typography
-            sx={{ cursor: 'pointer' }}
+            sx={{
+              cursor: 'pointer',
+              color: Colors.lightPrimary1,
+              fontSize: 14,
+              fontWeight: 500,
+            }}
             display={'inline'}
-            color={'lightPrimary1'}
             onClick={() => {
               setOtp('')
               setOpenModal(true)
             }}
           >
-            Resend
+            Resend Code
           </Typography>
         </Typography>
         <CCButton
           variant="contained"
           sx={{
-            height: '40px',
+            height: '50px',
             width: '320px',
             borderRadius: '6px',
           }}
           onClick={handleVerify}
         >
-          Verify & Create Account
+          Verify Account
         </CCButton>
       </Box>
       <Box

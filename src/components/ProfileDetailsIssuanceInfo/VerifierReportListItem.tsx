@@ -37,8 +37,6 @@ const VerifierReportListItemListItem: FC<
     return 7 - (currentDay - result)
   }
 
-  console.log("accountBalance",accountBalance)
-
   return (
     <>
       <Box sx={{ background: '#E8F3EF', py: 3, pl: 1, borderRadius: 2 }}>
@@ -174,8 +172,9 @@ const VerifierReportListItemListItem: FC<
               </span>{' '}
               wallet address?
             </Typography>
-            <Typography sx={{ mt: 2,fontSize: 18, fontWeight: 500, pb: 2 }}>
-              Wallet Balance : <span style={{color: Colors.lightPrimary1, fontSize: 18 }}>
+            <Typography sx={{ mt: 2, fontSize: 18, fontWeight: 500, pb: 2 }}>
+              Wallet Balance :{' '}
+              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
                 {accountBalance}
               </span>{' '}
             </Typography>
