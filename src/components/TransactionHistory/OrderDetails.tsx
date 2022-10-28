@@ -32,17 +32,16 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
         mt: 2,
       }}
     >
-      <Box
-        sx={{
-          width: {
-            xs: '100%',
-            lg: '50%',
-          },
-          height: '100%',
-          p: 3,
-        }}
-      >
-        <Box>
+          <Box
+            sx={{
+              width: {
+                xs: '100%',
+                lg: '50%',    
+              },
+              height: '100%',
+              p: 3,
+            }}
+          ><Box>
           <Typography
             sx={{
               fontSize: 18,
@@ -60,6 +59,7 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
               // alignItems: 'center',
             }}
           >
+
             <Box sx={{ width: '50%' }}>
               <THTile
                 title="Transaction ID:"
@@ -98,9 +98,20 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
               />
             </Box>
           </Box>
-        </Box>
+        </Box> 
 
         <Divider sx={{ mt: 3, mb: 2 }} />
+
+        {/* <Box
+        sx={{
+          width: {
+            xs: '100%',
+            lg: '50%',
+          },
+          height: '100%',
+          p: 3,
+        }}
+      > */}
 
         <Box>
           <Typography

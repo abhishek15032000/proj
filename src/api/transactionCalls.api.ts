@@ -11,4 +11,12 @@ export const transactionCalls = {
       return res.data
     })
   },
+  getTransactionById: (txId: any) => {
+    return AxiosHelper(
+      URL_PATH.transaction.getTransactionById + '?txId=' + txId,
+      'GET'
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }

@@ -1,5 +1,6 @@
 import {
   Box,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -31,7 +32,7 @@ const TokenAndContractReportTable = (
 
   const headings = [
     'Date of Report Submission',
-    'No of VCOs Authorised',
+    'No of VCOT Authorised',
     'Date of Verification',
     'Comments',
   ]

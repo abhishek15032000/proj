@@ -20,11 +20,16 @@ interface EmptyComponentProps {
   listNewProject?: any
   action?: any
   exploreMarketplace?: any
+  elevation?: number
 }
 
-const EmptyComponent: FC<EmptyComponentProps> = (props) => {
+const EmptyComponent: FC<EmptyComponentProps> = ({
+  elevation = 1,
+  ...props
+}: EmptyComponentProps) => {
   return (
     <Paper
+      elevation={elevation}
       sx={{
         height: '540px',
         display: 'flex',
@@ -138,24 +143,26 @@ const ExploreMarketplace: FC<ExploreMarketplaceProps> = (props) => {
         Buy or sell some tokens to view the transaction history here
       </Typography>
 
-      <CCButton
-        variant="contained"
-        sx={{
-          backgroundColor: '#005046',
-          textTransform: 'none',
-          width: '260px',
-          borderRadius: '100px',
-          marginBottom: 4,
-          marginTop: 3,
-          padding: '10px 24px 10px 16px',
-        }}
-        // startIcon={<AddIcon style={{ color: '#005046' }} />}
-        onClick={props.action}
-      >
-        <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#FFF' }}>
-        Explore Marketplace
-        </Typography>
-      </CCButton>
+      {props.action && (
+        <CCButton
+          variant="contained"
+          sx={{
+            backgroundColor: '#005046',
+            textTransform: 'none',
+            width: '260px',
+            borderRadius: '100px',
+            marginBottom: 4,
+            marginTop: 3,
+            padding: '10px 24px 10px 16px',
+          }}
+          // startIcon={<AddIcon style={{ color: '#005046' }} />}
+          onClick={props.action}
+        >
+          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#FFF' }}>
+            Explore Marketplace
+          </Typography>
+        </CCButton>
+      )}
     </>
   )
 }

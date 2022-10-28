@@ -1,26 +1,89 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 
 // Local Imports
-import PurchaseComp from './PurchaseComp'
-import SellOrders from './SellOrders'
 import MarketDepth from './MarketDepth'
 import CancelModal from './CancelModal'
 import ModifyOrderModal from './ModifyOrderModal'
+import TabSelector from '../../atoms/TabSelector/TabSelector'
+import BuyOrderFlow from './BuyOrderFlow/BuyOrderFlow'
+import SellOrderFlow from './SellOrderFlow/SellOrderFlow'
 import { getLocalItem } from '../../utils/Storage'
+import {
+  LOCAL_STORAGE_VARS,
+  MARKETPLACE_CALL_TYPES,
+} from '../../config/constants.config'
+import {
+  setOngoingBuyOrderTransaction,
+  setOngoingDepositTransactionBuyFlow,
+  setOngoingDepositTransactionSellFlow,
+  setOngoingSellOrderTransaction,
+} from '../../redux/Slices/marketplaceSlice'
+import { checkBlockchainTransactionComplete } from '../../utils/marketplace.utils'
 
 interface BuySellComponentProps {}
 
 const BuySellComponent: FC<BuySellComponentProps> = (props) => {
+  const [tabIndex, setTabIndex] = useState(1)
+
+  const onGoingDepositTxIdSellFlowLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_SELL_FLOW
+  )
+  const onGoingDepositTxIdBuyFlowLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_BUY_FLOW
+  )
+  const onGoingSellOrderTxIdLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.ON_GOING_SELL_ORDER_TX_ID
+  )
+  const onGoingBuyOrderTxIdLocalStorage = getLocalItem(
+    LOCAL_STORAGE_VARS.ON_GOING_BUY_ORDER_TX_ID
+  )
+
+  useEffect(() => {
+    checkForTransactionToComplete()
+  }, [])
+
+  function checkForTransactionToComplete() {
+    let txId
+    let setOngoingTransaction
+    let callType = ''
+
+    if (onGoingDepositTxIdSellFlowLocalStorage) {
+      txId = onGoingDepositTxIdSellFlowLocalStorage
+      setOngoingTransaction = setOngoingDepositTransactionSellFlow
+      callType = MARKETPLACE_CALL_TYPES.DEPOSIT_SELL_FLOW
+    } else if (onGoingDepositTxIdBuyFlowLocalStorage) {
+      txId = onGoingDepositTxIdBuyFlowLocalStorage
+      setOngoingTransaction = setOngoingDepositTransactionBuyFlow
+      callType = MARKETPLACE_CALL_TYPES.DEPOSIT_BUY_FLOW
+    } else if (onGoingSellOrderTxIdLocalStorage) {
+      txId = onGoingSellOrderTxIdLocalStorage
+      setOngoingTransaction = setOngoingSellOrderTransaction
+      callType = MARKETPLACE_CALL_TYPES.CREATE_SELL_ORDER
+    } else if (onGoingBuyOrderTxIdLocalStorage) {
+      txId = onGoingBuyOrderTxIdLocalStorage
+      setOngoingTransaction = setOngoingBuyOrderTransaction
+      callType = MARKETPLACE_CALL_TYPES.CREATE_BUY_ORDER
+    }
+
+    checkBlockchainTransactionComplete(txId, callType, setOngoingTransaction)
+  }
+
   return (
     <Grid container>
       <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
-        <PurchaseComp />
-
-        <SellOrders />
+        <TabSelector
+          tabArray={['Buy', 'Sell', 'Withdraw/Deposit']}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          tabStyle={{ width: 'auto' }}
+          sx={{ mt: 0 }}
+        />
+        {tabIndex === 1 && <BuyOrderFlow />}
+        {tabIndex === 2 && <SellOrderFlow />}
       </Grid>
 
       <Grid

@@ -51,7 +51,7 @@ const StepFour = (props: Props) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography variant="h4">Add Custom Network</Typography>
+          <Typography variant="h6">Add Custom Network</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>Fill in the details of your custom network</Typography>
@@ -116,7 +116,7 @@ const StepFour = (props: Props) => {
           </Grid>
         </AccordionDetails>
       </Accordion>
-      <img src={stepFourImage} width="100%" />
+      <img src={stepFourImage} width="60%" />
     </>
   )
 }

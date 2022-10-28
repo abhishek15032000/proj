@@ -9,12 +9,15 @@ import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
+import moment from 'moment'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 const TokenAndContract = () => {
   const navigate = useNavigate()
 
   const { email } = getLocalItem('userDetails')
+
+  const [loading, setLoading] = useState(true)
 
   const [projects, setProjects] = useState<any>()
 
@@ -34,6 +37,9 @@ const TokenAndContract = () => {
       })
       .catch((e) => {
         console.log(e)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 

@@ -4,6 +4,7 @@ export const ENDPOINTS = {
   authServiceURL: BASE_URL + 'auth/api/v1',
   carbonServiceURL: BASE_URL + 'carbon/api/v1',
   userServiceURL: BASE_URL + 'user/api/v1',
+  orderServiceURL: BASE_URL + 'order/api/v1',
   notificationServiceURL: BASE_URL + 'notification/api/v1',
 }
 
@@ -75,9 +76,20 @@ export const URL_PATH = {
   transaction: {
     getTransactionByUser:
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
+    getTransactionById:
+      ENDPOINTS.carbonServiceURL + '/transaction/getTransactionById',
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
+  },
+  marketplace: {
+    depositERC20: ENDPOINTS.orderServiceURL + '/marketplace/depositERC20',
+    createOrder: ENDPOINTS.orderServiceURL + '/marketplace/createOrder',
+    fillOrder: ENDPOINTS.orderServiceURL + '/marketplace/fillOrder',
+    getSellOrder: ENDPOINTS.orderServiceURL + '/marketplace/getSellOrder',
+    getBuyOrder: ENDPOINTS.orderServiceURL + '/marketplace/getBuyOrder',
+    checkForFullFillOrder:
+      ENDPOINTS.orderServiceURL + '/marketplace/checkForFullFillOrder',
   },
   buyers: {
     saveRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/retire-token',

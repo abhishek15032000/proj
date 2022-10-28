@@ -32,6 +32,7 @@ const LabelInput: FC<LabelInputProps> = (props) => {
         label={props.label}
         variant="outlined"
         sx={{ width: '100%', ...props.textFieldSx }}
+        value={props.value ? props.value : ''}
         onChange={
           props?.setValue
             ? props?.setValue
