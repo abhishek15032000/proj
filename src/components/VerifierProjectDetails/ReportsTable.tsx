@@ -175,9 +175,9 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
       {!props.loading && props.data.length === 0 && (
         <>
           <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
-            {props?.projectDetails?.project_status === 2
+            {props?.projectDetails?.project_status === 1
               ? 'Please Approve or Reject the Project Request first'
-              : 'Response awaiting from project developer'}
+              : 'Response awaiting from Project Developer'}
           </Typography>
           <NoData title="Your project’s review report will show up here" />
         </>

@@ -286,7 +286,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               ml: 4,
             }}
           >
-            How much quantity of CO2e can be authorised for the current month?
+            How much quantity of VCOT can be authorised for the current month?
           </Typography>
 
           <Box
@@ -324,7 +324,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
             <Box sx={{ width: '43%', ml: 4 }}>
               <CCInputField
-                label="Enter Quantity of CO2e"
+                label="Enter Quantity of VCOT"
                 variant="outlined"
                 // sx={{ mt: 1 }}
                 value={quantity}

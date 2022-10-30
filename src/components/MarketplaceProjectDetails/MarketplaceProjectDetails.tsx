@@ -30,7 +30,7 @@ const MarketplaceProjectDetails: FC<MarketplaceProjectDetailsProps> = (
         <Box sx={{ width: '100%', margin: 1 }}>
           <Paper sx={{ p: 2, borderRadius: '8px', mb: 2 }}>
             <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-              Total CO2e Sequestered
+              Total VCOT Sequestered
             </Typography>
 
             <Typography sx={{ fontSize: 22, fontWeight: 400 }}>981</Typography>

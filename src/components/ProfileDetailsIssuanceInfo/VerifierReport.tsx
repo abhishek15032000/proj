@@ -250,7 +250,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          getVerifierByProject()
+          // getVerifierByProject()
           createProjectContractCall(res?.data?.fileHash)
         }
       })
@@ -280,9 +280,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         }
         const updateTxRes = await dataCollectionCalls.updateTx(updateTxPayload)
         if (updateTxRes.success) {
+          getVerifierByProject()
           setShowActionSuccessModal(true)
           //Setting  setLoading false over here to give user impression that updateVerifier api call and createNewProject contract call is a single call
-          setLoading(false)
+          // setLoading(false)
         }
       }
     } catch (e) {
