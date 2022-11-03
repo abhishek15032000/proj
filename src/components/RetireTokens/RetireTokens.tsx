@@ -1,33 +1,26 @@
-// React Imports
-import React, { FC, useEffect, useState } from 'react'
-
-// MUI Imports
+import React, { useEffect, useState } from 'react'
 import { Box, Grid, Paper, Stack, Typography } from '@mui/material'
-
-// Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import { Colors } from '../../theme'
 import { RetireTokensProps } from './RetireTokens.interface'
 import tokenRetirement from '../../assets/Images/illustrations/tokenRetirement.png'
 import CCInputField from '../../atoms/CCInputField'
-import TextButton from '../../atoms/TextButton/TextButton'
-import { USER } from '../../api/user.api'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
-import { getLocalItem, setLocalItem } from '../../utils/Storage'
 import Spinner from '../../atoms/Spinner'
 import CCButton from '../../atoms/CCButton'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
-import { buyerCalls } from '../../api/buyerCalls.api'
 import BlockchainCalls from '../../blockchain/Blockchain'
-import { EXCHANGE_CONTRACT_ADDRESS } from '../../config/exchange.config'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import { TOKEN_CONTRACT_ADDRESS } from '../../config/token.config'
 import Web3 from 'web3'
-import { shallowEqual, useDispatch } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 import { ethers } from 'ethers'
-import { setOngoingApproveTokenRetirement } from '../../redux/Slices/tokenRetireSlice'
-import OngoingApprove from './OngoingApprove'
+import { getApprovedTokensBalance } from '../../utils/tokenRetire.utils'
+import PreBlockchainCallModal from '../../atoms/PreBlockchainCallModal/PreBlockchainCallModal'
+import BalanceCheckModal from '../../atoms/BalanceCheckModal/BalanceCheckModal'
+import { buyerCalls } from '../../api/buyerCalls.api'
+
 declare let window: any
 
 const provider =
@@ -37,17 +30,27 @@ const provider =
 
 const RetireTokens = (props: RetireTokensProps) => {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
   )
-  const [tonnesOfCarbon, setTonnesOfCarbon] = useState('')
-  const [beneficialOwner, setBeneficialOwner] = useState('')
+  const tokensApprovedForRetiring = useAppSelector(
+    ({ tokenRetire }) => tokenRetire.tokensApprovedForRetiring,
+    shallowEqual
+  )
+
   const [retiring, setRetiring] = useState('')
   const [explain, setExplain] = useState('')
   const [loading, setLoading] = useState(false)
-  const [vrs, setVRS] = useState<any>({})
+  const [showModal, setShowModal] = useState(false)
+  const [showSecondModal, setShowSecondModal] = useState(false)
+
+  useEffect(() => {
+    if (accountAddress) {
+      getApprovedTokensBalance()
+    }
+  }, [accountAddress])
 
   async function getHashAndVRS() {
     try {
@@ -74,31 +77,11 @@ const RetireTokens = (props: RetireTokensProps) => {
       console.log(e)
     }
   }
-
-  const onSave = async () => {
-    // const tokenContractFunctions = await BlockchainCalls.temp_contract_caller()
-
-    const tokenContractFunctions = await BlockchainCalls.token_caller()
-
-    const approveFnRes = await tokenContractFunctions.approve(
-      '0x92e8DA2ca27997e0FC6286e7B252cb9175d2BD37', // exchangeAddress
-      Number(retiring)
-    )
-
-    if (approveFnRes) {
-      setLocalItem('OngoingApproveTokenRetirement', approveFnRes)
-      dispatch(setOngoingApproveTokenRetirement(approveFnRes))
-    }
-
-    return
-  }
-
-  const onSaveAfterApprove = async () => {
-    if (!tonnesOfCarbon || !beneficialOwner || !retiring || !explain) {
-      alert('Fill all the Fields!')
+  const retireTokens = async () => {
+    if (Number(retiring) > Number(tokensApprovedForRetiring)) {
+      setShowSecondModal(true)
       return
     }
-
     setLoading(true)
     const hashAnd = await getHashAndVRS()
 
@@ -121,6 +104,7 @@ const RetireTokens = (props: RetireTokensProps) => {
       buyerCalls
         .retireToken(payload)
         .then((response) => {
+          getApprovedTokensBalance()
           navigate(pathNames.TOKENS_RETIREMENT, { replace: true })
           setLoading(false)
         })
@@ -130,147 +114,140 @@ const RetireTokens = (props: RetireTokensProps) => {
     }
   }
 
-  if (loading) {
-    return (
-      <Stack
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: 450 }}
+  const isDisabled = () => {
+    let shouldDisable = true
+    if (retiring && explain) {
+      shouldDisable = false
+    }
+    return shouldDisable
+  }
+
+  return loading ? (
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+      <Spinner />
+    </Stack>
+  ) : (
+    <Box sx={{ p: 0 }}>
+      <Grid
+        container
+        xs={12}
+        sx={{ p: 0, border: '0px solid' }}
+        justifyContent={'space-between'}
       >
-        <Spinner />
-      </Stack>
-    )
-  } else {
-    return (
-      <Box sx={{ p: 0 }}>
-        <Grid
-          container
-          xs={12}
-          sx={{ p: 0, border: '0px solid' }}
-          justifyContent={'space-between'}
-        >
-          <Grid item xs={9} sx={{ pr: 1 }}>
-            <Paper
+        <Grid item xs={9} sx={{ pr: 1 }}>
+          <Paper
+            sx={{
+              width: '100%',
+              borderRadius: '8px',
+              backgroundColor: Colors.white,
+              p: 2,
+              position: 'relative',
+            }}
+          >
+            <Box
               sx={{
-                height: '750px',
-                width: '100%',
-                borderRadius: '8px',
-                // border: '2px solid',
-                backgroundColor: Colors.white,
-                p: 2,
-                position: 'relative',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
               }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <BackHeader
-                  title="Retire Tokens"
-                  onClick={() => navigate(pathNames.TOKENS_RETIREMENT)}
-                />
-                <Grid
-                  item
-                  xs={6}
-                  sx={{ display: 'flex', justifyContent: 'end' }}
+              <BackHeader
+                title="Retire Tokens"
+                onClick={() => navigate(pathNames.TOKENS_RETIREMENT)}
+              />
+              <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end' }}>
+                <CCButton
+                  sx={{
+                    backgroundColor: Colors.darkPrimary1,
+                    padding: '8px 24px',
+                    minWidth: '50px',
+                    color: '#fff',
+                    borderRadius: 10,
+                    fontSize: 14,
+                    mr: 1,
+                  }}
+                  onClick={() => {
+                    console.log({ retiring, explain })
+                    if (!retiring || !explain) {
+                      alert('Fill all the Fields!')
+                      return
+                    }
+                    setShowModal(true)
+                  }}
+                  disabled={isDisabled()}
+                  variant="contained"
                 >
-                  <CCButton
-                    sx={{
-                      backgroundColor: Colors.darkPrimary1,
-                      padding: '8px 24px',
-                      minWidth: '50px',
-                      color: '#fff',
-                      borderRadius: 10,
-                      fontSize: 14,
-                      mr: 1,
-                    }}
-                    onClick={onSave}
-                  >
-                    Approve
-                  </CCButton>
-                  {/* <CCButton
-                    sx={{
-                      backgroundColor: Colors.darkPrimary1,
-                      padding: '8px 24px',
-                      minWidth: '50px',
-                      color: '#fff',
-                      borderRadius: 10,
-                      fontSize: 14,
-                      mr: 1,
-                    }}
-                    onClick={onSaveAfterApprove}
-                  >
-                    Save
-                  </CCButton> */}
-                </Grid>
-              </Box>
-
-              <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
-                Go carbon neutral by retiring carbon tokens and claiming the
-                underlying environmental benefit of the carbon offset.
-              </Typography>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'end',
-                  flexDirection: 'row',
-                }}
-              >
-                <CCInputField
-                  label="Tonnes of Carbon to Offset"
-                  placeholder="Enter Tonnes of Carbon to Offset"
-                  sx={{ mb: 1.5, mr: 2 }}
-                  value={tonnesOfCarbon}
-                  onChange={(e) => setTonnesOfCarbon(e.target.value)}
-                />
-
-                <CCInputField
-                  label="Retiring"
-                  placeholder="Enter Retiring"
-                  sx={{ mb: 1.5 }}
-                  value={retiring}
-                  onChange={(e) => setRetiring(e.target.value)}
-                />
+                  Retire
+                </CCButton>
               </Grid>
+            </Box>
 
-              <CCInputField
-                label="Beneficial Owner"
-                placeholder="Enter Beneficial Owner                "
-                sx={{ mb: 1.5 }}
-                value={beneficialOwner}
-                onChange={(e) => setBeneficialOwner(e.target.value)}
-              />
-              <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
-                What is your reason for retirement ?
-              </Typography>
-              <CCMultilineTextArea
-                label="Explain"
-                placeholder="Explain it here"
-                value={explain}
-                onChange={(event) => setExplain(event.target.value)}
-              />
-              <OngoingApprove onSaveAfterApprove={() => onSaveAfterApprove()} />
-              <Box
-                component="img"
-                sx={{
-                  width: '100%',
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                }}
-                src={tokenRetirement}
-              />
-            </Paper>
-          </Grid>
+            <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
+              Go carbon neutral by retiring carbon tokens and claiming the
+              underlying environmental benefit of the carbon offset.
+            </Typography>
+            <CCInputField
+              label="Retiring"
+              placeholder="Enter Retiring"
+              sx={{ mb: 1.5 }}
+              value={retiring}
+              onChange={(e: any) => {
+                //Allow only no.s upto 3 decimal places
+                const regexp = /^\d+(\.\d{0,3})?$/
+                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
+                  setRetiring(e?.target?.value)
+                }
+              }}
+            />
+            <CCInputField
+              disabled
+              label="Tonnes of Carbon to Offset"
+              placeholder="Enter Tonnes of Carbon to Offset"
+              sx={{ mb: 1.5, mr: 2 }}
+              value={retiring}
+            />
+
+            <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
+              What is your reason for retirement ?
+            </Typography>
+            <CCMultilineTextArea
+              label="Explain"
+              placeholder="Explain it here"
+              value={explain}
+              onChange={(event) => setExplain(event.target.value)}
+            />
+            <Box
+              sx={{
+                mt: 2,
+              }}
+            >
+              <img src={tokenRetirement} width="100%" />
+            </Box>
+          </Paper>
         </Grid>
-      </Box>
-    )
-  }
+      </Grid>
+      <PreBlockchainCallModal
+        btn1OnClick={() => {
+          setShowModal(false)
+          retireTokens()
+        }}
+        btn2OnClick={() => setShowModal(false)}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
+      <BalanceCheckModal
+        msg1="Retiring more tokens than Approved. Please lessen the retiring token quantity."
+        msg2="Approved Tokens for Retiring"
+        tokenBal={tokensApprovedForRetiring}
+        btn1OnClick={() => {
+          setRetiring('')
+          setShowSecondModal(false)
+        }}
+        showModal={showSecondModal}
+        setShowModal={setShowSecondModal}
+      />
+    </Box>
+  )
 }
 
 export default RetireTokens
