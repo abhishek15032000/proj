@@ -298,7 +298,7 @@ const ListNewProject = () => {
       </Grid>
       <Grid item xs={12}>
         <CCInputField
-          label="Duration of the Project"
+          label="Project Duration"
           placeholder="Enter Project Duration"
           value={projectDuration}
           onChange={(e) => handleTextChange(e, 'projectDuration')}

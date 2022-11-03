@@ -30,9 +30,11 @@ const CCInputField = (props: CCInputFieldProps) => {
           </InputAdornment>
         ) : null,
       }}
-      InputLabelProps={{ style: { color: '#006B5E' } }}
+      InputLabelProps={{
+        style: { color: props?.disabled ? '#BFC9C6' : '#006B5E' },
+      }}
       color={props?.color ? props?.color : 'darkPrimary1'}
-      required
+      required={props?.notRequired ? false : true}
       {...props}
     />
   )

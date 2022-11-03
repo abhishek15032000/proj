@@ -169,6 +169,10 @@ export default function ResetPassword(props: any) {
                     </InputAdornment>
                   ),
                 }}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
+                notRequired
               />
             </Grid>
             <Grid item xs={12}>
@@ -209,6 +213,10 @@ export default function ResetPassword(props: any) {
                     </InputAdornment>
                   ),
                 }}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
+                notRequired
               />
             </Grid>
           </Grid>
