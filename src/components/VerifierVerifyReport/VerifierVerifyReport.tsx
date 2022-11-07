@@ -146,12 +146,14 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   }
 
   const getSignatureHash = async () => {
-    const nonce = await provider.getTransactionCount(accountAddress)
+    // const nonce = await provider.getTransactionCount(accountAddress)
+    //Using random number as Nonce since getTransactionCount not working properly
+    const pseudoNonce = new Date().getTime()
     const signatureHashPayload = {
       recipient: issuerShineKey,
       _amount: Number(quantity),
       _project_data: JSON.stringify({ projectId: project?.uuid }),
-      _nonce: nonce,
+      _nonce: pseudoNonce,
     }
     try {
       const signatureHashRes = await verifierCalls.getPDFHash(
@@ -164,7 +166,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           toPassParam
         )
         if (personalSignRes) {
-          verifyPDF(personalSignRes)
+          verifyPDF(personalSignRes, pseudoNonce)
         } else {
           alert("Couldn't sign successfully. Please try again!!!")
           return
@@ -177,12 +179,12 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     }
   }
 
-  const verifyPDF = async (signatureHash: string) => {
+  const verifyPDF = async (signatureHash: string, pseudoNonce: number) => {
     const {
       state: { project },
     } = location
 
-    const nonce = await provider.getTransactionCount(accountAddress)
+    // const nonce = await provider.getTransactionCount(accountAddress)
 
     const verifyPDFAndMintTokenpayload = {
       project_id: project?.uuid,
@@ -193,7 +195,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       signature_hash: signatureHash,
       signer: accountAddress,
       file_attach: stringExtractor(relevantDocs, 'fileName'),
-      nonce,
+      nonce: pseudoNonce,
     }
     try {
       const verifyPDFAndMintTokenRes =
@@ -311,6 +313,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                   <CCInputField
                     {...params}
                     style={{ backgroundColor: 'white' }}
+                    InputLabelProps={{
+                      style: { color: '#3F4946' },
+                    }}
                   />
                 )}
                 // onChange={(e) => undefined}
@@ -336,6 +341,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                   ) {
                     setQuantity(e?.target?.value)
                   }
+                }}
+                InputLabelProps={{
+                  style: { color: '#3F4946' },
                 }}
               />
             </Box>
@@ -368,6 +376,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                   <CCInputField
                     {...params}
                     style={{ backgroundColor: 'white' }}
+                    InputLabelProps={{
+                      style: { color: '#3F4946' },
+                    }}
                   />
                 )
               }}

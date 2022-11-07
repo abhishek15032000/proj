@@ -172,15 +172,30 @@ const VerifierReportListItemListItem: FC<
               </span>{' '}
               wallet address?
             </Typography>
-            <Typography sx={{ mt: 2, fontSize: 18, fontWeight: 500, pb: 2 }}>
+            <Typography sx={{ mt: 2, fontSize: 18, fontWeight: 500 }}>
               Wallet Balance :{' '}
-              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+              <span
+                style={{
+                  color: accountBalance
+                    ? Colors.lightPrimary1
+                    : Colors.tertiary,
+                  fontSize: 18,
+                }}
+              >
                 {accountBalance}
               </span>{' '}
             </Typography>
+            {!accountBalance && (
+              <Typography
+                sx={{ fontSize: 14, fontWeight: 500, color: Colors.tertiary }}
+              >
+                ! Insufficient balance to perform blockchain call
+              </Typography>
+            )}
           </>
         }
         btn1Text="Continue"
+        disableBtn1={!accountBalance ? true : false}
         btn1OnClick={() => {
           setShowModal(false)
           props?.updateVerifierAPI(props?.data)

@@ -8,6 +8,7 @@ interface MessageModalProps {
   message: any
   btn1Text: string
   btn1OnClick: any
+  disableBtn1?: boolean
   btn2Text?: string
   btn2OnClick?: any
   showModal: boolean
@@ -22,6 +23,7 @@ const MessageModal = ({
   btn2Text,
   showModal,
   setShowModal,
+  disableBtn1,
 }: MessageModalProps) => {
   return (
     <Modal
@@ -67,12 +69,14 @@ const MessageModal = ({
                 </CCButtonOutlined>
               )}
               <CCButton
+                variant="contained"
                 sx={{
                   ml: 3,
                   padding: '6px 20px',
                   borderRadius: 10,
                 }}
                 onClick={btn1OnClick}
+                disabled={disableBtn1}
               >
                 {btn1Text}
               </CCButton>
