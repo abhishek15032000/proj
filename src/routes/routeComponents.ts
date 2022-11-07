@@ -43,12 +43,12 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Dashboard,
     roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
-  {
-    path: pathNames.TOKEN_CONTRACT,
-    component: TokenAndContractPage,
-    sidebarName: linkLabels.Token_Contract,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.TOKEN_CONTRACT,
+  //   component: TokenAndContractPage,
+  //   sidebarName: linkLabels.Token_Contract,
+  //   roles: [ROLES.ISSUER],
+  // },
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,
@@ -69,17 +69,17 @@ export const privateRouteComponents = [
     component: ProfileDetailsIssuanceInfo,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.MARKETPLACE,
-    component: MarketplaceHome,
-    sidebarName: linkLabels.Marketplace,
-    roles: [ROLES.ISSUER, ROLES.BUYER],
-  },
-  {
-    path: pathNames.MARKETPLACE_PROJECT_DETAILS,
-    component: MarketplaceProjectDetails,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.MARKETPLACE,
+  //   component: MarketplaceHome,
+  //   sidebarName: linkLabels.Marketplace,
+  //   roles: [ROLES.ISSUER, ROLES.BUYER],
+  // },
+  // {
+  //   path: pathNames.MARKETPLACE_PROJECT_DETAILS,
+  //   component: MarketplaceProjectDetails,
+  //   roles: [ROLES.ISSUER],
+  // },
   {
     path: pathNames.PROJECTS,
     component: ProjectsPage,
@@ -151,12 +151,12 @@ export const privateRouteComponents = [
     component: VerifierVerifyReport,
     roles: [ROLES.VERIFIER],
   },
-  {
-    path: pathNames.ISSUER_WALLET,
-    component: IssuerWallet,
-    sidebarName: linkLabels.Wallet,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.ISSUER_WALLET,
+  //   component: IssuerWallet,
+  //   sidebarName: linkLabels.Wallet,
+  //   roles: [ROLES.ISSUER],
+  // },
   {
     path: pathNames.TRANSACTION_HISTORY,
     component: TransactionHistory,
@@ -188,15 +188,15 @@ export const privateRouteComponents = [
     component: OrganisationalDetails,
     roles: [ROLES.BUYER],
   },
-  {
-    path: pathNames.RETIRE_TOKENS,
-    component: RetireTokens,
-    roles: [ROLES.BUYER],
-  },
-  {
-    path: pathNames.TOKENS_RETIREMENT,
-    sidebarName: linkLabels.TokenRetirement,
-    component: TokenRetirementPage,
-    roles: [ROLES.BUYER],
-  },
+  // {
+  //   path: pathNames.RETIRE_TOKENS,
+  //   component: RetireTokens,
+  //   roles: [ROLES.BUYER],
+  // },
+  // {
+  //   path: pathNames.TOKENS_RETIREMENT,
+  //   sidebarName: linkLabels.TokenRetirement,
+  //   component: TokenRetirementPage,
+  //   roles: [ROLES.BUYER],
+  // },
 ]

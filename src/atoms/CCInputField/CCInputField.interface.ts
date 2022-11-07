@@ -1,7 +1,8 @@
-import { TextFieldProps } from "@mui/material";
+import { TextFieldProps } from '@mui/material'
 
 export type CCInputFieldProps = TextFieldProps & {
-    clearFn?: any
-    onChange?: (arg: any) => void
-    color?: string
+  clearFn?: any
+  onChange?: (arg: any) => void
+  color?: string
+  notRequired?: boolean
 }

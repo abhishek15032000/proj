@@ -94,6 +94,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
               fontWeight: 500,
               fontSize: 28,
               pb: 2,
+              color: '#325743',
             }}
           >
             Verify Account
