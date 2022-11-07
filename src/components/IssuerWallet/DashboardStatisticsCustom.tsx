@@ -10,10 +10,13 @@ import { Colors } from '../../theme'
 import { WalletStats } from '../../config/constants.config'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
+import CCButton from '../../atoms/CCButton'
+import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 
 interface DashboardStatisticsProps {
   data?: any
   loading?: any
+  setIsVisibleWithdraw?: any
 }
 
 const DashboardStatisticsCustom: FC<DashboardStatisticsProps> = (props) => {
@@ -52,6 +55,9 @@ const DashboardStatisticsCustom: FC<DashboardStatisticsProps> = (props) => {
                 title={item.title}
                 value={item.value}
                 color={item.color}
+                setIsVisibleWithdraw={(value: any) =>
+                  props.setIsVisibleWithdraw(value)
+                }
               />
             )
           }
@@ -66,6 +72,7 @@ interface DashboardStatisticTileProps {
   title?: string
   value?: string
   color?: string
+  setIsVisibleWithdraw?: any
 }
 
 const DashboardStatisticTile: FC<DashboardStatisticTileProps> = (props) => {
@@ -174,6 +181,7 @@ const DashboardStatisticTileFirst: FC<DashboardStatisticTileProps> = (
         height: '120px',
         borderRadius: '8px',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
         p: 2,
@@ -182,7 +190,8 @@ const DashboardStatisticTileFirst: FC<DashboardStatisticTileProps> = (
     >
       <Box
         sx={{
-          height: '100%',
+          width: '100%',
+          height: '50%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-around',
@@ -196,24 +205,52 @@ const DashboardStatisticTileFirst: FC<DashboardStatisticTileProps> = (
             fontSize: 24,
             fontWeight: 400,
             color: Colors.textColorBrightRed,
-            mt: 1,
           }}
         >
           {props.value}
         </Typography>
       </Box>
-      <Typography
-        onClick={() => navigate(pathNames.BANK_DETAILS)}
-        style={{
-          fontSize: 16,
-          fontWeight: 400,
-          color: Colors.textColorLightGreen,
-          textDecoration: 'underline',
-          cursor: 'pointer'
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mt: 1,
         }}
       >
-        View Account Details
-      </Typography>
+        <CCButton
+          onClick={() => props.setIsVisibleWithdraw(true)}
+          rounded
+          style={{
+            width: '30%',
+            height: '40px',
+            fontSize: 12,
+            fontWeight: 500,
+
+            color: '#005046',
+            cursor: 'pointer',
+          }}
+        >
+          Withdraw Balance
+        </CCButton>
+        <CCButtonOutlined
+          rounded
+          onClick={() => navigate(pathNames.BANK_DETAILS)}
+          style={{
+            width: '30%',
+            height: '40px',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#005046',
+            cursor: 'pointer',
+            marginLeft: '5px',
+          }}
+        >
+          View Bank Details
+        </CCButtonOutlined>
+      </Box>
     </Paper>
   )
 }

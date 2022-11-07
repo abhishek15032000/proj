@@ -23,7 +23,7 @@ import reportsViewComments from './reportsViewCommentsSlice'
 import marketplace from './marketplaceSlice'
 import tokenRetire from './tokenRetireSlice'
 import issuanceDataCollectionHelp from './issuanceDataCollectionHelpSlice'
-
+import allBankDetailsSlice from './allBankDetailsSlice'
 // TODO: rename names
 export default {
   auth,
@@ -48,4 +48,5 @@ export default {
   marketplace,
   tokenRetire,
   issuanceDataCollectionHelp,
+  allBankDetailsSlice,
 }

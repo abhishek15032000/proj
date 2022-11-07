@@ -81,6 +81,11 @@ export const URL_PATH = {
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
+    addBankDetails: ENDPOINTS.carbonServiceURL + '/bank/add',
+    withdrawAmount: ENDPOINTS.carbonServiceURL + '/bank/withdraw',
+    getAllBankAccount: ENDPOINTS.carbonServiceURL + '/bank/get',
+    updateBankAccountDetails: ENDPOINTS.carbonServiceURL + '/bank/update',
+    removeBankAccount: ENDPOINTS.carbonServiceURL + '/bank/delete',
   },
   marketplace: {
     depositERC20: ENDPOINTS.orderServiceURL + '/marketplace/depositERC20',

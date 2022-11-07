@@ -44,7 +44,7 @@ const BankDetailsTab: FC<BankDetailsTabProps> = (props) => {
             mt: 1,
           }}
         >
-          Bank Details
+          Chainflux Bank Details
         </Typography>
         <Box
           sx={{
@@ -54,23 +54,18 @@ const BankDetailsTab: FC<BankDetailsTabProps> = (props) => {
           }}
         >
           <Box sx={{ width: '50%' }}>
-            <THTile
-              title="Bank Number:"
-              value="212208"
-            />
-            <THTile
-              title='Account Owner Name:'
-              value='Abcd'
-            />
+            <THTile title="Bank Name :" value="Punjab National Bank" />
+            <THTile title="Bank Number:" value="212200008" />
+            <THTile title="Account Owner Name:" value="Abcd" />
             <THTile title="Branch:" value={'Indira nagar'} />
-            <THTile title="IFSC Code:" value={'BKID0006935'} />
+            <THTile title="IFSC Code:" value={'PUNB0112000'} />
           </Box>
         </Box>
       </Box>
       <Box
         component="img"
         sx={{
-            mr: 4,
+          mr: 4,
           width: '40%',
           display: {
             xs: 'none',
