@@ -31,6 +31,7 @@ import { setLoadWallet } from '../../../redux/Slices/walletSlice'
 import { Colors } from '../../../theme'
 import NotificationList from '../../../atoms/NotificationList'
 import NotificationIcon from './NotificationIcon'
+import Help from './Help/Help'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -248,10 +249,10 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                   }}
                 />
               )}
-              <Typography sx={{ mx: 1 }}>Wallet</Typography>
+              <Typography sx={{ mx: 1, fontWeight: 500 }}>Wallet</Typography>
             </Button>
           </Box>
-
+          <Help />
           <IconButton
             size="large"
             aria-label="show 17 new notifications"
@@ -264,7 +265,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
 
           <NotificationIcon />
 
-         <IconButton
+          <IconButton
             size="large"
             edge="end"
             aria-label="account of current user"
