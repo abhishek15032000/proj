@@ -25,6 +25,7 @@ import Captcha from '../../components/Captcha/Captcha'
 import LoaderOverlay from '../../components/LoderOverlay'
 import isEmail from 'validator/lib/isEmail'
 import ForgotPasswordModal from './ForgotPasswordModal'
+import { setWalletAdded } from '../../redux/Slices/walletSlice'
 
 declare let window: any
 
@@ -76,8 +77,6 @@ const Login = () => {
     try {
       setLoading(true)
       const res = await authCalls.loginCall(payload)
-      console.log('res')
-      console.log(JSON.stringify(res, null, 4))
 
       if (res?.success && res?.data) {
         if (res?.status === 204) {
@@ -88,6 +87,7 @@ const Login = () => {
         if (res?.data?.captchaVerify) {
           const userResponse = await USER.getUsersById(res?.data?.user_id)
           setLocalItem('userDetails2', userResponse?.data)
+          dispatch(setWalletAdded(userResponse?.data?.wallet_added))
           const profileCompleted = userResponse?.data?.orgName ? true : false
           setLocalItem('profileCompleted', profileCompleted)
           dispatch(loginAction(res?.data)) //calling action from redux
