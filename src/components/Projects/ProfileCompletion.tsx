@@ -13,7 +13,7 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { getLocalItem } from '../../utils/Storage'
 import { Colors } from '../../theme'
 import { useAppSelector } from '../../hooks/reduxHooks'
-import { setLoadWallet } from '../../redux/Slices/walletSlice'
+import { setLoadWallet, setWalletAdded } from '../../redux/Slices/walletSlice'
 
 // Local Imports
 
@@ -30,6 +30,11 @@ const ProfileCompletion = () => {
   )
 
   const [isShineKeyAdded, setIsShineKeyAdded] = useState(false)
+
+  useEffect(()=>{
+    const shineKey = getLocalItem('userDetails2')?.shineKey
+    if(shineKey) dispatch(setWalletAdded(true))
+  },[])
 
   useEffect(() => {
     if (walletAdded && isConnected) {

@@ -77,8 +77,6 @@ const Login = () => {
     try {
       setLoading(true)
       const res = await authCalls.loginCall(payload)
-      console.log('res')
-      console.log(JSON.stringify(res, null, 4))
 
       if (res?.success && res?.data) {
         if (res?.status === 204) {
