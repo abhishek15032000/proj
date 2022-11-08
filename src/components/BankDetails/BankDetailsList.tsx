@@ -31,7 +31,7 @@ const BankDetailsList: FC<BankDetailsListProps> = (props) => {
     <Paper
       sx={{
         width: '100%',
-        // height: '350px',
+
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -43,7 +43,7 @@ const BankDetailsList: FC<BankDetailsListProps> = (props) => {
       <Box
         sx={{
           width: '100%',
-          // height: '100%',
+
           p: 1,
         }}
       >
@@ -60,15 +60,11 @@ const BankDetailsList: FC<BankDetailsListProps> = (props) => {
         </Typography>
         <Grid
           container
-          // ref={scrollRef}
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            // width: '100%',
-            // justifyContent: 'space-between',
-            // alignItems: 'start',
+
             mt: 1,
-            // overflowY:"",
           }}
         >
           {allAccountList &&

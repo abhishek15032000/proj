@@ -106,18 +106,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       bankName,
       isChecked,
     } = BankDetailsData
-    if (
-      bankName === '' ||
-      bankName === undefined ||
-      bankNumber === '' ||
-      bankNumber === undefined ||
-      accountOwnerName === '' ||
-      accountOwnerName === undefined ||
-      branch === '' ||
-      branch === undefined ||
-      IFSCCode === '' ||
-      IFSCCode === undefined
-    ) {
+    if (!bankName || !bankNumber || !accountOwnerName || !IFSCCode) {
       alert('Fill all the Fields!')
       return
     }
@@ -222,7 +211,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   const onWithdrawAmount = () => {
     const { bankNumber, accountOwnerName, branch, IFSCCode, bankName } =
       BankDetailsData
-    if (withdrawAmount === '' || withdrawAmount === undefined) {
+    if (!withdrawAmount) {
       alert('Fill all the Fields!')
       return
     }
@@ -240,11 +229,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       uuid: selectAccount?.uuid,
       amount: Number(withdrawAmount),
       currency: 'Matic',
-      // bankName: selectAccount?.bankName,
-      // accountNumber: selectAccount?.accountNumber,
-      // name: selectAccount?.name,
-      // branch: selectAccount?.branch,
-      // ifscCode: selectAccount?.ifscCode,
     }
 
     issuerCalls
@@ -274,7 +258,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
 
           <DashboardStatisticsCustom
             data={dashboardStatistics}
-            // loading={balanceLoading || vcoLoading}
             setIsVisibleWithdraw={(value: any) => setIsVisibleWithdraw(value)}
             loading={balanceLoading || vcoAvailableFoSaleLoading}
           />

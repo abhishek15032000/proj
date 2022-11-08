@@ -83,18 +83,7 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
       bankName,
       isChecked,
     } = BankDetailsData
-    if (
-      bankName === '' ||
-      bankName === undefined ||
-      bankNumber === '' ||
-      bankNumber === undefined ||
-      accountOwnerName === '' ||
-      accountOwnerName === undefined ||
-      branch === '' ||
-      branch === undefined ||
-      IFSCCode === '' ||
-      IFSCCode === undefined
-    ) {
+    if (!bankName || !bankNumber || !accountOwnerName || !IFSCCode) {
       alert('Fill all the Fields!')
       return
     }
@@ -211,8 +200,6 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
       .then((res) => {
         setLoading(false)
         getAllBankAccount()
-
-        // dispatch(setAllBankDetailsList(res?.data))
       })
       .catch((error) => {
         console.log('error', error)
@@ -254,7 +241,6 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
                 marginLeft: '10px',
                 color: '#005046',
                 cursor: 'pointer',
-                // width: '80px',
               }}
             >
               <AddIcon />

@@ -50,7 +50,6 @@ const BankDetailsTab: FC<BankDetailsTabProps> = (props) => {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            // alignItems: 'center',
           }}
         >
           <Box sx={{ width: '70%' }}>
