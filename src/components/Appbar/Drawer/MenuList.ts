@@ -13,6 +13,7 @@ const MENUS = {
     linkLabels.Dashboard,
     linkLabels.Marketplace,
     linkLabels.TokenRetirement,
+    linkLabels.Wallet,
   ],
 }
 
