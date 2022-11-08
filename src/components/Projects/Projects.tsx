@@ -17,6 +17,7 @@ import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import LoaderOverlay from '../LoderOverlay'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 import { Colors } from '../../theme'
+import { getLocalItem } from '../../utils/Storage'
 
 const Projects = () => {
   const navigate = useNavigate()
@@ -29,7 +30,8 @@ const Projects = () => {
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
 
   useEffect(() => {
-    setMetamask && isConnected
+    const shineKey = getLocalItem('userDetails2')?.shineKey
+    setMetamask && isConnected && shineKey
       ? setShowDashboard(true)
       : setShowDashboard(false)
   }, [setMetamask, isConnected])

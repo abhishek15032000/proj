@@ -208,7 +208,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     navigate(pathNames.MONTHLY_REPORT_UPDATE)
   }
 
-  const getVerifierByProject = () => {
+  const getVerifierByProject = (showModalAfterGetCall = false) => {
     setLoading(true)
     verifierCalls
       .getVerifierByProjectId(props?.currentProjectId)
@@ -220,6 +220,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           finalVerifierData && finalVerifierData?.length
             ? setVerifierReports(finalVerifierData)
             : setVerifierReports(res?.data)
+
+          if (showModalAfterGetCall) {
+            setShowActionSuccessModal(true)
+          }
         }
       })
       .catch((err) => console.log(err))
@@ -280,8 +284,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         }
         const updateTxRes = await dataCollectionCalls.updateTx(updateTxPayload)
         if (updateTxRes.success) {
-          getVerifierByProject()
-          setShowActionSuccessModal(true)
+          getVerifierByProject(true)
+          // setShowActionSuccessModal(true)
           //Setting  setLoading false over here to give user impression that updateVerifier api call and createNewProject contract call is a single call
           // setLoading(false)
         }

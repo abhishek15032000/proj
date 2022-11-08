@@ -266,7 +266,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           }}
           onClick={() => navigate(pathNames.VERIFIER_PROJECTS_LIST)}
         >
-          See all
+          See All
         </Typography>
       </Box>
 
