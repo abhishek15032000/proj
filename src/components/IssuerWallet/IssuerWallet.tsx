@@ -99,8 +99,14 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   }, [])
 
   const onSaveAccountDetails = () => {
-    const { bankNumber, accountOwnerName, branch, IFSCCode, bankName } =
-      BankDetailsData
+    const {
+      bankNumber,
+      accountOwnerName,
+      branch,
+      IFSCCode,
+      bankName,
+      isChecked,
+    } = BankDetailsData
     if (
       bankName === '' ||
       bankName === undefined ||
@@ -124,7 +130,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       name: accountOwnerName,
       branch: branch,
       ifscCode: IFSCCode,
-      default: 0,
+      default: isChecked ? 1 : 0,
     }
 
     console.log('payload', payload)

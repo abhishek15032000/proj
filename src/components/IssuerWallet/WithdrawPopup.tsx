@@ -180,6 +180,7 @@ const WithdrawPopup: FC<WithdrawPopupProps> = (props) => {
             color: '#006B5E',
             display: 'flex',
             flexDirection: 'row',
+            cursor: 'pointer',
           }}
           onClick={() => {
             setIsVisibleAddAccount(true)

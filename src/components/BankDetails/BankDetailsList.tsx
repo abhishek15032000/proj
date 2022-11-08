@@ -117,11 +117,14 @@ const BankDetailsList: FC<BankDetailsListProps> = (props) => {
                       alignItems: 'start',
                     }}
                   >
-                    <Box onClick={() => openBankDetailsPopup(item)}>
+                    <Box
+                      onClick={() => openBankDetailsPopup(item)}
+                      sx={{ cursor: 'pointer' }}
+                    >
                       <EditIcon color="primary" />
                     </Box>
                     <Box
-                      style={{ marginLeft: '20px' }}
+                      style={{ marginLeft: '20px', cursor: 'pointer' }}
                       onClick={() => removeBankDetails(item?.uuid)}
                     >
                       <DeleteOutlineIcon color="primary" />
