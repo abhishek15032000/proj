@@ -53,8 +53,8 @@ const BankDetailsTab: FC<BankDetailsTabProps> = (props) => {
             // alignItems: 'center',
           }}
         >
-          <Box sx={{ width: '50%' }}>
-            <THTile title="Bank Name :" value="Punjab National Bank" />
+          <Box sx={{ width: '70%' }}>
+            <THTile title="Bank Name:" value={'ICCI Bank'} />
             <THTile title="Bank Number:" value="212200008" />
             <THTile title="Account Owner Name:" value="Abcd" />
             <THTile title="Branch:" value={'Indira nagar'} />

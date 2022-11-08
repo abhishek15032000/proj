@@ -110,8 +110,18 @@ const WithdrawPopup: FC<WithdrawPopupProps> = (props) => {
           onChange={(e) => setSelectAccount(e.target.value)}
         >
           {allBankAccount.map((item: any, index: any) => (
-            <MenuItem key={index} value={item}>
-              {item?.accountNumber}
+            <MenuItem
+              key={index}
+              value={item}
+              sx={{
+                flex: 'display',
+                flexDirection: 'column',
+                justifyContent: 'left',
+                alignItems: 'flex-start',
+              }}
+            >
+              <Typography>{item?.bankName}</Typography>
+              <Typography>{item?.accountNumber}</Typography>
             </MenuItem>
           ))}
         </Select>
@@ -148,7 +158,7 @@ const WithdrawPopup: FC<WithdrawPopupProps> = (props) => {
           />
         </Box>
         <Box sx={{ color: '#3F4946', position: 'absolute', top: 16, right: 5 }}>
-          USD
+          MATIC
         </Box>
       </Box>
       <Box

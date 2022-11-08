@@ -151,12 +151,12 @@ export const privateRouteComponents = [
     component: VerifierVerifyReport,
     roles: [ROLES.VERIFIER],
   },
-  // {
-  //   path: pathNames.ISSUER_WALLET,
-  //   component: IssuerWallet,
-  //   sidebarName: linkLabels.Wallet,
-  //   roles: [ROLES.ISSUER],
-  // },
+  {
+    path: pathNames.ISSUER_WALLET,
+    component: IssuerWallet,
+    sidebarName: linkLabels.Wallet,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
   {
     path: pathNames.TRANSACTION_HISTORY,
     component: TransactionHistory,
@@ -165,7 +165,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.BANK_DETAILS,
     component: BankDetails,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
     path: pathNames.MONTHLY_REPORT_UPDATE,

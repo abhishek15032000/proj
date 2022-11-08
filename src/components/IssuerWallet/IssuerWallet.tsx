@@ -19,11 +19,11 @@ import { IssuerWalletProps } from './IssuerWallet.interface'
 import SavedAccountPopup from './SavedAccountPopup'
 import TransactionHistoryTable from './TransactionHistory'
 import WithdrawPopup from './WithdrawPopup'
-
+import LoaderOverlay from '../../components/LoderOverlay'
 const stats = [
   {
     title: WalletStats.WALLET_BALANCE,
-    value: 'USD 0',
+    value: 'MATIC 0',
   },
   {
     title: WalletStats.VCO_ON_SALE,
@@ -155,7 +155,8 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   useEffect(() => {
     if (dashboardStatistics && vcoOnSale) {
       const dashboardStatisticsCopy = [...dashboardStatistics]
-      dashboardStatisticsCopy[1].value = vcoOnSale
+      dashboardStatisticsCopy[1].value =
+        Math.round(Number(vcoOnSale) * 1000) / 1000
       setDashboardStatistics(dashboardStatisticsCopy)
     }
   }, [vcoOnSale])
@@ -171,7 +172,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   useEffect(() => {
     if (dashboardStatistics && accountBalance) {
       const dashboardStatisticsCopy = [...dashboardStatistics]
-      const bal = 'USD ' + Math.round(Number(accountBalance) * 1000) / 1000
+      const bal = 'MATIC ' + Math.round(Number(accountBalance) * 1000) / 1000
 
       dashboardStatisticsCopy[0].value = bal
       setDashboardStatistics(dashboardStatisticsCopy)
@@ -226,21 +227,21 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       alert('Select Account Bank Account!')
       return
     }
-    if (withdrawAmount >= accountBalance) {
-      alert('Insufficient balance!')
-      return
-    }
+    // if (withdrawAmount >= accountBalance) {
+    //   alert('Insufficient balance!')
+    //   return
+    // }
     setIsVisibleWithdraw(false)
     setLoading(true)
     const payload = {
-      uuid: getLocalItem('userDetails').uuid,
-      amount: withdrawAmount,
-      currency: 'USD',
-      bankName: selectAccount?.bankName,
-      accountNumber: selectAccount?.accountNumber,
-      name: selectAccount?.name,
-      branch: selectAccount?.branch,
-      ifscCode: selectAccount?.ifscCode,
+      uuid: selectAccount?.uuid,
+      amount: Number(withdrawAmount),
+      currency: 'Matic',
+      // bankName: selectAccount?.bankName,
+      // accountNumber: selectAccount?.accountNumber,
+      // name: selectAccount?.name,
+      // branch: selectAccount?.branch,
+      // ifscCode: selectAccount?.ifscCode,
     }
 
     console.log('payload', payload, selectAccount)
@@ -264,15 +265,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     )
   }
   if (loading) {
-    return (
-      <Stack
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: 450 }}
-      >
-        <Spinner />
-      </Stack>
-    )
+    return <LoaderOverlay />
   } else {
     return (
       <Box sx={{ p: 0 }}>

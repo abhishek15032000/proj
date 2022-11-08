@@ -29,6 +29,7 @@ import { issuerCalls } from '../../api/issuerCalls.api'
 import { setAllBankDetailsList } from '../../redux/Slices/allBankDetailsSlice'
 import Spinner from '../../atoms/Spinner'
 import { getLocalItem } from '../../utils/Storage'
+import LoderOverlay from '../LoderOverlay'
 
 interface BankDetailsProps {}
 
@@ -223,15 +224,7 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
   }
 
   if (loading) {
-    return (
-      <Stack
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: 450 }}
-      >
-        <Spinner />
-      </Stack>
-    )
+    return <LoderOverlay />
   } else {
     return (
       <Box sx={{ p: 0 }}>
