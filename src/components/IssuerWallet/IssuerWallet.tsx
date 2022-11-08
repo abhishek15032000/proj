@@ -77,7 +77,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   const [isVisibleAddAccountSucess, setIsVisibleAddAccountSucess] =
     useState(false)
   const onChangeInput = (e: any, key: any, value: any) => {
-    console.log('onChangeInput<<<<<<<<<<<', e, key, value)
     const addAccountDetails = { ...BankDetailsData }
     setBankDetailsData({ ...addAccountDetails, [key]: value })
   }
@@ -88,7 +87,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       .getAllBankAccount()
       .then((res) => {
         setLoading(false)
-        console.log('AllBankData', res?.data)
+
         dispatch(setAllBankDetailsList(res?.data))
         setAllBankAccount(res?.data)
       })
@@ -133,11 +132,9 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       default: isChecked ? 1 : 0,
     }
 
-    console.log('payload', payload)
     issuerCalls
       .addBankAccountDetails(payload)
       .then((response) => {
-        console.log('response', response)
         setLoading(false)
         setIsVisibleAddAccountSucess(true)
       })
@@ -250,11 +247,9 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       // ifscCode: selectAccount?.ifscCode,
     }
 
-    console.log('payload', payload, selectAccount)
     issuerCalls
       .withdrawAmount(payload)
       .then((response) => {
-        console.log('response', response)
         setLoading(false)
       })
       .catch((e) => {
@@ -262,14 +257,6 @@ const IssuerWallet = (props: IssuerWalletProps) => {
       })
   }
 
-  {
-    console.log(
-      'allBankDetails====================',
-      allBankDetails,
-      accountBalance,
-      withdrawAmount >= accountBalance
-    )
-  }
   if (loading) {
     return <LoaderOverlay />
   } else {

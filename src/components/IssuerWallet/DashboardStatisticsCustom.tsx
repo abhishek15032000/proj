@@ -37,8 +37,6 @@ const DashboardStatisticsCustom: FC<DashboardStatisticsProps> = (props) => {
       {!props.loading &&
         props.data &&
         props.data.map((item: any, index: any) => {
-          console.log('index')
-          console.log(JSON.stringify(index, null, 4))
           if (index !== 0) {
             return (
               <DashboardStatisticTile

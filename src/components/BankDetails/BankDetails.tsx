@@ -55,7 +55,6 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
   const [onCallUpdate, setOnCallUpdate] = useState('')
 
   const onChangeInput = (e: any, key: any, value: any) => {
-    console.log('onChangeInput<<<<<<<<<<<', e, key, value)
     const addAccountDetails = { ...BankDetailsData }
     setBankDetailsData({ ...addAccountDetails, [key]: value })
   }
@@ -66,7 +65,7 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
       .getAllBankAccount()
       .then((res) => {
         setLoading(false)
-        console.log('AllBankData', res?.data)
+
         dispatch(setAllBankDetailsList(res?.data))
       })
       .catch((error) => {
@@ -110,11 +109,9 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
       default: isChecked ? 1 : 0,
     }
 
-    console.log('payload', payload)
     issuerCalls
       .addBankAccountDetails(payload)
       .then((response) => {
-        console.log('response', response)
         getAllBankAccount()
         setBankDetailsData({
           bankName: '',
@@ -133,7 +130,6 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
   }
 
   const openBankDetailsPopup = (item: any) => {
-    console.log('Item', item)
     setOnCallUpdate('Update')
     setBankDetailsData({
       bankName: item?.bankName,
@@ -188,11 +184,9 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
       ifscCode: IFSCCode,
     }
 
-    console.log('payload', payload)
     issuerCalls
       .updateBankAccountDetails(payload)
       .then((response) => {
-        console.log('response', response)
         getAllBankAccount()
         setBankDetailsData({
           bankName: '',
@@ -217,16 +211,13 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
       .then((res) => {
         setLoading(false)
         getAllBankAccount()
-        console.log('AllBankData', res?.data)
+
         // dispatch(setAllBankDetailsList(res?.data))
       })
       .catch((error) => {
         console.log('error', error)
         setLoading(false)
       })
-  }
-  {
-    console.log('allBankDetails====================', allBankDetails)
   }
 
   if (loading) {
