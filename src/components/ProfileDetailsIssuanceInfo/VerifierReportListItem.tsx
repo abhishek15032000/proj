@@ -176,7 +176,7 @@ const VerifierReportListItemListItem: FC<
               Wallet Balance :{' '}
               <span
                 style={{
-                  color: accountBalance
+                  color: Number(accountBalance)
                     ? Colors.lightPrimary1
                     : Colors.tertiary,
                   fontSize: 18,
@@ -185,7 +185,7 @@ const VerifierReportListItemListItem: FC<
                 {accountBalance}
               </span>{' '}
             </Typography>
-            {!accountBalance && (
+            {!Number(accountBalance) && (
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: Colors.tertiary }}
               >

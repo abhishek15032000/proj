@@ -36,7 +36,9 @@ const ProfileCard = ({
       }}
     >
       <Box>
-        <Typography sx={{ fontSize: 22 }}>{title}</Typography>
+        <Typography sx={{ fontSize: 22, color: Colors.darkPrimary1 }}>
+          {title}
+        </Typography>
         <Typography
           sx={{
             fontSize: 14,
