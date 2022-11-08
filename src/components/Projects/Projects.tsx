@@ -28,13 +28,14 @@ const Projects = () => {
 
   const setMetamask = useAppSelector(({ wallet }) => wallet.haveMetamask)
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
+  const walletAdded = useAppSelector(({ wallet }) => wallet.walletAdded)
 
   useEffect(() => {
     const shineKey = getLocalItem('userDetails2')?.shineKey
-    setMetamask && isConnected && shineKey
+    setMetamask && isConnected && walletAdded
       ? setShowDashboard(true)
       : setShowDashboard(false)
-  }, [setMetamask, isConnected])
+  }, [setMetamask, isConnected, walletAdded])
 
   useEffect(() => {
     setTimeout(() => {
