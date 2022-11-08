@@ -5,8 +5,8 @@ export const ROLES = {
 }
 export const WalletStats = {
   WALLET_BALANCE: 'Wallet Balance',
-  VCO_ON_SALE: 'Number of VCOs on sale',
-  VCO_AVAILABLE_FOR_SALE: 'Number of VCOs available for sale',
+  VCO_ON_SALE: 'Number of  VCOT on sale',
+  VCO_AVAILABLE_FOR_SALE: 'Number of  VCOT available for sale',
 }
 export const SECTION_NAMES = {
   PROJECT_INTRODUCTION: 'Project Introduction',
