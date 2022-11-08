@@ -298,8 +298,8 @@ const ListNewProject = () => {
       </Grid>
       <Grid item xs={12}>
         <CCInputField
-          label="Project Duration"
-          placeholder="Enter Project Duration"
+          label="Project Duration(Years)"
+          placeholder="Enter Project Duration(Years)"
           value={projectDuration}
           onChange={(e) => handleTextChange(e, 'projectDuration')}
           type="number"

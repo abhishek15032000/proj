@@ -35,7 +35,7 @@ const THTile: FC<THTileProps> = (props) => {
       {(props.value === undefined || props.value === '') && '-'}
 
       {props.value?.length < 20 && (
-        <Typography sx={{ fontWeight: 400, fontSize: 14 }}>
+        <Typography sx={{ fontWeight: 400, fontSize: 14, textAlign: 'right' }}>
           {props.value}
         </Typography>
       )}
