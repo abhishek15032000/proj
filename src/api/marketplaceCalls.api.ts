@@ -16,6 +16,13 @@ export const marketplaceCalls = {
       }
     )
   },
+  withdraw: (payload: any) => {
+    return AxiosHelper(URL_PATH.marketplace.withdraw, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
   fillOrder: (payload: any) => {
     return AxiosHelper(URL_PATH.marketplace.fillOrder, 'POST', payload).then(
       (res: any) => {
