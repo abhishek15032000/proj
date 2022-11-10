@@ -84,7 +84,7 @@ const RegisterPage = (props: RegisterPageProps) => {
       .then((response: any) => {
         const roles = response?.data
           .filter(
-            (department: any) => department.name !== 'super admin department'
+            (department: any) => !['super admin department','Credit Buyer'].includes(department?.name)
           )
           .map((department: any, index: number) => {
             return {

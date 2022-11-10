@@ -150,6 +150,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 sx={{ mb: 1.5, zIndex: 20 }}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
@@ -158,6 +161,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 sx={{ mb: 1.5, zIndex: 20 }}
                 value={designation}
                 onChange={(e) => setDesignation(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
@@ -168,6 +174,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled
                 required={false}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
@@ -175,8 +184,13 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 placeholder="Enter Contact Number"
                 sx={{ mb: 1.5, zIndex: 20 }}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required={false}
+                onChange={(e) => {
+                  const telephone = e.target.value
+                  const regexp = /^[0-9\b]+$/
+                  if (telephone === '' || regexp.test(telephone)) {
+                    setPhone(e.target.value)
+                  }
+                }}
                 inputProps={{
                   maxLength: 10,
                 }}
@@ -188,6 +202,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                   !isMobilePhone(phone.toString(), 'en-IN') &&
                   'Enter valid Mobile Number'
                 }
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
@@ -196,6 +213,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 sx={{ mb: 1.5, zIndex: 20 }}
                 value={organisationName}
                 onChange={(e) => setOrganisationName(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
@@ -204,6 +224,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 sx={{ mb: 1.5, zIndex: 20 }}
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
@@ -216,6 +239,9 @@ const VerifierProfileSetup = (props: VerifierProfileSetupProps) => {
                 helperText={
                   website !== '' && !isURL(website) && 'Enter valid URL'
                 }
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <Box
