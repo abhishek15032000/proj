@@ -23,6 +23,7 @@ import {
   setOngoingSellOrderTransaction,
 } from '../../redux/Slices/marketplaceSlice'
 import { checkBlockchainTransactionComplete } from '../../utils/marketplace.utils'
+import WithdrawFlow from './WithdrawFlow/WithdrawFlow'
 
 interface BuySellComponentProps {}
 
@@ -76,7 +77,7 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
     <Grid container>
       <Grid item md={12} sm={12} lg={9} sx={{ paddingRight: 2 }}>
         <TabSelector
-          tabArray={['Buy', 'Sell', 'Withdraw/Deposit']}
+          tabArray={['Buy', 'Sell', 'Withdraw']}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
           tabStyle={{ width: 'auto' }}
@@ -84,6 +85,7 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
         />
         {tabIndex === 1 && <BuyOrderFlow />}
         {tabIndex === 2 && <SellOrderFlow />}
+        {tabIndex === 3 && <WithdrawFlow />}
       </Grid>
 
       <Grid

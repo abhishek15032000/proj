@@ -31,15 +31,17 @@ import {
   setOnGoingDepositTxIdReduxBuyFlow,
   setOnGoingDepositTxIdReduxSellFlow,
   setOngoingSellOrderTransaction,
+  setOngoingWithdrawOrderTransaction,
   setSellQuantityForApprove,
   setSellQuantityForDeposit,
   setSellQuantityForSellOrder,
   setSellUnitPriceForSellOrder,
   setWalletBal,
   setWalletBalBuyFlow,
+  setWithdrawQuantity,
 } from '../redux/Slices/marketplaceSlice'
 import { store } from '../redux/store'
-import { setLocalItem } from './Storage'
+import { getLocalItem, setLocalItem } from './Storage'
 import { transactionCalls } from '../api/transactionCalls.api'
 
 declare let window: any
@@ -358,8 +360,12 @@ export async function createSellOrder() {
         getBalanceOnExchange()
         getApprovedTokensBalance()
 
+        // setLocalItem(
+        //   LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_DEPOSIT,
+        //   sellQuantityForSellOrder
+        // )
         setLocalItem(
-          LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_DEPOSIT,
+          LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_SELL_ORDER,
           sellQuantityForSellOrder
         )
         setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_SELL_ORDER_TX_ID, txId)
@@ -371,6 +377,59 @@ export async function createSellOrder() {
         alert('Sell order created')
       } else {
         alert(createOrderRes?.error)
+      }
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.createOrder api : ' + err)
+  }
+}
+
+export async function createWithdrawOrder() {
+  try {
+    const uuid = getLocalItem('userDetails')?.uuid
+
+    const withdrawQuantity = store.getState()?.marketplace?.withdrawQuantity
+    const accountAddress = store.getState()?.wallet?.accountAddress
+
+    //pseudo nonce
+    const randomNumber = new Date().getTime()
+    const hashAndVRS = await getHashAndVRS('withdraw', randomNumber)
+    if (hashAndVRS) {
+      const { hash, v, r, s } = hashAndVRS
+
+      const payload = {
+        uuid,
+        hash,
+        _withdrawer: accountAddress,
+        _token: TOKEN_CONTRACT_ADDRESS,
+        _amount: Number(withdrawQuantity),
+        _feeAsset: TOKEN_CONTRACT_ADDRESS,
+        _feeAmount: 1,
+        _nonce: randomNumber,
+        _v: v,
+        _r: r,
+        _s: s,
+      }
+      console.log('payload', payload)
+
+      const withdrawOrderRes = await marketplaceCalls.withdraw(payload)
+      console.log('withdrawOrderRes', withdrawOrderRes)
+      if (withdrawOrderRes.success) {
+        const txId =
+          withdrawOrderRes?.data?.transactions?.create[0]?.transactionHash
+        // getBalanceOnExchange()
+        // getApprovedTokensBalance()
+
+        setLocalItem(LOCAL_STORAGE_VARS.WITHDRAW_QUANTITY, withdrawQuantity)
+        setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_WITHDRAW_ORDER_TX_ID, txId)
+        checkBlockchainTransactionComplete(
+          txId,
+          MARKETPLACE_CALL_TYPES.WITHDRAW_ORDER,
+          setOngoingWithdrawOrderTransaction
+        )
+        alert('Withdraw order created')
+      } else {
+        alert(withdrawOrderRes?.error)
       }
     }
   } catch (err) {
@@ -486,6 +545,32 @@ async function getHashAndVRS(type: string, randomNumber: any) {
       //   'data._feeAmount': { type: 'uint256', value: feeAmount },
       //   'data._nonce': { type: 'uint64', value: nonce },
       // })
+    } else if (type === 'withdraw') {
+      const withdrawQuantity = store.getState()?.marketplace?.withdrawQuantity
+
+      const nonce: any = await provider.getTransactionCount(accountAddress)
+      //Explicitly needed to make them any since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
+      const feeAmount: any = 1
+      const withdrawQuantityCopy: any = Number(withdrawQuantity)
+      // const sellUnitPriceCopy: any = Number(sellUnitPrice)
+      hash = new Web3().utils.soliditySha3(
+        { type: 'string', value: 'withdraw' },
+        { type: 'address', value: accountAddress },
+        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'uint256', value: withdrawQuantityCopy },
+        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'uint256', value: feeAmount },
+        { type: 'uint64', value: randomNumber }
+      )
+      console.log('wthdrawhashPayload', {
+        '': { type: 'string', value: 'withdraw' },
+        'data._withdrawer': { type: 'address', value: accountAddress },
+        'data._token': { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        'data._amount': { type: 'uint256', value: withdrawQuantityCopy },
+        'data._feeAsset': { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        'data._feeAmount': { type: 'uint256', value: feeAmount },
+        'data._nonce': { type: 'uint64', value: randomNumber },
+      })
     } else {
       //for buy order
       const buyOrderPayloadOfferHashes =
@@ -653,6 +738,20 @@ const callsToMakeAfterBlockchainSuccess = (
       getBalanceOnExchange()
 
       setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_SELL_ORDER_TX_ID, null)
+
+      return
+    }
+    case MARKETPLACE_CALL_TYPES.WITHDRAW_ORDER: {
+      clearInterval(intervalId)
+
+      store.dispatch(setOngoingTransaction(null))
+      store.dispatch(setWithdrawQuantity(0))
+
+      getWalletBalance()
+      getApprovedTokensBalance()
+      getBalanceOnExchange()
+
+      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_WITHDRAW_ORDER_TX_ID, null)
 
       return
     }

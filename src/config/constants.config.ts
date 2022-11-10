@@ -28,6 +28,7 @@ export const MARKETPLACE_CALL_TYPES = {
   APPROVE_BUY_FLOW: 'approveBuyFlow',
   DEPOSIT_BUY_FLOW: 'depositBuyFlow',
   CREATE_BUY_ORDER: 'createBuyOrder',
+  WITHDRAW_ORDER: 'withdrawOrder',
 }
 
 export const LOCAL_STORAGE_VARS = {
@@ -52,4 +53,7 @@ export const LOCAL_STORAGE_VARS = {
   // DATA_FOR_CREATE_BUY_ORDER_CALL: 'dataForCreateBuyOrderCall',
   // DATA_FOR_DEPOSIT_CALL_BUY_FLOW: 'dataForDepositCallForBuyFlow',
   // DATA_FOR_BUY_CALL: 'dataForBuyCall',
+  //Wthdraw flow
+  ON_GOING_WITHDRAW_ORDER_TX_ID: 'onGoingWithdrawOrderData',
+  WITHDRAW_QUANTITY: 'withdrawQuantity',
 }

@@ -69,17 +69,17 @@ export const privateRouteComponents = [
     component: ProfileDetailsIssuanceInfo,
     roles: [ROLES.ISSUER],
   },
-  // {
-  //   path: pathNames.MARKETPLACE,
-  //   component: MarketplaceHome,
-  //   sidebarName: linkLabels.Marketplace,
-  //   roles: [ROLES.ISSUER, ROLES.BUYER],
-  // },
-  // {
-  //   path: pathNames.MARKETPLACE_PROJECT_DETAILS,
-  //   component: MarketplaceProjectDetails,
-  //   roles: [ROLES.ISSUER],
-  // },
+  {
+    path: pathNames.MARKETPLACE,
+    component: MarketplaceHome,
+    sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.MARKETPLACE_PROJECT_DETAILS,
+    component: MarketplaceProjectDetails,
+    roles: [ROLES.ISSUER],
+  },
   {
     path: pathNames.PROJECTS,
     component: ProjectsPage,
@@ -188,15 +188,15 @@ export const privateRouteComponents = [
     component: OrganisationalDetails,
     roles: [ROLES.BUYER],
   },
-  // {
-  //   path: pathNames.RETIRE_TOKENS,
-  //   component: RetireTokens,
-  //   roles: [ROLES.BUYER],
-  // },
-  // {
-  //   path: pathNames.TOKENS_RETIREMENT,
-  //   sidebarName: linkLabels.TokenRetirement,
-  //   component: TokenRetirementPage,
-  //   roles: [ROLES.BUYER],
-  // },
+  {
+    path: pathNames.RETIRE_TOKENS,
+    component: RetireTokens,
+    roles: [ROLES.BUYER],
+  },
+  {
+    path: pathNames.TOKENS_RETIREMENT,
+    sidebarName: linkLabels.TokenRetirement,
+    component: TokenRetirementPage,
+    roles: [ROLES.BUYER],
+  },
 ]
