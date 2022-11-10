@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 import { setSellQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import {
@@ -18,8 +18,6 @@ import TabWithdraw from './TabWithdraw'
 interface WithdrawTokenProps {}
 
 const WithdrawToken: FC<WithdrawTokenProps> = () => {
-  const dispatch = useAppDispatch()
-
   const [tabIndex, setTabIndex] = useState(1)
 
   const accountAddress = useAppSelector(
