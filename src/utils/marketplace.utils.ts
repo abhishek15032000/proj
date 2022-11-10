@@ -398,7 +398,6 @@ export async function createWithdrawOrder() {
       const { hash, v, r, s } = hashAndVRS
 
       const payload = {
-        uuid,
         hash,
         _withdrawer: accountAddress,
         _token: TOKEN_CONTRACT_ADDRESS,
@@ -416,7 +415,7 @@ export async function createWithdrawOrder() {
       console.log('withdrawOrderRes', withdrawOrderRes)
       if (withdrawOrderRes.success) {
         const txId =
-          withdrawOrderRes?.data?.transactions?.create[0]?.transactionHash
+          withdrawOrderRes?.data?.transactions?.withdraw[0]?.transactionHash
         // getBalanceOnExchange()
         // getApprovedTokensBalance()
 
@@ -433,7 +432,7 @@ export async function createWithdrawOrder() {
       }
     }
   } catch (err) {
-    console.log('Error in marketplaceCalls.createOrder api : ' + err)
+    console.log('Error in marketplaceCalls.withdraw api : ' + err)
   }
 }
 
