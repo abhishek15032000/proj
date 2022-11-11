@@ -19,7 +19,7 @@ const NotificationIcon = (props: NotificationIconProps) => {
   const [notificationCount, setNotificationCount] = useState(0)
 
   useEffect(() => {
-    updateNotificationCount()
+    // updateNotificationCount()
   }, [])
 
   const updateNotificationCount = () => {

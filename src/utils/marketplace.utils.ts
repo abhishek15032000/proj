@@ -44,7 +44,7 @@ import {
   setWithdrawQuantity,
 } from '../redux/Slices/marketplaceSlice'
 import { store } from '../redux/store'
-import { getLocalItem, setLocalItem } from './Storage'
+import { getLocalItem, removeItem, setLocalItem } from './Storage'
 import { transactionCalls } from '../api/transactionCalls.api'
 
 declare let window: any
@@ -779,11 +779,24 @@ const callsToMakeAfterBlockchainSuccess = (
       getApprovedTokensBalance()
       getBalanceOnExchange()
 
-      setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_SELL_FLOW, null)
+      removeItem(LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_SELL_FLOW)
+      removeItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_DEPOSIT)
 
       return
     }
     case MARKETPLACE_CALL_TYPES.DEPOSIT_BUY_FLOW: {
+      clearInterval(intervalId)
+
+      store.dispatch(setBuyQuantityForDeposit(0))
+      store.dispatch(setOnGoingDepositTxIdReduxBuyFlow(null))
+
+      removeItem(LOCAL_STORAGE_VARS.ON_GOING_DEPOSIT_TX_ID_BUY_FLOW)
+      removeItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_DEPOSIT)
+
+      getWalletBalanceBuyFlow()
+      getApprovedTokensBalanceBuyFlow()
+      getBalanceOnExchangeBuyFlow()
+
       return
     }
     case MARKETPLACE_CALL_TYPES.CREATE_BUY_ORDER: {
