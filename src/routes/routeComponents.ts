@@ -70,17 +70,17 @@ export const privateRouteComponents = [
     component: ProfileDetailsIssuanceInfo,
     roles: [ROLES.ISSUER],
   },
-  // {
-  //   path: pathNames.MARKETPLACE,
-  //   component: MarketplaceHome,
-  //   sidebarName: linkLabels.Marketplace,
-  //   roles: [ROLES.ISSUER, ROLES.BUYER],
-  // },
-  // {
-  //   path: pathNames.MARKETPLACE_PROJECT_DETAILS,
-  //   component: MarketplaceProjectDetails,
-  //   roles: [ROLES.ISSUER],
-  // },
+  {
+    path: pathNames.MARKETPLACE,
+    component: MarketplaceHome,
+    sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.MARKETPLACE_PROJECT_DETAILS,
+    component: MarketplaceProjectDetails,
+    roles: [ROLES.ISSUER],
+  },
   {
     path: pathNames.PROJECTS,
     component: ProjectsPage,

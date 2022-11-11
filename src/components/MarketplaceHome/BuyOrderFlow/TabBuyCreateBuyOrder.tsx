@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { marketplaceCalls } from '../../../api/marketplaceCalls.api'
+import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModal'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -21,6 +22,7 @@ import CardRow from '../CardRow'
 const TabBuyCreateBuyOrder = () => {
   const dispatch = useAppDispatch()
 
+  const [showSecondModal, setShowSecondModal] = useState(false)
   const buyQuantityForBuyOrder = useAppSelector(
     ({ marketplace }) => marketplace.buyQuantityForBuyOrder,
     shallowEqual
@@ -35,6 +37,11 @@ const TabBuyCreateBuyOrder = () => {
   )
   const onGoingApproveReduxBuyFlow = useAppSelector(
     ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
+    shallowEqual
+  )
+
+  const exchangeBalBuyFlow = useAppSelector(
+    ({ marketplace }) => marketplace.exchangeBalBuyFlow,
     shallowEqual
   )
 
@@ -68,6 +75,14 @@ const TabBuyCreateBuyOrder = () => {
 
   const isThereApproveObject = () => {
     return onGoingApproveReduxBuyFlow ? true : false
+  }
+
+  const onCreateBuyOrder = () => {
+    if (Number(buyQuantityForBuyOrder) >= Number(exchangeBalBuyFlow)) {
+      setShowSecondModal(true)
+      return
+    }
+    createBuyOrder()
   }
 
   return (
@@ -135,7 +150,7 @@ const TabBuyCreateBuyOrder = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={createBuyOrder}
+            onClick={onCreateBuyOrder}
             disabled={
               isThereApproveObject() ||
               !buyQuantityForBuyOrder ||
@@ -147,6 +162,16 @@ const TabBuyCreateBuyOrder = () => {
           </CCButton>
         </Box>
       </Grid>
+      <BalanceCheckModal
+        msg1="Requesting buy token  for more tokens than you actually have"
+        msg2="Balance on Exchange"
+        tokenBal={exchangeBalBuyFlow}
+        btn1OnClick={() => {
+          setShowSecondModal(false)
+        }}
+        showModal={showSecondModal}
+        setShowModal={setShowSecondModal}
+      />
     </Grid>
   )
 }

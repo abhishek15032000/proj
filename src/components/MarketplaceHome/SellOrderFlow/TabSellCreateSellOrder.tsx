@@ -1,7 +1,8 @@
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModal'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -14,7 +15,7 @@ import { createSellOrder } from '../../../utils/marketplace.utils'
 
 const TabSellCreateSellOrder = () => {
   const dispatch = useAppDispatch()
-
+  const [showSecondModal, setShowSecondModal] = useState(false)
   const sellQuantityForSellOrder = useAppSelector(
     ({ marketplace }) => marketplace.sellQuantityForSellOrder,
     shallowEqual
@@ -27,6 +28,19 @@ const TabSellCreateSellOrder = () => {
     ({ marketplace }) => marketplace.onGoingApproveRedux,
     shallowEqual
   )
+
+  const exchangeBal = useAppSelector(
+    ({ marketplace }) => marketplace.exchangeBal,
+    shallowEqual
+  )
+
+  const onCreateBuyOrder = () => {
+    if (Number(sellQuantityForSellOrder) > Number(exchangeBal)) {
+      setShowSecondModal(true)
+      return
+    }
+    createSellOrder()
+  }
 
   return (
     <Grid container xs={12} justifyContent="center">
@@ -94,7 +108,7 @@ const TabSellCreateSellOrder = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={createSellOrder}
+            onClick={onCreateBuyOrder}
             disabled={
               onGoingApproveRedux ||
               !sellQuantityForSellOrder ||
@@ -105,6 +119,16 @@ const TabSellCreateSellOrder = () => {
           </CCButton>
         </Box>
       </Grid>
+      <BalanceCheckModal
+        msg1="Requesting sell for more tokens than you actually have"
+        msg2="Balance on Exchange"
+        tokenBal={exchangeBal}
+        btn1OnClick={() => {
+          setShowSecondModal(false)
+        }}
+        showModal={showSecondModal}
+        setShowModal={setShowSecondModal}
+      />
     </Grid>
   )
 }
