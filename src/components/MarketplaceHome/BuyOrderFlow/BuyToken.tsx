@@ -46,13 +46,6 @@ const BuyToken: FC<BuyTokenProps> = () => {
   )
 
   useEffect(() => {
-    const buyQuantityInLocalStorage = getLocalItem(
-      LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE
-    )
-    dispatch(setBuyQuantityForApprove(buyQuantityInLocalStorage))
-  }, [])
-
-  useEffect(() => {
     if (accountAddress) {
       getWalletBalanceBuyFlow()
       getApprovedTokensBalanceBuyFlow()

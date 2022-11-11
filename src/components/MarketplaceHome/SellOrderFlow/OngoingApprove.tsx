@@ -15,7 +15,7 @@ import {
   getApprovedTokensBalance,
   getTransaction,
 } from '../../../utils/marketplace.utils'
-import { getLocalItem, setLocalItem } from '../../../utils/Storage'
+import { getLocalItem, removeItem, setLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
@@ -72,8 +72,9 @@ const OngoingApprove = () => {
           // dispatch(setDataToMakeDepositCall(newReceipt))
           dispatch(setOnGoingApproveRedux(null))
           dispatch(setSellQuantityForApprove(0))
-          setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
-          setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE, 0)
+
+          removeItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW)
+          removeItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE)
         }
         makeRows(receipt)
         getApprovedTokensBalance()
