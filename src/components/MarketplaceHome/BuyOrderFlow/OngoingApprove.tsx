@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setBuyQuantityForApprove,
   setDataToMakeDepositCallBuyFlow,
-  setOnGoingApproveRedux,
   setOnGoingApproveReduxBuyFlow,
 } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
@@ -39,7 +38,8 @@ const OngoingApprove = () => {
   const [rows, setRows] = useState<any>()
   useEffect(() => {
     if (onGoingApproveBuyFlowLocalStorage && onGoingApproveReduxBuyFlow) {
-      dispatch(setOnGoingApproveRedux(onGoingApproveBuyFlowLocalStorage))
+      // if (onGoingApproveBuyFlowLocalStorage) {
+      dispatch(setOnGoingApproveReduxBuyFlow(onGoingApproveBuyFlowLocalStorage))
     }
   }, [])
 

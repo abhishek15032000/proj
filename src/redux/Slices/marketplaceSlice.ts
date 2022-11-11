@@ -41,6 +41,9 @@ interface MarketplaceReducerInterface {
   ongoingTransaction: any
   withdrawQuantity: number
   ongoingWithdrawOrderTransaction: any
+  marketplaceModalMessage: string
+  showMarketplaceMsgModal: boolean
+  marketplaceLoading: boolean
 }
 const initialState: MarketplaceReducerInterface = {
   buyQuantityForApprove: 0,
@@ -83,6 +86,9 @@ const initialState: MarketplaceReducerInterface = {
   ongoingTransaction: null,
   withdrawQuantity: 0,
   ongoingWithdrawOrderTransaction: null,
+  marketplaceModalMessage: '',
+  showMarketplaceMsgModal: false,
+  marketplaceLoading: false,
 }
 const marketplace = createSlice({
   name: 'marketplace',
@@ -217,6 +223,15 @@ const marketplace = createSlice({
     setOngoingWithdrawOrderTransaction: (state, action: PayloadAction<any>) => {
       state.ongoingWithdrawOrderTransaction = action.payload
     },
+    setMarketplaceModalMessage: (state, action: PayloadAction<any>) => {
+      state.marketplaceModalMessage = action.payload
+    },
+    setShowMarketplaceMsgModal: (state, action: PayloadAction<any>) => {
+      state.showMarketplaceMsgModal = action.payload
+    },
+    setMarketplaceLoading: (state, action: PayloadAction<any>) => {
+      state.marketplaceLoading = action.payload
+    },
   },
 })
 
@@ -258,6 +273,9 @@ export const {
   setOngoingTransaction,
   setWithdrawQuantity,
   setOngoingWithdrawOrderTransaction,
+  setMarketplaceModalMessage,
+  setShowMarketplaceMsgModal,
+  setMarketplaceLoading,
 } = marketplace.actions
 
 export default marketplace.reducer

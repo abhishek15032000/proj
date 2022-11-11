@@ -22,6 +22,8 @@ import {
   setBuyQuantityForDeposit,
   setExchangeBal,
   setExchangeBalBuyFlow,
+  setMarketplaceLoading,
+  setMarketplaceModalMessage,
   setOnGoingApproveRedux,
   setOnGoingApproveReduxBuyFlow,
   setOngoingBuyOrderTransaction,
@@ -36,6 +38,7 @@ import {
   setSellQuantityForDeposit,
   setSellQuantityForSellOrder,
   setSellUnitPriceForSellOrder,
+  setShowMarketplaceMsgModal,
   setWalletBal,
   setWalletBalBuyFlow,
   setWithdrawQuantity,
@@ -165,6 +168,7 @@ export async function requestApprovalForTokenSelling() {
     store.getState()?.marketplace?.sellQuantityForApprove
 
   try {
+    store.dispatch(setMarketplaceLoading(true))
     store.dispatch(setOnGoingApproveRedux(null))
     setLocalItem(LOCAL_STORAGE_VARS?.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
     setLocalItem(LOCAL_STORAGE_VARS?.SELL_QUANTITY_FOR_APPROVE, null)
@@ -185,11 +189,20 @@ export async function requestApprovalForTokenSelling() {
       )
       store.dispatch(setOnGoingApproveRedux(approveFnRes))
       store.dispatch(setSellQuantityForApprove(0))
+
+      store.dispatch(
+        setMarketplaceModalMessage(
+          'Request sent for token approval. Please check once blockchain call is completed from Ongoing Approve tab.'
+        )
+      )
+      store.dispatch(setShowMarketplaceMsgModal(true))
     }
   } catch (err) {
     // show proper error message
     console.log('Error: ' + JSON.stringify(err))
     // alert("JSON.stringify(err)")
+  } finally {
+    store.dispatch(setMarketplaceLoading(false))
   }
 }
 export async function requestApprovalForTokenBuy() {
@@ -197,6 +210,7 @@ export async function requestApprovalForTokenBuy() {
     store.getState()?.marketplace?.buyQuantityForApprove
 
   try {
+    store.dispatch(setMarketplaceLoading(true))
     store.dispatch(setOnGoingApproveRedux(null))
     setLocalItem(LOCAL_STORAGE_VARS?.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
     setLocalItem(LOCAL_STORAGE_VARS?.BUY_QUANTITY_FOR_APPROVE, null)
@@ -216,11 +230,20 @@ export async function requestApprovalForTokenBuy() {
       )
       store.dispatch(setOnGoingApproveReduxBuyFlow(approveFnRes))
       store.dispatch(setBuyQuantityForApprove(0))
+
+      store.dispatch(
+        setMarketplaceModalMessage(
+          'Request sent for token approval. Please check once blockchain call is completed from Ongoing Approve tab.'
+        )
+      )
+      store.dispatch(setShowMarketplaceMsgModal(true))
     }
   } catch (err) {
     // show proper error message
     console.log('Error: ' + JSON.stringify(err))
     // alert("JSON.stringify(err)")
+  } finally {
+    store.dispatch(setMarketplaceLoading(false))
   }
 }
 export const getTransaction = async (txId: string) => {
@@ -255,6 +278,7 @@ export async function depositERC20() {
     _expectedAmount: Number(sellQuantityForDeposit),
   }
   try {
+    store.dispatch(setMarketplaceLoading(true))
     const depositERC20Res = await marketplaceCalls.depositERC20(payload)
     console.log('depositERC20Res', depositERC20Res)
 
@@ -275,12 +299,21 @@ export async function depositERC20() {
         MARKETPLACE_CALL_TYPES.DEPOSIT_SELL_FLOW,
         setOngoingDepositTransactionSellFlow
       )
-      alert('amount deposited')
+      // alert('amount deposited')
+
+      store.dispatch(
+        setMarketplaceModalMessage(
+          'Request sent to deposit token. Please check once blockchain call is completed from Ongoing Deposit tab.'
+        )
+      )
+      store.dispatch(setShowMarketplaceMsgModal(true))
     } else {
       alert(depositERC20Res?.error)
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.depositERC20 api : ' + err)
+  } finally {
+    store.dispatch(setMarketplaceLoading(false))
   }
 }
 export async function depositERC20BuyFlow() {
@@ -295,6 +328,7 @@ export async function depositERC20BuyFlow() {
     _expectedAmount: Number(buyQuantityForDeposit),
   }
   try {
+    store.dispatch(setMarketplaceLoading(true))
     const depositERC20Res = await marketplaceCalls.depositERC20(payload)
     if (depositERC20Res.success) {
       const txId = depositERC20Res?.data?.transactionId
@@ -313,17 +347,27 @@ export async function depositERC20BuyFlow() {
         MARKETPLACE_CALL_TYPES.DEPOSIT_BUY_FLOW,
         setOngoingDepositTransactionBuyFlow
       )
-      alert('amount deposited')
+      // alert('amount deposited')
+
+      store.dispatch(
+        setMarketplaceModalMessage(
+          'Request sent to deposit token. Please check once blockchain call is completed from Ongoing Deposit tab.'
+        )
+      )
+      store.dispatch(setShowMarketplaceMsgModal(true))
     } else {
       alert(depositERC20Res?.error)
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.depositERC20 api : ' + err)
+  } finally {
+    store.dispatch(setMarketplaceLoading(false))
   }
 }
 
 export async function createSellOrder() {
   try {
+    store.dispatch(setMarketplaceLoading(true))
     const sellQuantityForSellOrder =
       store.getState()?.marketplace?.sellQuantityForSellOrder
     const sellUnitPriceForSellOrder: any =
@@ -374,18 +418,28 @@ export async function createSellOrder() {
           MARKETPLACE_CALL_TYPES.CREATE_SELL_ORDER,
           setOngoingSellOrderTransaction
         )
-        alert('Sell order created')
+        // alert('Sell order created')
+
+        store.dispatch(
+          setMarketplaceModalMessage(
+            'Sell order created. Please check once blockchain call is completed from Ongoing Sell Order tab.'
+          )
+        )
+        store.dispatch(setShowMarketplaceMsgModal(true))
       } else {
         alert(createOrderRes?.error)
       }
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.createOrder api : ' + err)
+  } finally {
+    store.dispatch(setMarketplaceLoading(false))
   }
 }
 
 export async function createWithdrawOrder() {
   try {
+    store.dispatch(setMarketplaceLoading(true))
     const uuid = getLocalItem('userDetails')?.uuid
 
     const withdrawQuantity = store.getState()?.marketplace?.withdrawQuantity
@@ -409,10 +463,8 @@ export async function createWithdrawOrder() {
         _r: r,
         _s: s,
       }
-      console.log('payload', payload)
 
       const withdrawOrderRes = await marketplaceCalls.withdraw(payload)
-      console.log('withdrawOrderRes', withdrawOrderRes)
       if (withdrawOrderRes.success) {
         const txId =
           withdrawOrderRes?.data?.transactions?.withdraw[0]?.transactionHash
@@ -426,18 +478,27 @@ export async function createWithdrawOrder() {
           MARKETPLACE_CALL_TYPES.WITHDRAW_ORDER,
           setOngoingWithdrawOrderTransaction
         )
-        alert('Withdraw order created')
+        // alert('Withdraw order created')
+        store.dispatch(
+          setMarketplaceModalMessage(
+            'Withdraw order created. Please check once blockchain call is completed from Ongoing Withdraw Order tab.'
+          )
+        )
+        store.dispatch(setShowMarketplaceMsgModal(true))
       } else {
         alert(withdrawOrderRes?.error)
       }
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.withdraw api : ' + err)
+  } finally {
+    store.dispatch(setMarketplaceLoading(false))
   }
 }
 
 export async function createBuyOrder() {
   try {
+    store.dispatch(setMarketplaceLoading(true))
     const accountAddress = store.getState()?.wallet?.accountAddress
     const buyOrderPayloadOfferHashes =
       store.getState()?.marketplace?.buyOrderPayloadOfferHashes
@@ -445,6 +506,8 @@ export async function createBuyOrder() {
       store.getState()?.marketplace?.buyOrderPayloadAmountsToTake
     const buyOrderPayloadUUID =
       store.getState()?.marketplace?.buyOrderPayloadUUID
+    const totalAmountForBuying =
+      store.getState()?.marketplace?.totalAmountForBuying
 
     // const nonce = await provider.getTransactionCount(accountAddress)
     const randomNumber = new Date().getTime()
@@ -458,7 +521,7 @@ export async function createBuyOrder() {
         _offerHashes: buyOrderPayloadOfferHashes,
         _amountsToTake: buyOrderPayloadAmountsToTake,
         _feeAsset: INR_USD_TOKEN_ADDRESS, //inr_usd token address
-        _feeAmount: 1, //1
+        _feeAmount: Number(totalAmountForBuying),
         _nonce: randomNumber, //like in submit see getnonce()
         hash: hash,
         _v: v,
@@ -496,13 +559,22 @@ export async function createBuyOrder() {
           MARKETPLACE_CALL_TYPES.CREATE_BUY_ORDER,
           setOngoingBuyOrderTransaction
         )
-        alert('Buy order created')
+        // alert('Buy order created')
+
+        store.dispatch(
+          setMarketplaceModalMessage(
+            'Buy order created. Please check once blockchain call is completed from Ongoing Buy Order tab.'
+          )
+        )
+        store.dispatch(setShowMarketplaceMsgModal(true))
       } else {
         alert(createOrderRes.error)
       }
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.createOrder api : ' + err)
+  } finally {
+    store.dispatch(setMarketplaceLoading(false))
   }
 }
 
@@ -561,25 +633,28 @@ async function getHashAndVRS(type: string, randomNumber: any) {
         { type: 'uint256', value: feeAmount },
         { type: 'uint64', value: randomNumber }
       )
-      console.log('wthdrawhashPayload', {
-        '': { type: 'string', value: 'withdraw' },
-        'data._withdrawer': { type: 'address', value: accountAddress },
-        'data._token': { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
-        'data._amount': { type: 'uint256', value: withdrawQuantityCopy },
-        'data._feeAsset': { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
-        'data._feeAmount': { type: 'uint256', value: feeAmount },
-        'data._nonce': { type: 'uint64', value: randomNumber },
-      })
+      // console.log('wthdrawhashPayload', {
+      //   '': { type: 'string', value: 'withdraw' },
+      //   'data._withdrawer': { type: 'address', value: accountAddress },
+      //   'data._token': { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+      //   'data._amount': { type: 'uint256', value: withdrawQuantityCopy },
+      //   'data._feeAsset': { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+      //   'data._feeAmount': { type: 'uint256', value: feeAmount },
+      //   'data._nonce': { type: 'uint64', value: randomNumber },
+      // })
     } else {
       //for buy order
       const buyOrderPayloadOfferHashes =
         store.getState()?.marketplace?.buyOrderPayloadOfferHashes
       const buyOrderPayloadAmountsToTake =
         store.getState()?.marketplace?.buyOrderPayloadAmountsToTake
+      const totalAmountForBuying: any =
+        store.getState()?.marketplace?.totalAmountForBuying
 
       //Explicitly needed to make them "any" since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
       const nonce: any = await provider.getTransactionCount(accountAddress)
       const feeAmount: any = 1
+      const totalAmountForBuyingCopy: any = Number(totalAmountForBuying)
 
       hash = new Web3().utils.soliditySha3(
         { type: 'string', value: 'fillOffers' },
@@ -587,7 +662,7 @@ async function getHashAndVRS(type: string, randomNumber: any) {
         { type: 'bytes32[]', value: buyOrderPayloadOfferHashes }, //!todo
         { type: 'uint256[]', value: buyOrderPayloadAmountsToTake },
         { type: 'address', value: INR_USD_TOKEN_ADDRESS },
-        { type: 'uint256', value: feeAmount },
+        { type: 'uint256', value: totalAmountForBuyingCopy },
         { type: 'uint64', value: randomNumber }
       )
     }
