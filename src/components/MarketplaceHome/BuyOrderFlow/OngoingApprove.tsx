@@ -16,7 +16,7 @@ import {
   getApprovedTokensBalanceBuyFlow,
   getTransaction,
 } from '../../../utils/marketplace.utils'
-import { getLocalItem, setLocalItem } from '../../../utils/Storage'
+import { getLocalItem, removeItem, setLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
@@ -37,8 +37,7 @@ const OngoingApprove = () => {
 
   const [rows, setRows] = useState<any>()
   useEffect(() => {
-    if (onGoingApproveBuyFlowLocalStorage && onGoingApproveReduxBuyFlow) {
-      // if (onGoingApproveBuyFlowLocalStorage) {
+    if (onGoingApproveBuyFlowLocalStorage) {
       dispatch(setOnGoingApproveReduxBuyFlow(onGoingApproveBuyFlowLocalStorage))
     }
   }, [])
@@ -72,11 +71,12 @@ const OngoingApprove = () => {
         //This means approve call is done and put in blockchain
         const newReceipt: any = await receipt?.res.wait()
         if (newReceipt?.blockHash) {
-          dispatch(setDataToMakeDepositCallBuyFlow(newReceipt))
           dispatch(setOnGoingApproveReduxBuyFlow(null))
           dispatch(setBuyQuantityForApprove(0))
-          setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
-          setLocalItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE, null)
+
+          removeItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW)
+          removeItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE)
+
           getApprovedTokensBalanceBuyFlow()
         }
         makeRows(receipt)
