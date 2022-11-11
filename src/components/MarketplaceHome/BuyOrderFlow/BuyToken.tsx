@@ -66,8 +66,8 @@ const BuyToken: FC<BuyTokenProps> = () => {
         mt: 1,
         borderRadius: '4px',
         p: 2,
-        pointerEvents: onGoingApproveLocalStorage ? 'none' : 'all',
-        opacity: onGoingApproveLocalStorage ? 0.5 : 1,
+        // pointerEvents: onGoingApproveLocalStorage ? 'none' : 'all',
+        // opacity: onGoingApproveLocalStorage ? 0.5 : 1,
       }}
     >
       <CardRow

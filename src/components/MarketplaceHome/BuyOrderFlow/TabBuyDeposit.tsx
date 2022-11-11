@@ -50,7 +50,7 @@ const TabBuyDeposit = () => {
               right: 10,
             }}
           >
-            VCOT
+            INR
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>

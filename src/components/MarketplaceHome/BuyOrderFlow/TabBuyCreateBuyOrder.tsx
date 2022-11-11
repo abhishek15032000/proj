@@ -37,6 +37,10 @@ const TabBuyCreateBuyOrder = () => {
     ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
+  const exchangeBalBuyFlow = useAppSelector(
+    ({ marketplace }) => marketplace.exchangeBalBuyFlow,
+    shallowEqual
+  )
 
   const checkForFullFillOrder = async () => {
     try {
@@ -66,8 +70,24 @@ const TabBuyCreateBuyOrder = () => {
     }
   }
 
-  const isThereApproveObject = () => {
-    return onGoingApproveReduxBuyFlow ? true : false
+  const isDisabled = () => {
+    console.log({
+      onGoingApproveReduxBuyFlow,
+      buyQuantityForBuyOrder,
+      buyUnitPrice,
+      totalAmountForBuying,
+      exchangeBalBuyFlow,
+    })
+    if (
+      onGoingApproveReduxBuyFlow ||
+      !buyQuantityForBuyOrder ||
+      !buyUnitPrice ||
+      !totalAmountForBuying ||
+      totalAmountForBuying > exchangeBalBuyFlow
+    ) {
+      return true
+    }
+    return false
   }
 
   return (
@@ -83,6 +103,13 @@ const TabBuyCreateBuyOrder = () => {
                 const regexp = /^\d+(\.\d{0,3})?$/
                 if (regexp.test(e?.target?.value) || e?.target?.value === '') {
                   dispatch(setBuyQuantityForBuyOrder(e?.target?.value))
+
+                  //reseting fulfil values
+                  dispatch(setTotalAmountForBuying(0))
+                  dispatch(setBuyUnitPrice(0))
+                  dispatch(setBuyOrderPayloadOfferHashes(null))
+                  dispatch(setBuyOrderPayloadAmountsToTake(null))
+                  dispatch(setBuyOrderPayloadUUID(null))
                 }
               }}
             />
@@ -108,6 +135,7 @@ const TabBuyCreateBuyOrder = () => {
               : Colors.lightGray,
             cursor: buyQuantityForBuyOrder ? 'pointer' : 'not-allowed',
             textDecoration: 'underline',
+            width: 'fit-content',
           }}
           onClick={() => {
             if (buyQuantityForBuyOrder) {
@@ -122,6 +150,11 @@ const TabBuyCreateBuyOrder = () => {
           title="Total amount to be paid :"
           value={`${totalAmountForBuying || 0} INR`}
         />
+        {totalAmountForBuying > exchangeBalBuyFlow && (
+          <Typography sx={{ mt: 1, fontSize: 14, color: Colors.tertiary }}>
+            You have less INR balance for buying {buyQuantityForBuyOrder} tokens
+          </Typography>
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <CCButton
             sx={{
@@ -136,12 +169,7 @@ const TabBuyCreateBuyOrder = () => {
             }}
             variant="contained"
             onClick={createBuyOrder}
-            disabled={
-              isThereApproveObject() ||
-              !buyQuantityForBuyOrder ||
-              !buyUnitPrice ||
-              !totalAmountForBuying
-            }
+            disabled={isDisabled()}
           >
             Buy
           </CCButton>

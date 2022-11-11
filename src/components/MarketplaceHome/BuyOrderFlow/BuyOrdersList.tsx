@@ -5,19 +5,21 @@ import { marketplaceCalls } from '../../../api/marketplaceCalls.api'
 import CCTable from '../../../atoms/CCTable'
 import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
+import ShortenedIDComp from '../../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
+import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
 import { getLocalItem } from '../../../utils/Storage'
 
 const headings = [
   'Order ID',
-  'Date',
-  'Time',
+  // 'Date',
+  // 'Time',
   'Quantity',
   'Unit Price',
   'Total Amount',
-  'Quantity Left',
-  'Action',
+  // 'Quantity Left',
+  // 'Action',
 ]
 
 const BuyOrdersList = () => {
@@ -38,25 +40,35 @@ const BuyOrdersList = () => {
   async function getBuyOrders() {
     try {
       const buyOrderRes = await marketplaceCalls.getBuyOrder(accountAddress)
+      const temp: any[] = []
       if (buyOrderRes.success && buyOrderRes.data.length) {
-        const rowValues = buyOrderRes.data.map((row: any) => {
-          const orderId = row?.uuid
-          const quantity = row?._offerAmount
-          const unitPrice = row?._wantAmount
-          const totalAmount = quantity * unitPrice
-          return [orderId, '-', '-', quantity, unitPrice, totalAmount, '-', '-']
-          // return [
-          //   orderId,
-          //   'Date',
-          //   'Time',
-          //   quantity,
-          //   unitPrice,
-          //   totalAmount,
-          //   'Qty Left',
-          //   'Action',
-          // ]
+        buyOrderRes.data.forEach((row: any) => {
+          if (row?.fillOrder.length) {
+            row?.fillOrder.forEach((order: any, index: number) => {
+              const transactionElement = row?.transactions?.fill[index]
+              const orderId = transactionElement?.transactionHash
+              const quantity = order?._amountsToTake.reduce(
+                (acc: any, cur: any) => {
+                  return acc + cur
+                },
+                0
+              )
+              const unitPrice = (order?._feeAmount / quantity).toFixed(3)
+              const totalAmount = order?._feeAmount
+              temp.push([
+                <ShortenedIDComp
+                  key={index}
+                  referenceId={orderId}
+                  width={'565'}
+                />,
+                quantity,
+                unitPrice,
+                totalAmount,
+              ])
+            })
+          }
         })
-        setRows(rowValues)
+        setRows(temp.reverse())
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.getBuyOrder api : ', err)
