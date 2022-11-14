@@ -131,6 +131,7 @@ export async function getWalletBalanceBuyFlow() {
           )
         )
       }
+
       // const tokenAddress = 'REPLACE_WITH_ERC20_TOKEN_ADDRESS'
       // const walletAddress = 'REPLACE_WITH_WALLET_ADDRESS'
 
