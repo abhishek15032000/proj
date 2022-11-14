@@ -75,7 +75,7 @@ const TokenAndContractProjectList = (
           {showDetails ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
         </Grid>
       </Grid>
-      {showDetails && <TokenAndContractReportTable />}
+      {showDetails && <TokenAndContractReportTable uuid={props?.data?.uuid} />}
     </>
   )
 }

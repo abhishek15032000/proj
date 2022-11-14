@@ -3,7 +3,15 @@ import {
   SHINE_CONTRACTS_ABI,
   SHINE_CONTRACT_ADDRESS,
 } from '../config/blockchain.config'
-import { TOKEN_ABI, TOKEN_CONTRACT_ADDRESS } from '../config/token.config'
+import {
+  EXCHANGE_ABI,
+  EXCHANGE_CONTRACT_ADDRESS,
+} from '../config/exchange.config'
+import {
+  INR_USD_TOKEN_ADDRESS,
+  TOKEN_ABI,
+  TOKEN_CONTRACT_ADDRESS,
+} from '../config/token.config'
 import { getLocalItem } from '../utils/Storage'
 
 declare let window: any
@@ -18,30 +26,36 @@ const { ethereum } = window
 
 const BlockchainCalls = {
   isMetamaskInstalled: () => {
-    return Boolean(window.ethereum);
+    return Boolean(window.ethereum)
   },
   readAddress: async () => {
-    const method = "eth_requestAccounts";
+    const method = 'eth_requestAccounts'
 
     const accounts = await window.ethereum.request({
-      method
-    });
+      method,
+    })
 
-    return accounts[0];
+    return accounts[0]
   },
   getSelectedAddress: () => {
-    return window.ethereum?.selectedAddress;
+    return window.ethereum?.selectedAddress
   },
   compareShinekeyAndAddress: (address: string) => {
-    if (getLocalItem('userDetails2')?.shineKey !== address) {
+    if (
+      getLocalItem('userDetails2')?.shineKey?.toLowerCase() !==
+      address?.toLowerCase()
+    ) {
       return false
-    } return true
+    }
+    return true
   },
   connectWallet: async () => {
-    console.log("BlockchainCalls.connectWallet called")
+    console.log('BlockchainCalls.connectWallet called')
     let isConnected = false
     const haveMetamask = BlockchainCalls.isMetamaskInstalled()
-    const accountAddress = await BlockchainCalls.readAddress() || undefined
+    const accountAddress = (await BlockchainCalls.readAddress()) || undefined
+
+    let accountBalanceRes: any
 
     // let accountAddress =undefined
     try {
@@ -58,14 +72,15 @@ const BlockchainCalls = {
       // }
 
       if (accountAddress) {
-
         isConnected = true
+        accountBalanceRes = (await BlockchainCalls.getWalletBalance(accountAddress)) || undefined
       }
 
       return {
         haveMetamask,
         accountAddress,
         isConnected,
+        accountBalance:accountBalanceRes?.balance || 0
       }
     } catch (error) {
       console.log(
@@ -89,12 +104,18 @@ const BlockchainCalls = {
   getWalletNetwork: async () => {
     try {
       const getNetwork = await provider.getNetwork()
-      console.log("🚀 ~ file: Blockchain.ts ~ line 62 ~ getWalletNetwork: ~ getNetwork", getNetwork)
+      console.log(
+        '🚀 ~ file: Blockchain.ts ~ line 62 ~ getWalletNetwork: ~ getNetwork',
+        getNetwork
+      )
       // const balance = ethers.utils.formatEther(getBalance)
 
       return getNetwork
     } catch (error) {
-      console.log("🚀 ~ file: Blockchain.ts ~ line 126 ~ getWalletNetwork: ~ error", error)
+      console.log(
+        '🚀 ~ file: Blockchain.ts ~ line 126 ~ getWalletNetwork: ~ error',
+        error
+      )
 
       //   setIsConnected(false)
       return { connected: false }
@@ -120,6 +141,27 @@ const BlockchainCalls = {
     )
     return shine_Contract
   },
+  //Temporary Use for burn
+  temp_contract_caller: async (address?: string) => {
+    const ethereum = (window as any).ethereum
+    const accounts = await ethereum.request({
+      method: 'eth_requestAccounts',
+    })
+
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const walletAddress = accounts[0] // first account in MetaMask
+    const signer = provider.getSigner(walletAddress)
+    const shine_Contract = new ethers.Contract(
+      '0x92e8DA2ca27997e0FC6286e7B252cb9175d2BD37',
+      SHINE_CONTRACTS_ABI,
+      signer
+    )
+    console.log(
+      '🚀 ~ file: blockchain.ts ~ line 60 ~ contract_caller: ~ shine_Contract',
+      shine_Contract
+    )
+    return shine_Contract
+  },
   token_caller: async (address?: string) => {
     const ethereum = (window as any).ethereum
     const accounts = await ethereum.request({
@@ -135,6 +177,38 @@ const BlockchainCalls = {
       signer
     )
     return tokenContract
+  },
+  inr_usd_token_caller: async () => {
+    const ethereum = (window as any).ethereum
+    const accounts = await ethereum.request({
+      method: 'eth_requestAccounts',
+    })
+
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const walletAddress = accounts[0] // first account in MetaMask
+    const signer = provider.getSigner(walletAddress)
+    const tokenContract = new ethers.Contract(
+      INR_USD_TOKEN_ADDRESS,
+      TOKEN_ABI,
+      signer
+    )
+    return tokenContract
+  },
+  exchange_caller: async () => {
+    const ethereum = (window as any).ethereum
+    const accounts = await ethereum.request({
+      method: 'eth_requestAccounts',
+    })
+
+    const provider = new ethers.providers.Web3Provider(ethereum)
+    const walletAddress = accounts[0] // first account in MetaMask
+    const signer = provider.getSigner(walletAddress)
+    const exchangeContract = new ethers.Contract(
+      EXCHANGE_CONTRACT_ADDRESS,
+      EXCHANGE_ABI,
+      signer
+    )
+    return exchangeContract
   },
   requestMethodCalls: async (method: string, params: any) => {
     try {
@@ -165,7 +239,6 @@ const BlockchainCalls = {
 }
 
 export default BlockchainCalls
-
 
 // declare global {
 //   interface Window {

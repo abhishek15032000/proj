@@ -1,4 +1,4 @@
-import { linkLabels } from "../../../routes/pathNames";
+import { linkLabels } from '../../../routes/pathNames'
 
 const MENUS = {
   issuer_menus: [
@@ -8,15 +8,13 @@ const MENUS = {
     linkLabels.Marketplace,
     linkLabels.Wallet,
   ],
-  verifier_menus: [
-    linkLabels.Dashboard,
-  ],
+  verifier_menus: [linkLabels.Dashboard],
   buyer_menus: [
     linkLabels.Dashboard,
     linkLabels.Marketplace,
-    linkLabels.Token_Contract,
+    linkLabels.TokenRetirement,
+    linkLabels.Wallet,
   ],
 }
-
 
 export default MENUS

@@ -158,7 +158,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
                 sx={{ color: '#006B5E', mr: 1, fontSize: 18 }}
               />
               <Typography sx={{ fontSize: 14 }}>
-                {projectDetails?.location}
+                {currentProjectDetails?.location}
               </Typography>
             </Box>
           </Grid>

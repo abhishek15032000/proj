@@ -12,22 +12,33 @@ import './Projects.css'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { useLocation } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
+import { buyerCalls } from '../../api/buyerCalls.api'
+import { getTokensBalance } from '../../utils/tokenRetire.utils'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
   const location = useLocation()
 
-  const { type: userType, email, user_id } = getLocalItem('userDetails')
-  const [stats, setStats] = useState<any[] | null>(null)
-  const [loading, setLoading] = useState(false)
-
+  const accountAddress = useAppSelector(({ wallet }) => wallet.accountAddress)
   const verifierStatsReload = useAppSelector(
     ({ verifier }) => verifier.verifierStatsReload
   )
 
+  const { type: userType, email, user_id } = getLocalItem('userDetails')
+  const [stats, setStats] = useState<any[] | null>(null)
+  //Raw data from api
+  const [rawStatsData, setRawStatsData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     verifierStatsReload && getStats()
-  }, [verifierStatsReload])
+  }, [verifierStatsReload, accountAddress])
+
+  useEffect(() => {
+    if (rawStatsData && Object.keys(rawStatsData).length) {
+      structureDataForStats()
+    }
+  }, [rawStatsData])
 
   const getStats = async () => {
     try {
@@ -35,30 +46,86 @@ const ProjectsStats = () => {
       let res
       if (userType === ROLES.VERIFIER) {
         res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
+        if (res?.success) {
+          setRawStatsData(res)
+          setLoading(false)
+        }
       }
       //using this for token and contract stats
       else if (location.pathname === pathNames.TOKEN_CONTRACT) {
         res = await dataCollectionCalls.getStats()
+        if (res?.success) {
+          setRawStatsData(res)
+          setLoading(false)
+        }
+      } else if (location.pathname === pathNames.TOKENS_RETIREMENT) {
+        if (!accountAddress) {
+          return
+        }
+        getStatsForTokenRetirement()
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
-      }
-      if (res.success) {
-        //Making dynamic stats objects from response
-        const keys = Object.keys(res.data)
-        const values = Object.values(res.data)
-        const statsObj = keys.map((key, index) => {
-          return {
-            title: capitaliseFirstLetter(key.replaceAll('_', ' ')),
-            value: values[index],
-          }
-        })
-        setStats(statsObj)
+        if (res?.success) {
+          setRawStatsData(res)
+          setLoading(false)
+        }
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
+    }
+  }
+
+  const structureDataForStats = () => {
+    //Making dynamic stats objects from rawStatsDataponse
+    const keys = Object.keys(rawStatsData.data)
+    const values = Object.values(rawStatsData.data)
+    const statsObj = keys.map((key, index) => {
+      return {
+        title: capitaliseFirstLetter(key.replaceAll('_', ' ')),
+        value: values[index],
+      }
+    })
+    setStats(statsObj)
+  }
+
+  const getStatsForTokenRetirement = async () => {
+    // let bal
+    // let data
+    let apiData
+    const bal = await getTokensBalance()
+    try {
+      const res = await buyerCalls.getStats({
+        address: accountAddress,
+      })
+      if (res?.success) {
+        apiData = res?.data
+      }
+    } catch (err) {
+      console.log('Error in buyerCalls.getStats api : ', err)
     } finally {
       setLoading(false)
     }
+    let burnTokenCount
+    if (apiData?.burn_token_count && apiData?.burn_token_count.length) {
+      burnTokenCount = apiData?.burn_token_count?.reduce(
+        (prev: any, curr: any) => {
+          return (prev += curr?.total)
+        },
+        0
+      )
+    }
+    const data = {
+      data: {
+        Total_active_VCOs: bal,
+        Total_retired_VCOs: burnTokenCount,
+        Total_VCOT_purchased_so_far: apiData?.purchased_token_count,
+        Total_footprint_offset: burnTokenCount,
+      },
+      success: true,
+    }
+
+    setRawStatsData(data)
   }
 
   const getColoredDivColor = (index: number) => {
@@ -144,7 +211,9 @@ const ProjectsStats = () => {
                 <Box key={index} className="stats-container">
                   <Box className="content-container">
                     <Box className="stats-title">{stat?.title}</Box>
-                    <Box className="stats-value">{stat?.value}</Box>
+                    <Box className="stats-value">
+                      {stat?.value ? stat?.value : stat?.value === 0 ? 0 : '-'}
+                    </Box>
                   </Box>
                   <Box
                     className="colored-div"

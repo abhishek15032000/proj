@@ -4,6 +4,8 @@ export const ENDPOINTS = {
   authServiceURL: BASE_URL + 'auth/api/v1',
   carbonServiceURL: BASE_URL + 'carbon/api/v1',
   userServiceURL: BASE_URL + 'user/api/v1',
+  orderServiceURL: BASE_URL + 'order/api/v1',
+  notificationServiceURL: BASE_URL + 'notification/api/v1',
 }
 
 export const URL_PATH = {
@@ -74,8 +76,37 @@ export const URL_PATH = {
   transaction: {
     getTransactionByUser:
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
+    getTransactionById:
+      ENDPOINTS.carbonServiceURL + '/transaction/getTransactionById',
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
+    addBankDetails: ENDPOINTS.carbonServiceURL + '/bank/add',
+    withdrawAmount: ENDPOINTS.carbonServiceURL + '/bank/withdraw',
+    getAllBankAccount: ENDPOINTS.carbonServiceURL + '/bank/get',
+    updateBankAccountDetails: ENDPOINTS.carbonServiceURL + '/bank/update',
+    removeBankAccount: ENDPOINTS.carbonServiceURL + '/bank/delete',
+  },
+  marketplace: {
+    depositERC20: ENDPOINTS.orderServiceURL + '/marketplace/depositERC20',
+    createOrder: ENDPOINTS.orderServiceURL + '/marketplace/createOrder',
+    withdraw: ENDPOINTS.orderServiceURL + '/marketplace/withdraw',
+    fillOrder: ENDPOINTS.orderServiceURL + '/marketplace/fillOrder',
+    getSellOrder: ENDPOINTS.orderServiceURL + '/marketplace/getSellOrder',
+    getBuyOrder: ENDPOINTS.orderServiceURL + '/marketplace/getBuyOrder',
+    checkForFullFillOrder:
+      ENDPOINTS.orderServiceURL + '/marketplace/checkForFullFillOrder',
+  },
+  buyers: {
+    saveRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/retire-token',
+    getAllRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
+    getTokenAndRetirementStats: ENDPOINTS.carbonServiceURL + '/buyer/getStats',
+  },
+  notification: {
+    getNotification:
+      ENDPOINTS.notificationServiceURL + '/notification/getNotifications',
+    updateRead:
+      ENDPOINTS.notificationServiceURL +
+      '/notification/updateInAppNotification',
   },
 }

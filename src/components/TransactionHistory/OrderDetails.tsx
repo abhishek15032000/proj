@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 // MUI Imports
 import { Grid, Box, Typography, Paper, Divider } from '@mui/material'
@@ -7,11 +7,18 @@ import { Grid, Box, Typography, Paper, Divider } from '@mui/material'
 // Local Imports
 import TransactionHistoryImg from '../../assets/Images/illustrations/TransactionHistory.png'
 import { Colors } from '../../theme'
-import CCTitleValue from '../../atoms/CCTitleValue/CCTitleValue'
+import moment from 'moment'
+import THTile from './THTile'
 
-interface OrderDetailsProps {}
+interface OrderDetailsProps {
+  data?: any
+}
 
 const OrderDetails: FC<OrderDetailsProps> = (props) => {
+  const unitPrice =
+    Number(props.data?.transaction_data?.values?.amountFilled) /
+    Number(props.data?.transaction_data?.values?.amountTaken)
+
   return (
     <Paper
       sx={{
@@ -21,20 +28,20 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: '8px',
+        minWidth: '520px',
         mt: 2,
       }}
     >
-      <Box
-        sx={{
-          width: {
-            xs: '100%',
-            lg: '50%',
-          },
-          height: '100%',
-          p: 3,
-        }}
-      >
-        <Box>
+          <Box
+            sx={{
+              width: {
+                xs: '100%',
+                lg: '50%',    
+              },
+              height: '100%',
+              p: 3,
+            }}
+          ><Box>
           <Typography
             sx={{
               fontSize: 18,
@@ -52,63 +59,59 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
               // alignItems: 'center',
             }}
           >
+
             <Box sx={{ width: '50%' }}>
-              <CCTitleValue
+              <THTile
                 title="Transaction ID:"
-                value="21220"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={props.data?.transaction_id}
               />
-              <CCTitleValue
+              <THTile
                 title="Sell Order  ID:"
-                value="1234"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={props.data?.transaction_data?.contract}
               />
-              <CCTitleValue
+              <THTile
                 title="Order Match Date:"
-                value="11/07/2022"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={moment
+                  .unix(props.data?.transaction_data?.timestamp)
+                  .format('DD/MM/YYYY')}
               />
-              <CCTitleValue
+              <THTile
                 title="Order Match Time:"
-                value="17:41:20"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={moment
+                  .unix(props.data?.transaction_data?.timestamp)
+                  .format('HH:mm:ss')}
               />
             </Box>
+
             <Box sx={{ width: '50%' }}>
-              <CCTitleValue
+              <THTile
                 title="Unit Price:"
-                value="214"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={isNaN(unitPrice) ? '-' : unitPrice.toString()}
               />
-              <CCTitleValue
+              <THTile
                 title="Quantity:"
-                value="3"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={props.data?.transaction_data?.values?.amountTaken}
               />
-              <CCTitleValue
+              <THTile
                 title="Total Amount:"
-                value="214"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={props.data?.transaction_data?.values?.amountFilled}
               />
             </Box>
           </Box>
-        </Box>
+        </Box> 
 
         <Divider sx={{ mt: 3, mb: 2 }} />
+
+        {/* <Box
+        sx={{
+          width: {
+            xs: '100%',
+            lg: '50%',
+          },
+          height: '100%',
+          p: 3,
+        }}
+      > */}
 
         <Box>
           <Typography
@@ -129,19 +132,13 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
             }}
           >
             <Box sx={{ width: '50%' }}>
-              <CCTitleValue
+              <THTile
                 title="Sold to:"
-                value="XYZ"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={props.data?.transaction_data?.to}
               />
-              <CCTitleValue
+              <THTile
                 title="Sold by:"
-                value="ABC"
-                fontWeight={400}
-                fontSize={14}
-                sx={styles.TitleValue}
+                value={props.data?.transaction_data?.from}
               />
             </Box>
           </Box>
@@ -163,12 +160,3 @@ const OrderDetails: FC<OrderDetailsProps> = (props) => {
 }
 
 export default OrderDetails
-
-const styles = {
-  TitleValue: {
-    marginTop: 2,
-    maxWidth: '250px',
-    pr: 2,
-    // pl: 1,
-  },
-}

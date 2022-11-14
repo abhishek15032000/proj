@@ -24,6 +24,7 @@ const VerifierReportListItemListItem: FC<
   VerifierReportListItemListItemProps
 > = (props) => {
   const accountAddress = useAppSelector((state) => state.wallet.accountAddress)
+  const accountBalance = useAppSelector((state) => state.wallet.accountBalance)
 
   const [showModal, setShowModal] = useState(false)
   const [showVerifierDetails, setShowVerifierDetails] = useState<boolean>(false)
@@ -162,16 +163,39 @@ const VerifierReportListItemListItem: FC<
       {/* modal when user clicks on finalise verifier */}
       <MessageModal
         message={
-          <Typography sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}>
-            Next step involves making calls with Blockchain. Do you want to
-            continue with{' '}
-            <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
-              {accountAddress}
-            </span>{' '}
-            wallet address?
-          </Typography>
+          <>
+            <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
+              Next step involves making calls with Blockchain. Do you want to
+              continue with{' '}
+              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
+                {accountAddress}
+              </span>{' '}
+              wallet address?
+            </Typography>
+            <Typography sx={{ mt: 2, fontSize: 18, fontWeight: 500 }}>
+              Wallet Balance :{' '}
+              <span
+                style={{
+                  color: Number(accountBalance)
+                    ? Colors.lightPrimary1
+                    : Colors.tertiary,
+                  fontSize: 18,
+                }}
+              >
+                {accountBalance}
+              </span>{' '}
+            </Typography>
+            {!Number(accountBalance) && (
+              <Typography
+                sx={{ fontSize: 14, fontWeight: 500, color: Colors.tertiary }}
+              >
+                ! Insufficient balance to perform blockchain call
+              </Typography>
+            )}
+          </>
         }
         btn1Text="Continue"
+        disableBtn1={!accountBalance ? true : false}
         btn1OnClick={() => {
           setShowModal(false)
           props?.updateVerifierAPI(props?.data)

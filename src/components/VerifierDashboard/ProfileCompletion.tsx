@@ -23,7 +23,7 @@ const ProfileCompletion = () => {
 
   const [profileCompletion, setProfileCompletion] = useState(0)
   const [linearProgressValue, setLinearProgressValue] = useState(0)
-
+  console.log('linearProgressValue', linearProgressValue)
   const isConnected = useAppSelector(
     ({ wallet }) => wallet.isConnected,
     shallowEqual
@@ -85,15 +85,14 @@ const ProfileCompletion = () => {
         if (response.connected) {
           lpValue = lpValue + 50
         }
-
+        setLinearProgressValue(lpValue)
         if (response.connected && count === 7) {
           navigate(pathNames.DASHBOARD)
         }
       })
-
+      console.log('lpValue', lpValue)
       setLinearProgressValue(lpValue)
     })
-
   }, [isConnected])
 
   return (
@@ -105,7 +104,9 @@ const ProfileCompletion = () => {
         padding: 1.5,
       }}
     >
-      <Typography sx={{ fontSize: 18, fontWeight: 400 }}>
+      <Typography
+        sx={{ fontSize: 18, fontWeight: 400, color: Colors.darkPrimary1 }}
+      >
         Profile Completion
       </Typography>
 

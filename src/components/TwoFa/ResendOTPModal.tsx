@@ -11,12 +11,14 @@ interface ResendOTPModalProps {
   showModal: boolean
   setShowModal: any
   setLoading: any
+  setSeconds: any
 }
 
 const ResendOTPModal = ({
   showModal,
   setShowModal,
   setLoading,
+  setSeconds,
 }: ResendOTPModalProps) => {
   const uuid = getLocalItem('uuid')
 
@@ -43,6 +45,7 @@ const ResendOTPModal = ({
       const res = await authCalls.resendOTP(payload)
       if (res.success) {
         alert('New OTP Sent')
+        setSeconds(90)
       } else {
         alert(res?.error)
       }

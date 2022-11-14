@@ -135,7 +135,6 @@ const ListNewProject = () => {
     }
   }, [currentProjectDetails])
 
-  console.log(currentProjectDetails)
   const handleChange = (event: SelectChangeEvent<typeof projectType>) => {
     const {
       target: { value },
@@ -151,7 +150,6 @@ const ListNewProject = () => {
   const handleDelete = (e: React.MouseEvent, value: string) => {
     const projectTypes = [...projectType]
     const filterTypes = projectTypes.filter((item) => item !== value && item)
-    console.log('clicked delete', value, filterTypes)
     dispatch(setProjectType(filterTypes))
   }
 
@@ -300,8 +298,8 @@ const ListNewProject = () => {
       </Grid>
       <Grid item xs={12}>
         <CCInputField
-          label="Duration of the Project"
-          placeholder="Enter Project Duration"
+          label="Project Duration(Years)"
+          placeholder="Enter Project Duration(Years)"
           value={projectDuration}
           onChange={(e) => handleTextChange(e, 'projectDuration')}
           type="number"

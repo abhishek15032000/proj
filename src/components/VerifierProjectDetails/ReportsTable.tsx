@@ -27,11 +27,11 @@ import { downloadFile } from '../../utils/commonFunctions'
 const headings = [
   'Submitted On',
   'Next Submission date',
-  'Report',
+  'Conclusive Report',
   'Report Version',
   'Status',
-  'Conclusive Report',
-  'CO2c Authorised',
+  'Report',
+  'VCOT Authorised',
   'Action',
 ]
 
@@ -40,6 +40,7 @@ interface ReportsTableProps {
   loading?: any
   pdfCall?: any
   attachDownload?: any
+  projectDetails: any
 }
 
 const ReportsTable: FC<ReportsTableProps> = (props) => {
@@ -71,10 +72,16 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
               textAlign: 'left',
             }}
           >
-            Report
+            Conclusive Report
           </Typography>
           <DownloadIcon
-            onClick={() => downloadFile(item.file_attach?.[0])}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              if (!item.file_attach?.length) return
+              item.file_attach.forEach((file: any, index: number) => {
+                downloadFile(file)
+              })
+            }}
             style={{ color: Colors.lightPrimary1 }}
           />
         </Box>,
@@ -99,7 +106,7 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
               textAlign: 'left',
             }}
           >
-            Conclusive Report
+            Report
           </Typography>
           <ArticleIcon
             onClick={() => props.pdfCall(item)}
@@ -168,7 +175,9 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
       {!props.loading && props.data.length === 0 && (
         <>
           <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
-            Response awaiting from project developer
+            {props?.projectDetails?.project_status === 1
+              ? 'Please Approve or Reject the Project Request first'
+              : 'Response awaiting from Project Developer'}
           </Typography>
           <NoData title="Your project’s review report will show up here" />
         </>

@@ -22,6 +22,7 @@ import NoData from '../../atoms/NoData/NoData'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import {
   addSectionPercentages,
+  addSectionPercentagesMonthly,
   isProjectCompleted,
   totalCompletion,
 } from '../../utils/newProject.utils'
@@ -145,17 +146,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 onClick={() => openProjectDetails(item, 'Verify')}
               />
             ) : (
-              <>
-                <div> {totalCompletion(item)} </div>
-                <CreateIcon
-                  sx={{ cursor: 'pointer' }}
-                  key="1"
-                  onClick={() => openProjectDetails(item, 'Details')}
-                />
-              </>
+              <CreateIcon
+                sx={{ cursor: 'pointer' }}
+                key="1"
+                onClick={() => openProjectDetails(item, 'Details')}
+              />
             )
           ) : (
-            totalCompletion(item)
+            '-'
           ),
           <ChevronRightIcon
             sx={{ cursor: 'pointer' }}
@@ -260,3 +258,5 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 }
 
 export default ListOfProjects
+
+{/* <div> {totalCompletion(item)} </div> */}

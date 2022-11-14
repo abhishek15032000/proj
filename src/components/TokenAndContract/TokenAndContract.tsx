@@ -1,25 +1,23 @@
 import { Grid, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 //MUI imports
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 //Local imports
-import CCTable from '../../atoms/CCTable'
 import ProjectsStats from '../ProjectStats/ProjectsStats'
-import { Box } from '@mui/system'
 import CCButton from '../../atoms/CCButton'
 import TokenAndContractProjectList from './TokenAndContractProjectList'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
-import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
 import moment from 'moment'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 const TokenAndContract = () => {
   const navigate = useNavigate()
 
   const { email } = getLocalItem('userDetails')
+
+  const [loading, setLoading] = useState(true)
 
   const [projects, setProjects] = useState<any>()
 
@@ -33,10 +31,15 @@ const TokenAndContract = () => {
       .then((res: any) => {
         if (res?.data?.success) {
           setProjects(res.data.data)
+        } else if (res?.data?.error) {
+          alert(res?.data?.error[0])
         }
       })
       .catch((e) => {
         console.log(e)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -75,42 +78,46 @@ const TokenAndContract = () => {
               Sell Tokens
             </CCButton>
           </Stack>
-          <Grid
-            container
-            columns={14}
-            alignItems="center"
-            sx={{ mt: 3, py: 2, background: '#CCE8E1' }}
-          >
-            <Grid item xs={2} sx={{ pl: 2 }}>
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                Date
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                Project Name
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                Project Type
-              </Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                Location
-              </Typography>
-            </Grid>
-          </Grid>
-          {projects &&
-            projects.length > 0 &&
-            projects.map((i: any, index: number) => (
-              <TokenAndContractProjectList
-                data={i}
-                key={index}
-                background={index % 2 ? '#edf5f2' : '#fff'}
-              />
-            ))}
+          {!projects ? (
+            <CCTableSkeleton sx={{ mt: 2 }} />
+          ) : (
+            <>
+              <Grid
+                container
+                columns={14}
+                alignItems="center"
+                sx={{ mt: 3, py: 2, background: '#CCE8E1' }}
+              >
+                <Grid item xs={2} sx={{ pl: 2 }}>
+                  <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+                    Date
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+                    Project Name
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+                    Project Type
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+                    Location
+                  </Typography>
+                </Grid>
+              </Grid>
+              {projects.map((i: any, index: number) => (
+                <TokenAndContractProjectList
+                  data={i}
+                  key={index}
+                  background={index % 2 ? '#edf5f2' : '#fff'}
+                />
+              ))}
+            </>
+          )}
         </Paper>
       </Grid>
 

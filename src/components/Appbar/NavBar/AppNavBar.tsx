@@ -29,6 +29,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setLoadWallet } from '../../../redux/Slices/walletSlice'
 import { Colors } from '../../../theme'
+import NotificationList from '../../../atoms/NotificationList'
+import NotificationIcon from './NotificationIcon'
+import Help from './Help/Help'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -75,7 +78,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function AppNavBar({ handleDrawerToggle }: any) {
   const dispatch = useAppDispatch()
   const openWallet = () => {
-    console.log('loda wallet')
+    console.log('load wallet')
     dispatch(setLoadWallet(true))
     console.log('done')
   }
@@ -128,7 +131,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   )
@@ -173,7 +176,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      {/* <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -184,7 +187,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           <PersonOutlineOutlinedIcon />
         </IconButton>
         <p>Profile</p>
-      </MenuItem>
+      </MenuItem> */}
     </Menu>
   )
 
@@ -212,7 +215,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                     />
                 </Search> */}
         <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
           {/* <SelectDropdown /> */}
 
           <Box
@@ -246,10 +249,10 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                   }}
                 />
               )}
-              <Typography sx={{ mx: 1 }}>Wallet</Typography>
+              <Typography sx={{ mx: 1, fontWeight: 500 }}>Wallet</Typography>
             </Button>
           </Box>
-
+          <Help />
           <IconButton
             size="large"
             aria-label="show 17 new notifications"
@@ -260,18 +263,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             </Badge>
           </IconButton>
 
-          <IconButton
-            size="large"
-            aria-label="show 17 new notifications"
-            color="primary"
-          >
-            <Badge
-              // badgeContent={17}
-              color="error"
-            >
-              <NotificationsOutlinedIcon />
-            </Badge>
-          </IconButton>
+          <NotificationIcon />
 
           <IconButton
             size="large"

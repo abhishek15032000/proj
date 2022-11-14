@@ -13,20 +13,36 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { getLocalItem } from '../../utils/Storage'
 import { Colors } from '../../theme'
 import { useAppSelector } from '../../hooks/reduxHooks'
-import { setLoadWallet } from '../../redux/Slices/walletSlice'
+import { setLoadWallet, setWalletAdded } from '../../redux/Slices/walletSlice'
 
 // Local Imports
 
 const ProfileCompletion = () => {
   const dispatch = useDispatch()
-  const walletAdded = getLocalItem('userDetails2')?.wallet_added
 
   const isConnected = useAppSelector(
     ({ wallet }) => wallet.isConnected,
     shallowEqual
   )
+  const walletAdded = useAppSelector(
+    ({ wallet }) => wallet.walletAdded,
+    shallowEqual
+  )
 
-  const walletIsConnected = walletAdded && isConnected
+  const [isShineKeyAdded, setIsShineKeyAdded] = useState(false)
+
+  useEffect(()=>{
+    const shineKey = getLocalItem('userDetails2')?.shineKey
+    if(shineKey) dispatch(setWalletAdded(true))
+  },[])
+
+  useEffect(() => {
+    if (walletAdded && isConnected) {
+      setIsShineKeyAdded(true)
+    } else {
+      setIsShineKeyAdded(false)
+    }
+  }, [walletAdded, isConnected])
 
   // useEffect(() => {
   //   const completionPercent = walletAdded ? 100 : 0
@@ -51,24 +67,24 @@ const ProfileCompletion = () => {
         sx={{
           fontSize: 14,
           fontWeight: 500,
-          color: walletIsConnected ? Colors.lightPrimary1 : Colors.secondary,
+          color: isShineKeyAdded ? Colors.lightPrimary1 : Colors.secondary,
           marginTop: 0.5,
           marginBottom: 0.5,
         }}
       >
-        {walletIsConnected ? 'Complete!' : 'Incomplete!'}
+        {isShineKeyAdded ? 'Complete!' : 'Incomplete!'}
       </Typography>
 
       <LinearProgress
         variant="determinate"
         sx={{ borderRadius: 8, height: 8 }}
-        value={walletIsConnected === true ? 100 : 0}
+        value={isShineKeyAdded === true ? 100 : 0}
       />
 
       <Typography
         sx={{ fontSize: 14, fontWeight: 400, marginTop: 1, marginBottom: 2 }}
       >
-        {!walletIsConnected ? 'Go back & complete your profile setup!' : null}
+        {!isShineKeyAdded ? 'Go back & complete your profile setup!' : null}
       </Typography>
 
       <Box
@@ -90,10 +106,10 @@ const ProfileCompletion = () => {
             sx={{
               fontSize: 14,
               fontWeight: 400,
-              color: walletIsConnected ? Colors.lightPrimary1 : '#BA1B1B',
+              color: isShineKeyAdded ? Colors.lightPrimary1 : '#BA1B1B',
             }}
           >
-            {`${walletIsConnected ? '100' : '0'}% Complete`}
+            {`${isShineKeyAdded ? '100' : '0'}% Complete`}
           </Typography>
         </Box>
 
@@ -105,12 +121,12 @@ const ProfileCompletion = () => {
             height: '40px',
             width: '40px',
             borderRadius: '20px',
-            backgroundColor: walletIsConnected
+            backgroundColor: isShineKeyAdded
               ? Colors.white
               : Colors.lightPrimary1,
           }}
         >
-          {walletIsConnected ? (
+          {isShineKeyAdded ? (
             <CheckIcon style={{ color: Colors.lightPrimary1 }} />
           ) : (
             <ArrowRightAltIcon

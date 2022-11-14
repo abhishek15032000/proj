@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import { disposeEmitNodes } from 'typescript'
 import { USER } from '../api/user.api'
 import BlockchainCalls from '../blockchain/Blockchain'
-import { setAccountAddress, setConnected, setLoadWallet, setMetamask, setAlertMessage, setLoadWalletAlert, resetWallet } from '../redux/Slices/walletSlice'
+import { setAccountAddress, setConnected, setLoadWallet, setMetamask, setAlertMessage, setLoadWalletAlert, resetWallet, setAccountAddressToConnectWith, setShowAddMetaMaskAccountModal, setAccountBalance, setWalletAdded } from '../redux/Slices/walletSlice'
 import { store } from '../redux/store'
 import { getLocalItem, setLocalItem } from './Storage'
 declare let window: any
@@ -122,6 +122,8 @@ export const connectWallet = async () => {
             // res.accountAddress = '0xbde38db937bb7a0ae5b4c82831cfb768c7f9acd7'
             store.dispatch(setAccountAddress(res.accountAddress))
             store.dispatch(setConnected(res.isConnected))
+            store.dispatch(setAccountBalance(res?.accountBalance))
+
             if (getLocalItem('userDetails2')?.shineKey) {
                 if (!BlockchainCalls.compareShinekeyAndAddress(res.accountAddress)) {
                     store.dispatch(setLoadWalletAlert(true))
@@ -130,8 +132,10 @@ export const connectWallet = async () => {
             } else {
 
                 // if (!walletAdded) {
-                updateUserWithShineKey(res.accountAddress)
+                // updateUserWithShineKey(res.accountAddress)
                 // }
+                store.dispatch(setAccountAddressToConnectWith(res.accountAddress))
+                store.dispatch(setShowAddMetaMaskAccountModal(true))
             }
             return true
 
@@ -158,6 +162,7 @@ export const updateUserWithShineKey = async (shineKey: string) => {
             if (user_id) {
                 const userResponse = await USER.getUsersById(user_id)
                 setLocalItem('userDetails2', userResponse?.data)
+                store.dispatch(setWalletAdded(userResponse?.data?.wallet_added))
             } else {
                 //Couldn't get userId from localStorage
                 alert('User id not found')

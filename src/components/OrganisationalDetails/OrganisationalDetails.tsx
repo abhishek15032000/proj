@@ -26,9 +26,48 @@ const OrganisationalDetails = (props: OrganisationalDetailsProps) => {
   const [sector, setSector] = useState('')
   const [headquarters, setHeadquarters] = useState('')
   const [loading, setLoading] = useState(false)
+  const [fullName, setFullName] = useState('')
+  useEffect(() => {
+    USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
+      console.log('user', response)
+      setFullName(response?.data?.data?.fullName)
+    })
+  }, [])
 
   const onSave = () => {
-    navigate(pathNames.BUYER_ONBOARDING)
+    if (
+      organisationName === '' ||
+      organisationName === undefined ||
+      headquarters === '' ||
+      headquarters === undefined ||
+      website === '' ||
+      website === undefined ||
+      sector === '' ||
+      sector === undefined
+    ) {
+      alert('Fill all the Fields!')
+      return
+    }
+
+    setLoading(true)
+    const payload = {
+      uuid: getLocalItem('userDetails').uuid,
+      email: getLocalItem('userDetails').email,
+      fullName: fullName,
+      organisationName: organisationName,
+      address: headquarters,
+      website: website,
+      sector: sector,
+    }
+    console.log('payload', getLocalItem('userDetails'), payload)
+    USER.updateUserInfo(payload)
+      .then((response) => {
+        navigate(pathNames.DASHBOARD, { replace: true })
+        setLoading(false)
+      })
+      .catch((e) => {
+        setLoading(false)
+      })
   }
 
   if (loading) {
@@ -69,7 +108,10 @@ const OrganisationalDetails = (props: OrganisationalDetailsProps) => {
                   alignItems: 'center',
                 }}
               >
-                <BackHeader title="Organisational Details" onClick={onSave} />
+                <BackHeader
+                  title="Organisational Details"
+                  onClick={() => navigate(-1)}
+                />
                 <Grid
                   item
                   xs={6}
@@ -87,7 +129,7 @@ const OrganisationalDetails = (props: OrganisationalDetailsProps) => {
                       pr: 3,
                       cursor: 'pointer',
                     }}
-                    onClick={onSave}
+                    onClick={() => navigate(-1)}
                   >
                     <Typography
                       sx={{

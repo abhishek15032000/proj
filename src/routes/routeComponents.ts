@@ -31,6 +31,8 @@ import BuyerOnboarding from '../pages/BuyerOnboarding'
 import OrganisationalDetails from '../pages/OrganisationalDetails'
 import RetireTokens from '../pages/RetireTokens'
 import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPage'
+import BankDetails from '../pages/BankDetails'
+import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
 
 export const privateRouteComponents = [
   {
@@ -41,12 +43,12 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Dashboard,
     roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
-  {
-    path: pathNames.TOKEN_CONTRACT,
-    component: TokenAndContractPage,
-    sidebarName: linkLabels.Token_Contract,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.TOKEN_CONTRACT,
+  //   component: TokenAndContractPage,
+  //   sidebarName: linkLabels.Token_Contract,
+  //   roles: [ROLES.ISSUER],
+  // },
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,
@@ -58,6 +60,11 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
+    path: pathNames.ISSUANCE_DATA_COLLECTION_HELP,
+    component: IssuanceDataCollectionHelp,
+    roles: [ROLES.ISSUER],
+  },
+  {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
     component: ProfileDetailsIssuanceInfo,
     roles: [ROLES.ISSUER],
@@ -66,7 +73,7 @@ export const privateRouteComponents = [
     path: pathNames.MARKETPLACE,
     component: MarketplaceHome,
     sidebarName: linkLabels.Marketplace,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
     path: pathNames.MARKETPLACE_PROJECT_DETAILS,
@@ -148,12 +155,17 @@ export const privateRouteComponents = [
     path: pathNames.ISSUER_WALLET,
     component: IssuerWallet,
     sidebarName: linkLabels.Wallet,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
     path: pathNames.TRANSACTION_HISTORY,
     component: TransactionHistory,
     roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.BANK_DETAILS,
+    component: BankDetails,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
     path: pathNames.MONTHLY_REPORT_UPDATE,
@@ -183,6 +195,7 @@ export const privateRouteComponents = [
   },
   {
     path: pathNames.TOKENS_RETIREMENT,
+    sidebarName: linkLabels.TokenRetirement,
     component: TokenRetirementPage,
     roles: [ROLES.BUYER],
   },

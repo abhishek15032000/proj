@@ -8,6 +8,7 @@ export const pathNames = {
   ONBOARDING: '/onboarding',
   MAINTENANCE_PAGE: '/maintenance-page',
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
+  ISSUANCE_DATA_COLLECTION_HELP: '/issuance-data-collection/help',
   PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
   MARKETPLACE: '/marketplace',
   MARKETPLACE_PROJECT_DETAILS: '/marketplace-project-details',
@@ -26,6 +27,7 @@ export const pathNames = {
   VERIFIER_VERIFY_REPORT: '/verifier-verify-report',
   ISSUER_WALLET: '/issuer-wallet',
   TRANSACTION_HISTORY: '/transaction-history',
+  BANK_DETAILS: '/bank-details',
   REPORT_VIEW_COMMENTS: '/report-view-comments',
   BUYER_ONBOARDING: '/buyer-onboarding',
   ORGANISATIONAL_DETAILS: '/organisational-details',
@@ -40,4 +42,5 @@ export const linkLabels = {
   // My_Portfolio: 'My Portfolio',
   Marketplace: 'Marketplace',
   Wallet: 'Wallet',
+  TokenRetirement: 'Token Retirement',
 }

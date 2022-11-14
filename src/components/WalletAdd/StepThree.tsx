@@ -4,7 +4,7 @@ import stepThreeImage from '../../assets/Images/wallet_steps/wallet_step_3.png'
 interface Props {}
 
 const StepThree = (props: Props) => {
-  return <img src={stepThreeImage} width="100%" />
+  return <img src={stepThreeImage} width="60%" />
 }
 
 export default StepThree

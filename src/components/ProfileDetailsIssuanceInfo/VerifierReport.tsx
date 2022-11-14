@@ -16,12 +16,16 @@ import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import moment from 'moment'
-import { addSectionPercentages } from '../../utils/newProject.utils'
+import {
+  addSectionPercentages,
+  addSectionPercentagesMonthly,
+} from '../../utils/newProject.utils'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { Colors } from '../../theme'
 import AddIcon from '@mui/icons-material/Add'
 import MonthlyReportUpdate, {
   setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
   setMainProjectDetails,
   setSectionIndex,
   setSubSectionIndex,
@@ -75,7 +79,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
             setShowTable(true)
           }
           const modifiedRows = res?.data?.record.map((i: any) =>
-            addSectionPercentages(i)
+            addSectionPercentagesMonthly(i)
           )
 
           const main = res?.data?.main_project?.report
@@ -196,13 +200,15 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
 
   const addMonthlyData = (item: any, main: any) => {
     dispatch(setCurrentProjectDetails(item))
+    dispatch(setCurrentProjectDetailsUUID(item?.uuid))
     dispatch(setMainProjectDetails(main))
     dispatch(setSectionIndex(0))
     dispatch(setSubSectionIndex(0))
+
     navigate(pathNames.MONTHLY_REPORT_UPDATE)
   }
 
-  const getVerifierByProject = () => {
+  const getVerifierByProject = (showModalAfterGetCall = false) => {
     setLoading(true)
     verifierCalls
       .getVerifierByProjectId(props?.currentProjectId)
@@ -214,6 +220,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           finalVerifierData && finalVerifierData?.length
             ? setVerifierReports(finalVerifierData)
             : setVerifierReports(res?.data)
+
+          if (showModalAfterGetCall) {
+            setShowActionSuccessModal(true)
+          }
         }
       })
       .catch((err) => console.log(err))
@@ -244,12 +254,12 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          getVerifierByProject()
+          // getVerifierByProject()
           createProjectContractCall(res?.data?.fileHash)
         }
       })
-      .catch((err) => console.log(err))
-      .finally(() => {
+      .catch((err) => {
+        console.log(err)
         setLoading(false)
       })
   }
@@ -274,7 +284,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         }
         const updateTxRes = await dataCollectionCalls.updateTx(updateTxPayload)
         if (updateTxRes.success) {
-          setShowActionSuccessModal(true)
+          getVerifierByProject(true)
+          // setShowActionSuccessModal(true)
+          //Setting  setLoading false over here to give user impression that updateVerifier api call and createNewProject contract call is a single call
+          // setLoading(false)
         }
       }
     } catch (e) {
@@ -403,7 +416,7 @@ const headings = [
   'Report',
   'Version',
   'Status',
-  'CO2c Sequestered',
+  'VCOT Sequestered',
   'Report Received',
   'comment Received',
   'Action',
