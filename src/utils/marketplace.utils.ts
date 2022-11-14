@@ -121,8 +121,51 @@ export async function getWalletBalanceBuyFlow() {
       )
       if (balanceCallRes) {
         const bigNumExchangeBal = ethers.BigNumber.from(balanceCallRes)
-        store.dispatch(setWalletBalBuyFlow(bigNumExchangeBal.toNumber()))
+        // store.dispatch(
+        // setWalletBalBuyFlow(bigNumExchangeBal.toNumber() * 10 ** -18)
+        // )
+        const bigNumValInString = bigNumExchangeBal.toString()
+        store.dispatch(
+          setWalletBalBuyFlow(
+            bigNumValInString.slice(0, bigNumValInString.length - 18)
+          )
+        )
       }
+      // const tokenAddress = 'REPLACE_WITH_ERC20_TOKEN_ADDRESS'
+      // const walletAddress = 'REPLACE_WITH_WALLET_ADDRESS'
+
+      // // The minimum ABI to get ERC20 Token balance
+      // const minABI = [
+      //   // balanceOf
+      //   {
+      //     constant: true,
+      //     inputs: [{ name: '_owner', type: 'address' }],
+      //     name: 'balanceOf',
+      //     outputs: [{ name: 'balance', type: 'uint256' }],
+      //     type: 'function',
+      //   },
+      //   // decimals
+      //   {
+      //     constant: true,
+      //     inputs: [],
+      //     name: 'decimals',
+      //     outputs: [{ name: '', type: 'uint8' }],
+      //     type: 'function',
+      //   },
+      // ]
+
+      // // Get ERC20 Token contract instance
+      // const contract = new Web3.eth.contract(minABI).at(tokenAddress);
+
+      // // Call balanceOf function
+      // contract.balanceOf(walletAddress, (error, balance) => {
+      //   // Get decimals
+      //   contract.decimals((error, decimals) => {
+      //     // calculate a balance
+      //     balance = balance.div(10**decimals);
+      //     console.log(balance.toString());
+      //   });
+      // });
     } catch (err) {
       console.log(err)
     }
@@ -508,6 +551,7 @@ export async function createBuyOrder() {
       store.getState()?.marketplace?.buyOrderPayloadUUID
     const totalAmountForBuying =
       store.getState()?.marketplace?.totalAmountForBuying
+    const temp = parseInt(totalAmountForBuying.toString())
 
     // const nonce = await provider.getTransactionCount(accountAddress)
     const randomNumber = new Date().getTime()
@@ -521,7 +565,8 @@ export async function createBuyOrder() {
         _offerHashes: buyOrderPayloadOfferHashes,
         _amountsToTake: buyOrderPayloadAmountsToTake,
         _feeAsset: INR_USD_TOKEN_ADDRESS, //inr_usd token address
-        _feeAmount: Number(totalAmountForBuying),
+        // _feeAmount: Number(totalAmountForBuying),
+        _feeAmount: temp,
         _nonce: randomNumber, //like in submit see getnonce()
         hash: hash,
         _v: v,

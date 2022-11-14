@@ -3,14 +3,16 @@ import React, { FC } from 'react'
 
 // MUI Imports
 import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Colors } from '../../theme';
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import { Colors } from '../../theme'
 
 // Local Imports
 
-interface ProjectTileProps {}
+interface ProjectTileProps {
+  projectDetail: any
+}
 
-const ProjectTile: FC<ProjectTileProps> = () => {
+const ProjectTile: FC<ProjectTileProps> = ({ projectDetail }) => {
   return (
     <Grid item sm={12} md={6} lg={4}>
       <Paper
@@ -23,9 +25,7 @@ const ProjectTile: FC<ProjectTileProps> = () => {
       >
         <Box
           component="img"
-          src={
-            'https://www.firstbenefits.org/wp-content/uploads/2017/10/placeholder.png'
-          }
+          src={projectDetail?.imgSrc}
           sx={{
             width: '100%',
             height: '140px',
@@ -43,8 +43,7 @@ const ProjectTile: FC<ProjectTileProps> = () => {
           }}
         >
           <Typography sx={{ fontSize: 14, fontWeight: 500, margin: 1 }}>
-            3.66 MW poultry litter based power generation project by Raus Power
-            in India
+            {projectDetail?.projectName}
           </Typography>
         </Box>
         {/* <Divider /> */}
@@ -53,14 +52,13 @@ const ProjectTile: FC<ProjectTileProps> = () => {
             width: '100%',
             // height: '35px',
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
-            padding: 1,
+            px: 1,
           }}
         >
-          <LocationOnIcon style={{ margin: 2, color: Colors.textColorLightGreen }} />
+          <LocationOnIcon style={{ color: Colors.textColorLightGreen }} />
           <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-            6430 Hixson Pike, Hixson, TN 37343, USA | 9,900 hectares.
+            {projectDetail?.location}
           </Typography>
         </Box>
       </Paper>

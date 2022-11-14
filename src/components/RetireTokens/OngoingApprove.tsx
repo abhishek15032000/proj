@@ -131,7 +131,7 @@ const OngoingApprove = (props: any) => {
             textAlign: 'center',
           }}
         >
-          <Typography>No Ongoing Transactions Pending for Approve</Typography>
+          <Typography>No Ongoing Transactions Pending for Approval</Typography>
         </Box>
       )}
     </>
