@@ -5,19 +5,19 @@ import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setBuyQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
+import { setBuyQuantityForApprove } from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
-import { requestApprovalForTokenBuy } from '../../../utils/marketplace.utils'
+import { requestApprovalForTokenBuy } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 
 const TabBuyApprove = () => {
   const dispatch = useAppDispatch()
 
   const buyQuantityForApprove = useAppSelector(
-    ({ marketplace }) => marketplace.buyQuantityForApprove,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyQuantityForApprove,
     shallowEqual
   )
   const onGoingApproveReduxBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 

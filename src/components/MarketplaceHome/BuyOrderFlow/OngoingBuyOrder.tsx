@@ -11,7 +11,7 @@ const headings = ['Transaction ID', 'Quantity', 'Status']
 
 const OngoingBuyOrder = () => {
   const ongoingBuyOrderTransaction = useAppSelector(
-    ({ marketplace }) => marketplace.ongoingBuyOrderTransaction,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.ongoingBuyOrderTransaction,
     shallowEqual
   )
   const [rows, setRows] = useState<any>()

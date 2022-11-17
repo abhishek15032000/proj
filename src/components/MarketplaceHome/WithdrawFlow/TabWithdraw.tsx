@@ -5,19 +5,19 @@ import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setWithdrawQuantity } from '../../../redux/Slices/marketplaceSlice'
+import { setWithdrawQuantity } from '../../../redux/Slices/Marketplace/marketplaceWithdrawFlowSlice'
 import { Colors } from '../../../theme'
-import { createWithdrawOrder } from '../../../utils/marketplace.utils'
+import { createWithdrawOrder } from '../../../utils/Marketplace/marketplaceWithdraw.util'
 
 const TabWithdraw = () => {
   const dispatch = useAppDispatch()
 
   const withdrawQuantity = useAppSelector(
-    ({ marketplace }) => marketplace.withdrawQuantity,
+    ({ marketplaceWithdrawFlow }) => marketplaceWithdrawFlow.withdrawQuantity,
     shallowEqual
   )
   const onGoingApproveReduxBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 

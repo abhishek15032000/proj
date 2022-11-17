@@ -25,6 +25,7 @@ import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { USER } from '../../api/user.api'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
 import { onManualConnectClick } from '../../utils/blockchain.util'
+import CloseIcon from '@mui/icons-material/Close'
 
 declare let window: any
 
@@ -80,30 +81,53 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
         aria-describedby="modal-modal-description"
         sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Grid
-          container
-          justifyContent={'center'}
-          alignItems="flex-start"
+        <Box
           sx={{
+            p: 3,
             background: '#fff',
-            minHeight: '80%',
-            maxheight: '80%',
-            minWidth: '80%',
-            maxWidth: '80%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
           }}
         >
+          <Box sx={{ alignSelf: 'end' }}>
+            <CloseIcon
+              sx={{
+                fontSize: 28,
+                color: Colors.darkPrimary1,
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                dispatch(setLoadWalletAlert(false))
+              }}
+            />
+          </Box>
           <Grid
-            item
+            container
+            justifyContent={'center'}
+            alignItems="flex-start"
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'stretch',
-              width: '100%',
-              padding: 3,
+              mt: 2,
+              background: '#fff',
+              minHeight: '80%',
+              maxheight: '80%',
+              minWidth: '80%',
+              maxWidth: '80%',
+              pb: 3,
             }}
           >
-            <>
+            <Grid
+              item
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'stretch',
+                width: '100%',
+                py: 5,
+              }}
+            >
               <Box
                 sx={{
                   display: 'flex',
@@ -127,6 +151,7 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
                 </Grid>
                 <Typography
                   sx={{
+                    mt: 2,
                     fontWeight: 400,
                     fontSize: 16,
                     color: Colors.lightPrimary1,
@@ -142,9 +167,9 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
                   Okay
                 </CCButton> */}
               </Box>
-            </>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Modal>
     </div>
   )
