@@ -82,3 +82,9 @@ export const getUrlVars = (url: string) => {
   }
   return urlVarObj
 }
+
+export const roundUp = (value: number, places = 2) => {
+  if (value) {
+    return Math.round(Number(value) * 10 ** places) / 10 ** places
+  }
+}

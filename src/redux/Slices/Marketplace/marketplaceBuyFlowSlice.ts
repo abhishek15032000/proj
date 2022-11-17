@@ -21,6 +21,8 @@ interface BuyFlowReducerInterface {
   ongoingApproveTransactionBuyFlow: any
   ongoingDepositTransactionBuyFlow: any
   ongoingBuyOrderTransaction: any
+  buyOrdersListData: any
+  buyOrdersListDataLoading: boolean
 }
 const initialState: BuyFlowReducerInterface = {
   buyQuantityForApprove: 0,
@@ -43,6 +45,8 @@ const initialState: BuyFlowReducerInterface = {
   ongoingApproveTransactionBuyFlow: null,
   ongoingDepositTransactionBuyFlow: null,
   ongoingBuyOrderTransaction: null,
+  buyOrdersListData: null,
+  buyOrdersListDataLoading: false,
 }
 const marketplaceBuyFlow = createSlice({
   name: 'marketplaceBuyFlow',
@@ -111,6 +115,12 @@ const marketplaceBuyFlow = createSlice({
     setOngoingBuyOrderTransaction: (state, action: PayloadAction<any>) => {
       state.ongoingBuyOrderTransaction = action.payload
     },
+    setBuyOrdersListData: (state, action: PayloadAction<any>) => {
+      state.buyOrdersListData = action.payload
+    },
+    setBuyOrdersListDataLoading: (state, action: PayloadAction<any>) => {
+      state.buyOrdersListDataLoading = action.payload
+    },
   },
 })
 
@@ -134,6 +144,8 @@ export const {
   setOngoingApproveTransactionBuyFlow,
   setOngoingDepositTransactionBuyFlow,
   setOngoingBuyOrderTransaction,
+  setBuyOrdersListData,
+  setBuyOrdersListDataLoading,
 } = marketplaceBuyFlow.actions
 
 export default marketplaceBuyFlow.reducer

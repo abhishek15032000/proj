@@ -11,9 +11,14 @@ import {
   TOKEN_CONTRACT_ADDRESS,
 } from '../../config/token.config'
 import {
+  setBuyOrderPayloadAmountsToTake,
+  setBuyOrderPayloadOfferHashes,
+  setBuyOrderPayloadUUID,
   setBuyQuantityForBuyOrder,
   setBuyQuantityForDeposit,
+  setBuyUnitPrice,
   setOnGoingDepositTxIdReduxBuyFlow,
+  setTotalAmountForBuying,
 } from '../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import {
   setSellQuantityForDeposit,
@@ -27,11 +32,13 @@ import { getMarketplaceDepthData } from './marketDepth.util'
 import {
   getApprovedTokensBalanceBuyFlow,
   getBalanceOnExchangeBuyFlow,
+  getBuyOrdersListData,
   getWalletBalanceBuyFlow,
 } from './marketplaceBuyFlow.util'
 import {
   getApprovedTokensBalance,
   getBalanceOnExchange,
+  getSellOrdersListData,
   getWalletBalance,
 } from './marketplaceSellFlow.util'
 
@@ -183,10 +190,18 @@ const callsToMakeAfterBlockchainSuccess = (
 
       store.dispatch(setBuyQuantityForBuyOrder(0))
       store.dispatch(setOngoingTransaction(null))
+      //reseting fulfil values
+      store.dispatch(setTotalAmountForBuying(0))
+      store.dispatch(setBuyUnitPrice(0))
+      store.dispatch(setBuyOrderPayloadOfferHashes(null))
+      store.dispatch(setBuyOrderPayloadAmountsToTake(null))
+      store.dispatch(setBuyOrderPayloadUUID(null))
 
       getWalletBalanceBuyFlow()
       getApprovedTokensBalanceBuyFlow()
       getBalanceOnExchangeBuyFlow()
+
+      getBuyOrdersListData()
 
       setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_BUY_ORDER_TX_ID, null)
 
@@ -204,6 +219,7 @@ const callsToMakeAfterBlockchainSuccess = (
       getBalanceOnExchange()
 
       getMarketplaceDepthData()
+      getSellOrdersListData()
 
       setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_SELL_ORDER_TX_ID, null)
 
