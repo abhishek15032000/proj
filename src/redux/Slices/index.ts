@@ -20,10 +20,15 @@ import sectionDMonthly from './MonthlyReport/sectionDMonthly'
 import sectionEMonthly from './MonthlyReport/sectionEMonthly'
 import verifier from './verifierSlice'
 import reportsViewComments from './reportsViewCommentsSlice'
-import marketplace from './marketplaceSlice'
+import marketplace from './Marketplace/marketplaceSlice'
 import tokenRetire from './tokenRetireSlice'
 import issuanceDataCollectionHelp from './issuanceDataCollectionHelpSlice'
 import allBankDetailsSlice from './allBankDetailsSlice'
+import marketDepth from './Marketplace/marketDepthSlice'
+import marketplaceSellFlow from './Marketplace/marketplaceSellFlowSlice'
+import marketplaceBuyFlow from './Marketplace/marketplaceBuyFlowSlice'
+import marketplaceWithdrawFlow from './Marketplace/marketplaceWithdrawFlowSlice'
+
 // TODO: rename names
 export default {
   auth,
@@ -49,4 +54,8 @@ export default {
   tokenRetire,
   issuanceDataCollectionHelp,
   allBankDetailsSlice,
+  marketDepth,
+  marketplaceSellFlow,
+  marketplaceBuyFlow,
+  marketplaceWithdrawFlow,
 }

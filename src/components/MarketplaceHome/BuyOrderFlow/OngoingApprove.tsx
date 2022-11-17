@@ -7,16 +7,13 @@ import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setBuyQuantityForApprove,
-  setDataToMakeDepositCallBuyFlow,
   setOnGoingApproveReduxBuyFlow,
-} from '../../../redux/Slices/marketplaceSlice'
+} from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
-import {
-  getApprovedTokensBalanceBuyFlow,
-  getTransaction,
-} from '../../../utils/marketplace.utils'
-import { getLocalItem, removeItem, setLocalItem } from '../../../utils/Storage'
+import { getTransaction } from '../../../utils/Marketplace/marketplace.util'
+import { getApprovedTokensBalanceBuyFlow } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+import { getLocalItem, removeItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
@@ -31,7 +28,7 @@ const OngoingApprove = () => {
   )
 
   const onGoingApproveReduxBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 

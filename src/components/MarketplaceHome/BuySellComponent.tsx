@@ -6,8 +6,6 @@ import { Grid } from '@mui/material'
 
 // Local Imports
 import MarketDepth from './MarketDepth'
-import CancelModal from './CancelModal'
-import ModifyOrderModal from './ModifyOrderModal'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import BuyOrderFlow from './BuyOrderFlow/BuyOrderFlow'
 import SellOrderFlow from './SellOrderFlow/SellOrderFlow'
@@ -16,14 +14,16 @@ import {
   LOCAL_STORAGE_VARS,
   MARKETPLACE_CALL_TYPES,
 } from '../../config/constants.config'
+import WithdrawFlow from './WithdrawFlow/WithdrawFlow'
+import {
+  setOngoingDepositTransactionSellFlow,
+  setOngoingSellOrderTransaction,
+} from '../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import {
   setOngoingBuyOrderTransaction,
   setOngoingDepositTransactionBuyFlow,
-  setOngoingDepositTransactionSellFlow,
-  setOngoingSellOrderTransaction,
-} from '../../redux/Slices/marketplaceSlice'
-import { checkBlockchainTransactionComplete } from '../../utils/marketplace.utils'
-import WithdrawFlow from './WithdrawFlow/WithdrawFlow'
+} from '../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
+import { checkBlockchainTransactionComplete } from '../../utils/Marketplace/marketplace.util'
 
 interface BuySellComponentProps {}
 
@@ -69,7 +69,6 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
       setOngoingTransaction = setOngoingBuyOrderTransaction
       callType = MARKETPLACE_CALL_TYPES.CREATE_BUY_ORDER
     }
-
     checkBlockchainTransactionComplete(txId, callType, setOngoingTransaction)
   }
 
@@ -87,7 +86,6 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
         {tabIndex === 2 && <SellOrderFlow />}
         {tabIndex === 3 && <WithdrawFlow />}
       </Grid>
-
       <Grid
         item
         lg={3}
@@ -101,10 +99,6 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
       >
         <MarketDepth />
       </Grid>
-
-      {/* <CancelModal /> */}
-
-      {/* <ModifyOrderModal /> */}
     </Grid>
   )
 }

@@ -5,19 +5,19 @@ import { shallowEqual } from 'react-redux'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setBuyQuantityForDeposit } from '../../../redux/Slices/marketplaceSlice'
+import { setBuyQuantityForDeposit } from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
-import { depositERC20BuyFlow } from '../../../utils/marketplace.utils'
+import { depositERC20BuyFlow } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 
 const TabBuyDeposit = () => {
   const dispatch = useAppDispatch()
 
   const buyQuantityForDeposit = useAppSelector(
-    ({ marketplace }) => marketplace.buyQuantityForDeposit,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyQuantityForDeposit,
     shallowEqual
   )
   const onGoingApproveReduxBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 

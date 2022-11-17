@@ -11,7 +11,8 @@ const headings = ['Transaction ID', 'Quantity', 'Status']
 
 const OngoingDeposit = () => {
   const ongoingDepositTransactionBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.ongoingDepositTransactionBuyFlow,
+    ({ marketplaceBuyFlow }) =>
+      marketplaceBuyFlow.ongoingDepositTransactionBuyFlow,
     shallowEqual
   )
   const [rows, setRows] = useState<any>()

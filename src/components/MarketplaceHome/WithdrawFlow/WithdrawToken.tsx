@@ -2,16 +2,13 @@ import { Paper } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
-import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { setSellQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import {
-  getApprovedTokensBalance,
   getBalanceOnExchange,
   getWalletBalance,
-} from '../../../utils/marketplace.utils'
-import { getLocalItem } from '../../../utils/Storage'
+} from '../../../utils/Marketplace/marketplaceSellFlow.util'
+import { getApprovedTokensBalance } from '../../../utils/tokenRetire.utils'
 import CardRow from '../CardRow'
 import TabWithdraw from './TabWithdraw'
 
@@ -26,11 +23,11 @@ const WithdrawToken: FC<WithdrawTokenProps> = () => {
   )
 
   const walletBal = useAppSelector(
-    ({ marketplace }) => marketplace.walletBal,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.walletBal,
     shallowEqual
   )
   const exchangeBal = useAppSelector(
-    ({ marketplace }) => marketplace.exchangeBal,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.exchangeBal,
     shallowEqual
   )
 

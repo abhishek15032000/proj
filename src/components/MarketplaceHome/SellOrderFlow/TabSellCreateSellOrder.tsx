@@ -8,23 +8,23 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setSellQuantityForSellOrder,
   setSellUnitPriceForSellOrder,
-} from '../../../redux/Slices/marketplaceSlice'
+} from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import { createSellOrder } from '../../../utils/marketplace.utils'
+import { createSellOrder } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const TabSellCreateSellOrder = () => {
   const dispatch = useAppDispatch()
 
   const sellQuantityForSellOrder = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantityForSellOrder,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellQuantityForSellOrder,
     shallowEqual
   )
   const sellUnitPriceForSellOrder = useAppSelector(
-    ({ marketplace }) => marketplace.sellUnitPriceForSellOrder,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellUnitPriceForSellOrder,
     shallowEqual
   )
   const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.onGoingApproveRedux,
     shallowEqual
   )
 

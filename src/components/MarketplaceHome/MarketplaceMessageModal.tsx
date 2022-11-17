@@ -1,14 +1,12 @@
 import { Modal, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { FC } from 'react'
-import { Colors } from '../../theme'
-import ErrorIcon from '@mui/icons-material/Error'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
   setMarketplaceModalMessage,
   setShowMarketplaceMsgModal,
-} from '../../redux/Slices/marketplaceSlice'
+} from '../../redux/Slices/Marketplace/marketplaceSlice'
 import CCButton from '../../atoms/CCButton'
 
 interface MarketplaceMessageModalProps {}

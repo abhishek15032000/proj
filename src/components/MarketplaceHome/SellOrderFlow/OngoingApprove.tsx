@@ -8,13 +8,11 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setOnGoingApproveRedux,
   setSellQuantityForApprove,
-} from '../../../redux/Slices/marketplaceSlice'
+} from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
-import {
-  getApprovedTokensBalance,
-  getTransaction,
-} from '../../../utils/marketplace.utils'
+import { getTransaction } from '../../../utils/Marketplace/marketplace.util'
+import { getApprovedTokensBalance } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 import { getLocalItem, removeItem, setLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
@@ -30,7 +28,7 @@ const OngoingApprove = () => {
   )
 
   const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.onGoingApproveRedux,
     shallowEqual
   )
 
@@ -62,6 +60,7 @@ const OngoingApprove = () => {
   }
 
   const checkForPendingTransactions = async () => {
+    console.log('checkForPendingTransactions called')
     try {
       const receipt: any = await getTransaction(onGoingApproveRedux?.hash)
       if (!receipt?.success) {
