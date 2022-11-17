@@ -31,6 +31,7 @@ import {
   setShowMarketplaceMsgModal,
 } from '../../redux/Slices/Marketplace/marketplaceSlice'
 import { store } from '../../redux/store'
+import { roundUp } from '../commonFunctions'
 import { setLocalItem } from '../Storage'
 import {
   checkBlockchainTransactionComplete,
@@ -269,8 +270,8 @@ export async function getSellOrdersListData() {
       const rowValues = sellOrderRes.data.map((row: any) => {
         const orderId = row?.uuid
         const quantity = row?._offerAmount
-        const unitPrice = row?._wantAmount
-        const totalAmount = quantity * unitPrice
+        const totalAmount = row?._wantAmount
+        const unitPrice = roundUp(totalAmount / quantity, 3)
         return [orderId, '-', '-', quantity, unitPrice, totalAmount, '-', '-']
         // return [
         //   orderId,

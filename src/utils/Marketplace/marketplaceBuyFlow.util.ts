@@ -12,6 +12,8 @@ import {
   setBuyOrderPayloadAmountsToTake,
   setBuyOrderPayloadOfferHashes,
   setBuyOrderPayloadUUID,
+  setBuyOrdersListData,
+  setBuyOrdersListDataLoading,
   setBuyQuantityForApprove,
   setBuyQuantityForDeposit,
   setExchangeBalBuyFlow,
@@ -306,5 +308,20 @@ export async function createBuyOrder() {
     console.log('Error in marketplaceCalls.createOrder api : ' + err)
   } finally {
     store.dispatch(setMarketplaceLoading(false))
+  }
+}
+
+export async function getBuyOrdersListData() {
+  const accountAddress = store.getState()?.wallet?.accountAddress
+  try {
+    store.dispatch(setBuyOrdersListDataLoading(true))
+    const buyOrderRes = await marketplaceCalls.getBuyOrder(accountAddress)
+    if (buyOrderRes.success && buyOrderRes.data.length) {
+      store.dispatch(setBuyOrdersListData(buyOrderRes))
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.getBuyOrder api : ', err)
+  } finally {
+    store.dispatch(setBuyOrdersListDataLoading(false))
   }
 }
