@@ -13,6 +13,8 @@ import {
 } from '@mui/material'
 
 // Local Imports
+import CryptoJS from 'crypto-js'
+import { v4 as uuidv4 } from 'uuid'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import TransactionHistoryImg from '../../assets/Images/illustrations/TransactionHistory.png'
 import { Colors } from '../../theme'
@@ -42,6 +44,7 @@ import EditProfile from './EditProfile'
 import { department } from '../../api/department.api'
 import { USER } from '../../api/user.api'
 import { pathNames } from '../../routes/pathNames'
+import ChangePassword from './ChangePassword'
 
 interface ProfileProps {}
 
@@ -69,7 +72,14 @@ const Profile: FC<ProfileProps> = (props) => {
   const [typeOptions, setTypeOptions] = useState<any>([])
   const [selectedRole, setSelectedRole] = useState<any>('')
   const [departmentId, setDepartmentId] = useState<any>()
-  const [editProfileVisible, setEditProfileVisible] = useState(true)
+  const [editProfileVisible, setEditProfileVisible] = useState(false)
+  const [isChangePassowrdVisible, setIsChangePassowrdVisible] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState('')
+  const [captchaInput, setCaptchInput] = useState<string>('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [password, setPassword] = useState<any>()
+  const [newPassword, setNewPassword] = useState<any>()
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
@@ -78,6 +88,15 @@ const Profile: FC<ProfileProps> = (props) => {
     ({ wallet }) => wallet.accountBalance,
     shallowEqual
   )
+
+  useEffect(() => {
+    setCaptchaTokenFromUUID()
+  }, [])
+
+  const setCaptchaTokenFromUUID = () => {
+    console.log('loginn page setCaptchaTokenFromUUID')
+    setCaptchaToken(uuidv4())
+  }
 
   useEffect(() => {
     getDepartment()
@@ -89,6 +108,8 @@ const Profile: FC<ProfileProps> = (props) => {
 
   const fetchingSelectedRoleId = () => {
     const roleId = typeOptions.filter((i: any) => i?.value === selectedRole)
+    console.log('roleId', roleId)
+    // setSelectedRole()
     setDepartmentId(roleId)
   }
 
@@ -96,6 +117,7 @@ const Profile: FC<ProfileProps> = (props) => {
     department
       .getDepartment()
       .then((response: any) => {
+        console.log('responseId<<<<,', response)
         const roles = response?.data
           .filter(
             (department: any) =>
@@ -262,6 +284,33 @@ const Profile: FC<ProfileProps> = (props) => {
       })
   }
 
+  const onChangePassword = () => {
+    if (!password || !newPassword) {
+      alert('Fill all the Fields!')
+      return
+    }
+
+    setLoading(true)
+    const payload = {
+      uuid: getLocalItem('userDetails').uuid,
+      email: getLocalItem('userDetails').email,
+      id: captchaToken,
+      captcha: captchaInput,
+      oldPassword: CryptoJS.MD5(password).toString(),
+      newPassword: CryptoJS.MD5(newPassword).toString(),
+    }
+    console.log('payload', getLocalItem('userDetails'), payload)
+    USER.changePassword(payload)
+      .then((response) => {
+        // navigate(pathNames.DASHBOARD, { replace: true })
+        console.log('response<<<<<<', response)
+        setLoading(false)
+      })
+      .catch((e) => {
+        setLoading(false)
+      })
+  }
+
   if (loading) {
     return <LoderOverlay />
   } else {
@@ -290,7 +339,7 @@ const Profile: FC<ProfileProps> = (props) => {
           </Grid>
 
           <Grid
-            item
+            container
             xs={12}
             sx={{
               display: 'flex',
@@ -298,33 +347,73 @@ const Profile: FC<ProfileProps> = (props) => {
               justifyContent: 'space-between',
             }}
           >
-            <ProfileList
-              profileDetails={profileDetails}
-              setOpenModal={(item: any) => setOpenModal(item)}
-              accountAddress={accountAddress}
-              accountBalance={accountBalance}
-              editProfileVisible={editProfileVisible}
-              // updateProfile={() => updateProfile()}
-              // openProfilePopup={(item: any) => openProfilePopup(item)}
-              setEditProfileVisible={(item: any) => setEditProfileVisible(item)}
-            />
-            {editProfileVisible ? (
-              <EditProfile
+            <Grid
+              item
+              xs={12}
+              md={12}
+              lg={editProfileVisible || isChangePassowrdVisible ? 6 : 12}
+              xl={editProfileVisible || isChangePassowrdVisible ? 6 : 12}
+            >
+              <ProfileList
                 profileDetails={profileDetails}
-                typeOptions={typeOptions}
-                onChangeInput={(key: any, value: any) =>
-                  onChangeInput(key, value)
-                }
+                setOpenModal={(item: any) => setOpenModal(item)}
+                accountAddress={accountAddress}
+                accountBalance={accountBalance}
+                editProfileVisible={editProfileVisible}
+                isChangePassowrdVisible={isChangePassowrdVisible}
+                // updateProfile={() => updateProfile()}
+                // openProfilePopup={(item: any) => openProfilePopup(item)}
                 setEditProfileVisible={(item: any) =>
                   setEditProfileVisible(item)
                 }
-                setSelectedRole={(item: any) => setSelectedRole(item)}
-                onSave={() => onSave()}
+                setIsChangePassowrdVisible={(item: any) =>
+                  setIsChangePassowrdVisible(item)
+                }
               />
+            </Grid>
+            {editProfileVisible ? (
+              <Grid item xs={12} md={12} lg={6} xl={6}>
+                <EditProfile
+                  profileDetails={profileDetails}
+                  typeOptions={typeOptions}
+                  onChangeInput={(key: any, value: any) =>
+                    onChangeInput(key, value)
+                  }
+                  setEditProfileVisible={(item: any) =>
+                    setEditProfileVisible(item)
+                  }
+                  setSelectedRole={(item: any) => setSelectedRole(item)}
+                  onSave={() => onSave()}
+                />
+              </Grid>
+            ) : null}
+            {isChangePassowrdVisible ? (
+              <Grid item xs={12} md={12} lg={6} xl={6}>
+                <ChangePassword
+                  captchaToken={captchaToken}
+                  captchaInput={captchaInput}
+                  setCaptchaToken={(value: any) => setCaptchaToken(value)}
+                  setCaptchInput={(value: any) => setCaptchInput(value)}
+                  showPassword={showPassword}
+                  setShowPassword={(value: any) => setShowPassword(value)}
+                  setPassword={(value: any) => setPassword(value)}
+                  password={password}
+                  newPassword={newPassword}
+                  setNewPassword={(value: any) => setNewPassword(value)}
+                  showNewPassword={showNewPassword}
+                  setShowNewPassword={(value: any) => setShowNewPassword(value)}
+                  setOpenModal={(item: any) => setOpenModal(item)}
+                  onChangePassword={() => onChangePassword()}
+                  setIsChangePassowrdVisible={(item: any) =>
+                    setIsChangePassowrdVisible(item)
+                  }
+                />
+              </Grid>
             ) : null}
           </Grid>
+
           <Grid
-            item
+            container
             xs={12}
             sx={{
               display: 'flex',
@@ -334,9 +423,19 @@ const Profile: FC<ProfileProps> = (props) => {
             }}
           >
             {userType === ROLES.ISSUER && (
-              <ProjectList tableData={tableData} loading={loading} />
+              <Grid item xs={12} md={8} lg={8} xl={8}>
+                <ProjectList tableData={tableData} loading={loading} />
+              </Grid>
             )}
-            <ProfileTab stats={stats} userType={userType} />
+            <Grid
+              item
+              xs={12}
+              md={userType === ROLES.ISSUER ? 4 : 12}
+              lg={userType === ROLES.ISSUER ? 4 : 12}
+              xl={userType === ROLES.ISSUER ? 4 : 12}
+            >
+              <ProfileTab stats={stats} userType={userType} />
+            </Grid>
           </Grid>
         </Grid>
         <ForgotPasswordModal

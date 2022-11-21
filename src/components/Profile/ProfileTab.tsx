@@ -29,7 +29,7 @@ const ProfileTab: FC<ProfileTabProps> = (props) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: '8px',
-        width: userType === ROLES.ISSUER ? '30%' : '100%',
+
         mt: 2,
         ml: 2,
       }}

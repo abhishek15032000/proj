@@ -46,7 +46,6 @@ const EditProfile: FC<EditProfileProps> = (props) => {
         mt: 2,
         padding: 2,
         ml: 1,
-        width: '50%',
       }}
     >
       <Box

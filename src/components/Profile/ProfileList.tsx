@@ -26,6 +26,8 @@ interface ProfileListProps {
   accountAddress?: any
   editProfileVisible?: any
   setEditProfileVisible?: any
+  setIsChangePassowrdVisible?: any
+  isChangePassowrdVisible?: any
 }
 
 const ProfileList: FC<ProfileListProps> = (props) => {
@@ -37,16 +39,17 @@ const ProfileList: FC<ProfileListProps> = (props) => {
     accountBalance,
     editProfileVisible,
     setEditProfileVisible,
+    setIsChangePassowrdVisible,
+    isChangePassowrdVisible,
   } = props
   const scrollRef = useHorizontalScroll()
   return (
     <Paper
       sx={{
-        width: editProfileVisible ? '50%' : '100%',
+        // width: editProfileVisible || isChangePassowrdVisible ? '50%' : '100%',
         borderRadius: '8px',
 
-        mt: 2,
-        height: '98%',
+        mt: 1,
       }}
     >
       <Box
@@ -59,10 +62,10 @@ const ProfileList: FC<ProfileListProps> = (props) => {
         <Box
           sx={{
             width: '10%',
-            flexDirection: 'row',
-            flex: 'display',
-            justifyContent: 'center',
-            alignItems: 'center',
+            // flexDirection: 'row',
+            // flex: 'display',
+            // justifyContent: 'center',
+            // alignItems: 'center',
 
             ml: 2,
           }}
@@ -77,9 +80,9 @@ const ProfileList: FC<ProfileListProps> = (props) => {
           <img
             src={Edit}
             style={{
-              right: 0,
-              // marginLeft: '100%',
+              marginLeft: '80px',
               cursor: 'pointer',
+              paddingBottom: '-50px',
             }}
           />
         </Box>
@@ -89,7 +92,6 @@ const ProfileList: FC<ProfileListProps> = (props) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mt: 1,
           }}
         >
           <Box
@@ -137,25 +139,27 @@ const ProfileList: FC<ProfileListProps> = (props) => {
               ) : null}
             </Box>
             <Box
-              onClick={() => setEditProfileVisible(true)}
+              onClick={() =>
+                isChangePassowrdVisible ? null : setEditProfileVisible(true)
+              }
               sx={{ cursor: 'pointer' }}
             >
               <EditIcon color="primary" />
             </Box>
           </Box>
-          {!editProfileVisible ? (
+          {!editProfileVisible && !isChangePassowrdVisible ? (
             <Box
               component="img"
               sx={{
-                width: '90%',
-                ml: '20%',
+                width: '420px',
               }}
               src={require('../../assets/Images/illustrations/profile.png')}
             />
           ) : null}
         </Box>
         <CCButton
-          onClick={() => setOpenModal(true)}
+          onClick={() => setIsChangePassowrdVisible(true)}
+          disabled={editProfileVisible ? true : false}
           rounded
           style={{
             height: '40px',

@@ -16,6 +16,7 @@ export const URL_PATH = {
     userInfo: ENDPOINTS.userServiceURL + '/users/user/',
     forgotPassword: ENDPOINTS.userServiceURL + '/users/forgotPassword',
     resetPassword: ENDPOINTS.userServiceURL + '/users/resetPassword',
+    changePassword: ENDPOINTS.userServiceURL + '/users/changePassword',
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + '/auth/login',
