@@ -1,11 +1,13 @@
 import { Paper, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import CCButtonOutlined from '../../../atoms/CCButtonOutlined'
 import CCTable from '../../../atoms/CCTable'
 import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
+import { roundUp } from '../../../utils/commonFunctions'
 import { getSellOrdersListData } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const headings = [
@@ -29,9 +31,48 @@ const SellOrdersList = () => {
     shallowEqual
   )
 
+  const [rows, setRows] = useState<any>(null)
+
   useEffect(() => {
     getSellOrdersListData()
   }, [])
+
+  console.log('sellOrdersList', sellOrdersList)
+  useEffect(() => {
+    if (sellOrdersList) {
+      const rowValues = sellOrdersList.data.map((row: any, index: number) => {
+        const orderId = row?.uuid
+        const quantity = row?._offerAmount
+        const totalAmount = row?._wantAmount
+        const unitPrice = roundUp(totalAmount / quantity, 3)
+        return [
+          orderId,
+          '-',
+          '-',
+          quantity,
+          unitPrice,
+          totalAmount,
+          '-',
+          <CCButtonOutlined
+            key={index}
+            sx={{
+              fontSize: 14,
+              minWidth: 0,
+              padding: '8px 16px',
+              borderRadius: 10,
+              mr: 3,
+              border: 'none',
+              backgroundColor: '#F6F9F7',
+            }}
+            // onClick={() => {}
+          >
+            Cancel
+          </CCButtonOutlined>,
+        ]
+      })
+      setRows(rowValues)
+    }
+  }, [sellOrdersList])
 
   return (
     <>
@@ -41,8 +82,8 @@ const SellOrdersList = () => {
         </Typography>
         {sellOrdersLoading ? (
           <CCTableSkeleton sx={{ mt: 2 }} />
-        ) : sellOrdersList && sellOrdersList.length ? (
-          <CCTable headings={headings} rows={sellOrdersList} />
+        ) : rows && rows.length ? (
+          <CCTable headings={headings} rows={rows} />
         ) : (
           <EmptyComponent
             photoType={2}

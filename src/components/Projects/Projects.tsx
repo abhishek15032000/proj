@@ -58,15 +58,17 @@ const Projects = () => {
         <LoaderOverlay />
       ) : (
         <>
-          <Typography sx={{ color: Colors.error }}>
+          <Typography sx={{ color: Colors.error, mb: 1 }}>
             {!isConnected &&
               'Metamask not connected. Please Connect Metamask before proceeding!!!'}
           </Typography>
-          <Typography
-            sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400 }}
-          >
-            Dashboard
-          </Typography>
+          {isConnected && (
+            <Typography
+              sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400 }}
+            >
+              Dashboard
+            </Typography>
+          )}
           <Grid container>
             <Grid item md={12} sm={12} lg={9} sx={{ pr: 2 }}>
               {!showDashboard ? (

@@ -181,8 +181,15 @@ const RetireTokens = (props: RetireTokensProps) => {
                 </CCButton>
               </Grid>
             </Box>
-
-            <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
+            <Box sx={{ mt: 1, color: Colors.darkPrimary1, fontWeight: 500 }}>
+              No. of Tokens that can be retired :{' '}
+              {tokensApprovedForRetiring
+                ? tokensApprovedForRetiring
+                : tokensApprovedForRetiring === 0
+                ? 0
+                : '-'}
+            </Box>
+            <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 1, mb: 2 }}>
               Go carbon neutral by retiring carbon tokens and claiming the
               underlying environmental benefit of the carbon offset.
             </Typography>

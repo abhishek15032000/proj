@@ -5,6 +5,7 @@ import BlockchainCalls from '../../blockchain/Blockchain'
 import {
   LOCAL_STORAGE_VARS,
   MARKETPLACE_CALL_TYPES,
+  TOKEN_TYPES,
 } from '../../config/constants.config'
 import {
   INR_USD_TOKEN_ADDRESS,
@@ -235,6 +236,10 @@ const callsToMakeAfterBlockchainSuccess = (
       getApprovedTokensBalance()
       getBalanceOnExchange()
 
+      getWalletBalanceBuyFlow()
+      getApprovedTokensBalanceBuyFlow()
+      getBalanceOnExchangeBuyFlow()
+
       setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_WITHDRAW_ORDER_TX_ID, null)
 
       return
@@ -283,6 +288,13 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
     } else if (type === 'withdraw') {
       const withdrawQuantity =
         store.getState()?.marketplaceWithdrawFlow?.withdrawQuantity
+      const withdrawTokenType =
+        store.getState()?.marketplaceWithdrawFlow?.withdrawTokenType
+
+      const contractAddress =
+        withdrawTokenType === TOKEN_TYPES.VCOT
+          ? TOKEN_CONTRACT_ADDRESS
+          : INR_USD_TOKEN_ADDRESS
 
       const nonce: any = await provider.getTransactionCount(accountAddress)
       //Explicitly needed to make them any since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
@@ -292,9 +304,9 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
       hash = new Web3().utils.soliditySha3(
         { type: 'string', value: 'withdraw' },
         { type: 'address', value: accountAddress },
-        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'address', value: contractAddress },
         { type: 'uint256', value: withdrawQuantityCopy },
-        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'address', value: contractAddress },
         { type: 'uint256', value: feeAmount },
         { type: 'uint64', value: randomNumber }
       )
