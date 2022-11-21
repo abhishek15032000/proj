@@ -11,6 +11,12 @@ import OpenExternallyIcon from '../assets/Images/Icons/open-externally-icon.svg'
 import ListNewProject from '../assets/Images/help/list-new-project.png'
 import DemoImg from '../assets/Images/help/demo.png'
 import DemoImg2 from '../assets/Images/help/demo2.png'
+import SampleProject1 from '../assets/Images/sample-project/sample-proj-1.png'
+import SampleProject2 from '../assets/Images/sample-project/sample-proj-2.png'
+import SampleProject3 from '../assets/Images/sample-project/sample-proj-3.png'
+import SampleProject4 from '../assets/Images/sample-project/sample-proj-4.png'
+import SampleProject5 from '../assets/Images/sample-project/sample-proj-5.png'
+import SampleProject6 from '../assets/Images/sample-project/sample-proj-6.png'
 
 export const Images = {
   logo,
@@ -26,4 +32,10 @@ export const Images = {
   ListNewProject,
   DemoImg,
   DemoImg2,
+  SampleProject1,
+  SampleProject2,
+  SampleProject3,
+  SampleProject4,
+  SampleProject5,
+  SampleProject6,
 }

@@ -190,19 +190,20 @@ export const privateRouteComponents = [
     roles: [ROLES.BUYER],
   },
   {
+    path: pathNames.RETIRE_TOKENS,
+    component: RetireTokens,
+    roles: [ROLES.BUYER],
+  },
+  {
+    path: pathNames.TOKENS_RETIREMENT,
+    sidebarName: linkLabels.TokenRetirement,
+    component: TokenRetirementPage,
+    roles: [ROLES.BUYER],
+  },
+
+  {
     path: pathNames.PROFILE,
     component: Profile,
     roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
-  // {
-  //   path: pathNames.RETIRE_TOKENS,
-  //   component: RetireTokens,
-  //   roles: [ROLES.BUYER],
-  // },
-  // {
-  //   path: pathNames.TOKENS_RETIREMENT,
-  //   sidebarName: linkLabels.TokenRetirement,
-  //   component: TokenRetirementPage,
-  //   roles: [ROLES.BUYER],
-  // },
 ]

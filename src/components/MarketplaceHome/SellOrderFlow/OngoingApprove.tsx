@@ -8,14 +8,12 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setOnGoingApproveRedux,
   setSellQuantityForApprove,
-} from '../../../redux/Slices/marketplaceSlice'
+} from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
-import {
-  getApprovedTokensBalance,
-  getTransaction,
-} from '../../../utils/marketplace.utils'
-import { getLocalItem, setLocalItem } from '../../../utils/Storage'
+import { getTransaction } from '../../../utils/Marketplace/marketplace.util'
+import { getApprovedTokensBalance } from '../../../utils/Marketplace/marketplaceSellFlow.util'
+import { getLocalItem, removeItem, setLocalItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
@@ -30,7 +28,7 @@ const OngoingApprove = () => {
   )
 
   const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.onGoingApproveRedux,
     shallowEqual
   )
 
@@ -62,6 +60,7 @@ const OngoingApprove = () => {
   }
 
   const checkForPendingTransactions = async () => {
+    console.log('checkForPendingTransactions called')
     try {
       const receipt: any = await getTransaction(onGoingApproveRedux?.hash)
       if (!receipt?.success) {
@@ -72,8 +71,9 @@ const OngoingApprove = () => {
           // dispatch(setDataToMakeDepositCall(newReceipt))
           dispatch(setOnGoingApproveRedux(null))
           dispatch(setSellQuantityForApprove(0))
-          setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW, null)
-          setLocalItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE, 0)
+
+          removeItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW)
+          removeItem(LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE)
         }
         makeRows(receipt)
         getApprovedTokensBalance()
@@ -96,7 +96,7 @@ const OngoingApprove = () => {
             textAlign: 'center',
           }}
         >
-          <Typography>No Ongoing Transactions Pending for Approve</Typography>
+          <Typography>No Ongoing Transactions Pending for Approval</Typography>
         </Box>
       )}
     </>

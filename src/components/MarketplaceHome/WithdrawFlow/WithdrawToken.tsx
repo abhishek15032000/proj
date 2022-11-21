@@ -2,26 +2,19 @@ import { Paper } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
-import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setSellQuantityForApprove } from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
 import {
-  getApprovedTokensBalance,
   getBalanceOnExchange,
   getWalletBalance,
 } from '../../../utils/Marketplace/marketplaceSellFlow.util'
-import { getLocalItem } from '../../../utils/Storage'
+import { getApprovedTokensBalance } from '../../../utils/tokenRetire.utils'
 import CardRow from '../CardRow'
-import TabSellApprove from './TabSellApprove'
-import TabSellCreateSellOrder from './TabSellCreateSellOrder'
-import TabSellDeposit from './TabSellDeposit'
+import TabWithdraw from './TabWithdraw'
 
-interface SellTokenProps {}
+interface WithdrawTokenProps {}
 
-const SellToken: FC<SellTokenProps> = () => {
-  const dispatch = useAppDispatch()
-
+const WithdrawToken: FC<WithdrawTokenProps> = () => {
   const [tabIndex, setTabIndex] = useState(1)
 
   const accountAddress = useAppSelector(
@@ -37,21 +30,17 @@ const SellToken: FC<SellTokenProps> = () => {
     ({ marketplaceSellFlow }) => marketplaceSellFlow.exchangeBal,
     shallowEqual
   )
-  const approvedTokensBal = useAppSelector(
-    ({ marketplaceSellFlow }) => marketplaceSellFlow.approvedTokensBal,
-    shallowEqual
-  )
 
-  const onGoingApproveLocalStorage = getLocalItem(
-    LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
-  )
+  // const onGoingApproveLocalStorage = getLocalItem(
+  //   LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW
+  // )
 
-  useEffect(() => {
-    const sellQuantityForApproveInLocalStorage = getLocalItem(
-      LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE
-    )
-    dispatch(setSellQuantityForApprove(sellQuantityForApproveInLocalStorage))
-  }, [])
+  // useEffect(() => {
+  //   const sellQuantityForApproveInLocalStorage = getLocalItem(
+  //     LOCAL_STORAGE_VARS.SELL_QUANTITY_FOR_APPROVE
+  //   )
+  //   dispatch(setSellQuantityForApprove(sellQuantityForApproveInLocalStorage))
+  // }, [])
 
   useEffect(() => {
     if (accountAddress) {
@@ -87,19 +76,6 @@ const SellToken: FC<SellTokenProps> = () => {
           value={`${walletBal || 0} VCOT`}
         />
         <CardRow
-          title="Approved Token(Carbon) Balance :"
-          titleStyle={{
-            color: Colors.lightPrimary1,
-            fontSize: 16,
-            fontWeight: 500,
-          }}
-          valueStyle={{
-            fontSize: 16,
-            fontWeight: 500,
-          }}
-          value={`${approvedTokensBal || 0} VCOT`}
-        />
-        <CardRow
           title="Balance on Exchange :"
           titleStyle={{
             color: Colors.lightPrimary1,
@@ -113,18 +89,16 @@ const SellToken: FC<SellTokenProps> = () => {
           value={`${exchangeBal || 0} VCOT`}
         />
         <TabSelector
-          tabArray={['Approve Tokens', 'Deposit Tokens', 'Sell Order']}
+          tabArray={['Withdraw Tokens']}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
           tabStyle={{ width: 'auto' }}
           sx={{ mt: 0 }}
         />
-        {tabIndex === 1 && <TabSellApprove />}
-        {tabIndex === 2 && <TabSellDeposit />}
-        {tabIndex === 3 && <TabSellCreateSellOrder />}
+        {tabIndex === 1 && <TabWithdraw />}
       </Paper>
     </>
   )
 }
 
-export default SellToken
+export default WithdrawToken

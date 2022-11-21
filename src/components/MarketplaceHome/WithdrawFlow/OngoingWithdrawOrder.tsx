@@ -9,21 +9,21 @@ import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
-const OngoingDeposit = () => {
-  const ongoingDepositTransactionBuyFlow = useAppSelector(
-    ({ marketplaceBuyFlow }) =>
-      marketplaceBuyFlow.ongoingDepositTransactionBuyFlow,
+const OngoingWithdrawOrder = () => {
+  const ongoingWithdrawOrderTransaction = useAppSelector(
+    ({ marketplaceWithdrawFlow }) =>
+      marketplaceWithdrawFlow.ongoingWithdrawOrderTransaction,
     shallowEqual
   )
   const [rows, setRows] = useState<any>()
 
   useEffect(() => {
-    if (ongoingDepositTransactionBuyFlow) {
-      makeRows(ongoingDepositTransactionBuyFlow)
+    if (ongoingWithdrawOrderTransaction) {
+      makeRows(ongoingWithdrawOrderTransaction)
     } else {
       setRows(null)
     }
-  }, [ongoingDepositTransactionBuyFlow])
+  }, [ongoingWithdrawOrderTransaction])
 
   const makeRows = (data: any) => {
     const rows = [
@@ -50,11 +50,13 @@ const OngoingDeposit = () => {
             textAlign: 'center',
           }}
         >
-          <Typography>No Ongoing Transactions Pending for Deposit</Typography>
+          <Typography>
+            No Ongoing Transactions Pending for Withdraw Order
+          </Typography>
         </Box>
       )}
     </>
   )
 }
 
-export default OngoingDeposit
+export default OngoingWithdrawOrder

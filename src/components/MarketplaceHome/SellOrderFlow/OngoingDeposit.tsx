@@ -11,7 +11,8 @@ const headings = ['Transaction ID', 'Quantity', 'Status']
 
 const OngoingDeposit = () => {
   const ongoingDepositTransactionSellFlow = useAppSelector(
-    ({ marketplace }) => marketplace.ongoingDepositTransactionSellFlow,
+    ({ marketplaceSellFlow }) =>
+      marketplaceSellFlow.ongoingDepositTransactionSellFlow,
     shallowEqual
   )
 

@@ -6,9 +6,9 @@ import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModa
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setBuyQuantityForDeposit } from '../../../redux/Slices/marketplaceSlice'
+import { setBuyQuantityForDeposit } from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
-import { depositERC20BuyFlow } from '../../../utils/marketplace.utils'
+import { depositERC20BuyFlow } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 
 const TabBuyDeposit = () => {
   const dispatch = useAppDispatch()
@@ -16,16 +16,16 @@ const TabBuyDeposit = () => {
   const [showSecondModal, setShowSecondModal] = useState(false)
 
   const buyQuantityForDeposit = useAppSelector(
-    ({ marketplace }) => marketplace.buyQuantityForDeposit,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyQuantityForDeposit,
     shallowEqual
   )
   const onGoingApproveReduxBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 
   const approvedTokensBalBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.approvedTokensBalBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.approvedTokensBalBuyFlow,
     shallowEqual
   )
 
@@ -66,7 +66,7 @@ const TabBuyDeposit = () => {
               right: 10,
             }}
           >
-            VCOT
+            INR
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>

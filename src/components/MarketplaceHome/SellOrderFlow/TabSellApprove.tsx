@@ -6,24 +6,24 @@ import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModa
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setSellQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
+import { setSellQuantityForApprove } from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import { requestApprovalForTokenSelling } from '../../../utils/marketplace.utils'
+import { requestApprovalForTokenSelling } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const TabSellApprove = () => {
   const dispatch = useAppDispatch()
   const [showSecondModal, setShowSecondModal] = useState(false)
   const sellQuantityForApprove = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantityForApprove,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellQuantityForApprove,
     shallowEqual
   )
   const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.onGoingApproveRedux,
     shallowEqual
   )
 
   const walletBal = useAppSelector(
-    ({ marketplace }) => marketplace.walletBal,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.walletBal,
     shallowEqual
   )
 

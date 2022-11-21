@@ -44,3 +44,4 @@ autoscaling:
 
 podAntiAffinity:
   enabled: true
+

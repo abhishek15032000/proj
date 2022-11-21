@@ -1,67 +1,82 @@
 import { Paper, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { marketplaceCalls } from '../../../api/marketplaceCalls.api'
 import CCTable from '../../../atoms/CCTable'
 import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
+import ShortenedIDComp from '../../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
+import { limitTitleFromMiddle, roundUp } from '../../../utils/commonFunctions'
+import { getBuyOrdersListData } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 import { getLocalItem } from '../../../utils/Storage'
 
 const headings = [
   'Order ID',
-  'Date',
-  'Time',
+  // 'Date',
+  // 'Time',
   'Quantity',
   'Unit Price',
   'Total Amount',
-  'Quantity Left',
-  'Action',
+  // 'Quantity Left',
+  // 'Action',
 ]
 
 const BuyOrdersList = () => {
   const [rows, setRows] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
 
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
   )
+  const buyOrdersListData = useAppSelector(
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyOrdersListData,
+    shallowEqual
+  )
+  const buyOrdersListDataLoading = useAppSelector(
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyOrdersListDataLoading,
+    shallowEqual
+  )
 
   useEffect(() => {
     if (accountAddress) {
-      getBuyOrders()
+      getBuyOrdersListData()
     }
   }, [accountAddress])
-
-  async function getBuyOrders() {
-    try {
-      const buyOrderRes = await marketplaceCalls.getBuyOrder(accountAddress)
-      if (buyOrderRes.success && buyOrderRes.data.length) {
-        const rowValues = buyOrderRes.data.map((row: any) => {
-          const orderId = row?.uuid
-          const quantity = row?._offerAmount
-          const unitPrice = row?._wantAmount
-          const totalAmount = quantity * unitPrice
-          return [orderId, '-', '-', quantity, unitPrice, totalAmount, '-', '-']
-          // return [
-          //   orderId,
-          //   'Date',
-          //   'Time',
-          //   quantity,
-          //   unitPrice,
-          //   totalAmount,
-          //   'Qty Left',
-          //   'Action',
-          // ]
-        })
-        setRows(rowValues)
-      }
-    } catch (err) {
-      console.log('Error in marketplaceCalls.getBuyOrder api : ', err)
+  useEffect(() => {
+    if (buyOrdersListData) {
+      const temp: any[] = []
+      buyOrdersListData.data.forEach((row: any) => {
+        if (row?.fillOrder.length) {
+          row?.fillOrder.forEach((order: any, index: number) => {
+            const transactionElement = row?.transactions?.fill[index]
+            const orderId = transactionElement?.transactionHash
+            const quantity = order?._amountsToTake.reduce(
+              (acc: any, cur: any) => {
+                return acc + cur
+              },
+              0
+            )
+            const unitPrice = roundUp(order?._feeAmount / quantity, 3)
+            const totalAmount = order?._feeAmount
+            temp.push([
+              <ShortenedIDComp
+                key={index}
+                referenceId={orderId}
+                width={'565'}
+              />,
+              quantity,
+              unitPrice,
+              totalAmount,
+            ])
+          })
+          setRows(temp.reverse())
+        }
+      })
     }
-  }
+  }, [buyOrdersListData])
 
   return (
     <>
@@ -69,7 +84,7 @@ const BuyOrdersList = () => {
         <Typography sx={{ color: Colors.darkPrimary1, fontWeight: 500 }}>
           Buy Orders
         </Typography>
-        {loading ? (
+        {buyOrdersListDataLoading ? (
           <CCTableSkeleton sx={{ mt: 2 }} />
         ) : rows && rows.length ? (
           <CCTable headings={headings} rows={rows} />

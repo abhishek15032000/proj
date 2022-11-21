@@ -7,17 +7,13 @@ import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setBuyQuantityForApprove,
-  setDataToMakeDepositCallBuyFlow,
-  setOnGoingApproveRedux,
   setOnGoingApproveReduxBuyFlow,
-} from '../../../redux/Slices/marketplaceSlice'
+} from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
-import {
-  getApprovedTokensBalanceBuyFlow,
-  getTransaction,
-} from '../../../utils/marketplace.utils'
-import { getLocalItem, setLocalItem } from '../../../utils/Storage'
+import { getTransaction } from '../../../utils/Marketplace/marketplace.util'
+import { getApprovedTokensBalanceBuyFlow } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+import { getLocalItem, removeItem } from '../../../utils/Storage'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
@@ -32,14 +28,14 @@ const OngoingApprove = () => {
   )
 
   const onGoingApproveReduxBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveReduxBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.onGoingApproveReduxBuyFlow,
     shallowEqual
   )
 
   const [rows, setRows] = useState<any>()
   useEffect(() => {
-    if (onGoingApproveBuyFlowLocalStorage && onGoingApproveReduxBuyFlow) {
-      dispatch(setOnGoingApproveRedux(onGoingApproveBuyFlowLocalStorage))
+    if (onGoingApproveBuyFlowLocalStorage) {
+      dispatch(setOnGoingApproveReduxBuyFlow(onGoingApproveBuyFlowLocalStorage))
     }
   }, [])
 
@@ -72,11 +68,12 @@ const OngoingApprove = () => {
         //This means approve call is done and put in blockchain
         const newReceipt: any = await receipt?.res.wait()
         if (newReceipt?.blockHash) {
-          dispatch(setDataToMakeDepositCallBuyFlow(newReceipt))
           dispatch(setOnGoingApproveReduxBuyFlow(null))
           dispatch(setBuyQuantityForApprove(0))
-          setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW, null)
-          setLocalItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE, null)
+
+          removeItem(LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW)
+          removeItem(LOCAL_STORAGE_VARS.BUY_QUANTITY_FOR_APPROVE)
+
           getApprovedTokensBalanceBuyFlow()
         }
         makeRows(receipt)
@@ -100,7 +97,7 @@ const OngoingApprove = () => {
             textAlign: 'center',
           }}
         >
-          <Typography>No Ongoing Transactions Pending for Approve</Typography>
+          <Typography>No Ongoing Transactions Pending for Approval</Typography>
         </Box>
       )}
     </>
