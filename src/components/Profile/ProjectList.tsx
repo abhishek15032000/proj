@@ -9,26 +9,19 @@ import { Grid, Box, Typography, Paper, Divider } from '@mui/material'
 import { Colors } from '../../theme'
 
 import CCTable from '../../atoms/CCTable'
+import ListOfProjects from '../Projects/ListOfProjects'
 
-interface ProjectListProps {}
-const headings = [
-  'Reference ID',
-  'Creation Date',
-  'Project Name',
-  'Project Type',
-  'Location',
-]
-const rows = [
-  ['4331', '07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India'],
-  ['4331', '07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India'],
-  ['4331', '07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India'],
-  ['4331', '07.07.2022', 'Project Name', 'Project Type', 'Mumbai, India'],
-]
+interface ProjectListProps {
+  tableData?: any
+  loading?: boolean
+}
+
 const ProjectList: FC<ProjectListProps> = (props) => {
+  const { tableData, loading } = props
   return (
     <Paper
       sx={{
-        height: '350px',
+        height: '480px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
@@ -37,6 +30,7 @@ const ProjectList: FC<ProjectListProps> = (props) => {
 
         mt: 2,
         padding: 2,
+        width: '70%',
       }}
     >
       <Typography
@@ -49,7 +43,9 @@ const ProjectList: FC<ProjectListProps> = (props) => {
       >
         Projects
       </Typography>
-      <CCTable headings={headings} rows={rows} />
+      <Grid xs={12} style={{ width: '100%', height: '280px' }}>
+        <ListOfProjects data={tableData} loading={loading} />
+      </Grid>
     </Paper>
   )
 }

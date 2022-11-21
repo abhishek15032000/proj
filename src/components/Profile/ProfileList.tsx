@@ -14,59 +14,85 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useHorizontalScroll } from '../../hooks/useHorizontalScroll'
 import Edit from '../../assets/Images/Icons/edit.png'
 import CCButton from '../../atoms/CCButton'
+import { AccountBalance } from '@mui/icons-material'
+import TitleValue from './TitleValue'
 interface ProfileListProps {
   profileDetails?: any
   updateProfile?: any
   openProfilePopup?: any
   removeProfile?: any
   setOpenModal?: any
+  accountBalance?: any
+  accountAddress?: any
+  editProfileVisible?: any
+  setEditProfileVisible?: any
 }
 
 const ProfileList: FC<ProfileListProps> = (props) => {
-  const { profileDetails, updateProfile, setOpenModal } = props
+  const {
+    profileDetails,
+    updateProfile,
+    setOpenModal,
+    accountAddress,
+    accountBalance,
+    editProfileVisible,
+    setEditProfileVisible,
+  } = props
   const scrollRef = useHorizontalScroll()
   return (
     <Paper
       sx={{
-        width: '100%',
-
+        width: editProfileVisible ? '50%' : '100%',
         borderRadius: '8px',
-        minWidth: '520px',
+
         mt: 2,
+        height: '98%',
       }}
     >
-      <Grid
+      <Box
         sx={{
-          width: '100%',
-          p: 1,
+          // width: '50%',
+          paddingY: 1,
+          paddingX: 2,
         }}
       >
-        <Box>
+        <Box
+          sx={{
+            width: '10%',
+            flexDirection: 'row',
+            flex: 'display',
+            justifyContent: 'center',
+            alignItems: 'center',
+
+            ml: 2,
+          }}
+        >
           <Box
             component="img"
             sx={{
-              mr: 4,
               width: '100px',
-              display: {
-                xs: 'none',
-                lg: 'block',
-              },
             }}
             src={require('../../assets/Images/Icons/userProfile.png')}
           />
-          <img src={Edit} style={{}} />
+          <img
+            src={Edit}
+            style={{
+              right: 0,
+              // marginLeft: '100%',
+              cursor: 'pointer',
+            }}
+          />
         </Box>
-        <Grid
-          container
+        <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
-
+            justifyContent: 'space-between',
+            alignItems: 'center',
             mt: 1,
           }}
         >
-          <Grid
-            item
+          <Box
             sx={{
               display: 'flex',
               flexDirection: 'row',
@@ -83,23 +109,51 @@ const ProfileList: FC<ProfileListProps> = (props) => {
             }}
           >
             <Box sx={{ width: '100%' }}>
-              <THTile title="First Name :" value={profileDetails?.firstname} />
-              <THTile title="Last Name :" value={profileDetails?.lastname} />
-              <THTile title="Work Email ID:" value={profileDetails?.email} />
-              <THTile
+              <TitleValue
+                title="First Name :"
+                value={profileDetails?.firstname}
+              />
+              <TitleValue
+                title="Last Name :"
+                value={profileDetails?.lastname}
+              />
+              <TitleValue
+                title="Work Email ID:"
+                value={profileDetails?.email}
+              />
+              <TitleValue
                 title="Participant Type :"
                 value={profileDetails?.projectType}
               />
-              <THTile title="Mobile Number :" value={profileDetails?.mobile} />
+              <TitleValue
+                title="Mobile Number :"
+                value={profileDetails?.mobile}
+              />
+              {accountAddress ? (
+                <TitleValue title="Account Address :" value={accountAddress} />
+              ) : null}
+              {accountBalance ? (
+                <TitleValue title="Account Balance :" value={accountBalance} />
+              ) : null}
             </Box>
             <Box
-              // onClick={() => openProfilePopup(item)}
+              onClick={() => setEditProfileVisible(true)}
               sx={{ cursor: 'pointer' }}
             >
               <EditIcon color="primary" />
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+          {!editProfileVisible ? (
+            <Box
+              component="img"
+              sx={{
+                width: '90%',
+                ml: '20%',
+              }}
+              src={require('../../assets/Images/illustrations/profile.png')}
+            />
+          ) : null}
+        </Box>
         <CCButton
           onClick={() => setOpenModal(true)}
           rounded
@@ -116,19 +170,7 @@ const ProfileList: FC<ProfileListProps> = (props) => {
         >
           Change Password
         </CCButton>
-      </Grid>
-      <Box
-        component="img"
-        sx={{
-          mr: 4,
-          width: '35%',
-          display: {
-            xs: 'none',
-            lg: 'block',
-          },
-        }}
-        src={require('../../assets/Images/illustrations/profile.png')}
-      />
+      </Box>
     </Paper>
   )
 }

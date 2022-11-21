@@ -10,19 +10,26 @@ import { Colors } from '../../theme'
 import moment from 'moment'
 import THTile from '../TransactionHistory/THTile'
 import CCButton from '../../atoms/CCButton'
+import TitleValue from './TitleValue'
+import { ROLES } from '../../config/constants.config'
 
-interface ProfileTabProps {}
+interface ProfileTabProps {
+  stats?: any
+  userType?: any
+}
 
 const ProfileTab: FC<ProfileTabProps> = (props) => {
+  const { stats, userType } = props
+  console.log('stat>>>>>>>>>.', stats)
   return (
     <Paper
       sx={{
-        height: '350px',
+        height: '480px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: '8px',
-        minWidth: '400px',
+        width: userType === ROLES.ISSUER ? '30%' : '100%',
         mt: 2,
         ml: 2,
       }}
@@ -47,12 +54,21 @@ const ProfileTab: FC<ProfileTabProps> = (props) => {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
+            width: '100%',
           }}
         >
           <Box sx={{ width: '100%' }}>
-            <THTile title="Number of VCOT on sale :" value={'10 VCOT'} />
-            <THTile title="Number VCOT Available for Sale :" value="05 VCOT" />
-            <THTile title="Balance on exchange :" value="05 VCOT" />
+            {stats &&
+              stats.length &&
+              stats?.map((stat: any, index: any) => (
+                <TitleValue
+                  title={stat?.title}
+                  value={
+                    stat?.value ? stat?.value : stat?.value === 0 ? 0 : '-'
+                  }
+                  key={index}
+                />
+              ))}
           </Box>
         </Box>
       </Box>
