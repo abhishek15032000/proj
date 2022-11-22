@@ -5,7 +5,7 @@ import React, { FC, useEffect } from 'react'
 import { Grid, Box, Typography, Paper, Divider } from '@mui/material'
 
 // Local Imports
-// import CreditCardImg from '../../assets/Images/illustrations/credit-card.png'
+
 import { Colors } from '../../theme'
 import moment from 'moment'
 import THTile from '../TransactionHistory/THTile'
@@ -20,7 +20,7 @@ interface ProfileTabProps {
 
 const ProfileTab: FC<ProfileTabProps> = (props) => {
   const { stats, userType } = props
-  console.log('stat>>>>>>>>>.', stats)
+
   return (
     <Paper
       sx={{
@@ -31,7 +31,7 @@ const ProfileTab: FC<ProfileTabProps> = (props) => {
         borderRadius: '8px',
 
         mt: 2,
-        ml: 2,
+        ml: userType === ROLES.ISSUER ? 2 : null,
       }}
     >
       <Box

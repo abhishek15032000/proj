@@ -2,15 +2,7 @@
 import React, { useEffect, FC, useState } from 'react'
 
 // MUI Imports
-import {
-  Grid,
-  Box,
-  Typography,
-  Paper,
-  Divider,
-  Modal,
-  Stack,
-} from '@mui/material'
+import { Grid, Box, Typography, Stack, Chip } from '@mui/material'
 
 // Local Imports
 import CryptoJS from 'crypto-js'
@@ -39,13 +31,15 @@ import { ROLES } from '../../config/constants.config'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { getTokensBalance } from '../../utils/tokenRetire.utils'
 import { buyerCalls } from '../../api/buyerCalls.api'
-import { capitaliseFirstLetter } from '../../utils/commonFunctions'
+import { capitaliseFirstLetter, limitTitle } from '../../utils/commonFunctions'
 import EditProfile from './EditProfile'
 import { department } from '../../api/department.api'
 import { USER } from '../../api/user.api'
 import { pathNames } from '../../routes/pathNames'
 import ChangePassword from './ChangePassword'
-
+import CircleIcon from '@mui/icons-material/Circle'
+import moment from 'moment'
+import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
 interface ProfileProps {}
 
 const Profile: FC<ProfileProps> = (props) => {
@@ -58,9 +52,9 @@ const Profile: FC<ProfileProps> = (props) => {
   const [openModal, setOpenModal] = useState(false)
   const [profileDetails, setProfileDetails] = useState({
     firstname: '',
-    lastname: '',
+
     email: '',
-    projectType: '',
+
     mobile: '',
   })
 
@@ -80,6 +74,7 @@ const Profile: FC<ProfileProps> = (props) => {
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [password, setPassword] = useState<any>()
   const [newPassword, setNewPassword] = useState<any>()
+
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
@@ -94,43 +89,25 @@ const Profile: FC<ProfileProps> = (props) => {
   }, [])
 
   const setCaptchaTokenFromUUID = () => {
-    console.log('loginn page setCaptchaTokenFromUUID')
     setCaptchaToken(uuidv4())
   }
 
-  useEffect(() => {
-    getDepartment()
-  }, [])
-
-  useEffect(() => {
-    fetchingSelectedRoleId()
-  }, [selectedRole])
-
-  const fetchingSelectedRoleId = () => {
-    const roleId = typeOptions.filter((i: any) => i?.value === selectedRole)
-    console.log('roleId', roleId)
-    // setSelectedRole()
-    setDepartmentId(roleId)
-  }
-
-  const getDepartment = async () => {
+  const getDepartment = async (tempData: any) => {
     department
       .getDepartment()
       .then((response: any) => {
-        console.log('responseId<<<<,', response)
         const roles = response?.data
-          .filter(
-            (department: any) =>
-              !['super admin department', 'Credit Buyer'].includes(
-                department?.name
-              )
-          )
           .map((department: any, index: number) => {
             return {
               value: department.name,
               label: department._id,
             }
           })
+          .filter((item: any, index: number) => {
+            if (item?.label === tempData?.departmentId?._id) return item
+          })
+
+        setSelectedRole(roles[0]?.value)
         setTypeOptions(roles)
       })
       .catch((e) => console.log('Error in department.getDepartment api :', e))
@@ -138,15 +115,14 @@ const Profile: FC<ProfileProps> = (props) => {
 
   useEffect(() => {
     USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
-      console.log('user', response)
       const tempData = response?.data?.data
       setProfileDetails({
         firstname: tempData?.fullName,
-        lastname: tempData?.fullName,
+
         email: tempData?.email,
-        projectType: tempData?.email,
         mobile: tempData?.phone,
       })
+      getDepartment(tempData)
     })
   }, [])
   useEffect(() => {
@@ -158,16 +134,11 @@ const Profile: FC<ProfileProps> = (props) => {
 
   const loadTableData = () => {
     setLoading(true)
-
-    dataCollectionCalls
-      .getAllProjects(getLocalItem('userDetails')?.email)
-      .then((response) => {
-        setTableData(response.data.data)
-        setLoading(false)
-      })
-      .catch((e) => {
-        setLoading(false)
-      })
+    if (userType === ROLES.ISSUER) {
+      getAllProjects()
+    } else if (userType === ROLES.VERIFIER) {
+      getAllProjectsVerifier()
+    }
   }
 
   const getStats = async () => {
@@ -178,7 +149,6 @@ const Profile: FC<ProfileProps> = (props) => {
         res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
         if (res?.success) {
           structureDataForStats(res?.data)
-          console.log('res', res)
 
           setLoading(false)
         }
@@ -257,8 +227,8 @@ const Profile: FC<ProfileProps> = (props) => {
   }
 
   const onSave = () => {
-    const { firstname, lastname, mobile, projectType, email } = profileDetails
-    if (!firstname || !lastname || !mobile || !projectType || !email) {
+    const { firstname, mobile, email } = profileDetails
+    if (!firstname || !mobile || !email) {
       alert('Fill all the Fields!')
       return
     }
@@ -266,17 +236,14 @@ const Profile: FC<ProfileProps> = (props) => {
     setLoading(true)
     const payload = {
       uuid: getLocalItem('userDetails').uuid,
-      fullName: firstname + ' ' + lastname,
+      fullName: firstname,
       email: email,
-      phone: Number(mobile),
-      departmentId: departmentId[0]?.label,
-      country_code: '91',
+      phone: String(mobile),
     }
-    console.log('payload', getLocalItem('userDetails'), payload)
+
     USER.updateUserInfo(payload)
       .then((response) => {
-        // navigate(pathNames.DASHBOARD, { replace: true })
-        console.log('response<<<<<<', response)
+        setEditProfileVisible(false)
         setLoading(false)
       })
       .catch((e) => {
@@ -299,11 +266,12 @@ const Profile: FC<ProfileProps> = (props) => {
       oldPassword: CryptoJS.MD5(password).toString(),
       newPassword: CryptoJS.MD5(newPassword).toString(),
     }
-    console.log('payload', getLocalItem('userDetails'), payload)
+
     USER.changePassword(payload)
       .then((response) => {
-        // navigate(pathNames.DASHBOARD, { replace: true })
-        console.log('response<<<<<<', response)
+        setPassword('')
+        setNewPassword('')
+        setIsChangePassowrdVisible(false)
         setLoading(false)
       })
       .catch((e) => {
@@ -311,6 +279,193 @@ const Profile: FC<ProfileProps> = (props) => {
       })
   }
 
+  const getAllProjects = () => {
+    setLoading(true)
+    dataCollectionCalls
+      .getAllProjects(getLocalItem('userDetails')?.email)
+      .then((res: any) => {
+        if (res?.data?.success) {
+          const modifiedRows = res?.data?.data
+          const rows =
+            modifiedRows &&
+            modifiedRows.map((i: any, index: number) => {
+              return [
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {limitTitle(i?.uuid, 10)}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {moment(i?.createdAt).format(`DD/MM/YY`)}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {i?.company_name}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {i?.location}
+                </Typography>,
+                <Chip
+                  sx={{
+                    pl: 1,
+                    backgroundColor:
+                      i?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
+                  }}
+                  key={index}
+                  icon={
+                    <CircleIcon
+                      sx={{
+                        fontSize: 10,
+                        color: i?.project_status === 3 ? '#00A392' : '#96B1AB',
+                      }}
+                    />
+                  }
+                  label={
+                    i?.project_status === 0
+                      ? 'Yet to select'
+                      : i?.project_status === 1
+                      ? 'Selected'
+                      : i?.project_status === 3 && 'Finalised'
+                  }
+                />,
+                <Stack
+                  key={index}
+                  direction={'row'}
+                  alignItems="center"
+                  justifyContent={'flex-end'}
+                >
+                  {i?.verifier_details_id ? (
+                    <>
+                      <img
+                        src={DataTablesBriefCase}
+                        width="35px"
+                        height="35px"
+                      />
+                      <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
+                        {i?.verifier_details_id?.verifier_name}
+                      </Typography>
+                    </>
+                  ) : (
+                    '-'
+                  )}
+                </Stack>,
+              ]
+            })
+          setTableData(rows)
+        }
+        setLoading(false)
+      })
+  }
+
+  const getAllProjectsVerifier = () => {
+    setLoading(true)
+    verifierCalls
+      .getAllVerifiers(getLocalItem('userDetails')?.user_id)
+      .then((res: any) => {
+        if (res?.data?.success) {
+          const modifiedRows = res?.data?.data
+
+          const rows =
+            modifiedRows &&
+            modifiedRows.map((i: any, index: number) => {
+              return [
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {limitTitle(i?.project_id?.uuid, 10)}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {moment(i?.createdAt).format(`DD/MM/YY`)}
+                </Typography>,
+                <Stack
+                  key={index}
+                  direction={'row'}
+                  alignItems="center"
+                  justifyContent={'flex-end'}
+                >
+                  {i?.project_id?.name ? (
+                    <>
+                      <img
+                        src={DataTablesBriefCase}
+                        width="35px"
+                        height="35px"
+                      />
+                      <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
+                        {i?.project_id?.name}
+                      </Typography>
+                    </>
+                  ) : (
+                    '-'
+                  )}
+                </Stack>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {i?.project_id?.company_name}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500 }}
+                >
+                  {i?.project_id?.location}
+                </Typography>,
+                <Chip
+                  sx={{
+                    pl: 1,
+                    backgroundColor:
+                      i?.project_id?.project_status === 3
+                        ? '#75F8E4'
+                        : '#DAE5E1',
+                  }}
+                  key={index}
+                  icon={
+                    <CircleIcon
+                      sx={{
+                        fontSize: 10,
+                        color:
+                          i?.project_id?.project_status === 3
+                            ? '#00A392'
+                            : '#96B1AB',
+                      }}
+                    />
+                  }
+                  label={
+                    i?.project_id?.project_status === 0
+                      ? 'Yet to select'
+                      : i?.project_id?.project_status === 1
+                      ? 'Selected'
+                      : i?.project_id?.project_status === 3 && 'Finalised'
+                  }
+                />,
+              ]
+            })
+          setTableData(rows)
+        }
+        setLoading(false)
+      })
+  }
   if (loading) {
     return <LoderOverlay />
   } else {
@@ -361,8 +516,7 @@ const Profile: FC<ProfileProps> = (props) => {
                 accountBalance={accountBalance}
                 editProfileVisible={editProfileVisible}
                 isChangePassowrdVisible={isChangePassowrdVisible}
-                // updateProfile={() => updateProfile()}
-                // openProfilePopup={(item: any) => openProfilePopup(item)}
+                selectedRole={selectedRole}
                 setEditProfileVisible={(item: any) =>
                   setEditProfileVisible(item)
                 }
@@ -376,6 +530,7 @@ const Profile: FC<ProfileProps> = (props) => {
                 <EditProfile
                   profileDetails={profileDetails}
                   typeOptions={typeOptions}
+                  selectedRole={selectedRole}
                   onChangeInput={(key: any, value: any) =>
                     onChangeInput(key, value)
                   }
@@ -422,24 +577,40 @@ const Profile: FC<ProfileProps> = (props) => {
               alignItems: 'center',
             }}
           >
-            {userType === ROLES.ISSUER && (
+            {userType === ROLES.ISSUER || userType === ROLES.VERIFIER ? (
               <Grid item xs={12} md={8} lg={8} xl={8}>
-                <ProjectList tableData={tableData} loading={loading} />
+                <ProjectList
+                  tableData={tableData}
+                  loading={loading}
+                  userType={userType}
+                />
               </Grid>
-            )}
+            ) : null}
             <Grid
               item
               xs={12}
-              md={userType === ROLES.ISSUER ? 4 : 12}
-              lg={userType === ROLES.ISSUER ? 4 : 12}
-              xl={userType === ROLES.ISSUER ? 4 : 12}
+              md={
+                userType === ROLES.ISSUER || userType === ROLES.VERIFIER
+                  ? 4
+                  : 12
+              }
+              lg={
+                userType === ROLES.ISSUER || userType === ROLES.VERIFIER
+                  ? 4
+                  : 12
+              }
+              xl={
+                userType === ROLES.ISSUER || userType === ROLES.VERIFIER
+                  ? 4
+                  : 12
+              }
             >
               <ProfileTab stats={stats} userType={userType} />
             </Grid>
           </Grid>
         </Grid>
         <ForgotPasswordModal
-          isChangePassword={true}
+          isChangePassword={false}
           showModal={openModal}
           setShowModal={setOpenModal}
           setLoading={setLoading}

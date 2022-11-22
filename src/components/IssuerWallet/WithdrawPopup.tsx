@@ -158,7 +158,7 @@ const WithdrawPopup: FC<WithdrawPopupProps> = (props) => {
           />
         </Box>
         <Box sx={{ color: '#3F4946', position: 'absolute', top: 16, right: 5 }}>
-          MATIC
+          USD
         </Box>
       </Box>
       <Box
@@ -188,7 +188,7 @@ const WithdrawPopup: FC<WithdrawPopupProps> = (props) => {
           }}
         >
           <AddIcon />
-          <Typography sx={{ textDecoration: 'underline' }}>
+          <Typography sx={{ textDecoration: 'underline', fontWeight: 600 }}>
             Add New Account
           </Typography>
         </Box>

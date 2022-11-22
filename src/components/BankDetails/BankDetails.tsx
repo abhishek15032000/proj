@@ -36,6 +36,7 @@ interface BankDetailsProps {}
 const BankDetails: FC<BankDetailsProps> = (props) => {
   const navigate = useNavigate()
   const dispatch: any = useAppDispatch()
+
   const allBankDetails = useAppSelector(
     ({ allBankDetailsSlice }) => allBankDetailsSlice.allBankDetails,
     shallowEqual
@@ -54,6 +55,20 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
   const [loading, setLoading] = useState(false)
   const [onCallUpdate, setOnCallUpdate] = useState('')
 
+  useEffect(() => {
+    setLoading(true)
+    issuerCalls
+      .getAllBankAccount()
+      .then((res) => {
+        setLoading(false)
+
+        dispatch(setAllBankDetailsList(res?.data))
+      })
+      .catch((error) => {
+        console.log('error', error)
+        setLoading(false)
+      })
+  }, [])
   const onChangeInput = (e: any, key: any, value: any) => {
     const addAccountDetails = { ...BankDetailsData }
     setBankDetailsData({ ...addAccountDetails, [key]: value })
@@ -64,9 +79,9 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
     issuerCalls
       .getAllBankAccount()
       .then((res) => {
-        setLoading(false)
-
+        console.log('getAllBankAccount', res)
         dispatch(setAllBankDetailsList(res?.data))
+        setLoading(false)
       })
       .catch((error) => {
         console.log('error', error)

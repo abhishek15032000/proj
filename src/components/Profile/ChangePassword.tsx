@@ -15,9 +15,6 @@ import {
 // import CreditCardImg from '../../assets/Images/illustrations/credit-card.png'
 import { Colors } from '../../theme'
 
-import CCTable from '../../atoms/CCTable'
-import ListOfProjects from '../Projects/ListOfProjects'
-import CCSelectBox from '../../atoms/CCSelectBox'
 import CCInputField from '../../atoms/CCInputField'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import CCButton from '../../atoms/CCButton'
@@ -170,7 +167,7 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
             </InputAdornment>
           ),
         }}
-        sx={{ width: '400px', mb: 2 }}
+        sx={{ width: '410px', mb: 2 }}
       />
 
       <CCInputField
@@ -196,28 +193,28 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
             </InputAdornment>
           ),
         }}
-        sx={{ width: '400px', mb: 2 }}
+        sx={{ width: '410px', mb: 2 }}
       />
       <Captcha
         token={captchaToken}
         captchaInput={captchaInput}
         setCaptchaInput={setCaptchInput}
         setCaptchaToken={setCaptchaToken}
-        sx={{ mt: 1 }}
+        sx={{ mt: 1, width: '520px' }}
       />
       <Typography
         onClick={() => setOpenModal(true)}
         sx={{
           fontWeight: '500',
           fontSize: 18,
-          px: 1,
+
           cursor: 'pointer',
           color: '#1D4B44',
           textAlign: 'right',
+          width: '410px',
         }}
       >
-        {' '}
-        Forgot password?{' '}
+        Forgot password?
       </Typography>
     </Paper>
   )

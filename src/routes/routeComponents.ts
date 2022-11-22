@@ -44,12 +44,12 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.Dashboard,
     roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
-  // {
-  //   path: pathNames.TOKEN_CONTRACT,
-  //   component: TokenAndContractPage,
-  //   sidebarName: linkLabels.Token_Contract,
-  //   roles: [ROLES.ISSUER],
-  // },
+  {
+    path: pathNames.TOKEN_CONTRACT,
+    component: TokenAndContractPage,
+    sidebarName: linkLabels.Token_Contract,
+    roles: [ROLES.ISSUER],
+  },
   {
     path: pathNames.ONBOARDING,
     component: Onboarding,

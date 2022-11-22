@@ -28,25 +28,25 @@ interface ProfileListProps {
   setEditProfileVisible?: any
   setIsChangePassowrdVisible?: any
   isChangePassowrdVisible?: any
+  selectedRole?: any
 }
 
 const ProfileList: FC<ProfileListProps> = (props) => {
   const {
     profileDetails,
-    updateProfile,
-    setOpenModal,
+
     accountAddress,
     accountBalance,
     editProfileVisible,
     setEditProfileVisible,
     setIsChangePassowrdVisible,
     isChangePassowrdVisible,
+    selectedRole,
   } = props
   const scrollRef = useHorizontalScroll()
   return (
     <Paper
       sx={{
-        // width: editProfileVisible || isChangePassowrdVisible ? '50%' : '100%',
         borderRadius: '8px',
 
         mt: 1,
@@ -54,7 +54,6 @@ const ProfileList: FC<ProfileListProps> = (props) => {
     >
       <Box
         sx={{
-          // width: '50%',
           paddingY: 1,
           paddingX: 2,
         }}
@@ -62,10 +61,6 @@ const ProfileList: FC<ProfileListProps> = (props) => {
         <Box
           sx={{
             width: '10%',
-            // flexDirection: 'row',
-            // flex: 'display',
-            // justifyContent: 'center',
-            // alignItems: 'center',
 
             ml: 2,
           }}
@@ -111,22 +106,13 @@ const ProfileList: FC<ProfileListProps> = (props) => {
             }}
           >
             <Box sx={{ width: '100%' }}>
-              <TitleValue
-                title="First Name :"
-                value={profileDetails?.firstname}
-              />
-              <TitleValue
-                title="Last Name :"
-                value={profileDetails?.lastname}
-              />
+              <TitleValue title=" Name :" value={profileDetails?.firstname} />
+
               <TitleValue
                 title="Work Email ID:"
                 value={profileDetails?.email}
               />
-              <TitleValue
-                title="Participant Type :"
-                value={profileDetails?.projectType}
-              />
+              <TitleValue title="Participant Type :" value={selectedRole} />
               <TitleValue
                 title="Mobile Number :"
                 value={profileDetails?.mobile}

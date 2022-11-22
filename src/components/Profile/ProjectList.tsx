@@ -5,26 +5,46 @@ import React, { FC, useEffect } from 'react'
 import { Grid, Box, Typography, Paper, Divider } from '@mui/material'
 
 // Local Imports
-// import CreditCardImg from '../../assets/Images/illustrations/credit-card.png'
+
 import { Colors } from '../../theme'
 
 import CCTable from '../../atoms/CCTable'
-import ListOfProjects from '../Projects/ListOfProjects'
+
+import { ROLES } from '../../config/roles.config'
 
 interface ProjectListProps {
   tableData?: any
   loading?: boolean
+  userType?: any
 }
 
+const headings = [
+  'Reference ID',
+  'Creation Dt',
+  'Project Name',
+  'Location',
+  'Verifier Status',
+  'Verifier',
+]
+const headingsVerifer = [
+  'Reference ID',
+  'Recieved On',
+  'Issuer',
+  'Project Name',
+  'Location',
+  'Status',
+]
+
 const ProjectList: FC<ProjectListProps> = (props) => {
-  const { tableData, loading } = props
+  const { tableData, loading, userType } = props
+
   return (
     <Paper
       sx={{
         height: '480px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         alignItems: 'flex-start',
         borderRadius: '8px',
 
@@ -42,8 +62,12 @@ const ProjectList: FC<ProjectListProps> = (props) => {
       >
         Projects
       </Typography>
-      <Grid xs={12} style={{ width: '100%', height: '280px' }}>
-        <ListOfProjects data={tableData} loading={loading} />
+      <Grid xs={12} style={{ width: '100%', height: '80%' }}>
+        {userType === ROLES.ISSUER ? (
+          <CCTable headings={headings} rows={tableData} />
+        ) : (
+          <CCTable headings={headingsVerifer} rows={tableData} />
+        )}
       </Grid>
     </Paper>
   )

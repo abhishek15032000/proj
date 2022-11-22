@@ -22,6 +22,7 @@ interface EditProfileProps {
   setEditProfileVisible?: any
   onSave?: any
   setSelectedRole?: any
+  selectedRole?: any
 }
 
 const EditProfile: FC<EditProfileProps> = (props) => {
@@ -32,6 +33,7 @@ const EditProfile: FC<EditProfileProps> = (props) => {
     setEditProfileVisible,
     onSave,
     setSelectedRole,
+    selectedRole,
   } = props
   return (
     <Paper
@@ -43,7 +45,7 @@ const EditProfile: FC<EditProfileProps> = (props) => {
         alignItems: 'flex-start',
         borderRadius: '8px',
 
-        mt: 2,
+        mt: 1,
         padding: 2,
         ml: 1,
       }}
@@ -113,67 +115,48 @@ const EditProfile: FC<EditProfileProps> = (props) => {
           </CCButton>
         </Box>
       </Box>
-      <Box
-        sx={{
-          width: '400px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          mt: '30px',
-        }}
-      >
-        <CCInputField
-          label="First Name"
-          variant="outlined"
-          name="firstName"
-          size="medium"
-          value={profileDetails?.firstname}
-          onChange={(e) => onChangeInput('firstname', e.target.value)}
-          // error={firstName !== '' && !isAlpha(firstName)}
-          // helperText={
-          //   firstName !== '' && !isAlpha(firstName) && 'Enter valid Name'
-          // }
-          defaultValue={profileDetails?.firstName}
-          sx={{ background: '#F5F5F5', mr: 1.5 }}
-        />
 
-        <CCInputField
-          label="Last Name"
-          variant="outlined"
-          name="firstName"
-          size="medium"
-          value={profileDetails?.lastname}
-          onChange={(e) => onChangeInput('lastname', e.target.value)}
-          // error={lastName !== '' && !isAlpha(lastName)}
-          // helperText={
-          //   lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
-          // }
-          defaultValue={profileDetails?.lastName}
-          sx={{ background: '#F5F5F5' }}
-        />
-      </Box>
+      <CCInputField
+        label=" Name"
+        variant="outlined"
+        name="firstName"
+        size="medium"
+        value={profileDetails?.firstname}
+        onChange={(e) => onChangeInput('firstname', e.target.value)}
+        // error={firstName !== '' && !isAlpha(firstName)}
+        // helperText={
+        //   firstName !== '' && !isAlpha(firstName) && 'Enter valid Name'
+        // }
+        defaultValue={profileDetails?.firstName}
+        sx={{ background: '#F5F5F5', width: '400px' }}
+      />
 
       <CCInputField
         label="Work Email ID"
         variant="outlined"
-        name="email"
+        name="firstName"
         size="medium"
+        disabled={true}
         value={profileDetails?.email}
-        onChange={(e) => onChangeInput('email', e.target.value)}
-        // error={email !== '' && !isEmail(email)}
-        // helperText={email !== '' && !isEmail(email) && 'Enter valid Email ID'}
-        defaultValue={profileDetails?.email}
-        sx={{ width: '400px' }}
+        onChange={(e) => onChangeInput('lastname', e.target.value)}
+        // error={lastName !== '' && !isAlpha(lastName)}
+        // helperText={
+        //   lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
+        // }
+        defaultValue={profileDetails?.lastName}
+        sx={{ background: '#F5F5F5', width: '400px' }}
       />
 
       <CCSelectBox
         label="Participant Type"
         // placeholder='Participant Type'
+        defaultValue={selectedRole}
         items={typeOptions}
         onChange={(e) => setSelectedRole(e.target.value)}
         sx={{ width: '400px', mb: 2, background: '#F5F5F5' }}
         fullWidth={false}
         size="medium"
+        disabled={true}
       />
 
       <Box
