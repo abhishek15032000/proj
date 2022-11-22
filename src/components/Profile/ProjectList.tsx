@@ -18,21 +18,13 @@ interface ProjectListProps {
   userType?: any
 }
 
-const headings = [
-  'Reference ID',
-  'Creation Dt',
-  'Project Name',
-  'Location',
-  'Verifier Status',
-  'Verifier',
-]
+const headings = ['Reference ID', 'Creation Dt', 'Project Name', 'Location']
 const headingsVerifer = [
   'Reference ID',
   'Recieved On',
   'Issuer',
   'Project Name',
   'Location',
-  'Status',
 ]
 
 const ProjectList: FC<ProjectListProps> = (props) => {

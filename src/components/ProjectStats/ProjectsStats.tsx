@@ -117,8 +117,8 @@ const ProjectsStats = () => {
     }
     const data = {
       data: {
-        Total_active_VCOs: bal,
-        Total_retired_VCOs: burnTokenCount,
+        Total_active_VCOT: bal,
+        Total_retired_VCOT: burnTokenCount,
         Total_VCOT_purchased_so_far: apiData?.purchased_token_count,
         Total_footprint_offset: burnTokenCount,
       },

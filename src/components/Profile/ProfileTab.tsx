@@ -48,7 +48,7 @@ const ProfileTab: FC<ProfileTabProps> = (props) => {
             mt: 1,
           }}
         >
-          Tokens
+          {userType === ROLES.VERIFIER ? 'Project Count' : 'Tokens'}
         </Typography>
         <Box
           sx={{

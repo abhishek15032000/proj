@@ -27,7 +27,7 @@ import LoderOverlay from '../LoderOverlay'
 import ProjectList from './ProjectList'
 import ForgotPasswordModal from '../../pages/LoginPage/ForgotPasswordModal'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import { ROLES } from '../../config/constants.config'
+import { ROLES, WalletStats } from '../../config/constants.config'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { getTokensBalance } from '../../utils/tokenRetire.utils'
 import { buyerCalls } from '../../api/buyerCalls.api'
@@ -40,8 +40,22 @@ import ChangePassword from './ChangePassword'
 import CircleIcon from '@mui/icons-material/Circle'
 import moment from 'moment'
 import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
+import BlockchainCalls from '../../blockchain/Blockchain'
 interface ProfileProps {}
-
+const statsIssuer = [
+  {
+    title: WalletStats.VCO_ON_SALE,
+    value: '0',
+  },
+  {
+    title: WalletStats.VCO_AVAILABLE_FOR_SALE,
+    value: '0',
+  },
+  {
+    title: WalletStats.Balance_on_exchange,
+    value: '0',
+  },
+]
 const Profile: FC<ProfileProps> = (props) => {
   const navigate = useNavigate()
   const dispatch: any = useAppDispatch()
@@ -74,13 +88,27 @@ const Profile: FC<ProfileProps> = (props) => {
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [password, setPassword] = useState<any>()
   const [newPassword, setNewPassword] = useState<any>()
-
+  const [vcoOnSale, setVCOOnSale] = useState(0)
+  const [vcoAvailableFoSale, setVCOAvailableFoSale] = useState(0)
+  const [dashboardStatistics, setDashboardStatistics] = useState<null | any>(
+    statsIssuer
+  )
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
   )
   const accountBalance = useAppSelector(
     ({ wallet }) => wallet.accountBalance,
+    shallowEqual
+  )
+
+  const exchangeBalBuyFlow = useAppSelector(
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.exchangeBalBuyFlow,
+    shallowEqual
+  )
+
+  const exchangeBal = useAppSelector(
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.exchangeBal,
     shallowEqual
   )
 
@@ -155,11 +183,12 @@ const Profile: FC<ProfileProps> = (props) => {
       }
       //using this for token and contract stats
       else if (userType === ROLES.ISSUER) {
-        res = await dataCollectionCalls.getStats()
-        if (res?.success) {
-          structureDataForStats(res?.data)
-          setLoading(false)
-        }
+        getStatsForIssuer()
+        // res = await dataCollectionCalls.getStats()
+        // if (res?.success) {
+        //   structureDataForStats(res?.data)
+        //   setLoading(false)
+        // }
       } else if (userType === ROLES.BUYER) {
         getStatsForTokenRetirement()
       }
@@ -169,6 +198,77 @@ const Profile: FC<ProfileProps> = (props) => {
     }
   }
 
+  useEffect(() => {
+    tokenContractCalls()
+    getVCOAvailabelForSale()
+  }, [])
+
+  useEffect(() => {
+    if (dashboardStatistics && vcoOnSale) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[0].value =
+        Math.round(Number(vcoOnSale) * 1000) / 1000
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [vcoOnSale])
+
+  useEffect(() => {
+    if (dashboardStatistics && vcoAvailableFoSale) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[1].value = vcoAvailableFoSale
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [vcoAvailableFoSale])
+
+  useEffect(() => {
+    if (dashboardStatistics && exchangeBal) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[2].value = exchangeBal
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [exchangeBal])
+
+  const tokenContractCalls = async () => {
+    try {
+      setLoading(true)
+      const tokenContractFunctions = await BlockchainCalls.token_caller()
+      await tokenContractFunctions.estimateGas.balanceOf(accountAddress)
+      const balanceCallRes = await tokenContractFunctions.balanceOf(
+        accountAddress
+      )
+      const createProjectRes = await tokenContractFunctions.balanceOf(
+        accountAddress
+      )
+      const bal = Number(createProjectRes.toString()) * 10 ** -18
+      setVCOOnSale(bal)
+    } catch (error) {
+      console.log('Error : ', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getVCOAvailabelForSale = async () => {
+    try {
+      setLoading(true)
+      const res = await issuerCalls.getIssuerTokenStats()
+      if (res?.success && res?.data) {
+        const token = res?.data?.totalQuantityForSales
+        if (token !== undefined) {
+          setVCOAvailableFoSale(token)
+        }
+      }
+    } catch (error) {
+      console.log('Error : ', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getStatsForIssuer = async () => {
+    console.log('stats', stats, dashboardStatistics)
+    setStats(dashboardStatistics)
+  }
   const getStatsForTokenRetirement = async () => {
     // let bal
     // let data
@@ -197,11 +297,12 @@ const Profile: FC<ProfileProps> = (props) => {
     }
     const data = {
       data: {
-        Total_active_VCOs:
+        Total_active_VCOT:
           Math.round(Number(bal?.toString()) * 10 ** -18 * 1000) / 1000,
-        Total_retired_VCOs: burnTokenCount,
+        Total_retired_VCOT: burnTokenCount,
         Total_VCOT_purchased_so_far: apiData?.purchased_token_count,
         Total_footprint_offset: burnTokenCount,
+        Balance_on_exchange: exchangeBalBuyFlow,
       },
       success: true,
     }
@@ -292,76 +393,32 @@ const Profile: FC<ProfileProps> = (props) => {
               return [
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {limitTitle(i?.uuid, 10)}
                 </Typography>,
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {moment(i?.createdAt).format(`DD/MM/YY`)}
                 </Typography>,
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {i?.company_name}
                 </Typography>,
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {i?.location}
                 </Typography>,
-                <Chip
-                  sx={{
-                    pl: 1,
-                    backgroundColor:
-                      i?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
-                  }}
-                  key={index}
-                  icon={
-                    <CircleIcon
-                      sx={{
-                        fontSize: 10,
-                        color: i?.project_status === 3 ? '#00A392' : '#96B1AB',
-                      }}
-                    />
-                  }
-                  label={
-                    i?.project_status === 0
-                      ? 'Yet to select'
-                      : i?.project_status === 1
-                      ? 'Selected'
-                      : i?.project_status === 3 && 'Finalised'
-                  }
-                />,
-                <Stack
-                  key={index}
-                  direction={'row'}
-                  alignItems="center"
-                  justifyContent={'flex-end'}
-                >
-                  {i?.verifier_details_id ? (
-                    <>
-                      <img
-                        src={DataTablesBriefCase}
-                        width="35px"
-                        height="35px"
-                      />
-                      <Typography sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}>
-                        {i?.verifier_details_id?.verifier_name}
-                      </Typography>
-                    </>
-                  ) : (
-                    '-'
-                  )}
-                </Stack>,
               ]
             })
           setTableData(rows)
@@ -384,14 +441,14 @@ const Profile: FC<ProfileProps> = (props) => {
               return [
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {limitTitle(i?.project_id?.uuid, 10)}
                 </Typography>,
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {moment(i?.createdAt).format(`DD/MM/YY`)}
@@ -419,46 +476,18 @@ const Profile: FC<ProfileProps> = (props) => {
                 </Stack>,
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {i?.project_id?.company_name}
                 </Typography>,
                 <Typography
                   key={index}
-                  textAlign="start"
+                  textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {i?.project_id?.location}
                 </Typography>,
-                <Chip
-                  sx={{
-                    pl: 1,
-                    backgroundColor:
-                      i?.project_id?.project_status === 3
-                        ? '#75F8E4'
-                        : '#DAE5E1',
-                  }}
-                  key={index}
-                  icon={
-                    <CircleIcon
-                      sx={{
-                        fontSize: 10,
-                        color:
-                          i?.project_id?.project_status === 3
-                            ? '#00A392'
-                            : '#96B1AB',
-                      }}
-                    />
-                  }
-                  label={
-                    i?.project_id?.project_status === 0
-                      ? 'Yet to select'
-                      : i?.project_id?.project_status === 1
-                      ? 'Selected'
-                      : i?.project_id?.project_status === 3 && 'Finalised'
-                  }
-                />,
               ]
             })
           setTableData(rows)
@@ -466,6 +495,8 @@ const Profile: FC<ProfileProps> = (props) => {
         setLoading(false)
       })
   }
+
+  console.log('dashboardStatistics', dashboardStatistics)
   if (loading) {
     return <LoderOverlay />
   } else {
