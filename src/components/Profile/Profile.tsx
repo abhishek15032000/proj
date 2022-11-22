@@ -496,7 +496,6 @@ const Profile: FC<ProfileProps> = (props) => {
       })
   }
 
-  console.log('dashboardStatistics', dashboardStatistics)
   if (loading) {
     return <LoderOverlay />
   } else {
