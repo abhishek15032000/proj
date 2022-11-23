@@ -1,32 +1,46 @@
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModal'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setSellQuantityForSellOrder,
   setSellUnitPriceForSellOrder,
-} from '../../../redux/Slices/marketplaceSlice'
+} from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import { createSellOrder } from '../../../utils/marketplace.utils'
+import { createSellOrder } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const TabSellCreateSellOrder = () => {
   const dispatch = useAppDispatch()
-
+  const [showSecondModal, setShowSecondModal] = useState(false)
   const sellQuantityForSellOrder = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantityForSellOrder,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellQuantityForSellOrder,
     shallowEqual
   )
   const sellUnitPriceForSellOrder = useAppSelector(
-    ({ marketplace }) => marketplace.sellUnitPriceForSellOrder,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellUnitPriceForSellOrder,
     shallowEqual
   )
   const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.onGoingApproveRedux,
     shallowEqual
   )
+
+  const exchangeBal = useAppSelector(
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.exchangeBal,
+    shallowEqual
+  )
+
+  const onCreateBuyOrder = () => {
+    if (Number(sellQuantityForSellOrder) > Number(exchangeBal)) {
+      setShowSecondModal(true)
+      return
+    }
+    createSellOrder()
+  }
 
   return (
     <Grid container xs={12} justifyContent="center">
@@ -94,7 +108,7 @@ const TabSellCreateSellOrder = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={createSellOrder}
+            onClick={onCreateBuyOrder}
             disabled={
               onGoingApproveRedux ||
               !sellQuantityForSellOrder ||
@@ -105,6 +119,16 @@ const TabSellCreateSellOrder = () => {
           </CCButton>
         </Box>
       </Grid>
+      <BalanceCheckModal
+        msg1="Requesting sell for more tokens than you actually have"
+        msg2="Balance on Exchange"
+        tokenBal={exchangeBal}
+        btn1OnClick={() => {
+          setShowSecondModal(false)
+        }}
+        showModal={showSecondModal}
+        setShowModal={setShowSecondModal}
+      />
     </Grid>
   )
 }

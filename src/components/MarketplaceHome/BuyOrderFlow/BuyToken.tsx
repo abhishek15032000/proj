@@ -4,13 +4,12 @@ import { shallowEqual } from 'react-redux'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setBuyQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import {
   getApprovedTokensBalanceBuyFlow,
   getBalanceOnExchangeBuyFlow,
   getWalletBalanceBuyFlow,
-} from '../../../utils/marketplace.utils'
+} from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 import { getLocalItem } from '../../../utils/Storage'
 import CardRow from '../CardRow'
 import TabBuyApprove from './TabBuyApprove'
@@ -29,15 +28,15 @@ const BuyToken: FC<BuyTokenProps> = () => {
   )
 
   const walletBalBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.walletBalBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.walletBalBuyFlow,
     shallowEqual
   )
   const exchangeBalBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.exchangeBalBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.exchangeBalBuyFlow,
     shallowEqual
   )
   const approvedTokensBalBuyFlow = useAppSelector(
-    ({ marketplace }) => marketplace.approvedTokensBalBuyFlow,
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.approvedTokensBalBuyFlow,
     shallowEqual
   )
 

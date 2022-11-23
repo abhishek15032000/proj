@@ -35,6 +35,11 @@ const stats = [
     value: '0',
     color: Colors.lightGreenBackground3,
   },
+  {
+    title: WalletStats.Balance_on_exchange,
+    value: '0',
+    color: Colors.lightGreenBackground3,
+  },
 ]
 
 const IssuerWallet = (props: IssuerWalletProps) => {
@@ -50,6 +55,10 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   )
   const allBankDetails = useAppSelector(
     ({ allBankDetailsSlice }) => allBankDetailsSlice.allBankDetails,
+    shallowEqual
+  )
+  const exchangeBal = useAppSelector(
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.exchangeBal,
     shallowEqual
   )
   const [dashboardStatistics, setDashboardStatistics] = useState<null | any>(
@@ -80,6 +89,14 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     const addAccountDetails = { ...BankDetailsData }
     setBankDetailsData({ ...addAccountDetails, [key]: value })
   }
+
+  useEffect(() => {
+    if (dashboardStatistics && exchangeBal) {
+      const dashboardStatisticsCopy = [...dashboardStatistics]
+      dashboardStatisticsCopy[3].value = exchangeBal
+      setDashboardStatistics(dashboardStatisticsCopy)
+    }
+  }, [exchangeBal])
 
   useEffect(() => {
     setLoading(true)

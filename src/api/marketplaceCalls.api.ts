@@ -53,4 +53,11 @@ export const marketplaceCalls = {
       return res.data
     })
   },
+  cancelOrder: (payload: any) => {
+    return AxiosHelper(URL_PATH.marketplace.cancelOrder, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }

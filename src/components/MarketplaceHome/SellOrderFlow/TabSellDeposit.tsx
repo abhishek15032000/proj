@@ -1,25 +1,39 @@
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModal'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import { setSellQuantityForDeposit } from '../../../redux/Slices/marketplaceSlice'
+import { setSellQuantityForDeposit } from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import { depositERC20 } from '../../../utils/marketplace.utils'
+import { depositERC20 } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const TabSellDeposit = () => {
   const dispatch = useAppDispatch()
-
+  const [showSecondModal, setShowSecondModal] = useState(false)
   const sellQuantityForDeposit = useAppSelector(
-    ({ marketplace }) => marketplace.sellQuantityForDeposit,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellQuantityForDeposit,
     shallowEqual
   )
   const onGoingApproveRedux = useAppSelector(
-    ({ marketplace }) => marketplace.onGoingApproveRedux,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.onGoingApproveRedux,
     shallowEqual
   )
+
+  const approvedTokensBal = useAppSelector(
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.approvedTokensBal,
+    shallowEqual
+  )
+
+  const onDepositToken = () => {
+    if (Number(sellQuantityForDeposit) > Number(approvedTokensBal)) {
+      setShowSecondModal(true)
+      return
+    }
+    depositERC20()
+  }
 
   return (
     <Grid container xs={12} justifyContent="center">
@@ -62,13 +76,23 @@ const TabSellDeposit = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={depositERC20}
+            onClick={onDepositToken}
             disabled={onGoingApproveRedux || !sellQuantityForDeposit}
           >
             Deposit
           </CCButton>
         </Box>
       </Grid>
+      <BalanceCheckModal
+        msg1="Requesting deposit for more tokens than you actually have."
+        msg2="Approved Token(Carbon) Balance "
+        tokenBal={approvedTokensBal}
+        btn1OnClick={() => {
+          setShowSecondModal(false)
+        }}
+        showModal={showSecondModal}
+        setShowModal={setShowSecondModal}
+      />
     </Grid>
   )
 }

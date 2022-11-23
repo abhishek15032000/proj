@@ -57,7 +57,7 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
   const loadTableData = (transactionsData: any) => {
     const tableData: any = []
 
-    transactionsData.map((item: any, index: number) => {
+    transactionsData.reverse().map((item: any, index: number) => {
       const amountTaken =
         item.transaction_data?.values?.amountTaken !== undefined
           ? item.transaction_data?.values?.amountTaken

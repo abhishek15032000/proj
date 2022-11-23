@@ -1,36 +1,26 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Box, Grid, Paper, Skeleton, Typography } from '@mui/material'
-import { marketplaceCalls } from '../../api/marketplaceCalls.api'
 import { Colors } from '../../theme'
+import { getMarketplaceDepthData } from '../../utils/Marketplace/marketDepth.util'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface MarketDepthProps {}
 
 const MarketDepth: FC<MarketDepthProps> = (props) => {
-  const [rows, setRows] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
+  const marketDepthData = useAppSelector(
+    ({ marketDepth }) => marketDepth.marketDepthData,
+    shallowEqual
+  )
+  const marketDepthDataLoading = useAppSelector(
+    ({ marketDepth }) => marketDepth.marketDepthDataLoading,
+    shallowEqual
+  )
 
   useEffect(() => {
-    getSellOrders()
+    getMarketplaceDepthData()
   }, [])
 
-  async function getSellOrders() {
-    try {
-      setLoading(true)
-      const sellOrderRes = await marketplaceCalls.getSellOrder()
-      if (sellOrderRes.success && sellOrderRes.data.length) {
-        const rowValues = sellOrderRes.data.reverse().map((row: any) => {
-          const quantity = row?._offerAmount
-          const unitPrice = Math.round(row?._wantAmount * 1000) / 1000
-          return { price: unitPrice, quantity }
-        })
-        setRows(rowValues)
-      }
-    } catch (err) {
-      console.log('Error in marketplaceCalls.getSellOrder api : ', err)
-    } finally {
-      setLoading(false)
-    }
-  }
   return (
     <Box
       sx={{
@@ -67,7 +57,7 @@ const MarketDepth: FC<MarketDepthProps> = (props) => {
             (VCOT)
           </Grid>
         </Grid>
-        {loading ? (
+        {marketDepthDataLoading ? (
           <Box>
             {[1, 2, 3, 4, 5].map((item: any, index: number) => (
               <Skeleton
@@ -82,16 +72,18 @@ const MarketDepth: FC<MarketDepthProps> = (props) => {
               />
             ))}
           </Box>
-        ) : rows && rows.length ? (
+        ) : marketDepthData && marketDepthData.length ? (
           <Box sx={{ maxHeight: '70vh', overflow: 'auto' }}>
-            {rows?.map(({ price = '', quantity = '' }, index: number) => (
-              <Row
-                key={index}
-                index={index}
-                price={price}
-                quantity={quantity}
-              />
-            ))}
+            {marketDepthData?.map(
+              ({ price = '', quantity = '' }, index: number) => (
+                <Row
+                  key={index}
+                  index={index}
+                  price={price}
+                  quantity={quantity}
+                />
+              )
+            )}
           </Box>
         ) : (
           <Box

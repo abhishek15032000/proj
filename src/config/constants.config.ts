@@ -7,6 +7,7 @@ export const WalletStats = {
   WALLET_BALANCE: 'Wallet Balance',
   VCO_ON_SALE: 'Number of  VCOT on sale',
   VCO_AVAILABLE_FOR_SALE: 'Number of  VCOT available for sale',
+  Balance_on_exchange: '  Balance on exchange',
 }
 export const SECTION_NAMES = {
   PROJECT_INTRODUCTION: 'Project Introduction',
@@ -56,4 +57,9 @@ export const LOCAL_STORAGE_VARS = {
   //Wthdraw flow
   ON_GOING_WITHDRAW_ORDER_TX_ID: 'onGoingWithdrawOrderData',
   WITHDRAW_QUANTITY: 'withdrawQuantity',
+}
+
+export const TOKEN_TYPES = {
+  VCOT: 'VCOT',
+  INR: 'INR',
 }

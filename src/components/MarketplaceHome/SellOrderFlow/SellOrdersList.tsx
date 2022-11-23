@@ -1,20 +1,16 @@
 import { Paper, Typography } from '@mui/material'
-import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { marketplaceCalls } from '../../../api/marketplaceCalls.api'
+import CCButtonOutlined from '../../../atoms/CCButtonOutlined'
 import CCTable from '../../../atoms/CCTable'
 import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
+import { TOKEN_CONTRACT_ADDRESS } from '../../../config/token.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
-
-declare let window: any
-
-const provider =
-  window.ethereum != null
-    ? new ethers.providers.Web3Provider(window.ethereum)
-    : ethers.getDefaultProvider()
+import { roundUp } from '../../../utils/commonFunctions'
+import { cancelOrder } from '../../../utils/Marketplace/marketplace.util'
+import { getSellOrdersListData } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const headings = [
   'Order ID',
@@ -28,52 +24,73 @@ const headings = [
 ]
 
 const SellOrdersList = () => {
-  const [rows, setRows] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
-
-  const accountAddress = useAppSelector(
-    ({ wallet }) => wallet.accountAddress,
+  const sellOrdersList = useAppSelector(
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellOrdersList,
+    shallowEqual
+  )
+  const sellOrdersLoading = useAppSelector(
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.sellOrdersLoading,
     shallowEqual
   )
 
+  const [rows, setRows] = useState<any>(null)
+
   useEffect(() => {
-    abc()
-    getSellOrders()
+    getSellOrdersListData()
   }, [])
 
-  async function abc() {
-    const nonce = await provider.getTransactionCount(accountAddress)
-  }
-  async function getSellOrders() {
-    try {
-      setLoading(true)
-      const sellOrderRes = await marketplaceCalls.getSellOrder()
-      if (sellOrderRes.success && sellOrderRes.data.length) {
-        const rowValues = sellOrderRes.data.map((row: any) => {
-          const orderId = row?.uuid
-          const quantity = row?._offerAmount
-          const unitPrice = row?._wantAmount
-          const totalAmount = quantity * unitPrice
-          return [orderId, '-', '-', quantity, unitPrice, totalAmount, '-', '-']
-          // return [
-          //   orderId,
-          //   'Date',
-          //   'Time',
-          //   quantity,
-          //   unitPrice,
-          //   totalAmount,
-          //   'Qty Left',
-          //   'Action',
-          // ]
-        })
-        setRows(rowValues)
-      }
-    } catch (err) {
-      console.log('Error in marketplaceCalls.getSellOrder api : ', err)
-    } finally {
-      setLoading(false)
+  useEffect(() => {
+    if (sellOrdersList) {
+      const rowValues = sellOrdersList.map((row: any, index: number) => {
+        const orderId = row?.uuid
+        const quantity = row?._offerAmount
+        const totalAmount = row?._wantAmount
+        const unitPrice = roundUp(totalAmount / quantity, 3)
+        return [
+          orderId,
+          '-',
+          '-',
+          quantity,
+          unitPrice,
+          totalAmount,
+          '-',
+          row?.cancelOrder && row?.cancelOrder.length ? (
+            <Typography sx={{ color: Colors.tertiary, fontSize: 14 }}>
+              Cancelled
+            </Typography>
+          ) : (
+            <CCButtonOutlined
+              key={index}
+              sx={{
+                fontSize: 14,
+                minWidth: 0,
+                padding: '8px 16px',
+                borderRadius: 10,
+                mr: 3,
+                border: 'none',
+                backgroundColor: '#F6F9F7',
+              }}
+              onClick={() => {
+                console.log('row', row)
+
+                const payload = {
+                  uuid: row?.uuid,
+                  _offerHash: row?.hash,
+                  _expectedAvailableAmount: row?._offerAmount,
+                  _feeAsset: TOKEN_CONTRACT_ADDRESS,
+                  _feeAmount: 1,
+                }
+                cancelOrder(payload)
+              }}
+            >
+              Cancel
+            </CCButtonOutlined>
+          ),
+        ]
+      })
+      setRows(rowValues)
     }
-  }
+  }, [sellOrdersList])
 
   return (
     <>
@@ -81,7 +98,7 @@ const SellOrdersList = () => {
         <Typography sx={{ color: Colors.darkPrimary1, fontWeight: 500 }}>
           Sell Orders
         </Typography>
-        {loading ? (
+        {sellOrdersLoading ? (
           <CCTableSkeleton sx={{ mt: 2 }} />
         ) : rows && rows.length ? (
           <CCTable headings={headings} rows={rows} />

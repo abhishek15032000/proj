@@ -1,17 +1,16 @@
 import { Paper } from '@mui/material'
+import { Box } from '@mui/system'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import TabSelector from '../../../atoms/TabSelector/TabSelector'
-import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
+import { TOKEN_TYPES } from '../../../config/constants.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { setSellQuantityForApprove } from '../../../redux/Slices/marketplaceSlice'
 import { Colors } from '../../../theme'
 import {
-  getApprovedTokensBalance,
   getBalanceOnExchange,
   getWalletBalance,
-} from '../../../utils/marketplace.utils'
-import { getLocalItem } from '../../../utils/Storage'
+} from '../../../utils/Marketplace/marketplaceSellFlow.util'
+import { getApprovedTokensBalance } from '../../../utils/tokenRetire.utils'
 import CardRow from '../CardRow'
 import TabWithdraw from './TabWithdraw'
 
@@ -26,11 +25,23 @@ const WithdrawToken: FC<WithdrawTokenProps> = () => {
   )
 
   const walletBal = useAppSelector(
-    ({ marketplace }) => marketplace.walletBal,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.walletBal,
     shallowEqual
   )
   const exchangeBal = useAppSelector(
-    ({ marketplace }) => marketplace.exchangeBal,
+    ({ marketplaceSellFlow }) => marketplaceSellFlow.exchangeBal,
+    shallowEqual
+  )
+  const walletBalBuyFlow = useAppSelector(
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.walletBalBuyFlow,
+    shallowEqual
+  )
+  const exchangeBalBuyFlow = useAppSelector(
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.exchangeBalBuyFlow,
+    shallowEqual
+  )
+  const withdrawTokenType = useAppSelector(
+    ({ marketplaceWithdrawFlow }) => marketplaceWithdrawFlow.withdrawTokenType,
     shallowEqual
   )
 
@@ -65,32 +76,65 @@ const WithdrawToken: FC<WithdrawTokenProps> = () => {
           // opacity: onGoingApproveLocalStorage ? 0.5 : 1,
         }}
       >
-        <CardRow
-          title="Wallet Balance for Sale :"
-          titleStyle={{
-            color: Colors.lightPrimary1,
-            fontSize: 16,
-            fontWeight: 500,
-          }}
-          valueStyle={{
-            fontSize: 16,
-            fontWeight: 500,
-          }}
-          value={`${walletBal || 0} VCOT`}
-        />
-        <CardRow
-          title="Balance on Exchange :"
-          titleStyle={{
-            color: Colors.lightPrimary1,
-            fontSize: 16,
-            fontWeight: 500,
-          }}
-          valueStyle={{
-            fontSize: 16,
-            fontWeight: 500,
-          }}
-          value={`${exchangeBal || 0} VCOT`}
-        />
+        {withdrawTokenType === TOKEN_TYPES.VCOT ? (
+          <Box>
+            <CardRow
+              title="Wallet Balance for Sale :"
+              titleStyle={{
+                color: Colors.lightPrimary1,
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              valueStyle={{
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              value={`${walletBal || 0} VCOT`}
+            />
+            <CardRow
+              title="Balance on Exchange :"
+              titleStyle={{
+                color: Colors.lightPrimary1,
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              valueStyle={{
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              value={`${exchangeBal || 0} VCOT`}
+            />
+          </Box>
+        ) : (
+          <Box>
+            <CardRow
+              title="Wallet Balance for Purchase :"
+              titleStyle={{
+                color: Colors.lightPrimary1,
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              valueStyle={{
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              value={`${walletBalBuyFlow || 0} INR`}
+            />
+            <CardRow
+              title="Balance on Exchange :"
+              titleStyle={{
+                color: Colors.lightPrimary1,
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              valueStyle={{
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+              value={`${exchangeBalBuyFlow || 0} INR`}
+            />
+          </Box>
+        )}
         <TabSelector
           tabArray={['Withdraw Tokens']}
           tabIndex={tabIndex}
