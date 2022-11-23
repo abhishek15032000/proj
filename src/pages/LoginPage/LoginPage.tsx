@@ -317,6 +317,7 @@ const Login = () => {
         />
       </Box>
       <ForgotPasswordModal
+        isChangePassword={false}
         showModal={openModal}
         setShowModal={setOpenModal}
         setLoading={setLoading}

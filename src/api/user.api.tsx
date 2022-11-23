@@ -52,4 +52,13 @@ export const USER = {
       }
     )
   },
+  changePassword: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.userRoutes.changePassword,
+      'POST',
+      payload
+    ).then((response: any) => {
+      return response.data
+    })
+  },
 }

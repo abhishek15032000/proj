@@ -12,12 +12,14 @@ interface ForgotPasswordModalProps {
   showModal: boolean
   setShowModal: any
   setLoading: any
+  isChangePassword: any
 }
 
 const ForgotPasswordModal = ({
   showModal,
   setShowModal,
   setLoading,
+  isChangePassword,
 }: ForgotPasswordModalProps) => {
   const [email, setEmail] = useState<string>('')
   const [captchaInput, setCaptchaInput] = useState('')
@@ -91,10 +93,12 @@ const ForgotPasswordModal = ({
           <Typography
             sx={{ fontSize: 20, fontWeight: 500, color: Colors.darkPrimary1 }}
           >
-            Forgot Password
+            {isChangePassword ? 'Change Password' : 'Forgot Password'}
           </Typography>
           <Typography sx={{ fontSize: 14, mt: 3 }}>
-            Please verify your email to start the recovery process
+            {isChangePassword
+              ? 'Please verify your email to change your password'
+              : 'Please verify your email to start the recovery process'}
           </Typography>
           <Box sx={{ width: '80%', mt: 3 }}>
             <CCInputField
