@@ -1,10 +1,12 @@
 import { ethers } from 'ethers'
 import Web3 from 'web3'
+import { marketplaceCalls } from '../../api/marketplaceCalls.api'
 import { transactionCalls } from '../../api/transactionCalls.api'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import {
   LOCAL_STORAGE_VARS,
   MARKETPLACE_CALL_TYPES,
+  TOKEN_TYPES,
 } from '../../config/constants.config'
 import {
   INR_USD_TOKEN_ADDRESS,
@@ -25,6 +27,10 @@ import {
   setSellQuantityForSellOrder,
   setSellUnitPriceForSellOrder,
 } from '../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
+import {
+  setMarketplaceModalMessage,
+  setShowMarketplaceMsgModal,
+} from '../../redux/Slices/Marketplace/marketplaceSlice'
 import { setWithdrawQuantity } from '../../redux/Slices/Marketplace/marketplaceWithdrawFlowSlice'
 import { store } from '../../redux/store'
 import { removeItem, setLocalItem } from '../Storage'
@@ -235,6 +241,10 @@ const callsToMakeAfterBlockchainSuccess = (
       getApprovedTokensBalance()
       getBalanceOnExchange()
 
+      getWalletBalanceBuyFlow()
+      getApprovedTokensBalanceBuyFlow()
+      getBalanceOnExchangeBuyFlow()
+
       setLocalItem(LOCAL_STORAGE_VARS.ON_GOING_WITHDRAW_ORDER_TX_ID, null)
 
       return
@@ -283,6 +293,13 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
     } else if (type === 'withdraw') {
       const withdrawQuantity =
         store.getState()?.marketplaceWithdrawFlow?.withdrawQuantity
+      const withdrawTokenType =
+        store.getState()?.marketplaceWithdrawFlow?.withdrawTokenType
+
+      const contractAddress =
+        withdrawTokenType === TOKEN_TYPES.VCOT
+          ? TOKEN_CONTRACT_ADDRESS
+          : INR_USD_TOKEN_ADDRESS
 
       const nonce: any = await provider.getTransactionCount(accountAddress)
       //Explicitly needed to make them any since typescript was giving type errors when assigining these values to "value" key in "hash" generation(SoliditySHA3 fn)
@@ -292,9 +309,9 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
       hash = new Web3().utils.soliditySha3(
         { type: 'string', value: 'withdraw' },
         { type: 'address', value: accountAddress },
-        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'address', value: contractAddress },
         { type: 'uint256', value: withdrawQuantityCopy },
-        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'address', value: contractAddress },
         { type: 'uint256', value: feeAmount },
         { type: 'uint64', value: randomNumber }
       )
@@ -307,6 +324,14 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
       //   'data._feeAmount': { type: 'uint256', value: feeAmount },
       //   'data._nonce': { type: 'uint64', value: randomNumber },
       // })
+    } else if (type === 'cancel') {
+      const feeAmount: any = 1
+      hash = new Web3().utils.soliditySha3(
+        { type: 'string', value: 'cancel' },
+        { type: 'bytes', value: randomNumber },
+        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'uint256', value: feeAmount }
+      )
     } else {
       //for buy order
       const buyOrderPayloadOfferHashes =
@@ -345,5 +370,24 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
     return { v, r, s, hash }
   } catch (e) {
     console.log(e)
+  }
+}
+
+export const cancelOrder = async (payload: any) => {
+  const hashAndVRS = await getHashAndVRS('cancel', payload?._offerHash)
+  if (hashAndVRS) {
+    const { hash, v, r, s } = hashAndVRS
+    const payload2 = {
+      ...payload,
+      hash: hash,
+      _v: v,
+      _r: r,
+      _s: s,
+    }
+    const cancelOrderRes = await marketplaceCalls.cancelOrder(payload2)
+    if (cancelOrderRes.success) {
+      store.dispatch(setMarketplaceModalMessage('Sell order Cancelled.'))
+      store.dispatch(setShowMarketplaceMsgModal(true))
+    }
   }
 }

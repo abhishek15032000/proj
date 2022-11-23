@@ -2,8 +2,12 @@ import { marketplaceCalls } from '../../api/marketplaceCalls.api'
 import {
   LOCAL_STORAGE_VARS,
   MARKETPLACE_CALL_TYPES,
+  TOKEN_TYPES,
 } from '../../config/constants.config'
-import { TOKEN_CONTRACT_ADDRESS } from '../../config/token.config'
+import {
+  INR_USD_TOKEN_ADDRESS,
+  TOKEN_CONTRACT_ADDRESS,
+} from '../../config/token.config'
 import {
   setMarketplaceLoading,
   setMarketplaceModalMessage,
@@ -21,9 +25,11 @@ export async function createWithdrawOrder() {
   try {
     store.dispatch(setMarketplaceLoading(true))
 
+    const accountAddress = store.getState()?.wallet?.accountAddress
     const withdrawQuantity =
       store.getState()?.marketplaceWithdrawFlow?.withdrawQuantity
-    const accountAddress = store.getState()?.wallet?.accountAddress
+    const withdrawTokenType =
+      store.getState()?.marketplaceWithdrawFlow?.withdrawTokenType
 
     //pseudo nonce
     const randomNumber = new Date().getTime()
@@ -31,12 +37,17 @@ export async function createWithdrawOrder() {
     if (hashAndVRS) {
       const { hash, v, r, s } = hashAndVRS
 
+      const contractAddress =
+        withdrawTokenType === TOKEN_TYPES.VCOT
+          ? TOKEN_CONTRACT_ADDRESS
+          : INR_USD_TOKEN_ADDRESS
+
       const payload = {
         hash,
         _withdrawer: accountAddress,
-        _token: TOKEN_CONTRACT_ADDRESS,
+        _token: contractAddress,
         _amount: Number(withdrawQuantity),
-        _feeAsset: TOKEN_CONTRACT_ADDRESS,
+        _feeAsset: contractAddress,
         _feeAmount: 1,
         _nonce: randomNumber,
         _v: v,

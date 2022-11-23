@@ -267,24 +267,25 @@ export async function getSellOrdersListData() {
     store.dispatch(setSellOrdersLoading(true))
     const sellOrderRes = await marketplaceCalls.getSellOrder()
     if (sellOrderRes.success && sellOrderRes.data.length) {
-      const rowValues = sellOrderRes.data.map((row: any) => {
-        const orderId = row?.uuid
-        const quantity = row?._offerAmount
-        const totalAmount = row?._wantAmount
-        const unitPrice = roundUp(totalAmount / quantity, 3)
-        return [orderId, '-', '-', quantity, unitPrice, totalAmount, '-', '-']
-        // return [
-        //   orderId,
-        //   'Date',
-        //   'Time',
-        //   quantity,
-        //   unitPrice,
-        //   totalAmount,
-        //   'Qty Left',
-        //   'Action',
-        // ]
-      })
-      store.dispatch(setSellOrdersList(rowValues))
+      // const rowValues = sellOrderRes.data.map((row: any) => {
+      //   const orderId = row?.uuid
+      //   const quantity = row?._offerAmount
+      //   const totalAmount = row?._wantAmount
+      //   const unitPrice = roundUp(totalAmount / quantity, 3)
+      //   return [orderId, '-', '-', quantity, unitPrice, totalAmount, '-', '-']
+      //   // return [
+      //   //   orderId,
+      //   //   'Date',
+      //   //   'Time',
+      //   //   quantity,
+      //   //   unitPrice,
+      //   //   totalAmount,
+      //   //   'Qty Left',
+      //   //   'Action',
+      //   // ]
+      // })
+      // store.dispatch(setSellOrdersList(rowValues))
+      store.dispatch(setSellOrdersList(sellOrderRes?.data?.reverse()))
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.getSellOrder api : ', err)

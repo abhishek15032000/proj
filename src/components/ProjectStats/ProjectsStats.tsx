@@ -55,7 +55,16 @@ const ProjectsStats = () => {
       else if (location.pathname === pathNames.TOKEN_CONTRACT) {
         res = await dataCollectionCalls.getStats()
         if (res?.success) {
-          setRawStatsData(res)
+          const obj = {
+            data: {
+              report_count: res?.data.report_count,
+              total_VCOT_Quantity: res?.data?.total_Quantity,
+              total_VCOT_Quantity_For_Sale: res?.data.total_Quantity_For_Sale,
+              total_VCOT_Quantity_On_Sale: res?.data.total_Quantity_On_Sale,
+              total_VCOT_Quantity_Sold: res?.data.total_Quantity_Sold,
+            },
+          }
+          setRawStatsData(obj)
           setLoading(false)
         }
       } else if (location.pathname === pathNames.TOKENS_RETIREMENT) {

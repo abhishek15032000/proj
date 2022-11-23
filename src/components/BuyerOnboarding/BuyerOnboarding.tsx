@@ -2,7 +2,7 @@ import { Box, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import OnBoardingIllustration from '../../assets/Images/illustrations/OnBoardingIllustration.svg'
-import { useAppDispatch } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { setLoadWallet } from '../../redux/Slices/walletSlice'
 import { pathNames } from '../../routes/pathNames'
 import { Colors } from '../../theme'
@@ -13,11 +13,22 @@ import ProfileCard from '../../atoms/ProfileCard/ProfileCard'
 const BuyerOnboarding = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
+  const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
+
   return (
     <>
-      <Typography sx={{ color: Colors.tertiary, fontSize: 28 }}>
-        Dashboard
+      <Typography sx={{ color: Colors.error, mb: 1 }}>
+        {!isConnected &&
+          'Metamask not connected. Please Connect Metamask before proceeding!!!'}
       </Typography>
+      {isConnected && (
+        <Typography
+          sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400 }}
+        >
+          Dashboard
+        </Typography>
+      )}
       <Grid container>
         <Grid item xs={9} sx={{ pr: 1 }}>
           <Paper elevation={2} sx={{ mt: 2 }}>

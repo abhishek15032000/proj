@@ -58,3 +58,8 @@ export const LOCAL_STORAGE_VARS = {
   ON_GOING_WITHDRAW_ORDER_TX_ID: 'onGoingWithdrawOrderData',
   WITHDRAW_QUANTITY: 'withdrawQuantity',
 }
+
+export const TOKEN_TYPES = {
+  VCOT: 'VCOT',
+  INR: 'INR',
+}
