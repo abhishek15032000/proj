@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import Web3 from 'web3'
+import { marketplaceCalls } from '../../api/marketplaceCalls.api'
 import { transactionCalls } from '../../api/transactionCalls.api'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import {
@@ -26,6 +27,10 @@ import {
   setSellQuantityForSellOrder,
   setSellUnitPriceForSellOrder,
 } from '../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
+import {
+  setMarketplaceModalMessage,
+  setShowMarketplaceMsgModal,
+} from '../../redux/Slices/Marketplace/marketplaceSlice'
 import { setWithdrawQuantity } from '../../redux/Slices/Marketplace/marketplaceWithdrawFlowSlice'
 import { store } from '../../redux/store'
 import { removeItem, setLocalItem } from '../Storage'
@@ -319,6 +324,14 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
       //   'data._feeAmount': { type: 'uint256', value: feeAmount },
       //   'data._nonce': { type: 'uint64', value: randomNumber },
       // })
+    } else if (type === 'cancel') {
+      const feeAmount: any = 1
+      hash = new Web3().utils.soliditySha3(
+        { type: 'string', value: 'cancel' },
+        { type: 'bytes', value: randomNumber },
+        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+        { type: 'uint256', value: feeAmount }
+      )
     } else {
       //for buy order
       const buyOrderPayloadOfferHashes =
@@ -357,5 +370,24 @@ export async function getHashAndVRS(type: string, randomNumber: any) {
     return { v, r, s, hash }
   } catch (e) {
     console.log(e)
+  }
+}
+
+export const cancelOrder = async (payload: any) => {
+  const hashAndVRS = await getHashAndVRS('cancel', payload?._offerHash)
+  if (hashAndVRS) {
+    const { hash, v, r, s } = hashAndVRS
+    const payload2 = {
+      ...payload,
+      hash: hash,
+      _v: v,
+      _r: r,
+      _s: s,
+    }
+    const cancelOrderRes = await marketplaceCalls.cancelOrder(payload2)
+    if (cancelOrderRes.success) {
+      store.dispatch(setMarketplaceModalMessage('Sell order Cancelled.'))
+      store.dispatch(setShowMarketplaceMsgModal(true))
+    }
   }
 }

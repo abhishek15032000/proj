@@ -5,9 +5,11 @@ import CCButtonOutlined from '../../../atoms/CCButtonOutlined'
 import CCTable from '../../../atoms/CCTable'
 import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
+import { TOKEN_CONTRACT_ADDRESS } from '../../../config/token.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
 import { roundUp } from '../../../utils/commonFunctions'
+import { cancelOrder } from '../../../utils/Marketplace/marketplace.util'
 import { getSellOrdersListData } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const headings = [
@@ -37,10 +39,9 @@ const SellOrdersList = () => {
     getSellOrdersListData()
   }, [])
 
-  console.log('sellOrdersList', sellOrdersList)
   useEffect(() => {
     if (sellOrdersList) {
-      const rowValues = sellOrdersList.data.map((row: any, index: number) => {
+      const rowValues = sellOrdersList.map((row: any, index: number) => {
         const orderId = row?.uuid
         const quantity = row?._offerAmount
         const totalAmount = row?._wantAmount
@@ -53,21 +54,38 @@ const SellOrdersList = () => {
           unitPrice,
           totalAmount,
           '-',
-          <CCButtonOutlined
-            key={index}
-            sx={{
-              fontSize: 14,
-              minWidth: 0,
-              padding: '8px 16px',
-              borderRadius: 10,
-              mr: 3,
-              border: 'none',
-              backgroundColor: '#F6F9F7',
-            }}
-            // onClick={() => {}
-          >
-            Cancel
-          </CCButtonOutlined>,
+          row?.cancelOrder && row?.cancelOrder.length ? (
+            <Typography sx={{ color: Colors.tertiary, fontSize: 14 }}>
+              Cancelled
+            </Typography>
+          ) : (
+            <CCButtonOutlined
+              key={index}
+              sx={{
+                fontSize: 14,
+                minWidth: 0,
+                padding: '8px 16px',
+                borderRadius: 10,
+                mr: 3,
+                border: 'none',
+                backgroundColor: '#F6F9F7',
+              }}
+              onClick={() => {
+                console.log('row', row)
+
+                const payload = {
+                  uuid: row?.uuid,
+                  _offerHash: row?.hash,
+                  _expectedAvailableAmount: row?._offerAmount,
+                  _feeAsset: TOKEN_CONTRACT_ADDRESS,
+                  _feeAmount: 1,
+                }
+                cancelOrder(payload)
+              }}
+            >
+              Cancel
+            </CCButtonOutlined>
+          ),
         ]
       })
       setRows(rowValues)

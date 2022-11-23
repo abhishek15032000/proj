@@ -285,7 +285,7 @@ export async function getSellOrdersListData() {
       //   // ]
       // })
       // store.dispatch(setSellOrdersList(rowValues))
-      store.dispatch(setSellOrdersList(sellOrderRes))
+      store.dispatch(setSellOrdersList(sellOrderRes?.data?.reverse()))
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.getSellOrder api : ', err)
