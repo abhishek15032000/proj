@@ -33,6 +33,7 @@ import RetireTokens from '../pages/RetireTokens'
 import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPage'
 import BankDetails from '../pages/BankDetails'
 import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
+import Profile from '../pages/Profile'
 
 export const privateRouteComponents = [
   {
@@ -198,5 +199,11 @@ export const privateRouteComponents = [
     sidebarName: linkLabels.TokenRetirement,
     component: TokenRetirementPage,
     roles: [ROLES.BUYER],
+  },
+
+  {
+    path: pathNames.PROFILE,
+    component: Profile,
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
   },
 ]

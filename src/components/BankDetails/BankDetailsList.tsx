@@ -68,6 +68,7 @@ const BankDetailsList: FC<BankDetailsListProps> = (props) => {
           }}
         >
           {allAccountList &&
+            allAccountList.length > 0 &&
             allAccountList.map((item: any, index: any) => (
               <Grid
                 item

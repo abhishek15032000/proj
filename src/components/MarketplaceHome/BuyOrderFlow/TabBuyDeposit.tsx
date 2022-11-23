@@ -1,7 +1,8 @@
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModal'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -12,6 +13,8 @@ import { depositERC20BuyFlow } from '../../../utils/Marketplace/marketplaceBuyFl
 const TabBuyDeposit = () => {
   const dispatch = useAppDispatch()
 
+  const [showSecondModal, setShowSecondModal] = useState(false)
+
   const buyQuantityForDeposit = useAppSelector(
     ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyQuantityForDeposit,
     shallowEqual
@@ -21,8 +24,21 @@ const TabBuyDeposit = () => {
     shallowEqual
   )
 
+  const approvedTokensBalBuyFlow = useAppSelector(
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.approvedTokensBalBuyFlow,
+    shallowEqual
+  )
+
   const isThereApproveObject = () => {
     return onGoingApproveReduxBuyFlow ? true : false
+  }
+
+  const onDepositToken = () => {
+    if (Number(buyQuantityForDeposit) >= Number(approvedTokensBalBuyFlow)) {
+      setShowSecondModal(true)
+      return
+    }
+    depositERC20BuyFlow()
   }
 
   return (
@@ -66,13 +82,23 @@ const TabBuyDeposit = () => {
               minWidth: '120px',
             }}
             variant="contained"
-            onClick={depositERC20BuyFlow}
+            onClick={onDepositToken}
             disabled={isThereApproveObject() || !buyQuantityForDeposit}
           >
             Deposit
           </CCButton>
         </Box>
       </Grid>
+      <BalanceCheckModal
+        msg1="Requesting deposit for more tokens than you actually have"
+        msg2="Approved Token(INR/USD) Balance"
+        tokenBal={approvedTokensBalBuyFlow}
+        btn1OnClick={() => {
+          setShowSecondModal(false)
+        }}
+        showModal={showSecondModal}
+        setShowModal={setShowSecondModal}
+      />
     </Grid>
   )
 }

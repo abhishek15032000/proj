@@ -1,7 +1,8 @@
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModal'
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
@@ -11,7 +12,13 @@ import { requestApprovalForTokenBuy } from '../../../utils/Marketplace/marketpla
 
 const TabBuyApprove = () => {
   const dispatch = useAppDispatch()
+  const [showModal, setShowModal] = useState(false)
+  const [showSecondModal, setShowSecondModal] = useState(false)
 
+  const walletBalBuyFlow = useAppSelector(
+    ({ marketplaceBuyFlow }) => marketplaceBuyFlow.walletBalBuyFlow,
+    shallowEqual
+  )
   const buyQuantityForApprove = useAppSelector(
     ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyQuantityForApprove,
     shallowEqual
@@ -23,6 +30,14 @@ const TabBuyApprove = () => {
 
   const isThereApproveObject = () => {
     return onGoingApproveReduxBuyFlow ? true : false
+  }
+
+  const onApproveToken = () => {
+    if (Number(buyQuantityForApprove) >= Number(walletBalBuyFlow)) {
+      setShowSecondModal(true)
+      return
+    }
+    requestApprovalForTokenBuy
   }
 
   return (
@@ -66,7 +81,7 @@ const TabBuyApprove = () => {
               fontSize: 14,
               minWidth: '120px',
             }}
-            onClick={requestApprovalForTokenBuy}
+            onClick={onApproveToken}
             disabled={isThereApproveObject() || !buyQuantityForApprove}
             variant="contained"
           >
@@ -74,6 +89,16 @@ const TabBuyApprove = () => {
           </CCButton>
         </Box>
       </Grid>
+      <BalanceCheckModal
+        msg1="Requesting approval for more tokens than you actually have. Please lessen the approval token quantity"
+        msg2="Available Tokens"
+        tokenBal={walletBalBuyFlow}
+        btn1OnClick={() => {
+          setShowSecondModal(false)
+        }}
+        showModal={showSecondModal}
+        setShowModal={setShowSecondModal}
+      />
     </Grid>
   )
 }
