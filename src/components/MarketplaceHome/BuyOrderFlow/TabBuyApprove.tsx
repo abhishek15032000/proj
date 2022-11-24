@@ -37,7 +37,7 @@ const TabBuyApprove = () => {
       setShowSecondModal(true)
       return
     }
-    requestApprovalForTokenBuy
+    requestApprovalForTokenBuy()
   }
 
   return (
