@@ -386,7 +386,11 @@ export const cancelOrder = async (payload: any) => {
     }
     const cancelOrderRes = await marketplaceCalls.cancelOrder(payload2)
     if (cancelOrderRes.success) {
-      store.dispatch(setMarketplaceModalMessage('Sell order Cancelled.'))
+      store.dispatch(
+        setMarketplaceModalMessage(
+          'Sell order Cancelled. Cancelled Token Amount will reflect in your "Balance on Exchange" amount.'
+        )
+      )
       store.dispatch(setShowMarketplaceMsgModal(true))
     }
   }
