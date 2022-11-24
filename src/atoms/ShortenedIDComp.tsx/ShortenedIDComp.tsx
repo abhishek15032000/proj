@@ -11,8 +11,15 @@ interface ShortenedIDCompProps {
 }
 
 const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
+  const [onHoverText, setOnHoverText] = useState('Copy To Clipboard')
   const [show, setShow] = useState<boolean>(false)
   const [show2, setShow2] = useState<boolean>(false)
+
+  const changeOnHoverText = () => {
+    setTimeout(() => {
+      setOnHoverText('Copy To Clipboard')
+    }, 3000)
+  }
 
   return (
     <Box>
@@ -42,7 +49,11 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
               cursor: 'pointer',
               ml: 1,
             }}
-            onClick={() => navigator.clipboard.writeText(referenceId)}
+            onClick={() => {
+              navigator.clipboard.writeText(referenceId)
+              setOnHoverText('Copied!')
+              changeOnHoverText()
+            }}
             onMouseEnter={() => setShow2(true)}
             onMouseLeave={() => setShow2(false)}
           />
@@ -67,10 +78,11 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
       {show2 && (
         <Paper
           sx={{
-            width: '150px',
-            // width: 'fit-content',
+            // width: '150px',
+            width: 'fit-content',
             ml: 3,
-            p: 1,
+            py: 1,
+            px: 2,
             position: 'absolute',
             zIndex: '1000',
             borderRadius: 2,
@@ -78,7 +90,7 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
             fontSize: 14,
           }}
         >
-          Copy To Clipboard
+          {onHoverText}
         </Paper>
       )}
     </Box>

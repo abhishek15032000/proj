@@ -54,57 +54,79 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
     getTransactions()
   }, [])
 
+  const getTransactionName = (type: string) => {
+    switch (type) {
+      case 'Make': {
+        return 'Sell'
+      }
+      case 'Fill': {
+        return 'Buy'
+      }
+      case 'Cancel': {
+        return 'Cancel'
+      }
+    }
+  }
   const loadTableData = (transactionsData: any) => {
     const tableData: any = []
 
-    transactionsData.reverse().map((item: any, index: number) => {
-      const amountTaken =
-        item.transaction_data?.values?.amountTaken !== undefined
-          ? item.transaction_data?.values?.amountTaken
-          : '-'
+    // MintCarbonToken ProjectCreated
+    transactionsData
+      .reverse()
+      .filter(
+        (item: any) =>
+          !['MintCarbonToken', 'ProjectCreated'].includes(
+            item.transaction_data?.name
+          )
+      )
+      .map((item: any, index: number) => {
+        const amountTaken =
+          item.transaction_data?.values?.amountTaken !== undefined
+            ? item.transaction_data?.values?.amountTaken
+            : '-'
 
-      const amountFilled =
-        item.transaction_data?.values?.amountFilled !== undefined
-          ? item.transaction_data?.values?.amountFilled
-          : '-'
+        const amountFilled =
+          item.transaction_data?.values?.amountFilled !== undefined
+            ? item.transaction_data?.values?.amountFilled
+            : '-'
 
-      const unitPrice =
-        Number(item.transaction_data?.values?.amountFilled) /
-        Number(item.transaction_data?.values?.amountTaken)
+        const unitPrice =
+          Number(item.transaction_data?.values?.amountFilled) /
+          Number(item.transaction_data?.values?.amountTaken)
 
-      tableData.push([
-        <ShortenedIDComp
-          key={index}
-          referenceId={item.transaction_id}
-          width="fit-content"
-        />,
-        item.transaction_data?.name === 'Make' ? 'Sell' : 'Buy',
-        moment.unix(item.transaction_data?.timestamp).format('DD/MM/YYYY'),
-        moment.unix(item.transaction_data?.timestamp).format('HH:mm:ss'),
-        amountTaken,
-        isNaN(unitPrice) ? '-' : unitPrice,
-        amountFilled,
-        <Typography
-          key={1}
-          sx={{
-            fontSize: 14,
-            fontWeight: 600,
-            textDecoration: 'underline',
-            color: Colors.textColorLightGreen,
-            cursor: 'pointer',
-          }}
-          onClick={() =>
-            navigate(pathNames.TRANSACTION_HISTORY, {
-              state: {
-                transactionDetails: item,
-              },
-            })
-          }
-        >
-          View
-        </Typography>,
-      ])
-    })
+        tableData.push([
+          <ShortenedIDComp
+            key={index}
+            referenceId={item.transaction_id}
+            width="fit-content"
+          />,
+          getTransactionName(item.transaction_data?.name),
+          moment.unix(item.transaction_data?.timestamp).format('DD/MM/YYYY'),
+          moment.unix(item.transaction_data?.timestamp).format('HH:mm:ss'),
+          amountTaken,
+          isNaN(unitPrice) ? '-' : unitPrice,
+          amountFilled,
+          <Typography
+            key={1}
+            sx={{
+              fontSize: 14,
+              fontWeight: 600,
+              textDecoration: 'underline',
+              color: Colors.textColorLightGreen,
+              cursor: 'pointer',
+            }}
+            onClick={() =>
+              navigate(pathNames.TRANSACTION_HISTORY, {
+                state: {
+                  transactionDetails: item,
+                },
+              })
+            }
+          >
+            View
+          </Typography>,
+        ])
+      })
 
     if (tableData.length > 0) {
       setTableRow(tableData)
