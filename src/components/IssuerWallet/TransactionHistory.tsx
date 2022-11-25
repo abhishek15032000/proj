@@ -28,11 +28,12 @@ import BlockchainCalls from '../../blockchain/Blockchain'
 
 const headings = [
   'Transaction ID',
-  'Buy/Sell',
+  // 'Buy/Sell',
+  'Transaction Type',
   'Date',
   'Time',
   'Quantity(VCOT)',
-  'Unit Price(USD)',
+  'Unit Price',
   'Total Amount',
   'Details',
 ]
@@ -65,6 +66,9 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
       case 'Cancel': {
         return 'Cancel'
       }
+      case 'BurnCarbonToken': {
+        return 'Token Retired'
+      }
     }
   }
   const loadTableData = (transactionsData: any) => {
@@ -80,9 +84,13 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
           )
       )
       .map((item: any, index: number) => {
+        const amountKeyName =
+          item.transaction_data?.name === 'BurnCarbonToken'
+            ? 'amount'
+            : 'amountTaken'
         const amountTaken =
-          item.transaction_data?.values?.amountTaken !== undefined
-            ? item.transaction_data?.values?.amountTaken
+          item.transaction_data?.values[amountKeyName] !== undefined
+            ? item.transaction_data?.values[amountKeyName]
             : '-'
 
         const amountFilled =
