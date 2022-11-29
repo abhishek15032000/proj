@@ -2,7 +2,7 @@ import { KeyboardArrowLeft } from '@mui/icons-material'
 import { Box, Divider } from '@mui/material'
 import React, { FC } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import SectionWiseContent from '../SectionWiseContent'
+import SectionWiseContent from './SectionWiseContent'
 
 interface HelpContentProps {
   closeMenu: any

@@ -1,6 +1,6 @@
 import { Grid, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CCInputField from '../../../atoms/CCInputField'
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
@@ -9,10 +9,12 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setA1 } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const SectionA1 = () => {
   const dispatch: any = useAppDispatch()
-
+  const [modal, setModal] = useState(true)
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
@@ -193,6 +195,11 @@ const SectionA1 = () => {
           required={false}
         />
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.A1}
+      />
     </Grid>
   )
 }

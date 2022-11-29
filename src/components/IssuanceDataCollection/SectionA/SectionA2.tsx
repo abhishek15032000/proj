@@ -11,10 +11,12 @@ import { setA2 } from '../../../redux/Slices/sectionASlice'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import Spinner from '../../../atoms/Spinner'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const SectionA2 = () => {
   const dispatch = useAppDispatch()
-
+  const [modal, setModal] = useState(true)
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
@@ -163,6 +165,11 @@ const SectionA2 = () => {
           }}
         />
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.A2}
+      />
     </Grid>
   )
 }
