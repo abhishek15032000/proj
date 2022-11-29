@@ -83,8 +83,8 @@ const HelpPopUp: FC<HelpPopUpProps> = (props) => {
           <Divider sx={{ mt: 2, color: '#E8E8E8' }} />
         </Box>
 
-        <IssuanceSectionWiseContent data={data} />
-        {/* <DashboardHelpSection data={DashboardHelpSectionFAQ} /> */}
+        {/* <IssuanceSectionWiseContent data={data} /> */}
+        <DashboardHelpSection data={DashboardHelpSectionFAQ} />
       </Paper>
     </Modal>
   )
