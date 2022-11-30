@@ -7,6 +7,9 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setProjectParticipants } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const SectionA3 = () => {
   const dispatch = useAppDispatch()
@@ -16,6 +19,13 @@ const SectionA3 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
 
   const party_and_project_participants = useAppSelector(
     ({ sectionA }) => sectionA.party_and_project_participants,
@@ -193,6 +203,12 @@ const SectionA3 = () => {
       >
         + Add more participants
       </CCButton>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.A3}
+        issuanceVisible={true}
+      />
     </Box>
   )
 }

@@ -7,6 +7,8 @@ interface MonthlyReportUpdateReducerInterface {
   currentProjectDetailsUUID: string
   mainProjectDetails: any
   showMandatoryFieldModal: boolean
+  isApiCallSuccess: boolean
+  toMoveSectionIndex: boolean
 }
 const initialState: MonthlyReportUpdateReducerInterface = {
   sectionIndex: 0,
@@ -15,6 +17,8 @@ const initialState: MonthlyReportUpdateReducerInterface = {
   currentProjectDetailsUUID: '',
   mainProjectDetails: null,
   showMandatoryFieldModal: false,
+  isApiCallSuccess: false,
+  toMoveSectionIndex: false,
 }
 const MonthlyReportUpdate = createSlice({
   name: 'MonthlyReportUpdate',
@@ -38,6 +42,12 @@ const MonthlyReportUpdate = createSlice({
     setShowMandatoryFieldModal: (state, action: PayloadAction<any>) => {
       state.showMandatoryFieldModal = action.payload
     },
+    setIsApiCallSuccess: (state, action: PayloadAction<any>) => {
+      state.isApiCallSuccess = action.payload
+    },
+    setToMoveSectionIndex: (state, action: PayloadAction<any>) => {
+      state.toMoveSectionIndex = action.payload
+    },
   },
 })
 
@@ -48,6 +58,8 @@ export const {
   setShowMandatoryFieldModal,
   setCurrentProjectDetailsUUID,
   setMainProjectDetails,
+  setIsApiCallSuccess,
+  setToMoveSectionIndex,
 } = MonthlyReportUpdate.actions
 
 export default MonthlyReportUpdate.reducer

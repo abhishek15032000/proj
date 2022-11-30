@@ -22,6 +22,9 @@ import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
 import Spinner from '../../../atoms/Spinner'
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 interface methodologiesInterface {
   approvedMethodologies: string
@@ -38,6 +41,14 @@ const SectionA4 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
+
   useEffect(() => {
     if (currentProjectDetails.section_a.step4.completed) {
       const { methodologies } = currentProjectDetails.section_a.step4
@@ -438,6 +449,12 @@ const SectionA4 = () => {
         >
           + Add More Methodology
         </CCButton>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.A4}
+          issuanceVisible={true}
+        />
       </Grid>
     </>
   )

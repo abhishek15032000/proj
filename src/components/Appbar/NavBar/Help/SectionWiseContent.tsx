@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import { Colors, Images } from '../../../theme'
-import { HelpContentData } from './Help/helpContentData'
+import { Colors, Images } from '../../../../theme'
+import { HelpContentData } from './helpContentData'
 
 const SectionWiseContent = () => {
   const [data, setData] = useState<any>(null)

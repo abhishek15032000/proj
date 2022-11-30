@@ -35,6 +35,7 @@ export const pathNames = {
   TOKENS_RETIREMENT: '/token-retirement',
   RESET_PASSWORD: '/reset-password',
   PROFILE: '/profile',
+  HELP_CENTER: '/help-center',
 }
 
 export const linkLabels = {

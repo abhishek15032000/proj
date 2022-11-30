@@ -28,9 +28,15 @@ const OrganisationalDetails = (props: OrganisationalDetailsProps) => {
   const [loading, setLoading] = useState(false)
   const [fullName, setFullName] = useState('')
   useEffect(() => {
+    setLoading(true)
     USER.getUserInfo(getLocalItem('userDetails').uuid).then((response) => {
       console.log('user', response)
+      setLoading(false)
       setFullName(response?.data?.data?.fullName)
+      setOrganisationName(response?.data?.data?.organisationName)
+      setWebsite(response?.data?.data?.website)
+      setSector(response?.data?.data?.sector)
+      setHeadquarters(response?.data?.data?.address)
     })
   }, [])
 
