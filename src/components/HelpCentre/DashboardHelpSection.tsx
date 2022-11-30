@@ -2,21 +2,20 @@ import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { FC, useEffect, useState } from 'react'
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye'
-import { IssuanceHelpContentData } from './SectionA/helpContentData'
-import { Colors, Images } from '../../../../theme'
+
+import { Colors, Images } from '../../theme'
 import { useNavigate } from 'react-router-dom'
-import { pathNames } from '../../../../routes/pathNames'
-import { useAppDispatch } from '../../../../hooks/reduxHooks'
-import { setShowPopUp } from '../../../../redux/Slices/issuanceDataCollection'
+import { pathNames } from '../../routes/pathNames'
 interface DashboardHelpSectionProps {
   modal?: any
 
   data?: any
+  setQuestions?: any
+  selectQuestion?: any
 }
 const DashboardHelpSection: FC<DashboardHelpSectionProps> = (props) => {
-  const { data } = props
+  const { data, setQuestions, selectQuestion } = props
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
 
   return (
     <Box sx={{ height: '100%', width: '100%' }}>
@@ -46,11 +45,13 @@ const DashboardHelpSection: FC<DashboardHelpSectionProps> = (props) => {
                   alignItems: 'center',
                   py: 2,
                   cursor: 'pointer',
+                  backgroundColor:
+                    selectQuestion === index
+                      ? Colors.lightGreenBackground3
+                      : Colors.white,
+                  borderRadius: 2,
                 }}
-                onClick={() => {
-                  navigate(pathNames.HELP_CENTER)
-                  dispatch(setShowPopUp(false))
-                }}
+                onClick={() => setQuestions(index)}
               >
                 <PanoramaFishEyeIcon
                   style={{
@@ -69,35 +70,6 @@ const DashboardHelpSection: FC<DashboardHelpSectionProps> = (props) => {
                 </Typography>
               </Box>
             ))}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              py: 2,
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              navigate(pathNames.HELP_CENTER)
-              dispatch(setShowPopUp(false))
-            }}
-          >
-            <img
-              src={Images.OpenExternallyIcon}
-              width="20px"
-              height={'20px'}
-              style={{ cursor: 'pointer' }}
-            />
-            <Typography
-              sx={{
-                fontSize: 16,
-                fontWeight: 500,
-                color: Colors.darkGreen,
-                ml: 2,
-              }}
-            >
-              {'View in our Help Center'}
-            </Typography>
-          </Box>
         </Box>
       )}
     </Box>

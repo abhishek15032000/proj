@@ -20,6 +20,7 @@ import SavedAccountPopup from './SavedAccountPopup'
 import TransactionHistoryTable from './TransactionHistory'
 import WithdrawPopup from './WithdrawPopup'
 import LoaderOverlay from '../../components/LoderOverlay'
+import { getBalanceOnExchange } from '../../utils/Marketplace/marketplaceSellFlow.util'
 const stats = [
   {
     title: WalletStats.WALLET_BALANCE,
@@ -89,6 +90,12 @@ const IssuerWallet = (props: IssuerWalletProps) => {
     const addAccountDetails = { ...BankDetailsData }
     setBankDetailsData({ ...addAccountDetails, [key]: value })
   }
+
+  useEffect(() => {
+    if (accountAddress) {
+      getBalanceOnExchange()
+    }
+  }, [accountAddress])
 
   useEffect(() => {
     if (dashboardStatistics && exchangeBal) {

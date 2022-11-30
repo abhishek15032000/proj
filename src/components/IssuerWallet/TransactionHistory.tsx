@@ -43,8 +43,8 @@ interface TransactionHistoryProps {}
 const TransactionHistory = (props: TransactionHistoryProps) => {
   const navigate = useNavigate()
 
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(new Date())
+  const [startDate, setStartDate] = useState<Date | null>()
+  const [endDate, setEndDate] = useState<Date | null>()
   const [dropdown, setDropdown] = useState('All')
   const [transactionLoading, setTransactionLoading] = useState(false)
   const [transactions, setTransactions] = useState<any>(null)
@@ -268,6 +268,7 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
             <DatePicker
               label="Start Date"
               value={startDate}
+              maxDate={endDate ? endDate : undefined}
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,
               }}
@@ -292,6 +293,7 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
             <DatePicker
               label="End Date"
               value={endDate}
+              minDate={startDate ? startDate : undefined}
               components={{
                 OpenPickerIcon: CalendarMonthOutlinedIcon,
               }}
@@ -315,10 +317,10 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
           <TextButton
             title="Search"
             sx={{
-              backgroundColor: Colors.darkOrangeBackground,
+              backgroundColor: Colors.darkPrimary1,
               boxShadow: 3,
             }}
-            textStyle={{ color: Colors.textColorDarkGreen }}
+            textStyle={{ color: Colors.white }}
             onClick={getFilterResults}
           />
         </Box>

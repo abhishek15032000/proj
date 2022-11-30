@@ -17,7 +17,19 @@ import SampleProject3 from '../assets/Images/sample-project/sample-proj-3.png'
 import SampleProject4 from '../assets/Images/sample-project/sample-proj-4.png'
 import SampleProject5 from '../assets/Images/sample-project/sample-proj-5.png'
 import SampleProject6 from '../assets/Images/sample-project/sample-proj-6.png'
-
+import INTROEMPTY from '../assets/Images/help/INTROEMPTY.png'
+import INTROFILLED from '../assets/Images/help/INTROFILLED.png'
+import A1EMPTY from '../assets/Images/help/A1EMPTY.png'
+import A1FILLED from '../assets/Images/help/A1FILLED.png'
+import A2EMPTY from '../assets/Images/help/A2EMPTY.png'
+import A2FILLED from '../assets/Images/help/A2FILLED.png'
+import A3EMPTY from '../assets/Images/help/A3EMPTY.png'
+import A3FILLED from '../assets/Images/help/A3FILLED.png'
+import A4EMPTY from '../assets/Images/help/A4EMPTY.png'
+import A4FILLED from '../assets/Images/help/A4FILLED.png'
+import A5EMPTY from '../assets/Images/help/A5EMPTY.png'
+import A5FILLED from '../assets/Images/help/A5FILLED.png'
+import List from '../assets/Images/help/List.png'
 export const Images = {
   logo,
   illustration1,
@@ -38,4 +50,17 @@ export const Images = {
   SampleProject4,
   SampleProject5,
   SampleProject6,
+  INTROEMPTY,
+  INTROFILLED,
+  A1EMPTY,
+  A1FILLED,
+  A2EMPTY,
+  A2FILLED,
+  A3EMPTY,
+  A3FILLED,
+  A4EMPTY,
+  A4FILLED,
+  A5EMPTY,
+  A5FILLED,
+  List,
 }

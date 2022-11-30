@@ -6,6 +6,8 @@ import MonthlyReportUpdate, {
   setSectionIndex,
   setSubSectionIndex,
   setShowMandatoryFieldModal,
+  setIsApiCallSuccess,
+  setToMoveSectionIndex,
 } from '../redux/Slices/MonthlyReportUpdate'
 import { setLoading, setNewProjectUUID } from '../redux/Slices/SelectDateSlice'
 import { setEndDate } from '../redux/Slices/SelectDateSlice'
@@ -531,13 +533,15 @@ export const moveToNextSection = async (
 }
 
 const getProjectDetails = async (projectID: string) => {
+  const MonthlyReportUpdate: any = store.getState()?.MonthlyReportUpdate
+  const { toMoveSectionIndex } = MonthlyReportUpdate
   try {
     dispatch(setLoading(true))
     const res = await dataCollectionCalls.getProjectById(projectID)
 
     if (res?.success && res?.data) {
       const modifiedRows = addSectionPercentagesMonthly(res?.data)
-
+      toMoveSectionIndex && dispatch(setIsApiCallSuccess(true))
       if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
     }
 
@@ -547,6 +551,7 @@ const getProjectDetails = async (projectID: string) => {
   } catch (e) {
     console.log('Error in dataCollectionCalls.getProjectById api ~ ', e)
   } finally {
+    dispatch(setToMoveSectionIndex(false))
     dispatch(setLoading(false))
   }
 }

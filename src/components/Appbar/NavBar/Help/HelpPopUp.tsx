@@ -13,10 +13,12 @@ interface HelpPopUpProps {
   modal?: any
   setModal?: any
   data?: any
+  issuanceVisible?: any
+  dashboardVisible?: any
 }
 const HelpPopUp: FC<HelpPopUpProps> = (props) => {
   const location = useLocation()
-  const { modal, setModal, data } = props
+  const { modal, setModal, data, issuanceVisible, dashboardVisible } = props
 
   return (
     <Modal
@@ -43,7 +45,7 @@ const HelpPopUp: FC<HelpPopUpProps> = (props) => {
           // alignItems: 'center',
           // justifyContent: 'center',
           borderRadius: 3,
-          width: '30%',
+          width: '50%',
           height: '100%',
           outline: 'none',
           overflowY: 'scroll',
@@ -83,8 +85,8 @@ const HelpPopUp: FC<HelpPopUpProps> = (props) => {
           <Divider sx={{ mt: 2, color: '#E8E8E8' }} />
         </Box>
 
-        {/* <IssuanceSectionWiseContent data={data} /> */}
-        <DashboardHelpSection data={DashboardHelpSectionFAQ} />
+        {issuanceVisible ? <IssuanceSectionWiseContent data={data} /> : null}
+        {dashboardVisible ? <DashboardHelpSection data={data} /> : null}
       </Paper>
     </Modal>
   )

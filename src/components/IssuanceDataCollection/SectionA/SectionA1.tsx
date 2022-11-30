@@ -11,16 +11,23 @@ import { setA1 } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 const SectionA1 = () => {
   const dispatch: any = useAppDispatch()
-  const [modal, setModal] = useState(true)
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
 
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -199,6 +206,7 @@ const SectionA1 = () => {
         modal={modal}
         setModal={(item: any) => setModal(item)}
         data={IssuanceHelpContentData?.A1}
+        issuanceVisible={true}
       />
     </Grid>
   )

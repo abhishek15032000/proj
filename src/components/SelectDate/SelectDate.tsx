@@ -71,7 +71,14 @@ const SelectDate = () => {
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,
           }}
-          renderInput={(params) => <CCInputField {...params} />}
+          renderInput={(params) => (
+            <CCInputField
+              {...params}
+              InputLabelProps={{
+                style: { color: '#3F4946' },
+              }}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={6} md={6}>
@@ -85,7 +92,14 @@ const SelectDate = () => {
           components={{
             OpenPickerIcon: CalendarMonthOutlinedIcon,
           }}
-          renderInput={(params) => <CCInputField {...params} />}
+          renderInput={(params) => (
+            <CCInputField
+              {...params}
+              InputLabelProps={{
+                style: { color: '#3F4946' },
+              }}
+            />
+          )}
         />
       </Grid>
     </Grid>

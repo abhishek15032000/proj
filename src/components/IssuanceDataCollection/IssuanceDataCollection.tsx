@@ -589,6 +589,8 @@ const IssuanceDataCollection = () => {
                   backgroundColor: '#DAF7F0',
                   borderBottom: '2px solid #005046',
                   borderRadius: '6px 6px 0 0',
+                  color: '#1D4B44',
+                  fontWeight: 500,
                 }}
               >
                 {getSectionName()}

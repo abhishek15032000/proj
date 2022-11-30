@@ -9,6 +9,9 @@ import { shallowEqual } from 'react-redux'
 import { setA5 } from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
 import moment from 'moment'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 const SectionA5 = () => {
   const dispatch = useAppDispatch()
@@ -18,6 +21,13 @@ const SectionA5 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
 
   const A5 = useAppSelector(({ sectionA }) => sectionA.A5, shallowEqual)
   const loading = useAppSelector(
@@ -165,6 +175,12 @@ const SectionA5 = () => {
             }
           />
         </Grid>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.A5}
+          issuanceVisible={true}
+        />
       </Grid>
     </>
   )

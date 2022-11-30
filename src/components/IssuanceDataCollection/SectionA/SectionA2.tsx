@@ -13,15 +13,23 @@ import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import Spinner from '../../../atoms/Spinner'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 const SectionA2 = () => {
   const dispatch = useAppDispatch()
-  const [modal, setModal] = useState(true)
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
   const A2 = useAppSelector(({ sectionA }) => sectionA.A2)
 
   const { file_attach } = A2
@@ -169,6 +177,7 @@ const SectionA2 = () => {
         modal={modal}
         setModal={(item: any) => setModal(item)}
         data={IssuanceHelpContentData?.A2}
+        issuanceVisible={true}
       />
     </Grid>
   )
