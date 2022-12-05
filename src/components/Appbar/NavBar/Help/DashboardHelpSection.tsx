@@ -48,7 +48,7 @@ const DashboardHelpSection: FC<DashboardHelpSectionProps> = (props) => {
                   cursor: 'pointer',
                 }}
                 onClick={() => {
-                  navigate(pathNames.HELP_CENTER)
+                  navigate(pathNames.HELP_CENTER, { state: index })
                   dispatch(setShowPopUp(false))
                 }}
               >

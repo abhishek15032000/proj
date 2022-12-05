@@ -25,12 +25,13 @@ import {
 } from '../Appbar/NavBar/Help/SectionA/helpContentData'
 
 import IssuanceAllSectionContent from '../Appbar/NavBar/Help/IssuanceAllSectionContent'
+import WalletAdd from './WalletAdd'
 
 const HelpCentre = (props: HelpCentreProps) => {
   const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
-  const [selectQuestion, setQuestions] = useState(1)
+  const [selectQuestion, setQuestions] = useState(0)
   if (loading) {
     return (
       <Stack
@@ -44,13 +45,20 @@ const HelpCentre = (props: HelpCentreProps) => {
   } else {
     return (
       <Box sx={{ p: 0 }}>
-        <BackHeader title="Help Centre" onClick={() => navigate(-1)} />
+        <BackHeader
+          title="Help Centre"
+          onClick={() => navigate(-1)}
+          sx={{
+            position: 'fixed',
+            marginTop: '-20px',
+          }}
+        />
         <Grid
           container
           xs={12}
           sx={{ p: 0, border: '0px solid', width: '100%' }}
         >
-          <Grid item xs={12} sx={{ p: 1 }}>
+          <Grid item xs={12} sx={{ p: 1, mt: '20px' }}>
             <Paper
               sx={{
                 // height: '750px',
@@ -60,21 +68,34 @@ const HelpCentre = (props: HelpCentreProps) => {
                 borderRadius: '8px',
                 // border: '2px solid',
                 backgroundColor: Colors.white,
+
                 p: 2,
               }}
             >
-              <Box sx={{ width: '30%' }}>
+              <Box
+                sx={{
+                  width: '25%',
+                  position: 'fixed',
+                  zIndex: 10,
+                  height: '100%',
+                }}
+              >
                 <DashboardHelpSection
                   data={DashboardHelpSectionFAQ}
                   setQuestions={(item: any) => setQuestions(item)}
                   selectQuestion={selectQuestion}
                 />
               </Box>
-              <Box sx={{ width: '50px', alignItems: 'center' }}>
+              <Box sx={{ width: '50px', alignItems: 'center', ml: '30%' }}>
                 <Divider sx={{ color: '#E8E8E8' }} orientation={'vertical'} />
               </Box>
-              <Box sx={{ width: '60%', ml: 3 }}>
-                <IssuanceAllSectionContent data={HelpContentIssuanceAllData} />
+              <Box sx={{ width: '65%', ml: 3 }}>
+                {selectQuestion === 0 ? <WalletAdd /> : null}
+                {selectQuestion === 1 ? (
+                  <IssuanceAllSectionContent
+                    data={HelpContentIssuanceAllData}
+                  />
+                ) : null}
               </Box>
             </Paper>
           </Grid>

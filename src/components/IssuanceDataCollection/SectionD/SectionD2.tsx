@@ -22,6 +22,9 @@ import sampleD2 from '../../../assets/Images/sample-d2.png'
 import sampleD3 from '../../../assets/Images/sample-d3.png'
 import sampleD4 from '../../../assets/Images/sample-d4.png'
 import Spinner from '../../../atoms/Spinner'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 const SectionD2: FC = () => {
   const dispatch = useAppDispatch()
@@ -33,6 +36,13 @@ const SectionD2: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
 
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
@@ -125,6 +135,12 @@ const SectionD2: FC = () => {
           }}
         />
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.D2}
+        issuanceVisible={true}
+      />
     </Grid>
   )
 }

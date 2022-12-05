@@ -8,6 +8,9 @@ import { setE3 } from '../../../redux/Slices/sectionESlice'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
 import Spinner from '../../../atoms/Spinner'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const SectionE3 = () => {
   const dispatch = useAppDispatch()
@@ -25,6 +28,12 @@ const SectionE3 = () => {
     shallowEqual
   )
 
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
   useEffect(() => {
     if (
       currentProjectDetails &&
@@ -85,6 +94,12 @@ const SectionE3 = () => {
           }}
         />
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.E3}
+        issuanceVisible={true}
+      />
     </Grid>
   )
 }

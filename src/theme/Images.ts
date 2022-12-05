@@ -29,6 +29,32 @@ import A4EMPTY from '../assets/Images/help/A4EMPTY.png'
 import A4FILLED from '../assets/Images/help/A4FILLED.png'
 import A5EMPTY from '../assets/Images/help/A5EMPTY.png'
 import A5FILLED from '../assets/Images/help/A5FILLED.png'
+import B1EMPTY from '../assets/Images/help/B1EMPTY.png'
+import B1FILLED from '../assets/Images/help/B1FILLED.png'
+import B2EMPTY from '../assets/Images/help/B2EMPTY.png'
+import B2FILLED from '../assets/Images/help/B2FILLED.png'
+import C1EMPTY from '../assets/Images/help/C1EMPTY.png'
+import C1FILLED from '../assets/Images/help/C1FILLED.png'
+import E1EMPTY from '../assets/Images/help/E1EMPTY.png'
+import E1FILLED from '../assets/Images/help/E1FILLED.png'
+import E2EMPTY from '../assets/Images/help/E2EMPTY.png'
+import E2FILLED from '../assets/Images/help/E2FILLED.png'
+import E3EMPTY from '../assets/Images/help/E3EMPTY.png'
+import E3FILLED from '../assets/Images/help/E3FILLED.png'
+import E4EMPTY from '../assets/Images/help/E4EMPTY.png'
+import E4FILLED from '../assets/Images/help/E4FILLED.png'
+import E5EMPTY from '../assets/Images/help/E5EMPTY.png'
+import E5FILLED from '../assets/Images/help/E5FILLED.png'
+import E6EMPTY from '../assets/Images/help/E6EMPTY.png'
+import E6FILLED from '../assets/Images/help/E6FILLED.png'
+import E7EMPTY from '../assets/Images/help/E7EMPTY.png'
+import E7FILLED from '../assets/Images/help/E7FILLED.png'
+import D1EMPTY from '../assets/Images/help/D1EMPTY.png'
+import D1FILLED from '../assets/Images/help/D1FILLED.png'
+import D2EMPTY from '../assets/Images/help/D2EMPTY.png'
+import D2FILLED from '../assets/Images/help/D2FILLED.png'
+import D3EMPTY from '../assets/Images/help/D3EMPTY.png'
+import D3FILLED from '../assets/Images/help/D3FILLED.png'
 import List from '../assets/Images/help/List.png'
 export const Images = {
   logo,
@@ -62,5 +88,30 @@ export const Images = {
   A4FILLED,
   A5EMPTY,
   A5FILLED,
-  List,
+  B1EMPTY,
+  B1FILLED,
+  B2EMPTY,
+  B2FILLED,
+  C1EMPTY,
+  C1FILLED,
+  E1EMPTY,
+  E1FILLED,
+  E2EMPTY,
+  E2FILLED,
+  E3EMPTY,
+  E3FILLED,
+  E4EMPTY,
+  E4FILLED,
+  E5EMPTY,
+  E5FILLED,
+  E6EMPTY,
+  E6FILLED,
+  E7EMPTY,
+  E7FILLED,
+  D1EMPTY,
+  D1FILLED,
+  D2EMPTY,
+  D2FILLED,
+  D3EMPTY,
+  D3FILLED,
 }

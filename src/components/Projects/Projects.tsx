@@ -20,10 +20,7 @@ import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlic
 import { Colors } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 import HelpPopUp from '../Appbar/NavBar/Help/HelpPopUp'
-import {
-  DashboardHelpContentData,
-  DashboardHelpSectionFAQ,
-} from '../Appbar/NavBar/Help/SectionA/helpContentData'
+import { DashboardHelpSectionFAQ } from '../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const Projects = () => {
   const navigate = useNavigate()
