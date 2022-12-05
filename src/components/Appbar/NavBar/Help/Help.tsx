@@ -5,20 +5,29 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import HelpContent from './HelpContent'
 import { useLocation } from 'react-router-dom'
 import { pathNames } from '../../../../routes/pathNames'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import { setShowPopUp } from '../../../../redux/Slices/issuanceDataCollection'
 
 const Help = () => {
   const location = useLocation()
+  const dispatch: any = useAppDispatch()
+  const showPopUp = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp,
+    shallowEqual
+  )
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (location.pathname === pathNames.ISSUANCE_DATA_COLLECTION)
-      setAnchorEl(event.currentTarget)
+    // if (location.pathname === pathNames.ISSUANCE_DATA_COLLECTION)
+    //   setAnchorEl(event.currentTarget)
+    dispatch(setShowPopUp(true))
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
+    dispatch(setShowPopUp(false))
   }
 
   return (
@@ -44,29 +53,6 @@ const Help = () => {
         <HelpOutlineOutlinedIcon />
         <Typography sx={{ mx: 1, fontWeight: 500 }}>Help</Typography>
       </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-        sx={{
-          boxShadow: 'none',
-          '.MuiMenu-paper': {
-            boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-            borderRadius: '16px',
-            py: 2,
-            px: 2,
-            height: '100%',
-          },
-        }}
-      >
-        <Box sx={{ width: '400px', borderRadius: '16px' }}>
-          <HelpContent closeMenu={handleClose} />
-        </Box>
-      </Menu>
     </Box>
   )
 }

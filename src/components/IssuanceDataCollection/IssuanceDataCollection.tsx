@@ -185,7 +185,8 @@ const IssuanceDataCollection = () => {
   const [sectionIndexState, setSectionIndexState] = useState<number>()
   const [changeInSection, setChangeInSection] = useState<boolean>(false)
   const [blockRouting, setBlockRouting] = useState<boolean>(false)
-
+  const [onHoverText, setOnHoverText] = useState('Copy To Clipboard')
+  const [show, setShow] = useState<boolean>(false)
   useEffect(() => {
     return () => {
       dispatch(resetSectionA())
@@ -218,6 +219,12 @@ const IssuanceDataCollection = () => {
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
+  }
+
+  const changeOnHoverText = () => {
+    setTimeout(() => {
+      setOnHoverText('Copy To Clipboard')
+    }, 3000)
   }
 
   const handleSave = () => {
@@ -589,6 +596,8 @@ const IssuanceDataCollection = () => {
                   backgroundColor: '#DAF7F0',
                   borderBottom: '2px solid #005046',
                   borderRadius: '6px 6px 0 0',
+                  color: '#1D4B44',
+                  fontWeight: 500,
                 }}
               >
                 {getSectionName()}
@@ -763,13 +772,38 @@ const IssuanceDataCollection = () => {
             borderRadius: '16px',
             cursor: 'pointer',
           }}
+          onMouseEnter={() => setShow(true)}
+          onMouseLeave={() => setShow(false)}
           onClick={() => {
             navigate(pathNames.ISSUANCE_DATA_COLLECTION_HELP)
+            changeOnHoverText()
           }}
         >
           <Box sx={{ display: 'flex', height: '100%' }}>
             <img src={Images.HelpIcon} width="24px" height={'24px'} />
           </Box>
+          {show && (
+            <Typography
+              sx={{
+                position: 'absolute',
+                right: 0,
+                bottom: 0,
+                marginBottom: '50px',
+
+                color: Colors.black,
+                backgroundColor: 'white',
+                fontSize: 14,
+                fontWeight: 400,
+                width: '150px',
+                borderRadius: '3px',
+                textAlign: 'center',
+                p: 3,
+                mr: -2,
+              }}
+            >
+              View Sample Report
+            </Typography>
+          )}
           <Typography
             sx={{
               ml: 1,

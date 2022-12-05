@@ -5,6 +5,9 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setD3 } from '../../../redux/Slices/sectionDSlice'
 import Spinner from '../../../atoms/Spinner'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 const SectionD3: FC = () => {
   const dispatch = useAppDispatch()
@@ -16,6 +19,13 @@ const SectionD3: FC = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
 
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
@@ -64,6 +74,12 @@ const SectionD3: FC = () => {
         onChange={({ target: { name, value } }) =>
           dispatch(setD3({ name, value }))
         }
+      />
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.D3}
+        issuanceVisible={true}
       />
     </Grid>
   )

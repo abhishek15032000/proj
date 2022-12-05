@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
   setCurrentProjectDetails,
   setSectionIndex,
+  setShowPopUp,
   setSubSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
@@ -18,11 +19,16 @@ import LoaderOverlay from '../LoderOverlay'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 import { Colors } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
+import HelpPopUp from '../Appbar/NavBar/Help/HelpPopUp'
+import { DashboardHelpSectionFAQ } from '../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const Projects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const showPopUp = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
   const [showDashboard, setShowDashboard] = useState<boolean>(false)
   const [loader, setloader] = useState<boolean>(true)
 
@@ -43,6 +49,9 @@ const Projects = () => {
     }, 200)
   }, [showDashboard])
 
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
   //useEffect(()=>{return resetSectionNewProjectDetails},[])
   const listNewProject = () => {
     // dispatch(resetSectionNewProjectDetails())
@@ -105,6 +114,12 @@ const Projects = () => {
               )}
               <ProfileCompletion />
             </Grid>
+            <HelpPopUp
+              modal={showPopUp}
+              setModal={(item: any) => setModal(item)}
+              data={DashboardHelpSectionFAQ}
+              dashboardVisible={true}
+            />
           </Grid>
         </>
       )}

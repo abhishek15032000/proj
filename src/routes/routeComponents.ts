@@ -34,6 +34,7 @@ import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPag
 import BankDetails from '../pages/BankDetails'
 import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
 import Profile from '../pages/Profile'
+import HelpCentre from '../pages/HelpCentre/HelpCentre'
 
 export const privateRouteComponents = [
   {
@@ -205,5 +206,10 @@ export const privateRouteComponents = [
     path: pathNames.PROFILE,
     component: Profile,
     roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.HELP_CENTER,
+    component: HelpCentre,
+    roles: [ROLES.ISSUER],
   },
 ]

@@ -52,7 +52,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   )
 
   const [verifierReports, setVerifierReports] = useState<any>([])
-  const [showTable, setShowTable] = useState<boolean>(false)
+  const [showTable, setShowTable] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
   const [mainProjectData, setMainProjectData] = useState<any>([])
@@ -343,9 +343,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                   alignItems: 'center',
                 }}
               >
-                <Typography
-                  sx={{ fontSize: 16, fontWeight: 500, color: '#005046' }}
-                >
+                <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
                   Reports Submitted
                 </Typography>
 
@@ -416,7 +414,7 @@ const headings = [
   'Report',
   'Version',
   'Status',
-  'VCOT Sequestered',
+  'VCOT Authorised',
   'Report Received',
   'comment Received',
   'Action',

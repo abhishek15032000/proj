@@ -12,6 +12,7 @@ import THTile from '../TransactionHistory/THTile'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useHorizontalScroll } from '../../hooks/useHorizontalScroll'
+import TitleValue from '../Profile/TitleValue'
 interface BankDetailsListProps {
   allAccountList?: any
   updateBankDetails?: any
@@ -97,14 +98,19 @@ const BankDetailsList: FC<BankDetailsListProps> = (props) => {
                     alignItems: 'start',
                   }}
                 >
-                  <Typography
-                    style={{
-                      fontSize: '16px',
-                      fontWeight: '500',
-                    }}
-                  >
-                    {item?.bankName}
-                  </Typography>
+                  <Box sx={{ width: '320px', mt: -2 }}>
+                    <TitleValue title="Bank Name:" value={item?.bankName} />
+                    <TitleValue
+                      title="Bank Number:"
+                      value={item?.accountNumber}
+                    />
+                    <TitleValue
+                      title="Account Owner Name:"
+                      value={item?.name}
+                    />
+                    <TitleValue title="Branch:" value={item?.branch} />
+                    <TitleValue title="IFSC Code:" value={item?.ifscCode} />
+                  </Box>
                   <Box
                     sx={{
                       display: 'flex',
@@ -127,12 +133,6 @@ const BankDetailsList: FC<BankDetailsListProps> = (props) => {
                       <DeleteOutlineIcon color="primary" />
                     </Box>
                   </Box>
-                </Box>
-                <Box sx={{ width: '100%' }}>
-                  <THTile title="Bank Number:" value={item?.accountNumber} />
-                  <THTile title="Account Owner Name:" value={item?.name} />
-                  <THTile title="Branch:" value={item?.branch} />
-                  <THTile title="IFSC Code:" value={item?.ifscCode} />
                 </Box>
               </Grid>
             ))}

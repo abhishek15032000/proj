@@ -17,8 +17,7 @@ const TitleValue: FC<TitleValueProps> = (props) => {
     <Box
       sx={{
         display: 'flex',
-
-        justifyContent: 'sleft',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         marginTop: 2,
       }}
@@ -27,7 +26,7 @@ const TitleValue: FC<TitleValueProps> = (props) => {
         {props.title}
       </Typography>
 
-      <Typography sx={{ fontWeight: 400, fontSize: 14, marginLeft: '30px' }}>
+      <Typography sx={{ fontWeight: 400, fontSize: 14, ml: 1 }}>
         {props.value === undefined || props.value === '' ? '-' : props.value}
       </Typography>
     </Box>

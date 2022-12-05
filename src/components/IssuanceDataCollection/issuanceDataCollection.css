@@ -113,3 +113,10 @@
   color: '#006B5E';
   border: '0px solid white';
 }
+.tab-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #1d4b44;
+}

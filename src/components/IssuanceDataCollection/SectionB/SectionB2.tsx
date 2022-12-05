@@ -12,6 +12,9 @@ import { setB2 } from '../../../redux/Slices/sectionBSlice'
 // Local Components
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import Spinner from '../../../atoms/Spinner'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const SectionB2 = () => {
   const dispatch = useAppDispatch()
@@ -23,6 +26,12 @@ const SectionB2 = () => {
   )
   const B2 = useAppSelector(({ sectionB }) => sectionB.B2, shallowEqual)
 
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -155,6 +164,12 @@ const SectionB2 = () => {
           />
         </Grid>
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.B2}
+        issuanceVisible={true}
+      />
     </Box>
   )
 }

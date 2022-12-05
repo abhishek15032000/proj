@@ -25,9 +25,11 @@ import './MonthlyReportUpdate.css'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
+  setIsApiCallSuccess,
   setSectionIndex,
   setShowMandatoryFieldModal,
   setSubSectionIndex,
+  setToMoveSectionIndex,
 } from '../../redux/Slices/MonthlyReportUpdate'
 // import { moveToNextSection } from '../../utils/MonthlyReportUpdate.utils'
 import CCButton from '../../atoms/CCButton'
@@ -196,6 +198,16 @@ const MonthlyReportUpdate = () => {
     shallowEqual
   )
 
+  const isApiCallSuccess = useAppSelector(
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.isApiCallSuccess,
+    shallowEqual
+  )
+
+  const toMoveSectionIndex = useAppSelector(
+    ({ MonthlyReportUpdate }) => MonthlyReportUpdate.toMoveSectionIndex,
+    shallowEqual
+  )
+
   useEffect(() => {
     return () => {
       dispatch(resetSelectDate())
@@ -207,6 +219,12 @@ const MonthlyReportUpdate = () => {
       dispatch(setSubSectionIndex(0))
     }
   }, [])
+
+  useEffect(() => {
+    if (isApiCallSuccess) {
+      handleSectionIndexFromModal()
+    }
+  }, [isApiCallSuccess])
 
   useEffect(() => {
     if (
@@ -264,7 +282,9 @@ const MonthlyReportUpdate = () => {
         setSectionIndexState(sectionIndex + 1)
         setSubSectionIndexState(0)
       } else if (!isDataModified) {
-        dispatch(setSectionIndex(sectionIndex + 1))
+        if (sectionIndex !== 5) {
+          dispatch(setSectionIndex(sectionIndex + 1))
+        }
         dispatch(setSubSectionIndex(0))
       }
       //handling next btn as per section data collection percentage
@@ -397,8 +417,8 @@ const MonthlyReportUpdate = () => {
     if (index !== subSectionIndex) {
       const dataModified = handleDataCheck()
       if (dataModified) {
-        setModal(true)
         setSubSectionIndexState(index)
+        setModal(true)
       } else if (!dataModified) {
         dispatch(setSubSectionIndex(index))
       }
@@ -407,15 +427,25 @@ const MonthlyReportUpdate = () => {
 
   const handleQuitWithoutSave = () => {
     setModal(false)
-
-    //ChangeInSection is to know whether the issuer has clicked on section level next or he is clicked on subSection level
-    changeInSection && dispatch(setSectionIndex(sectionIndexState))
-    dispatch(setSubSectionIndex(subSectionIndexState))
-    setChangeInSection(false)
+    if (sectionIndex === 5) {
+      handleNextBtnFromSectionE()
+    } else {
+      handleSectionIndexFromModal()
+    }
   }
 
+  const handleSectionIndexFromModal = () => {
+    dispatch(setSubSectionIndex(subSectionIndexState))
+    //ChangeInSection is to know whether the issuer has clicked on section level next or he clicked on subSection level
+    if (changeInSection) {
+      dispatch(setSectionIndex(sectionIndexState))
+      setChangeInSection(false)
+    }
+    dispatch(setIsApiCallSuccess(false))
+  }
   const handleModalSave = () => {
     setModal(false)
+    dispatch(setToMoveSectionIndex(true))
     handleSave()
   }
 
@@ -528,6 +558,8 @@ const MonthlyReportUpdate = () => {
                   backgroundColor: '#DAF7F0',
                   borderBottom: '2px solid #005046',
                   borderRadius: '6px 6px 0 0',
+                  color: '#1D4B44',
+                  fontWeight: 500,
                 }}
               >
                 {getSectionName()}
@@ -662,7 +694,11 @@ const MonthlyReportUpdate = () => {
                 Please Enter All the Mandatory Fields
               </Typography>
               <CCButton
-                onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+                onClick={() => {
+                  dispatch(setShowMandatoryFieldModal(false))
+                  //below line will make the triggered redux to false if the mandatory fields in sections so that the section or subsection wont' change when clicks on save from out of modal
+                  toMoveSectionIndex && dispatch(setToMoveSectionIndex(false))
+                }}
                 sx={{
                   mt: 3,
                   minWidth: 0,

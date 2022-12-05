@@ -8,6 +8,9 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
 import Spinner from '../../../atoms/Spinner'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 const SectionE4 = () => {
   const dispatch = useAppDispatch()
 
@@ -23,6 +26,13 @@ const SectionE4 = () => {
     ({ newProject }) => newProject.loading,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
 
   useEffect(() => {
     if (
@@ -87,6 +97,12 @@ const SectionE4 = () => {
           }}
         />
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.E4}
+        issuanceVisible={true}
+      />
     </Grid>
   )
 }
