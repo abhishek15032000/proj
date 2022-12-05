@@ -45,7 +45,7 @@ const HelpPopUp: FC<HelpPopUpProps> = (props) => {
           // alignItems: 'center',
           // justifyContent: 'center',
           borderRadius: 3,
-          width: '50%',
+          width: dashboardVisible ? '30%' : '50%',
           height: '100%',
           outline: 'none',
           overflowY: 'scroll',

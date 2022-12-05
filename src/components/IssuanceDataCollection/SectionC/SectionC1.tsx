@@ -24,6 +24,9 @@ import { shallowEqual } from 'react-redux'
 import { setC1 } from '../../../redux/Slices/sectionCSlice'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import Spinner from '../../../atoms/Spinner'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 const SectionC1 = () => {
   const dispatch = useAppDispatch()
@@ -33,6 +36,13 @@ const SectionC1 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
+
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -144,6 +154,12 @@ const SectionC1 = () => {
           />
         </Grid>
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.C1}
+        issuanceVisible={true}
+      />
     </Box>
   )
 }

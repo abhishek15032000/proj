@@ -8,6 +8,9 @@ import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import { shallowEqual } from 'react-redux'
 import Spinner from '../../../atoms/Spinner'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const SectionE5 = () => {
   const dispatch = useAppDispatch()
@@ -19,6 +22,13 @@ const SectionE5 = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -87,6 +97,12 @@ const SectionE5 = () => {
           }}
         />
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.E5}
+        issuanceVisible={true}
+      />
     </Grid>
   )
 }

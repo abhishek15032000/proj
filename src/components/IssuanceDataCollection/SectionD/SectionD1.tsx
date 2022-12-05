@@ -8,6 +8,9 @@ import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import sampleAnteTable from '../../../assets/Images/sample-d1.png'
 import Spinner from '../../../atoms/Spinner'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 
 const SectionD1: FC = () => {
   const dispatch = useAppDispatch()
@@ -20,6 +23,12 @@ const SectionD1: FC = () => {
     shallowEqual
   )
 
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -107,6 +116,12 @@ const SectionD1: FC = () => {
           }}
         />
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.D1}
+        issuanceVisible={true}
+      />
     </Grid>
   )
 }

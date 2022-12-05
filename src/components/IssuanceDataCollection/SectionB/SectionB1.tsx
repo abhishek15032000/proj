@@ -30,6 +30,9 @@ import { setB1 } from '../../../redux/Slices/sectionBSlice'
 
 // Functional Imports
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
+import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 
 const SectionB1 = () => {
   const dispatch = useAppDispatch()
@@ -44,6 +47,13 @@ const SectionB1 = () => {
     ({ newProject }) => newProject.loading,
     shallowEqual
   )
+
+  const modal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showPopUp
+  )
+  const setModal = (item: any) => {
+    dispatch(setShowPopUp(item))
+  }
 
   const B1 = useAppSelector(({ sectionB }) => sectionB.B1, shallowEqual)
 
@@ -260,6 +270,12 @@ const SectionB1 = () => {
           />
         </Grid>
       </Grid>
+      <HelpPopUp
+        modal={modal}
+        setModal={(item: any) => setModal(item)}
+        data={IssuanceHelpContentData?.B1}
+        issuanceVisible={true}
+      />
     </Box>
   )
 }

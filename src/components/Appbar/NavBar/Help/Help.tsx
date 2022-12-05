@@ -23,7 +23,7 @@ const Help = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     // if (location.pathname === pathNames.ISSUANCE_DATA_COLLECTION)
     //   setAnchorEl(event.currentTarget)
-    // dispatch(setShowPopUp(true))
+    dispatch(setShowPopUp(true))
   }
 
   const handleClose = () => {

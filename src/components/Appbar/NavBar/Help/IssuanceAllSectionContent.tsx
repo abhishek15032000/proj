@@ -20,16 +20,15 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
         <Box>
           <Typography
             sx={{
-              mt: 2,
+              my: 2,
               fontSize: 16,
               fontWeight: 500,
               color: Colors.darkPrimary1,
-              pb: 3,
             }}
           >
             {data?.title}
           </Typography>
-          <Typography sx={{ mt: 1, fontSize: 14, color: '#141D1B' }}>
+          <Typography sx={{ mt: 3, fontSize: 14, color: '#141D1B' }}>
             {data?.description}
           </Typography>
 
@@ -39,16 +38,28 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
               <Box key={index}>
                 <Typography
                   sx={{
-                    mt: 2,
                     fontSize: 14,
                     fontWeight: 500,
                     color: Colors.lightPrimary1,
+                    mb: 2,
+                    mt: 6,
                   }}
                 >
                   {step?.title}
                 </Typography>
-                <Typography sx={{ mt: 1, fontSize: 14, color: '#141D1B' }}>
+                <Typography sx={{ fontSize: 14, color: '#141D1B', mt: 3 }}>
                   {step?.description}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: 11,
+                    color: '#667080',
+                    textAlign: 'center',
+                    mb: 2,
+                    mt: 6,
+                  }}
+                >
+                  {step?.footerText}
                 </Typography>
                 {step?.imgSrcEmptyFields && (
                   <Box
@@ -72,8 +83,16 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
                     />
                   </Box>
                 )}
-                <Typography sx={{ mt: 1, fontSize: 11, color: '#667080' }}>
-                  {step?.footerText}
+                <Typography
+                  sx={{
+                    fontSize: 11,
+                    color: '#667080',
+                    textAlign: 'center',
+                    mb: 2,
+                    mt: 6,
+                  }}
+                >
+                  {step?.footerTextWith}
                 </Typography>
                 {step?.imgSrcFields && (
                   <Box
@@ -85,6 +104,7 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
                       borderRadius: '4px',
                       // display: 'flex',
                       alignItems: 'center',
+                      mb: 4,
                     }}
                   >
                     <img
@@ -97,16 +117,15 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
                     />
                   </Box>
                 )}
-                <Typography sx={{ mt: 1, fontSize: 11, color: '#667080' }}>
-                  {step?.footerTextWith}
-                </Typography>
+
                 {step.subSections &&
                   step.subSections.length > 0 &&
                   step.subSections.map((subSections: any, index: number) => (
                     <Box key={index}>
                       <Typography
                         sx={{
-                          mt: 2,
+                          mt: -3,
+
                           fontSize: 14,
                           fontWeight: 500,
                           color: Colors.lightPrimary1,
@@ -115,9 +134,20 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
                         {subSections?.title}
                       </Typography>
                       <Typography
-                        sx={{ mt: 1, fontSize: 14, color: '#141D1B' }}
+                        sx={{ mb: 2, mt: 3, fontSize: 14, color: '#141D1B' }}
                       >
                         {subSections?.description}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          mb: 2,
+                          mt: 6,
+                          fontSize: 11,
+                          color: '#667080',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {subSections?.footerText}
                       </Typography>
                       {subSections?.imgSrcEmptyFields && (
                         <Box
@@ -142,14 +172,21 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
                         </Box>
                       )}
                       <Typography
-                        sx={{ mt: 1, fontSize: 11, color: '#667080' }}
+                        sx={{
+                          mb: 2,
+                          mt: 6,
+                          fontSize: 11,
+                          color: '#667080',
+                          textAlign: 'center',
+                        }}
                       >
-                        {subSections?.footerText}
+                        {subSections?.footerTextWith}
                       </Typography>
                       {subSections?.imgSrcFields && (
                         <Box
                           sx={{
                             mt: 1,
+                            mb: 8,
                             // height: '220px',
                             p: 1,
                             bgcolor: Colors.lightPrimary2,
@@ -168,11 +205,6 @@ const IssuanceAllSectionContent: FC<HelpPopUpIssuanceAllSectionProps> = (
                           />
                         </Box>
                       )}
-                      <Typography
-                        sx={{ mt: 1, fontSize: 11, color: '#667080' }}
-                      >
-                        {subSections?.footerTextWith}
-                      </Typography>
                     </Box>
                   ))}
               </Box>
