@@ -52,7 +52,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   )
 
   const [verifierReports, setVerifierReports] = useState<any>([])
-  const [showTable, setShowTable] = useState<boolean>(true)
+  const [showTable, setShowTable] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
   const [mainProjectData, setMainProjectData] = useState<any>([])
@@ -75,9 +75,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .getAllMonthlyData(props?.currentProjectUUID)
       .then((res: any) => {
         if (res?.success) {
-          if (res?.data?.record.length > 0) {
-            setShowTable(true)
-          }
+          // if (res?.data?.record.length > 0) {
+
+          //   setShowTable(true)
+          // }
           const modifiedRows = res?.data?.record.map((i: any) =>
             addSectionPercentagesMonthly(i)
           )
@@ -188,8 +189,11 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 ),
               ]
             })
-          setMonthlyReportsList(rows)
+
           setMainProjectData(res?.data?.main_project)
+          if (res?.data?.main_project) {
+            setMonthlyReportsList(rows)
+          }
         }
       })
       .catch((err) => console.log(err))
@@ -331,7 +335,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           )}
         </Grid>
         <Grid item xs={12} sx={{ mt: 2 }}>
-          {showTable ? (
+          {monthlyReportsList && monthlyReportsList.length > 0 ? (
             <>
               <Grid
                 item
@@ -416,6 +420,6 @@ const headings = [
   'Status',
   'VCOT Authorised',
   'Report Received',
-  'comment Received',
+  'Comment Received',
   'Action',
 ]

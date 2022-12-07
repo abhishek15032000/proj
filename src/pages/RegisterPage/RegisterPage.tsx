@@ -220,10 +220,10 @@ const RegisterPage = (props: RegisterPageProps) => {
             name="firstName"
             size="small"
             onChange={(e) => setFirstName(e.target.value)}
-            // error={firstName !== '' && !isAlpha(firstName)}
-            // helperText={
-            //   firstName !== '' && !isAlpha(firstName) && 'Enter valid Name'
-            // }
+            error={firstName !== '' && !isAlpha(firstName)}
+            helperText={
+              firstName !== '' && !isAlpha(firstName) && 'Enter valid Name'
+            }
             defaultValue={values?.firstName}
             sx={{ background: '#F5F5F5', mr: 1.5 }}
           />
@@ -234,10 +234,10 @@ const RegisterPage = (props: RegisterPageProps) => {
             name="firstName"
             size="small"
             onChange={(e) => setLastName(e.target.value)}
-            // error={lastName !== '' && !isAlpha(lastName)}
-            // helperText={
-            //   lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
-            // }
+            error={lastName !== '' && !isAlpha(lastName)}
+            helperText={
+              lastName !== '' && !isAlpha(lastName) && 'Enter valid Name'
+            }
             defaultValue={values?.lastName}
             sx={{ background: '#F5F5F5' }}
           />
