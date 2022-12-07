@@ -79,7 +79,6 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
     issuerCalls
       .getAllBankAccount()
       .then((res) => {
-        console.log('getAllBankAccount', res)
         dispatch(setAllBankDetailsList(res?.data))
         setLoading(false)
       })
@@ -252,7 +251,7 @@ const BankDetails: FC<BankDetailsProps> = (props) => {
               style={{
                 height: '40px',
                 fontSize: 14,
-                fontWeight: 500,
+                fontWeight: 600,
                 marginLeft: '10px',
                 color: '#005046',
                 cursor: 'pointer',

@@ -31,7 +31,7 @@ const projectDetails = {
   duration: 2,
   area: '1000',
 }
-const tabs = ['Issuance Details', 'Verifier & Reports']
+const tabs = ['Registration Details', 'Verifier & Reports']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
