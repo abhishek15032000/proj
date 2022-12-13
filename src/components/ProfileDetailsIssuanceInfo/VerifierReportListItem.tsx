@@ -39,7 +39,7 @@ const VerifierReportListItemListItem: FC<
 
   return (
     <>
-      <Box sx={{ background: '#E8F3EF', py: 3, pl: 1, borderRadius: 2 }}>
+      <Box sx={{ background: '#E8F3EF', py: 3, px: 3, borderRadius: 2 }}>
         <Grid
           container
           alignItems={'center'}

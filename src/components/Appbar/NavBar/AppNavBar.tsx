@@ -32,6 +32,8 @@ import { Colors } from '../../../theme'
 import NotificationList from '../../../atoms/NotificationList'
 import NotificationIcon from './NotificationIcon'
 import Help from './Help/Help'
+import { ROLES } from '../../../config/roles.config'
+import { getLocalItem } from '../../../utils/Storage'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -82,6 +84,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
     dispatch(setLoadWallet(true))
     console.log('done')
   }
+  const { type: userType } = getLocalItem('userDetails')
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
@@ -253,8 +256,9 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
               <Typography sx={{ mx: 1, fontWeight: 500 }}>Wallet</Typography>
             </Button>
           </Box>
-          <Help />
-          <IconButton
+          {userType === ROLES.ISSUER && <Help />}
+
+          {/* <IconButton
             size="large"
             aria-label="show 17 new notifications"
             color="primary"
@@ -262,7 +266,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             <Badge color="error">
               <SettingsOutlinedIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
 
           <NotificationIcon />
 

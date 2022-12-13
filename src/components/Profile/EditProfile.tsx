@@ -14,6 +14,7 @@ import CCSelectBox from '../../atoms/CCSelectBox'
 import CCInputField from '../../atoms/CCInputField'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import CCButton from '../../atoms/CCButton'
+import isAlpha from 'validator/lib/isAlpha'
 
 interface EditProfileProps {
   onChangeInput?: any
@@ -123,10 +124,15 @@ const EditProfile: FC<EditProfileProps> = (props) => {
         size="medium"
         value={profileDetails?.firstname}
         onChange={(e) => onChangeInput('firstname', e.target.value)}
-        // error={firstName !== '' && !isAlpha(firstName)}
-        // helperText={
-        //   firstName !== '' && !isAlpha(firstName) && 'Enter valid Name'
-        // }
+        error={
+          profileDetails?.firstname !== '' &&
+          !isAlpha(profileDetails?.firstname)
+        }
+        helperText={
+          profileDetails?.firstname !== '' &&
+          !isAlpha(profileDetails?.firstname) &&
+          'Enter valid Name'
+        }
         defaultValue={profileDetails?.firstName}
         sx={{ background: '#F5F5F5', width: '400px' }}
       />

@@ -22,7 +22,7 @@ import AddAccountDetails from '../IssuerWallet/AddAccountDetailsPopup'
 import { issuerCalls } from '../../api/issuerCalls.api'
 // import { setAllProfileList } from '../../redux/Slices/allProfileSlice'
 import Spinner from '../../atoms/Spinner'
-import { getLocalItem } from '../../utils/Storage'
+import { getLocalItem, setLocalItem } from '../../utils/Storage'
 import LoderOverlay from '../LoderOverlay'
 import ProjectList from './ProjectList'
 import ForgotPasswordModal from '../../pages/LoginPage/ForgotPasswordModal'
@@ -41,6 +41,8 @@ import CircleIcon from '@mui/icons-material/Circle'
 import moment from 'moment'
 import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
 import BlockchainCalls from '../../blockchain/Blockchain'
+import isAlpha from 'validator/lib/isAlpha'
+import { setWalletAdded } from '../../redux/Slices/walletSlice'
 interface ProfileProps {}
 const statsIssuer = [
   {
@@ -334,6 +336,10 @@ const Profile: FC<ProfileProps> = (props) => {
       return
     }
 
+    if (!isAlpha(firstname)) {
+      alert('Names cannot contain numbers or special characters!')
+      return
+    }
     setLoading(true)
     const payload = {
       uuid: getLocalItem('userDetails').uuid,
@@ -358,6 +364,16 @@ const Profile: FC<ProfileProps> = (props) => {
       return
     }
 
+    if (/^\s|\s$/.test(password)) {
+      alert('White Space not allowed!')
+      return
+    }
+
+    if (/^\s|\s$/.test(newPassword)) {
+      alert('White Space not allowed!')
+      return
+    }
+
     setLoading(true)
     const payload = {
       uuid: getLocalItem('userDetails').uuid,
@@ -369,11 +385,25 @@ const Profile: FC<ProfileProps> = (props) => {
     }
 
     USER.changePassword(payload)
-      .then((response) => {
-        setPassword('')
-        setNewPassword('')
-        setIsChangePassowrdVisible(false)
-        setLoading(false)
+      .then(async (res) => {
+        if (res?.status === 204) {
+          alert('Retry login with new Captch')
+          setCaptchInput('')
+          setLoading(false)
+          return
+        }
+        if (res?.data?.captchaVerify) {
+          // const userResponse = await USER.getUsersById(res?.data?.user_id)
+          // setLocalItem('userDetails2', userResponse?.data)
+          // dispatch(setWalletAdded(userResponse?.data?.wallet_added))
+
+          setPassword('')
+          setNewPassword('')
+          setIsChangePassowrdVisible(false)
+          setLoading(false)
+        } else {
+          alert(res?.error)
+        }
       })
       .catch((e) => {
         setLoading(false)

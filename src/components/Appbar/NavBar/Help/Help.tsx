@@ -8,6 +8,8 @@ import { pathNames } from '../../../../routes/pathNames'
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { setShowPopUp } from '../../../../redux/Slices/issuanceDataCollection'
+import HelpPopUp from './HelpPopUp'
+import { DashboardHelpSectionFAQ } from './SectionA/helpContentData'
 
 const Help = () => {
   const location = useLocation()
@@ -20,10 +22,10 @@ const Help = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (item: any) => {
     // if (location.pathname === pathNames.ISSUANCE_DATA_COLLECTION)
     //   setAnchorEl(event.currentTarget)
-    dispatch(setShowPopUp(true))
+    dispatch(setShowPopUp(item))
   }
 
   const handleClose = () => {
@@ -48,11 +50,19 @@ const Help = () => {
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
+        onClick={() => handleClick(true)}
       >
         <HelpOutlineOutlinedIcon />
         <Typography sx={{ mx: 1, fontWeight: 500 }}>Help</Typography>
       </Button>
+      {showPopUp && (
+        <HelpPopUp
+          modal={showPopUp}
+          setModal={(item: any) => handleClick(item)}
+          data={DashboardHelpSectionFAQ}
+          dashboardVisible={true}
+        />
+      )}
     </Box>
   )
 }
