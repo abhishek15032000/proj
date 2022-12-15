@@ -43,8 +43,8 @@ interface TransactionHistoryProps {}
 const TransactionHistory = (props: TransactionHistoryProps) => {
   const navigate = useNavigate()
 
-  const [startDate, setStartDate] = useState<Date | null>()
-  const [endDate, setEndDate] = useState<Date | null>()
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
   const [dropdown, setDropdown] = useState('All')
   const [transactionLoading, setTransactionLoading] = useState(false)
   const [transactions, setTransactions] = useState<any>(null)

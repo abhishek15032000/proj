@@ -73,7 +73,7 @@ const ChangePassword: FC<ChangePasswordProps> = (props) => {
         alignItems: 'flex-start',
         borderRadius: '8px',
 
-        mt: 2,
+        mt: 1,
         padding: 2,
         ml: 1,
       }}

@@ -250,7 +250,7 @@ const TabBuyCreateBuyOrder = () => {
         <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} INR`} />
         <CardRow
           title="Total amount to be paid :"
-          value={`${totalAmountForBuying || 0} INR`}
+          value={`${totalAmountForBuying.toFixed(3) || 0} INR`}
         />
         {totalAmountForBuying > exchangeBalBuyFlow && (
           <Typography sx={{ mt: 1, fontSize: 14, color: Colors.tertiary }}>

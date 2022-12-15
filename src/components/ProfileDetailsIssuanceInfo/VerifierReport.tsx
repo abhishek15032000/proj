@@ -37,6 +37,7 @@ import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import LoaderOverlay from '../../components/LoderOverlay'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
+import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice'
 
 interface VerifierReportListProps {
   //data?: any
@@ -68,6 +69,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     getAllProjects()
   }, [])
 
+  const handleComments = (i: any) => {
+    dispatch(setViewCommentsData(i))
+    navigate(pathNames.REPORT_VIEW_COMMENTS)
+  }
   const getAllProjects = () => {
     setLoading(true)
 
@@ -83,7 +88,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
             addSectionPercentagesMonthly(i)
           )
 
-          const main = res?.data?.main_project?.report
+          const mergeArray = modifiedRows.splice(0, 0, res?.data?.main_project)
+
           // const modifiedRows = res?.data?.record
 
           const rows =
@@ -93,16 +99,16 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 <Typography
                   key={index}
                   textAlign="start"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
+                  sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
                 >
-                  {moment(main?.createdAt).format(`DD/MM/YY`)}
+                  {moment(i?.report?.createdAt).format(`DD/MM/YY`)}
                 </Typography>,
                 <Typography
                   key={index}
                   textAlign="start"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
+                  sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
                 >
-                  {moment(main?.next_date).format(`DD/MM/YY`)}
+                  {moment(i?.report?.next_date).format(`DD/MM/YY`)}
                 </Typography>,
 
                 <Box
@@ -140,34 +146,46 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 //   label={'-'}
                 // />,
                 '-',
-                '-',
-                // <Box
-                //   key={'1'}
-                //   sx={{
-                //     flexDirection: 'row',
-                //     display: 'flex',
-                //     justifyContent: 'space-between',
-                //     alignItems: 'center',
-                //     borderBottom: '2px solid black',
-                //   }}
-                // >
-                //   <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
-                //   <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />
-                //   <TextSnippetOutlinedIcon sx={{ color: '#388E81' }} />,
-                // </Box >
-                '-',
-                // <Typography
-                //   key="1"
-                //   sx={{
-                //     color: '#006B5E',
-                //     fontSize: 16,
-                //     fontWeight: 600,
-                //     textDecoration: 'underline',
-                //   }}
-                // >
-                //   View
-                // </Typography>,
-                '-',
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
+                >
+                  {i?.report?.quantity}
+                </Typography>,
+                <Box
+                  key={'1'}
+                  sx={{
+                    flexDirection: 'row',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  {i?.report?.file_attach.map((item: any, index: number) => (
+                    <TextSnippetOutlinedIcon
+                      sx={{
+                        color: '#388E81',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                      key={index}
+                    />
+                  ))}
+                </Box>,
+                <Box onClick={() => handleComments(i)} key={index}>
+                  <Typography
+                    sx={{
+                      color: '#006B5E',
+                      fontSize: 16,
+                      fontWeight: 600,
+                      textDecoration: 'underline',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    View
+                  </Typography>
+                </Box>,
                 i.project_status === 0 ? (
                   <CCButton
                     key={index}
@@ -219,7 +237,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .then((res) => {
         if (res?.success) {
           const finalVerifierData = res?.data.filter((i: any) => {
-            return i?.project_status === 3 || i?.project_status === 4
+            return (
+              i?.report?.project_status === 3 || i?.report?.project_status === 4
+            )
           })
           finalVerifierData && finalVerifierData?.length
             ? setVerifierReports(finalVerifierData)
