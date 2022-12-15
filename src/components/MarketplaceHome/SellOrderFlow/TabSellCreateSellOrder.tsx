@@ -73,7 +73,7 @@ const TabSellCreateSellOrder = () => {
         <Box sx={{ position: 'relative' }}>
           <Box>
             <LabelInput
-              label="Total Price"
+              label="Price Per Unit"
               value={sellUnitPriceForSellOrder}
               setValue={(e: any) => {
                 //Allow only no.s upto 3 decimal places

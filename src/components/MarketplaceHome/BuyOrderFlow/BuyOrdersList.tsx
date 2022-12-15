@@ -72,7 +72,7 @@ const BuyOrdersList = () => {
               totalAmount,
             ])
           })
-          setRows(temp.reverse())
+          setRows(temp)
         }
       })
     }

@@ -162,7 +162,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.TRANSACTION_HISTORY,
     component: TransactionHistory,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
     path: pathNames.BANK_DETAILS,
