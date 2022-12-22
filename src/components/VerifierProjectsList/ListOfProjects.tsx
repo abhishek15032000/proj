@@ -64,13 +64,16 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const [newRequests, setNewRequests] = useState(0)
 
   useEffect(() => {
+    verifierState()
+  }, [newRequests])
+
+  const verifierState = () => {
     verifierCalls
       .getVerifierProjectDashboardStats(getLocalItem('userDetails')?.user_id)
       .then((response) => {
         setNewRequests(response.data?.new_requests)
       })
-  }, [])
-
+  }
   useEffect(() => {
     const newData: any = [],
       registeredData: any = []
@@ -131,7 +134,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => props.updateStatus(2, item)}
+                onClick={() => {
+                  props.updateStatus(2, item)
+                  verifierState()
+                }}
               >
                 Approve
               </Typography>
@@ -143,7 +149,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => props.updateStatus(6, item)}
+                onClick={() => {
+                  props.updateStatus(6, item)
+                  verifierState()
+                }}
               >
                 Reject
               </Typography>

@@ -87,7 +87,9 @@ const ProfileCompletion = () => {
         padding: 1.5,
       }}
     >
-      <Typography sx={{ fontSize: 18, fontWeight: 400 }}>
+      <Typography
+        sx={{ fontSize: 18, fontWeight: 400, color: Colors.darkPrimary1 }}
+      >
         Profile Completion
       </Typography>
 

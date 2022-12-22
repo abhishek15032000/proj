@@ -2,7 +2,7 @@
 import React, { FC, useState, useEffect } from 'react'
 
 // MUI Imports
-import { Box, Typography, Paper, IconButton, Badge } from '@mui/material'
+import { Box, Typography, Paper, IconButton, Badge, Modal } from '@mui/material'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 
 // Functional Imports
@@ -11,6 +11,7 @@ import { getLocalItem } from '../../../utils/Storage'
 
 // Local Imports
 import NotificationList from '../../../atoms/NotificationList'
+import { Colors } from '../../../theme'
 
 interface NotificationIconProps {}
 
@@ -56,7 +57,26 @@ const NotificationIcon = (props: NotificationIconProps) => {
         </Badge>
       </IconButton>
 
-      {showNotifications && <NotificationList />}
+      {showNotifications && (
+        <Modal
+          open={showNotifications}
+          onClose={() => setShowNotifications(false)}
+          sx={{
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            // background: 'rgba(56, 142, 129, 0.4)',
+            backgroundColor: Colors.white,
+            marginLeft: '55%',
+            mt: 8,
+            width: '40%',
+            height: '20%',
+          }}
+        >
+          <NotificationList />
+        </Modal>
+      )}
     </>
   )
 }

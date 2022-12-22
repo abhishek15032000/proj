@@ -72,6 +72,7 @@ const Profile: FC<ProfileProps> = (props) => {
     email: '',
 
     mobile: '',
+    copyMobile: '',
   })
 
   const [uuid, setUUID] = useState('')
@@ -116,7 +117,7 @@ const Profile: FC<ProfileProps> = (props) => {
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
-  }, [])
+  }, [isChangePassowrdVisible])
 
   const setCaptchaTokenFromUUID = () => {
     setCaptchaToken(uuidv4())
@@ -151,6 +152,7 @@ const Profile: FC<ProfileProps> = (props) => {
 
         email: tempData?.email,
         mobile: tempData?.phone,
+        copyMobile: tempData?.phone,
       })
       getDepartment(tempData)
     })
@@ -351,6 +353,7 @@ const Profile: FC<ProfileProps> = (props) => {
     USER.updateUserInfo(payload)
       .then((response) => {
         setEditProfileVisible(false)
+        setProfileDetails({ ...profileDetails, ['copyMobile']: mobile })
         setLoading(false)
       })
       .catch((e) => {
@@ -392,20 +395,25 @@ const Profile: FC<ProfileProps> = (props) => {
           setLoading(false)
           return
         }
-        if (res?.data?.captchaVerify) {
+        console.log('res<<<<<<<<<,', res)
+        if (res?.success) {
+          setLoading(false)
           // const userResponse = await USER.getUsersById(res?.data?.user_id)
           // setLocalItem('userDetails2', userResponse?.data)
           // dispatch(setWalletAdded(userResponse?.data?.wallet_added))
 
           setPassword('')
           setNewPassword('')
+          setCaptchInput('')
           setIsChangePassowrdVisible(false)
           setLoading(false)
         } else {
-          alert(res?.error)
+          alert('Captch is missmatched')
+          setLoading(false)
         }
       })
-      .catch((e) => {
+      .catch((error) => {
+        alert('old password incorrect ! ')
         setLoading(false)
       })
   }
