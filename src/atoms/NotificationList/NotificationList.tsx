@@ -34,11 +34,11 @@ const NotificationList: FC<NotificationListProps> = (props) => {
   return (
     <Paper
       sx={{
-        position: 'absolute',
-        left: -240,
-        top: -30,
-        width: '490px',
-        mt: 10,
+        // position: 'absolute',
+        // left: -240,
+        // top: -30,
+        width: '100%',
+        // mt: 10,
       }}
     >
       <Typography sx={{ fontSize: 18, fontWeight: 400, p: 2 }}>

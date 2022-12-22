@@ -31,10 +31,10 @@ const ProfileCompletion = () => {
 
   const [isShineKeyAdded, setIsShineKeyAdded] = useState(false)
 
-  useEffect(()=>{
+  useEffect(() => {
     const shineKey = getLocalItem('userDetails2')?.shineKey
-    if(shineKey) dispatch(setWalletAdded(true))
-  },[])
+    if (shineKey) dispatch(setWalletAdded(true))
+  }, [])
 
   useEffect(() => {
     if (walletAdded && isConnected) {
@@ -59,7 +59,9 @@ const ProfileCompletion = () => {
         padding: 1.5,
       }}
     >
-      <Typography sx={{ fontSize: 18, fontWeight: 400 }}>
+      <Typography
+        sx={{ fontSize: 18, fontWeight: 400, color: Colors.darkPrimary1 }}
+      >
         Profile Completion
       </Typography>
 

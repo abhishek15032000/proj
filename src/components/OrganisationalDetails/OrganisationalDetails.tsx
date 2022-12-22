@@ -170,33 +170,45 @@ const OrganisationalDetails = (props: OrganisationalDetailsProps) => {
               <CCInputField
                 label="Organisation Name"
                 placeholder="Enter Organisation Name"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, color: '#141D1B' }}
                 value={organisationName}
                 onChange={(e) => setOrganisationName(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
                 label="Headquarters"
                 placeholder="Enter Headquarters"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, color: '#141D1B' }}
                 value={headquarters}
                 onChange={(e) => setHeadquarters(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
                 label="Website link"
-                placeholder="Enter Website link                "
-                sx={{ mb: 1.5 }}
+                placeholder="Enter Website link"
+                sx={{ mb: 1.5, color: '#141D1B' }}
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
 
               <CCInputField
                 label="Sector"
                 placeholder="Enter Sector"
-                sx={{ mb: 1.5 }}
+                sx={{ mb: 1.5, color: '#141D1B' }}
                 value={sector}
                 onChange={(e) => setSector(e.target.value)}
+                InputLabelProps={{
+                  style: { color: '#141D1B' },
+                }}
               />
               <Box
                 component="img"

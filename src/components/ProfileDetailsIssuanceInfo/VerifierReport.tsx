@@ -38,6 +38,8 @@ import { shallowEqual } from 'react-redux'
 import LoaderOverlay from '../../components/LoderOverlay'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice'
+import DownloadIcon from '@mui/icons-material/Download'
+import { downloadFile } from '../../utils/commonFunctions'
 
 interface VerifierReportListProps {
   //data?: any
@@ -153,26 +155,20 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 >
                   {i?.report?.quantity}
                 </Typography>,
-                <Box
-                  key={'1'}
-                  sx={{
-                    flexDirection: 'row',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+
+                <DownloadIcon
+                  key={index}
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    if (!i?.report?.file_attach?.length) return
+                    i?.report?.file_attach.forEach(
+                      (file: any, index: number) => {
+                        downloadFile(file)
+                      }
+                    )
                   }}
-                >
-                  {i?.report?.file_attach.map((item: any, index: number) => (
-                    <TextSnippetOutlinedIcon
-                      sx={{
-                        color: '#388E81',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                      key={index}
-                    />
-                  ))}
-                </Box>,
+                  style={{ color: Colors.lightPrimary1 }}
+                />,
                 <Box onClick={() => handleComments(i)} key={index}>
                   <Typography
                     sx={{

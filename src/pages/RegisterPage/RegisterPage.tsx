@@ -20,7 +20,7 @@ import useForm from '../../hooks/useForm'
 import CCInputField from '../../atoms/CCInputField'
 import CCSelectBox from '../../atoms/CCSelectBox'
 import Logo1 from '../../atoms/Logo'
-import { Images } from '../../theme'
+import { Colors, Images } from '../../theme'
 import Captcha from '../../components/Captcha/Captcha'
 import { v4 as uuidv4 } from 'uuid'
 //import CryptoJs from 'crypto-js'
@@ -368,13 +368,20 @@ const RegisterPage = (props: RegisterPageProps) => {
           sx={{ mt: 2, mb: 2 }}
         >
           <Typography
-            textAlign={'center'}
-          >{`Don't have an account?`}</Typography>
+            sx={{
+              marginTop: '20px',
+              marginBottom: '15px',
+              textAlign: 'center',
+              fontSize: 14,
+              color: Colors.textColorDarkGreen,
+              fontWeight: '500',
+            }}
+          >{`Already have an account?`}</Typography>
           <Typography
             onClick={() => navigate(pathNames.LOGIN)}
             sx={{
               fontWeight: '500',
-              fontSize: 20,
+              fontSize: 18,
               px: 1,
               cursor: 'pointer',
             }}
@@ -384,9 +391,12 @@ const RegisterPage = (props: RegisterPageProps) => {
           </Typography>
           <Typography
             sx={{
+              marginTop: '20px',
+              marginBottom: '15px',
               textAlign: 'center',
-              fontWeight: '400',
-              fontSize: 16,
+              fontSize: 14,
+              color: Colors.textColorDarkGreen,
+              fontWeight: '500',
             }}
           >
             {`here`}
