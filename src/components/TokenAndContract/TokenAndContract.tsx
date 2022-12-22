@@ -47,7 +47,7 @@ const TokenAndContract = () => {
     <Grid container>
       <Grid item>
         <Typography sx={{ fontSize: 28, fontWeight: 400, color: '#F15D5F' }}>
-          Token & Contracts
+          Tokens & Reports
         </Typography>
       </Grid>
       <Grid item xs={12} sx={{ marginRight: 100 }}>

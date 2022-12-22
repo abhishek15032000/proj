@@ -13,7 +13,7 @@ export default function Captcha({
   setCaptchaInput,
   setCaptchaToken,
   token,
-  sx
+  sx,
 }: CaptchaProps) {
   const [captchaImg, setCaptchaImg] = useState<any>()
 
@@ -43,7 +43,7 @@ export default function Captcha({
         width: '100%',
         px: 2,
         mt: 2,
-        ...sx
+        ...sx,
       }}
     >
       <img
@@ -51,7 +51,7 @@ export default function Captcha({
         style={{
           width: 120,
           height: 30,
-          marginTop: 10
+          marginTop: 10,
         }}
       />
       <Box
@@ -85,6 +85,9 @@ export default function Captcha({
         sx={{ width: 120, mt: 1 }}
         value={captchaInput}
         onChange={(e) => setCaptchaInput(e.target.value)}
+        inputProps={{
+          maxLength: 6,
+        }}
       />
     </Box>
   )

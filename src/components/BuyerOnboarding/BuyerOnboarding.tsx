@@ -9,12 +9,66 @@ import { Colors } from '../../theme'
 import LoadWallet from '../LoadWallet'
 import ProfileCompletion from './ProfileCompletion'
 import ProfileCard from '../../atoms/ProfileCard/ProfileCard'
+import BlockchainCalls from '../../blockchain/Blockchain'
+import { USER } from '../../api/user.api'
+import { getLocalItem } from '../../utils/Storage'
 
 const BuyerOnboarding = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const isConnected = useAppSelector(({ wallet }) => wallet.isConnected)
+  const [profileCompletion, setProfileCompletion] = useState(0)
+  const [linearProgressValue, setLinearProgressValue] = useState(0)
+
+  useEffect(() => {
+    USER.getUserInfo(getLocalItem('userDetails')?.uuid).then((response) => {
+      let count = 0
+
+      if (
+        response?.data?.data?.address !== '' &&
+        response?.data?.data?.address !== undefined
+      ) {
+        count++
+      }
+
+      if (
+        response?.data?.data?.organisationName !== '' &&
+        response?.data?.data?.organisationName !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.website !== '' &&
+        response?.data?.data?.website !== undefined
+      ) {
+        count++
+      }
+      if (
+        response?.data?.data?.sector !== '' &&
+        response?.data?.data?.sector !== undefined
+      ) {
+        count++
+      }
+
+      setProfileCompletion(Math.round((count / 4) * 100))
+
+      // Linear Progress
+      let lpValue = (count / 4) * 50
+
+      BlockchainCalls.getConnectionStatusAndAddress().then((response) => {
+        if (response.connected) {
+          lpValue = lpValue + 50
+          setLinearProgressValue(lpValue)
+        }
+
+        if (response.connected && count === 4) {
+          console.log('response.connected && count', response.connected, count)
+          // navigate(pathNames.DASHBOARD)
+        }
+      })
+    })
+  }, [isConnected])
 
   return (
     <>
@@ -60,7 +114,7 @@ const BuyerOnboarding = () => {
                   <ProfileCard
                     title="Organisational Details"
                     content="Complete filling your organisational details to complete the onboarding process"
-                    buttonText="Start"
+                    buttonText={profileCompletion > 0 ? 'Resume' : 'Start'}
                     onClickFn={() => navigate(pathNames.ORGANISATIONAL_DETAILS)}
                   />
                 </Grid>

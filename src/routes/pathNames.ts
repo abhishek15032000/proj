@@ -40,7 +40,7 @@ export const pathNames = {
 
 export const linkLabels = {
   Dashboard: 'Dashboard',
-  Token_Contract: 'Token & Contract',
+  Token_Contract: 'Tokens & Reports',
   // My_Portfolio: 'My Portfolio',
   Marketplace: 'Marketplace',
   Wallet: 'Wallet',

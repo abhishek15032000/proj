@@ -26,12 +26,15 @@ import { USER } from '../../api/user.api'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
 import { onManualConnectClick } from '../../utils/blockchain.util'
 import CloseIcon from '@mui/icons-material/Close'
+import { pathNames } from '../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
 
 declare let window: any
 
 // const provider = new ethers.providers.Web3Provider(window.ethereum)
 
 const BlockchainAlert = (props: BlockchainAlertProps) => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const loadWalletAlert = useAppSelector(
     (state) => state.wallet.loadWalletAlert
@@ -91,7 +94,7 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
             flexDirection: 'column',
           }}
         >
-          <Box sx={{ alignSelf: 'end' }}>
+          {/* <Box sx={{ alignSelf: 'end' }}>
             <CloseIcon
               sx={{
                 fontSize: 28,
@@ -102,7 +105,7 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
                 dispatch(setLoadWalletAlert(false))
               }}
             />
-          </Box>
+          </Box> */}
           <Grid
             container
             justifyContent={'center'}
@@ -160,12 +163,12 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
                   {alertMessage}
                 </Typography>
 
-                {/* <CCButton
+                <CCButton
                   sx={{ mt: 2 }}
-                  onClick={() => dispatch(setLoadWalletAlert(false))}
+                  onClick={() => navigate(pathNames.LOGOUT, { replace: true })}
                 >
-                  Okay
-                </CCButton> */}
+                  Logout
+                </CCButton>
               </Box>
             </Grid>
           </Grid>

@@ -115,7 +115,7 @@ const ProfileList: FC<ProfileListProps> = (props) => {
               <TitleValue title="Participant Type :" value={selectedRole} />
               <TitleValue
                 title="Mobile Number :"
-                value={profileDetails?.mobile}
+                value={profileDetails?.copyMobile}
               />
               {accountAddress ? (
                 <TitleValue title="Account Address :" value={accountAddress} />

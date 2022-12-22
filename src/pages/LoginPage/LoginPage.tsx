@@ -50,6 +50,11 @@ const Login = () => {
   }
 
   const login = async () => {
+    if (/^\s|\s$/.test(pwdCopy)) {
+      alert('White Space not allowed!')
+      return false
+    }
+
     setLoading(true)
     const payload = { email: '', id: '', password: '', captcha: '' }
 
@@ -256,9 +261,10 @@ const Login = () => {
                   marginTop: '20px',
                   marginBottom: '15px',
                   textAlign: 'center',
-                  fontWeight: '400',
+
                   fontSize: 14,
                   color: Colors.textColorDarkGreen,
+                  fontWeight: '500',
                 }}
               >
                 {`Don't have an account?`}
@@ -282,8 +288,9 @@ const Login = () => {
                   marginTop: '20px',
                   marginBottom: '15px',
                   textAlign: 'center',
-                  fontWeight: '400',
+
                   fontSize: 14,
+                  fontWeight: '500',
                   color: Colors.textColorDarkGreen,
                 }}
               >
