@@ -35,6 +35,7 @@ import BankDetails from '../pages/BankDetails'
 import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
 import Profile from '../pages/Profile'
 import HelpCentre from '../pages/HelpCentre/HelpCentre'
+import ProjectDetails from '../pages/ProjectDetails'
 
 export const privateRouteComponents = [
   {
@@ -210,6 +211,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.HELP_CENTER,
     component: HelpCentre,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.PROJECT_DETAILS,
+    component: ProjectDetails,
     roles: [ROLES.ISSUER],
   },
 ]

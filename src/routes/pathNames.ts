@@ -36,6 +36,7 @@ export const pathNames = {
   RESET_PASSWORD: '/reset-password',
   PROFILE: '/profile',
   HELP_CENTER: '/help-center',
+  PROJECT_DETAILS: '/project-details',
 }
 
 export const linkLabels = {
