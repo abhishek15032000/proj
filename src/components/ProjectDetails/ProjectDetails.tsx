@@ -1,7 +1,11 @@
 import { Grid, Typography } from '@mui/material'
 import React from 'react'
 import CCButton from '../../atoms/CCButton'
+import AdditionalDetails from './AdditionalDetails/AdditionalDetails'
+import OtherProjects from './OtherProjects/OtherProjects'
 import ProjectIntroduction from './ProjectIntroduction'
+import Reports from './Reports/Reports'
+import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
 
 const ProjectDetails = () => {
   return (
@@ -13,6 +17,12 @@ const ProjectDetails = () => {
           </Typography>
         </Grid>
         <ProjectIntroduction />
+        <Grid item xs={12}>
+          <AdditionalDetails />
+          <TokensTxHistory />
+          <Reports />
+          <OtherProjects />
+        </Grid>
       </Grid>
     </>
   )
