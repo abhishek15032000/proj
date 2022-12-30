@@ -56,6 +56,8 @@ import D2FILLED from '../assets/Images/help/D2FILLED.png'
 import D3EMPTY from '../assets/Images/help/D3EMPTY.png'
 import D3FILLED from '../assets/Images/help/D3FILLED.png'
 import List from '../assets/Images/help/List.png'
+import Project from '../assets/Images/illustrations/Project.png'
+
 export const Images = {
   logo,
   illustration1,
@@ -114,4 +116,5 @@ export const Images = {
   D2FILLED,
   D3EMPTY,
   D3FILLED,
+  Project,
 }

@@ -36,6 +36,7 @@ import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/Issu
 import Profile from '../pages/Profile'
 import HelpCentre from '../pages/HelpCentre/HelpCentre'
 import ProjectDetails from '../pages/ProjectDetails'
+import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
 
 export const privateRouteComponents = [
   {
@@ -216,6 +217,11 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROJECT_DETAILS,
     component: ProjectDetails,
+    roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.PROJECT_LISTS_WITH_FILTER,
+    component: ProjectListsWithFilter,
     roles: [ROLES.ISSUER],
   },
 ]

@@ -37,6 +37,7 @@ export const pathNames = {
   PROFILE: '/profile',
   HELP_CENTER: '/help-center',
   PROJECT_DETAILS: '/project-details',
+  PROJECT_LISTS_WITH_FILTER: '/project-lists-with-filter',
 }
 
 export const linkLabels = {
