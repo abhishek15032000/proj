@@ -36,7 +36,7 @@
 
 .card-list li {
   transition: all 100ms ease-in-out;
-  border-radius: 2px;
+  border-radius: 24px;
   position: absolute;
   list-style: none;
   -webkit-box-shadow: 0 2px 15px 1px rgba(225, 225, 225, 0.5);
