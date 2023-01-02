@@ -27,6 +27,8 @@ const { ethereum } = window
 const drawerExemptList = [
   pathNames.VERIFIER_VERIFY_REPORT,
   pathNames.ISSUANCE_DATA_COLLECTION_HELP,
+  pathNames.PROJECT_DETAILS,
+  pathNames.PROJECT_LISTS_WITH_FILTER,
 ]
 
 type AppProps = {

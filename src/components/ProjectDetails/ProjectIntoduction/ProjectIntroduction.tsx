@@ -1,9 +1,9 @@
 import { Grid, Typography, Box, Paper } from '@mui/material'
 
 import React from 'react'
-import CCButton from '../../atoms/CCButton'
-import { Colors, Images } from '../../theme'
-import TitleValue from '../Profile/TitleValue'
+import CCButton from '../../../atoms/CCButton'
+import { Colors, Images } from '../../../theme'
+import TitleValue from '../../Profile/TitleValue'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 const ProjectIntroduction = () => {
   const data = [

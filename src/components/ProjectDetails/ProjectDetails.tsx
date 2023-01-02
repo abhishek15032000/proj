@@ -1,8 +1,12 @@
 import { Grid, Typography } from '@mui/material'
 import React from 'react'
 import CCButton from '../../atoms/CCButton'
-import ProjectIntroduction from './ProjectIntroduction'
-import TraceHistory from './TraceHistory'
+import AdditionalDetails from './AdditionalDetails/AdditionalDetails'
+import OtherProjects from './OtherProjects/OtherProjects'
+import ProjectIntroduction from './ProjectIntoduction/ProjectIntroduction'
+import TraceHistory from './TraceHistory/TraceHistory'
+import Reports from './Reports/Reports'
+import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
 
 const ProjectDetails = () => {
   return (
@@ -17,7 +21,12 @@ const ProjectDetails = () => {
         }}
       >
         <ProjectIntroduction />
+
+        <AdditionalDetails />
+        <TokensTxHistory />
+        <Reports />
         <TraceHistory />
+        <OtherProjects />
       </Grid>
     </>
   )

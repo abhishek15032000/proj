@@ -2,9 +2,9 @@ import { Grid, Typography, Box, Radio, Paper } from '@mui/material'
 import { borderColor } from '@mui/system'
 
 import React, { FC } from 'react'
-import CCButton from '../../atoms/CCButton'
-import { Colors, Images } from '../../theme'
-import TitleValue from '../Profile/TitleValue'
+import CCButton from '../../../atoms/CCButton'
+import { Colors, Images } from '../../../theme'
+import TitleValue from '../../Profile/TitleValue'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
 interface TraceDetailsProps {

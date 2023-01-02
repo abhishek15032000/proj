@@ -2,8 +2,8 @@ import { Grid, Typography, Box, Radio, Paper } from '@mui/material'
 import { borderColor } from '@mui/system'
 
 import React, { useState } from 'react'
-import CCButton from '../../atoms/CCButton'
-import { Colors, Images } from '../../theme'
+import CCButton from '../../../atoms/CCButton'
+import { Colors, Images } from '../../../theme'
 import TraceDetails from './TraceDetails'
 
 const TraceHistory = () => {
@@ -43,13 +43,12 @@ const TraceHistory = () => {
       alignItems={'center'}
       flexDirection="row"
       sx={{
-        my: 10,
-        mx: 5,
+        m: 10,
       }}
       height={'30%'}
     >
       <Typography
-        sx={{ color: '#55DBC8', fontSize: 40, fontWeight: 500, mt: -4 }}
+        sx={{ color: '#55DBC8', fontSize: '32px', fontWeight: 500, mt: -4 }}
       >
         Trace History
       </Typography>
@@ -62,6 +61,7 @@ const TraceHistory = () => {
           justifyContent: 'space-between',
           flexDirection: 'row',
           p: 4,
+
           background:
             'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, rgba(64, 96, 91, 0.59) 151.96%, #2D5F57 237.11%)',
         }}

@@ -30,7 +30,7 @@ export const limitTitle = (title: string, limit: number) => {
     }, 0)
 
     // return the result
-    return `${newTitle.join('')} ...`
+    return `${newTitle.join('')}...`
   }
   return title
 }
