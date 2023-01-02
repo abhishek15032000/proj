@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import React from 'react'
 import ProjectDetailsCard from './ProjectDetailsCard'
 
-const projects = ['', '', '', '']
+const projects = ['', '', '', '', '', '']
 
 const OtherProjects = () => {
   return (
@@ -29,7 +29,6 @@ const OtherProjects = () => {
         sx={{
           mt: 2,
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
         }}

@@ -1,7 +1,9 @@
 import { Box, Checkbox, Grid } from '@mui/material'
-import { height } from '@mui/system'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { getLocalItem } from '../../utils/Storage'
 import ProjectDetailsCard from '../ProjectDetails/OtherProjects/ProjectDetailsCard'
+import './index.css'
 
 const filters = [
   {
@@ -62,9 +64,72 @@ const filters = [
   },
 ]
 
-const projects = ['', '', '', '', '', '', '', '']
+const staticProjects = [
+  '',
+  '',
+  // '', '', '', '', ''
+]
 
 const ProjectListsWithFilter = () => {
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+  const [projects, setProjects] = useState<any>(null)
+  const [filteredProjects, setFilteredProjects] = useState<any>(null)
+
+  useEffect(() => {
+    getAllProjects()
+  }, [])
+
+  // useEffect(() => {
+  //   if (!selectedFilters.length) {
+  //     setFilteredProjects(projects)
+  //     return
+  //   }
+  //   if (projects && projects?.length) {
+  //     console.log('project', projects)
+  //     const projectsMatchingFilter: any[] = []
+  //     projects.foreach((project: any) => {
+  //       console.log(project?.type)
+  //       const projectType = project?.type
+  //       if (projectType.some((item: string) => projectType.includes(item))) {
+  //         projectsMatchingFilter.push(project)
+  //       }
+  //       // return project?.type
+  //       setFilteredProjects(projectsMatchingFilter)
+  //     })
+  //   }
+  // }, [projects])
+
+  const getAllProjects = () => {
+    dataCollectionCalls
+      .getAllProjects(getLocalItem('userDetails')?.email)
+      .then((response) => {
+        // console.log('response.data.data', response.data.data)
+        const types = response.data.data.map((project: any) => {
+          console.log(project?.type)
+          return project?.type
+        })
+        // console.log('types', types)
+        // setLoading(false)
+        setProjects(response.data.data)
+      })
+      .catch((e) => {
+        // setLoading(false)
+      })
+  }
+
+  const handleChange = (e: any, filter: string) => {
+    let selectedFiltersCopy
+    if (e.target.checked) {
+      selectedFiltersCopy = [...selectedFilters]
+      selectedFiltersCopy.push(filter)
+    } else {
+      selectedFiltersCopy = selectedFilters.filter(
+        (selectedFilter: string) => selectedFilter !== filter
+      )
+    }
+    setSelectedFilters(selectedFiltersCopy)
+  }
+
   return (
     <Box
       sx={{
@@ -74,7 +139,7 @@ const ProjectListsWithFilter = () => {
     >
       <Box sx={{ fontSize: '32px', color: '#55DBC8' }}>Projects</Box>
       <Grid container columnSpacing={2} sx={{ mt: 3 }}>
-        <Grid item xs={2}>
+        <Grid item md={2}>
           <Box
             sx={{
               color: '#DAE5E1',
@@ -93,51 +158,96 @@ const ProjectListsWithFilter = () => {
             >
               Filters
             </Box>
-            <Box sx={{ px: 2, py: 1, maxHeight: '70vh', overflow: 'auto' }}>
-              {filters &&
-                filters.length &&
-                filters.map((filter, index) => (
-                  <Box key={index} sx={{ mt: 2 }}>
-                    <Box sx={{ mb: 1 }}>{filter?.filterType}</Box>
-                    {filter?.filters &&
-                      filter?.filters.length &&
-                      filter?.filters.map((item, index) => (
-                        <Box
-                          key={index}
-                          sx={{
-                            mt: 1,
-                            fontSize: 12,
-                            borderBottom: '1px solid #6E7976',
-                            display: 'flex',
-                            // justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Box>
-                            <CustomCheckbox />
+            <Box
+              className="filter-list-container"
+              sx={{
+                px: 2,
+                py: 1,
+                maxHeight: '70vh',
+                overflow: 'auto',
+                overflowX: 'hidden',
+              }}
+            >
+              <Box
+              // className="filter-list-container"
+              // sx={{ overflow: 'auto', maxHeight: '70vh' }}
+              >
+                {filters &&
+                  filters.length &&
+                  filters.map((filter, index) => (
+                    <Box key={index} sx={{ mt: 2 }}>
+                      <Box sx={{ mb: 1 }}>{filter?.filterType}</Box>
+                      {filter?.filters &&
+                        filter?.filters.length &&
+                        filter?.filters.map((item, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              mt: 1,
+                              fontSize: 12,
+                              borderBottom: '1px solid #6E7976',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Box>
+                              <CustomCheckbox
+                                onChange={(e: any) => handleChange(e, item)}
+                              />
+                            </Box>
+                            {item}
                           </Box>
-                          {item}
-                        </Box>
-                      ))}
-                  </Box>
-                ))}
+                        ))}
+                    </Box>
+                  ))}
+              </Box>
             </Box>
+            {selectedFilters.length > 0 && (
+              <Box
+                sx={{
+                  background: '#005046',
+                  // padding: '4px 8px'
+                  p: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    // m: 1,
+                    fontSize: 14,
+                    fontWeight: 500,
+                    background: '#fff',
+                    borderRadius: '16px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    color: '#000',
+                    padding: '0 8px',
+                  }}
+                >
+                  {/* <CCButton>Apply</CCButton> */}
+                  Apply
+                </Box>
+              </Box>
+            )}
           </Box>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item md={10}>
           <Box
             sx={{
               display: 'flex',
-              // justifyContent: 'space-between',
               alignItems: 'center',
               flexWrap: 'wrap',
             }}
           >
-            {projects &&
-              projects.length &&
-              projects.map((project, index) => (
+            {filteredProjects &&
+              filteredProjects.length &&
+              filteredProjects.map((project: any, index: string) => (
                 <ProjectDetailsCard key={index} project={project} />
               ))}
+            {/* {staticProjects &&
+              staticProjects.length &&
+              staticProjects.map((project, index) => (
+                <ProjectDetailsCard key={index} project={project} />
+              ))} */}
           </Box>
         </Grid>
       </Grid>
@@ -147,9 +257,11 @@ const ProjectListsWithFilter = () => {
 
 export default ProjectListsWithFilter
 
-interface CustomCheckboxProps {}
+interface CustomCheckboxProps {
+  onChange: any
+}
 
-const CustomCheckbox: FC<CustomCheckboxProps> = () => {
+const CustomCheckbox: FC<CustomCheckboxProps> = ({ onChange }) => {
   return (
     <Checkbox
       // {...label}
@@ -168,6 +280,7 @@ const CustomCheckbox: FC<CustomCheckboxProps> = () => {
         width: '26px',
         height: '26px',
       }}
+      onChange={onChange}
     />
   )
 }
