@@ -5,6 +5,7 @@ import AdditionalDetails from './AdditionalDetails/AdditionalDetails'
 import OtherProjects from './OtherProjects/OtherProjects'
 import ProjectIntroduction from './ProjectIntroduction'
 import Reports from './Reports/Reports'
+import SliderComponent from './SliderComponent/SliderComponent'
 import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
 
 const ProjectDetails = () => {
@@ -19,6 +20,7 @@ const ProjectDetails = () => {
         <ProjectIntroduction />
         <Grid item xs={12}>
           <AdditionalDetails />
+          <SliderComponent />
           <TokensTxHistory />
           <Reports />
           <OtherProjects />
