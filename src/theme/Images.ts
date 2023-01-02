@@ -55,7 +55,17 @@ import D2EMPTY from '../assets/Images/help/D2EMPTY.png'
 import D2FILLED from '../assets/Images/help/D2FILLED.png'
 import D3EMPTY from '../assets/Images/help/D3EMPTY.png'
 import D3FILLED from '../assets/Images/help/D3FILLED.png'
-import List from '../assets/Images/help/List.png'
+
+import one from '../assets/Images/project-details/1.png'
+import three from '../assets/Images/project-details/3.png'
+import six from '../assets/Images/project-details/6.png'
+import seven from '../assets/Images/project-details/7.png'
+import eight from '../assets/Images/project-details/8.png'
+import ten from '../assets/Images/project-details/10.png'
+import twelve from '../assets/Images/project-details/12.png'
+import thirteen from '../assets/Images/project-details/13.png'
+import fifteen from '../assets/Images/project-details/15.png'
+import user from '../assets/Images/Icons/user.png'
 export const Images = {
   logo,
   illustration1,
@@ -114,4 +124,14 @@ export const Images = {
   D2FILLED,
   D3EMPTY,
   D3FILLED,
+  one,
+  three,
+  six,
+  seven,
+  eight,
+  ten,
+  twelve,
+  thirteen,
+  fifteen,
+  user,
 }

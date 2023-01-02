@@ -10,6 +10,8 @@ import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 interface TitleValueProps {
   title?: any
   value?: any
+  titleStyle?: any
+  valueStyle?: any
 }
 
 const TitleValue: FC<TitleValueProps> = (props) => {
@@ -22,11 +24,13 @@ const TitleValue: FC<TitleValueProps> = (props) => {
         marginTop: 2,
       }}
     >
-      <Typography sx={{ fontWeight: 400, fontSize: 14 }}>
+      <Typography sx={[{ fontWeight: 400, fontSize: 14 }, props?.titleStyle]}>
         {props.title}
       </Typography>
 
-      <Typography sx={{ fontWeight: 400, fontSize: 14, ml: 1 }}>
+      <Typography
+        sx={[{ fontWeight: 400, fontSize: 14, ml: 1 }, props?.valueStyle]}
+      >
         {props.value === undefined || props.value === '' ? '-' : props.value}
       </Typography>
     </Box>
