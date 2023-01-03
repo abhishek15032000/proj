@@ -5,9 +5,14 @@ import React, { useState } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import { Colors, Images } from '../../../theme'
 import TraceDetails from './TraceDetails'
-
+import './TraceHistory.css'
 const TraceHistory = () => {
   const data = [
+    {
+      dateTime: 'DD MM YYYY | Timestamp',
+      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
+      projectRole: 'Project Developer, Allenghey Trust',
+    },
     {
       dateTime: 'DD MM YYYY | Timestamp',
       TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
@@ -64,6 +69,7 @@ const TraceHistory = () => {
 
           background:
             'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, rgba(64, 96, 91, 0.59) 151.96%, #2D5F57 237.11%)',
+          overflow: 'hidden',
         }}
       >
         <Grid
@@ -74,6 +80,10 @@ const TraceHistory = () => {
           flexDirection="column"
           mt={3}
           mr={'20px'}
+          height={'520px'}
+          py={5}
+          overflow="auto"
+          className="scroll-container"
         >
           {data &&
             data.length > 0 &&
@@ -133,7 +143,7 @@ const TraceHistory = () => {
                     borderLeft:
                       traceOption === index
                         ? '10px solid #CCE8E1'
-                        : '1px solid #006B5E',
+                        : '10px solid #006B5E',
                   }}
                   onClick={() => setTraceOption(index)}
                 >

@@ -91,7 +91,14 @@ const rows = [
 
 const Reports = () => {
   return (
-    <Box sx={{ background: '#111E17', padding: '2vw 6vw', color: '#fff' }}>
+    <Box
+      sx={{
+        background: '#111E17',
+        padding: '2vw 6vw',
+        color: '#fff',
+        width: '100%',
+      }}
+    >
       <Typography sx={{ fontSize: '32px', color: '#55DBC8' }}>
         Reports
       </Typography>

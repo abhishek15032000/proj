@@ -68,7 +68,7 @@ import fifteen from '../assets/Images/project-details/15.png'
 import user from '../assets/Images/Icons/user.png'
 import List from '../assets/Images/help/List.png'
 import Project from '../assets/Images/illustrations/Project.png'
-
+import ProjectDetails from '../assets/Images/project-details/projectDetails.png'
 export const Images = {
   logo,
   illustration1,
@@ -138,4 +138,5 @@ export const Images = {
   fifteen,
   user,
   Project,
+  ProjectDetails,
 }

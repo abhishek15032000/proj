@@ -140,6 +140,48 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
 
       relevantDocs: [{}, {}],
     },
+    {
+      dateTime: 'DD MM YYYY | Timestamp',
+      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
+      projectInfoList: [
+        {
+          title: 'Project reference ID :',
+          value: '4334',
+        },
+        {
+          title: 'Project Name :',
+          value:
+            '33.66 MW poultry litter based power generation project by Raus Power in India',
+        },
+        {
+          title: 'Project location :',
+          value: 'Andhra pradesh',
+        },
+        {
+          title: 'Status :',
+          value: 'yet to be submit',
+        },
+        {
+          title: 'Project reference ID :',
+          value: '4334',
+        },
+        {
+          title: 'Project Name :',
+          value:
+            '33.66 MW poultry litter based power generation project by Raus Power in India',
+        },
+        {
+          title: 'Project location :',
+          value: 'Andhra pradesh',
+        },
+        {
+          title: 'Status :',
+          value: 'yet to be submit',
+        },
+      ],
+
+      relevantDocs: [{}, {}, {}],
+    },
   ]
 
   const { traceOption, setTraceOption } = props
@@ -153,10 +195,14 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
         justifyContent: 'start',
         alignItems: 'start',
         p: 4,
-        height: '50%',
+
         width: '70%',
         mt: '20px',
+        height: '520px',
+        py: 5,
+        overflowX: 'hidden',
       }}
+      // className="scroll-container"
     >
       <Typography sx={{ color: '#75F8E4', fontSize: 14, fontWeight: 500 }}>
         {data[traceOption]?.dateTime}
