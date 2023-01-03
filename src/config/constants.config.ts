@@ -63,3 +63,8 @@ export const TOKEN_TYPES = {
   VCOT: 'VCOT',
   INR: 'INR',
 }
+
+export const FILTER_ACTION = {
+  APPLY: 'Apply',
+  RESET: 'Reset',
+}
