@@ -15,6 +15,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({ project }) => {
         mb: 2,
         borderRadius: '8px',
         mr: 4,
+        height: '100%',
       }}
     >
       <Box>
@@ -52,7 +53,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({ project }) => {
           background: '#191C1B',
         }}
       >
-        <Box sx={{ fontSize: 16, fontWeight: 500 }}>
+        <Box sx={{ fontSize: 16, fontWeight: 500, wordBreak: 'break-word' }}>
           {project?.company_name || 'King County Urban Forest Council'}
         </Box>
         <Box

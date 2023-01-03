@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import React from 'react'
 import ProjectDetailsCard from './ProjectDetailsCard'
 
-const projects = ['', '', '', '', '', '']
+const projects = ['', '', '', '']
 
 const OtherProjects = () => {
   return (

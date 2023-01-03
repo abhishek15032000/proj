@@ -9,11 +9,9 @@ export const dataCollectionCalls = {
       }
     )
   },
-  getAllProjects: (email: string) => {
-    return AxiosHelper(
-      URL_PATH.project.getAllProjects + `?email=${email}`,
-      'GET'
-    )
+  getAllProjects: (email?: string) => {
+    const param = email ? `?email=${email}` : ''
+    return AxiosHelper(URL_PATH.project.getAllProjects + param, 'GET')
   },
   getProjectById: (projectID: string) => {
     return AxiosHelper(
