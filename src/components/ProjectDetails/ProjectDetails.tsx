@@ -3,7 +3,8 @@ import React from 'react'
 import CCButton from '../../atoms/CCButton'
 import AdditionalDetails from './AdditionalDetails/AdditionalDetails'
 import OtherProjects from './OtherProjects/OtherProjects'
-import ProjectIntroduction from './ProjectIntroduction'
+import ProjectIntroduction from './ProjectIntoduction/ProjectIntroduction'
+import TraceHistory from './TraceHistory/TraceHistory'
 import Reports from './Reports/Reports'
 import SliderComponent from './SliderComponent/SliderComponent'
 import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
@@ -11,14 +12,17 @@ import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
 const ProjectDetails = () => {
   return (
     <>
-      <Grid container justifyContent={'space-between'} alignItems={'center'}>
-        <Grid item>
-          <Typography sx={{ color: '#F15D5F', fontSize: 20, fontWeight: 500 }}>
-            Project Details
-          </Typography>
-        </Grid>
-        <ProjectIntroduction />
+      <Grid
+        container
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        sx={{
+          background:
+            'linear-gradient(180deg, #111E17 53.81%, rgba(7, 19, 13, 0.79) 100%)',
+        }}
+      >
         <Grid item xs={12}>
+          <ProjectIntroduction />
           <AdditionalDetails />
           <SliderComponent />
           <TokensTxHistory />

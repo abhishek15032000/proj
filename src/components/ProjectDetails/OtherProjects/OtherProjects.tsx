@@ -29,7 +29,6 @@ const OtherProjects = () => {
         sx={{
           mt: 2,
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
         }}

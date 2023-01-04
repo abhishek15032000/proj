@@ -7,9 +7,17 @@ import { Images } from '../../../theme'
 interface ProjectDetailsCardProps {
   project: any
 }
-const ProjectDetailsCard: FC<ProjectDetailsCardProps> = () => {
+const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({ project }) => {
   return (
-    <Box sx={{ width: '280px', mb: 2, borderRadius: '8px', mr: 2 }}>
+    <Box
+      sx={{
+        width: '280px',
+        mb: 2,
+        borderRadius: '8px',
+        mr: 4,
+        height: '100%',
+      }}
+    >
       <Box>
         <Box
           sx={{
@@ -31,7 +39,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = () => {
               left: '8px',
             }}
           >
-            Provisional Project
+            {project?.register ? 'Registered Project' : 'Provisional Project'}
           </Box>
         </Box>
       </Box>
@@ -45,8 +53,8 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = () => {
           background: '#191C1B',
         }}
       >
-        <Box sx={{ fontSize: 16, fontWeight: 500 }}>
-          King County Urban Forest Council
+        <Box sx={{ fontSize: 16, fontWeight: 500, wordBreak: 'break-word' }}>
+          {project?.company_name || 'King County Urban Forest Council'}
         </Box>
         <Box
           sx={{
@@ -58,8 +66,9 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = () => {
         >
           <FmdGoodOutlinedIcon sx={{ color: '#667080', ml: '-3px' }} />
           <Box sx={{ fontSize: 10, fontWeight: 500 }}>
-            Project Location Lexington, Ohio, United States | Project Area 53.4
-            ha
+            {`Project Location ${
+              project?.location || 'Lexington, Ohio, United States'
+            } | Project Area ${project?.area || '53.4'} Sq.Km`}
           </Box>
         </Box>
       </Box>
