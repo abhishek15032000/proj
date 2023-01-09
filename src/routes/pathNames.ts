@@ -37,7 +37,9 @@ export const pathNames = {
   PROFILE: '/profile',
   HELP_CENTER: '/help-center',
   PROJECT_DETAILS: '/project-details',
+  PROJECT_DETAILS_REGISTRY_ACC: '/project-details-registry-acc',
   PROJECT_LISTS_WITH_FILTER: '/project-lists-with-filter',
+  REGISTRY_REVIEW_REPORT: '/registry-review-report',
 }
 
 export const linkLabels = {
@@ -47,4 +49,5 @@ export const linkLabels = {
   Marketplace: 'Marketplace',
   Wallet: 'Wallet',
   TokenRetirement: 'Token Retirement',
+  Projects: 'Projects',
 }

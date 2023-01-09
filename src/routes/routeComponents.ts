@@ -37,6 +37,8 @@ import Profile from '../pages/Profile'
 import HelpCentre from '../pages/HelpCentre/HelpCentre'
 import ProjectDetails from '../pages/ProjectDetails'
 import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
+import ProjectDetailsRegistryAcc from '../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc'
+import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewReport'
 
 export const privateRouteComponents = [
   {
@@ -45,7 +47,7 @@ export const privateRouteComponents = [
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.TOKEN_CONTRACT,
@@ -66,7 +68,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUANCE_DATA_COLLECTION_HELP,
     component: IssuanceDataCollectionHelp,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
   },
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
@@ -118,7 +120,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.SELECT_VERIFIER,
@@ -217,11 +219,21 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROJECT_DETAILS,
     component: ProjectDetails,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
   },
   {
     path: pathNames.PROJECT_LISTS_WITH_FILTER,
     component: ProjectListsWithFilter,
     roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+    component: ProjectDetailsRegistryAcc,
+    roles: [ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.REGISTRY_REVIEW_REPORT,
+    component: RegistryReviewReport,
+    roles: [ROLES.REGISTRY],
   },
 ]

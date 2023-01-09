@@ -50,6 +50,8 @@ const ProjectsStats = () => {
           setRawStatsData(res)
           setLoading(false)
         }
+      } else if (userType === ROLES.REGISTRY) {
+        // get registry stats code
       }
       //using this for token and contract stats
       else if (location.pathname === pathNames.TOKEN_CONTRACT) {
