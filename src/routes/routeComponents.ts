@@ -39,6 +39,7 @@ import ProjectDetails from '../pages/ProjectDetails'
 import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
 import ProjectDetailsRegistryAcc from '../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc'
 import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewReport'
+import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProjects'
 
 export const privateRouteComponents = [
   {
@@ -224,7 +225,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROJECT_LISTS_WITH_FILTER,
     component: ProjectListsWithFilter,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
   },
   {
     path: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
@@ -235,5 +236,11 @@ export const privateRouteComponents = [
     path: pathNames.REGISTRY_REVIEW_REPORT,
     component: RegistryReviewReport,
     roles: [ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.REGISTRY_ALL_PROJECTS,
+    component: RegistryAllProjects,
+    roles: [ROLES.REGISTRY],
+    sidebarName: linkLabels.Dashboard,
   },
 ]

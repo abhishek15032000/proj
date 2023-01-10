@@ -15,7 +15,10 @@ const TabSelectorWithCount: FC<TabSelectorWithCountProps> = ({
   tabArray,
 }) => {
   return (
-    <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
+    <Box
+      sx={{ mt: 1, display: 'flex', alignItems: 'center' }}
+      data-testid="tab-selector-container"
+    >
       {tabArray?.map(({ name, count }, index) => (
         <Box
           sx={{
@@ -28,9 +31,11 @@ const TabSelectorWithCount: FC<TabSelectorWithCountProps> = ({
               index + 1 === tabIndex ? '#005046' : '#DAE5E1'
             }`,
             pb: 1,
+            cursor: 'pointer',
           }}
           key={index}
           onClick={() => setTabIndex(index + 1)}
+          data-testid="tab-selector-tab"
         >
           <Box
             sx={{

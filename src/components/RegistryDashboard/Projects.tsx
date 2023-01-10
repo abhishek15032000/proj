@@ -1,9 +1,14 @@
 import { Box, Paper, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWithCount'
+import { pathNames } from '../../routes/pathNames'
 import ProjectTable from './ProjectTable'
 
 const Projects = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const [tabIndex, setTabIndex] = useState(1)
 
   return (
@@ -16,26 +21,30 @@ const Projects = () => {
         marginTop: 3,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
-        <Typography
+      {location.pathname === pathNames.REGISTRY_ALL_PROJECTS ? null : (
+        <Box
           sx={{
-            color: '#F3BA4D',
-            fontSize: 14,
-            fontWeight: 400,
-            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
-          //   onClick={() => navigate(pathNames.SEE_ALL_PROJECTS)}
         >
-          See All
-        </Typography>
-      </Box>
+          <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
+            Projects
+          </Typography>
+          <Typography
+            sx={{
+              color: '#F3BA4D',
+              fontSize: 14,
+              fontWeight: 400,
+              cursor: 'pointer',
+            }}
+            onClick={() => navigate(pathNames.REGISTRY_ALL_PROJECTS)}
+          >
+            See All
+          </Typography>
+        </Box>
+      )}
       <TabSelectorWithCount
         tabArray={[
           { name: 'New', count: 1 },
@@ -46,7 +55,7 @@ const Projects = () => {
         setTabIndex={setTabIndex}
         sx={{ marginBottom: 2 }}
       />
-      <ProjectTable />
+      <ProjectTable tabIndex={tabIndex} />
     </Paper>
   )
 }

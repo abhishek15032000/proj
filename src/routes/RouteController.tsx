@@ -8,6 +8,8 @@ import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import MaintenancePage from '../pages/MaintenancePage'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
+import ProjectDetails from '../pages/ProjectDetails'
+import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
 import ResetPassword from '../pages/ResetPassword/ResetPassword'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
@@ -95,6 +97,28 @@ const RouteController = ({ localLoggedIn }: any) => {
           />
         }
       />
+      {/* <Route
+        path={pathNames.PROJECT_DETAILS}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={ProjectDetails}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      <Route
+        path={pathNames.PROJECT_LISTS_WITH_FILTER}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={ProjectListsWithFilter}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      /> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

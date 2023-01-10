@@ -40,6 +40,7 @@ export const pathNames = {
   PROJECT_DETAILS_REGISTRY_ACC: '/project-details-registry-acc',
   PROJECT_LISTS_WITH_FILTER: '/project-lists-with-filter',
   REGISTRY_REVIEW_REPORT: '/registry-review-report',
+  REGISTRY_ALL_PROJECTS: '/registry-all-projects',
 }
 
 export const linkLabels = {
