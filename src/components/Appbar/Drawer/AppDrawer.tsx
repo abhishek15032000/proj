@@ -128,6 +128,10 @@ export default function ResponsiveDrawer(props: any) {
       _.intersectionWith(userDataRoles, [ROLES.BUYER], _.isEqual).length > 0
     ) {
       return MENUS.buyer_menus
+    } else if (
+      _.intersectionWith(userDataRoles, [ROLES.REGISTRY], _.isEqual).length > 0
+    ) {
+      return MENUS.registry_menus
     } else {
       return []
     }

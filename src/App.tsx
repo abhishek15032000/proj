@@ -29,6 +29,7 @@ const drawerExemptList = [
   pathNames.ISSUANCE_DATA_COLLECTION_HELP,
   pathNames.PROJECT_DETAILS,
   pathNames.PROJECT_LISTS_WITH_FILTER,
+  pathNames.REGISTRY_REVIEW_REPORT,
 ]
 
 type AppProps = {

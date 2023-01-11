@@ -1,4 +1,5 @@
 import logo from '../assets/Images/logo/logo.svg'
+import ICRLogo from '../assets/Images/logo/ICR-Logo.png'
 import illustration1 from '../assets/Images/illustrations/illustration1.svg'
 import illustration2 from '../assets/Images/illustrations/illustration2.svg'
 import illustration3 from '../assets/Images/illustrations/illustration3.svg'
@@ -7,6 +8,9 @@ import ProjectCompletion from '../assets/Images/Icons/project-completion.svg'
 import BriefcaseIcon from '../assets/Images/Icons/briefcase.svg'
 import HelpIcon from '../assets/Images/Icons/help-icon.svg'
 import FileIcon from '../assets/Images/Icons/file-icon.svg'
+import LifetimeVCOTIcon from '../assets/Images/Icons/lifetime-vcot.png'
+import MonthlyVCOTIcon from '../assets/Images/Icons/monthly-vcot.png'
+import DashboardPencil from '../assets/Images/Icons/DashboardPencil.png'
 import OpenExternallyIcon from '../assets/Images/Icons/open-externally-icon.svg'
 import ListNewProject from '../assets/Images/help/list-new-project.png'
 import DemoImg from '../assets/Images/help/demo.png'
@@ -69,8 +73,10 @@ import user from '../assets/Images/Icons/user.png'
 import List from '../assets/Images/help/List.png'
 import Project from '../assets/Images/illustrations/Project.png'
 import ProjectDetails from '../assets/Images/project-details/projectDetails.png'
+
 export const Images = {
   logo,
+  ICRLogo,
   illustration1,
   illustration2,
   illustration3,
@@ -80,6 +86,9 @@ export const Images = {
   HelpIcon,
   OpenExternallyIcon,
   FileIcon,
+  MonthlyVCOTIcon,
+  LifetimeVCOTIcon,
+  DashboardPencil,
   ListNewProject,
   DemoImg,
   DemoImg2,

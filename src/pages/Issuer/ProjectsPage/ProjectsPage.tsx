@@ -6,6 +6,7 @@ import VerifierProjects from '../../../components/VerifierProjects'
 import { getLocalItem } from '../../../utils/Storage'
 import BuyerOnboarding from '../../../components/BuyerOnboarding'
 import { ROLES } from '../../../config/constants.config'
+import RegistryDashboard from '../../RegistryDashboard/RegistryDashboard'
 
 const ProjectsPage = (props: ProjectsPageProps) => {
   const userDetails = getLocalItem('userDetails')
@@ -16,6 +17,7 @@ const ProjectsPage = (props: ProjectsPageProps) => {
       {userDetails?.type === ROLES.ISSUER && <ProjectsComp />}
       {userDetails?.type === ROLES.VERIFIER && <VerifierProjects />}
       {userDetails?.type === ROLES.BUYER && <BuyerOnboarding />}
+      {userDetails?.type === ROLES.REGISTRY && <RegistryDashboard />}
     </>
   )
 }

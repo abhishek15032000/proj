@@ -2,6 +2,7 @@ export const ROLES = {
   ISSUER: 'ISSUER',
   VERIFIER: 'VERIFIER',
   BUYER: 'BUYER',
+  REGISTRY: 'REGISTRY',
 }
 export const WalletStats = {
   WALLET_BALANCE: 'Wallet Balance',

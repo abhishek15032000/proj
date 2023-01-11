@@ -15,6 +15,7 @@ const MENUS = {
     linkLabels.TokenRetirement,
     linkLabels.Wallet,
   ],
+  registry_menus: [linkLabels.Dashboard, linkLabels.Projects],
 }
 
 export default MENUS
