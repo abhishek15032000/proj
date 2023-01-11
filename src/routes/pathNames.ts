@@ -41,6 +41,7 @@ export const pathNames = {
   PROJECT_LISTS_WITH_FILTER: '/project-lists-with-filter',
   REGISTRY_REVIEW_REPORT: '/registry-review-report',
   REGISTRY_ALL_PROJECTS: '/registry-all-projects',
+  COMPLETE_PROFILE: '/complete-profile',
 }
 
 export const linkLabels = {
