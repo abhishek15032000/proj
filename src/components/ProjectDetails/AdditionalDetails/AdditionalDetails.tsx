@@ -34,7 +34,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       { heading: 'PROJECT TYPE', value: projectDetailsData?.type },
       {
         heading: 'REFERENCE & APPLIED METHODOLOGY',
-        value: methodologies.length <= 0 ? '-' : methodologies,
+        value: methodologies?.length <= 0 ? '-' : methodologies,
       },
       {
         heading: 'PROJECT START DATE',
@@ -154,7 +154,7 @@ const Details: FC<DetailsProps> = ({ heading, value }) => {
       {typeof value === 'string' ? (
         <Box sx={{ fontSize: 16 }}>{value}</Box>
       ) : (
-        value.map((val: string, index: number) => (
+        value?.map((val: string, index: number) => (
           <Box key={index} sx={{ fontSize: 16 }}>
             {val}
           </Box>
