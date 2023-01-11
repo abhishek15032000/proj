@@ -1,7 +1,9 @@
 import { Box, Checkbox, Grid } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { FILTER_ACTION } from '../../config/constants.config'
+import { pathNames } from '../../routes/pathNames'
 import { getLocalItem } from '../../utils/Storage'
 import ProjectDetailsCard from '../ProjectDetails/OtherProjects/ProjectDetailsCard'
 import ProjectDetailsCardSkeleton from '../ProjectDetails/OtherProjects/ProjectDetailsCardSkeleton'
@@ -79,7 +81,7 @@ const ProjectListsWithFilter = () => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const [action, setAction] = useState<string>(FILTER_ACTION.APPLY)
-
+  const navigate = useNavigate()
   useEffect(() => {
     getAllProjects()
   }, [])
@@ -260,7 +262,11 @@ const ProjectListsWithFilter = () => {
               : filteredProjects &&
                 filteredProjects.length &&
                 filteredProjects.map((project: any, index: number) => (
-                  <ProjectDetailsCard key={index} project={project} />
+                  <ProjectDetailsCard
+                    key={index}
+                    project={project}
+                    navigationAction={(item: any) => navigate(item)}
+                  />
                 ))}
           </Box>
         </Grid>

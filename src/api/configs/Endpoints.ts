@@ -61,6 +61,7 @@ export const URL_PATH = {
     getPDFHash: ENDPOINTS.carbonServiceURL + '/verifier/utils/getHash',
     verifyPDFAndMintToken:
       ENDPOINTS.carbonServiceURL + '/verifier/report/submit',
+    verifierAllReport: ENDPOINTS.carbonServiceURL + '/verifier/report/all',
   },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',
@@ -110,5 +111,9 @@ export const URL_PATH = {
     updateRead:
       ENDPOINTS.notificationServiceURL +
       '/notification/updateInAppNotification',
+  },
+  projectDetails: {
+    getAllTransactionHistory:
+      ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
   },
 }

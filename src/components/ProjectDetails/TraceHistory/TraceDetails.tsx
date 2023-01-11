@@ -10,6 +10,7 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 interface TraceDetailsProps {
   traceOption?: any
   setTraceOption?: any
+  theme?: any
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
@@ -184,11 +185,11 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
     },
   ]
 
-  const { traceOption, setTraceOption } = props
+  const { traceOption, setTraceOption, theme } = props
   return (
     <Paper
       sx={{
-        background: 'rgba(0, 107, 94, 0.08)',
+        background: theme === 'dark' ? 'rgba(0, 107, 94, 0.08)' : '#FAFDFA',
         borderRadius: '8px',
         display: 'flex',
         flexDirection: 'column',
@@ -204,7 +205,13 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
       }}
       // className="scroll-container"
     >
-      <Typography sx={{ color: '#75F8E4', fontSize: 14, fontWeight: 500 }}>
+      <Typography
+        sx={{
+          color: theme === 'dark' ? '#75F8E4' : '#006B5E',
+          fontSize: 14,
+          fontWeight: 500,
+        }}
+      >
         {data[traceOption]?.dateTime}
       </Typography>
       <Typography
@@ -225,19 +232,24 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
             title={item.title}
             value={item.value}
             valueStyle={{
-              fontWeight: 500,
-              color: Colors.white,
+              fontWeight: 400,
+              color: theme === 'dark' ? Colors.white : '#2B2B2B',
               textAlign: 'right',
             }}
             titleStyle={{
               fontWeight: 500,
-              color: Colors.white,
+              color: theme === 'dark' ? Colors.white : '#2B2B2B',
             }}
           />
         ))}
 
       <Typography
-        sx={{ color: '#75F8E4', fontSize: 16, fontWeight: 500, mt: '20px' }}
+        sx={{
+          color: theme === 'dark' ? '#75F8E4' : '#006B5E',
+          fontSize: 16,
+          fontWeight: 500,
+          mt: '20px',
+        }}
       >
         {'Relevant docs'}
       </Typography>
@@ -249,7 +261,8 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
             sx={{
               width: '100%',
               height: '40px',
-              backgroundColor: 'rgba(25, 28, 27, 0.12)',
+              backgroundColor:
+                theme === 'dark' ? 'rgba(25, 28, 27, 0.12)' : '#DAF7F0',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -266,7 +279,15 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
                 pl: 1,
               }}
             >
-              <InsertDriveFileIcon style={{ color: '#388E81' }} />
+              <InsertDriveFileIcon
+                style={{
+                  color: '#388E81',
+                  // border:
+                  //   theme === 'dark'
+                  //     ? '2px solid #388E81'
+                  //     : '2px solid #388E81',
+                }}
+              />
 
               <Box
                 sx={{
@@ -274,14 +295,22 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
                 }}
               >
                 <Typography
-                  sx={{ fontSize: 12, fontWeight: 500, color: '#CCE8E1' }}
+                  sx={{
+                    fontSize: 12,
+                    fontWeight: 400,
+                    color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
+                  }}
                 >
                   {/* {props.title} */}
                   {'Project introduction file.'}
                 </Typography>
                 {/* {props.fileSize > 0 && ( */}
                 <Typography
-                  sx={{ fontSize: 12, fontWeight: 500, color: '#CCE8E1' }}
+                  sx={{
+                    fontSize: 12,
+                    fontWeight: 500,
+                    color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
+                  }}
                 >
                   {/* {props.fileSize} MB */}
                   {'0.5 MB'}
