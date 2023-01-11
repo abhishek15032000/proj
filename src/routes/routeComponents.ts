@@ -217,7 +217,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROJECT_DETAILS,
     component: ProjectDetails,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER],
   },
   {
     path: pathNames.PROJECT_LISTS_WITH_FILTER,

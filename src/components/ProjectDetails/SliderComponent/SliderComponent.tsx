@@ -2,17 +2,18 @@ import React, { FC, useState } from 'react'
 import { Box, Grid, Typography } from '@mui/material'
 import './style.css'
 import Arrow from '../../../assets/Images/Icons/arrow-circle.svg'
+import { Images } from '../../../theme'
 
 const SliderComponent = () => {
   const [slideList, setSlideList] = useState([
     {
-      bg: 'https://cdn.pixabay.com/photo/2016/11/15/07/09/photo-manipulation-1825450_960_720.jpg',
+      bg: Images.ProjectDetails,
     },
     {
       bg: 'https://cdn.pixabay.com/photo/2022/01/28/18/32/leaves-6975462_960_720.png',
     },
     {
-      bg: 'https://cdn.pixabay.com/photo/2020/03/10/14/37/chick-4919202_960_720.jpg',
+      bg: Images.ProjectDetails,
     },
   ])
 

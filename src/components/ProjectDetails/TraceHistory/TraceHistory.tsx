@@ -41,6 +41,7 @@ const TraceHistory = () => {
   ]
 
   const [traceOption, setTraceOption] = useState(0)
+  const [theme, setTheme] = useState('dark')
   return (
     <Grid
       container
@@ -48,12 +49,21 @@ const TraceHistory = () => {
       alignItems={'center'}
       flexDirection="row"
       sx={{
-        m: 10,
+        p: 10,
+        background:
+          theme === 'dark'
+            ? 'linear-gradient(180deg, #111E17 9.55%, rgba(7, 19, 13, 0.79) 100%)'
+            : '#FFFFFF',
       }}
       height={'30%'}
     >
       <Typography
-        sx={{ color: '#55DBC8', fontSize: '32px', fontWeight: 500, mt: -4 }}
+        sx={{
+          color: theme === 'dark' ? '#55DBC8' : '#1D4B44',
+          fontSize: '32px',
+          fontWeight: 500,
+          mt: -4,
+        }}
       >
         Trace History
       </Typography>
@@ -68,7 +78,9 @@ const TraceHistory = () => {
           p: 4,
 
           background:
-            'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, rgba(64, 96, 91, 0.59) 151.96%, #2D5F57 237.11%)',
+            theme === 'dark'
+              ? 'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, rgba(64, 96, 91, 0.59) 151.96%, #2D5F57 237.11%)'
+              : '#FFFFFF',
           overflow: 'hidden',
         }}
       >
@@ -79,7 +91,7 @@ const TraceHistory = () => {
           alignItems={'center'}
           flexDirection="column"
           mt={3}
-          mr={'20px'}
+          px={'20px'}
           height={'520px'}
           py={5}
           overflow="auto"
@@ -123,7 +135,9 @@ const TraceHistory = () => {
                       height: '70px',
                       width: '4px',
                       background:
-                        'linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)',
+                        theme === 'dark'
+                          ? 'linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)'
+                          : '#CCE8E1',
                     }}
                   ></Box>
                 </Grid>
@@ -136,14 +150,23 @@ const TraceHistory = () => {
                   sx={{
                     py: 2,
                     px: 4,
-                    background: '#006B5E',
+                    background:
+                      theme === 'dark'
+                        ? '#006B5E'
+                        : traceOption === index
+                        ? ' #CCE8E1'
+                        : '#FAFDFA',
                     borderRadius: '8px',
                     heigth: '100px',
                     mt: -8,
                     borderLeft:
-                      traceOption === index
-                        ? '10px solid #CCE8E1'
-                        : '10px solid #006B5E',
+                      theme === 'dark'
+                        ? traceOption === index
+                          ? '10px solid #CCE8E1'
+                          : '10px solid #006B5E'
+                        : traceOption === index
+                        ? '10px solid #55DBC8'
+                        : '10px solid transparent',
                   }}
                   onClick={() => setTraceOption(index)}
                 >
@@ -159,12 +182,17 @@ const TraceHistory = () => {
                       data-testid="logo-img"
                       className="logoImage"
                       src={Images.user}
-                      color="White"
+                      color={theme === 'dark' ? 'White' : '#3F4946'}
                       style={{ width: '30px' }}
                     />
                     <Typography
                       sx={{
-                        color: 'white',
+                        color:
+                          theme === 'dark'
+                            ? 'white'
+                            : traceOption === index
+                            ? '#3F4946'
+                            : '#191C1B',
                         fontSize: 14,
                         fontWeight: 400,
                         ml: 1,
@@ -180,6 +208,7 @@ const TraceHistory = () => {
         <TraceDetails
           traceOption={traceOption}
           setTraceOption={(item: any) => setTraceOption(item)}
+          theme={theme}
         />
       </Paper>
     </Grid>
