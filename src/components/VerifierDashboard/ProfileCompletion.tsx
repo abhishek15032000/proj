@@ -148,11 +148,11 @@ const ProfileCompletion = () => {
         stepCompleted={profileCompletion}
         onClickWhenIncomplete={() => navigate(pathNames.VERIFIER_PROFILE_SETUP)}
       />
-      <ProfileCompletionStep
+      {/* <ProfileCompletionStep
         stepTitle="Wallet Added"
         stepCompleted={isConnected ? 100 : 0}
         onClickWhenIncomplete={() => undefined}
-      />
+      /> */}
     </Paper>
   )
 }

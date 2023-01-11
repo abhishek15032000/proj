@@ -124,19 +124,21 @@ export const connectWallet = async () => {
             store.dispatch(setConnected(res.isConnected))
             store.dispatch(setAccountBalance(res?.accountBalance))
 
-            if (getLocalItem('userDetails2')?.shineKey) {
-                if (!BlockchainCalls.compareShinekeyAndAddress(res.accountAddress)) {
-                    store.dispatch(setLoadWalletAlert(true))
-                    store.dispatch(setAlertMessage("Your ShineKey and your current Wallet Address does not match. Please select the correct address"))
-                }
-            } else {
-
-                // if (!walletAdded) {
-                // updateUserWithShineKey(res.accountAddress)
-                // }
+            //Commented to remove metamask validation
+            // if (getLocalItem('userDetails2')?.shineKey) {
+            //     if (!BlockchainCalls.compareShinekeyAndAddress(res.accountAddress)) {
+            //         store.dispatch(setLoadWalletAlert(true))
+            //         store.dispatch(setAlertMessage("Your ShineKey and your current Wallet Address does not match. Please select the correct address"))
+            //     }
+            // } else {
                 store.dispatch(setAccountAddressToConnectWith(res.accountAddress))
-                store.dispatch(setShowAddMetaMaskAccountModal(true))
-            }
+                const wallet_added = getLocalItem("userDetails2")?.wallet_added
+                const shineKey = getLocalItem("userDetails2")?.shineKey
+                console.log({wallet_added,shineKey})
+                if(!wallet_added&&!shineKey){
+                    store.dispatch(setShowAddMetaMaskAccountModal(true))
+                }
+            // }
             return true
 
         })
