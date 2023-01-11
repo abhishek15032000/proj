@@ -40,6 +40,7 @@ import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectLists
 import ProjectDetailsRegistryAcc from '../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc'
 import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewReport'
 import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProjects'
+import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
 
 export const privateRouteComponents = [
   {
@@ -242,5 +243,10 @@ export const privateRouteComponents = [
     component: RegistryAllProjects,
     roles: [ROLES.REGISTRY],
     sidebarName: linkLabels.Dashboard,
+  },
+  {
+    path: pathNames.COMPLETE_PROFILE,
+    component: CompleteProfile,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
   },
 ]
