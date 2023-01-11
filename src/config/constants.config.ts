@@ -2,6 +2,7 @@ export const ROLES = {
   ISSUER: 'ISSUER',
   VERIFIER: 'VERIFIER',
   BUYER: 'BUYER',
+  REGISTRY: 'REGISTRY',
 }
 export const WalletStats = {
   WALLET_BALANCE: 'Wallet Balance',
@@ -62,4 +63,9 @@ export const LOCAL_STORAGE_VARS = {
 export const TOKEN_TYPES = {
   VCOT: 'VCOT',
   INR: 'INR',
+}
+
+export const FILTER_ACTION = {
+  APPLY: 'Apply',
+  RESET: 'Reset',
 }
