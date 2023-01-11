@@ -3,11 +3,18 @@ import React, { FC } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined'
 import { Images } from '../../../theme'
+import { pathNames } from '../../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
 
 interface ProjectDetailsCardProps {
   project: any
+  navigationAction: any
 }
-const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({ project }) => {
+const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
+  project,
+  navigationAction,
+}) => {
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -97,6 +104,9 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({ project }) => {
               fontSize: 14,
               fontWeight: 500,
             }}
+            onClick={() =>
+              navigate(pathNames.PROJECT_DETAILS, { state: project })
+            }
           >
             Buy Credits
           </CCButton>

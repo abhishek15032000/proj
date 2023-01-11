@@ -1,10 +1,39 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import { pathNames } from '../../../routes/pathNames'
 import ProjectDetailsCard from './ProjectDetailsCard'
+import ProjectDetailsCardSkeleton from './ProjectDetailsCardSkeleton'
 
 const projects = ['', '', '', '']
 
 const OtherProjects = () => {
+  const navigate = useNavigate()
+  const [projects, setProjects] = useState<any>(null)
+  const [filteredProjects, setFilteredProjects] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  useEffect(() => {
+    getAllProjects()
+  }, [])
+
+  const getAllProjects = async () => {
+    try {
+      setLoading(true)
+      const projectRes = await dataCollectionCalls.getAllProjects()
+      if (projectRes.data.success) {
+        const filterProject = projectRes.data.data.filter(
+          (item: any, index: number) => index <= 3 && item
+        )
+
+        setProjects(filterProject)
+      }
+    } catch (e) {
+      console.log('Error in dataCollectionCalls.getAllProjects api ~ ', e)
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <Box
       sx={{
@@ -22,6 +51,7 @@ const OtherProjects = () => {
           color: '#55DBC8',
           textAlign: 'right',
         }}
+        onClick={() => navigate(pathNames.PROJECT_LISTS_WITH_FILTER)}
       >
         See All
       </Box>
@@ -33,11 +63,19 @@ const OtherProjects = () => {
           flexWrap: 'wrap',
         }}
       >
-        {projects &&
-          projects.length &&
-          projects.map((project, index) => (
-            <ProjectDetailsCard key={index} project={project} />
-          ))}
+        {loading
+          ? ['', '', '', ''].map((project, index) => (
+              <ProjectDetailsCardSkeleton key={index} />
+            ))
+          : projects &&
+            projects.length &&
+            projects.map((project: any, index: number) => (
+              <ProjectDetailsCard
+                key={index}
+                project={project}
+                navigationAction={(item: any) => null}
+              />
+            ))}
       </Box>
     </Box>
   )
