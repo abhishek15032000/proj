@@ -1,12 +1,14 @@
 import _ from 'lodash'
 import React from 'react'
 import { shallowEqual } from 'react-redux'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { ROLES } from '../config/constants.config'
 import { useAppSelector } from '../hooks/reduxHooks'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import MaintenancePage from '../pages/MaintenancePage'
+import MarketplaceHome from '../pages/MarketplaceHome'
+import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 import ProjectDetails from '../pages/ProjectDetails'
 import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
@@ -15,12 +17,13 @@ import ResetPassword from '../pages/ResetPassword/ResetPassword'
 import TwoFaPage from '../pages/TwoFa/TwoFaPage'
 import VerifierVerifyReport from '../pages/VerifierVerifyReport'
 import { getLocalItem } from '../utils/Storage'
+import { drawerExemptList, hybridPaths } from './config'
 import { pathNames } from './pathNames'
 import { privateRouteComponents } from './routeComponents'
 
 const RouteController = ({ localLoggedIn }: any) => {
   const userData = useAppSelector((state: any) => state.auth.data, shallowEqual)
-
+  const location = useLocation()
   return (
     <Routes>
       {privateRouteComponents.map((route: any) => (
@@ -76,6 +79,40 @@ const RouteController = ({ localLoggedIn }: any) => {
           <PublicRoute
             roles={[]}
             component={MaintenancePage}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      <Route
+        path={pathNames.MARKETPLACE}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={MarketplaceHome}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      <Route
+        path={pathNames.MARKETPLACE_PROJECT_DETAILS}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={MarketplaceProjectDetails}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      <Route
+      
+        path={pathNames.PROJECT_DETAILS}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={ProjectDetails}
             authenticated={userData}
             userData={userData}
           />
@@ -149,14 +186,16 @@ const PrivateRoute = ({
     '🚀 ~ file: RouteController.tsx ~ line 27 ~ RouteController ~ userHasRequiredRole',
     userHasRequiredRole
   )
+  alert(location.pathname)
 
-  if (isAuthenticated && userHasRequiredRole) {
+  if ((isAuthenticated && userHasRequiredRole) || hybridPaths.includes(location.pathname)) {
     return <RouteComponent />
   }
 
   if (isAuthenticated && !userHasRequiredRole) {
     return <AccessDeniedPage />
   }
+  
 
   return <Navigate to={pathNames.LOGIN} />
 }

@@ -40,7 +40,7 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
     (state) => state.wallet.loadWalletAlert
   )
 
-  const { user_id } = getLocalItem('userDetails')
+  // const { user_id } = getLocalItem('userDetails')
 
   const closeModal = () => dispatch(setLoadWallet(false))
 
