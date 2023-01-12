@@ -19,7 +19,11 @@ import { pathNames } from '../../routes/pathNames'
 
 // Local Imports
 
-const ProfileCompletion = () => {
+interface ProfileCompletionProps {
+  short?: boolean
+}
+
+const ProfileCompletion: FC<ProfileCompletionProps> = ({ short = false }) => {
   // const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -69,10 +73,10 @@ const ProfileCompletion = () => {
         boxShadow: '1px 1px 2px 2px #CCC',
         borderRadius: '8px',
         padding: 1.5,
-        backgroundImage: `url(${Images.ProfileCompletionBg})`,
+        backgroundImage: short ? '' : `url(${Images.ProfileCompletionBg})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center bottom',
-        height: 'calc(100vh - 120px)',
+        height: short ? 'calc(50vh - 120px )' : 'calc(100vh - 120px)',
       }}
     >
       <Typography

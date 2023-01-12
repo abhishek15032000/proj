@@ -4,7 +4,7 @@ import CCButton from '../../../atoms/CCButton'
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined'
 import { Images } from '../../../theme'
 import { pathNames } from '../../../routes/pathNames'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -15,6 +15,10 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
   navigationAction,
 }) => {
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const onWebApp = location.pathname === pathNames.MARKETPLACE_V2
+
   return (
     <Box
       sx={{
@@ -23,6 +27,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
         borderRadius: '8px',
         mr: 4,
         height: '100%',
+        boxShadow: onWebApp ? '0px 5px 25px rgba(0, 0, 0, 0.12)' : '',
       }}
     >
       <Box>
@@ -32,13 +37,17 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           }}
         >
           <Box>
-            <img src={Images.Project} alt="" width="100%" />
+            <img
+              src={onWebApp ? Images.ProjectLight : Images.Project}
+              alt=""
+              width="100%"
+            />
           </Box>
           <Box
             sx={{
               position: 'absolute',
-              background: '#1C3531',
-              color: '#BFC9C6',
+              background: onWebApp ? '#CCE8E1' : '#1C3531',
+              color: onWebApp ? '#006B5E' : '#BFC9C6',
               padding: '4px 8px',
               fontSize: '11px',
               fontWeight: 500,
@@ -55,9 +64,9 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           px: 2,
           pt: 2,
           pb: 1,
-          color: '#E1E3E1',
+          color: onWebApp ? '#00201B' : '#E1E3E1',
+          background: onWebApp ? '#fff' : '#191C1B',
           borderBottom: '1px solid #899390',
-          background: '#191C1B',
         }}
       >
         <Box sx={{ fontSize: 16, fontWeight: 500, wordBreak: 'break-word' }}>
@@ -80,7 +89,13 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
         </Box>
       </Box>
       <Box
-        sx={{ px: 2, pb: 2, pt: 1, color: '#E1E3E1', background: '#191C1B' }}
+        sx={{
+          px: 2,
+          pb: 2,
+          pt: 1,
+          color: onWebApp ? '#00201B' : '#E1E3E1',
+          background: onWebApp ? '#fff' : '#191C1B',
+        }}
       >
         <Box sx={{ fontSize: 12, fontWeight: 500 }}>
           <Box sx={{ display: 'flex' }}>
@@ -96,7 +111,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           <CCButton
             sx={{
               mt: 3,
-              background: '#55DBC8',
+              background: onWebApp ? '' : '#55DBC8',
               width: '100%',
               height: '30px',
               borderRadius: '16px',
