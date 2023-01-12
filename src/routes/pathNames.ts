@@ -43,6 +43,7 @@ export const pathNames = {
   REGISTRY_REVIEW_REPORT: '/registry-review-report',
   REGISTRY_ALL_PROJECTS: '/registry-all-projects',
   COMPLETE_PROFILE: '/complete-profile',
+  REVIEW_AND_COMMENT: '/review-and-comment',
 }
 
 export const linkLabels = {

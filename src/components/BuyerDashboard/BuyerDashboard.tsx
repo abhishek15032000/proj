@@ -39,7 +39,7 @@ const BuyerDashboard = () => {
   }, [])
 
   useEffect(() => {
-    checkProfileComplete()
+    if (userDetails) checkProfileComplete()
   }, [userDetails])
 
   const getUserDetails = async () => {

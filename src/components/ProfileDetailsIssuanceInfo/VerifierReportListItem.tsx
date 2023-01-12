@@ -141,7 +141,8 @@ const VerifierReportListItemListItem: FC<
                 props?.data?.project_status === 2 && (
                   <CCButton
                     onClick={() => {
-                      setShowModal(true)
+                      // setShowModal(true)
+                      props?.updateVerifierAPI(props?.data)
                     }}
                     sx={{
                       backgroundColor: '#006B5E',
@@ -161,7 +162,7 @@ const VerifierReportListItemListItem: FC<
         </Grid>
       </Box>
       {/* modal when user clicks on finalise verifier */}
-      <MessageModal
+      {/* <MessageModal
         message={
           <>
             <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
@@ -204,7 +205,7 @@ const VerifierReportListItemListItem: FC<
         btn2Text="Cancel"
         showModal={showModal}
         setShowModal={setShowModal}
-      />
+      /> */}
     </>
   )
 }

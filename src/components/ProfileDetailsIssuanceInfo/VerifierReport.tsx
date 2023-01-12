@@ -255,10 +255,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const updateVerifier = (confirmedVerifier: any) => {
     const { shineKey = '' } = getLocalItem('userDetails2')
 
-    if (wallet_address !== shineKey) {
-      setShowModal(true)
-      return
-    }
+    // if (wallet_address !== shineKey) {
+    //   setShowModal(true)
+    //   return
+    // }
 
     setLoading(true)
     const payload = {
@@ -274,8 +274,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          // getVerifierByProject()
-          createProjectContractCall(res?.data?.fileHash)
+          getVerifierByProject()
+          // createProjectContractCall(res?.data?.fileHash)
         }
       })
       .catch((err) => {
@@ -405,7 +405,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           )}
         </Grid>
       </Grid>
-      <MessageModal
+      {/* <MessageModal
         message={
           'Please use the same Wallet address submitted at the start while completing the Profile!!!'
         }
@@ -413,7 +413,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         btn1OnClick={() => setShowModal(false)}
         showModal={showModal}
         setShowModal={setShowModal}
-      />
+      /> */}
       <MessageModal
         message={
           'Successfully finalized Verifier and Project added in Blockchain!!!'

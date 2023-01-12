@@ -71,7 +71,7 @@ const Projects = () => {
   }, [])
 
   useEffect(() => {
-    checkProfileComplete()
+    if (userDetails) checkProfileComplete()
   }, [userDetails])
 
   const getUserDetails = async () => {
@@ -136,6 +136,26 @@ const Projects = () => {
           'Metamask not connected. Please Connect Metamask before proceeding!!!'}
       </Typography> */}
           {/* {isConnected && ( */}
+          <CCButton
+            variant="contained"
+            sx={{
+              backgroundColor: '#F3BA4D',
+              textTransform: 'none',
+              width: '260px',
+              borderRadius: '100px',
+              marginBottom: 4,
+              marginTop: 3,
+              padding: '10px 24px 10px 16px',
+            }}
+            startIcon={<AddIcon style={{ color: '#005046' }} />}
+            onClick={listNewProject}
+          >
+            <Typography
+              sx={{ fontSize: 14, fontWeight: 500, color: '#005046' }}
+            >
+              List New Project
+            </Typography>
+          </CCButton>
           <Typography
             sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400 }}
           >

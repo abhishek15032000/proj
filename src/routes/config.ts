@@ -12,6 +12,7 @@ export const drawerExemptList = [
     pathNames.MAINTENANCE_PAGE,
     pathNames.TWOFA,
     pathNames.REGISTER,
+    pathNames.REVIEW_AND_COMMENT
   ]
 
 export const hybridPaths=[

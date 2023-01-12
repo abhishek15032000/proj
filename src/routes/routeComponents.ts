@@ -41,6 +41,7 @@ import ProjectDetailsRegistryAcc from '../pages/ProjectDetailsRegistryAcc/Projec
 import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewReport'
 import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProjects'
 import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
+import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
 
 export const privateRouteComponents = [
   {
@@ -254,5 +255,11 @@ export const privateRouteComponents = [
     component: ProjectListsWithFilter,
     // component: MarketplaceV2,
     roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.REVIEW_AND_COMMENT,
+    component: ReviewAndComment,
+    // component: MarketplaceV2,
+    roles: [ROLES.VERIFIER],
   },
 ]
