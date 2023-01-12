@@ -17,5 +17,6 @@ export const drawerExemptList = [
 export const hybridPaths=[
     pathNames.MARKETPLACE,
     pathNames.MARKETPLACE_PROJECT_DETAILS,
-    pathNames.PROJECT_DETAILS
+    pathNames.PROJECT_DETAILS,
+    'projects.html'
 ]
