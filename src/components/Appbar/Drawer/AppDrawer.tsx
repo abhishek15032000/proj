@@ -32,9 +32,9 @@ import { privateRouteComponents } from '../../../routes/routeComponents'
 import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
-const drawerWidth = 240
 
 export default function ResponsiveDrawer(props: any) {
+  const drawerWidth = !props.user ? 0:  240
   const location = useLocation()
 
   const userDataRoles = useAppSelector(
@@ -248,7 +248,7 @@ export default function ResponsiveDrawer(props: any) {
     </Box>
   )
 
-  return !props.show ? <> {props.children}</>: (
+  return !props.show && !props.user ? <> {props.children}</>: (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
@@ -262,7 +262,7 @@ export default function ResponsiveDrawer(props: any) {
       >
         <AppNavBar handleDrawerToggle={handleDrawerToggle} user= {props.user} />
       </AppBar>
-      <Box
+     { props.user && <Box
         component="nav"
         sx={{
           width: { sm: drawerWidth },
@@ -303,7 +303,7 @@ export default function ResponsiveDrawer(props: any) {
         >
           {drawer}
         </Drawer>
-      </Box>
+      </Box>}
       <Box
         component="main"
         sx={{
