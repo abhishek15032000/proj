@@ -186,7 +186,7 @@ const PrivateRoute = ({
     '🚀 ~ file: RouteController.tsx ~ line 27 ~ RouteController ~ userHasRequiredRole',
     userHasRequiredRole
   )
-  alert(location.pathname)
+  // alert(location.pathname)
 
   if ((isAuthenticated && userHasRequiredRole) || hybridPaths.includes(location.pathname)) {
     return <RouteComponent />
