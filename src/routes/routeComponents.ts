@@ -249,4 +249,10 @@ export const privateRouteComponents = [
     component: CompleteProfile,
     roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
   },
+  {
+    path: pathNames.MARKETPLACE_V2,
+    component: ProjectListsWithFilter,
+    // component: MarketplaceV2,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
 ]

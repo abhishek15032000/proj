@@ -40,7 +40,8 @@ const CompleteProfile = () => {
     let temp = {}
     if (
       userDetails?.type === ROLES.ISSUER ||
-      userDetails?.type === ROLES.REGISTRY
+      userDetails?.type === ROLES.REGISTRY ||
+      userDetails?.type === ROLES.BUYER
     ) {
       temp = {
         uuid: userDetails?.uuid,
@@ -130,6 +131,8 @@ const CompleteProfile = () => {
                       padding: '8px 24px',
                       borderRadius: '20px',
                       fontSize: 14,
+                      background: '#006B5E',
+                      color: '#fff',
                     }}
                     onClick={updateUser}
                     disabled={isDisabled()}
@@ -142,6 +145,7 @@ const CompleteProfile = () => {
               {userDetails?.type === ROLES.REGISTRY && (
                 <IsssuerCompleteProfile />
               )}
+              {userDetails?.type === ROLES.BUYER && <IsssuerCompleteProfile />}
             </Box>
           </Grid>
           <Grid item md={3}>
