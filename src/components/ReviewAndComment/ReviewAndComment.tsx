@@ -80,7 +80,7 @@ const ReviewAndComment = () => {
           />
         </Box>
       </Box>
-      <Grid container sx={{ background: '#DAE5E1', px: 2 }} columnSpacing={2}>
+      <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
         <Grid item md={showCommentSection ? 6 : 12}>
           {/* <PDFViewer pdfUrl={'/src/components//pdf-lib_form_creation_example'} /> */}
           <PDFViewer pdfUrl={'/src/components/ReviewAndComment/demo-pdf.pdf'} />

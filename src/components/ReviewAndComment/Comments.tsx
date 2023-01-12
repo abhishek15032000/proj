@@ -11,9 +11,10 @@ const Comments = () => {
       sx={{
         color: '#000',
         mb: 2,
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 180px)',
         display: 'flex',
         flexDirection: 'column',
+        ml: 2,
       }}
     >
       <Box
