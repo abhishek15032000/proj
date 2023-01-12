@@ -20,17 +20,24 @@ import { setLoadWallet } from './redux/Slices/walletSlice'
 import LoadWallet from './components/LoadWallet'
 import BlockchainAlert from './components/BlockchainAlert'
 import AddMetaMaskAccountModal from './components/AddMetaMaskAccountModal/AddMetaMaskAccountModal'
+import { drawerExemptList } from './routes/config'
 
 declare let window: any
 const { ethereum } = window
 
-const drawerExemptList = [
-  pathNames.VERIFIER_VERIFY_REPORT,
-  pathNames.ISSUANCE_DATA_COLLECTION_HELP,
-  pathNames.PROJECT_DETAILS,
-  pathNames.PROJECT_LISTS_WITH_FILTER,
-  pathNames.REGISTRY_REVIEW_REPORT,
-]
+// const drawerExemptList = [
+//   pathNames.VERIFIER_VERIFY_REPORT,
+//   pathNames.ISSUANCE_DATA_COLLECTION_HELP,
+//   pathNames.PROJECT_DETAILS,
+//   pathNames.PROJECT_LISTS_WITH_FILTER,
+//   pathNames.REGISTRY_REVIEW_REPORT,
+//   pathNames.LOGIN,
+//   pathNames.LOGOUT,
+//   pathNames.RESET_PASSWORD,
+//   pathNames.MAINTENANCE_PAGE,
+//   pathNames.TWOFA,
+//   pathNames.REGISTER,
+// ]
 
 type AppProps = {
   appName?: string
@@ -148,15 +155,15 @@ const App: FC<AppProps> = () => {
     <>
       {/* For using mui DatePicker */}
       <LocalizationProvider dateAdapter={AdapterMoment}>
-        {userData && showDrawer && (
-          <AppDrawer>
-            <BlockchainAlert />
-            <LoadWallet />
-            <AddMetaMaskAccountModal />
-            <RouteController />
-          </AppDrawer>
-        )}
-        {userData && !showDrawer && (
+        {/* {userData && showDrawer && ( */}
+        <AppDrawer show={showDrawer} user={userData}>
+          {userData && <BlockchainAlert />}
+          {userData && <LoadWallet />}
+          {userData && <AddMetaMaskAccountModal />}
+          <RouteController />
+        </AppDrawer>
+
+        {/* {userData && !showDrawer && (
           // <AppDrawer>
           <>
             <BlockchainAlert />
@@ -165,8 +172,8 @@ const App: FC<AppProps> = () => {
             <RouteController />
           </>
           // </AppDrawer>
-        )}
-        {!userData && (
+        )} */}
+        {/* {!userData && (
           <Box
             component="main"
             sx={{
@@ -178,7 +185,7 @@ const App: FC<AppProps> = () => {
             {userData && <Toolbar />}
             <RouteController />
           </Box>
-        )}
+        )} */}
       </LocalizationProvider>
     </>
   )
