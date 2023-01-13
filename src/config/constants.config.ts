@@ -128,3 +128,8 @@ export const filters = [
     filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
   },
 ]
+
+export const COMMENT_ALIGN = {
+  LEFT: 'left',
+  RIGHT: 'right',
+}

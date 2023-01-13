@@ -4,16 +4,27 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { Colors } from '../../theme'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import {
+  setSelectedSection,
+  setSelectedSectionIndex,
+} from '../../redux/Slices/commentsSlice'
 
-const sections = [
-  'Section A',
-  'Section B',
-  'Section C',
-  'Section D',
-  'Section E',
-]
 export default function SelectSections() {
-  const [selectedSection, setSelectedSection] = React.useState('Section A')
+  const dispatch = useAppDispatch()
+
+  const sections = useAppSelector(
+    ({ comments }) => comments.sections,
+    shallowEqual
+  )
+  const selectedSection = useAppSelector(
+    ({ comments }) => comments.selectedSection,
+    shallowEqual
+  )
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const open = Boolean(anchorEl)
@@ -24,8 +35,9 @@ export default function SelectSections() {
     setAnchorEl(null)
   }
 
-  const handleMenuClick = (section: string) => {
-    setSelectedSection(section)
+  const handleMenuClick = (section: string, index: number) => {
+    dispatch(setSelectedSectionIndex(index))
+    dispatch(setSelectedSection(section))
     handleClose()
   }
 
@@ -46,8 +58,9 @@ export default function SelectSections() {
         sx={{ p: 0 }}
       >
         <Typography sx={{ fontWeight: 500, fontSize: 16 }}>
-          {selectedSection}
+          {selectedSection ? selectedSection?.name : ''}
         </Typography>
+        <ArrowDropDownIcon sx={{ color: Colors.darkPrimary1 }} />
       </Button>
       <Menu
         id="basic-menu"
@@ -58,11 +71,16 @@ export default function SelectSections() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        {sections.map((section, index: number) => (
-          <MenuItem key={index} onClick={() => handleMenuClick(section)}>
-            {section}
-          </MenuItem>
-        ))}
+        {sections &&
+          sections.length &&
+          sections.map((section: any, index: number) => (
+            <MenuItem
+              key={index}
+              onClick={() => handleMenuClick(section, index)}
+            >
+              {section?.name}
+            </MenuItem>
+          ))}
       </Menu>
     </Box>
   )

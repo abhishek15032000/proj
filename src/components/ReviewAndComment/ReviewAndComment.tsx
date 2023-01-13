@@ -1,22 +1,65 @@
 import { Grid, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import CCButton from '../../atoms/CCButton'
 import { Colors } from '../../theme'
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
 import OpenInFullOutlinedIcon from '@mui/icons-material/OpenInFullOutlined'
 import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
-import Comments from './Comments'
+import CommentBox from './CommentBox'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import {
+  setCommentFrom,
+  setCommentTo,
+  setProject,
+  setProjectID,
+  setSectionIDs,
+} from '../../redux/Slices/commentsSlice'
+import { getLocalItem } from '../../utils/Storage'
+import { getComments } from '../../utils/reviewAndComment.util'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
+  const dispatch = useAppDispatch()
 
   const {
     state: { project },
   } = location
 
+  const sectionIDs = useAppSelector(
+    ({ comments }) => comments.sectionIDs,
+    shallowEqual
+  )
+
   const [showCommentSection, setShowCommentSection] = useState<boolean>(false)
+
+  useEffect(() => {
+    const user_id = getLocalItem('userDetails')?.user_id
+
+    dispatch(setProject(project))
+
+    dispatch(setProjectID(project?._id))
+
+    dispatch(
+      setSectionIDs([
+        project?.section_a,
+        project?.section_b,
+        project?.section_c,
+        project?.section_d,
+        project?.section_e,
+      ])
+    )
+    dispatch(setCommentFrom(user_id))
+    dispatch(setCommentTo(project?.user_id))
+  }, [])
+
+  useEffect(() => {
+    if (sectionIDs && sectionIDs.length) {
+      getComments()
+    }
+  }, [sectionIDs])
 
   return (
     <Paper>
@@ -81,13 +124,13 @@ const ReviewAndComment = () => {
         </Box>
       </Box>
       <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
-        <Grid item md={showCommentSection ? 6 : 12}>
+        <Grid item xs={12} lg={showCommentSection ? 6 : 12}>
           {/* <PDFViewer pdfUrl={'/src/components//pdf-lib_form_creation_example'} /> */}
           <PDFViewer pdfUrl={'/src/components/ReviewAndComment/demo-pdf.pdf'} />
         </Grid>
         {showCommentSection ? (
-          <Grid item md={6}>
-            <Comments />
+          <Grid item xs={12} lg={6}>
+            <CommentBox />
           </Grid>
         ) : null}
       </Grid>
