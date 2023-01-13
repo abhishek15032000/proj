@@ -260,6 +260,6 @@ export const privateRouteComponents = [
     path: pathNames.REVIEW_AND_COMMENT,
     component: ReviewAndComment,
     // component: MarketplaceV2,
-    roles: [ROLES.VERIFIER],
+    roles: [ROLES.VERIFIER, ROLES.ISSUER],
   },
 ]
