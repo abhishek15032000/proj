@@ -7,6 +7,7 @@ import CCButton from '../../atoms/CCButton'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import StatusChips from '../../atoms/StatusChips/StatusChips'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { pathNames } from '../../routes/pathNames'
 import { Images } from '../../theme'
 
@@ -122,7 +123,10 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
                 Start review
               </CCButton>,
             ]
-            if (project?.project_status === 6) {
+            if (
+              project?.project_status ===
+              PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
+            ) {
               tempNewProjects.push(row)
             } else if (project?.project_status === 7) {
               console.log('project', project)

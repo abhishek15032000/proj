@@ -70,6 +70,61 @@ export const FILTER_ACTION = {
   RESET: 'Reset',
 }
 
+export const PROJECT_STATUS = [
+  {
+    key: 0,
+    value: 'Created Project',
+  },
+  {
+    key: 1,
+    value: 'Submitted for Screening',
+  },
+  {
+    key: 2,
+    value: 'Accepted screening internal',
+  },
+  {
+    key: 3,
+    value: 'Potential Verifier selected',
+  },
+  {
+    key: 4,
+    value: 'Verifier Approved the project',
+  },
+  {
+    key: 5,
+    value: 'Issuer Approved the verifier for the project',
+  },
+  {
+    key: 6,
+    value: 'Verifier Approves the project and sends it to registry',
+  },
+  {
+    key: 7,
+    value: 'Registry verifies and submits the report',
+  },
+  {
+    key: 8,
+    value: ' Rejected by the issuer',
+  },
+  {
+    key: 9,
+    value: 'Rejected by the verifier',
+  },
+]
+
+export const PROJECT_ALL_STATUS = {
+  CREATED_PROJECT: 0,
+  SUBMITTED_FOR_SCREENING: 1,
+  ACCEPTED_SCREENING_INTERNAL: 2,
+  POTENTIAL_VERIFIER_SELECTED: 3,
+  VERIFIER_APPROVED_THE_PROJECT: 4,
+  ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT: 5,
+  VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY: 6,
+  REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT: 7,
+  REJECTED_BY_THE_ISSUER: 8,
+  REJECTED_BY_THE_VERIFIER: 9,
+}
 export const filters = [
   {
     filterType: 'Project Type',

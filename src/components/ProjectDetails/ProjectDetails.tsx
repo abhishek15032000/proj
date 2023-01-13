@@ -22,7 +22,7 @@ const ProjectDetails = () => {
           <SliderComponent />
           <TokensTxHistory />
           <Reports />
-          <TraceHistory />
+          <TraceHistory projectId={projectDetailsData?.state?.uuid} />
           <OtherProjects />
         </Grid>
       </Grid>
