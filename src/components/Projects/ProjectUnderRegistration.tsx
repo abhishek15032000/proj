@@ -18,6 +18,7 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 const headings = [
   'Reference ID',
@@ -99,23 +100,33 @@ const ProjectsUnderRegistration = () => {
                 sx={{
                   pl: 1,
                   backgroundColor:
-                    i?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
+                    i?.project_status ===
+                    PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                      ? '#75F8E4'
+                      : '#DAE5E1',
                 }}
                 key={index}
                 icon={
                   <CircleIcon
                     sx={{
                       fontSize: 10,
-                      color: i?.project_status === 3 ? '#00A392' : '#96B1AB',
+                      color:
+                        i?.project_status ===
+                        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                          ? '#00A392'
+                          : '#96B1AB',
                     }}
                   />
                 }
                 label={
-                  i?.project_status === 0
+                  i?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT
                     ? 'Yet to select'
-                    : i?.project_status === 1
+                    : i?.project_status ===
+                      PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED
                     ? 'Selected'
-                    : i?.project_status === 3 && 'Finalised'
+                    : i?.project_status ===
+                        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT &&
+                      'Finalised'
                 }
               />,
               <Stack
@@ -142,12 +153,14 @@ const ProjectsUnderRegistration = () => {
                 key={index}
               >
                 <Grid item xs={9} sx={{ pl: 2 }}>
-                  {!i?.verifier_details_id && i?.project_status !== 3 && (
-                    <img
-                      src={DashboardPencil}
-                      onClick={() => handleProjectDetails(i)}
-                    />
-                  )}
+                  {!i?.verifier_details_id &&
+                    i?.project_status !==
+                      PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
+                      <img
+                        src={DashboardPencil}
+                        onClick={() => handleProjectDetails(i)}
+                      />
+                    )}
                 </Grid>
                 <Grid item xs={3}>
                   {/*{data?.project_status !== 3 && (*/}
