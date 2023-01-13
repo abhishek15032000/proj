@@ -16,6 +16,7 @@ const Main = (props: Props) => {
   const theme = createTheme(themeOptions)
 
   const loader = () => {
+    return true
     if (window.self == window.top) {
       // Everything checks out, show the page.
       // document.documentElement.style.display = "block";

@@ -1,6 +1,8 @@
 import { Grid, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import { Box } from '@mui/system'
+import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { USER } from '../../api/user.api'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
@@ -10,12 +12,15 @@ import {
 } from '../../redux/Slices/profileCompletionSlice'
 import { Colors } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
+import LoaderOverlay from '../LoderOverlay'
 import OnBoardingIssuer from '../OnBoardingIssuer/OnBoardingIssuer'
 import ProfileCompletion from '../Projects/ProfileCompletion'
 import ProjectsStats from '../ProjectStats/ProjectsStats'
+import MarketplaceCard from './MarketplaceCard'
 import Projects from './Projects'
 
-const RegistryDashboard = () => {
+const BuyerDashboard = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const userDetails = useAppSelector(
@@ -26,6 +31,8 @@ const RegistryDashboard = () => {
     ({ profileCompletion }) => profileCompletion.profileComplete,
     shallowEqual
   )
+
+  const [loader, setloader] = useState<boolean>(false)
 
   useEffect(() => {
     getUserDetails()
@@ -75,40 +82,48 @@ const RegistryDashboard = () => {
   }
   return (
     <>
-      <Typography
-        sx={{
-          mt: 2,
-          color: Colors.tertiary,
-          fontSize: 28,
-          fontWeight: 400,
-        }}
-      >
-        Dashboard
-      </Typography>
-      <Grid container columnSpacing={2}>
-        <Grid item md={profileComplete ? 12 : 9}>
-          {!profileComplete ? <OnBoardingIssuer /> : null}
+      {loader ? (
+        <LoaderOverlay />
+      ) : (
+        <>
           <Typography
-            sx={{
-              mt: 2,
-              color: Colors.tertiary,
-              fontSize: 28,
-              fontWeight: 400,
-            }}
+            sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400 }}
           >
-            Overview
+            Dashboard
           </Typography>
-          <ProjectsStats />
-          <Projects />
-        </Grid>
-        {!profileComplete ? (
-          <Grid item md={3}>
-            <ProfileCompletion />
+          {/* )} */}
+          <Grid container>
+            <Grid item md={profileComplete ? 12 : 9}>
+              <Grid container>
+                <Grid item md={12} sm={12} sx={{ pr: 2 }}>
+                  {!profileComplete ? <OnBoardingIssuer /> : null}
+                  <Grid container columnSpacing={1}>
+                    <Grid item xs={profileComplete ? 9 : 12}>
+                      <ProjectsStats />
+                    </Grid>
+                    {profileComplete ? (
+                      <Grid item xs={3}>
+                        <MarketplaceCard />
+                      </Grid>
+                    ) : null}
+                  </Grid>
+                  <Projects />
+                </Grid>
+              </Grid>
+            </Grid>
+            {!profileComplete ? (
+              <Grid item md={3}>
+                <ProfileCompletion short />
+                <Box sx={{ mt: 2 }}>
+                  <MarketplaceCard elongated />
+                </Box>
+              </Grid>
+            ) : null}
           </Grid>
-        ) : null}
-      </Grid>
+        </>
+      )}
     </>
   )
 }
 
-export default RegistryDashboard
+export default BuyerDashboard

@@ -32,13 +32,13 @@ import { privateRouteComponents } from '../../../routes/routeComponents'
 import { Colors } from '../../../theme'
 import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
-const drawerWidth = 240
 
 export default function ResponsiveDrawer(props: any) {
+  const drawerWidth = !props.user ? 0:  240
   const location = useLocation()
 
   const userDataRoles = useAppSelector(
-    (state) => state.auth.data.roles,
+    (state) => state.auth?.data?.roles,
     shallowEqual
   )
 
@@ -116,7 +116,7 @@ export default function ResponsiveDrawer(props: any) {
   }
 
   const midMenu = React.useCallback(() => {
-    if (
+   if(userDataRoles?.length){ if (
       _.intersectionWith(userDataRoles, [ROLES.ISSUER], _.isEqual).length > 0
     ) {
       return MENUS.issuer_menus
@@ -133,6 +133,8 @@ export default function ResponsiveDrawer(props: any) {
     ) {
       return MENUS.registry_menus
     } else {
+      return []
+    }}else{
       return []
     }
   }, [userDataRoles])
@@ -246,7 +248,7 @@ export default function ResponsiveDrawer(props: any) {
     </Box>
   )
 
-  return (
+  return !props.show && !props.user ? <> {props.children}</>: (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
@@ -258,9 +260,9 @@ export default function ResponsiveDrawer(props: any) {
           background: 'background',
         }}
       >
-        <AppNavBar handleDrawerToggle={handleDrawerToggle} />
+        <AppNavBar handleDrawerToggle={handleDrawerToggle} user= {props.user} />
       </AppBar>
-      <Box
+     { props.user && <Box
         component="nav"
         sx={{
           width: { sm: drawerWidth },
@@ -301,7 +303,7 @@ export default function ResponsiveDrawer(props: any) {
         >
           {drawer}
         </Drawer>
-      </Box>
+      </Box>}
       <Box
         component="main"
         sx={{

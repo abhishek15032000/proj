@@ -77,14 +77,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-export default function AppNavBar({ handleDrawerToggle }: any) {
+export default function AppNavBar({ handleDrawerToggle, user }: any) {
   const dispatch = useAppDispatch()
   const openWallet = () => {
     console.log('load wallet')
     dispatch(setLoadWallet(true))
     console.log('done')
   }
-  const { type: userType } = getLocalItem('userDetails')
+  const  userType= getLocalItem('userDetails')?.type
+  // if(userDetails){
+  //   const { type: userType } = userDetails
+  // }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
@@ -105,7 +108,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
-    navigate(pathNames.PROFILE)
+    // navigate(pathNames.PROFILE)
   }
 
   const logout = () => {
@@ -135,8 +138,10 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={logout}>Logout</MenuItem>
+     {userType && <MenuItem onClick={handleMenuClose}>Profile</MenuItem>}
+     {userType &&  <MenuItem onClick={logout}>Logout</MenuItem>}
+     {!userType &&  <MenuItem onClick={()=> navigate(pathNames.LOGIN)}>Login</MenuItem>}
+
     </Menu>
   )
 
@@ -165,7 +170,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      {userType && <MenuItem>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -179,7 +184,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
+      </MenuItem>}
       {/* <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -229,7 +234,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
               display: { xs: 'none', md: 'flex' },
             }}
           >
-            <Button
+            {userType && <Button
               onClick={() => openWallet()}
               color="primary"
               sx={{
@@ -254,7 +259,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
                 />
               )}
               <Typography sx={{ mx: 1, fontWeight: 500 }}>Wallet</Typography>
-            </Button>
+            </Button>}
           </Box>
           {userType === ROLES.ISSUER && <Help />}
 
@@ -268,7 +273,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             </Badge>
           </IconButton> */}
 
-          <NotificationIcon />
+      {userType &&    <NotificationIcon />}
 
           <IconButton
             size="large"

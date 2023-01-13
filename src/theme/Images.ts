@@ -4,6 +4,9 @@ import illustration1 from '../assets/Images/illustrations/illustration1.svg'
 import illustration2 from '../assets/Images/illustrations/illustration2.svg'
 import illustration3 from '../assets/Images/illustrations/illustration3.svg'
 import check1 from '../assets/Images/illustrations/check1.svg'
+import IssuerOnboardingBg from '../assets/Images/illustrations/issuer-onboarding-bg.png'
+import ProfileCompletionBg from '../assets/Images/illustrations/profile-completion-bg.png'
+import CompleteProfileBg from '../assets/Images/illustrations/complete-profile-bg.png'
 import ProjectCompletion from '../assets/Images/Icons/project-completion.svg'
 import BriefcaseIcon from '../assets/Images/Icons/briefcase.svg'
 import HelpIcon from '../assets/Images/Icons/help-icon.svg'
@@ -72,6 +75,7 @@ import fifteen from '../assets/Images/project-details/15.png'
 import user from '../assets/Images/Icons/user.png'
 import List from '../assets/Images/help/List.png'
 import Project from '../assets/Images/illustrations/Project.png'
+import ProjectLight from '../assets/Images/illustrations/project-light.png'
 import ProjectDetails from '../assets/Images/project-details/projectDetails.png'
 
 export const Images = {
@@ -80,6 +84,9 @@ export const Images = {
   illustration1,
   illustration2,
   illustration3,
+  IssuerOnboardingBg,
+  ProfileCompletionBg,
+  CompleteProfileBg,
   check1,
   ProjectCompletion,
   BriefcaseIcon,
@@ -147,5 +154,6 @@ export const Images = {
   fifteen,
   user,
   Project,
+  ProjectLight,
   ProjectDetails,
 }

@@ -28,6 +28,7 @@ import marketDepth from './Marketplace/marketDepthSlice'
 import marketplaceSellFlow from './Marketplace/marketplaceSellFlowSlice'
 import marketplaceBuyFlow from './Marketplace/marketplaceBuyFlowSlice'
 import marketplaceWithdrawFlow from './Marketplace/marketplaceWithdrawFlowSlice'
+import profileCompletion from './profileCompletionSlice'
 
 // TODO: rename names
 export default {
@@ -58,4 +59,5 @@ export default {
   marketplaceSellFlow,
   marketplaceBuyFlow,
   marketplaceWithdrawFlow,
+  profileCompletion,
 }

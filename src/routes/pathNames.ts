@@ -3,7 +3,7 @@ export const pathNames = {
   LOGIN: '/login',
   LOGOUT: '/logout',
   REGISTER: '/register',
-  TWOFA: '/TwoFa',
+  TWOFA: '/twofa',
   ACCOUNTCREATEDPAGE: '/account_created',
   ONBOARDING: '/onboarding',
   MAINTENANCE_PAGE: '/maintenance-page',
@@ -11,6 +11,7 @@ export const pathNames = {
   ISSUANCE_DATA_COLLECTION_HELP: '/issuance-data-collection/help',
   PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
   MARKETPLACE: '/marketplace',
+  MARKETPLACE_V2: '/marketplace-v2',
   MARKETPLACE_PROJECT_DETAILS: '/marketplace-project-details',
   PROJECTS: '/projects',
   PROJECTS_LIST: '/projects-list',
@@ -41,6 +42,8 @@ export const pathNames = {
   PROJECT_LISTS_WITH_FILTER: '/project-lists-with-filter',
   REGISTRY_REVIEW_REPORT: '/registry-review-report',
   REGISTRY_ALL_PROJECTS: '/registry-all-projects',
+  COMPLETE_PROFILE: '/complete-profile',
+  REVIEW_AND_COMMENT: '/review-and-comment',
 }
 
 export const linkLabels = {
