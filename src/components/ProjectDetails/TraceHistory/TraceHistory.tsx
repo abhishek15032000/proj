@@ -1,47 +1,87 @@
 import { Grid, Typography, Box, Radio, Paper } from '@mui/material'
 import { borderColor } from '@mui/system'
 
-import React, { useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import CCButton from '../../../atoms/CCButton'
 import { Colors, Images } from '../../../theme'
 import TraceDetails from './TraceDetails'
 import './TraceHistory.css'
-const TraceHistory = () => {
-  const data = [
+interface TraceHistoryProps {
+  projectId?: any
+}
+const TraceHistory: FC<TraceHistoryProps> = (props) => {
+  const traceTab = [
     {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectRole: 'Project Developer, Allenghey Trust',
+      key: 0,
+      value: 'Project Developer Allenghey Trust created this project',
     },
     {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectRole: 'Project Developer, Allenghey Trust',
+      key: 1,
+      value: 'Project Developer Allenghey Trust Submitted For verification',
     },
     {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectRole: 'Project Developer, Allenghey Trust',
+      key: 2,
+      value: 'Verifier Allenghey Trust received verification request',
     },
     {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectRole: 'Project Developer, Allenghey Trust',
+      key: 3,
+      value: 'Verifier Allenghey Trust started verification process',
     },
     {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectRole: 'Project Developer, Allenghey Trust',
+      key: 4,
+      value:
+        'Verifier Allenghey Trust submitted its verification report on this project',
     },
     {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectRole: 'Project Developer, Allenghey Trust',
+      key: 5,
+      value:
+        'Registry Allenghey Trust received the verification report for approve',
+    },
+    {
+      key: 6,
+      value: 'Registry Allenghey Trust Approves the verification report',
+    },
+    {
+      key: 7,
+      value: 'Project Developer Allenghey Trust get verification report',
+    },
+    {
+      key: 8,
+      value: 'Buyer -1 buy VCOT By Project Developer',
     },
   ]
-
+  const { projectId } = props
+  const [loading, setLoading] = useState(false)
   const [traceOption, setTraceOption] = useState(0)
   const [theme, setTheme] = useState('dark')
+  const [traceAllData, setTraceAllData] = useState<any>([])
+  const [traceTabList, setTraceTabList] = useState<any>([])
+  useEffect(() => {
+    getAllDetails()
+  }, [])
+
+  const getAllDetails = () => {
+    setLoading(true)
+    dataCollectionCalls
+      .getProjectById(projectId)
+      .then((res) => {
+        console.log('getProjectById', res)
+        const filterArray =
+          traceTab &&
+          traceTab.filter(
+            (item: any, index: any) => index <= res?.data?.project_status
+          )
+        console.log('filterArray', filterArray)
+        setTraceAllData(res?.data)
+        setTraceTabList(filterArray)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.log('error', error)
+        setLoading(false)
+      })
+  }
   return (
     <Grid
       container
@@ -97,9 +137,9 @@ const TraceHistory = () => {
           overflow="auto"
           className="scroll-container"
         >
-          {data &&
-            data.length > 0 &&
-            data.map((item: any, index: any) => (
+          {traceTabList &&
+            traceTabList.length > 0 &&
+            traceTabList.map((item: any, index: any) => (
               <Grid
                 container
                 display={'flex'}
@@ -135,7 +175,9 @@ const TraceHistory = () => {
                       height: '70px',
                       width: '4px',
                       background:
-                        theme === 'dark'
+                        index === traceTabList.length - 1
+                          ? ''
+                          : theme === 'dark'
                           ? 'linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)'
                           : '#CCE8E1',
                     }}
@@ -198,7 +240,7 @@ const TraceHistory = () => {
                         ml: 1,
                       }}
                     >
-                      {item?.projectRole}
+                      {item?.value}
                     </Typography>
                   </Box>
                 </Grid>
@@ -209,6 +251,9 @@ const TraceHistory = () => {
           traceOption={traceOption}
           setTraceOption={(item: any) => setTraceOption(item)}
           theme={theme}
+          projectId={projectId}
+          projectDetails={traceAllData}
+          traceTab={traceTab}
         />
       </Paper>
     </Grid>
