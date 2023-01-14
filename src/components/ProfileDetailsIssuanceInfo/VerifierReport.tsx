@@ -40,6 +40,7 @@ import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice'
 import DownloadIcon from '@mui/icons-material/Download'
 import { downloadFile } from '../../utils/commonFunctions'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 interface VerifierReportListProps {
   //data?: any
@@ -182,7 +183,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                     View
                   </Typography>
                 </Box>,
-                i.project_status === 0 ? (
+                i.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
                   <CCButton
                     key={index}
                     sx={{
@@ -234,7 +235,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         if (res?.success) {
           const finalVerifierData = res?.data.filter((i: any) => {
             return (
-              i?.report?.project_status === 3 || i?.report?.project_status === 4
+              i?.report?.project_status ===
+                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+              i?.report?.project_status ===
+                PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
             )
           })
           finalVerifierData && finalVerifierData?.length
@@ -264,7 +268,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     const payload = {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
-      project_status: 3,
+      project_status:
+        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
       verifier_id: confirmedVerifier?.verifier_id,
       verifier_name: confirmedVerifier?.verifier_name,
       verifier_address: confirmedVerifier?.verifier_address,

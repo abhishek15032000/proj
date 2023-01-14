@@ -3,12 +3,19 @@ import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { department } from '../../api/department.api'
+import { registryCalls } from '../../api/registry.api'
 import CCButton from '../../atoms/CCButton'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import StatusChips from '../../atoms/StatusChips/StatusChips'
+import { ROLES } from '../../config/constants.config'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { setRegistryProjectDetails } from '../../redux/Slices/registrySlice'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { pathNames } from '../../routes/pathNames'
 import { Images } from '../../theme'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 const headings: any = [
   'Created on',
@@ -27,6 +34,7 @@ interface ProjectTableProps {
 const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useAppDispatch()
 
   const [newProjects, setNewProjects] = useState<any>([])
   const [underReviewProjects, setUnderReviewProjects] = useState<any>([])
@@ -106,26 +114,36 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
                 ? moment(project?.report?.next_date).format('l')
                 : '-',
               renderStatusChips(project?.project_status),
-              <CCButton
-                key={index}
-                sx={{
-                  background: '#006B5E',
-                  color: '#FFFFFF',
-                  borderRadius: '32px',
-                  fontSize: 14,
-                  px: 3,
-                  py: 1,
-                  minWidth: 0,
-                }}
-                onClick={() => navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC)}
-              >
-                Start review
-              </CCButton>,
+              project?.project_status === 8 ? (
+                <ChevronRightIcon
+                  onClick={() => onClickStartHandler(project)}
+                />
+              ) : (
+                <CCButton
+                  key={index}
+                  sx={{
+                    background: '#006B5E',
+                    color: '#FFFFFF',
+                    borderRadius: '32px',
+                    fontSize: 14,
+                    px: 3,
+                    py: 1,
+                    minWidth: 0,
+                  }}
+                  onClick={() => onClickStartHandler(project)}
+                >
+                  Start review
+                </CCButton>
+              ),
             ]
-            if (project?.project_status === 6) {
+            if (
+              project?.project_status ===
+              PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
+            ) {
               tempNewProjects.push(row)
             } else if (project?.project_status === 7) {
-              console.log('project', project)
+              tempUnderReviewProjects.push(row)
+            } else if (project?.project_status === 8) {
               tempReviewedProjects.push(row)
             }
             setNewProjects(tempNewProjects)
@@ -153,7 +171,7 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
           />
         )
       }
-      case 2: {
+      case 7: {
         return (
           <StatusChips
             text="In progress"
@@ -163,7 +181,7 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
           />
         )
       }
-      case 7: {
+      case 8: {
         return (
           <StatusChips
             text="Completed"
@@ -174,6 +192,11 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
         )
       }
     }
+  }
+
+  const onClickStartHandler = async (projectDetails: any) => {
+    dispatch(setRegistryProjectDetails(projectDetails))
+    navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC)
   }
 
   return (

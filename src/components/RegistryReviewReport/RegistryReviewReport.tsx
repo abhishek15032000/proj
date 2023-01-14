@@ -1,12 +1,17 @@
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
 import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
-import React, { FC, useState } from 'react'
+import moment from 'moment'
+import React, { FC, useEffect, useState } from 'react'
+import { shallowEqual } from 'react-redux'
+import { registryCalls } from '../../api/registry.api'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
 import Spinner from '../../atoms/Spinner'
 import TextButton from '../../atoms/TextButton/TextButton'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors, Images } from '../../theme'
+import { getLocalItem } from '../../utils/Storage'
 import EditTokensModal from './EditTokensModal'
 
 const pdfLoading = false
@@ -18,12 +23,53 @@ const docs = [
 const images = [{ name: 'Photo.jpeg', size: '1.0 MB' }]
 
 const RegistryReviewReport = () => {
+  const registryProjectDetails = useAppSelector(
+    ({ registry }) => registry.registryProjectDetails,
+    shallowEqual
+  )
+
   const [explain, setExplain] = useState<string>('')
   const [lifetimeVCOT, setLifetimeVCOT] = useState<number>(4234)
   const [monthlyVCOT, setMonthlyVCOT] = useState<number>(334)
   const [openModal, setOpenModal] = useState(false)
-
+  const [reportData, setReportData] = useState<any>()
   const closeModal = () => setOpenModal(false)
+
+  useEffect(() => {
+    setReportData(registryProjectDetails?.report)
+  }, [registryProjectDetails])
+
+  useEffect(() => {
+    //sumbitReport()
+  }, [])
+
+  const sumbitReport = async () => {
+    try {
+      const registryId = getLocalItem('userDetails')?.user_id
+      const payload = {
+        registry_id: registryId,
+        _id: reportData?.report?._id,
+        uuid: reportData?.report?.uuid,
+        project_id: reportData?.report?.project_id,
+        projectId: reportData?.report?.projectId,
+        current_month: reportData?.report?.current_month,
+        next_date: reportData?.report?.next_date,
+        quantity: reportData?.report?.quantity,
+        file_attach: reportData?.report?.file_attach,
+        issuer_details: reportData?.report?.issuer_details,
+        verifier_details: reportData?.report?.verifier_details,
+        ghg_reduction_explanation:
+          reportData?.report?.ghg_reduction_explanation,
+      }
+      const res = await registryCalls.reportSumbit(payload)
+      if (res?.statusCode === 200) {
+        alert('Report submitted')
+      } else alert('Something wrong in submitting the report')
+      console.log('res: ', res)
+    } catch (err) {
+      console.log('err', err)
+    }
+  }
 
   return (
     <>
@@ -52,6 +98,7 @@ const RegistryReviewReport = () => {
 
               <TextButton
                 // onClick={() => setShowModal(true)}
+                onClick={sumbitReport}
                 sx={{ ml: 4, background: '#006B5E' }}
                 title="Review & Mint Tokens"
               />
@@ -88,7 +135,7 @@ const RegistryReviewReport = () => {
                       Lifetime Credit Value :{' '}
                     </Box>
                   </Box>
-                  <Box>{lifetimeVCOT}</Box>
+                  <Box>{reportData?.report?.lifetime_tokens || '-'}</Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                   <Box>
@@ -100,7 +147,7 @@ const RegistryReviewReport = () => {
                   <Box sx={{ whiteSpace: 'nowrap' }}>
                     Monthly/ Quarterly VCOT Authorised :
                   </Box>
-                  <Box>{monthlyVCOT}</Box>
+                  <Box>{reportData?.report?.monthly_tokens || '-'}</Box>
                 </Box>
                 <Box
                   sx={{
@@ -128,7 +175,9 @@ const RegistryReviewReport = () => {
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14 }}>420</Box>
+                  <Box sx={{ fontSize: 14 }}>
+                    {moment(reportData?.report?.createdAt).format('DD-MM-YYYY')}
+                  </Box>
                 </Grid>
               </Grid>
               <Grid container sx={{ mt: 2 }}>
@@ -138,7 +187,9 @@ const RegistryReviewReport = () => {
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14 }}>420</Box>
+                  <Box sx={{ fontSize: 14 }}>
+                    {moment(reportData?.report?.next_date).format('DD-MM-YYYY')}
+                  </Box>
                 </Grid>
               </Grid>
               <Grid container sx={{ mt: 2 }}>
@@ -158,9 +209,12 @@ const RegistryReviewReport = () => {
                 Relevant Docs{' '}
               </Typography>
               <Box>
-                {docs?.map((doc: any, index: number) => (
-                  <FileDetails key={index} doc={doc} />
-                ))}
+                {/*{docs?.map((doc: any, index: number) => (*/}
+                {reportData?.report?.file_attach?.map(
+                  (doc: any, index: number) => (
+                    <FileDetails key={index} doc={doc} />
+                  )
+                )}
               </Box>
             </Box>
 
@@ -192,6 +246,7 @@ const RegistryReviewReport = () => {
 
               <CCMultilineTextArea
                 label="Explain"
+                //label = {reportData?.report?.ghg_reduction_explanation}
                 placeholder="Explain it here"
                 value={explain}
                 onChange={(e) => setExplain(e.target.value)}

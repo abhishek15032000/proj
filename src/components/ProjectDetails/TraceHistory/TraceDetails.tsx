@@ -1,191 +1,126 @@
 import { Grid, Typography, Box, Radio, Paper } from '@mui/material'
 import { borderColor } from '@mui/system'
 
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import { Colors, Images } from '../../../theme'
 import TitleValue from '../../Profile/TitleValue'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import moment from 'moment'
+import { PROJECT_STATUS } from '../../../config/constants.config'
+import CreateProject from './AllTraceTabDetails/CreateProject'
+import SubmitVerification from './AllTraceTabDetails/SubmitVerification'
+import Buyer from './AllTraceTabDetails/Buyer'
+import VerificationReport from './AllTraceTabDetails/VerificationReport'
+import RegsitryVerificationReport from './AllTraceTabDetails/RegsitryVerificationReport'
+import ApproveReport from './AllTraceTabDetails/ApproveReport'
+import VerificationRequest from './AllTraceTabDetails/VerificationRequest'
+import VerificationProcess from './AllTraceTabDetails/VerificationProcess'
+import GetVerificationReport from './AllTraceTabDetails/GetVerificationReport'
 
 interface TraceDetailsProps {
   traceOption?: any
   setTraceOption?: any
   theme?: any
+  projectId?: any
+  projectDetails?: any
+  traceTab?: any
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
-  const data = [
-    {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectInfoList: [
-        {
-          title: 'Project reference ID :',
-          value: '4334',
-        },
-        {
-          title: 'Project Name :',
-          value:
-            '33.66 MW poultry litter based power generation project by Raus Power in India',
-        },
-        {
-          title: 'Project location :',
-          value: 'Andhra pradesh',
-        },
-        {
-          title: 'Status :',
-          value: 'yet to be submit',
-        },
-      ],
+  const {
+    traceOption,
+    setTraceOption,
+    theme,
+    projectId,
+    projectDetails,
+    traceTab,
+  } = props
 
-      relevantDocs: [{}],
-    },
-    {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectInfoList: [
-        {
-          title: 'Project reference ID :',
-          value: '4334',
-        },
-        {
-          title: 'Project Name :',
-          value:
-            '33.66 MW poultry litter based power generation project by Raus Power in India',
-        },
-        {
-          title: 'Project location :',
-          value: 'Andhra pradesh',
-        },
-        {
-          title: 'Status :',
-          value: 'yet to be submit',
-        },
-      ],
-
-      relevantDocs: [{}],
-    },
-    {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-
-      projectInfoList: [
-        {
-          title: 'Project reference ID :',
-          value: '4334',
-        },
-        {
-          title: 'Project Name :',
-          value:
-            '33.66 MW poultry litter based power generation project by Raus Power in India',
-        },
-        {
-          title: 'Project location :',
-          value: 'Andhra pradesh',
-        },
-        {
-          title: 'Status :',
-          value: 'yet to be submit',
-        },
-      ],
-
-      relevantDocs: [{}],
-    },
-    {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectInfoList: [
-        {
-          title: 'Project reference ID :',
-          value: '4334',
-        },
-        {
-          title: 'Project Name :',
-          value:
-            '33.66 MW poultry litter based power generation project by Raus Power in India',
-        },
-        {
-          title: 'Project location :',
-          value: 'Andhra pradesh',
-        },
-        {
-          title: 'Status :',
-          value: 'yet to be submit',
-        },
-      ],
-
-      relevantDocs: [{}],
-    },
-    {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectInfoList: [
-        {
-          title: 'Project reference ID :',
-          value: '4334',
-        },
-        {
-          title: 'Project Name :',
-          value:
-            '33.66 MW poultry litter based power generation project by Raus Power in India',
-        },
-        {
-          title: 'Project location :',
-          value: 'Andhra pradesh',
-        },
-        {
-          title: 'Status :',
-          value: 'yet to be submit',
-        },
-      ],
-
-      relevantDocs: [{}, {}],
-    },
-    {
-      dateTime: 'DD MM YYYY | Timestamp',
-      TransactionId: 'Tx5r3465xujtfd6utr7i263te7ygwdu7t871t3ed378o90gf',
-      projectInfoList: [
-        {
-          title: 'Project reference ID :',
-          value: '4334',
-        },
-        {
-          title: 'Project Name :',
-          value:
-            '33.66 MW poultry litter based power generation project by Raus Power in India',
-        },
-        {
-          title: 'Project location :',
-          value: 'Andhra pradesh',
-        },
-        {
-          title: 'Status :',
-          value: 'yet to be submit',
-        },
-        {
-          title: 'Project reference ID :',
-          value: '4334',
-        },
-        {
-          title: 'Project Name :',
-          value:
-            '33.66 MW poultry litter based power generation project by Raus Power in India',
-        },
-        {
-          title: 'Project location :',
-          value: 'Andhra pradesh',
-        },
-        {
-          title: 'Status :',
-          value: 'yet to be submit',
-        },
-      ],
-
-      relevantDocs: [{}, {}, {}],
-    },
+  const renderTab = [
+    <CreateProject
+      key={0}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <SubmitVerification
+      key={1}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <VerificationRequest
+      key={2}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <VerificationProcess
+      key={3}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <VerificationReport
+      key={4}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <ApproveReport
+      key={5}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <RegsitryVerificationReport
+      key={6}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <GetVerificationReport
+      key={7}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
+    <Buyer
+      key={8}
+      traceOption={traceOption}
+      setTraceOption={(item: any) => setTraceOption(item)}
+      theme={theme}
+      projectId={projectId}
+      projectDetails={projectDetails}
+      traceTab={traceTab}
+    />,
   ]
-
-  const { traceOption, setTraceOption, theme } = props
   return (
     <Paper
       sx={{
@@ -212,7 +147,9 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
           fontWeight: 500,
         }}
       >
-        {data[traceOption]?.dateTime}
+        {moment(projectDetails?.createdAt).format(`DD/MM/YY`) +
+          ' | ' +
+          moment(projectDetails?.createdAt).format(`HH:MM:SS`)}
       </Typography>
       <Typography
         sx={{
@@ -222,27 +159,12 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
           mt: 1,
         }}
       >
-        {data[traceOption]?.TransactionId}
+        {projectDetails?.tx && projectDetails?.tx?.lenght > 0
+          ? projectDetails?.tx?.transaction_id
+          : '-'}
       </Typography>
-      {data[traceOption]?.projectInfoList &&
-        data[traceOption]?.projectInfoList.length > 0 &&
-        data[traceOption]?.projectInfoList.map((item: any, index: number) => (
-          <TitleValue
-            key={index}
-            title={item.title}
-            value={item.value}
-            valueStyle={{
-              fontWeight: 400,
-              color: theme === 'dark' ? Colors.white : '#2B2B2B',
-              textAlign: 'right',
-            }}
-            titleStyle={{
-              fontWeight: 500,
-              color: theme === 'dark' ? Colors.white : '#2B2B2B',
-            }}
-          />
-        ))}
 
+      {renderTab[traceOption]}
       <Typography
         sx={{
           color: theme === 'dark' ? '#75F8E4' : '#006B5E',
@@ -253,9 +175,9 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
       >
         {'Relevant docs'}
       </Typography>
-      {data[traceOption]?.relevantDocs &&
-        data[traceOption]?.relevantDocs.length > 0 &&
-        data[traceOption]?.relevantDocs.map((item: any, index: number) => (
+      {projectDetails?.report?.file_attach &&
+        projectDetails?.report?.file_attach.length > 0 &&
+        projectDetails?.report?.file_attach.map((item: any, index: number) => (
           <Box
             key={index}
             sx={{

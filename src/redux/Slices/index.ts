@@ -29,6 +29,7 @@ import marketplaceSellFlow from './Marketplace/marketplaceSellFlowSlice'
 import marketplaceBuyFlow from './Marketplace/marketplaceBuyFlowSlice'
 import marketplaceWithdrawFlow from './Marketplace/marketplaceWithdrawFlowSlice'
 import profileCompletion from './profileCompletionSlice'
+import registry from './registrySlice'
 import comments from './commentsSlice'
 
 // TODO: rename names
@@ -61,5 +62,6 @@ export default {
   marketplaceBuyFlow,
   marketplaceWithdrawFlow,
   profileCompletion,
+  registry,
   comments,
 }

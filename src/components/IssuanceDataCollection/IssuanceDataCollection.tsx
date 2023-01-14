@@ -53,6 +53,7 @@ import { resetSectionB } from '../../redux/Slices/sectionBSlice'
 import { resetSectionC } from '../../redux/Slices/sectionCSlice'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 import { usePrompt } from '../../hooks/useCustomBlocker'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -251,7 +252,10 @@ const IssuanceDataCollection = () => {
     if (nextBtn) {
       navigate(pathNames.DASHBOARD)
     } else if (!nextBtn) {
-      if (currentProjectDetails?.project_status === 0) {
+      if (
+        currentProjectDetails?.project_status ===
+        PROJECT_ALL_STATUS.CREATED_PROJECT
+      ) {
         navigate(pathNames.SELECT_VERIFIER)
       } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
     }

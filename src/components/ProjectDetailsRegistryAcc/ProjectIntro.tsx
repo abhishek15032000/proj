@@ -3,6 +3,10 @@ import { Box } from '@mui/system'
 import React from 'react'
 import { Images } from '../../theme'
 
+interface projectIntroProps {
+  title: any
+  location: any
+}
 const data = [
   {
     image: Images.one,
@@ -42,7 +46,7 @@ const data = [
   },
 ]
 
-const ProjectIntro = () => {
+const ProjectIntro = ({ title, location }: projectIntroProps) => {
   return (
     <Grid
       container
@@ -68,11 +72,12 @@ const ProjectIntro = () => {
         >
           <Box>
             <Box sx={{ fontSize: 52, color: '#fff', lineHeight: '57px' }}>
-              3.66 MW poultry litter based power generation project by Raus
-              Power in India
+              {title}
+              {/*3.66 MW poultry litter based power generation project by Raus
+              Power in India*/}
             </Box>
-            <Box sx={{ fontSize: 10, color: '#fff' }}>
-              PROJECT LOCATION | AREA XXXXX HA
+            <Box sx={{ fontSize: 10, color: '#fff', pt: 2 }}>
+              PROJECT LOCATION | AREA {location}
             </Box>
           </Box>
           <Box sx={{ mb: 4 }}>
