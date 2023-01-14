@@ -141,7 +141,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   cursor: 'pointer',
                 }}
                 onClick={() => {
-                  props.updateStatus(2, item)
+                  props.updateStatus(
+                    PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT,
+                    item
+                  )
                   verifierState()
                 }}
               >
@@ -156,7 +159,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   cursor: 'pointer',
                 }}
                 onClick={() => {
-                  props.updateStatus(6, item)
+                  props.updateStatus(
+                    PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER,
+                    item
+                  )
                   verifierState()
                 }}
               >

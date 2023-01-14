@@ -111,7 +111,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     }
   }, [currentProjectDetails])
 
-  console.log('currentProjectDetails'), currentProjectDetails
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -213,7 +212,13 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
-            onClick={() => navigate(pathNames.REVIEW_AND_COMMENT)}
+            onClick={() =>
+              navigate(pathNames.REVIEW_AND_COMMENT, {
+                state: {
+                  project: currentProjectDetails,
+                },
+              })
+            }
           >
             <Typography
               sx={{

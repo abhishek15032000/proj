@@ -1,8 +1,9 @@
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
 import { COMMENT_ALIGN } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
+import { markCommentsAsRead } from '../../utils/reviewAndComment.util'
 import { getLocalItem } from '../../utils/Storage'
 import Comment from './Comment'
 
@@ -14,6 +15,16 @@ const Comments = () => {
     shallowEqual
   )
 
+  useEffect(() => {
+    if (
+      selectedSection &&
+      selectedSection.unreadCommentIDs &&
+      selectedSection.unreadCommentIDs.length
+    ) {
+      markCommentsAsRead(selectedSection.unreadCommentIDs)
+    }
+  }, [selectedSection])
+
   return (
     <Box
       sx={{
@@ -21,6 +32,7 @@ const Comments = () => {
         flex: '1 1 auto',
         p: 2,
         pb: 1,
+        overflowY: 'auto',
       }}
     >
       {selectedSection?.comments && selectedSection?.comments.length ? (

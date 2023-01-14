@@ -64,7 +64,6 @@ const ReviewAndComment = () => {
 
   const setDataForViewer = () => {
     dispatch(setProject(project))
-
     dispatch(setProjectID(project?._id))
 
     dispatch(
@@ -86,6 +85,19 @@ const ReviewAndComment = () => {
   }
 
   const setDataForIssuer = () => {
+    dispatch(setProject(project))
+    dispatch(setProjectID(project?._id))
+
+    dispatch(
+      setSectionIDs([
+        project?.section_a?._id,
+        project?.section_b?._id,
+        project?.section_c?._id,
+        project?.section_d?._id,
+        project?.section_e?._id,
+      ])
+    )
+
     const veriferInitial = veriferName?.slice(0, 1) || 'V'
     const issuerInitial = userName.slice(0, 1) || 'I'
     dispatch(setSenderInitial(issuerInitial))
