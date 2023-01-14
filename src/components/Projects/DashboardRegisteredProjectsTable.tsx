@@ -26,6 +26,7 @@ import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import CircleIcon from '@mui/icons-material/Circle'
 import DashboardPencil from '../../assets/Images/Icons/DashboardPencil.png'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 interface DashboardNewProjectsTableProps {
   tableRows?: any
@@ -122,7 +123,8 @@ const DashboardRegisteredProjectsTable = (
       dispatch(setCurrentProjectDetails(projectDetails))
       if (
         !projectDetails?.projectCompleted ||
-        projectDetails?.project_status === 1
+        projectDetails?.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED
       ) {
         navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
       } else if (projectDetails?.projectCompleted) {
@@ -209,7 +211,10 @@ const DashboardRegisteredProjectsTable = (
                         sx={{
                           pl: 1,
                           backgroundColor:
-                            data?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
+                            data?.project_status ===
+                            PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                              ? '#75F8E4'
+                              : '#DAE5E1',
                         }}
                         key="1"
                         icon={
@@ -217,18 +222,23 @@ const DashboardRegisteredProjectsTable = (
                             sx={{
                               fontSize: 10,
                               color:
-                                data?.project_status === 3
+                                data?.project_status ===
+                                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
                                   ? '#00A392'
                                   : '#96B1AB',
                             }}
                           />
                         }
                         label={
-                          data?.project_status === 0
+                          data?.project_status ===
+                          PROJECT_ALL_STATUS.CREATED_PROJECT
                             ? 'Yet to select'
-                            : data?.project_status === 1
+                            : data?.project_status ===
+                              PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED
                             ? 'Selected'
-                            : data?.project_status === 3 && 'Finalised'
+                            : data?.project_status ===
+                                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT &&
+                              'Finalised'
                         }
                       />
                     </TableCell>
@@ -260,7 +270,8 @@ const DashboardRegisteredProjectsTable = (
                       <Grid container flexDirection="row" alignItems={'center'}>
                         <Grid item xs={9} sx={{ pl: 2 }}>
                           {!data?.verifier_details_id &&
-                            data?.project_status !== 3 && (
+                            data?.project_status !==
+                              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
                               <img src={DashboardPencil} />
                             )}
                         </Grid>

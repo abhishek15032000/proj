@@ -1,72 +1,15 @@
 import { Box, Checkbox, Grid } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import { FILTER_ACTION } from '../../config/constants.config'
+import { filters, FILTER_ACTION } from '../../config/constants.config'
 import { pathNames } from '../../routes/pathNames'
+import { Colors } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 import ProjectDetailsCard from '../ProjectDetails/OtherProjects/ProjectDetailsCard'
 import ProjectDetailsCardSkeleton from '../ProjectDetails/OtherProjects/ProjectDetailsCardSkeleton'
+import CustomCheckbox from './CustomCheckbox'
 import './index.css'
-
-const filters = [
-  {
-    filterType: 'Project Type',
-    filters: [
-      'Registered or Active Project',
-      'Provisional Project or Future Project',
-    ],
-  },
-  {
-    filterType: 'Credit Type',
-    filters: ['Carbon Credit', 'Biodiversity Credit', 'Plastics Credit'],
-  },
-  {
-    filterType: 'Project Categories',
-    filters: [
-      'Agriculture',
-      'Afforestation and reforestation',
-      'Bio mass energy',
-      'Cement',
-      'CO2 Usage',
-      'Chemical industries',
-      'Construction',
-      'Mining/mineral production/ bed CH4',
-      'Energy distribution',
-      'Energy efficiency: households',
-      'Energy efficiency: industry',
-      'Energy efficiency: own generation',
-      'Energy efficiency: service',
-      'Energy efficiency: supply side',
-      'Energy demand',
-      'Forestry and Other Land Use',
-      'Forest conservation (REDD+)',
-      'Fossil fuel switch',
-      'Fugitive emissions from fuels (solid, oil and gas)',
-      'Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
-      'Geothermal',
-      'HFCs',
-      'Hydro',
-      'Livestock, enteric fermentation, and manure management',
-      'Manufacturing industries',
-      'Metal production',
-      'Waste handling and disposal',
-      'Methane avoidance',
-      'N2O',
-      'Solar',
-      'Solvent use',
-      'Blue carbon',
-      'Transport',
-      'Wind',
-      'Other Energy industries (renewable - / non-renewable sources)',
-      'Other, please specify',
-    ],
-  },
-  {
-    filterType: 'Verification Standard',
-    filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
-  },
-]
 
 const staticProjects = [
   '',
@@ -75,13 +18,17 @@ const staticProjects = [
 ]
 
 const ProjectListsWithFilter = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const onWebApp = location.pathname === pathNames.MARKETPLACE_V2
+  console.log('onWebApp', onWebApp)
+
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const [projects, setProjects] = useState<any>(null)
   const [filteredProjects, setFilteredProjects] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(false)
-
   const [action, setAction] = useState<string>(FILTER_ACTION.APPLY)
-  const navigate = useNavigate()
   useEffect(() => {
     getAllProjects()
   }, [])
@@ -151,23 +98,30 @@ const ProjectListsWithFilter = () => {
   return (
     <Box
       sx={{
-        background: 'linear-gradient(180deg, #222926 63.19%, #121E18 100%)',
-        padding: '56px 6vw',
+        background: onWebApp
+          ? ''
+          : 'linear-gradient(180deg, #222926 63.19%, #121E18 100%)',
+        padding: onWebApp ? '' : '56px 6vw',
       }}
     >
-      <Box sx={{ fontSize: '32px', color: '#55DBC8' }}>Projects</Box>
+      <Box
+        sx={{ fontSize: '32px', color: onWebApp ? Colors.tertiary : '#55DBC8' }}
+      >
+        Projects
+      </Box>
       <Grid container columnSpacing={2} sx={{ mt: 3 }}>
         <Grid item md={2}>
           <Box
             sx={{
-              color: '#DAE5E1',
-              background:
-                'linear-gradient(180deg, rgba(7, 19, 13, 0.79) 0%, #222926 100%)',
+              color: onWebApp ? '#006B5E' : '#DAE5E1',
+              background: onWebApp
+                ? '#fff'
+                : 'linear-gradient(180deg, rgba(7, 19, 13, 0.79) 0%, #222926 100%)',
             }}
           >
             <Box
               sx={{
-                background: '#005046',
+                background: onWebApp ? '#DAF7F0' : '#005046',
                 px: 2,
                 py: 1,
                 fontSize: 14,
@@ -177,11 +131,11 @@ const ProjectListsWithFilter = () => {
               Filters
             </Box>
             <Box
-              className="filter-list-container"
+              className={`filter-list-container${onWebApp ? '-light' : ''}`}
               sx={{
                 px: 2,
                 py: 1,
-                maxHeight: '70vh',
+                maxHeight: onWebApp ? '65vh' : '70vh',
                 overflow: 'auto',
                 overflowX: 'hidden',
               }}
@@ -222,7 +176,7 @@ const ProjectListsWithFilter = () => {
             {selectedFilters.length > 0 && (
               <Box
                 sx={{
-                  background: '#005046',
+                  background: onWebApp ? '#F0FFFB' : '#005046',
                   p: 1,
                 }}
               >
@@ -230,12 +184,12 @@ const ProjectListsWithFilter = () => {
                   sx={{
                     fontSize: 14,
                     fontWeight: 500,
-                    background: '#fff',
+                    background: onWebApp ? '#006B5E' : '#fff',
                     borderRadius: '16px',
                     textAlign: 'center',
                     cursor: 'pointer',
-                    color: '#000',
-                    padding: '0 8px',
+                    color: onWebApp ? '#fff' : '#000',
+                    padding: onWebApp ? '4px 8px' : '0 8px',
                   }}
                   onClick={handleClick}
                 >
@@ -276,36 +230,3 @@ const ProjectListsWithFilter = () => {
 }
 
 export default ProjectListsWithFilter
-
-interface CustomCheckboxProps {
-  label: string
-  onChange: any
-  selectedFilters: any
-}
-
-const CustomCheckbox: FC<CustomCheckboxProps> = ({
-  label,
-  onChange,
-  selectedFilters,
-}) => {
-  return (
-    <Checkbox
-      checked={selectedFilters.includes(label)}
-      sx={{
-        // color: '#55DBC8',
-        color: '#DAE5E1',
-        '&.Mui-checked': {
-          // color: '#55DBC8',
-          color: '#DAE5E1',
-        },
-        '.MuiSvgIcon-root': {
-          width: '16px',
-          height: '16px',
-        },
-        width: '26px',
-        height: '26px',
-      }}
-      onChange={onChange}
-    />
-  )
-}

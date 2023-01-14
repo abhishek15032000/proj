@@ -27,7 +27,7 @@ import { shallowEqual } from 'react-redux'
 // Local Imports
 import CCButton from '../../atoms/CCButton/CCButton'
 import { department } from '../../api/department.api'
-import { ROLES } from '../../config/constants.config'
+import { PROJECT_ALL_STATUS, ROLES } from '../../config/constants.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
@@ -98,7 +98,7 @@ const SelectVerifier = () => {
     const payload: any = selectedVerifiers.map((verifierDetials: any) => {
       return {
         project_id: currentProjectDetails?._id,
-        project_status: 1,
+        project_status: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
         verifier_id: verifierDetials?._id,
         verifier_name: verifierDetials?.fullName,
         verifier_address: verifierDetials?.address,
@@ -117,7 +117,7 @@ const SelectVerifier = () => {
     } catch (err) {
       console.log(err)
     } finally {
-      setLoading(false)    
+      setLoading(false)
     }
   }
 

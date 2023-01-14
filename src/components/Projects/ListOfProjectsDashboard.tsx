@@ -34,6 +34,7 @@ import {
   setMainProjectDetails,
 } from '../../redux/Slices/MonthlyReportUpdate'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 const headingsNew = [
   'Reference ID',
@@ -70,7 +71,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   const [tabIndex, setTabIndex] = useState(1)
   const [rowsNew, setRowsNew]: any = useState([{}])
   const [rowsRegistered, setRowsRegistered]: any = useState([{}])
-  
+
   const openProjectDetails = (projectDetails: any, redirect: any) => {
     if (projectDetails) {
       const percentageAddedData = addSectionPercentages(projectDetails)
@@ -101,23 +102,27 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
 
     props.data.map((item: any, index: any) => {
       if (
-        item.project_status === 0 ||
-        item.project_status === 1 ||
-        item.project_status === 2
+        item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ||
+        item.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
+        item.project_status === PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT
       ) {
         newData.push([
           <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,
-          item.project_status === 0 ? (
+          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
             <ApprovalChip variant="Yet to Select" key={index} />
-          ) : item.project_status === 1 ? (
+          ) : item.project_status ===
+            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <ApprovalChip variant="Selected" key={index} />
-          ) : item.project_status === 2 ? (
+          ) : item.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
             <ApprovalChip variant="Selected" key={index} />
           ) : (
-            item.project_status === 3 && (
+            item.project_status ===
+              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
               <ApprovalChip variant="Finalised" key={index} />
             )
           ),
@@ -138,7 +143,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ) : (
             '-'
           ),
-          item.project_status === 0 ? (
+          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
             isProjectCompleted(item) ? (
               <TextButton
                 title="Select Verifier"
@@ -162,7 +167,12 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         ])
       }
 
-      if (item.project_status === 3 || item.project_status === 4) {
+      if (
+        item.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+        item.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+      ) {
         registeredData.push([
           <ShortenedIDComp key={index} referenceId={item.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
@@ -186,11 +196,17 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             '-'
           ),
           <ApprovalChip
-            variant={item.project_status === 3 ? 'In progress' : 'Verified'}
+            variant={
+              item.project_status ===
+              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                ? 'In progress'
+                : 'Verified'
+            }
             key={'1'}
           />,
           moment(item.report?.next_date).format('DD/MM/YYYY'),
-          item.project_status === 4 ? (
+          item.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
             <TextButton
               key="1"
               title="Add Monthly Data"

@@ -25,6 +25,7 @@ import NoData from '../../atoms/NoData/NoData'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { getLocalItem } from '../../utils/Storage'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 const headingsNew = [
   'Reference ID',
@@ -80,10 +81,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 
     props.data.map((item: any, index: any) => {
       if (
-        item.project_status === 1 ||
-        item.project_status === 2 ||
-        item.project_status === 5 ||
-        item.project_status === 6
+        item.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
+        item.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ||
+        item.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
+        item.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
       ) {
         newData.push([
           <ShortenedIDComp key={index} referenceId={item?.project_id?.uuid} />,
@@ -109,14 +112,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           </Box>,
           item.verifier_name,
           item.verifier_address,
-          item.project_status === 1 ? (
+          item.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <ApprovalChip key={index} variant={'Pending'} />
-          ) : item.project_status === 2 ? (
+          ) : item.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
             <ApprovalChip key={index} variant={'Approved'} />
           ) : (
             <ApprovalChip key={index} variant={'Rejected'} />
           ),
-          item.project_status === 1 ? (
+          item.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <Box
               key={index}
               sx={{
@@ -160,7 +166,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          (item.project_status === 1 || item.project_status === 2) && (
+          (item.project_status ===
+            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
+            item.project_status ===
+              PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT) && (
             <ChevronRightIcon
               key={index}
               onClick={() => {
@@ -173,7 +182,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         ])
       }
 
-      if (item.project_status === 3 || item.project_status === 4) {
+      if (
+        item.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+        item.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+      ) {
         registeredData.push([
           <ShortenedIDComp key={index} referenceId={item?.project_id?.uuid} />,
           moment(item.createdAt).format('DD/MM/YYYY'),
@@ -199,12 +213,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           item.verifier_name,
           item.verifier_address,
           moment(item.createdAt).format('DD/MM/YYYY'),
-          item.project_status === 3 ? (
+          item.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <ApprovalChip key={index} variant={'Pending'} />
           ) : (
             <ApprovalChip key={index} variant={'Verified'} />
           ),
-          item.project_status === 3 ? (
+          item.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <TextButton
               key={index}
               sx={{ width: '90px' }}

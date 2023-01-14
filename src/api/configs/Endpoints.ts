@@ -122,4 +122,9 @@ export const URL_PATH = {
     getAllTransactionHistory:
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
   },
+  comments: {
+    getComments: ENDPOINTS.carbonServiceURL + '/comment/getCommentByProjectId',
+    createComment: ENDPOINTS.carbonServiceURL + '/comment/create',
+    updateComment: ENDPOINTS.carbonServiceURL + '/comment/update',
+  },
 }

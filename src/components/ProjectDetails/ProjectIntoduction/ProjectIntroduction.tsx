@@ -111,13 +111,14 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               <Typography
                 sx={{ color: 'white', fontSize: 40, fontWeight: 500, mt: -4 }}
               >
-                3.66 MW poultry litter based power generation project by Raus
-                Power in India
+                {projectDetailsData?.name}
               </Typography>
               <Typography
                 sx={{ color: 'white', fontSize: 16, fontWeight: 400, mt: 2 }}
               >
-                PROJECT LOCATION | AREA XXXXX HA in India
+                {projectDetailsData?.location +
+                  ' | ' +
+                  projectDetailsData?.area}
               </Typography>
               <Grid
                 item

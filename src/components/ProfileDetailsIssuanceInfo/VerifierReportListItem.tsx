@@ -14,6 +14,7 @@ import VerifierDetails from './VerifierDetails'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 interface VerifierReportListItemListItemProps {
   data: any
@@ -65,8 +66,10 @@ const VerifierReportListItemListItem: FC<
             )}
           </Grid>
           {/* verifier contact number shown when issuer confirmed final verifier */}
-          {(props?.data?.project_status === 3 ||
-            props?.data?.project_status === 4) && (
+          {(props?.data?.project_status ===
+            PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+            props?.data?.project_status ===
+              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY) && (
             <Grid item xs={3}>
               <Stack direction={'row'} alignItems="center">
                 <PhoneInTalkOutlinedIcon
@@ -90,33 +93,48 @@ const VerifierReportListItemListItem: FC<
             <CircleIcon
               sx={{
                 color:
-                  props?.data?.project_status === 2 ||
-                  props?.data?.project_status === 3 ||
-                  props?.data?.project_status === 4
+                  props?.data?.project_status ===
+                    PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ||
+                  props?.data?.project_status ===
+                    PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+                  props?.data?.project_status ===
+                    PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
                     ? '#7ACB9F'
-                    : props?.data?.project_status === 1
+                    : props?.data?.project_status ===
+                      PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED
                     ? '#F7CA56'
-                    : props?.data?.project_status === 5 ||
-                      props?.data?.project_status === 6
+                    : props?.data?.project_status ===
+                        PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
+                      props?.data?.project_status ===
+                        PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
                     ? 'rgba(250,0,0,0.2)'
                     : 'transparent',
                 mr: 1,
               }}
             />
             <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-              {props?.data?.project_status === 2 ||
-              props?.data?.project_status === 3 ||
-              props?.data?.project_status === 4
+              {props?.data?.project_status ===
+                PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT ||
+              props?.data?.project_status ===
+                PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+              props?.data?.project_status ===
+                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
                 ? 'Verifier Confirmed'
-                : props?.data?.project_status === 1
+                : props?.data?.project_status ===
+                  PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED
                 ? 'Waiting for Verifier’s Confirmation'
-                : props?.data?.project_status === 5
+                : props?.data?.project_status ===
+                  PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER
                 ? 'Rejected'
-                : props?.data?.project_status === 6 && 'Verifier Rejected'}
+                : props?.data?.project_status ===
+                    PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER &&
+                  'Verifier Rejected'}
             </Typography>
           </Grid>
-          {(props?.data?.project_status !== 3 ||
-            props?.data?.project_status !== 4) && (
+          {(props?.data?.project_status !==
+            PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+            props?.data?.project_status !==
+              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY) && (
             <Grid
               item
               xs={3}
@@ -125,7 +143,8 @@ const VerifierReportListItemListItem: FC<
                 justifyContent: 'center',
               }}
             >
-              {props?.data?.project_status === 1 ? (
+              {props?.data?.project_status ===
+              PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED ? (
                 <Typography
                   textAlign="center"
                   sx={{
@@ -138,10 +157,12 @@ const VerifierReportListItemListItem: FC<
                   {`${daysLeft(props?.data?.createdAt)} Day(s) Left`}
                 </Typography>
               ) : (
-                props?.data?.project_status === 2 && (
+                props?.data?.project_status ===
+                  PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT && (
                   <CCButton
                     onClick={() => {
-                      setShowModal(true)
+                      // setShowModal(true)
+                      props?.updateVerifierAPI(props?.data)
                     }}
                     sx={{
                       backgroundColor: '#006B5E',
@@ -161,7 +182,7 @@ const VerifierReportListItemListItem: FC<
         </Grid>
       </Box>
       {/* modal when user clicks on finalise verifier */}
-      <MessageModal
+      {/* <MessageModal
         message={
           <>
             <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
@@ -204,7 +225,7 @@ const VerifierReportListItemListItem: FC<
         btn2Text="Cancel"
         showModal={showModal}
         setShowModal={setShowModal}
-      />
+      /> */}
     </>
   )
 }

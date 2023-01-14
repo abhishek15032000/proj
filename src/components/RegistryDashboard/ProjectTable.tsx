@@ -12,6 +12,7 @@ import StatusChips from '../../atoms/StatusChips/StatusChips'
 import { ROLES } from '../../config/constants.config'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 import { setRegistryProjectDetails } from '../../redux/Slices/registrySlice'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { pathNames } from '../../routes/pathNames'
 import { Images } from '../../theme'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -135,7 +136,10 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
                 </CCButton>
               ),
             ]
-            if (project?.project_status === 6) {
+            if (
+              project?.project_status ===
+              PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
+            ) {
               tempNewProjects.push(row)
             } else if (project?.project_status === 7) {
               tempUnderReviewProjects.push(row)

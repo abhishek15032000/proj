@@ -71,7 +71,7 @@ const Projects = () => {
   }, [])
 
   useEffect(() => {
-    checkProfileComplete()
+    if (userDetails) checkProfileComplete()
   }, [userDetails])
 
   const getUserDetails = async () => {
