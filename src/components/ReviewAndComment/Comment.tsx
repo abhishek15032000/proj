@@ -1,12 +1,22 @@
 import { Box } from '@mui/system'
 import React, { FC } from 'react'
+import { shallowEqual } from 'react-redux'
 import { COMMENT_ALIGN } from '../../config/constants.config'
+import { useAppSelector } from '../../hooks/reduxHooks'
 
 interface CommentProps {
   comment: string
   align: string
 }
 const Comment: FC<CommentProps> = ({ comment, align }) => {
+  const senderInitial = useAppSelector(
+    ({ comments }) => comments.senderInitial,
+    shallowEqual
+  )
+  const receiverInitial = useAppSelector(
+    ({ comments }) => comments.receiverInitial,
+    shallowEqual
+  )
   return (
     <Box
       sx={{
@@ -32,7 +42,7 @@ const Comment: FC<CommentProps> = ({ comment, align }) => {
             mr: 1,
           }}
         >
-          V
+          {receiverInitial}
         </Box>
       )}
       <Box
@@ -61,7 +71,7 @@ const Comment: FC<CommentProps> = ({ comment, align }) => {
             ml: 1,
           }}
         >
-          V
+          {senderInitial}
         </Box>
       ) : null}
     </Box>

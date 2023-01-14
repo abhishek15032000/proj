@@ -10,6 +10,8 @@ interface CommentsReducerInterface {
   comment: string
   commentFrom: string
   commentTo: string
+  senderInitial: string
+  receiverInitial: string
   sectionAComments: any
   sectionBComments: any
   sectionCComments: any
@@ -26,6 +28,8 @@ const initialState: CommentsReducerInterface = {
   comment: '',
   commentFrom: '',
   commentTo: '',
+  senderInitial: '',
+  receiverInitial: '',
   sectionAComments: null,
   sectionBComments: null,
   sectionCComments: null,
@@ -63,6 +67,12 @@ const comments = createSlice({
     setCommentTo: (state, action: PayloadAction<any>) => {
       state.commentTo = action.payload
     },
+    setSenderInitial: (state, action: PayloadAction<any>) => {
+      state.senderInitial = action.payload
+    },
+    setReceiverInitial: (state, action: PayloadAction<any>) => {
+      state.receiverInitial = action.payload
+    },
     setSectionAComments: (state, action: PayloadAction<any>) => {
       state.sectionAComments = action.payload
     },
@@ -90,6 +100,8 @@ export const {
   setComment,
   setCommentFrom,
   setCommentTo,
+  setSenderInitial,
+  setReceiverInitial,
   setSectionIDs,
 } = comments.actions
 

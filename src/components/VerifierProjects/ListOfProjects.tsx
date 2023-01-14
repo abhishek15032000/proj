@@ -200,16 +200,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
               key={index}
               sx={{ width: '90px' }}
               onClick={() =>
-                // navigate(pathNames.VERIFIER_VERIFY_REPORT, {
-                //   state: {
-                //     project: item?.project_id,
-                //     pdf: item?.project_id?.project_pdf,
-                //   },
-                // })
                 navigate(pathNames.REVIEW_AND_COMMENT, {
                   state: {
                     project: item?.project_id,
                     pdf: item?.project_id?.project_pdf,
+                    veriferName: item?.verifier_name,
                   },
                 })
               }

@@ -17,31 +17,36 @@ export const getComments = async () => {
     {
       name: 'Section A',
       id: project?.section_a,
-      unreadCount: 0,
+      unreadCount: getUnreadCommentCount(commentsRes[0]),
+      unreadCommentIDs: getUnreadCommentID(commentsRes[0]),
       comments: commentsRes[0],
     },
     {
       name: 'Section B',
       id: project?.section_b,
-      unreadCount: 0,
+      unreadCount: getUnreadCommentCount(commentsRes[1]),
+      unreadCommentIDs: getUnreadCommentID(commentsRes[1]),
       comments: commentsRes[1],
     },
     {
       name: 'Section C',
       id: project?.section_c,
-      unreadCount: 0,
+      unreadCount: getUnreadCommentCount(commentsRes[2]),
+      unreadCommentIDs: getUnreadCommentID(commentsRes[2]),
       comments: commentsRes[2],
     },
     {
       name: 'Section D',
       id: project?.section_d,
-      unreadCount: 0,
+      unreadCount: getUnreadCommentCount(commentsRes[3]),
+      unreadCommentIDs: getUnreadCommentID(commentsRes[3]),
       comments: commentsRes[3],
     },
     {
       name: 'Section E',
       id: project?.section_e,
-      unreadCount: 0,
+      unreadCount: getUnreadCommentCount(commentsRes[4]),
+      unreadCommentIDs: getUnreadCommentID(commentsRes[4]),
       comments: commentsRes[4],
     },
   ]
@@ -65,4 +70,27 @@ const getSectionWiseComment = async (sectionID: string) => {
   } catch (err) {
     console.log('Error in  commentsCalls.getComments api ~ ', err)
   }
+}
+
+const getUnreadCommentCount = (comments: any) => {
+  let count = 0
+  if (comments && comments.length) {
+    comments.forEach((comment: any) => {
+      if (!comment?.read) {
+        count += 1
+      }
+    })
+  }
+  return count
+}
+const getUnreadCommentID = (comments: any) => {
+  const unreadCommentIDs: any = []
+  if (comments && comments.length) {
+    comments.forEach((comment: any) => {
+      if (!comment?.read) {
+        unreadCommentIDs.push(comment.id)
+      }
+    })
+  }
+  return unreadCommentIDs
 }

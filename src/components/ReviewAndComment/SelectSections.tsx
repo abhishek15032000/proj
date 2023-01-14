@@ -78,7 +78,36 @@ export default function SelectSections() {
               key={index}
               onClick={() => handleMenuClick(section, index)}
             >
-              {section?.name}
+              <Box
+                sx={{
+                  fontSize: 14,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box>{section?.name}</Box>
+                {section?.unreadCount ? (
+                  <Box
+                    sx={{
+                      ml: 1,
+                      p: '4px',
+                      background: Colors.lightPrimary2,
+                      color: Colors.darkPrimary1,
+                      borderRadius: '50%',
+                      height: '20px',
+                      width: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 12,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {section?.unreadCount}
+                  </Box>
+                ) : null}
+              </Box>
             </MenuItem>
           ))}
       </Menu>

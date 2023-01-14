@@ -23,17 +23,16 @@ const Comments = () => {
         pb: 1,
       }}
     >
-      <Box
-        sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column-reverse',
-          justifyContent: 'end',
-        }}
-      >
-        {selectedSection?.comments &&
-          selectedSection?.comments.length &&
-          selectedSection?.comments.map((comment: any, index: number) => (
+      {selectedSection?.comments && selectedSection?.comments.length ? (
+        <Box
+          sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column-reverse',
+            justifyContent: 'end',
+          }}
+        >
+          {selectedSection?.comments.map((comment: any, index: number) => (
             <Comment
               key={index}
               align={
@@ -44,7 +43,24 @@ const Comments = () => {
               comment={comment?.comment}
             />
           ))}
-      </Box>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+        >
+          <Box sx={{ color: '#3F4946', textAlign: 'center', width: '50%' }}>
+            <Box sx={{ fontSize: 14, fontWeight: 500 }}>No comments yet</Box>
+            <Box sx={{ fontSize: 12 }}>
+              Add a comment and send it to the PD to comment on your text
+            </Box>
+          </Box>
+        </Box>
+      )}
     </Box>
   )
 }

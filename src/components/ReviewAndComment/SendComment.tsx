@@ -30,6 +30,10 @@ const SendComment = () => {
     ({ comments }) => comments.commentTo,
     shallowEqual
   )
+  const senderInitial = useAppSelector(
+    ({ comments }) => comments.senderInitial,
+    shallowEqual
+  )
 
   const sendComment = async () => {
     if (!comment) return
@@ -78,7 +82,7 @@ const SendComment = () => {
           mr: 2,
         }}
       >
-        V
+        {senderInitial}
       </Box>
       <Box
         sx={{

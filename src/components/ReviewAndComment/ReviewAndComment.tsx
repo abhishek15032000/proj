@@ -1,7 +1,7 @@
 import { Grid, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import CCButton from '../../atoms/CCButton'
 import { Colors } from '../../theme'
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
@@ -15,18 +15,31 @@ import {
   setCommentTo,
   setProject,
   setProjectID,
+  setReceiverInitial,
   setSectionIDs,
+  setSenderInitial,
 } from '../../redux/Slices/commentsSlice'
 import { getLocalItem } from '../../utils/Storage'
 import { getComments } from '../../utils/reviewAndComment.util'
+import { pathNames } from '../../routes/pathNames'
+import { ROLES } from '../../config/constants.config'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const {
-    state: { project },
-  } = location
+  const userType = getLocalItem('userDetails')?.type
+  const userName = getLocalItem('userDetails2')?.fullName
+  const user_id = getLocalItem('userDetails')?.user_id
+
+  // const {
+  //   state: { project = '', pdf = '', veriferName = '' },
+  // } = location
+
+  const project = location?.state?.project
+  const pdf = location?.state?.pdf
+  const veriferName = location?.state?.veriferName
 
   const sectionIDs = useAppSelector(
     ({ comments }) => comments.sectionIDs,
@@ -36,8 +49,20 @@ const ReviewAndComment = () => {
   const [showCommentSection, setShowCommentSection] = useState<boolean>(false)
 
   useEffect(() => {
-    const user_id = getLocalItem('userDetails')?.user_id
+    if (userType === ROLES.VERIFIER) {
+      setDataForViewer()
+    } else {
+      setDataForIssuer()
+    }
+  }, [])
 
+  useEffect(() => {
+    if (sectionIDs && sectionIDs.length) {
+      getComments()
+    }
+  }, [sectionIDs])
+
+  const setDataForViewer = () => {
     dispatch(setProject(project))
 
     dispatch(setProjectID(project?._id))
@@ -53,13 +78,19 @@ const ReviewAndComment = () => {
     )
     dispatch(setCommentFrom(user_id))
     dispatch(setCommentTo(project?.user_id))
-  }, [])
 
-  useEffect(() => {
-    if (sectionIDs && sectionIDs.length) {
-      getComments()
-    }
-  }, [sectionIDs])
+    const veriferInitial = veriferName?.slice(0, 1) || 'V'
+    const issuerInitial = project?.name?.slice(0, 1) || 'I'
+    dispatch(setSenderInitial(veriferInitial))
+    dispatch(setReceiverInitial(issuerInitial))
+  }
+
+  const setDataForIssuer = () => {
+    const veriferInitial = veriferName?.slice(0, 1) || 'V'
+    const issuerInitial = userName.slice(0, 1) || 'I'
+    dispatch(setSenderInitial(issuerInitial))
+    dispatch(setReceiverInitial(veriferInitial))
+  }
 
   return (
     <Paper>
@@ -82,18 +113,28 @@ const ReviewAndComment = () => {
             justifyContent: 'space-between',
           }}
         >
-          <CCButton
-            sx={{
-              minWidth: 0,
-              padding: '8px 24px',
-              borderRadius: '20px',
-              fontSize: 14,
-              background: '#006B5E',
-              color: '#fff',
-            }}
-          >
-            Move to Verification
-          </CCButton>
+          {userType === ROLES.VERIFIER ? (
+            <CCButton
+              sx={{
+                minWidth: 0,
+                padding: '8px 24px',
+                borderRadius: '20px',
+                fontSize: 14,
+                background: '#006B5E',
+                color: '#fff',
+              }}
+              onClick={() =>
+                navigate(pathNames.VERIFIER_VERIFY_REPORT, {
+                  state: {
+                    project,
+                    pdf,
+                  },
+                })
+              }
+            >
+              Move to Verification
+            </CCButton>
+          ) : null}
           <Box
             sx={{
               ml: 2,
