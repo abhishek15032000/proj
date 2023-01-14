@@ -14,6 +14,7 @@ import { useLocation } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { buyerCalls } from '../../api/buyerCalls.api'
 import { getTokensBalance } from '../../utils/tokenRetire.utils'
+import { registryCalls } from '../../api/registry.api'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
@@ -52,6 +53,12 @@ const ProjectsStats = () => {
         }
       } else if (userType === ROLES.REGISTRY) {
         // get registry stats code
+        res = await registryCalls.getRegistryDashboardStats(user_id)
+        if (res?.success) {
+          setRawStatsData(res)
+          setLoading(false)
+        }
+        console.log('stats', res)
       }
       //using this for token and contract stats
       else if (location.pathname === pathNames.TOKEN_CONTRACT) {

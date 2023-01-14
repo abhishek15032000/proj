@@ -63,6 +63,12 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/verifier/report/submit',
     verifierAllReport: ENDPOINTS.carbonServiceURL + '/verifier/report/all',
   },
+  registry: {
+    getRegistryReports: ENDPOINTS.carbonServiceURL + '/registry/report/submit',
+    registryUpdate: ENDPOINTS.carbonServiceURL + '/registry/update',
+    getRegistryDashboardStats:
+      ENDPOINTS.carbonServiceURL + '/registry/getRegistryProjectDashboardStats',
+  },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',
     getUsersByOrgType:

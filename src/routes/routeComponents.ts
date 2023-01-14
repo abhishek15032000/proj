@@ -231,12 +231,12 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
     component: ProjectDetailsRegistryAcc,
-    roles: [ROLES.REGISTRY],
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
   },
   {
     path: pathNames.REGISTRY_REVIEW_REPORT,
     component: RegistryReviewReport,
-    roles: [ROLES.REGISTRY],
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
   },
   {
     path: pathNames.REGISTRY_ALL_PROJECTS,

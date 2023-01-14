@@ -34,7 +34,9 @@ const TabSelectorWithCount: FC<TabSelectorWithCountProps> = ({
             cursor: 'pointer',
           }}
           key={index}
-          onClick={() => setTabIndex(index + 1)}
+          onClick={() => {
+            setTabIndex(index + 1)
+          }}
           data-testid="tab-selector-tab"
         >
           <Box

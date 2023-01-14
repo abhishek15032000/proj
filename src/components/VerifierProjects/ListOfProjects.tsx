@@ -155,9 +155,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             <ChevronRightIcon
               key={index}
               onClick={() => {
-                navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
                   state: { project_uuid: item?.project_id.uuid },
                 })
+                //navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                //  state: { project_uuid: item?.project_id.uuid },
+                //})
               }}
             />
           ),
@@ -215,10 +218,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           <ChevronRightIcon
             sx={{ cursor: 'pointer' }}
             key={index}
-            onClick={() =>
-              navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                state: { project_uuid: item?.project_id.uuid },
-              })
+            onClick={
+              () =>
+                navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                  state: { project_uuid: item?.project_id.uuid },
+                })
+              //navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+              //  state: { project_uuid: item?.project_id.uuid },
+              //})
             }
           />,
         ])

@@ -1,9 +1,11 @@
 import { Grid, Typography, Box, Radio, Paper } from '@mui/material'
 import { borderColor } from '@mui/system'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CCButton from '../../../atoms/CCButton'
+import { ROLES } from '../../../config/constants.config'
 import { Colors, Images } from '../../../theme'
+import { getLocalItem } from '../../../utils/Storage'
 import TraceDetails from './TraceDetails'
 import './TraceHistory.css'
 const TraceHistory = () => {
@@ -42,6 +44,12 @@ const TraceHistory = () => {
 
   const [traceOption, setTraceOption] = useState(0)
   const [theme, setTheme] = useState('dark')
+
+  useEffect(() => {
+    const role = getLocalItem('loggedIn')?.roles
+    role && role[0] === ROLES.REGISTRY && setTheme('')
+  }, [])
+
   return (
     <Grid
       container
