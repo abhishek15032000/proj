@@ -23,6 +23,7 @@ import { getLocalItem } from '../../utils/Storage'
 import { getComments } from '../../utils/reviewAndComment.util'
 import { pathNames } from '../../routes/pathNames'
 import { ROLES } from '../../config/constants.config'
+import { fileUploadCalls } from '../../api/fileUpload.api'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
@@ -41,12 +42,16 @@ const ReviewAndComment = () => {
   const pdf = location?.state?.pdf
   const veriferName = location?.state?.veriferName
 
+  const { jwtToken } = getLocalItem('userDetails')
+
   const sectionIDs = useAppSelector(
     ({ comments }) => comments.sectionIDs,
     shallowEqual
   )
 
   const [showCommentSection, setShowCommentSection] = useState<boolean>(false)
+  const [pdfLoading, setPDFLoading] = useState(false)
+  const [pdfURL, setpdfURL] = useState<null | string>(null)
 
   useEffect(() => {
     if (userType === ROLES.VERIFIER) {
@@ -102,6 +107,29 @@ const ReviewAndComment = () => {
     const issuerInitial = userName.slice(0, 1) || 'I'
     dispatch(setSenderInitial(issuerInitial))
     dispatch(setReceiverInitial(veriferInitial))
+  }
+
+  useEffect(() => {
+    getPDF()
+  }, [])
+  const getPDF = async () => {
+    if (location && location?.state && location.state?.pdf) {
+      const {
+        state: { pdf },
+      } = location
+      setPDFLoading(true)
+      try {
+        const res = await fileUploadCalls.getFile(pdf, jwtToken)
+
+        const pdfObjectURL = URL.createObjectURL(res)
+
+        setpdfURL(pdfObjectURL)
+      } catch (err) {
+        console.log('Error in fileUploadCalls.getFile api : ', err)
+      } finally {
+        setPDFLoading(false)
+      }
+    }
   }
 
   return (
@@ -179,7 +207,7 @@ const ReviewAndComment = () => {
       <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
         <Grid item xs={12} lg={showCommentSection ? 6 : 12}>
           {/* <PDFViewer pdfUrl={'/src/components//pdf-lib_form_creation_example'} /> */}
-          <PDFViewer pdfUrl={'/src/components/ReviewAndComment/demo-pdf.pdf'} />
+          {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
         </Grid>
         {showCommentSection ? (
           <Grid item xs={12} lg={6}>
