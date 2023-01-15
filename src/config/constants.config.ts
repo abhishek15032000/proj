@@ -101,14 +101,18 @@ export const PROJECT_STATUS = [
   },
   {
     key: 7,
-    value: 'Registry verifies and submits the report',
+    value: '   Project under review in registry',
   },
   {
     key: 8,
-    value: ' Rejected by the issuer',
+    value: 'Registry verifies and submits the report',
   },
   {
     key: 9,
+    value: ' Rejected by the issuer',
+  },
+  {
+    key: 10,
     value: 'Rejected by the verifier',
   },
 ]
@@ -121,9 +125,10 @@ export const PROJECT_ALL_STATUS = {
   VERIFIER_APPROVED_THE_PROJECT: 4,
   ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT: 5,
   VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY: 6,
-  REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT: 7,
-  REJECTED_BY_THE_ISSUER: 8,
-  REJECTED_BY_THE_VERIFIER: 9,
+  PROJECT_UNDER_REVIEW_IN_REGISTRY: 7,
+  REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT: 8,
+  REJECTED_BY_THE_ISSUER: 9,
+  REJECTED_BY_THE_VERIFIER: 10,
 }
 export const filters = [
   {
