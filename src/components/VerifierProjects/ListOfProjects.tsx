@@ -228,7 +228,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   state: {
                     project: item?.project_id,
                     pdf: item?.project_id?.project_pdf,
-                    veriferName: item?.verifier_name,
+                    verifierName: item?.verifier_name,
                   },
                 })
               }

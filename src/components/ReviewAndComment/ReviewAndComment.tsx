@@ -24,6 +24,7 @@ import { getComments } from '../../utils/reviewAndComment.util'
 import { pathNames } from '../../routes/pathNames'
 import { ROLES } from '../../config/constants.config'
 import { fileUploadCalls } from '../../api/fileUpload.api'
+import './index.css'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
@@ -35,12 +36,12 @@ const ReviewAndComment = () => {
   const user_id = getLocalItem('userDetails')?.user_id
 
   // const {
-  //   state: { project = '', pdf = '', veriferName = '' },
+  //   state: { project = '', pdf = '', verifierName = '' },
   // } = location
 
   const project = location?.state?.project
   const pdf = location?.state?.pdf
-  const veriferName = location?.state?.veriferName
+  const verifierName = location?.state?.verifierName
 
   const { jwtToken } = getLocalItem('userDetails')
 
@@ -83,7 +84,7 @@ const ReviewAndComment = () => {
     dispatch(setCommentFrom(user_id))
     dispatch(setCommentTo(project?.user_id))
 
-    const veriferInitial = veriferName?.slice(0, 1) || 'V'
+    const veriferInitial = verifierName?.slice(0, 1) || 'V'
     const issuerInitial = project?.name?.slice(0, 1) || 'I'
     dispatch(setSenderInitial(veriferInitial))
     dispatch(setReceiverInitial(issuerInitial))
@@ -103,7 +104,7 @@ const ReviewAndComment = () => {
       ])
     )
 
-    const veriferInitial = veriferName?.slice(0, 1) || 'V'
+    const veriferInitial = verifierName?.slice(0, 1) || 'V'
     const issuerInitial = userName.slice(0, 1) || 'I'
     dispatch(setSenderInitial(issuerInitial))
     dispatch(setReceiverInitial(veriferInitial))
@@ -209,22 +210,50 @@ const ReviewAndComment = () => {
           />
         </Box>
       </Box>
-      <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
-        <Grid
-          item
-          xs={12}
-          lg={showCommentSection ? 6 : 12}
-          sx={{ height: 'calc( 100vh - 60px)' }}
+      {pdfLoading ? (
+        <Box
+          sx={{
+            fontSize: '32',
+            color: Colors.darkPrimary1,
+            fontWeight: 500,
+            height: 'calc( 100vh - 60px)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          {/* <PDFViewer pdfUrl={'/src/components//pdf-lib_form_creation_example'} /> */}
-          {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
+          Loading PDF...
+        </Box>
+      ) : null}
+      {!showCommentSection ? (
+        <Grid
+          container
+          sx={{
+            background: '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Grid
+            className="hide-scrollbar"
+            item
+            xs={12}
+            lg={6}
+            sx={{ height: 'calc( 100vh - 60px)' }}
+          >
+            {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
+          </Grid>
         </Grid>
-        {showCommentSection ? (
+      ) : (
+        <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
+          <Grid item xs={12} lg={6} sx={{ height: 'calc( 100vh - 60px)' }}>
+            {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
+          </Grid>
           <Grid item xs={12} lg={6} sx={{ height: 'calc( 100vh - 60px)' }}>
             <CommentBox />
           </Grid>
-        ) : null}
-      </Grid>
+        </Grid>
+      )}
     </Paper>
   )
 }

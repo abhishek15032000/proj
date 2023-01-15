@@ -211,11 +211,15 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              cursor: 'pointer',
             }}
             onClick={() =>
               navigate(pathNames.REVIEW_AND_COMMENT, {
                 state: {
                   project: currentProjectDetails,
+                  pdf: currentProjectDetails?.project_pdf,
+                  verifierName:
+                    currentProjectDetails?.verifier_details_id?.verifier_name,
                 },
               })
             }
