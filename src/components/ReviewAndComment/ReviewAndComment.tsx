@@ -105,9 +105,14 @@ const ReviewAndComment = () => {
   }
 
   return (
-    <Paper>
+    <Paper
+      sx={{
+        height: 'calc(100vh)',
+      }}
+    >
       <Box
         sx={{
+          height: '60px',
           p: 1,
           display: 'flex',
           alignItems: 'center',
@@ -177,12 +182,17 @@ const ReviewAndComment = () => {
         </Box>
       </Box>
       <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
-        <Grid item xs={12} lg={showCommentSection ? 6 : 12}>
+        <Grid
+          item
+          xs={12}
+          lg={showCommentSection ? 6 : 12}
+          sx={{ height: 'calc( 100vh - 60px)' }}
+        >
           {/* <PDFViewer pdfUrl={'/src/components//pdf-lib_form_creation_example'} /> */}
           <PDFViewer pdfUrl={'/src/components/ReviewAndComment/demo-pdf.pdf'} />
         </Grid>
         {showCommentSection ? (
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} lg={6} sx={{ height: 'calc( 100vh - 60px)' }}>
             <CommentBox />
           </Grid>
         ) : null}

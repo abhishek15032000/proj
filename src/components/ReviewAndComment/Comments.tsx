@@ -29,33 +29,27 @@ const Comments = () => {
     <Box
       sx={{
         background: '#fff',
-        flex: '1 1 auto',
+        height: '100%',
         p: 2,
         pb: 1,
         overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        justifyContent: 'end',
       }}
     >
       {selectedSection?.comments && selectedSection?.comments.length ? (
-        <Box
-          sx={{
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column-reverse',
-            justifyContent: 'end',
-          }}
-        >
-          {selectedSection?.comments.map((comment: any, index: number) => (
-            <Comment
-              key={index}
-              align={
-                comment?.from === user_id
-                  ? COMMENT_ALIGN.RIGHT
-                  : COMMENT_ALIGN.LEFT
-              }
-              comment={comment?.comment}
-            />
-          ))}
-        </Box>
+        selectedSection?.comments.map((comment: any, index: number) => (
+          <Comment
+            key={index}
+            align={
+              comment?.from === user_id
+                ? COMMENT_ALIGN.RIGHT
+                : COMMENT_ALIGN.LEFT
+            }
+            comment={comment?.comment}
+          />
+        ))
       ) : (
         <Box
           sx={{

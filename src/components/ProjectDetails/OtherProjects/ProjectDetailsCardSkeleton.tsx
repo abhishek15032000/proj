@@ -1,13 +1,15 @@
 import { Skeleton } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
+import { shallowEqual } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 import { pathNames } from '../../../routes/pathNames'
 
 const ProjectDetailsCardSkeleton = () => {
   const location = useLocation()
 
-  const onWebApp = location.pathname === pathNames.MARKETPLACE_V2
+  const onWebApp = useAppSelector(({ app }) => app.throughIFrame, shallowEqual)
 
   return (
     <Box

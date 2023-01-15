@@ -1,6 +1,7 @@
 // import { constant } from "lodash";
 // import { combineReducers } from "redux";
 // import todos from "./todos";
+import app from './appSlice'
 import auth from './authSlice'
 import theme from './themeSlice'
 import issuanceDataCollection from './issuanceDataCollection'
@@ -34,6 +35,7 @@ import comments from './commentsSlice'
 
 // TODO: rename names
 export default {
+  app,
   auth,
   theme,
   issuanceDataCollection,

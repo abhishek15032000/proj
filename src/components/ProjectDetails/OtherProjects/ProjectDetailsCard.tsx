@@ -5,6 +5,8 @@ import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined'
 import { Images } from '../../../theme'
 import { pathNames } from '../../../routes/pathNames'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -17,7 +19,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
   const navigate = useNavigate()
   const location = useLocation()
 
-  const onWebApp = location.pathname === pathNames.MARKETPLACE_V2
+  const onWebApp = useAppSelector(({ app }) => app.throughIFrame, shallowEqual)
 
   return (
     <Box
@@ -30,13 +32,14 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
         boxShadow: onWebApp ? '0px 5px 25px rgba(0, 0, 0, 0.12)' : '',
       }}
     >
-      <Box>
+      <Box sx={{ borderRadius: '8px 8px 0 0' }}>
         <Box
           sx={{
             position: 'relative',
+            borderRadius: '8px 8px 0 0',
           }}
         >
-          <Box>
+          <Box sx={{ borderRadius: '8px 8px 0 0' }}>
             <img
               src={onWebApp ? Images.ProjectLight : Images.Project}
               alt=""
@@ -95,6 +98,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           pt: 1,
           color: onWebApp ? '#00201B' : '#E1E3E1',
           background: onWebApp ? '#fff' : '#191C1B',
+          borderRadius: '0 0 8px 8px',
         }}
       >
         <Box sx={{ fontSize: 12, fontWeight: 500 }}>

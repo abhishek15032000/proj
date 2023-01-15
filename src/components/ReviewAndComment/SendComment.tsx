@@ -28,22 +28,25 @@ const SendComment = () => {
         justifyContent: 'center',
         background: '#fff',
         flex: '0 1 auto',
+        mb: 2,
       }}
     >
-      <Box
-        sx={{
-          color: '#fff',
-          background: '#006B5E',
-          height: '40px',
-          width: '40px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          mr: 2,
-        }}
-      >
-        {senderInitial}
+      <Box>
+        <Box
+          sx={{
+            color: '#fff',
+            background: '#006B5E',
+            height: '40px',
+            width: '40px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mr: 2,
+          }}
+        >
+          {senderInitial}
+        </Box>
       </Box>
       <Box
         sx={{
