@@ -19,7 +19,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
   const navigate = useNavigate()
   const location = useLocation()
 
-  const onWebApp = useAppSelector(({ app }) => app.throughIFrame, shallowEqual)
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
     <Box

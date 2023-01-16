@@ -66,6 +66,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState<null | number>(null)
+  const [lifeTimeQuantity, setLifetimeQuantity] = useState<null | number>(null)
   const [selectMonth, setSelectMonth] = useState(new Date())
   const [nextSubmissionDate, setNextSubmissionDate] = useState<any>(
     moment().add(1, 'd')
@@ -191,8 +192,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       project_id: project?.uuid,
       current_month: selectMonth,
       next_date: nextSubmissionDate,
-      quantity: Number(quantity),
       ghg_reduction_explanation: explain,
+      quantity: Number(quantity),
+      monthly_carbon_tokens: Number(quantity),
+      lifetime_carbon_tokens: Number(lifeTimeQuantity),
       // signature_hash: signatureHash,
       // signer: accountAddress,
       file_attach: stringExtractor(relevantDocs, 'fileName'),
@@ -331,8 +334,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
             <Box sx={{ width: '43%', ml: 4 }}>
               <CCInputField
-                label="Please enter the lifetime value of VCOT"
-                placeholder="Enter lifetime value of VCOT"
+                label="Enter Quantity of VCOTs"
+                placeholder="Enter Quantity of VCOTs"
                 variant="outlined"
                 // sx={{ mt: 1 }}
                 value={quantity}
@@ -364,7 +367,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           >
             Please enter next monthly report submission date for issuer
           </Typography>
-
           <Box sx={{ width: '90%', ml: 4 }}>
             <DatePicker
               label="Next submission date"
@@ -392,6 +394,42 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               }}
             />
           </Box>
+
+          <Typography
+            sx={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: Colors.darkPrimary1,
+              ml: 4,
+              mt: 3,
+              mb: 2,
+            }}
+          >
+            Please enter the lifetime value of VCOT
+          </Typography>
+          <Box
+            sx={{
+              m: 3,
+              mx: 4,
+            }}
+          >
+            <CCInputField
+              label="Enter lifetime value of VCOT"
+              placeholder="Enter lifetime value of VCOT"
+              variant="outlined"
+              value={lifeTimeQuantity}
+              onChange={(e) => {
+                const regexp = /^\d+(\.\d{0,3})?$/
+                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
+                  setLifetimeQuantity(e?.target?.value)
+                }
+              }}
+              InputLabelProps={{
+                style: { color: '#3F4946' },
+              }}
+            />
+          </Box>
+
           <CCDropAndUpload
             sx={{ m: 4, mr: 5 }}
             mediaTitle={[]}
@@ -486,7 +524,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         setShowModal={setShowAddressNotMatchingModal}
       /> */}
       <MessageModal
-        message={'PDF Verified and Token Minted Successfully!!!'}
+        message={'PDF Verified and sent to Registry!!!'}
         btn1Text="Ok"
         btn1OnClick={() => {
           setShowActionSuccessModal(false)

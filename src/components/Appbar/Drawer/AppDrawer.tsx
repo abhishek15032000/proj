@@ -37,6 +37,10 @@ export default function ResponsiveDrawer(props: any) {
   const drawerWidth = !props.user ? 0 : 240
   const location = useLocation()
 
+  const throughIFrame = useAppSelector(
+    (state) => state.app?.throughIFrame,
+    shallowEqual
+  )
   const userDataRoles = useAppSelector(
     (state) => state.auth?.data?.roles,
     shallowEqual

@@ -20,8 +20,7 @@ const Main = (props: Props) => {
 
   const loader = () => {
     console.log('window.self == window.top', window.self == window.top)
-
-    dispatch(setThroughIFrame(window.self === window.top))
+    dispatch(setThroughIFrame(window.self !== window.top))
 
     return true
     if (window.self == window.top) {

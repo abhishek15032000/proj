@@ -18,7 +18,7 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({
 }) => {
   const location = useLocation()
 
-  const onWebApp = useAppSelector(({ app }) => app.throughIFrame, shallowEqual)
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
     <Checkbox
