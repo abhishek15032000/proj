@@ -137,7 +137,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => props.updateStatus(2, item)}
+                onClick={() =>
+                  props.updateStatus(
+                    PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT,
+                    item
+                  )
+                }
               >
                 Approve
               </Typography>
@@ -149,7 +154,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => props.updateStatus(6, item)}
+                onClick={() => props.updateStatus(10, item)}
               >
                 Reject
               </Typography>
@@ -219,16 +224,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
               key={index}
               sx={{ width: '90px' }}
               onClick={() =>
-                // navigate(pathNames.VERIFIER_VERIFY_REPORT, {
-                //   state: {
-                //     project: item?.project_id,
-                //     pdf: item?.project_id?.project_pdf,
-                //   },
-                // })
                 navigate(pathNames.REVIEW_AND_COMMENT, {
                   state: {
                     project: item?.project_id,
                     pdf: item?.project_id?.project_pdf,
+                    verifierName: item?.verifier_name,
                   },
                 })
               }

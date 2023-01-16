@@ -12,7 +12,8 @@ const CommentBox = () => {
       sx={{
         color: '#000',
         mb: 2,
-        height: 'calc(100vh - 180px)',
+        // height: 'calc(100vh - 180px)',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         ml: 2,

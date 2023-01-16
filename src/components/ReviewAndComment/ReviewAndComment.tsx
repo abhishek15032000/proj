@@ -1,7 +1,7 @@
 import { Grid, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import CCButton from '../../atoms/CCButton'
 import { Colors } from '../../theme'
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
@@ -15,18 +15,35 @@ import {
   setCommentTo,
   setProject,
   setProjectID,
+  setReceiverInitial,
   setSectionIDs,
+  setSenderInitial,
 } from '../../redux/Slices/commentsSlice'
 import { getLocalItem } from '../../utils/Storage'
 import { getComments } from '../../utils/reviewAndComment.util'
+import { pathNames } from '../../routes/pathNames'
+import { ROLES } from '../../config/constants.config'
+import { fileUploadCalls } from '../../api/fileUpload.api'
+import './index.css'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const {
-    state: { project },
-  } = location
+  const userType = getLocalItem('userDetails')?.type
+  const userName = getLocalItem('userDetails2')?.fullName
+  const user_id = getLocalItem('userDetails')?.user_id
+
+  // const {
+  //   state: { project = '', pdf = '', verifierName = '' },
+  // } = location
+
+  const project = location?.state?.project
+  const pdf = location?.state?.pdf
+  const verifierName = location?.state?.verifierName
+
+  const { jwtToken } = getLocalItem('userDetails')
 
   const sectionIDs = useAppSelector(
     ({ comments }) => comments.sectionIDs,
@@ -34,12 +51,25 @@ const ReviewAndComment = () => {
   )
 
   const [showCommentSection, setShowCommentSection] = useState<boolean>(false)
+  const [pdfLoading, setPDFLoading] = useState(false)
+  const [pdfURL, setpdfURL] = useState<null | string>(null)
 
   useEffect(() => {
-    const user_id = getLocalItem('userDetails')?.user_id
+    if (userType === ROLES.VERIFIER) {
+      setDataForViewer()
+    } else {
+      setDataForIssuer()
+    }
+  }, [])
 
+  useEffect(() => {
+    if (sectionIDs && sectionIDs.length) {
+      getComments()
+    }
+  }, [sectionIDs])
+
+  const setDataForViewer = () => {
     dispatch(setProject(project))
-
     dispatch(setProjectID(project?._id))
 
     dispatch(
@@ -53,18 +83,65 @@ const ReviewAndComment = () => {
     )
     dispatch(setCommentFrom(user_id))
     dispatch(setCommentTo(project?.user_id))
-  }, [])
+
+    const veriferInitial = verifierName?.slice(0, 1) || 'V'
+    const issuerInitial = project?.name?.slice(0, 1) || 'I'
+    dispatch(setSenderInitial(veriferInitial))
+    dispatch(setReceiverInitial(issuerInitial))
+  }
+
+  const setDataForIssuer = () => {
+    dispatch(setProject(project))
+    dispatch(setProjectID(project?._id))
+
+    dispatch(
+      setSectionIDs([
+        project?.section_a?._id,
+        project?.section_b?._id,
+        project?.section_c?._id,
+        project?.section_d?._id,
+        project?.section_e?._id,
+      ])
+    )
+
+    const veriferInitial = verifierName?.slice(0, 1) || 'V'
+    const issuerInitial = userName.slice(0, 1) || 'I'
+    dispatch(setSenderInitial(issuerInitial))
+    dispatch(setReceiverInitial(veriferInitial))
+  }
 
   useEffect(() => {
-    if (sectionIDs && sectionIDs.length) {
-      getComments()
+    getPDF()
+  }, [])
+  const getPDF = async () => {
+    if (location && location?.state && location.state?.pdf) {
+      const {
+        state: { pdf },
+      } = location
+      setPDFLoading(true)
+      try {
+        const res = await fileUploadCalls.getFile(pdf, jwtToken)
+
+        const pdfObjectURL = URL.createObjectURL(res)
+
+        setpdfURL(pdfObjectURL)
+      } catch (err) {
+        console.log('Error in fileUploadCalls.getFile api : ', err)
+      } finally {
+        setPDFLoading(false)
+      }
     }
-  }, [sectionIDs])
+  }
 
   return (
-    <Paper>
+    <Paper
+      sx={{
+        height: 'calc(100vh)',
+      }}
+    >
       <Box
         sx={{
+          height: '60px',
           p: 1,
           display: 'flex',
           alignItems: 'center',
@@ -82,18 +159,28 @@ const ReviewAndComment = () => {
             justifyContent: 'space-between',
           }}
         >
-          <CCButton
-            sx={{
-              minWidth: 0,
-              padding: '8px 24px',
-              borderRadius: '20px',
-              fontSize: 14,
-              background: '#006B5E',
-              color: '#fff',
-            }}
-          >
-            Move to Verification
-          </CCButton>
+          {userType === ROLES.VERIFIER ? (
+            <CCButton
+              sx={{
+                minWidth: 0,
+                padding: '8px 24px',
+                borderRadius: '20px',
+                fontSize: 14,
+                background: '#006B5E',
+                color: '#fff',
+              }}
+              onClick={() =>
+                navigate(pathNames.VERIFIER_VERIFY_REPORT, {
+                  state: {
+                    project,
+                    pdf,
+                  },
+                })
+              }
+            >
+              Move to Verification
+            </CCButton>
+          ) : null}
           <Box
             sx={{
               ml: 2,
@@ -123,17 +210,50 @@ const ReviewAndComment = () => {
           />
         </Box>
       </Box>
-      <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
-        <Grid item xs={12} lg={showCommentSection ? 6 : 12}>
-          {/* <PDFViewer pdfUrl={'/src/components//pdf-lib_form_creation_example'} /> */}
-          <PDFViewer pdfUrl={'/src/components/ReviewAndComment/demo-pdf.pdf'} />
+      {pdfLoading ? (
+        <Box
+          sx={{
+            fontSize: '32',
+            color: Colors.darkPrimary1,
+            fontWeight: 500,
+            height: 'calc( 100vh - 60px)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          Loading PDF...
+        </Box>
+      ) : null}
+      {!showCommentSection ? (
+        <Grid
+          container
+          sx={{
+            background: '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Grid
+            className="hide-scrollbar"
+            item
+            xs={12}
+            lg={6}
+            sx={{ height: 'calc( 100vh - 60px)' }}
+          >
+            {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
+          </Grid>
         </Grid>
-        {showCommentSection ? (
-          <Grid item xs={12} lg={6}>
+      ) : (
+        <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
+          <Grid item xs={12} lg={6} sx={{ height: 'calc( 100vh - 60px)' }}>
+            {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
+          </Grid>
+          <Grid item xs={12} lg={6} sx={{ height: 'calc( 100vh - 60px)' }}>
             <CommentBox />
           </Grid>
-        ) : null}
-      </Grid>
+        </Grid>
+      )}
     </Paper>
   )
 }

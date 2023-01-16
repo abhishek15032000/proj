@@ -34,14 +34,13 @@ import AppNavBar from '../NavBar/AppNavBar'
 import MENUS from './MenuList'
 
 export default function ResponsiveDrawer(props: any) {
-  const drawerWidth = !props.user ? 0:  240
+  const drawerWidth = !props.user ? 0 : 240
   const location = useLocation()
 
   const userDataRoles = useAppSelector(
     (state) => state.auth?.data?.roles,
     shallowEqual
   )
-
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const handleDrawerToggle = () => {
@@ -116,25 +115,29 @@ export default function ResponsiveDrawer(props: any) {
   }
 
   const midMenu = React.useCallback(() => {
-   if(userDataRoles?.length){ if (
-      _.intersectionWith(userDataRoles, [ROLES.ISSUER], _.isEqual).length > 0
-    ) {
-      return MENUS.issuer_menus
-    } else if (
-      _.intersectionWith(userDataRoles, [ROLES.VERIFIER], _.isEqual).length > 0
-    ) {
-      return MENUS.verifier_menus
-    } else if (
-      _.intersectionWith(userDataRoles, [ROLES.BUYER], _.isEqual).length > 0
-    ) {
-      return MENUS.buyer_menus
-    } else if (
-      _.intersectionWith(userDataRoles, [ROLES.REGISTRY], _.isEqual).length > 0
-    ) {
-      return MENUS.registry_menus
+    if (userDataRoles?.length) {
+      if (
+        _.intersectionWith(userDataRoles, [ROLES.ISSUER], _.isEqual).length > 0
+      ) {
+        return MENUS.issuer_menus
+      } else if (
+        _.intersectionWith(userDataRoles, [ROLES.VERIFIER], _.isEqual).length >
+        0
+      ) {
+        return MENUS.verifier_menus
+      } else if (
+        _.intersectionWith(userDataRoles, [ROLES.BUYER], _.isEqual).length > 0
+      ) {
+        return MENUS.buyer_menus
+      } else if (
+        _.intersectionWith(userDataRoles, [ROLES.REGISTRY], _.isEqual).length >
+        0
+      ) {
+        return MENUS.registry_menus
+      } else {
+        return []
+      }
     } else {
-      return []
-    }}else{
       return []
     }
   }, [userDataRoles])
@@ -248,7 +251,9 @@ export default function ResponsiveDrawer(props: any) {
     </Box>
   )
 
-  return !props.show && !props.user ? <> {props.children}</>: (
+  return !props.show || !props.user ? (
+    <> {props.children}</>
+  ) : (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
@@ -260,50 +265,52 @@ export default function ResponsiveDrawer(props: any) {
           background: 'background',
         }}
       >
-        <AppNavBar handleDrawerToggle={handleDrawerToggle} user= {props.user} />
+        <AppNavBar handleDrawerToggle={handleDrawerToggle} user={props.user} />
       </AppBar>
-     { props.user && <Box
-        component="nav"
-        sx={{
-          width: { sm: drawerWidth },
-          flexShrink: { sm: 0 },
-        }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+      {props.user && (
+        <Box
+          component="nav"
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              backgroundColor: 'darkPrimary1.main',
-            },
+            width: { sm: drawerWidth },
+            flexShrink: { sm: 0 },
           }}
+          aria-label="mailbox folders"
         >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              backgroundColor: 'darkPrimary1.main',
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>}
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+                backgroundColor: 'darkPrimary1.main',
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+                backgroundColor: 'darkPrimary1.main',
+              },
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+      )}
       <Box
         component="main"
         sx={{

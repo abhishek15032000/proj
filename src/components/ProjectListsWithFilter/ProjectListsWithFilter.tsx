@@ -1,11 +1,11 @@
 import { Box, Checkbox, Grid } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
+import { shallowEqual } from 'react-redux'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { filters, FILTER_ACTION } from '../../config/constants.config'
-import { pathNames } from '../../routes/pathNames'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
-import { getLocalItem } from '../../utils/Storage'
 import ProjectDetailsCard from '../ProjectDetails/OtherProjects/ProjectDetailsCard'
 import ProjectDetailsCardSkeleton from '../ProjectDetails/OtherProjects/ProjectDetailsCardSkeleton'
 import CustomCheckbox from './CustomCheckbox'
@@ -21,8 +21,7 @@ const ProjectListsWithFilter = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const onWebApp = location.pathname === pathNames.MARKETPLACE_V2
-  console.log('onWebApp', onWebApp)
+  const onWebApp = useAppSelector(({ app }) => app.throughIFrame, shallowEqual)
 
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const [projects, setProjects] = useState<any>(null)

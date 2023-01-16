@@ -1,57 +1,22 @@
-import { Box } from '@mui/system'
 import SendIcon from '@mui/icons-material/Send'
+import { Box } from '@mui/system'
 import React from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { commentsCalls } from '../../api/commentsCalls.api'
 import { setComment } from '../../redux/Slices/commentsSlice'
-import { getComments } from '../../utils/reviewAndComment.util'
+import { sendComment } from '../../utils/reviewAndComment.util'
 
 const SendComment = () => {
   const dispatch = useAppDispatch()
 
-  const projectID = useAppSelector(
-    ({ comments }) => comments.projectID,
-    shallowEqual
-  )
-  const selectedSection = useAppSelector(
-    ({ comments }) => comments.selectedSection,
-    shallowEqual
-  )
   const comment = useAppSelector(
     ({ comments }) => comments.comment,
     shallowEqual
   )
-  const commentFrom = useAppSelector(
-    ({ comments }) => comments.commentFrom,
+  const senderInitial = useAppSelector(
+    ({ comments }) => comments.senderInitial,
     shallowEqual
   )
-  const commentTo = useAppSelector(
-    ({ comments }) => comments.commentTo,
-    shallowEqual
-  )
-
-  const sendComment = async () => {
-    if (!comment) return
-    const payload = {
-      project_id: projectID,
-      section_id: selectedSection?.id,
-      comment: comment,
-      from: commentFrom,
-      to: commentTo,
-      read: false,
-    }
-    try {
-      const createCommentRes = await commentsCalls.createComment(payload)
-      console.log(createCommentRes)
-      if (createCommentRes?.success) {
-        getComments()
-        dispatch(setComment(''))
-      }
-    } catch (err) {
-      console.log('Error in commentsCalls.createComment api ~ ', err)
-    }
-  }
 
   return (
     <Box
@@ -63,22 +28,25 @@ const SendComment = () => {
         justifyContent: 'center',
         background: '#fff',
         flex: '0 1 auto',
+        mb: 2,
       }}
     >
-      <Box
-        sx={{
-          color: '#fff',
-          background: '#006B5E',
-          height: '40px',
-          width: '40px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          mr: 2,
-        }}
-      >
-        V
+      <Box>
+        <Box
+          sx={{
+            color: '#fff',
+            background: '#006B5E',
+            height: '40px',
+            width: '40px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mr: 2,
+          }}
+        >
+          {senderInitial}
+        </Box>
       </Box>
       <Box
         sx={{

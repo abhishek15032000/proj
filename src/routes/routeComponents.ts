@@ -219,11 +219,11 @@ export const privateRouteComponents = [
     component: HelpCentre,
     roles: [ROLES.ISSUER],
   },
-  // {
-  //   path: pathNames.PROJECT_DETAILS,
-  //   component: ProjectDetails,
-  //   roles: [ROLES.ISSUER, ROLES.REGISTRY],
-  // },
+  {
+    path: pathNames.PROJECT_DETAILS,
+    component: ProjectDetails,
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
+  },
   {
     path: pathNames.PROJECT_LISTS_WITH_FILTER,
     component: ProjectListsWithFilter,
@@ -259,7 +259,6 @@ export const privateRouteComponents = [
   {
     path: pathNames.REVIEW_AND_COMMENT,
     component: ReviewAndComment,
-    // component: MarketplaceV2,
     roles: [ROLES.VERIFIER, ROLES.ISSUER],
   },
 ]
