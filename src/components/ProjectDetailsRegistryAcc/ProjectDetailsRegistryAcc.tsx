@@ -14,21 +14,21 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import Spinner from '../../atoms/Spinner'
 import { fileUploadCalls } from '../../api/fileUpload.api'
+import { Colors } from '../../theme'
 
 const ProjectDetailsRegistryAcc = () => {
   const location: any = useLocation()
+
+  const projectDetails = location?.state?.projectDetails
 
   const registryProjectDetails = useAppSelector(
     ({ registry }) => registry.registryProjectDetails,
     shallowEqual
   )
 
-  //const [projectDetails, setProjectDetails] = useState()
   const [title, setTitle] = useState<string>()
   const [area, setArea] = useState<string>()
   const [loading, setLoading] = useState(false)
-  const [projectDetails, setProjectDetails] = useState<any>()
-  //const [reportDetails, setReportDetails]: any = useState([])
   const [loadingReport, setLoadingReport] = useState(false)
 
   useEffect(() => {
@@ -43,41 +43,43 @@ const ProjectDetailsRegistryAcc = () => {
 
     if (role === ROLES.REGISTRY) {
       if (registryProjectDetails) {
-        setTitle(
-          role === ROLES.REGISTRY && registryProjectDetails?.company_name
-        )
-        setArea(role === ROLES.REGISTRY && registryProjectDetails?.location)
-        setProjectDetails(role === ROLES.REGISTRY && registryProjectDetails)
+        //setTitle(
+        //  role === ROLES.REGISTRY && registryProjectDetails?.company_name
+        //)
+        //setArea(role === ROLES.REGISTRY && registryProjectDetails?.location)
+        //setProjectDetails(role === ROLES.REGISTRY && registryProjectDetails)
       }
-    } else if (role === ROLES.VERIFIER) {
-      setLoading(true)
-
-      dataCollectionCalls
-        .getProjectById(location?.state?.project_uuid)
-        .then((response) => {
-          setProjectDetails(response.data)
-          setTitle(response?.data?.company_name)
-          setArea(response?.data?.location)
-          setLoading(false)
-        })
-        .catch((e) => setLoading(false))
-
-      // 'e8712a5e-3d13-4619-9bc7-930401044ebb'
-
-      setLoadingReport(true)
-      verifierCalls
-        .getReportByProjectId(location?.state?.project_uuid)
-        .then((response) => {
-          let tempObj: any = []
-          if (response?.data?.main_project?.report !== undefined) {
-            tempObj = [response.data.main_project]
-          }
-          console.log('temp_obj_reports: ', tempObj)
-          setProjectDetails(tempObj)
-          setLoadingReport(false)
-        })
-        .catch((e) => setLoadingReport(false))
     }
+    //else if (role === ROLES.VERIFIER) {
+
+    //  setLoading(true)
+
+    //  dataCollectionCalls
+    //    .getProjectById(location?.state?.project_uuid)
+    //    .then((response) => {
+    //      setProjectDetails(response.data)
+    //      setTitle(response?.data?.company_name)
+    //      setArea(response?.data?.location)
+    //      setLoading(false)
+    //    })
+    //    .catch((e) => setLoading(false))
+
+    //  // 'e8712a5e-3d13-4619-9bc7-930401044ebb'
+
+    //  setLoadingReport(true)
+    //  verifierCalls
+    //    .getReportByProjectId(location?.state?.project_uuid)
+    //    .then((response) => {
+    //      let tempObj: any = []
+    //      if (response?.data?.main_project?.report !== undefined) {
+    //        tempObj = [response.data.main_project]
+    //      }
+    //      console.log('temp_obj_reports: ', tempObj)
+    //      setProjectDetails(tempObj)
+    //      setLoadingReport(false)
+    //    })
+    //    .catch((e) => setLoadingReport(false))
+    //}
   }, [registryProjectDetails])
 
   //TODO: will add it once original data is available
@@ -129,11 +131,31 @@ const ProjectDetailsRegistryAcc = () => {
       ) : (
         <>
           <BackHeader title="Project Details" />
-          <ProjectIntro title={title && title} location={area && area} />
-          <Reports projectDetails={projectDetails} />
-          <Box sx={{ mt: 3 }}>
+          <ProjectIntro
+            title={projectDetails?.company_name}
+            location={projectDetails?.location}
+          />
+          {projectDetails?.project_status === 4 ? (
+            <Box
+              sx={{
+                p: 4,
+                mt: 3,
+                background: '#FFF',
+                color: Colors.darkPrimary1,
+                fontSize: 22,
+                fontWeight: 500,
+                borderRadius: '8px',
+              }}
+            >
+              Verifier Yet to be confirmed from Issuer side
+            </Box>
+          ) : null}
+          {projectDetails?.project_status > 4 ? (
+            <Reports projectDetails={projectDetails} />
+          ) : null}
+          {/*<Box sx={{ mt: 3 }}>
             <TraceHistory />
-          </Box>
+          </Box>*/}
         </>
       )}
     </>

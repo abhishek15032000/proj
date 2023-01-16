@@ -17,6 +17,8 @@ import { downloadFile } from '../../utils/commonFunctions'
 import DownloadIcon from '@mui/icons-material/Download'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ArticleIcon from '@mui/icons-material/Article'
+import { getLocalItem } from '../../utils/Storage'
+import { ROLES } from '../../config/constants.config'
 
 interface reportsProps {
   projectDetails: any
@@ -35,9 +37,14 @@ const headings: any = [
 
 const Reports = ({ projectDetails }: reportsProps) => {
   const navigate = useNavigate()
-
+  const userType: any = getLocalItem('userDetails')?.type
   const [tableRows, setTableRows] = useState()
 
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
   useEffect(() => {
     //if (reportDetails) {
     if (Array.isArray(projectDetails)) {
@@ -159,7 +166,9 @@ const Reports = ({ projectDetails }: reportsProps) => {
           </Box>,
           //'--',
           projectDetails?.report?.quantity,
-          projectDetails?.project_status === 8 ? (
+          (userType === ROLES.VERIFIER && projectDetails?.project_status > 5) ||
+          (userType === ROLES.REGISTRY &&
+            projectDetails?.project_status > 7) ? (
             '-'
           ) : (
             <CCButton
@@ -174,9 +183,45 @@ const Reports = ({ projectDetails }: reportsProps) => {
                 // padding: '4px 8px',
                 minWidth: '150px',
               }}
-              onClick={() => navigate(pathNames.REGISTRY_REVIEW_REPORT)}
+              onClick={() => {
+                if (
+                  userType === ROLES.VERIFIER &&
+                  projectDetails?.project_status === 5
+                ) {
+                  navigate(pathNames.REVIEW_AND_COMMENT, {
+                    state: {
+                      project: currentProjectDetails,
+                      pdf: currentProjectDetails?.project_pdf,
+                      verifierName:
+                        currentProjectDetails?.verifier_details_id
+                          ?.verifier_name,
+                    },
+                  })
+                }
+                if (
+                  (userType === ROLES.REGISTRY &&
+                    projectDetails?.project_status === 6) ||
+                  projectDetails?.project_status === 7
+                ) {
+                  console.log(
+                    'seeting project detail in location state:',
+                    projectDetails
+                  )
+                  navigate(pathNames.REGISTRY_REVIEW_REPORT, {
+                    state: { projectReportDetails: projectDetails },
+                  })
+                }
+              }}
             >
-              Start review
+              {userType === ROLES.VERIFIER &&
+              projectDetails?.project_status === 5
+                ? 'Verify'
+                : null}
+              {userType === ROLES.REGISTRY &&
+              (projectDetails?.project_status === 6 ||
+                projectDetails?.project_status === 7)
+                ? 'Start review'
+                : null}
             </CCButton>
           ),
         ],

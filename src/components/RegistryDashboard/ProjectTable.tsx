@@ -138,7 +138,7 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
             ]
             if (
               project?.project_status ===
-              PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
+              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
             ) {
               tempNewProjects.push(row)
             } else if (project?.project_status === 7) {
@@ -196,7 +196,9 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
 
   const onClickStartHandler = async (projectDetails: any) => {
     dispatch(setRegistryProjectDetails(projectDetails))
-    navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC)
+    navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+      state: { projectDetails: projectDetails },
+    })
   }
 
   return (

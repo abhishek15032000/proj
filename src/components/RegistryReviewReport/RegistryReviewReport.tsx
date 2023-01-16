@@ -3,6 +3,7 @@ import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import { useLocation } from 'react-router'
 import { registryCalls } from '../../api/registry.api'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
@@ -23,6 +24,7 @@ const docs = [
 const images = [{ name: 'Photo.jpeg', size: '1.0 MB' }]
 
 const RegistryReviewReport = () => {
+  const location: any = useLocation()
   const registryProjectDetails = useAppSelector(
     ({ registry }) => registry.registryProjectDetails,
     shallowEqual
@@ -36,18 +38,13 @@ const RegistryReviewReport = () => {
   const closeModal = () => setOpenModal(false)
 
   useEffect(() => {
-    setReportData(registryProjectDetails?.report)
-  }, [registryProjectDetails])
-
-  useEffect(() => {
-    //sumbitReport()
-  }, [])
+    setReportData(location?.state?.projectReportDetails)
+  }, [location])
 
   const sumbitReport = async () => {
     try {
       const registryId = getLocalItem('userDetails')?.user_id
       const payload = {
-        registry_id: registryId,
         _id: reportData?.report?._id,
         uuid: reportData?.report?.uuid,
         project_id: reportData?.report?.project_id,
@@ -56,10 +53,13 @@ const RegistryReviewReport = () => {
         next_date: reportData?.report?.next_date,
         quantity: reportData?.report?.quantity,
         file_attach: reportData?.report?.file_attach,
-        issuer_details: reportData?.report?.issuer_details,
-        verifier_details: reportData?.report?.verifier_details,
+        issuer_details: reportData?.report?.issuer_details?.user_id,
+        verifier_details: reportData?.report?.verifier_details?.user_id,
         ghg_reduction_explanation:
           reportData?.report?.ghg_reduction_explanation,
+        monthly_carbon_tokens: reportData?.report?.monthly_carbon_tokens || 1,
+        lifetime_carbon_tokens: reportData?.report?.lifetime_carbon_tokens || 1,
+        registry_id: registryId,
       }
       const res = await registryCalls.reportSumbit(payload)
       if (res?.statusCode === 200) {

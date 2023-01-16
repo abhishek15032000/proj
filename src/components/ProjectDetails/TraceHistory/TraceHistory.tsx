@@ -60,8 +60,10 @@ const TraceHistory: FC<TraceHistoryProps> = (props) => {
 
   useEffect(() => {
     //setting dark or light theme based on roles
-    const role = getLocalItem('loggedIn')?.roles
-    role && role[0] === ROLES.REGISTRY && setTheme('')
+    const userType: any = getLocalItem('userDetails')?.type
+    if ([ROLES.REGISTRY, ROLES.VERIFIER].includes(userType)) {
+      setTheme('')
+    } else setTheme('dark')
   }, [])
 
   const [traceAllData, setTraceAllData] = useState<any>([])
