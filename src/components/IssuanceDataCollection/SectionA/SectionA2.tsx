@@ -151,6 +151,30 @@ const SectionA2 = () => {
             }
           />
         </Grid>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
+          <CCInputField
+            label="Geographic coordinates"
+            //type="number"
+            sx={{ backgroundColor: ' #FFFFFF' }}
+            //value={A2.geographic_coordinates}
+            name={'geographic_coordinates'}
+            //onChange={({ target: { value, name } }) =>
+            //  dispatch(setA2({ value, name }))
+            //}
+          />
+        </Grid>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
+          <CCInputField
+            label="link to an aerial photo of the location"
+            //type="number"
+            sx={{ backgroundColor: ' #FFFFFF' }}
+            //value={A2.aerial_photo}
+            name={'aerial_photo'}
+            //onChange={({ target: { value, name } }) =>
+            //  dispatch(setA2({ value, name }))
+            //}
+          />
+        </Grid>
       </Grid>
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCDropAndUpload
