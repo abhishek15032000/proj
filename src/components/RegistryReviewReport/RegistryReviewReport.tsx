@@ -3,7 +3,8 @@ import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { useLocation } from 'react-router'
+import { Navigate, useLocation, useNavigate } from 'react-router'
+import { fileUploadCalls } from '../../api/fileUpload.api'
 import { registryCalls } from '../../api/registry.api'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
@@ -11,6 +12,7 @@ import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
 import Spinner from '../../atoms/Spinner'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { useAppSelector } from '../../hooks/reduxHooks'
+import { pathNames } from '../../routes/pathNames'
 import { Colors, Images } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 import EditTokensModal from './EditTokensModal'
@@ -24,7 +26,10 @@ const docs = [
 const images = [{ name: 'Photo.jpeg', size: '1.0 MB' }]
 
 const RegistryReviewReport = () => {
+  const navigate = useNavigate()
   const location: any = useLocation()
+  const { jwtToken } = getLocalItem('userDetails')
+
   const registryProjectDetails = useAppSelector(
     ({ registry }) => registry.registryProjectDetails,
     shallowEqual
@@ -35,11 +40,48 @@ const RegistryReviewReport = () => {
   const [monthlyVCOT, setMonthlyVCOT] = useState<number>(334)
   const [openModal, setOpenModal] = useState(false)
   const [reportData, setReportData] = useState<any>()
+  const [pdfLoading, setPDFLoading] = useState(false)
+  const [pdfURL, setpdfURL] = useState<null | string>(null)
+
   const closeModal = () => setOpenModal(false)
 
   useEffect(() => {
     setReportData(location?.state?.projectReportDetails)
+    setLifetimeVCOT(
+      location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
+    )
+    setMonthlyVCOT(
+      location?.state?.projectReportDetails?.report?.monthly_carbon_tokens
+    )
   }, [location])
+
+  useEffect(() => {
+    getPDF()
+  }, [])
+
+  const getPDF = async () => {
+    if (
+      location &&
+      location?.state &&
+      location.state?.projectReportDetails?.project_pdf
+    ) {
+      setPDFLoading(true)
+      try {
+        const res = await fileUploadCalls.getFile(
+          location.state?.projectReportDetails?.project_pdf,
+          jwtToken
+        )
+
+        const pdfObjectURL = URL.createObjectURL(res)
+
+        setpdfURL(pdfObjectURL)
+      } catch (err) {
+        console.log('Error in fileUploadCalls.getFile api : ', err)
+      } finally {
+        setPDFLoading(false)
+      }
+    }
+  }
 
   const sumbitReport = async () => {
     try {
@@ -47,7 +89,7 @@ const RegistryReviewReport = () => {
       const payload = {
         _id: reportData?.report?._id,
         uuid: reportData?.report?.uuid,
-        project_id: reportData?.report?.project_id,
+        project_id: reportData?._id,
         projectId: reportData?.report?.projectId,
         current_month: reportData?.report?.current_month,
         next_date: reportData?.report?.next_date,
@@ -57,14 +99,15 @@ const RegistryReviewReport = () => {
         verifier_details: reportData?.report?.verifier_details?.user_id,
         ghg_reduction_explanation:
           reportData?.report?.ghg_reduction_explanation,
-        monthly_carbon_tokens: reportData?.report?.monthly_carbon_tokens || 1,
+        monthly_carbon_tokens: monthlyVCOT,
         lifetime_carbon_tokens: reportData?.report?.lifetime_carbon_tokens || 1,
         registry_id: registryId,
       }
       const res = await registryCalls.reportSumbit(payload)
-      if (res?.statusCode === 200) {
+      if (res?.success) {
         alert('Report submitted')
-      } else alert('Something wrong in submitting the report')
+        navigate(pathNames.DASHBOARD)
+      } else alert('Something wrong in submitting the file')
       console.log('res: ', res)
     } catch (err) {
       console.log('err', err)
@@ -135,7 +178,7 @@ const RegistryReviewReport = () => {
                       Lifetime Credit Value :{' '}
                     </Box>
                   </Box>
-                  <Box>{reportData?.report?.lifetime_tokens || '-'}</Box>
+                  <Box>{lifetimeVCOT || '-'}</Box>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                   <Box>
@@ -147,7 +190,7 @@ const RegistryReviewReport = () => {
                   <Box sx={{ whiteSpace: 'nowrap' }}>
                     Monthly/ Quarterly VCOT Authorised :
                   </Box>
-                  <Box>{reportData?.report?.monthly_tokens || '-'}</Box>
+                  <Box>{monthlyVCOT || '-'}</Box>
                 </Box>
                 <Box
                   sx={{
@@ -268,22 +311,7 @@ const RegistryReviewReport = () => {
             }}
           />
           <Paper sx={{ height: '120vh', flex: 1 }}>
-            {/* {pdfLoading ? (
-            <Box
-              sx={{
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Spinner />
-            </Box>
-          ) : (
-            // pdfURL && <PDFViewer pdfUrl={pdfURL} />
-            <PDFViewer pdfUrl={''} />
-          )} */}
-            pojhgxvsckccvcccns
+            {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
           </Paper>
         </Grid>
       </Grid>

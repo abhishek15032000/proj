@@ -44,7 +44,6 @@ const ReviewAndComment = () => {
   const pdf = location?.state?.pdf
   const verifierName = location?.state?.verifierName
   const verifierID = location?.state?.verifierID
-
   const { jwtToken } = getLocalItem('userDetails')
 
   const sectionIDs = useAppSelector(
