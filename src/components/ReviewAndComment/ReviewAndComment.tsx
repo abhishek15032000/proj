@@ -25,6 +25,7 @@ import { pathNames } from '../../routes/pathNames'
 import { ROLES } from '../../config/constants.config'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import './index.css'
+import { KeyboardArrowLeft } from '@mui/icons-material'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
@@ -42,6 +43,7 @@ const ReviewAndComment = () => {
   const project = location?.state?.project
   const pdf = location?.state?.pdf
   const verifierName = location?.state?.verifierName
+  const verifierID = location?.state?.verifierID
 
   const { jwtToken } = getLocalItem('userDetails')
 
@@ -104,6 +106,9 @@ const ReviewAndComment = () => {
       ])
     )
 
+    dispatch(setCommentFrom(user_id))
+    dispatch(setCommentTo(verifierID))
+
     const veriferInitial = verifierName?.slice(0, 1) || 'V'
     const issuerInitial = userName.slice(0, 1) || 'I'
     dispatch(setSenderInitial(issuerInitial))
@@ -113,6 +118,7 @@ const ReviewAndComment = () => {
   useEffect(() => {
     getPDF()
   }, [])
+
   const getPDF = async () => {
     if (location && location?.state && location.state?.pdf) {
       const {
@@ -149,9 +155,21 @@ const ReviewAndComment = () => {
           border: '1px solid #DAE5E1',
         }}
       >
-        <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
-          Project Issuance Report (PDF)
-        </Typography>
+        {' '}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <KeyboardArrowLeft
+            sx={{ ml: 1, cursor: 'pointer' }}
+            onClick={() => navigate(-1)}
+          />
+          <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
+            Project Issuance Report (PDF)
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -238,7 +256,7 @@ const ReviewAndComment = () => {
             className="hide-scrollbar"
             item
             xs={12}
-            lg={6}
+            md={6}
             sx={{ height: 'calc( 100vh - 60px)' }}
           >
             {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
@@ -246,10 +264,10 @@ const ReviewAndComment = () => {
         </Grid>
       ) : (
         <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
-          <Grid item xs={12} lg={6} sx={{ height: 'calc( 100vh - 60px)' }}>
+          <Grid item xs={12} md={6} sx={{ height: 'calc( 100vh - 60px)' }}>
             {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
           </Grid>
-          <Grid item xs={12} lg={6} sx={{ height: 'calc( 100vh - 60px)' }}>
+          <Grid item xs={12} md={6} sx={{ height: 'calc( 100vh - 60px)' }}>
             <CommentBox />
           </Grid>
         </Grid>

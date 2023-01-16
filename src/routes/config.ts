@@ -4,7 +4,7 @@ export const drawerExemptList = [
   pathNames.VERIFIER_VERIFY_REPORT,
   pathNames.ISSUANCE_DATA_COLLECTION_HELP,
   pathNames.PROJECT_DETAILS,
-  pathNames.PROJECT_LISTS_WITH_FILTER,
+  // pathNames.PROJECT_LISTS_WITH_FILTER,
   pathNames.REGISTRY_REVIEW_REPORT,
   pathNames.LOGIN,
   pathNames.LOGOUT,
@@ -13,7 +13,7 @@ export const drawerExemptList = [
   pathNames.TWOFA,
   pathNames.REGISTER,
   pathNames.REVIEW_AND_COMMENT,
-  pathNames.PROJECT_LISTS_WITH_FILTER,
+  // pathNames.PROJECT_LISTS_WITH_FILTER,
 ]
 
 export const hybridPaths = [

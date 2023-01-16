@@ -21,7 +21,7 @@ const ProjectListsWithFilter = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const onWebApp = useAppSelector(({ app }) => app.throughIFrame, shallowEqual)
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const [projects, setProjects] = useState<any>(null)
@@ -204,23 +204,41 @@ const ProjectListsWithFilter = () => {
           <Box
             sx={{
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               flexWrap: 'wrap',
             }}
           >
-            {loading
-              ? ['', '', '', '', '', ''].map((project, index) => (
-                  <ProjectDetailsCardSkeleton key={index} />
-                ))
-              : filteredProjects &&
-                filteredProjects.length &&
-                filteredProjects.map((project: any, index: number) => (
-                  <ProjectDetailsCard
-                    key={index}
-                    project={project}
-                    navigationAction={(item: any) => navigate(item)}
-                  />
-                ))}
+            {loading ? (
+              ['', '', '', '', '', ''].map((project, index) => (
+                <ProjectDetailsCardSkeleton key={index} />
+              ))
+            ) : filteredProjects && filteredProjects.length ? (
+              filteredProjects.map((project: any, index: number) => (
+                <ProjectDetailsCard
+                  key={index}
+                  project={project}
+                  navigationAction={(item: any) => navigate(item)}
+                />
+              ))
+            ) : (
+              <Box
+                sx={{
+                  height: '100%',
+                  width: '100%',
+                  fontSize: 18,
+                  color: Colors.darkPrimary1,
+                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#fff',
+                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+                  borderRadius: '8px',
+                }}
+              >
+                No Projects matching the selected filter for now!!!
+              </Box>
+            )}
           </Box>
         </Grid>
       </Grid>

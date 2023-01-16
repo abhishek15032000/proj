@@ -111,6 +111,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     }
   }, [currentProjectDetails])
 
+  console.log('currentProjectDetails', currentProjectDetails)
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -220,6 +221,8 @@ const ProfileDetailsIssuanceInfo: FC = () => {
                   pdf: currentProjectDetails?.project_pdf,
                   verifierName:
                     currentProjectDetails?.verifier_details_id?.verifier_name,
+                  verifierID:
+                    currentProjectDetails?.verifier_details_id?.verifier_id,
                 },
               })
             }

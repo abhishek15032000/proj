@@ -9,7 +9,7 @@ import { pathNames } from '../../../routes/pathNames'
 const ProjectDetailsCardSkeleton = () => {
   const location = useLocation()
 
-  const onWebApp = useAppSelector(({ app }) => app.throughIFrame, shallowEqual)
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
     <Box

@@ -1,4 +1,5 @@
 import { commentsCalls } from '../api/commentsCalls.api'
+import { ROLES } from '../config/constants.config'
 import {
   setComment,
   setSections,
@@ -8,6 +9,8 @@ import { store } from '../redux/store'
 import { getLocalItem } from './Storage'
 
 export const getComments = async () => {
+  const userType = getLocalItem('userDetails')?.type
+
   const sectionIDs = store.getState().comments.sectionIDs
   const project = store.getState().comments.project
   const selectedSectionIndex = store.getState().comments.selectedSectionIndex
@@ -21,35 +24,50 @@ export const getComments = async () => {
   const sectionsTemp = [
     {
       name: 'Section A',
-      id: project?.section_a,
+      id:
+        userType === ROLES.VERIFIER
+          ? project?.section_a
+          : project?.section_a?._id,
       unreadCount: getUnreadCommentCount(commentsRes[0]),
       unreadCommentIDs: getUnreadCommentID(commentsRes[0]),
       comments: commentsRes[0],
     },
     {
       name: 'Section B',
-      id: project?.section_b,
+      id:
+        userType === ROLES.VERIFIER
+          ? project?.section_b
+          : project?.section_b?._id,
       unreadCount: getUnreadCommentCount(commentsRes[1]),
       unreadCommentIDs: getUnreadCommentID(commentsRes[1]),
       comments: commentsRes[1],
     },
     {
       name: 'Section C',
-      id: project?.section_c,
+      id:
+        userType === ROLES.VERIFIER
+          ? project?.section_c
+          : project?.section_c?._id,
       unreadCount: getUnreadCommentCount(commentsRes[2]),
       unreadCommentIDs: getUnreadCommentID(commentsRes[2]),
       comments: commentsRes[2],
     },
     {
       name: 'Section D',
-      id: project?.section_d,
+      id:
+        userType === ROLES.VERIFIER
+          ? project?.section_d
+          : project?.section_d?._id,
       unreadCount: getUnreadCommentCount(commentsRes[3]),
       unreadCommentIDs: getUnreadCommentID(commentsRes[3]),
       comments: commentsRes[3],
     },
     {
       name: 'Section E',
-      id: project?.section_e,
+      id:
+        userType === ROLES.VERIFIER
+          ? project?.section_e
+          : project?.section_e?._id,
       unreadCount: getUnreadCommentCount(commentsRes[4]),
       unreadCommentIDs: getUnreadCommentID(commentsRes[4]),
       comments: commentsRes[4],
