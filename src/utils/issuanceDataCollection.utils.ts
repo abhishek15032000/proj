@@ -119,11 +119,34 @@ export const moveToNextSection = async (
       operation_period,
       total_GHG_emission,
       project_comissioning_date,
+      conditions_prior_to_initiation,
+      project_type_and_sectoral_scope,
+      //additional_information,
     } = sectionA.A1
-    const { country, state, city, pincode, landmark, file_attach } = sectionA.A2
+    const {
+      country,
+      state,
+      city,
+      pincode,
+      landmark,
+      file_attach,
+      geographic_coordinates,
+      aerial_photo,
+    } = sectionA.A2
     const { party_and_project_participants, methodologies } = sectionA
     const { credit_start_period, credit_period, credit_period_description } =
       sectionA.A5
+    const {
+      statutory_requirements,
+      negative_environmental_and_socio_economic_impacts,
+      consultation,
+      environmental_impact_assessment,
+      risk_assessment,
+      additional_information,
+    } = sectionA.A6
+    const { Level1, Level2a, Level2b, Level3, Level4a, Level4b, Level5 } =
+      sectionA.A7
+
     let params = {}
     if (subSectionIndex === 0) {
       if (
@@ -148,6 +171,9 @@ export const moveToNextSection = async (
           construction_date,
           operation_period,
           total_GHG_emission,
+          conditions_prior_to_initiation,
+          project_type_and_sectoral_scope,
+          additional_information: sectionA.A1.additional_information,
           completed: true,
         },
       }
@@ -159,6 +185,8 @@ export const moveToNextSection = async (
           city,
           pincode,
           landmark,
+          geographic_coordinates,
+          aerial_photo,
           file_attach,
         ])
       ) {
@@ -174,6 +202,8 @@ export const moveToNextSection = async (
           pincode,
           landmark,
           file_attach,
+          geographic_coordinates,
+          aerial_photo,
           //file_attach: stringExtractor(file_attach, 'fileName'),
           completed: true,
         },
@@ -221,6 +251,29 @@ export const moveToNextSection = async (
           },
           credit_period_description,
           completed: true,
+        },
+      }
+    } else if (subSectionIndex === 5) {
+      params = {
+        step6: {
+          statutory_requirements,
+          negative_environmental_and_socio_economic_impacts,
+          consultation,
+          environmental_impact_assessment,
+          risk_assessment,
+          additional_information,
+        },
+      }
+    } else if (subSectionIndex === 6) {
+      params = {
+        step7: {
+          Level1,
+          Level2a,
+          Level2b,
+          Level3,
+          Level4a,
+          Level4b,
+          Level5,
         },
       }
     }
@@ -381,6 +434,8 @@ export const moveToNextSection = async (
       monitoring_plan,
       attach_org_structure_and_responsibilities_chart,
       specific_data_monitored,
+      training_and_maintenance,
+      management_of_data_quality,
     } = sectionC.C1
     if (
       checkingMandatoryFields([
@@ -403,6 +458,8 @@ export const moveToNextSection = async (
         description,
         monitoring_plan,
         attach_org_structure_and_responsibilities_chart,
+        training_and_maintenance,
+        management_of_data_quality,
         specific_data_monitored,
         completed: true,
       },

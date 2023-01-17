@@ -147,7 +147,7 @@ const SectionB1 = () => {
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Technical Description"
-            placeholder="Write the technical description of the equipment, its specification, supplier name, installed by the project activity"
+            placeholder="List the facilities, systems, and equipment installed and/or modified. The types and levels of services provided by the facilities, if any, to other facilities, outside the project boundary. Arrangement of facilities, systems, and equipment. Age and the average lifetime of equipment utilized based on the manufacturer specifications and industry standards. Installed capacities, load factors, and efficiencies. Energy and mass flows and balances of the facilities, systems, and equipment, if necessary. Monitoring equipment and their location in the systems. Technologies/measures existing prior to implementing the project at the same site, as applicable, including the equivalent information listed above on the facilities, systems, and equipment."
             value={technical_description}
             name={'technical_description'}
             onChange={({ target: { name, value } }) =>

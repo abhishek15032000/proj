@@ -48,6 +48,9 @@ const SectionA1 = () => {
         construction_date,
         operation_period,
         total_GHG_emission,
+        conditions_prior_to_initiation,
+        project_type_and_sectoral_scope,
+        additional_information,
       } = currentProjectDetails.section_a.step1
 
       dispatch(
@@ -66,6 +69,24 @@ const SectionA1 = () => {
         setA1({
           name: 'brief_description_installed_tech',
           value: brief_description_installed_tech,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'conditions_prior_to_initiation',
+          value: conditions_prior_to_initiation,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'project_type_and_sectoral_scope',
+          value: project_type_and_sectoral_scope,
+        })
+      )
+      dispatch(
+        setA1({
+          name: 'additional_information',
+          value: additional_information,
         })
       )
       dispatch(
@@ -206,36 +227,36 @@ const SectionA1 = () => {
         <CCMultilineTextArea
           label={'Project Type and Sectoral Scope'}
           placeholder="(Provide information on the type of project, i.e., carbon removal/sequestration, avoidance/reduction, or hybrid, and information on the sectoral scope of the project. Further, please specify if the project is a grouped project.)"
-          //value={A1.total_GHG_emission}
-          //name={'total_GHG_emission'}
-          //onChange={({ target: { name, value } }) =>
-          //  dispatch(setA1({ value, name }))
-          //}
-          //required={false}
+          value={A1.project_type_and_sectoral_scope}
+          name={'project_type_and_sectoral_scope'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
+          }
+          required={false}
         />
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
         <CCMultilineTextArea
           label={'Conditions Prior to Initiation'}
           placeholder="Provide information on conditions at the project site prior to the implementation of project activities."
-          //value={A1.total_GHG_emission}
-          //name={'total_GHG_emission'}
-          //onChange={({ target: { name, value } }) =>
-          //  dispatch(setA1({ value, name }))
-          //}
-          //required={false}
+          value={A1.conditions_prior_to_initiation}
+          name={'conditions_prior_to_initiation'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
+          }
+          required={false}
         />
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
         <CCMultilineTextArea
           label={'Additional Information'}
           placeholder="Provide additional relevant legislative, technical, economic, sectoral, social, environmental, geographic, site-specific, and other information relevant to the projects eligibility, net GHG emission mitigations, or quantification of the projects net GHG emission mitigations. Further, discuss any information that may be excluded from public disclosure due to confidentiality."
-          //value={A1.total_GHG_emission}
-          //name={'total_GHG_emission'}
-          //onChange={({ target: { name, value } }) =>
-          //  dispatch(setA1({ value, name }))
-          //}
-          //required={false}
+          value={A1.additional_information}
+          name={'additional_information'}
+          onChange={({ target: { name, value } }) =>
+            dispatch(setA1({ value, name }))
+          }
+          required={false}
         />
       </Grid>
       <HelpPopUp

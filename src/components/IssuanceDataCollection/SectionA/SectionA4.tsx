@@ -25,6 +25,8 @@ import CancelPresentationIcon from '@mui/icons-material/CancelPresentation'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import { METHODOLOGIES, PROJECT_TYPES } from '../../../config/constants.config'
 
 interface methodologiesInterface {
   approvedMethodologies: string
@@ -90,6 +92,7 @@ const SectionA4 = () => {
   }
 
   const handleTextChange = (e: any, index: number, type: string) => {
+    console.log('e: ', e)
     const methodologiesCopy = [...methodologies]
     let objectToChange = methodologiesCopy[index]
     objectToChange = { ...objectToChange, [type]: e.target.value }
@@ -134,27 +137,6 @@ const SectionA4 = () => {
     },
   }
 
-  const projectTypes = [
-    'Agriculture',
-    'Chemical industries',
-    'Construction',
-    'Energy distribution',
-    'Energy demand',
-    ' Energy industries (renewable - / non-renewable sources)',
-    'Fugitive emissions from fuels (solid, oil and gas)',
-    ' Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
-    ' Livestock, enteric fermentation, and manure management',
-    ' Manufacturing industries',
-    ' Metal production',
-    'Mining/mineral production',
-    'Solvent use',
-    ' Transport',
-    'Waste handling and disposal',
-    'Afforestation and reforestation',
-    'Forestry and Other Land Use',
-    'Forest conservation (REDD+)',
-    ' Blue carbon',
-  ]
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -232,78 +214,18 @@ const SectionA4 = () => {
                     value={item?.methodology}
                     onChange={(e) => handleTextChange(e, index, 'methodology')}
                   >
-                    <MenuItem
-                      value={'AMS-I.A'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.A
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.B'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.B
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.C'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.C
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.D'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.D
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.E'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.E
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.F'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.F
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.G'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.G
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.H'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.H
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.I'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.I
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.J'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.J
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.K'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.K
-                    </MenuItem>
-                    <MenuItem
-                      value={'AMS-I.L'}
-                      sx={{ background: 'rgba(0, 107, 94, 0.12)' }}
-                    >
-                      AMS-I.L
-                    </MenuItem>
+                    {METHODOLOGIES.map((item, index) => (
+                      <MenuItem
+                        key={index}
+                        value={`${item}`}
+                        sx={{
+                          background: '#FAFDFA',
+                          width: '100%',
+                        }}
+                      >
+                        {item}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -368,7 +290,7 @@ const SectionA4 = () => {
                     )}
                     MenuProps={MenuProps}
                   >
-                    {projectTypes.map((item2) => (
+                    {PROJECT_TYPES.map((item2) => (
                       <MenuItem key={item2} value={item2}>
                         <Checkbox
                           checked={item?.project_type?.includes(item2)}
@@ -430,6 +352,57 @@ const SectionA4 = () => {
                   onChange={(e) => handleTextChange(e, index, 'tools')}
                   sx={{ background: 'white' }}
                   type="number"
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mt: 2 }}>
+                <CCMultilineTextArea
+                  label={'Applicability of Methodology'}
+                  placeholder="Justify the selected methodology's applicability by demonstrating that the project activity meets the applicability conditions of the methodology. Explanation of documentation used for the justification and provide references or include documentation"
+                  //name={'total_GHG_emission'}
+                  inputProps={{
+                    style: {
+                      height: '50px',
+                    },
+                  }}
+                  //value={A1.total_GHG_emission}
+                  //onChange={({ target: { name, value } }) =>
+                  //  dispatch(setA1({ name, value }))
+                  //}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mt: 2 }}>
+                <CCMultilineTextArea
+                  label={'Deviation from Methodology'}
+                  placeholder="Describe and justify any deviations from the methodology. Include evidence to demonstrate that the deviation will not negatively impact the conservativeness in quantifying GHG emission mitigations and conformity to ISO 14064-2."
+                  //name={'total_GHG_emission'}
+                  inputProps={{
+                    style: {
+                      height: '50px',
+                    },
+                  }}
+                  //value={A1.total_GHG_emission}
+                  //onChange={({ target: { name, value } }) =>
+                  //  dispatch(setA1({ name, value }))
+                  //}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ mt: 2 }}>
+                <CCMultilineTextArea
+                  label={
+                    'Other Information Relating to Methodology Application'
+                  }
+                  placeholder="Provide other relevant information regarding the application of a methodology, e.g., any revisions or ongoing development of a methodology."
+                  //name={'total_GHG_emission'}
+                  inputProps={{
+                    style: {
+                      height: '50px',
+                    },
+                  }}
+                  //sx={{ height: 68 }}
+                  //value={A1.total_GHG_emission}
+                  //onChange={({ target: { name, value } }) =>
+                  //  dispatch(setA1({ name, value }))
+                  //}
                 />
               </Grid>
             </>

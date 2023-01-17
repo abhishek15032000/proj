@@ -37,6 +37,7 @@ import moment from 'moment'
 import HelpPopUp from '../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../Appbar/NavBar/Help/SectionA/helpContentData'
 import { setShowPopUp } from '../../redux/Slices/issuanceDataCollection'
+import { PROJECT_TYPES } from '../../config/constants.config'
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 
@@ -48,70 +49,6 @@ const MenuProps = {
     },
   },
 }
-
-const projectTypes = [
-  'Agriculture',
-  'Chemical industries',
-  'Construction',
-  'Energy distribution',
-  'Energy demand',
-  ' Energy industries (renewable - / non-renewable sources)',
-  'Fugitive emissions from fuels (solid, oil and gas)',
-  ' Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
-  ' Livestock, enteric fermentation, and manure management',
-  ' Manufacturing industries',
-  ' Metal production',
-  'Mining/mineral production',
-  'Solvent use',
-  //' Transport',
-  'Waste handling and disposal',
-  'Afforestation and reforestation',
-  'Forestry and Other Land Use',
-  'Forest conservation (REDD+)',
-  ' Blue carbon',
-  //'Agriculture',
-  //'Afforestation and reforestation',
-  'Bio mass energy',
-  'Carbon Capture and Storage / Carbon Dioxide Removal',
-  'Cement',
-  'CO2 Usage',
-  //'Chemical industries',
-  //'Construction',
-  'Mining/mineral production/ bed CH4',
-  //'Energy distribution',
-  'Energy efficiency: households',
-  'Energy efficiency: industry',
-  'Energy efficiency: own generation',
-  'Energy efficiency: service',
-  'Energy efficiency: supply side',
-  //'Energy demand',
-  //'Forestry and Other Land Use',
-  //'Forest conservation (REDD+)',
-  'Fossil fuel switch',
-  //'Fugitive emissions from fuels (solid, oil and gas)',
-  //'Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
-  'Geothermal',
-  'HFCs',
-  'Hydro',
-  //'Livestock, enteric fermentation, and manure management',
-  //'Manufacturing industries',
-  //'Metal production',
-  //'Waste handling and disposal',
-  'Methane avoidance',
-  'N2O',
-  'Solar',
-  //'Solvent use',
-  'Blue carbon: Others',
-  'Blue carbon: mangroves',
-  'Blue carbon: salt marshes',
-  'Blue carbon: seagrasses',
-  'Blue carbon: Tidal marshes',
-  'Blue carbon: coastal wetlands',
-  'Transport',
-  'Wind',
-  'Other Energy industries (renewable - / non-renewable sources)',
-  'Other, please specify',
-]
 
 const ListNewProject = () => {
   const dispatch = useAppDispatch()
@@ -296,7 +233,7 @@ const ListNewProject = () => {
             )}
             MenuProps={MenuProps}
           >
-            {projectTypes.map((item) => (
+            {PROJECT_TYPES.map((item) => (
               <MenuItem key={item} value={item}>
                 <Checkbox checked={projectType.includes(item)} />
                 <ListItemText primary={item} />
