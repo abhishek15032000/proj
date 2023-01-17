@@ -10,6 +10,8 @@ const initialState: SectionCInterface = {
     monitoring_plan: '',
     attach_org_structure_and_responsibilities_chart: [],
     specific_data_monitored: '',
+    training_and_maintenance: '',
+    management_of_data_quality: '',
   },
 }
 
