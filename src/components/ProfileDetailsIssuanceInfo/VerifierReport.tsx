@@ -40,6 +40,7 @@ import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice'
 import DownloadIcon from '@mui/icons-material/Download'
 import { downloadFile } from '../../utils/commonFunctions'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 interface VerifierReportListProps {
   //data?: any
@@ -57,6 +58,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   const [verifierReports, setVerifierReports] = useState<any>([])
   const [showTable, setShowTable] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const [verifierLoading, setVerifierLoading] = useState<boolean>(false)
   const [monthlyReportsList, setMonthlyReportsList] = useState<any>([])
   const [mainProjectData, setMainProjectData] = useState<any>([])
   const [contractCallLoading, setContractCallLoading] = useState(false)
@@ -182,7 +184,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                     View
                   </Typography>
                 </Box>,
-                i.project_status === 0 ? (
+                i.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
                   <CCButton
                     key={index}
                     sx={{
@@ -227,14 +229,17 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   }
 
   const getVerifierByProject = (showModalAfterGetCall = false) => {
-    setLoading(true)
+    setVerifierLoading(true)
     verifierCalls
       .getVerifierByProjectId(props?.currentProjectId)
       .then((res) => {
         if (res?.success) {
           const finalVerifierData = res?.data.filter((i: any) => {
             return (
-              i?.report?.project_status === 3 || i?.report?.project_status === 4
+              i?.report?.project_status ===
+                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+              i?.report?.project_status ===
+                PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
             )
           })
           finalVerifierData && finalVerifierData?.length
@@ -248,23 +253,24 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        setLoading(false)
+        setVerifierLoading(false)
       })
   }
 
   const updateVerifier = (confirmedVerifier: any) => {
     const { shineKey = '' } = getLocalItem('userDetails2')
 
-    if (wallet_address !== shineKey) {
-      setShowModal(true)
-      return
-    }
+    // if (wallet_address !== shineKey) {
+    //   setShowModal(true)
+    //   return
+    // }
 
-    setLoading(true)
+    setVerifierLoading(true)
     const payload = {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
-      project_status: 3,
+      project_status:
+        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
       verifier_id: confirmedVerifier?.verifier_id,
       verifier_name: confirmedVerifier?.verifier_name,
       verifier_address: confirmedVerifier?.verifier_address,
@@ -274,49 +280,50 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          // getVerifierByProject()
-          createProjectContractCall(res?.data?.fileHash)
+          getVerifierByProject()
+          // createProjectContractCall(res?.data?.fileHash)
         }
       })
       .catch((err) => {
         console.log(err)
-        setLoading(false)
+        setVerifierLoading(false)
       })
   }
 
-  const createProjectContractCall = async (fileHash: string) => {
-    const { email, uuid } = getLocalItem('userDetails')
+  // const createProjectContractCall = async (fileHash: string) => {
+  //   const { email, uuid } = getLocalItem('userDetails')
 
-    try {
-      setContractCallLoading(true)
-      const toPassParam = [wallet_address, email]
-      // await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
-      const contractRes = await BlockchainCalls.contract_caller()
-      await contractRes.estimateGas.createProject(uuid, fileHash)
-      const createProjectRes = await contractRes.createProject(uuid, fileHash)
-      if (createProjectRes) {
-        const updateTxPayload = {
-          uuid: uuid,
-          tx: {
-            tx_id: createProjectRes?.hash,
-            tx_data: createProjectRes,
-          },
-        }
-        const updateTxRes = await dataCollectionCalls.updateTx(updateTxPayload)
-        if (updateTxRes.success) {
-          getVerifierByProject(true)
-          // setShowActionSuccessModal(true)
-          //Setting  setLoading false over here to give user impression that updateVerifier api call and createNewProject contract call is a single call
-          // setLoading(false)
-        }
-      }
-    } catch (e) {
-      console.log('Error in contract_caller().createProject call ~ ', e)
-    } finally {
-      setContractCallLoading(false)
-    }
-  }
+  //   try {
+  //     setContractCallLoading(true)
+  //     const toPassParam = [wallet_address, email]
+  //     // await BlockchainCalls.requestMethodCalls('personal_sign', toPassParam)
+  //     const contractRes = await BlockchainCalls.contract_caller()
+  //     await contractRes.estimateGas.createProject(uuid, fileHash)
+  //     const createProjectRes = await contractRes.createProject(uuid, fileHash)
+  //     if (createProjectRes) {
+  //       const updateTxPayload = {
+  //         uuid: uuid,
+  //         tx: {
+  //           tx_id: createProjectRes?.hash,
+  //           tx_data: createProjectRes,
+  //         },
+  //       }
+  //       const updateTxRes = await dataCollectionCalls.updateTx(updateTxPayload)
+  //       if (updateTxRes.success) {
+  //         getVerifierByProject(true)
+  //         // setShowActionSuccessModal(true)
+  //         //Setting  setLoading false over here to give user impression that updateVerifier api call and createNewProject contract call is a single call
+  //         // setLoading(false)
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.log('Error in contract_caller().createProject call ~ ', e)
+  //   } finally {
+  //     setContractCallLoading(false)
+  //   }
+  // }
 
+  console.log('verifierLoading', verifierLoading)
   return (
     <>
       <Grid container>
@@ -327,11 +334,12 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         </Grid>
         {/* {loading ? <LoaderOverlay /> : null} */}
         <Grid item xs={12}>
-          {loading || contractCallLoading ? (
+          {/* {loading || contractCallLoading ? ( */}
+          {verifierLoading ? (
             <Stack
               alignItems="center"
               justifyContent="center"
-              sx={{ minHeight: 250 }}
+              sx={{ minHeight: 150 }}
             >
               <Spinner />
             </Stack>
@@ -405,7 +413,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           )}
         </Grid>
       </Grid>
-      <MessageModal
+      {/* <MessageModal
         message={
           'Please use the same Wallet address submitted at the start while completing the Profile!!!'
         }
@@ -413,7 +421,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         btn1OnClick={() => setShowModal(false)}
         showModal={showModal}
         setShowModal={setShowModal}
-      />
+      /> */}
       <MessageModal
         message={
           'Successfully finalized Verifier and Project added in Blockchain!!!'

@@ -38,11 +38,12 @@ export const pathNames = {
   PROFILE: '/profile',
   HELP_CENTER: '/help-center',
   PROJECT_DETAILS: '/project-details',
-  PROJECT_DETAILS_REGISTRY_ACC: '/project-details-registry-acc',
+  PROJECT_DETAILS_REGISTRY_ACC: '/project-details-acc',
   PROJECT_LISTS_WITH_FILTER: '/project-lists-with-filter',
   REGISTRY_REVIEW_REPORT: '/registry-review-report',
   REGISTRY_ALL_PROJECTS: '/registry-all-projects',
   COMPLETE_PROFILE: '/complete-profile',
+  REVIEW_AND_COMMENT: '/review-and-comment',
 }
 
 export const linkLabels = {

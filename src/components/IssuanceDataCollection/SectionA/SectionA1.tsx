@@ -202,6 +202,42 @@ const SectionA1 = () => {
           required={false}
         />
       </Grid>
+      <Grid item xs={12} sx={{ mt: 2 }}>
+        <CCMultilineTextArea
+          label={'Project Type and Sectoral Scope'}
+          placeholder="(Provide information on the type of project, i.e., carbon removal/sequestration, avoidance/reduction, or hybrid, and information on the sectoral scope of the project. Further, please specify if the project is a grouped project.)"
+          //value={A1.total_GHG_emission}
+          //name={'total_GHG_emission'}
+          //onChange={({ target: { name, value } }) =>
+          //  dispatch(setA1({ value, name }))
+          //}
+          //required={false}
+        />
+      </Grid>
+      <Grid item xs={12} sx={{ mt: 2 }}>
+        <CCMultilineTextArea
+          label={'Conditions Prior to Initiation'}
+          placeholder="Provide information on conditions at the project site prior to the implementation of project activities."
+          //value={A1.total_GHG_emission}
+          //name={'total_GHG_emission'}
+          //onChange={({ target: { name, value } }) =>
+          //  dispatch(setA1({ value, name }))
+          //}
+          //required={false}
+        />
+      </Grid>
+      <Grid item xs={12} sx={{ mt: 2 }}>
+        <CCMultilineTextArea
+          label={'Additional Information'}
+          placeholder="Provide additional relevant legislative, technical, economic, sectoral, social, environmental, geographic, site-specific, and other information relevant to the projects eligibility, net GHG emission mitigations, or quantification of the projects net GHG emission mitigations. Further, discuss any information that may be excluded from public disclosure due to confidentiality."
+          //value={A1.total_GHG_emission}
+          //name={'total_GHG_emission'}
+          //onChange={({ target: { name, value } }) =>
+          //  dispatch(setA1({ value, name }))
+          //}
+          //required={false}
+        />
+      </Grid>
       <HelpPopUp
         modal={modal}
         setModal={(item: any) => setModal(item)}

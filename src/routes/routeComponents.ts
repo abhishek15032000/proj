@@ -41,6 +41,7 @@ import ProjectDetailsRegistryAcc from '../pages/ProjectDetailsRegistryAcc/Projec
 import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewReport'
 import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProjects'
 import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
+import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
 
 export const privateRouteComponents = [
   {
@@ -218,11 +219,11 @@ export const privateRouteComponents = [
     component: HelpCentre,
     roles: [ROLES.ISSUER],
   },
-  // {
-  //   path: pathNames.PROJECT_DETAILS,
-  //   component: ProjectDetails,
-  //   roles: [ROLES.ISSUER, ROLES.REGISTRY],
-  // },
+  {
+    path: pathNames.PROJECT_DETAILS,
+    component: ProjectDetails,
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
+  },
   {
     path: pathNames.PROJECT_LISTS_WITH_FILTER,
     component: ProjectListsWithFilter,
@@ -231,12 +232,12 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
     component: ProjectDetailsRegistryAcc,
-    roles: [ROLES.REGISTRY],
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
   },
   {
     path: pathNames.REGISTRY_REVIEW_REPORT,
     component: RegistryReviewReport,
-    roles: [ROLES.REGISTRY],
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
   },
   {
     path: pathNames.REGISTRY_ALL_PROJECTS,
@@ -254,5 +255,10 @@ export const privateRouteComponents = [
     component: ProjectListsWithFilter,
     // component: MarketplaceV2,
     roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.REVIEW_AND_COMMENT,
+    component: ReviewAndComment,
+    roles: [ROLES.VERIFIER, ROLES.ISSUER],
   },
 ]

@@ -66,6 +66,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState<null | number>(null)
+  const [lifeTimeQuantity, setLifetimeQuantity] = useState<null | number>(null)
   const [selectMonth, setSelectMonth] = useState(new Date())
   const [nextSubmissionDate, setNextSubmissionDate] = useState<any>(
     moment().add(1, 'd')
@@ -83,7 +84,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
   useEffect(() => {
     getPDF()
-    getIssuerShineKey()
+    // getIssuerShineKey()
   }, [])
 
   const getPDF = async () => {
@@ -104,82 +105,83 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     }
   }
 
-  const getIssuerShineKey = async () => {
-    try {
-      const userResponse = await USER.getUsersById(project?.user_id)
-      if (userResponse) {
-        setIssuerShineKey(userResponse?.data.shineKey)
-      } else {
-        alert("Couldn't get issuer shine key. Please try again!!!")
-      }
-    } catch (err) {
-      console.log('Error in USER.getUsersById api : ', err)
-    }
-  }
+  // const getIssuerShineKey = async () => {
+  //   try {
+  //     const userResponse = await USER.getUsersById(project?.user_id)
+  //     if (userResponse) {
+  //       setIssuerShineKey(userResponse?.data.shineKey)
+  //     } else {
+  //       alert("Couldn't get issuer shine key. Please try again!!!")
+  //     }
+  //   } catch (err) {
+  //     console.log('Error in USER.getUsersById api : ', err)
+  //   }
+  // }
 
-  const signAndVerify = async () => {
-    const { shineKey = '' } = getLocalItem('userDetails2')
+  // const signAndVerify = async () => {
+  //   const { shineKey = '' } = getLocalItem('userDetails2')
 
-    if (!isConnected) {
-      alert('Please connect Wallet before continuing!!!')
-      return
-    }
-    if (!issuerShineKey) {
-      alert("Couldn't get issuer shine key. Please try again!!!")
-      return
-    }
-    if (
-      !accountAddress ||
-      !shineKey ||
-      accountAddress?.toLowerCase() !== shineKey?.toLowerCase()
-    ) {
-      setShowAddressNotMatchingModal(true)
-      return
-    }
-    if (nextSubmissionDate && selectMonth && quantity) {
-      setLoading(true)
-      getSignatureHash()
-    } else {
-      alert('Please enter all fields!!!')
-      return
-    }
-  }
+  //   if (!isConnected) {
+  //     alert('Please connect Wallet before continuing!!!')
+  //     return
+  //   }
+  //   if (!issuerShineKey) {
+  //     alert("Couldn't get issuer shine key. Please try again!!!")
+  //     return
+  //   }
+  //   if (
+  //     !accountAddress ||
+  //     !shineKey ||
+  //     accountAddress?.toLowerCase() !== shineKey?.toLowerCase()
+  //   ) {
+  //     setShowAddressNotMatchingModal(true)
+  //     return
+  //   }
+  //   if (nextSubmissionDate && selectMonth && quantity) {
+  //     setLoading(true)
+  //     getSignatureHash()
+  //   } else {
+  //     alert('Please enter all fields!!!')
+  //     return
+  //   }
+  // }
 
-  const getSignatureHash = async () => {
-    // const nonce = await provider.getTransactionCount(accountAddress)
-    //Using random number as Nonce since getTransactionCount not working properly
-    const pseudoNonce = new Date().getTime()
-    const signatureHashPayload = {
-      recipient: issuerShineKey,
-      _amount: Number(quantity),
-      _project_data: JSON.stringify({ projectId: project?.uuid }),
-      _nonce: pseudoNonce,
-    }
-    try {
-      const signatureHashRes = await verifierCalls.getPDFHash(
-        signatureHashPayload
-      )
-      if (signatureHashRes?.data?.success && signatureHashRes?.data?.data) {
-        const toPassParam = [accountAddress, signatureHashRes?.data?.data?.data]
-        const personalSignRes = await BlockchainCalls.requestMethodCalls(
-          'personal_sign',
-          toPassParam
-        )
-        if (personalSignRes) {
-          verifyPDF(personalSignRes, pseudoNonce)
-        } else {
-          alert("Couldn't sign successfully. Please try again!!!")
-          return
-        }
-      }
-    } catch (err) {
-      console.log('Error in verifierCalls.getPDFHash api :', err)
-      setLoading(false)
-      alert('Error in verifierCalls.getPDFHash api')
-    }
-  }
+  // const getSignatureHash = async () => {
+  //   // const nonce = await provider.getTransactionCount(accountAddress)
+  //   //Using random number as Nonce since getTransactionCount not working properly
+  //   const pseudoNonce = new Date().getTime()
+  //   const signatureHashPayload = {
+  //     recipient: issuerShineKey,
+  //     _amount: Number(quantity),
+  //     _project_data: JSON.stringify({ projectId: project?.uuid }),
+  //     _nonce: pseudoNonce,
+  //   }
+  //   try {
+  //     const signatureHashRes = await verifierCalls.getPDFHash(
+  //       signatureHashPayload
+  //     )
+  //     if (signatureHashRes?.data?.success && signatureHashRes?.data?.data) {
+  //       const toPassParam = [accountAddress, signatureHashRes?.data?.data?.data]
+  //       const personalSignRes = await BlockchainCalls.requestMethodCalls(
+  //         'personal_sign',
+  //         toPassParam
+  //       )
+  //       if (personalSignRes) {
+  //         verifyPDF(personalSignRes, pseudoNonce)
+  //       } else {
+  //         alert("Couldn't sign successfully. Please try again!!!")
+  //         return
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log('Error in verifierCalls.getPDFHash api :', err)
+  //     setLoading(false)
+  //     alert('Error in verifierCalls.getPDFHash api')
+  //   }
+  // }
 
-  const verifyPDF = async (signatureHash: string, pseudoNonce: number) => {
+  const verifyPDF = async () => {
+    setLoading(true)
     const {
       state: { project },
     } = location
@@ -190,21 +192,24 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       project_id: project?.uuid,
       current_month: selectMonth,
       next_date: nextSubmissionDate,
-      quantity: Number(quantity),
       ghg_reduction_explanation: explain,
-      signature_hash: signatureHash,
-      signer: accountAddress,
+      quantity: Number(quantity),
+      monthly_carbon_tokens: Number(quantity),
+      lifetime_carbon_tokens: Number(lifeTimeQuantity),
+      // signature_hash: signatureHash,
+      // signer: accountAddress,
       file_attach: stringExtractor(relevantDocs, 'fileName'),
-      nonce: pseudoNonce,
+      // nonce: pseudoNonce,
     }
     try {
       const verifyPDFAndMintTokenRes =
         await verifierCalls.verifyPDFAndMintToken(verifyPDFAndMintTokenpayload)
-      if (verifyPDFAndMintTokenRes?.data.success) {
-        if (verifyPDFAndMintTokenRes?.data?.data.success) {
+
+      if (verifyPDFAndMintTokenRes?.data?.success) {
+        if (verifyPDFAndMintTokenRes?.data?.success) {
           setShowActionSuccessModal(true)
         } else {
-          alert(verifyPDFAndMintTokenRes?.data?.data.error)
+          alert(verifyPDFAndMintTokenRes?.data?.error)
         }
       }
     } catch (err) {
@@ -252,7 +257,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             </Typography>
 
             <TextButton
-              onClick={() => setShowModal(true)}
+              onClick={() => verifyPDF()}
               sx={{ ml: 4 }}
               title="Sign & Mark Verified"
             />
@@ -329,7 +334,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
             <Box sx={{ width: '43%', ml: 4 }}>
               <CCInputField
-                label="Enter Quantity of VCOT"
+                label="Enter Quantity of VCOTs"
+                placeholder="Enter Quantity of VCOTs"
                 variant="outlined"
                 // sx={{ mt: 1 }}
                 value={quantity}
@@ -361,7 +367,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           >
             Please enter next monthly report submission date for issuer
           </Typography>
-
           <Box sx={{ width: '90%', ml: 4 }}>
             <DatePicker
               label="Next submission date"
@@ -389,6 +394,42 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               }}
             />
           </Box>
+
+          <Typography
+            sx={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: Colors.darkPrimary1,
+              ml: 4,
+              mt: 3,
+              mb: 2,
+            }}
+          >
+            Please enter the lifetime value of VCOT
+          </Typography>
+          <Box
+            sx={{
+              m: 3,
+              mx: 4,
+            }}
+          >
+            <CCInputField
+              label="Enter lifetime value of VCOT"
+              placeholder="Enter lifetime value of VCOT"
+              variant="outlined"
+              value={lifeTimeQuantity}
+              onChange={(e) => {
+                const regexp = /^\d+(\.\d{0,3})?$/
+                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
+                  setLifetimeQuantity(e?.target?.value)
+                }
+              }}
+              InputLabelProps={{
+                style: { color: '#3F4946' },
+              }}
+            />
+          </Box>
+
           <CCDropAndUpload
             sx={{ m: 4, mr: 5 }}
             mediaTitle={[]}
@@ -429,7 +470,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           )}
         </Paper>
       </Grid>
-      <MessageModal
+      {/* <MessageModal
         message={
           <>
             <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
@@ -466,14 +507,14 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         disableBtn1={!accountBalance ? true : false}
         btn1OnClick={() => {
           setShowModal(false)
-          signAndVerify()
+          // signAndVerify()
         }}
         btn2OnClick={() => setShowModal(false)}
         btn2Text="Cancel"
         showModal={showModal}
         setShowModal={setShowModal}
-      />
-      <MessageModal
+      /> */}
+      {/* <MessageModal
         message={
           'Please use the same Wallet address submitted at the start while completing the Profile!!!'
         }
@@ -481,9 +522,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         btn1OnClick={() => setShowAddressNotMatchingModal(false)}
         showModal={showAddressNotMatchingModal}
         setShowModal={setShowAddressNotMatchingModal}
-      />
+      /> */}
       <MessageModal
-        message={'PDF Verified and Token Minted Successfully!!!'}
+        message={'PDF Verified and sent to Registry!!!'}
         btn1Text="Ok"
         btn1OnClick={() => {
           setShowActionSuccessModal(false)

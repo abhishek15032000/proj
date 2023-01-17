@@ -25,6 +25,7 @@ import NoData from '../../atoms/NoData/NoData'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { getLocalItem } from '../../utils/Storage'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 interface ListOfProjectsProps {
   data?: any
@@ -77,10 +78,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
 
     props.data.map((item: any, index: any) => {
       if (
-        item?.project_status === 1 ||
-        item?.project_status === 2 ||
-        item?.project_status === 5 ||
-        item?.project_status === 6
+        item?.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
+        item?.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ||
+        item?.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
+        item?.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
       ) {
         newData.push([
           <ShortenedIDComp key={index} referenceId={item?.project_id?.uuid} />,
@@ -106,14 +109,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           </Box>,
           item?.verifier_name,
           item?.verifier_address,
-          item?.project_status === 1 ? (
+          item?.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <ApprovalChip key={index} variant={'Pending'} />
-          ) : item?.project_status === 2 ? (
+          ) : item?.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
             <ApprovalChip key={index} variant={'Approved'} />
           ) : (
             <ApprovalChip key={index} variant={'Rejected'} />
           ),
-          item?.project_status === 1 ? (
+          item?.project_status ===
+          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <Box
               key={index}
               sx={{
@@ -131,7 +137,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => props.updateStatus(2, item)}
+                onClick={() =>
+                  props.updateStatus(
+                    PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT,
+                    item
+                  )
+                }
               >
                 Approve
               </Typography>
@@ -143,7 +154,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => props.updateStatus(6, item)}
+                onClick={() => props.updateStatus(10, item)}
               >
                 Reject
               </Typography>
@@ -151,12 +162,18 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          (item?.project_status === 1 || item?.project_status === 2) && (
+          (item?.project_status ===
+            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
+            item?.project_status ===
+              PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT) && (
             <ChevronRightIcon
               key={index}
               onClick={() => {
-                navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                  state: { project_uuid: item?.project_id.uuid },
+                navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                  state: {
+                    project_uuid: item?.project_id.uuid,
+                    projectDetails: item?.project_id,
+                  },
                 })
               }}
             />
@@ -164,7 +181,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         ])
       }
 
-      if (item?.project_status === 3 || item?.project_status === 4) {
+      if (
+        item?.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+        item?.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+      ) {
         registeredData.push([
           <ShortenedIDComp key={index} referenceId={item?.project_id?.uuid} />,
           moment(item?.createdAt).format('DD/MM/YYYY'),
@@ -190,20 +212,23 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           item?.verifier_name,
           item?.verifier_address,
           moment(item?.createdAt).format('DD/MM/YYYY'),
-          item?.project_status === 3 ? (
+          item?.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <ApprovalChip key={index} variant={'Pending'} />
           ) : (
             <ApprovalChip key={index} variant={'Verified'} />
           ),
-          item?.project_status === 3 ? (
+          item?.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <TextButton
               key={index}
               sx={{ width: '90px' }}
               onClick={() =>
-                navigate(pathNames.VERIFIER_VERIFY_REPORT, {
+                navigate(pathNames.REVIEW_AND_COMMENT, {
                   state: {
                     project: item?.project_id,
                     pdf: item?.project_id?.project_pdf,
+                    verifierName: item?.verifier_name,
                   },
                 })
               }
@@ -215,11 +240,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           <ChevronRightIcon
             sx={{ cursor: 'pointer' }}
             key={index}
-            onClick={() =>
-              navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                state: { project_uuid: item?.project_id.uuid },
+            onClick={() => {
+              navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                state: {
+                  project_uuid: item?.project_id.uuid,
+                  projectDetails: item?.project_id,
+                },
               })
-            }
+            }}
           />,
         ])
       }

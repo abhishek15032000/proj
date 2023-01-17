@@ -18,6 +18,7 @@ import { pathNames } from '../../routes/pathNames'
 import moment from 'moment'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 
 const projectDetails = {
   company_name:
@@ -109,6 +110,8 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       setIssuanceInfo(issuanceInfoTabData)
     }
   }, [currentProjectDetails])
+
+  console.log('currentProjectDetails', currentProjectDetails)
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -175,41 +178,86 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       </Paper>
 
       <Paper sx={{ mt: 2, px: 2, py: 2 }}>
-        <Box sx={{ display: 'flex', mt: 1 }}>
-          {tabs.map((tab, index) => (
-            <Box
-              key={index}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box sx={{ display: 'flex', mt: 1 }}>
+            {tabs.map((tab, index) => (
+              <Box
+                key={index}
+                sx={{
+                  py: 1,
+                  mr: 2,
+                  fontSize: 16,
+                  fontWeight: 500,
+                  color: tabIndex === index ? Colors.darkPrimary1 : '#7B9690',
+                  cursor: 'pointer',
+                  borderBottom:
+                    tabIndex === index
+                      ? `2px solid ${Colors.darkPrimary1}`
+                      : '1px solid #7B9690',
+                }}
+                onClick={() => setTabIndex(index)}
+              >
+                {tab}
+              </Box>
+            ))}
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+            }}
+            onClick={() =>
+              navigate(pathNames.REVIEW_AND_COMMENT, {
+                state: {
+                  project: currentProjectDetails,
+                  pdf: currentProjectDetails?.project_pdf,
+                  verifierName:
+                    currentProjectDetails?.verifier_details_id?.verifier_name,
+                  verifierID:
+                    currentProjectDetails?.verifier_details_id?.verifier_id,
+                },
+              })
+            }
+          >
+            <Typography
               sx={{
-                py: 1,
-                mr: 2,
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: 500,
-                color: tabIndex === index ? Colors.darkPrimary1 : '#7B9690',
-                cursor: 'pointer',
-                borderBottom:
-                  tabIndex === index
-                    ? `2px solid ${Colors.darkPrimary1}`
-                    : '1px solid #7B9690',
+                color: Colors.tertiary,
+                textDecoration: 'underline',
               }}
-              onClick={() => setTabIndex(index)}
             >
-              {tab}
+              {' '}
+              View Comments
+            </Typography>
+            <Box>
+              <OpenInNewIcon sx={{ ml: 1, color: Colors.darkPrimary1 }} />
             </Box>
-          ))}
+          </Box>
         </Box>
 
-        {tabIndex === 0 && (
-          <IssuanceInfoList
-            data={issuanceInfo && issuanceInfo}
-            projectStatus={projectStatus}
-          />
-        )}
-        {tabIndex === 1 && (
-          <VerifierReport
-            currentProjectId={currentProjectDetails?._id}
-            currentProjectUUID={currentProjectDetails?.uuid}
-          />
-        )}
+        <Box>
+          {tabIndex === 0 && (
+            <IssuanceInfoList
+              data={issuanceInfo && issuanceInfo}
+              projectStatus={projectStatus}
+            />
+          )}
+          {tabIndex === 1 && (
+            <VerifierReport
+              currentProjectId={currentProjectDetails?._id}
+              currentProjectUUID={currentProjectDetails?.uuid}
+            />
+          )}
+        </Box>
       </Paper>
     </Box>
   )
