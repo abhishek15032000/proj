@@ -147,13 +147,14 @@ interface DetailsProps {
   value: string | string[]
 }
 const Details: FC<DetailsProps> = ({ heading, value }) => {
-  console.log('Vlaue', value)
   return (
     <Grid item xs={10} md={5} sx={{ mt: 1 }}>
       <Box sx={{ fontSize: 14, color: '#CCE8E1', mb: 1 }}>{heading}</Box>
       {typeof value === 'string' ? (
         <Box sx={{ fontSize: 16 }}>{value}</Box>
       ) : (
+        value &&
+        value.length &&
         value?.map((val: string, index: number) => (
           <Box key={index} sx={{ fontSize: 16 }}>
             {val}

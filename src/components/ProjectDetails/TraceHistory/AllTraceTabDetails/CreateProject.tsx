@@ -42,7 +42,7 @@ const CreateProject: FC<CreateProjectProps> = (props) => {
 
       <TitleValue
         title="Project Name :"
-        value={projectDetails?.name}
+        value={projectDetails?.company_name}
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',

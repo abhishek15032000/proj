@@ -36,17 +36,27 @@ const RegistryReviewReport = () => {
   )
 
   const [explain, setExplain] = useState<string>('')
-  const [lifetimeVCOT, setLifetimeVCOT] = useState<number>(4234)
-  const [monthlyVCOT, setMonthlyVCOT] = useState<number>(334)
+  const [lifetimeVCOT, setLifetimeVCOT] = useState<number>(0)
+  const [monthlyVCOT, setMonthlyVCOT] = useState<number>(0)
   const [openModal, setOpenModal] = useState(false)
   const [reportData, setReportData] = useState<any>()
   const [pdfLoading, setPDFLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
 
-  const closeModal = () => setOpenModal(false)
+  console.log('lifetimeVCOT', lifetimeVCOT)
+  console.log('monthlyVCOT', monthlyVCOT)
 
+  const closeModal = () => setOpenModal(false)
+  console.log(
+    'location?.state?.projectReportDetails?',
+    location?.state?.projectReportDetails
+  )
   useEffect(() => {
     setReportData(location?.state?.projectReportDetails)
+    console.log(
+      'ran',
+      location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
+    )
     setLifetimeVCOT(
       location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
     )
@@ -252,12 +262,14 @@ const RegistryReviewReport = () => {
                 Relevant Docs{' '}
               </Typography>
               <Box>
-                {/*{docs?.map((doc: any, index: number) => (*/}
-                {reportData?.report?.file_attach?.map(
-                  (doc: any, index: number) => (
-                    <FileDetails key={index} doc={doc} />
-                  )
-                )}
+                {reportData?.report?.file_attach &&
+                reportData?.report?.file_attach.length
+                  ? reportData?.report?.file_attach?.map(
+                      (doc: any, index: number) => (
+                        <FileDetails key={index} doc={doc} />
+                      )
+                    )
+                  : '-'}
               </Box>
             </Box>
 
@@ -268,9 +280,10 @@ const RegistryReviewReport = () => {
                 Photos/Videos Added{' '}
               </Typography>
               <Box>
-                {docs?.map((doc: any, index: number) => (
+                {/* {docs?.map((doc: any, index: number) => (
                   <FileDetails key={index} doc={doc} />
-                ))}
+                ))} */}
+                -
               </Box>
             </Box>
 
@@ -353,9 +366,16 @@ const FileDetails: FC<FileDetailsProps> = ({ doc }) => {
           }}
         />
       </Box>
-      <Box sx={{ fontSize: 12, color: '#191C1B' }}>
-        <Box>{doc?.name}</Box>
-        <Box>{doc?.size}</Box>
+      <Box
+        sx={{
+          fontSize: 12,
+          color: '#191C1B',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Box>{doc}</Box>
+        {/* <Box>{doc?.size}</Box> */}
       </Box>
     </Box>
   )

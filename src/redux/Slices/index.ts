@@ -32,6 +32,7 @@ import marketplaceWithdrawFlow from './Marketplace/marketplaceWithdrawFlowSlice'
 import profileCompletion from './profileCompletionSlice'
 import registry from './registrySlice'
 import comments from './commentsSlice'
+import traceability from './traceabilitySlice'
 
 // TODO: rename names
 export default {
@@ -66,4 +67,5 @@ export default {
   profileCompletion,
   registry,
   comments,
+  traceability,
 }

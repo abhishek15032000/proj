@@ -5,6 +5,8 @@ import TitleValue from '../../../Profile/TitleValue'
 
 import moment from 'moment'
 import { PROJECT_STATUS } from '../../../../config/constants.config'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface ApproveReportProps {
   traceOption?: any
@@ -23,6 +25,11 @@ const ApproveReport: FC<ApproveReportProps> = (props) => {
 
     projectDetails,
   } = props
+
+  const verifier = useAppSelector(
+    ({ traceability }) => traceability?.verifier,
+    shallowEqual
+  )
 
   return (
     <>
@@ -54,7 +61,7 @@ const ApproveReport: FC<ApproveReportProps> = (props) => {
       />
       <TitleValue
         title="Verifier :"
-        value={'-'}
+        value={verifier || '-'}
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',
@@ -80,7 +87,7 @@ const ApproveReport: FC<ApproveReportProps> = (props) => {
       />
       <TitleValue
         title="Number of VCOT authorised :"
-        value={'-'}
+        value={projectDetails?.report?.quantity || '-'}
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',

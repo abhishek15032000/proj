@@ -63,6 +63,7 @@ export const URL_PATH = {
     verifyPDFAndMintToken:
       ENDPOINTS.carbonServiceURL + '/verifier/report/submit',
     verifierAllReport: ENDPOINTS.carbonServiceURL + '/verifier/report/all',
+    getVerifierById: ENDPOINTS.carbonServiceURL + '/verifier/getVerifierById',
   },
   registry: {
     getRegistryReports: ENDPOINTS.carbonServiceURL + '/registry/report/submit',

@@ -13,10 +13,11 @@ const TabSelectorWithCount: FC<TabSelectorWithCountProps> = ({
   tabIndex,
   setTabIndex,
   tabArray,
+  sx,
 }) => {
   return (
     <Box
-      sx={{ mt: 1, display: 'flex', alignItems: 'center' }}
+      sx={{ mt: 1, display: 'flex', alignItems: 'center', ...sx }}
       data-testid="tab-selector-container"
     >
       {tabArray?.map(({ name, count }, index) => (

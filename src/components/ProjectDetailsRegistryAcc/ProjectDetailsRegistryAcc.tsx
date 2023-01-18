@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
@@ -15,6 +15,11 @@ import { verifierCalls } from '../../api/verifierCalls.api'
 import Spinner from '../../atoms/Spinner'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { Colors } from '../../theme'
+import WebAppTraceHistory from '../ProjectDetails/TraceHistory/WebappTraceHistory'
+import TabSelector from '../../atoms/TabSelector/TabSelector'
+import ReportsTab from './ReportsTab'
+import TraceabilityTab from './TraceabilityTab'
+import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWithCount'
 
 const ProjectDetailsRegistryAcc = () => {
   const location: any = useLocation()
@@ -26,10 +31,11 @@ const ProjectDetailsRegistryAcc = () => {
     shallowEqual
   )
 
-  const [title, setTitle] = useState<string>()
-  const [area, setArea] = useState<string>()
+  // const [title, setTitle] = useState<string>()
+  // const [area, setArea] = useState<string>()
   const [loading, setLoading] = useState(false)
-  const [loadingReport, setLoadingReport] = useState(false)
+  // const [loadingReport, setLoadingReport] = useState(false)
+  const [tabIndex, setTabIndex] = useState(1)
 
   useEffect(() => {
     if (registryProjectDetails?.project_status === 6) {
@@ -118,6 +124,8 @@ const ProjectDetailsRegistryAcc = () => {
     }
   }
   console.log('registryReport: ', registryProjectDetails)
+  console.log('projectDetails', projectDetails)
+
   return (
     <>
       {loading ? (
@@ -135,27 +143,22 @@ const ProjectDetailsRegistryAcc = () => {
             title={projectDetails?.company_name}
             location={projectDetails?.location}
           />
-          {projectDetails?.project_status === 4 ? (
-            <Box
-              sx={{
-                p: 4,
-                mt: 3,
-                background: '#FFF',
-                color: Colors.darkPrimary1,
-                fontSize: 22,
-                fontWeight: 500,
-                borderRadius: '8px',
-              }}
-            >
-              Verifier Yet to be confirmed from Issuer side
-            </Box>
-          ) : null}
-          {projectDetails?.project_status > 4 ? (
-            <Reports projectDetails={projectDetails} />
-          ) : null}
-          {/*<Box sx={{ mt: 3 }}>
-            <TraceHistory />
-          </Box>*/}
+
+          <TabSelectorWithCount
+            tabArray={[
+              { name: 'Reports Received', count: 0 },
+              { name: 'Trace History', count: 0 },
+            ]}
+            tabIndex={tabIndex}
+            setTabIndex={setTabIndex}
+            sx={{ mt: 3 }}
+            // tabWidth="fit-content"
+          />
+
+          {tabIndex === 1 && <ReportsTab projectDetails={projectDetails} />}
+          {tabIndex === 2 && (
+            <TraceabilityTab projectID={projectDetails?.uuid} />
+          )}
         </>
       )}
     </>

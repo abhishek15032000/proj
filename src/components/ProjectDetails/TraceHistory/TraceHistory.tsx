@@ -103,10 +103,11 @@ const TraceHistory: FC<TraceHistoryProps> = (props) => {
         p: 10,
         background:
           theme === 'dark'
-            ? 'linear-gradient(180deg, #111E17 9.55%, rgba(7, 19, 13, 0.79) 100%)'
+            ? // ? 'linear-gradient(180deg, #111E17 9.55%, rgba(7, 19, 13, 0.79) 100%)'
+              'rgba(0, 107, 94, 0.08)'
             : '#FFFFFF',
       }}
-      height={'30%'}
+      // height={'30%'}
     >
       <Typography
         sx={{
@@ -265,6 +266,7 @@ const TraceHistory: FC<TraceHistoryProps> = (props) => {
           projectId={projectId}
           projectDetails={traceAllData}
           traceTab={traceTab}
+          // choosenVerifiers={choosenVerifiers}
         />
       </Paper>
     </Grid>

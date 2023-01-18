@@ -19,6 +19,7 @@ import moment from 'moment'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import WebAppTraceHistory from '../ProjectDetails/TraceHistory/WebappTraceHistory'
 
 const projectDetails = {
   company_name:
@@ -32,7 +33,7 @@ const projectDetails = {
   duration: 2,
   area: '1000',
 }
-const tabs = ['Registration Details', 'Verifier & Reports']
+const tabs = ['Registration Details', 'Verifier & Reports', 'Traceability']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
@@ -256,6 +257,14 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               currentProjectId={currentProjectDetails?._id}
               currentProjectUUID={currentProjectDetails?.uuid}
             />
+          )}
+          {tabIndex === 2 && (
+            <Box sx={{ mt: 5 }}>
+              <Typography sx={{ fontSize: 18, color: '#1D4B44', mb: 2 }}>
+                Trace History
+              </Typography>
+              <WebAppTraceHistory projectId={currentProjectDetails?.uuid} />
+            </Box>
           )}
         </Box>
       </Paper>
