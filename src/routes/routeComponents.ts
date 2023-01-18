@@ -42,6 +42,7 @@ import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewRe
 import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProjects'
 import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
 import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
+import Wallet from '../pages/Wallet'
 
 export const privateRouteComponents = [
   {
@@ -260,5 +261,11 @@ export const privateRouteComponents = [
     path: pathNames.REVIEW_AND_COMMENT,
     component: ReviewAndComment,
     roles: [ROLES.VERIFIER, ROLES.ISSUER],
+  },
+  {
+    path: pathNames.WALLET,
+    component: Wallet,
+    // component: MarketplaceV2,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
   },
 ]

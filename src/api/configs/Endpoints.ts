@@ -17,6 +17,7 @@ export const URL_PATH = {
     forgotPassword: ENDPOINTS.userServiceURL + '/users/forgotPassword',
     resetPassword: ENDPOINTS.userServiceURL + '/users/resetPassword',
     changePassword: ENDPOINTS.userServiceURL + '/users/changePassword',
+    getPrivateKey: ENDPOINTS.userServiceURL + '/users/getWalletDetailsById',
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + '/auth/login',
@@ -86,6 +87,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
     getTransactionById:
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionById',
+    getTokenBalanceList:
+      ENDPOINTS.carbonServiceURL + '/transaction/getWalletBalanceById',
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
