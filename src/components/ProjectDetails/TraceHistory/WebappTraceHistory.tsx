@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setChoosenVerifiers,
   setProjectDeveloper,
+  setReportPDF,
   setTxIDForTab,
   setVerifier,
 } from '../../../redux/Slices/traceabilitySlice'
@@ -147,6 +148,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
       .getProjectById(projectId)
       .then((res) => {
         dispatch(setProjectDeveloper(res?.data?.name))
+        dispatch(setReportPDF(res?.data?.project_pdf))
         getAllVerifiersForProject(res?.data?._id)
         getSelectedVerifierDetails(res?.data?.verifier_details_id)
         setTraceAllData(res?.data)
