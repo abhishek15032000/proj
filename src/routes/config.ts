@@ -21,4 +21,5 @@ export const hybridPaths = [
   pathNames.MARKETPLACE_PROJECT_DETAILS,
   pathNames.PROJECT_DETAILS,
   'projects.html',
+  pathNames.PROJECT_LISTS_WITH_FILTER,
 ]

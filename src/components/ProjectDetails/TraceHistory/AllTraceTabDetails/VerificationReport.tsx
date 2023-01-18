@@ -4,7 +4,9 @@ import { Colors, Images } from '../../../../theme'
 import TitleValue from '../../../Profile/TitleValue'
 
 import moment from 'moment'
+import { shallowEqual } from 'react-redux'
 import { PROJECT_STATUS } from '../../../../config/constants.config'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
 
 interface VerificationReportProps {
   traceOption?: any
@@ -23,6 +25,11 @@ const VerificationReport: FC<VerificationReportProps> = (props) => {
 
     projectDetails,
   } = props
+
+  const verifier = useAppSelector(
+    ({ traceability }) => traceability?.verifier,
+    shallowEqual
+  )
 
   return (
     <>
@@ -55,7 +62,7 @@ const VerificationReport: FC<VerificationReportProps> = (props) => {
 
       <TitleValue
         title="Verifier :"
-        value={'-'}
+        value={verifier || '-'}
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',
@@ -81,7 +88,7 @@ const VerificationReport: FC<VerificationReportProps> = (props) => {
       />
       <TitleValue
         title="Number of VCOT authorised :"
-        value={'-'}
+        value={projectDetails?.report?.quantity || '-'}
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',
@@ -94,7 +101,11 @@ const VerificationReport: FC<VerificationReportProps> = (props) => {
       />
       <TitleValue
         title=" Next date of monthly report submission :"
-        value={'-'}
+        value={
+          projectDetails?.report?.quantity
+            ? moment(projectDetails?.report?.next_date).format(`DD/MM/YY`)
+            : '-'
+        }
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',

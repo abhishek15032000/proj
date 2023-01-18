@@ -5,6 +5,8 @@ import TitleValue from '../../../Profile/TitleValue'
 
 import moment from 'moment'
 import { PROJECT_STATUS } from '../../../../config/constants.config'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface SubmitVerificationProps {
   traceOption?: any
@@ -20,9 +22,13 @@ const SubmitVerification: FC<SubmitVerificationProps> = (props) => {
     traceOption,
 
     theme,
-
     projectDetails,
   } = props
+
+  const choosenVerifiers = useAppSelector(
+    ({ traceability }) => traceability?.choosenVerifiers,
+    shallowEqual
+  )
 
   return (
     <>
@@ -55,7 +61,11 @@ const SubmitVerification: FC<SubmitVerificationProps> = (props) => {
       />
       <TitleValue
         title="Choosen verifiers :"
-        value={'-'}
+        value={
+          choosenVerifiers && choosenVerifiers.length
+            ? choosenVerifiers.toString()
+            : '-'
+        }
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',

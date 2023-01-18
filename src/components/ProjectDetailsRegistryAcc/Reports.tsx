@@ -190,11 +190,15 @@ const Reports = ({ projectDetails }: reportsProps) => {
                 ) {
                   navigate(pathNames.REVIEW_AND_COMMENT, {
                     state: {
-                      project: currentProjectDetails,
-                      pdf: currentProjectDetails?.project_pdf,
+                      // project: currentProjectDetails,
+                      // pdf: currentProjectDetails?.project_pdf,
+                      // verifierName:
+                      //   currentProjectDetails?.verifier_details_id
+                      //     ?.verifier_name,
+                      project: projectDetails,
+                      pdf: projectDetails?.project_pdf,
                       verifierName:
-                        currentProjectDetails?.verifier_details_id
-                          ?.verifier_name,
+                        projectDetails?.verifier_details_id?.verifier_name,
                     },
                   })
                 }
