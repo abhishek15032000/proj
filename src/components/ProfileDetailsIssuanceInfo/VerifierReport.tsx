@@ -11,6 +11,7 @@ import Spinner from '../../atoms/Spinner'
 //image Imports
 import illustration4 from '../../assets/Images/illustrations/illustration4.svg'
 import { CircleNotifications, KeyboardArrowLeft } from '@mui/icons-material'
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
 import CCButton from '../../atoms/CCButton'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
@@ -105,14 +106,18 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                   textAlign="start"
                   sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
                 >
-                  {moment(i?.report?.createdAt).format(`DD/MM/YY`)}
+                  {i?.report?.createdAt
+                    ? moment(i?.report?.createdAt).format(`DD/MM/YY`)
+                    : '-'}
                 </Typography>,
                 <Typography
                   key={index}
                   textAlign="start"
                   sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
                 >
-                  {moment(i?.report?.next_date).format(`DD/MM/YY`)}
+                  {i?.report?.next_date
+                    ? moment(i?.report?.next_date).format(`DD/MM/YY`)
+                    : '-'}
                 </Typography>,
 
                 <Box
@@ -129,13 +134,20 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                     sx={{
                       fontFamily: 'Poppins',
                       fontStyle: 'normal',
-                      fontWeight: '400',
+                      fontWeight: '500',
                       fontSize: '14px',
                       color: '#2B2B2B',
                     }}
                   >
-                    {'-'}
+                    {'PDF Report'}
                   </Typography>
+                  <FileDownloadOutlinedIcon
+                    sx={{ color: '#388E81', cursor: 'pointer' }}
+                    onClick={() => {
+                      if (!i.project_pdf) return
+                      downloadFile(i?.project_pdf)
+                    }}
+                  />
                 </Box>,
                 'V1.0',
                 // <Chip
@@ -323,7 +335,6 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   //   }
   // }
 
-  console.log('verifierLoading', verifierLoading)
   return (
     <>
       <Grid container>
@@ -359,7 +370,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           )}
         </Grid>
         <Grid item xs={12} sx={{ mt: 2 }}>
-          {monthlyReportsList && monthlyReportsList.length > 0 ? (
+          {mainProjectData?.project_status >=
+            PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY &&
+          monthlyReportsList &&
+          monthlyReportsList.length > 0 ? (
             <>
               <Grid
                 item

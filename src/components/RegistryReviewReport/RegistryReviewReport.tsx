@@ -3,19 +3,19 @@ import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { Navigate, useLocation, useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { registryCalls } from '../../api/registry.api'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
-import Spinner from '../../atoms/Spinner'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import { Colors, Images } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 import EditTokensModal from './EditTokensModal'
+import LoderOverlay from '../LoderOverlay'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 
 const pdfLoading = false
 
@@ -41,6 +41,7 @@ const RegistryReviewReport = () => {
   const [openModal, setOpenModal] = useState(false)
   const [reportData, setReportData] = useState<any>()
   const [pdfLoading, setPDFLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
 
   console.log('lifetimeVCOT', lifetimeVCOT)
@@ -95,6 +96,7 @@ const RegistryReviewReport = () => {
 
   const sumbitReport = async () => {
     try {
+      setLoading(true)
       const registryId = getLocalItem('userDetails')?.user_id
       const payload = {
         _id: reportData?.report?._id,
@@ -120,14 +122,16 @@ const RegistryReviewReport = () => {
       } else alert('Something wrong in submitting the file')
       console.log('res: ', res)
     } catch (err) {
-      console.log('err', err)
+      console.log('Error in registryCalls.reportSumbit ~ ', err)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <>
       <Grid container sx={{ background: '#DAE5E1' }} columnSpacing={2}>
-        {/* {loading ? <LoaderOverlay /> : null} */}
+        {loading ? <LoderOverlay /> : null}
         <Grid
           item
           // xs={12}
@@ -143,11 +147,16 @@ const RegistryReviewReport = () => {
                 display: 'flex',
               }}
             >
-              <Typography
+              {/* <Typography
                 sx={{ fontSize: 28, fontWeight: 400, color: Colors.tertiary }}
               >
                 Review Report & Add Comments
-              </Typography>
+              </Typography> */}
+              <BackHeader
+                title="Review Report & Add Comments"
+                onClick={() => navigate(-1)}
+                titleSx={{ fontSize: 26 }}
+              />
 
               <TextButton
                 // onClick={() => setShowModal(true)}

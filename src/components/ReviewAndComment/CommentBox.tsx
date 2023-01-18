@@ -1,12 +1,16 @@
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { FC } from 'react'
 import Comments from './Comments'
 import SelectSections from './SelectSections'
 import SendComment from './SendComment'
 
-const CommentBox = () => {
+interface CommentBoxProps {
+  closeChatbox?: any
+}
+
+const CommentBox: FC<CommentBoxProps> = ({ closeChatbox }) => {
   return (
     <Box
       sx={{
@@ -32,7 +36,10 @@ const CommentBox = () => {
         }}
       >
         <Typography sx={{ fontWeight: 500 }}>Comments</Typography>
-        <CloseOutlinedIcon sx={{ color: '#006B5E' }} />
+        <CloseOutlinedIcon
+          sx={{ color: '#006B5E', cursor: 'pointer' }}
+          onClick={closeChatbox}
+        />
       </Box>
       <SelectSections />
       <Comments />

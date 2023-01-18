@@ -1,10 +1,5 @@
 import React, { FC } from 'react'
-
-import { Colors, Images } from '../../../../theme'
-import TitleValue from '../../../Profile/TitleValue'
-
-import moment from 'moment'
-import { PROJECT_STATUS } from '../../../../config/constants.config'
+import TitleValue from './TitleValue'
 
 interface BuyerProps {
   traceOption?: any
@@ -16,69 +11,14 @@ interface BuyerProps {
 }
 
 const Buyer: FC<BuyerProps> = (props) => {
-  const {
-    traceOption,
-
-    theme,
-
-    projectDetails,
-  } = props
+  const { theme } = props
 
   return (
     <>
-      <TitleValue
-        title="Number of VCOT bought :"
-        value={'-'}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
-      />
-
-      <TitleValue
-        title="Transaction  ID :"
-        value={'-'}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
-      />
-      <TitleValue
-        title="Unit price ::"
-        value={'-'}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
-      />
-      <TitleValue
-        title="Total Price :"
-        value={'-'}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
-      />
+      <TitleValue title="Number of VCOT bought :" value={'-'} theme={theme} />
+      <TitleValue title="Transaction  ID :" value={'-'} theme={theme} />
+      <TitleValue title="Unit price :" value={'-'} theme={theme} />
+      <TitleValue title="Total Price :" value={'-'} theme={theme} />
     </>
   )
 }
