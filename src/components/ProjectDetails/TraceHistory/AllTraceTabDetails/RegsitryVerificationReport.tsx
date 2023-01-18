@@ -1,12 +1,9 @@
 import React, { FC } from 'react'
-
-import { Colors, Images } from '../../../../theme'
-import TitleValue from '../../../Profile/TitleValue'
-
 import moment from 'moment'
 import { PROJECT_STATUS } from '../../../../config/constants.config'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import TitleValue from './TitleValue'
 
 interface RegsitryVerificationReportProps {
   traceOption?: any
@@ -32,93 +29,33 @@ const RegsitryVerificationReport: FC<RegsitryVerificationReportProps> = (
       <TitleValue
         title="Date of Project verification report received :"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
+        theme={theme}
       />
       <TitleValue
-        title="DDate of Project verification started  :"
+        title="Date of Project verification started  :"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
+        theme={theme}
       />
       <TitleValue
         title="Date of Project verification End  :"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
+        theme={theme}
       />
       <TitleValue
         title="Project reference ID :"
         value={projectDetails?.uuid}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
+        theme={theme}
       />
-      <TitleValue
-        title="Verifier :"
-        value={verifier || '-'}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
-      />
+      <TitleValue title="Verifier :" value={verifier || '-'} theme={theme} />
       <TitleValue
         title="Status :"
         value={PROJECT_STATUS[traceOption]?.value}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
+        theme={theme}
       />
       <TitleValue
         title="Number of VCOT authorised :"
         value={projectDetails?.report?.updated_quantity || '-'}
-        valueStyle={{
-          fontWeight: 400,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-          textAlign: 'right',
-        }}
-        titleStyle={{
-          fontWeight: 500,
-          color: theme === 'dark' ? Colors.white : '#2B2B2B',
-        }}
+        theme={theme}
       />
     </>
   )

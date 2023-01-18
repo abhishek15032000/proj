@@ -267,7 +267,11 @@ const ReviewAndComment = () => {
             {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
           </Grid>
           <Grid item xs={12} md={5} sx={{ height: 'calc( 100vh - 60px)' }}>
-            <CommentBox />
+            <CommentBox
+              closeChatbox={() => {
+                setShowCommentSection(false)
+              }}
+            />
           </Grid>
         </Grid>
       )}

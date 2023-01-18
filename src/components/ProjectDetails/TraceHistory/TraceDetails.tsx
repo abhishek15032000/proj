@@ -1,6 +1,6 @@
 import { Box, Paper, Typography } from '@mui/material'
-
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
 import moment from 'moment'
 import React, { FC } from 'react'
 import { shallowEqual } from 'react-redux'
@@ -14,6 +14,7 @@ import SubmitVerification from './AllTraceTabDetails/SubmitVerification'
 import VerificationProcess from './AllTraceTabDetails/VerificationProcess'
 import VerificationReport from './AllTraceTabDetails/VerificationReport'
 import VerificationRequest from './AllTraceTabDetails/VerificationRequest'
+import { downloadFile } from '../../../utils/commonFunctions'
 
 export interface TraceDetailsProps {
   traceOption?: any
@@ -43,6 +44,10 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
     ({ traceability }) => traceability?.txIDForTab,
     shallowEqual
   )
+  const reportPDF = useAppSelector(
+    ({ traceability }) => traceability?.reportPDF,
+    shallowEqual
+  )
 
   return (
     <Paper
@@ -58,6 +63,7 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
         width: '100%',
         height: '520px',
         py: 5,
+        pr: 12,
         overflowX: 'hidden',
         boxShadow: '0px 5px 20px rgba(45, 95, 87, 0.1)',
       }}
@@ -106,10 +112,13 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
       >
         {'Relevant docs'}
       </Typography>
+      {reportPDF ? (
+        <FileComp theme={theme} filename={'Project Report'} file={reportPDF} />
+      ) : null}
       {projectDetails?.report?.file_attach &&
         projectDetails?.report?.file_attach.length > 0 &&
         projectDetails?.report?.file_attach.map((file: any, index: number) => (
-          <FileComp key={index} theme={theme} filename={file} />
+          <FileComp key={index} theme={theme} filename={file} file={file} />
         ))}
     </Paper>
   )
@@ -119,63 +128,76 @@ export default TraceDetails
 interface FileCompProps {
   theme: string
   filename: any
+  file?: string
 }
-const FileComp: FC<FileCompProps> = ({ theme, filename }) => {
+const FileComp: FC<FileCompProps> = ({ theme, filename, file }) => {
   return (
     <Box
       sx={{
         width: '100%',
-        height: '40px',
+        // height: '40px',
         backgroundColor:
           theme === 'dark' ? 'rgba(25, 28, 27, 0.12)' : '#DAF7F0',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: '8px',
-        pr: 1,
+        padding: '4px',
         mt: 1,
       }}
     >
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           alignItems: 'center',
           pl: 1,
+          width: '100%',
         }}
       >
-        <InsertDriveFileIcon
-          style={{
-            color: '#388E81',
-          }}
-        />
-
         <Box
           sx={{
-            ml: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Typography
+          <InsertDriveFileOutlinedIcon
+            style={{
+              color: '#388E81',
+            }}
+          />
+          <Box
             sx={{
-              fontSize: 12,
-              fontWeight: 400,
-              color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
+              ml: 1,
             }}
           >
-            {/* {'Project introduction file.'} */}
-            {filename}
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: 12,
-              fontWeight: 500,
-              color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
-            }}
-          >
-            {/* {'0.5 MB'} */}
-          </Typography>
-          {/* )} */}
+            <Typography
+              sx={{
+                fontSize: 12,
+                fontWeight: 400,
+                color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
+              }}
+            >
+              {filename}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 12,
+                fontWeight: 500,
+                color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
+              }}
+            ></Typography>
+          </Box>
         </Box>
+        {file ? (
+          <FileDownloadIcon
+            sx={{ color: '#388E81', ml: 1, cursor: 'pointer' }}
+            onClick={() => {
+              downloadFile(file)
+            }}
+          />
+        ) : null}
       </Box>
     </Box>
   )

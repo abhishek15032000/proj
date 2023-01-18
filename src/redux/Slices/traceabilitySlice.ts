@@ -5,12 +5,14 @@ interface TraceabilityReducerInterface {
   verifier: string
   choosenVerifiers: any
   txIDForTab: string
+  reportPDF: string
 }
 const initialState: TraceabilityReducerInterface = {
   projectDeveloper: '',
   verifier: '',
   choosenVerifiers: null,
   txIDForTab: '',
+  reportPDF: '',
 }
 const traceability = createSlice({
   name: 'traceability',
@@ -28,6 +30,9 @@ const traceability = createSlice({
     setTxIDForTab: (state, action: PayloadAction<any>) => {
       state.txIDForTab = action.payload
     },
+    setReportPDF: (state, action: PayloadAction<any>) => {
+      state.reportPDF = action.payload
+    },
   },
 })
 
@@ -36,6 +41,7 @@ export const {
   setVerifier,
   setChoosenVerifiers,
   setTxIDForTab,
+  setReportPDF,
 } = traceability.actions
 
 export default traceability.reducer
