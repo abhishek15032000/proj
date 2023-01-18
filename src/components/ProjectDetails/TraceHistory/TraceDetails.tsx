@@ -1,23 +1,19 @@
-import { Grid, Typography, Box, Radio, Paper } from '@mui/material'
-import { borderColor } from '@mui/system'
+import { Box, Paper, Typography } from '@mui/material'
 
-import React, { FC, useEffect, useState } from 'react'
-import CCButton from '../../../atoms/CCButton'
-import { Colors, Images } from '../../../theme'
-import TitleValue from '../../Profile/TitleValue'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import moment from 'moment'
-import { PROJECT_STATUS } from '../../../config/constants.config'
-import CreateProject from './AllTraceTabDetails/CreateProject'
-import SubmitVerification from './AllTraceTabDetails/SubmitVerification'
-import Buyer from './AllTraceTabDetails/Buyer'
-import VerificationReport from './AllTraceTabDetails/VerificationReport'
-import RegsitryVerificationReport from './AllTraceTabDetails/RegsitryVerificationReport'
+import React, { FC } from 'react'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 import ApproveReport from './AllTraceTabDetails/ApproveReport'
-import VerificationRequest from './AllTraceTabDetails/VerificationRequest'
-import VerificationProcess from './AllTraceTabDetails/VerificationProcess'
+import Buyer from './AllTraceTabDetails/Buyer'
+import CreateProject from './AllTraceTabDetails/CreateProject'
 import GetVerificationReport from './AllTraceTabDetails/GetVerificationReport'
+import RegsitryVerificationReport from './AllTraceTabDetails/RegsitryVerificationReport'
+import SubmitVerification from './AllTraceTabDetails/SubmitVerification'
+import VerificationProcess from './AllTraceTabDetails/VerificationProcess'
+import VerificationReport from './AllTraceTabDetails/VerificationReport'
+import VerificationRequest from './AllTraceTabDetails/VerificationRequest'
 
 export interface TraceDetailsProps {
   traceOption?: any
@@ -29,14 +25,7 @@ export interface TraceDetailsProps {
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
-  const {
-    traceOption,
-    setTraceOption,
-    theme,
-    projectId,
-    projectDetails,
-    traceTab,
-  } = props
+  const { traceOption, theme, projectDetails } = props
 
   const renderTab = [
     <CreateProject key={0} {...props} />,
@@ -49,6 +38,12 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
     <GetVerificationReport key={7} {...props} />,
     <Buyer key={8} {...props} />,
   ]
+
+  const txIDForTab = useAppSelector(
+    ({ traceability }) => traceability?.txIDForTab,
+    shallowEqual
+  )
+
   return (
     <Paper
       sx={{
@@ -79,18 +74,26 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
           ' | ' +
           moment(projectDetails?.createdAt).format(`HH:MM:SS`)}
       </Typography>
-      <Typography
-        sx={{
-          color: '#1A8EF5',
-          fontSize: 12,
-          fontWeight: 400,
-          mt: 1,
-        }}
-      >
-        {projectDetails?.tx && projectDetails?.tx?.lenght > 0
-          ? projectDetails?.tx?.transaction_id
-          : '-'}
-      </Typography>
+      {txIDForTab ? (
+        <Typography
+          sx={{
+            color: '#1A8EF5',
+            fontSize: 12,
+            fontWeight: 500,
+            mt: 1,
+            wordBreak: 'break-all',
+          }}
+        >
+          <a
+            href={`https://mumbai.polygonscan.com/tx/${txIDForTab}`}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#1A8EF5' }}
+          >
+            {txIDForTab}
+          </a>
+        </Typography>
+      ) : null}
 
       {renderTab[traceOption]}
       <Typography
