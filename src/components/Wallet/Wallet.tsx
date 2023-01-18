@@ -36,6 +36,7 @@ import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { limitTitle } from '../../utils/commonFunctions'
 import moment from 'moment'
 import { USER } from '../../api/user.api'
+import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 
 interface WalletProps {}
 
@@ -133,100 +134,100 @@ const Wallet: FC<WalletProps> = (props) => {
       })
   }
 
-  if (loading) {
-    return <LoderOverlay />
-  } else {
-    return (
-      <Box sx={{ p: 0 }}>
-        <Grid
-          container
-          xs={12}
-          md={12}
-          lg={12}
-          xl={12}
-          sx={{ border: '0px solid' }}
-          justifyContent={'space-between'}
-          display="flex"
-          flexDirection={'row'}
-        >
-          <Grid container xs={12} md={12} lg={8} xl={8}>
-            <Grid
-              item
-              xs={12}
-              md={12}
-              lg={12}
-              xl={12}
+  return (
+    <Box sx={{ p: 0 }}>
+      <Grid
+        container
+        xs={12}
+        md={12}
+        lg={12}
+        xl={12}
+        sx={{ border: '0px solid' }}
+        justifyContent={'space-between'}
+        display="flex"
+        flexDirection={'row'}
+      >
+        <Grid container xs={12} md={12} lg={8} xl={8}>
+          <Grid
+            item
+            xs={12}
+            md={12}
+            lg={12}
+            xl={12}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography
               sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                fontSize: 28,
+                fontWeight: 400,
+                color: Colors.tertiary,
+                my: 2,
               }}
             >
-              <Typography
-                sx={{
-                  fontSize: 28,
-                  fontWeight: 400,
-                  color: Colors.tertiary,
-                  my: 2,
-                }}
-              >
-                Wallet
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              md={12}
-              lg={12}
-              xl={12}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                backgroundColor: 'white',
-                borderRadius: '8px',
-                py: 3,
-                boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-                my: 3,
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 22,
-                  fontWeight: 400,
-
-                  mt: 1,
-                  ml: 4,
-                }}
-              >
-                Wallet Balance
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: 22,
-                  fontWeight: 400,
-                  color: '#C12902',
-                  mt: 1,
-                  ml: 2,
-                }}
-              >
-                {`USD ${balance}` + ' | ' + `MATIC ${balance}`}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={12} lg={12} xl={12}>
-              <TransactionList tableData={tableData} />
-            </Grid>
-
-            <Grid item xs={12} md={12} lg={12} xl={12} mt={2}>
-              <WalletCred privateKey={privateKey} />
-            </Grid>
+              Wallet
+            </Typography>
           </Grid>
-          <Grid item xs={12} md={12} lg={4} xl={4} mt={10}>
-            <WalletTab />
+          <Grid
+            item
+            xs={12}
+            md={12}
+            lg={12}
+            xl={12}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              py: 3,
+              boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+              my: 3,
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 22,
+                fontWeight: 400,
+
+                mt: 1,
+                ml: 4,
+              }}
+            >
+              Wallet Balance
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 22,
+                fontWeight: 400,
+                color: '#C12902',
+                mt: 1,
+                ml: 2,
+              }}
+            >
+              {`USD ${balance}` + ' | ' + `MATIC ${balance}`}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={12} lg={12} xl={12}>
+            {loading ? (
+              <CCTableSkeleton sx={{ mt: 2 }} />
+            ) : (
+              <TransactionList tableData={tableData} />
+            )}
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12} xl={12} mt={2}>
+            <WalletCred privateKey={privateKey} />
           </Grid>
         </Grid>
-      </Box>
-    )
-  }
+        <Grid item xs={12} md={12} lg={4} xl={4} mt={10}>
+          <WalletTab />
+        </Grid>
+      </Grid>
+    </Box>
+  )
 }
 
 export default Wallet
