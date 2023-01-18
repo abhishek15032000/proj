@@ -54,6 +54,8 @@ import { resetSectionC } from '../../redux/Slices/sectionCSlice'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 import { usePrompt } from '../../hooks/useCustomBlocker'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import SectionA6 from './SectionA/SectionA6'
+import SectionA7 from './SectionA/SectionA7'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -74,6 +76,8 @@ const sectionATabs = [
     { name: 'A3: Parties & Project Participants', component: SectionA3 },
     { name: 'A4: Reference & Applied Methodology', component: SectionA4 },
     { name: 'A5: Crediting Period', component: SectionA5 },
+    { name: 'A6: Safeguards', component: SectionA6 },
+    { name: 'A7: Additionaly', component: SectionA7 },
   ],
   [
     {

@@ -44,14 +44,26 @@ const SectionA2 = () => {
       currentProjectDetails &&
       currentProjectDetails.section_a.step2.completed
     ) {
-      const { country, state, city, pincode, landmark, file_attach } =
-        currentProjectDetails.section_a.step2
+      const {
+        country,
+        state,
+        city,
+        pincode,
+        landmark,
+        file_attach,
+        geographic_coordinates,
+        aerial_photo,
+      } = currentProjectDetails.section_a.step2
 
       dispatch(setA2({ name: 'city', value: city }))
       dispatch(setA2({ name: 'country', value: country }))
       dispatch(setA2({ name: 'state', value: state }))
       dispatch(setA2({ name: 'pincode', value: pincode }))
       dispatch(setA2({ name: 'landmark', value: landmark }))
+      dispatch(
+        setA2({ name: 'geographic_coordinates', value: geographic_coordinates })
+      )
+      dispatch(setA2({ name: 'aerial_photo', value: aerial_photo }))
       dispatch(setA2({ name: 'file_attach', value: file_attach }))
     }
   }, [currentProjectDetails])
@@ -156,11 +168,12 @@ const SectionA2 = () => {
             label="Geographic coordinates"
             //type="number"
             sx={{ backgroundColor: ' #FFFFFF' }}
-            //value={A2.geographic_coordinates}
+            value={A2.geographic_coordinates}
             name={'geographic_coordinates'}
-            //onChange={({ target: { value, name } }) =>
-            //  dispatch(setA2({ value, name }))
-            //}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setA2({ value, name }))
+            }
+            required={false}
           />
         </Grid>
         <Grid item xs={12} md={12} lg={6} xl={6}>
@@ -168,11 +181,12 @@ const SectionA2 = () => {
             label="link to an aerial photo of the location"
             //type="number"
             sx={{ backgroundColor: ' #FFFFFF' }}
-            //value={A2.aerial_photo}
+            value={A2.aerial_photo}
             name={'aerial_photo'}
-            //onChange={({ target: { value, name } }) =>
-            //  dispatch(setA2({ value, name }))
-            //}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setA2({ value, name }))
+            }
+            required={false}
           />
         </Grid>
       </Grid>

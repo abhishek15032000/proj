@@ -61,6 +61,8 @@ const SectionC1 = () => {
         monitoring_plan,
         attach_org_structure_and_responsibilities_chart,
         specific_data_monitored,
+        training_and_maintenance,
+        management_of_data_quality,
       } = currentProjectDetails.section_c.step1
 
       dispatch(setC1({ name: 'description', value: description }))
@@ -71,6 +73,18 @@ const SectionC1 = () => {
         })
       )
       dispatch(setC1({ name: 'monitoring_plan', value: monitoring_plan }))
+      dispatch(
+        setC1({
+          name: 'training_and_maintenance',
+          value: training_and_maintenance,
+        })
+      )
+      dispatch(
+        setC1({
+          name: 'management_of_data_quality',
+          value: management_of_data_quality,
+        })
+      )
       dispatch(
         setC1({
           name: 'attach_org_structure_and_responsibilities_chart',
@@ -151,6 +165,30 @@ const SectionC1 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setC1({ value, name }))
             }
+          />
+        </Grid>
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCMultilineTextArea
+            label="Training and Maintenance "
+            //placeholder="According to registered and the applied methodology, specific datas monitored"
+            value={C1.training_and_maintenance}
+            name={'training_and_maintenance'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setC1({ value, name }))
+            }
+            required={false}
+          />
+        </Grid>
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCMultilineTextArea
+            label="Management of data quality"
+            placeholder="Describe quality management procedures to manage data and information relevant to the project and baseline scenario, accompanied by the uncertainty assessment. Ensure that the management procedures include a description of how data is maintained and recorded. Describe the information management system used in the project. Location and retention of stored data and data management that includes a procedure for data transfers between different systems or documentation forms shall be included."
+            value={C1.management_of_data_quality}
+            name={'management_of_data_quality'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setC1({ value, name }))
+            }
+            required={false}
           />
         </Grid>
       </Grid>
