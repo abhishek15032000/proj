@@ -3,14 +3,15 @@ import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { verifierCalls } from '../../../api/verifierCalls.api'
-import { PROJECT_ALL_STATUS, ROLES } from '../../../config/constants.config'
+import { PROJECT_ALL_STATUS, TX_TYPE } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
   setChoosenVerifiers,
   setProjectDeveloper,
+  setTxIDForTab,
   setVerifier,
 } from '../../../redux/Slices/traceabilitySlice'
-import { Colors, Images } from '../../../theme'
+import { Images } from '../../../theme'
 import { getLocalItem } from '../../../utils/Storage'
 import TraceDetails from './TraceDetails'
 import './TraceHistory.css'
@@ -38,6 +39,8 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
       key: 0,
       showFromStatus: PROJECT_ALL_STATUS.CREATED_PROJECT,
       value: `Project Developer ${projectDeveloper} created this project`,
+      // txType used to get txID for a particular step from tx array
+      txType: TX_TYPE.CREATE_PROJECT,
     },
     {
       key: 1,
@@ -54,12 +57,14 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
       showFromStatus:
         PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
       value: `Verifier ${verifier} started verification process`,
+      txType: TX_TYPE.CONFIRM_VERIFIER,
     },
     {
       key: 4,
       showFromStatus:
         PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
       value: `Verifier ${verifier} submitted its verification report on this project`,
+      txType: TX_TYPE.VERIFIER_VERIFIES_REPORT,
     },
     {
       key: 5,
@@ -72,6 +77,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
       showFromStatus:
         PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
       value: `Registry Approves the verification report`,
+      txType: TX_TYPE.REGISTRY_VERIFIES_REPORT,
     },
     {
       key: 7,
@@ -116,7 +122,20 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
     }
   }, [projectDeveloper, verifier, traceAllData])
 
-  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  useEffect(() => {
+    if (traceAllData) {
+      const tabData = traceTabList[traceOption]
+      const txTypeToSearch = tabData?.txType
+      if (txTypeToSearch || txTypeToSearch === 0) {
+        const txIDObj = traceAllData?.tx.find(
+          (tx: any) => tx.type === txTypeToSearch
+        )
+        dispatch(setTxIDForTab(txIDObj?.tx_id))
+      } else {
+        dispatch(setTxIDForTab(''))
+      }
+    }
+  }, [traceOption, traceAllData])
 
   useEffect(() => {
     getAllDetails()

@@ -253,16 +253,16 @@ const IssuanceDataCollection = () => {
   }
 
   const handleNextBtnFromSectionE = () => {
-    // if (nextBtn) {
-    //   navigate(pathNames.DASHBOARD)
-    // } else if (!nextBtn) {
-    //   if (
-    //     currentProjectDetails?.project_status ===
-    //     PROJECT_ALL_STATUS.CREATED_PROJECT
-    //   ) {
-    navigate(pathNames.SELECT_VERIFIER)
-    //   } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
-    // }
+    if (nextBtn) {
+      navigate(pathNames.DASHBOARD)
+    } else if (!nextBtn) {
+      if (
+        currentProjectDetails?.project_status ===
+        PROJECT_ALL_STATUS.CREATED_PROJECT
+      ) {
+        navigate(pathNames.SELECT_VERIFIER)
+      } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+    }
   }
 
   const handleNext = () => {
