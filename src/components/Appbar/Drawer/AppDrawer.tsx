@@ -73,6 +73,7 @@ export default function ResponsiveDrawer(props: any) {
         IconComponent = FiberManualRecordIcon
         break
       case linkLabels.Token_Contract:
+      case linkLabels.Projects:
         // PlayArrowIcon
         // eslint-disable-next-line react/display-name
         IconComponent = (props: any) => (
@@ -255,7 +256,7 @@ export default function ResponsiveDrawer(props: any) {
     </Box>
   )
 
-  return !props.show || !props.user ? (
+  return throughIFrame || !props.show || !props.user ? (
     <> {props.children}</>
   ) : (
     <Box sx={{ display: 'flex' }}>

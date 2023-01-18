@@ -5,6 +5,8 @@ import TitleValue from '../../../Profile/TitleValue'
 
 import moment from 'moment'
 import { PROJECT_STATUS } from '../../../../config/constants.config'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface VerificationRequestProps {
   traceOption?: any
@@ -16,13 +18,12 @@ interface VerificationRequestProps {
 }
 
 const VerificationRequest: FC<VerificationRequestProps> = (props) => {
-  const {
-    traceOption,
+  const { traceOption, theme, projectDetails } = props
 
-    theme,
-
-    projectDetails,
-  } = props
+  const verifier = useAppSelector(
+    ({ traceability }) => traceability?.verifier,
+    shallowEqual
+  )
 
   return (
     <>
@@ -55,7 +56,7 @@ const VerificationRequest: FC<VerificationRequestProps> = (props) => {
 
       <TitleValue
         title="Verifier :"
-        value={'-'}
+        value={verifier}
         valueStyle={{
           fontWeight: 400,
           color: theme === 'dark' ? Colors.white : '#2B2B2B',

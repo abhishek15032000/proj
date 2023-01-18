@@ -1,5 +1,5 @@
 import { Box, Modal, Typography } from '@mui/material'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import CCButton from '../../atoms/CCButton'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import CCInputField from '../../atoms/CCInputField'
@@ -28,11 +28,20 @@ const EditTokensModal: FC<EditTokensModalProps> = ({
     useState<number>(lifetimeVCOT)
   const [localMonthlyVCOT, setLocalMonthlyVCOT] = useState<number>(monthlyVCOT)
 
+  useEffect(() => {
+    setLocalLifetimeVCOT(lifetimeVCOT)
+    setLocalMonthlyVCOT(monthlyVCOT)
+  }, [lifetimeVCOT, monthlyVCOT])
+
   const handleUpdate = () => {
     setLifetimeVCOT(localLifetimeVCOT)
     setMonthlyVCOT(localMonthlyVCOT)
     closeModal()
   }
+
+  console.log('inside', lifetimeVCOT, monthlyVCOT)
+  console.log('first', localLifetimeVCOT)
+  console.log('first', localMonthlyVCOT)
 
   return (
     <Modal

@@ -81,4 +81,13 @@ export const verifierCalls = {
       return res
     })
   },
+  getVerifierById: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.getVerifierById + '?id=' + payload,
+      'GET',
+      payload
+    ).then((res) => {
+      return res?.data
+    })
+  },
 }
