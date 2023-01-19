@@ -3,13 +3,11 @@ import { Box, Paper, Typography } from '@mui/material'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { registryCalls } from '../../api/registry.api'
 import CCButton from '../../atoms/CCButton'
 import CCTable from '../../atoms/CCTable'
 import StatusChips from '../../atoms/StatusChips/StatusChips'
 import { pathNames } from '../../routes/pathNames'
 import { Colors, Images } from '../../theme'
-import { v4 as uuidv4 } from 'uuid'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
@@ -18,7 +16,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ArticleIcon from '@mui/icons-material/Article'
 import { getLocalItem } from '../../utils/Storage'
-import { ROLES } from '../../config/constants.config'
+import { PROJECT_ALL_STATUS, ROLES } from '../../config/constants.config'
 
 interface reportsProps {
   projectDetails: any
@@ -46,8 +44,74 @@ const Reports = ({ projectDetails }: reportsProps) => {
     shallowEqual
   )
   useEffect(() => {
-    //if (reportDetails) {
-    if (Array.isArray(projectDetails)) {
+    if (
+      (userType === ROLES.VERIFIER &&
+        projectDetails?.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT) ||
+      (userType === ROLES.REGISTRY &&
+        (projectDetails?.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+          projectDetails?.project_status ===
+            PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY))
+    ) {
+      const objRow: any = [
+        [
+          '-',
+          '-',
+          '-',
+          '-',
+          '-',
+          '-',
+          '-',
+          <CCButton
+            key={1}
+            sx={{
+              background: '#006B5E',
+              color: '#FFFFFF',
+              borderRadius: '32px',
+              fontSize: 14,
+              px: 3,
+              py: 1,
+              minWidth: '150px',
+            }}
+            onClick={() => {
+              if (
+                userType === ROLES.VERIFIER &&
+                projectDetails?.project_status === 5
+              ) {
+                navigate(pathNames.REVIEW_AND_COMMENT, {
+                  state: {
+                    project: projectDetails,
+                    pdf: projectDetails?.project_pdf,
+                    verifierName:
+                      projectDetails?.verifier_details_id?.verifier_name,
+                  },
+                })
+              }
+              if (
+                (userType === ROLES.REGISTRY &&
+                  projectDetails?.project_status === 6) ||
+                projectDetails?.project_status === 7
+              ) {
+                navigate(pathNames.REGISTRY_REVIEW_REPORT, {
+                  state: { projectReportDetails: projectDetails },
+                })
+              }
+            }}
+          >
+            {userType === ROLES.VERIFIER && projectDetails?.project_status === 5
+              ? 'Verify'
+              : null}
+            {userType === ROLES.REGISTRY &&
+            (projectDetails?.project_status === 6 ||
+              projectDetails?.project_status === 7)
+              ? 'Start review'
+              : null}
+          </CCButton>,
+        ],
+      ]
+      setTableRows(objRow)
+    } else if (Array.isArray(projectDetails)) {
       const arrReportDetials: any = projectDetails.map(
         (item: any, index: any) => {
           return [
@@ -77,6 +141,8 @@ const Reports = ({ projectDetails }: reportsProps) => {
                   if (!item.file_attach?.length) return
                   item.report?.file_attach.forEach(
                     (file: any, index: number) => {
+                      console.log('downloaded', file)
+
                       downloadFile(file)
                     }
                   )
@@ -137,32 +203,37 @@ const Reports = ({ projectDetails }: reportsProps) => {
 
       console.log('reportDetails is an array: ', projectDetails)
     } else if (projectDetails && Object.keys(projectDetails).length > 0) {
-      console.log('reportDetails from else: ', projectDetails)
       const objRow: any = [
         [
           moment(projectDetails?.report?.createdAt).format('DD/MM/YYYY'),
           moment(projectDetails?.report?.next_date).format('DD/MM/YYYY'),
           <Box key={1} sx={{ display: 'flex' }}>
-            <img
-              src={Images.FileIcon}
-              width="20px"
-              height={'20px'}
-              style={{ cursor: 'pointer' }}
-            />
+            <img src={Images.FileIcon} width="20px" height={'20px'} />
             Monitoring Report
-            <FileDownloadOutlinedIcon sx={{ color: '#388E81' }} />
+            <FileDownloadOutlinedIcon
+              sx={{ color: '#388E81', cursor: 'pointer' }}
+              onClick={() => {
+                if (!projectDetails.project_pdf) return
+                downloadFile(projectDetails?.project_pdf)
+              }}
+            />
           </Box>,
           'v1',
           renderStatusChips(1),
           <Box key={1} sx={{ display: 'flex' }}>
-            <img
-              src={Images.FileIcon}
-              width="20px"
-              height={'20px'}
-              style={{ cursor: 'pointer' }}
-            />
+            <img src={Images.FileIcon} width="20px" height={'20px'} />
             Project Issuance
-            {/* <FileDownloadOutlinedIcon sx={{ color: '#388E81' }} /> */}
+            <FileDownloadOutlinedIcon
+              sx={{ color: '#388E81', cursor: 'pointer' }}
+              onClick={() => {
+                if (!projectDetails?.report?.file_attach?.length) return
+                projectDetails?.report?.file_attach.forEach(
+                  (file: any, index: number) => {
+                    downloadFile(file)
+                  }
+                )
+              }}
+            />
           </Box>,
           //'--',
           projectDetails?.report?.quantity,
@@ -190,11 +261,15 @@ const Reports = ({ projectDetails }: reportsProps) => {
                 ) {
                   navigate(pathNames.REVIEW_AND_COMMENT, {
                     state: {
-                      project: currentProjectDetails,
-                      pdf: currentProjectDetails?.project_pdf,
+                      // project: currentProjectDetails,
+                      // pdf: currentProjectDetails?.project_pdf,
+                      // verifierName:
+                      //   currentProjectDetails?.verifier_details_id
+                      //     ?.verifier_name,
+                      project: projectDetails,
+                      pdf: projectDetails?.project_pdf,
                       verifierName:
-                        currentProjectDetails?.verifier_details_id
-                          ?.verifier_name,
+                        projectDetails?.verifier_details_id?.verifier_name,
                     },
                   })
                 }

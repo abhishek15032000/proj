@@ -77,7 +77,7 @@ const SectionE8 = () => {
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Use appendices for supporting information and add any additional documents"
-            placeholder=""
+            placeholder="Use appendices for supporting information and add any additional documents"
             value={E8.appendices_supporting_documents}
             name="appendices_supporting_documents"
             onChange={({ target: { value, name } }) =>

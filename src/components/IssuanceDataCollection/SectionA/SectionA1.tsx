@@ -125,7 +125,7 @@ const SectionA1 = () => {
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCMultilineTextArea
           label=" Brief on purpose and general description of project activity "
-          placeholder="(Write a brief on the purpose of development of project and general description of project activity"
+          placeholder="Write a brief on the purpose of development of project and general description of project activity"
           value={A1.purpose_and_description}
           name={'purpose_and_description'}
           onChange={({ target: { name, value } }) =>
@@ -137,7 +137,7 @@ const SectionA1 = () => {
         <CCMultilineTextArea
           label=" Purpose of the project activity and the measures taken to reduce
           greenhouse gas emission "
-          placeholder="(Write the purpose of the project activity in details & the measures taken to reduce greenhouse gas emissions and their results, if any)"
+          placeholder="Write the purpose of the project activity in details & the measures taken to reduce greenhouse gas emissions and their results, if any"
           value={A1.measure_taken_for_gas_emissions}
           name={'measure_taken_for_gas_emissions'}
           onChange={({ target: { name, value } }) =>
@@ -148,7 +148,7 @@ const SectionA1 = () => {
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCMultilineTextArea
           label={' Brief description of the installed technology and equipment'}
-          placeholder="(Brief description of the installed technology and equipment, its purpose for installation)"
+          placeholder="Brief description of the installed technology and equipment, its purpose for installation"
           value={A1.brief_description_installed_tech}
           name={'brief_description_installed_tech'}
           onChange={({ target: { name, value } }) =>
@@ -161,7 +161,6 @@ const SectionA1 = () => {
       </Grid>
       <Grid item xs={6} md={6}>
         <DatePicker
-          //label="Construction Date"
           label="Project Commissioning Date"
           value={A1.construction_date}
           onChange={(newValue) => {
@@ -182,7 +181,6 @@ const SectionA1 = () => {
       </Grid>
       <Grid item xs={12} md={6}>
         <DatePicker
-          //label="Project Commissioning Date"
           label="End Date"
           value={A1.project_comissioning_date}
           onChange={(newValue) => {
@@ -217,7 +215,7 @@ const SectionA1 = () => {
           label={
             '   Total GHG emission reductions or net anthropogenic GHG removals by sinks achieved in this monitoring period'
           }
-          placeholder="(Total GHG emission reductions or net anthropogenic GHG removals by sinks achieved during this monitoring period.)"
+          placeholder="Total GHG emission reductions or net anthropogenic GHG removals by sinks achieved during this monitoring period."
           value={A1.total_GHG_emission}
           name={'total_GHG_emission'}
           onChange={({ target: { name, value } }) =>
@@ -229,7 +227,7 @@ const SectionA1 = () => {
       <Grid item xs={12} sx={{ mt: 2 }}>
         <CCMultilineTextArea
           label={'Project Type and Sectoral Scope'}
-          placeholder="(Provide information on the type of project, i.e., carbon removal/sequestration, avoidance/reduction, or hybrid, and information on the sectoral scope of the project. Further, please specify if the project is a grouped project.)"
+          placeholder="Provide information on the type of project, i.e., carbon removal/sequestration, avoidance/reduction, or hybrid, and information on the sectoral scope of the project. Further, please specify if the project is a grouped project."
           value={A1.project_type_and_sectoral_scope}
           name={'project_type_and_sectoral_scope'}
           onChange={({ target: { name, value } }) =>

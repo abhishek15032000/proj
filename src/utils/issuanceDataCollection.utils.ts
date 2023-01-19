@@ -451,6 +451,19 @@ export const moveToNextSection = async (
         },
       }
     } else if (subSectionIndex === 2) {
+      if (
+        project_boundary.length === 0 &&
+        eligibility.length === 0 &&
+        funding.length === 0 &&
+        ownership.length === 0 &&
+        ownership_file_attach.length === 0 &&
+        other_certifications.length === 0 &&
+        participation_under_GHG_programs.length === 0 &&
+        other_benefits.length === 0
+      ) {
+        alert('Fill any one field')
+        return
+      }
       params = {
         step3: {
           project_boundary,
@@ -548,6 +561,20 @@ export const moveToNextSection = async (
         },
       }
     } else if (subSectionIndex === 1) {
+      if (
+        criteria_and_procedures.length === 0 &&
+        baseline_emissions.length === 0 &&
+        baseline_emissions_upload.length === 0 &&
+        project_emissions.length === 0 &&
+        project_emissions_upload.length === 0 &&
+        leakage.length === 0 &&
+        leakage_upload.length === 0 &&
+        quantification_of_net_GHG_emission.length === 0 &&
+        quantification_of_net_GHG_emission_upload.length === 0
+      ) {
+        alert('Fill any one field')
+        return
+      }
       params = {
         step2: {
           criteria_and_procedures,
@@ -836,6 +863,13 @@ export const moveToNextSection = async (
         },
       }
     } else if (subSectionIndex === 7) {
+      if (
+        appendices_supporting_documents.length === 0 &&
+        appendices_supporting_documents_upload.length === 0
+      ) {
+        alert('Please fill any one field')
+        return
+      }
       params = {
         step8: {
           appendices_supporting_documents,

@@ -75,16 +75,18 @@ const RegistryDashboard = () => {
   }
   return (
     <>
-      <Typography
-        sx={{
-          mt: 2,
-          color: Colors.tertiary,
-          fontSize: 28,
-          fontWeight: 400,
-        }}
-      >
-        Dashboard
-      </Typography>
+      {!profileComplete ? (
+        <Typography
+          sx={{
+            mt: 2,
+            color: Colors.tertiary,
+            fontSize: 28,
+            fontWeight: 400,
+          }}
+        >
+          Dashboard
+        </Typography>
+      ) : null}
       <Grid container columnSpacing={2}>
         <Grid item md={profileComplete ? 12 : 9}>
           {!profileComplete ? <OnBoardingIssuer /> : null}

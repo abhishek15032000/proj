@@ -1,7 +1,13 @@
 import _ from 'lodash'
 import React from 'react'
 import { shallowEqual } from 'react-redux'
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom'
 import { ROLES } from '../config/constants.config'
 import { useAppSelector } from '../hooks/reduxHooks'
 import AccessDeniedPage from '../pages/AccessDeniedPage/AccessDeniedPage'
@@ -40,6 +46,28 @@ const RouteController = ({ localLoggedIn }: any) => {
           }
         />
       ))}
+      <Route
+        path={pathNames.PROJECT_LISTS_WITH_FILTER}
+        element={
+          <HybridRoute
+            roles={[]}
+            component={ProjectListsWithFilter}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      <Route
+        path={pathNames.PROJECT_DETAILS}
+        element={
+          <HybridRoute
+            roles={[]}
+            component={ProjectDetails}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
       <Route
         path={pathNames.LOGIN}
         element={
@@ -107,7 +135,6 @@ const RouteController = ({ localLoggedIn }: any) => {
         }
       />
       <Route
-      
         path={pathNames.PROJECT_DETAILS}
         element={
           <PublicRoute
@@ -134,28 +161,6 @@ const RouteController = ({ localLoggedIn }: any) => {
           />
         }
       />
-      {/* <Route
-        path={pathNames.PROJECT_DETAILS}
-        element={
-          <PublicRoute
-            roles={[]}
-            component={ProjectDetails}
-            authenticated={userData}
-            userData={userData}
-          />
-        }
-      />
-      <Route
-        path={pathNames.PROJECT_LISTS_WITH_FILTER}
-        element={
-          <PublicRoute
-            roles={[]}
-            component={ProjectListsWithFilter}
-            authenticated={userData}
-            userData={userData}
-          />
-        }
-      /> */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
@@ -188,14 +193,16 @@ const PrivateRoute = ({
   )
   // alert(location.pathname)
 
-  if ((isAuthenticated && userHasRequiredRole) || hybridPaths.includes(location.pathname)) {
+  if (
+    (isAuthenticated && userHasRequiredRole) ||
+    hybridPaths.includes(location.pathname)
+  ) {
     return <RouteComponent />
   }
 
   if (isAuthenticated && !userHasRequiredRole) {
     return <AccessDeniedPage />
   }
-  
 
   return <Navigate to={pathNames.LOGIN} />
 }
@@ -229,6 +236,9 @@ const PublicRoute = ({
   }
 
   return <Navigate to={pathNames.DASHBOARD} />
+}
+const HybridRoute = ({ component: RouteComponent }: Props) => {
+  return <RouteComponent />
 }
 
 export default RouteController

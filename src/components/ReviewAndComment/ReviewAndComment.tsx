@@ -255,7 +255,7 @@ const ReviewAndComment = () => {
             className="hide-scrollbar"
             item
             xs={12}
-            md={6}
+            md={7}
             sx={{ height: 'calc( 100vh - 60px)' }}
           >
             {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
@@ -263,11 +263,15 @@ const ReviewAndComment = () => {
         </Grid>
       ) : (
         <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
-          <Grid item xs={12} md={6} sx={{ height: 'calc( 100vh - 60px)' }}>
+          <Grid item xs={12} md={7} sx={{ height: 'calc( 100vh - 60px)' }}>
             {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
           </Grid>
-          <Grid item xs={12} md={6} sx={{ height: 'calc( 100vh - 60px)' }}>
-            <CommentBox />
+          <Grid item xs={12} md={5} sx={{ height: 'calc( 100vh - 60px)' }}>
+            <CommentBox
+              closeChatbox={() => {
+                setShowCommentSection(false)
+              }}
+            />
           </Grid>
         </Grid>
       )}

@@ -42,6 +42,7 @@ import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewRe
 import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProjects'
 import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
 import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
+import Wallet from '../pages/Wallet'
 
 export const privateRouteComponents = [
   {
@@ -163,7 +164,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUER_WALLET,
     component: IssuerWallet,
-    sidebarName: linkLabels.Wallet,
+
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
@@ -225,11 +226,6 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER, ROLES.REGISTRY],
   },
   {
-    path: pathNames.PROJECT_LISTS_WITH_FILTER,
-    component: ProjectListsWithFilter,
-    roles: [ROLES.ISSUER, ROLES.REGISTRY],
-  },
-  {
     path: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
     component: ProjectDetailsRegistryAcc,
     roles: [ROLES.REGISTRY, ROLES.VERIFIER],
@@ -260,5 +256,11 @@ export const privateRouteComponents = [
     path: pathNames.REVIEW_AND_COMMENT,
     component: ReviewAndComment,
     roles: [ROLES.VERIFIER, ROLES.ISSUER],
+  },
+  {
+    path: pathNames.WALLET,
+    component: Wallet,
+    sidebarName: linkLabels.Wallet,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
   },
 ]

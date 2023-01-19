@@ -251,12 +251,13 @@ const SectionA3 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA3({ value, name }))
             }
+            required={false}
           />
         </Grid>
         <Grid item xs={12}>
           <CCDropAndUpload
             mediaTitle={['Sample Report - Implementation of Milestones']}
-            title="Host Country Attestation*"
+            title="Host Country Attestation"
             mediaItem={[]}
             imageArray={A3.host_country_attestation_upload}
             onImageUpload={(item: any) => {
@@ -289,6 +290,7 @@ const SectionA3 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA3({ value, name }))
             }
+            required={false}
           />
         </Grid>
       </Grid>

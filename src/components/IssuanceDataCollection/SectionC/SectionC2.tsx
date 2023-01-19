@@ -139,7 +139,7 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            //required={false}
+            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -151,13 +151,13 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            //required={false}
+            required={false}
           />
         </Grid>
         <Grid item sx={{}} xs={12}>
           <CCDropAndUpload
             mediaTitle={[]}
-            title="Baseline emissions*"
+            title="Baseline emissions"
             mediaItem={[]}
             imageArray={C2.baseline_emissions_upload}
             onImageUpload={(item: any) => {
@@ -187,13 +187,13 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            //required={false}
+            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCDropAndUpload
             mediaTitle={[]}
-            title="Project emissions*"
+            title="Project emissions"
             mediaItem={[]}
             imageArray={C2.project_emissions_upload}
             onImageUpload={(item: any) => {
@@ -223,13 +223,13 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            //required={false}
+            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCDropAndUpload
             mediaTitle={[]}
-            title="Leakage*"
+            title="Leakage"
             mediaItem={[]}
             imageArray={C2.leakage_upload}
             onImageUpload={(item: any) => {
@@ -259,13 +259,13 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            //required={false}
+            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCDropAndUpload
             mediaTitle={[]}
-            title="Quantification of Net-GHG Emissions and/or Removals*"
+            title="Quantification of Net-GHG Emissions and/or Removals"
             mediaItem={[SectionC2IdentificationOfRelavantSSRs]}
             imageArray={C2.quantification_of_net_GHG_emission_upload}
             onImageUpload={(item: any) => {

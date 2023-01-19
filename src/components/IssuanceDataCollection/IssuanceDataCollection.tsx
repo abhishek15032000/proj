@@ -182,6 +182,8 @@ const IssuanceDataCollection = () => {
   )
   const methodologies = useAppSelector(({ sectionA }) => sectionA.methodologies)
   const A5 = useAppSelector(({ sectionA }) => sectionA.A5)
+  const A6 = useAppSelector(({ sectionA }) => sectionA.A6)
+  const A7 = useAppSelector(({ sectionA }) => sectionA.A7)
   const B1 = useAppSelector(({ sectionB }) => sectionB.B1)
   const B2 = useAppSelector(({ sectionB }) => sectionB.B2)
   const C1 = useAppSelector(({ sectionC }) => sectionC.C1, shallowEqual)
@@ -321,19 +323,12 @@ const IssuanceDataCollection = () => {
         section: 1,
         subSection: 1,
       },
-      //{
-      //  sectionName: party_and_project_participants,
-      //  subSectionRow:
-      //    currentProjectDetails?.['section_a']?.[
-      //      `step${subSectionIndex + 1}`
-      //    ]?.['party_and_project_participants'],
-      //  section: 1,
-      //  subSection: 2,
-      //},
       {
         sectionName: party_and_project_participants,
         subSectionRow:
-          currentProjectDetails?.['section_a']?.[`step${subSectionIndex + 1}`],
+          currentProjectDetails?.['section_a']?.[
+            `step${subSectionIndex + 1}`
+          ]?.['party_and_project_participants'],
         section: 1,
         subSection: 2,
       },
@@ -352,6 +347,20 @@ const IssuanceDataCollection = () => {
           currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
         section: 1,
         subSection: 4,
+      },
+      {
+        sectionName: A6,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
+        section: 1,
+        subSection: 5,
+      },
+      {
+        sectionName: A7,
+        subSectionRow:
+          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
+        section: 1,
+        subSection: 6,
       },
       {
         sectionName: B1,

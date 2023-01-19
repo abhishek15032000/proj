@@ -511,3 +511,13 @@ export const METHODOLOGIES = [
   'AMS-III.BF. Reduction of N2O emissions from use of Nitrogen Use Efficient (NUE) seeds that require less fertilizer application',
   'AMS-III.BK. Strategic feed supplementation in smallholder dairy sector to increase productivity',
 ]
+
+export const TX_TYPE = {
+  CREATE_PROJECT: 0,
+  UPDATE_PROJECT: 1,
+  CONFIRM_VERIFIER: 2,
+  VERIFIER_VERIFIES_REPORT: 4,
+  //Registry is assigned to the project(Currently happening automatically from BE)
+  REGISTRY_GETS_UPDATED: 3,
+  REGISTRY_VERIFIES_REPORT: 6,
+}

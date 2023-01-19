@@ -1,25 +1,22 @@
-import { Grid, Typography, Box, Radio, Paper } from '@mui/material'
-import { borderColor } from '@mui/system'
-
-import React, { FC, useEffect, useState } from 'react'
-import CCButton from '../../../atoms/CCButton'
-import { Colors, Images } from '../../../theme'
-import TitleValue from '../../Profile/TitleValue'
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import { Box, Paper, Typography } from '@mui/material'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
 import moment from 'moment'
-import { PROJECT_STATUS } from '../../../config/constants.config'
-import CreateProject from './AllTraceTabDetails/CreateProject'
-import SubmitVerification from './AllTraceTabDetails/SubmitVerification'
-import Buyer from './AllTraceTabDetails/Buyer'
-import VerificationReport from './AllTraceTabDetails/VerificationReport'
-import RegsitryVerificationReport from './AllTraceTabDetails/RegsitryVerificationReport'
+import React, { FC } from 'react'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 import ApproveReport from './AllTraceTabDetails/ApproveReport'
-import VerificationRequest from './AllTraceTabDetails/VerificationRequest'
-import VerificationProcess from './AllTraceTabDetails/VerificationProcess'
+import Buyer from './AllTraceTabDetails/Buyer'
+import CreateProject from './AllTraceTabDetails/CreateProject'
 import GetVerificationReport from './AllTraceTabDetails/GetVerificationReport'
+import RegsitryVerificationReport from './AllTraceTabDetails/RegsitryVerificationReport'
+import SubmitVerification from './AllTraceTabDetails/SubmitVerification'
+import VerificationProcess from './AllTraceTabDetails/VerificationProcess'
+import VerificationReport from './AllTraceTabDetails/VerificationReport'
+import VerificationRequest from './AllTraceTabDetails/VerificationRequest'
+import { downloadFile } from '../../../utils/commonFunctions'
 
-interface TraceDetailsProps {
+export interface TraceDetailsProps {
   traceOption?: any
   setTraceOption?: any
   theme?: any
@@ -29,98 +26,29 @@ interface TraceDetailsProps {
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
-  const {
-    traceOption,
-    setTraceOption,
-    theme,
-    projectId,
-    projectDetails,
-    traceTab,
-  } = props
+  const { traceOption, theme, projectDetails } = props
 
   const renderTab = [
-    <CreateProject
-      key={0}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <SubmitVerification
-      key={1}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <VerificationRequest
-      key={2}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <VerificationProcess
-      key={3}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <VerificationReport
-      key={4}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <ApproveReport
-      key={5}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <RegsitryVerificationReport
-      key={6}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <GetVerificationReport
-      key={7}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
-    <Buyer
-      key={8}
-      traceOption={traceOption}
-      setTraceOption={(item: any) => setTraceOption(item)}
-      theme={theme}
-      projectId={projectId}
-      projectDetails={projectDetails}
-      traceTab={traceTab}
-    />,
+    <CreateProject key={0} {...props} />,
+    <SubmitVerification key={1} {...props} />,
+    <VerificationRequest key={2} {...props} />,
+    <VerificationProcess key={3} {...props} />,
+    <VerificationReport key={4} {...props} />,
+    <ApproveReport key={5} {...props} />,
+    <RegsitryVerificationReport key={6} {...props} />,
+    <GetVerificationReport key={7} {...props} />,
+    <Buyer key={8} {...props} />,
   ]
+
+  const txIDForTab = useAppSelector(
+    ({ traceability }) => traceability?.txIDForTab,
+    shallowEqual
+  )
+  const reportPDF = useAppSelector(
+    ({ traceability }) => traceability?.reportPDF,
+    shallowEqual
+  )
+
   return (
     <Paper
       sx={{
@@ -132,13 +60,14 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
         alignItems: 'start',
         p: 4,
 
-        width: '70%',
-        mt: '20px',
+        width: '100%',
         height: '520px',
         py: 5,
+        pr: 12,
         overflowX: 'hidden',
+        boxShadow: '0px 5px 20px rgba(45, 95, 87, 0.1)',
       }}
-      // className="scroll-container"
+      className="trace-details"
     >
       <Typography
         sx={{
@@ -151,18 +80,26 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
           ' | ' +
           moment(projectDetails?.createdAt).format(`HH:MM:SS`)}
       </Typography>
-      <Typography
-        sx={{
-          color: '#1A8EF5',
-          fontSize: 12,
-          fontWeight: 400,
-          mt: 1,
-        }}
-      >
-        {projectDetails?.tx && projectDetails?.tx?.lenght > 0
-          ? projectDetails?.tx?.transaction_id
-          : '-'}
-      </Typography>
+      {txIDForTab ? (
+        <Typography
+          sx={{
+            color: '#1A8EF5',
+            fontSize: 12,
+            fontWeight: 500,
+            mt: 1,
+            wordBreak: 'break-all',
+          }}
+        >
+          <a
+            href={`https://mumbai.polygonscan.com/tx/${txIDForTab}`}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#1A8EF5' }}
+          >
+            {txIDForTab}
+          </a>
+        </Typography>
+      ) : null}
 
       {renderTab[traceOption]}
       <Typography
@@ -175,74 +112,93 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
       >
         {'Relevant docs'}
       </Typography>
+      {reportPDF ? (
+        <FileComp theme={theme} filename={'Project Report'} file={reportPDF} />
+      ) : null}
       {projectDetails?.report?.file_attach &&
         projectDetails?.report?.file_attach.length > 0 &&
-        projectDetails?.report?.file_attach.map((item: any, index: number) => (
-          <Box
-            key={index}
-            sx={{
-              width: '100%',
-              height: '40px',
-              backgroundColor:
-                theme === 'dark' ? 'rgba(25, 28, 27, 0.12)' : '#DAF7F0',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderRadius: '8px',
-              pr: 1,
-              mt: 1,
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                pl: 1,
-              }}
-            >
-              <InsertDriveFileIcon
-                style={{
-                  color: '#388E81',
-                  // border:
-                  //   theme === 'dark'
-                  //     ? '2px solid #388E81'
-                  //     : '2px solid #388E81',
-                }}
-              />
-
-              <Box
-                sx={{
-                  ml: 1,
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: 12,
-                    fontWeight: 400,
-                    color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
-                  }}
-                >
-                  {/* {props.title} */}
-                  {'Project introduction file.'}
-                </Typography>
-                {/* {props.fileSize > 0 && ( */}
-                <Typography
-                  sx={{
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
-                  }}
-                >
-                  {/* {props.fileSize} MB */}
-                  {'0.5 MB'}
-                </Typography>
-                {/* )} */}
-              </Box>
-            </Box>
-          </Box>
+        projectDetails?.report?.file_attach.map((file: any, index: number) => (
+          <FileComp key={index} theme={theme} filename={file} file={file} />
         ))}
     </Paper>
   )
 }
 export default TraceDetails
+
+interface FileCompProps {
+  theme: string
+  filename: any
+  file?: string
+}
+const FileComp: FC<FileCompProps> = ({ theme, filename, file }) => {
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        // height: '40px',
+        backgroundColor:
+          theme === 'dark' ? 'rgba(25, 28, 27, 0.12)' : '#DAF7F0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: '8px',
+        padding: '4px',
+        mt: 1,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          pl: 1,
+          width: '100%',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <InsertDriveFileOutlinedIcon
+            style={{
+              color: '#388E81',
+            }}
+          />
+          <Box
+            sx={{
+              ml: 1,
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 12,
+                fontWeight: 400,
+                color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
+              }}
+            >
+              {filename}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 12,
+                fontWeight: 500,
+                color: theme === 'dark' ? '#CCE8E1' : '#191C1B',
+              }}
+            ></Typography>
+          </Box>
+        </Box>
+        {file ? (
+          <FileDownloadIcon
+            sx={{ color: '#388E81', ml: 1, cursor: 'pointer' }}
+            onClick={() => {
+              downloadFile(file)
+            }}
+          />
+        ) : null}
+      </Box>
+    </Box>
+  )
+}

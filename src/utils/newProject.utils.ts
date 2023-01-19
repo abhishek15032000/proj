@@ -32,10 +32,14 @@ export const addSectionPercentages = (row: any) => {
     row.section_a.step7,
   ])
   //row.section_b.completionPercentage = calSectionPercent(row.section_b)
-  row.section_b.completionPercentage = calSectionPercent(row.section_b)
-  row.section_c.completionPercentage = calSectionPercentSpecificStep([
+  //row.section_b.completionPercentage = calSectionPercent(row.section_c)
+  row.section_b.completionPercentage = calSectionPercentSpecificStep([
     row.section_b.step1,
     row.section_b.step3,
+  ])
+  row.section_c.completionPercentage = calSectionPercentSpecificStep([
+    row.section_c.step1,
+    row.section_c.step2,
   ])
   row.section_d.completionPercentage = calSectionPercent(row.section_d)
   row.section_e.completionPercentage = calSectionPercent(row.section_e)

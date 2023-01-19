@@ -3,19 +3,19 @@ import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { Navigate, useLocation, useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { registryCalls } from '../../api/registry.api'
-import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
-import Spinner from '../../atoms/Spinner'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import { Colors, Images } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 import EditTokensModal from './EditTokensModal'
+import LoderOverlay from '../LoderOverlay'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 
 const pdfLoading = false
 
@@ -36,17 +36,28 @@ const RegistryReviewReport = () => {
   )
 
   const [explain, setExplain] = useState<string>('')
-  const [lifetimeVCOT, setLifetimeVCOT] = useState<number>(4234)
-  const [monthlyVCOT, setMonthlyVCOT] = useState<number>(334)
+  const [lifetimeVCOT, setLifetimeVCOT] = useState<number>(0)
+  const [monthlyVCOT, setMonthlyVCOT] = useState<number>(0)
   const [openModal, setOpenModal] = useState(false)
   const [reportData, setReportData] = useState<any>()
   const [pdfLoading, setPDFLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
 
-  const closeModal = () => setOpenModal(false)
+  console.log('lifetimeVCOT', lifetimeVCOT)
+  console.log('monthlyVCOT', monthlyVCOT)
 
+  const closeModal = () => setOpenModal(false)
+  console.log(
+    'location?.state?.projectReportDetails?',
+    location?.state?.projectReportDetails
+  )
   useEffect(() => {
     setReportData(location?.state?.projectReportDetails)
+    console.log(
+      'ran',
+      location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
+    )
     setLifetimeVCOT(
       location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
     )
@@ -85,6 +96,7 @@ const RegistryReviewReport = () => {
 
   const sumbitReport = async () => {
     try {
+      setLoading(true)
       const registryId = getLocalItem('userDetails')?.user_id
       const payload = {
         _id: reportData?.report?._id,
@@ -110,14 +122,16 @@ const RegistryReviewReport = () => {
       } else alert('Something wrong in submitting the file')
       console.log('res: ', res)
     } catch (err) {
-      console.log('err', err)
+      console.log('Error in registryCalls.reportSumbit ~ ', err)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <>
       <Grid container sx={{ background: '#DAE5E1' }} columnSpacing={2}>
-        {/* {loading ? <LoaderOverlay /> : null} */}
+        {loading ? <LoderOverlay /> : null}
         <Grid
           item
           // xs={12}
@@ -133,11 +147,16 @@ const RegistryReviewReport = () => {
                 display: 'flex',
               }}
             >
-              <Typography
+              {/* <Typography
                 sx={{ fontSize: 28, fontWeight: 400, color: Colors.tertiary }}
               >
                 Review Report & Add Comments
-              </Typography>
+              </Typography> */}
+              <BackHeader
+                title="Review Report & Add Comments"
+                onClick={() => navigate(-1)}
+                titleSx={{ fontSize: 26 }}
+              />
 
               <TextButton
                 // onClick={() => setShowModal(true)}
@@ -252,12 +271,14 @@ const RegistryReviewReport = () => {
                 Relevant Docs{' '}
               </Typography>
               <Box>
-                {/*{docs?.map((doc: any, index: number) => (*/}
-                {reportData?.report?.file_attach?.map(
-                  (doc: any, index: number) => (
-                    <FileDetails key={index} doc={doc} />
-                  )
-                )}
+                {reportData?.report?.file_attach &&
+                reportData?.report?.file_attach.length
+                  ? reportData?.report?.file_attach?.map(
+                      (doc: any, index: number) => (
+                        <FileDetails key={index} doc={doc} />
+                      )
+                    )
+                  : '-'}
               </Box>
             </Box>
 
@@ -268,9 +289,10 @@ const RegistryReviewReport = () => {
                 Photos/Videos Added{' '}
               </Typography>
               <Box>
-                {docs?.map((doc: any, index: number) => (
+                {/* {docs?.map((doc: any, index: number) => (
                   <FileDetails key={index} doc={doc} />
-                ))}
+                ))} */}
+                -
               </Box>
             </Box>
 
@@ -353,9 +375,16 @@ const FileDetails: FC<FileDetailsProps> = ({ doc }) => {
           }}
         />
       </Box>
-      <Box sx={{ fontSize: 12, color: '#191C1B' }}>
-        <Box>{doc?.name}</Box>
-        <Box>{doc?.size}</Box>
+      <Box
+        sx={{
+          fontSize: 12,
+          color: '#191C1B',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Box>{doc}</Box>
+        {/* <Box>{doc?.size}</Box> */}
       </Box>
     </Box>
   )

@@ -224,11 +224,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
               key={index}
               sx={{ width: '90px' }}
               onClick={() =>
-                navigate(pathNames.REVIEW_AND_COMMENT, {
+                navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
                   state: {
-                    project: item?.project_id,
-                    pdf: item?.project_id?.project_pdf,
-                    verifierName: item?.verifier_name,
+                    project_uuid: item?.project_id.uuid,
+                    projectDetails: item?.project_id,
                   },
                 })
               }
