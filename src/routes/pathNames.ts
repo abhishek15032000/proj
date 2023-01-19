@@ -44,6 +44,7 @@ export const pathNames = {
   REGISTRY_ALL_PROJECTS: '/registry-all-projects',
   COMPLETE_PROFILE: '/complete-profile',
   REVIEW_AND_COMMENT: '/review-and-comment',
+  WALLET: '/wallet',
 }
 
 export const linkLabels = {
