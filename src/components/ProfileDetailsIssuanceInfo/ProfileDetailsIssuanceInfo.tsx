@@ -21,6 +21,7 @@ import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import ProjectIntro from '../ProjectDetailsRegistryAcc/ProjectIntro'
 import WebAppTraceHistory from '../ProjectDetails/TraceHistory/WebappTraceHistory'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 const projectDetails = {
   company_name:
@@ -213,41 +214,44 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               </Box>
             ))}
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              cursor: 'pointer',
-            }}
-            onClick={() =>
-              navigate(pathNames.REVIEW_AND_COMMENT, {
-                state: {
-                  project: currentProjectDetails,
-                  pdf: currentProjectDetails?.project_pdf,
-                  verifierName:
-                    currentProjectDetails?.verifier_details_id?.verifier_name,
-                  verifierID:
-                    currentProjectDetails?.verifier_details_id?.verifier_id,
-                },
-              })
-            }
-          >
-            <Typography
+          {currentProjectDetails?.project_status >=
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
+            <Box
               sx={{
-                fontSize: 18,
-                fontWeight: 500,
-                color: Colors.tertiary,
-                textDecoration: 'underline',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
               }}
+              onClick={() =>
+                navigate(pathNames.REVIEW_AND_COMMENT, {
+                  state: {
+                    project: currentProjectDetails,
+                    pdf: currentProjectDetails?.project_pdf,
+                    verifierName:
+                      currentProjectDetails?.verifier_details_id?.verifier_name,
+                    verifierID:
+                      currentProjectDetails?.verifier_details_id?.verifier_id,
+                  },
+                })
+              }
             >
-              {' '}
-              View Comments
-            </Typography>
-            <Box>
-              <OpenInNewIcon sx={{ ml: 1, color: Colors.darkPrimary1 }} />
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  color: Colors.tertiary,
+                  textDecoration: 'underline',
+                }}
+              >
+                {' '}
+                View Comments
+              </Typography>
+              <Box>
+                <OpenInNewIcon sx={{ ml: 1, color: Colors.darkPrimary1 }} />
+              </Box>
             </Box>
-          </Box>
+          ) : null}
         </Box>
 
         <Box>
