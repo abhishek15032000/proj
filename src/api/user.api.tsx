@@ -61,4 +61,20 @@ export const USER = {
       return response.data
     })
   },
+  getTokenBalanceList: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.transaction.getTokenBalanceList + `?_id=${payload}`,
+      'GET'
+    ).then((response: any) => {
+      return response?.data
+    })
+  },
+  getPrivateKey: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.userRoutes.getPrivateKey + `?_id=${payload}`,
+      'GET'
+    ).then((response: any) => {
+      return response?.data
+    })
+  },
 }
