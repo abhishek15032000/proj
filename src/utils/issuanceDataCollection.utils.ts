@@ -45,8 +45,7 @@ export const moveToNextSection = async (
       projectType &&
       projectLocation &&
       startDate &&
-      projectDuration &&
-      projectArea
+      projectDuration
     ) {
       const payload: any = {
         company_name: projectName,
@@ -54,11 +53,14 @@ export const moveToNextSection = async (
         location: projectLocation,
         start_date: startDate,
         duration: Number(projectDuration),
-        area: projectArea,
         monthly_update: false,
       }
+      //endData, area is optional
       if (endDate) {
         payload['end_date'] = endDate
+      }
+      if (projectArea) {
+        payload['area'] = projectArea
       }
 
       try {
@@ -108,6 +110,10 @@ export const moveToNextSection = async (
         category: item.category,
         version: item.version,
         tools: item.tools,
+        applicability_of_methodology: item.applicability_of_methodology,
+        applicable_methodology: item.applicable_methodology,
+        deviation_of_methodology: item.deviation_of_methodology,
+        other_info: item.other_info,
       }
     })
 
@@ -121,7 +127,7 @@ export const moveToNextSection = async (
       project_comissioning_date,
       conditions_prior_to_initiation,
       project_type_and_sectoral_scope,
-      //additional_information,
+      additional_info,
     } = sectionA.A1
     const {
       country,
@@ -133,6 +139,11 @@ export const moveToNextSection = async (
       geographic_coordinates,
       aerial_photo,
     } = sectionA.A2
+    const {
+      host_country_attestation,
+      host_country_attestation_upload,
+      eligibility_criteria,
+    } = sectionA.A3
     const { party_and_project_participants, methodologies } = sectionA
     const { credit_start_period, credit_period, credit_period_description } =
       sectionA.A5
@@ -157,6 +168,9 @@ export const moveToNextSection = async (
           construction_date,
           operation_period,
           project_comissioning_date,
+          conditions_prior_to_initiation,
+          project_type_and_sectoral_scope,
+          additional_info,
         ])
       ) {
         dispatch(setShowMandatoryFieldModal(true))
@@ -173,7 +187,7 @@ export const moveToNextSection = async (
           total_GHG_emission,
           conditions_prior_to_initiation,
           project_type_and_sectoral_scope,
-          additional_information: sectionA.A1.additional_information,
+          additional_info,
           completed: true,
         },
       }
@@ -188,6 +202,8 @@ export const moveToNextSection = async (
           geographic_coordinates,
           aerial_photo,
           file_attach,
+          geographic_coordinates,
+          aerial_photo,
         ])
       ) {
         dispatch(setShowMandatoryFieldModal(true))
@@ -215,6 +231,9 @@ export const moveToNextSection = async (
       }
       params = {
         step3: {
+          host_country_attestation,
+          host_country_attestation_upload,
+          eligibility_criteria,
           party_and_project_participants: step3data,
           completed: true,
         },
@@ -254,6 +273,19 @@ export const moveToNextSection = async (
         },
       }
     } else if (subSectionIndex === 5) {
+      if (
+        checkingMandatoryFields([
+          statutory_requirements,
+          negative_environmental_and_socio_economic_impacts,
+          consultation,
+          environmental_impact_assessment,
+          risk_assessment,
+          additional_information,
+        ])
+      ) {
+        dispatch(setShowMandatoryFieldModal(true))
+        return
+      }
       params = {
         step6: {
           statutory_requirements,
@@ -262,9 +294,24 @@ export const moveToNextSection = async (
           environmental_impact_assessment,
           risk_assessment,
           additional_information,
+          completed: true,
         },
       }
     } else if (subSectionIndex === 6) {
+      if (
+        checkingMandatoryFields([
+          Level1,
+          Level2a,
+          Level2b,
+          Level3,
+          Level4a,
+          Level4b,
+          Level5,
+        ])
+      ) {
+        dispatch(setShowMandatoryFieldModal(true))
+        return
+      }
       params = {
         step7: {
           Level1,
@@ -274,6 +321,7 @@ export const moveToNextSection = async (
           Level4a,
           Level4b,
           Level5,
+          completed: true,
         },
       }
     }
@@ -330,6 +378,16 @@ export const moveToNextSection = async (
         change_project_design,
         change_startDate_creditPeriod,
         typeOf_changes_specific,
+      },
+      B3: {
+        project_boundary,
+        eligibility,
+        funding,
+        ownership,
+        ownership_file_attach,
+        other_certifications,
+        participation_under_GHG_programs,
+        other_benefits,
       },
     } = sectionB
     let params = {}
@@ -392,6 +450,20 @@ export const moveToNextSection = async (
           //completed: true,
         },
       }
+    } else if (subSectionIndex === 2) {
+      params = {
+        step3: {
+          project_boundary,
+          eligibility,
+          funding,
+          ownership,
+          ownership_file_attach,
+          other_certifications,
+          participation_under_GHG_programs,
+          other_benefits,
+          completed: true,
+        },
+      }
     }
 
     // Change 'String' to actual values
@@ -430,39 +502,75 @@ export const moveToNextSection = async (
     const issuanceDataCollection = store.getState()?.issuanceDataCollection
     const currentProjectUUID = issuanceDataCollection?.currentProjectDetailsUUID
     const {
-      description,
-      monitoring_plan,
-      attach_org_structure_and_responsibilities_chart,
-      specific_data_monitored,
-      training_and_maintenance,
-      management_of_data_quality,
-    } = sectionC.C1
-    if (
-      checkingMandatoryFields([
+      C1: {
         description,
         monitoring_plan,
         attach_org_structure_and_responsibilities_chart,
         specific_data_monitored,
-      ])
-    ) {
-      dispatch(setShowMandatoryFieldModal(true))
-      return
+        training_and_maintenance,
+        management_of_data_quality,
+      },
+      C2: {
+        criteria_and_procedures,
+        baseline_emissions,
+        baseline_emissions_upload,
+        project_emissions,
+        project_emissions_upload,
+        leakage,
+        leakage_upload,
+        quantification_of_net_GHG_emission,
+        quantification_of_net_GHG_emission_upload,
+      },
+    } = sectionC
+
+    let params = {}
+    if (subSectionIndex === 0) {
+      if (
+        checkingMandatoryFields([
+          description,
+          monitoring_plan,
+          attach_org_structure_and_responsibilities_chart,
+          specific_data_monitored,
+        ])
+      ) {
+        dispatch(setShowMandatoryFieldModal(true))
+        return
+      }
+      params = {
+        step1: {
+          description,
+          monitoring_plan,
+          attach_org_structure_and_responsibilities_chart,
+          training_and_maintenance,
+          management_of_data_quality,
+          specific_data_monitored,
+          completed: true,
+        },
+      }
+    } else if (subSectionIndex === 1) {
+      params = {
+        step2: {
+          criteria_and_procedures,
+          baseline_emissions,
+          baseline_emissions_upload,
+          project_emissions,
+          project_emissions_upload,
+          leakage,
+          leakage_upload,
+          quantification_of_net_GHG_emission,
+          quantification_of_net_GHG_emission_upload,
+          completed: true,
+        },
+      }
     }
+
     // Change 'String' to actual values
     const payload = {
       _id: issuanceDataCollection?.currentProjectDetails?.section_c?._id,
       uuid: issuanceDataCollection?.currentProjectDetails?.section_c?.uuid,
       project_id:
         issuanceDataCollection?.currentProjectDetails?.section_c?.project_id,
-      step1: {
-        description,
-        monitoring_plan,
-        attach_org_structure_and_responsibilities_chart,
-        training_and_maintenance,
-        management_of_data_quality,
-        specific_data_monitored,
-        completed: true,
-      },
+      ...params,
     }
 
     try {
@@ -593,6 +701,10 @@ export const moveToNextSection = async (
       E5: { comparison_of_actual_emission_reduction },
       E6: { remark_on_difference_from_estimate_value },
       E7: { actual_emission_reductions },
+      E8: {
+        appendices_supporting_documents,
+        appendices_supporting_documents_upload,
+      },
     } = sectionE
     if (subSectionIndex === 0) {
       if (
@@ -720,6 +832,14 @@ export const moveToNextSection = async (
           //  sectionE.actualEmissionReductionsImages,
           //  'fileName'
           //),
+          completed: true,
+        },
+      }
+    } else if (subSectionIndex === 7) {
+      params = {
+        step8: {
+          appendices_supporting_documents,
+          appendices_supporting_documents_upload,
           completed: true,
         },
       }

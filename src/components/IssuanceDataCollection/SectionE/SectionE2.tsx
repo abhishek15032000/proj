@@ -72,6 +72,7 @@ const SectionE2 = () => {
           onChange={({ target: { value, name } }) =>
             dispatch(setE2({ name, value }))
           }
+          required={false}
         />
       </Grid>
       <Grid item xs={12}>

@@ -23,6 +23,11 @@ import SectionD3 from './SectionD/SectionD3'
 import SectionB2 from './SectionB/SectionB2'
 import SectionB1 from './SectionB/SectionB1'
 import SectionC1 from './SectionC/SectionC1'
+import SectionA6 from './SectionA/SectionA6'
+import SectionA7 from './SectionA/SectionA7'
+import SectionB3 from './SectionB/SectionB3'
+import SectionC2 from './SectionC/SectionC2'
+import SectionE8 from './SectionE/SectionE8'
 import ProjectCompletionProgress from './ProjectCompletionProgress'
 import ListNewProject from '../ListNewProject'
 import './issuanceDataCollection.css'
@@ -54,8 +59,6 @@ import { resetSectionC } from '../../redux/Slices/sectionCSlice'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 import { usePrompt } from '../../hooks/useCustomBlocker'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
-import SectionA6 from './SectionA/SectionA6'
-import SectionA7 from './SectionA/SectionA7'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -85,11 +88,16 @@ const sectionATabs = [
       component: SectionB1,
     },
     { name: 'B2: Post registration changes', component: SectionB2 },
+    { name: 'B3: Additional details', component: SectionB3 },
   ],
   [
     {
-      name: 'Section C: Description of Monitoring Activity',
+      name: 'C1: Description of Monitoring Activity',
       component: SectionC1,
+    },
+    {
+      name: 'C2: Quantification of GHG emission mitigations',
+      component: SectionC2,
     },
   ],
   [
@@ -122,6 +130,10 @@ const sectionATabs = [
     {
       name: 'E7: Actual emission reductions or net anthropogenic GHG removals during 1st commitment period',
       component: SectionE7,
+    },
+    {
+      name: 'E8: Appendix',
+      component: SectionE8,
     },
   ],
 ]
@@ -173,6 +185,7 @@ const IssuanceDataCollection = () => {
   const B1 = useAppSelector(({ sectionB }) => sectionB.B1)
   const B2 = useAppSelector(({ sectionB }) => sectionB.B2)
   const C1 = useAppSelector(({ sectionC }) => sectionC.C1, shallowEqual)
+  const C2 = useAppSelector(({ sectionC }) => sectionC.C2, shallowEqual)
   const D1 = useAppSelector(({ sectionD }) => sectionD.D1, shallowEqual)
   const D2 = useAppSelector(({ sectionD }) => sectionD.D2, shallowEqual)
   const D3 = useAppSelector(({ sectionD }) => sectionD.D3, shallowEqual)
@@ -308,12 +321,19 @@ const IssuanceDataCollection = () => {
         section: 1,
         subSection: 1,
       },
+      //{
+      //  sectionName: party_and_project_participants,
+      //  subSectionRow:
+      //    currentProjectDetails?.['section_a']?.[
+      //      `step${subSectionIndex + 1}`
+      //    ]?.['party_and_project_participants'],
+      //  section: 1,
+      //  subSection: 2,
+      //},
       {
         sectionName: party_and_project_participants,
         subSectionRow:
-          currentProjectDetails?.['section_a']?.[
-            `step${subSectionIndex + 1}`
-          ]?.['party_and_project_participants'],
+          currentProjectDetails?.['section_a']?.[`step${subSectionIndex + 1}`],
         section: 1,
         subSection: 2,
       },
@@ -353,6 +373,13 @@ const IssuanceDataCollection = () => {
           currentProjectDetails['section_c'][`step${subSectionIndex + 1}`],
         section: 3,
         subSection: 0,
+      },
+      {
+        sectionName: C2,
+        subSectionRow:
+          currentProjectDetails['section_c'][`step${subSectionIndex + 1}`],
+        section: 3,
+        subSection: 1,
       },
       {
         sectionName: D1,

@@ -50,7 +50,7 @@ const SectionA1 = () => {
         total_GHG_emission,
         conditions_prior_to_initiation,
         project_type_and_sectoral_scope,
-        additional_information,
+        additional_info,
       } = currentProjectDetails.section_a.step1
 
       dispatch(
@@ -85,8 +85,8 @@ const SectionA1 = () => {
       )
       dispatch(
         setA1({
-          name: 'additional_information',
-          value: additional_information,
+          name: 'additional_info',
+          value: additional_info,
         })
       )
       dispatch(
@@ -115,6 +115,7 @@ const SectionA1 = () => {
       )
     }
   }, [currentProjectDetails])
+
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -160,7 +161,8 @@ const SectionA1 = () => {
       </Grid>
       <Grid item xs={6} md={6}>
         <DatePicker
-          label="Construction Date"
+          //label="Construction Date"
+          label="Project Commissioning Date"
           value={A1.construction_date}
           onChange={(newValue) => {
             dispatch(
@@ -180,7 +182,8 @@ const SectionA1 = () => {
       </Grid>
       <Grid item xs={12} md={6}>
         <DatePicker
-          label="Project Commissioning Date"
+          //label="Project Commissioning Date"
+          label="End Date"
           value={A1.project_comissioning_date}
           onChange={(newValue) => {
             dispatch(
@@ -232,7 +235,6 @@ const SectionA1 = () => {
           onChange={({ target: { name, value } }) =>
             dispatch(setA1({ value, name }))
           }
-          required={false}
         />
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
@@ -244,19 +246,17 @@ const SectionA1 = () => {
           onChange={({ target: { name, value } }) =>
             dispatch(setA1({ value, name }))
           }
-          required={false}
         />
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
         <CCMultilineTextArea
           label={'Additional Information'}
           placeholder="Provide additional relevant legislative, technical, economic, sectoral, social, environmental, geographic, site-specific, and other information relevant to the projects eligibility, net GHG emission mitigations, or quantification of the projects net GHG emission mitigations. Further, discuss any information that may be excluded from public disclosure due to confidentiality."
-          value={A1.additional_information}
-          name={'additional_information'}
+          value={A1.additional_info}
+          name={'additional_info'}
           onChange={({ target: { name, value } }) =>
             dispatch(setA1({ value, name }))
           }
-          required={false}
         />
       </Grid>
       <HelpPopUp

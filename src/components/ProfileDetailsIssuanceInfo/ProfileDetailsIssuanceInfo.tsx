@@ -19,6 +19,7 @@ import moment from 'moment'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import ProjectIntro from '../ProjectDetailsRegistryAcc/ProjectIntro'
 
 const projectDetails = {
   company_name:
@@ -125,8 +126,12 @@ const ProfileDetailsIssuanceInfo: FC = () => {
           Project Details
         </Typography>
       </Box>
-      <Paper sx={{ mt: 3 }}>
-        <Grid container>
+      {/*<Paper sx={{ mt: 3 }}>*/}
+      <ProjectIntro
+        title={currentProjectDetails?.company_name}
+        location={currentProjectDetails?.location}
+      />
+      {/*<Grid container>
           <Grid item xs={10} sx={{ p: 2 }}>
             <Typography sx={{ fontSize: 24 }}>
               {currentProjectDetails?.company_name}
@@ -174,8 +179,8 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               }}
             ></Box>
           </Grid>
-        </Grid>
-      </Paper>
+        </Grid>*/}
+      {/*</Paper>*/}
 
       <Paper sx={{ mt: 2, px: 2, py: 2 }}>
         <Box

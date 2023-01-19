@@ -280,7 +280,8 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .updateVerifier(payload)
       .then((res) => {
         if (res?.success) {
-          getVerifierByProject()
+          setVerifierLoading(false)
+          setShowActionSuccessModal(true)
           // createProjectContractCall(res?.data?.fileHash)
         }
       })
@@ -323,7 +324,6 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
   //   }
   // }
 
-  console.log('verifierLoading', verifierLoading)
   return (
     <>
       <Grid container>
@@ -427,7 +427,10 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
           'Successfully finalized Verifier and Project added in Blockchain!!!'
         }
         btn1Text="Ok"
-        btn1OnClick={() => setShowActionSuccessModal(false)}
+        btn1OnClick={() => {
+          getVerifierByProject()
+          setShowActionSuccessModal(false)
+        }}
         showModal={showActionSuccessModal}
         setShowModal={setShowActionSuccessModal}
       />

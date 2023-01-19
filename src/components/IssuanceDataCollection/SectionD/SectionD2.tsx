@@ -95,6 +95,7 @@ const SectionD2: FC = () => {
         onChange={({ target: { value, name } }) =>
           dispatch(setD2({ name, value }))
         }
+        required={false}
       />
 
       <Grid

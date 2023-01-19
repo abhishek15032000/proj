@@ -9,6 +9,7 @@ interface sectionEInterface {
   E5: any
   E6: any
   E7: any
+  E8: any
 }
 
 const initialState: sectionEInterface = {
@@ -39,6 +40,10 @@ const initialState: sectionEInterface = {
   E7: {
     actual_emission_reductions: '',
     attach_relevant_docs: [],
+  },
+  E8: {
+    appendices_supporting_documents: '',
+    appendices_supporting_documents_upload: [],
   },
 }
 
@@ -76,9 +81,15 @@ const sectionE = createSlice({
       const { name, value } = action.payload
       state.E6[name] = value
     },
+    //E7
     setE7: (state, action: PayloadAction<any>) => {
       const { name, value } = action.payload
       state.E7[name] = value
+    },
+    //E8
+    setE8: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.E8[name] = value
     },
     resetSectionE: () => initialState,
   },
@@ -92,6 +103,7 @@ export const {
   setE5,
   setE6,
   setE7,
+  setE8,
   resetSectionE,
 } = sectionE.actions
 

@@ -104,11 +104,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 ml: 1,
               }}
             >
-              {item?.project_id?.company_name}
+              {item?.project_id?.name}
             </Typography>
           </Box>,
-          item?.verifier_name,
-          item?.verifier_address,
+          item?.project_id?.company_name,
+          item?.project_id?.location,
           item?.project_status ===
           PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <ApprovalChip key={index} variant={'Pending'} />
