@@ -311,9 +311,11 @@ const Reports = ({ projectDetails }: reportsProps) => {
   }, [projectDetails])
 
   const renderStatusChips = (status: number) => {
-    // let bac
-    switch (status) {
-      case 1: {
+    if (userType === ROLES.VERIFIER) {
+      if (
+        status <
+        PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+      ) {
         return (
           <StatusChips
             text="Pending"
@@ -322,8 +324,16 @@ const Reports = ({ projectDetails }: reportsProps) => {
             cirlceColor="#A8ACAA"
           />
         )
-      }
-      case 3: {
+      } else if (
+        status > PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+      ) {
+        ;<StatusChips
+          text="Rejected"
+          textColor=""
+          backgroundColor={Colors.darkRedBackground}
+          cirlceColor="#fff"
+        />
+      } else {
         return (
           <StatusChips
             text="Completed"
@@ -333,6 +343,36 @@ const Reports = ({ projectDetails }: reportsProps) => {
           />
         )
       }
+    } else if (userType === ROLES.REGISTRY) {
+      if (status < PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT)
+        return (
+          <StatusChips
+            text="Pending"
+            textColor=""
+            backgroundColor="#E1E3E1"
+            cirlceColor="#A8ACAA"
+          />
+        )
+    } else if (
+      status > PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+    ) {
+      return (
+        <StatusChips
+          text="Rejected"
+          textColor=""
+          backgroundColor={Colors.darkRedBackground}
+          cirlceColor="#A8ACAA"
+        />
+      )
+    } else {
+      return (
+        <StatusChips
+          text="Completed"
+          textColor=""
+          backgroundColor="#75F8E4"
+          cirlceColor="#00A392"
+        />
+      )
     }
   }
 

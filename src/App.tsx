@@ -132,9 +132,9 @@ const App: FC<AppProps> = () => {
   const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
 
-  useEffect(() => {
-    BlockchainListener()
-  }, [])
+  // useEffect(() => {
+  // BlockchainListener()
+  // }, [])
 
   useEffect(() => {
     //const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
@@ -157,9 +157,9 @@ const App: FC<AppProps> = () => {
       <LocalizationProvider dateAdapter={AdapterMoment}>
         {/* {userData && showDrawer && ( */}
         <AppDrawer show={showDrawer} user={userData}>
-          {userData && <BlockchainAlert />}
-          {userData && <LoadWallet />}
-          {userData && <AddMetaMaskAccountModal />}
+          {/* {userData && <BlockchainAlert />} */}
+          {/* {userData && <LoadWallet />} */}
+          {/* {userData && <AddMetaMaskAccountModal />} */}
           <RouteController />
         </AppDrawer>
 
