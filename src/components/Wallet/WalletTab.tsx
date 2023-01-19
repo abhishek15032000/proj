@@ -65,7 +65,7 @@ const WalletTab: FC<WalletTabProps> = (props) => {
             }}
           >
             <KeyValue title="Bank Number:" value="212200008" />
-            <KeyValue title="Account Owner Name:" value="Abcd" />
+            <KeyValue title="Account Owner Name:" value="Chainflux" />
             <KeyValue title="Branch:" value={'Indira nagar'} />
             <KeyValue title="IFSC Code:" value={'PUNB0112000'} />
           </Box>

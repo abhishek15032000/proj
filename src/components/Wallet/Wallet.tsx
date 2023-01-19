@@ -63,7 +63,11 @@ const Wallet: FC<WalletProps> = (props) => {
     USER.getTokenBalanceList(getLocalItem('userDetails')?.user_id).then(
       (res: any) => {
         if (res?.data?.success) {
-          const modifiedRows = res?.data?.data?.token
+          let modifiedRows = res?.data?.data?.token
+          modifiedRows = modifiedRows.filter(
+            (item: any, index: number) => item.tokenBalances > 0 && item
+          )
+
           setBalance(res?.data?.data?.balance)
           const rows =
             modifiedRows &&
@@ -128,9 +132,6 @@ const Wallet: FC<WalletProps> = (props) => {
       })
       .catch((e) => {
         console.log(e)
-      })
-      .finally(() => {
-        setLoading(false)
       })
   }
 

@@ -68,7 +68,7 @@ const TransactionList: FC<TransactionListProps> = (props) => {
               ml: 3,
             }}
           >
-            Transaction Details
+            Project Token Details
           </Typography>
           <Grid
             container

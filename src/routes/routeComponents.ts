@@ -164,7 +164,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUER_WALLET,
     component: IssuerWallet,
-    sidebarName: linkLabels.Wallet,
+
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
@@ -260,7 +260,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.WALLET,
     component: Wallet,
-    // component: MarketplaceV2,
+    sidebarName: linkLabels.Wallet,
     roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
   },
 ]
