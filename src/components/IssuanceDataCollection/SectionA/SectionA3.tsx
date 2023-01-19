@@ -5,11 +5,17 @@ import React, { useEffect } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setProjectParticipants } from '../../../redux/Slices/sectionASlice'
+import {
+  setProjectParticipants,
+  setA3,
+} from '../../../redux/Slices/sectionASlice'
 import Spinner from '../../../atoms/Spinner'
 import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
+import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
+import { deleteIndexInArray } from '../../../utils/commonFunctions'
 
 const SectionA3 = () => {
   const dispatch = useAppDispatch()
@@ -31,7 +37,9 @@ const SectionA3 = () => {
     ({ sectionA }) => sectionA.party_and_project_participants,
     shallowEqual
   )
+  const A3 = useAppSelector(({ sectionA }) => sectionA.A3, shallowEqual)
 
+  const { host_country_attestation_upload } = A3
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -53,6 +61,26 @@ const SectionA3 = () => {
           indicate_party_involved: item?.indicate_party_involved,
         }
       })
+      const {
+        host_country_attestation,
+        host_country_attestation_upload,
+        eligibility_criteria,
+      } = currentProjectDetails.section_a.step3
+      dispatch(
+        setA3({
+          name: 'host_country_attestation',
+          value: host_country_attestation,
+        })
+      )
+      dispatch(
+        setA3({
+          name: 'host_country_attestation_upload',
+          value: host_country_attestation_upload,
+        })
+      )
+      dispatch(
+        setA3({ name: 'eligibility_criteria', value: eligibility_criteria })
+      )
       dispatch(setProjectParticipants(step3Data))
     }
   }, [currentProjectDetails])
@@ -60,9 +88,12 @@ const SectionA3 = () => {
   const addRow = () => {
     const dataCopy = [...party_and_project_participants]
     dataCopy.push({
-      partyInvolved: '',
-      participantType: '',
-      isProjectParticipant: 'Select from dropdown',
+      party_involved: '',
+      private_or_public_project_participant: '',
+      indicate_party_involved: '',
+      //partyInvolved: '',
+      //participantType: '',
+      //isProjectParticipant: 'Select from dropdown',
     })
     dispatch(setProjectParticipants(dataCopy))
   }
@@ -80,7 +111,6 @@ const SectionA3 = () => {
     dataCopy[index].isProjectParticipant = e.target.value
     dispatch(setProjectParticipants(dataCopy))
   }
-
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -203,6 +233,67 @@ const SectionA3 = () => {
       >
         + Add more participants
       </CCButton>
+      <Grid
+        container
+        sx={{ mt: 3 }}
+        spacing={1}
+        xs={12}
+        md={12}
+        lg={12}
+        xl={12}
+      >
+        <Grid item xs={12}>
+          <CCMultilineTextArea
+            label="Host Country Attestation"
+            placeholder="Provide information if the project has obtained a letter of assurance and authorization from the host country or countries where the emission mitigations occur."
+            value={A3.host_country_attestation}
+            name={'host_country_attestation'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setA3({ value, name }))
+            }
+            required={false}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <CCDropAndUpload
+            mediaTitle={['Sample Report - Implementation of Milestones']}
+            title="Host Country Attestation"
+            mediaItem={[]}
+            imageArray={A3.host_country_attestation_upload}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setA3({
+                  name: 'host_country_attestation_upload',
+                  value: [...host_country_attestation_upload, item],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setA3({
+                  name: 'host_country_attestation_upload',
+                  value: deleteIndexInArray(
+                    host_country_attestation_upload,
+                    index
+                  ),
+                })
+              )
+            }}
+          />
+        </Grid>
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCMultilineTextArea
+            label="Eligibility criteria for Grouped Project"
+            placeholder="Provide eligibility criteria for inclusion of new project activities under grouped project."
+            value={A3.eligibility_criteria}
+            name={'eligibility_criteria'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setA3({ value, name }))
+            }
+            required={false}
+          />
+        </Grid>
+      </Grid>
       <HelpPopUp
         modal={modal}
         setModal={(item: any) => setModal(item)}

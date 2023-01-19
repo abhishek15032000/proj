@@ -53,10 +53,8 @@ const SectionA6 = () => {
 
   useEffect(() => {
     if (
-      currentProjectDetails
-      //TODO: uncomment this once completed key added in BE
-      //&&
-      //currentProjectDetails.section_a.step6.completed
+      currentProjectDetails &&
+      currentProjectDetails.section_a.step6.completed
     ) {
       const {
         statutory_requirements,
@@ -102,7 +100,6 @@ const SectionA6 = () => {
       )
     }
   }, [currentProjectDetails])
-
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -119,7 +116,6 @@ const SectionA6 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA6({ name, value }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -131,7 +127,6 @@ const SectionA6 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA6({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -144,7 +139,6 @@ const SectionA6 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA6({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -157,7 +151,6 @@ const SectionA6 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA6({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -170,7 +163,6 @@ const SectionA6 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA6({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -182,7 +174,6 @@ const SectionA6 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA6({ value, name }))
             }
-            required={false}
           />
         </Grid>
       </Grid>

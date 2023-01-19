@@ -67,28 +67,12 @@ const Projects = () => {
   )
 
   useEffect(() => {
-    getUserDetails()
+    dispatch(setUserDetails(getLocalItem('userDetails2')))
   }, [])
 
   useEffect(() => {
     if (userDetails) checkProfileComplete()
   }, [userDetails])
-
-  const getUserDetails = async () => {
-    const uuid = getLocalItem('userDetails')?.uuid
-
-    dispatch(setProfileComplete(true))
-    dispatch(setProfilePercentage(0))
-
-    try {
-      const userRes = await USER.getUserInfo(uuid)
-      if (userRes?.data?.success) {
-        dispatch(setUserDetails(userRes?.data?.data))
-      }
-    } catch (err) {
-      console.log('Error in USER.getUserInfo api ~ ', err)
-    }
-  }
 
   const checkProfileComplete = () => {
     let count = 0

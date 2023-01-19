@@ -15,6 +15,8 @@ import { Box } from '@mui/system'
 
 // Asset Imports
 import SectionCOrganisationalStructure from '../../../assets/Images/SampleData/SectionCOrganisationalStructure.png'
+import SectionC1ProjectProponents from '../../../assets/Images/SampleData/SectionC1ProjectProponents.png'
+import SectionC1OthersInvolvedInProject from '../../../assets/Images/SampleData/SectionC1OthersInvolvedInProject.png'
 
 // Local Components
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
@@ -49,7 +51,11 @@ const SectionC1 = () => {
   )
 
   const C1 = useAppSelector(({ sectionC }) => sectionC.C1, shallowEqual)
-  const { attach_org_structure_and_responsibilities_chart } = C1
+  const {
+    attach_org_structure_and_responsibilities_chart,
+    project_proponents_upload,
+    others_involved_upload,
+  } = C1
 
   useEffect(() => {
     if (
@@ -63,6 +69,8 @@ const SectionC1 = () => {
         specific_data_monitored,
         training_and_maintenance,
         management_of_data_quality,
+        project_proponents_upload,
+        others_involved_upload,
       } = currentProjectDetails.section_c.step1
 
       dispatch(setC1({ name: 'description', value: description }))
@@ -89,6 +97,18 @@ const SectionC1 = () => {
         setC1({
           name: 'attach_org_structure_and_responsibilities_chart',
           value: attach_org_structure_and_responsibilities_chart,
+        })
+      )
+      dispatch(
+        setC1({
+          name: 'project_proponents_upload',
+          value: project_proponents_upload,
+        })
+      )
+      dispatch(
+        setC1({
+          name: 'others_involved_upload',
+          value: others_involved_upload,
         })
       )
     }
@@ -155,7 +175,54 @@ const SectionC1 = () => {
             }}
           />
         </Grid>
-
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCDropAndUpload
+            mediaTitle={[]}
+            mediaItem={[SectionC1ProjectProponents]}
+            title="Project Proponent(s)"
+            imageArray={project_proponents_upload}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setC1({
+                  name: 'project_proponents_upload',
+                  value: [item, ...project_proponents_upload],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setC1({
+                  name: 'project_proponents_upload',
+                  value: deleteIndexInArray(project_proponents_upload, index),
+                })
+              )
+            }}
+          />
+        </Grid>
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCDropAndUpload
+            mediaTitle={[]}
+            mediaItem={[SectionC1OthersInvolvedInProject]}
+            title="Others Involved in the Project"
+            imageArray={others_involved_upload}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setC1({
+                  name: 'others_involved_upload',
+                  value: [item, ...others_involved_upload],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setC1({
+                  name: 'others_involved_upload',
+                  value: deleteIndexInArray(others_involved_upload, index),
+                })
+              )
+            }}
+          />
+        </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Specific Datas Monitored "

@@ -172,7 +172,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         item.project_status ===
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
         item.project_status ===
-          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+        item.project_status ===
+          PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY ||
+        item.project_status ===
+          PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
       ) {
         registeredData.push([
           <ShortenedIDComp key={index} referenceId={item.uuid} />,
@@ -206,16 +210,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             key={'1'}
           />,
           moment(item.report?.next_date).format('DD/MM/YYYY'),
-          item.project_status ===
-          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
-            <TextButton
-              key="1"
-              title="Add Monthly Data"
-              onClick={() => openProjectDetails(item, 'Monthly')}
-            />
-          ) : (
-            '-'
-          ),
+          // item.project_status ===
+          // PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
+          //   <TextButton
+          //     key="1"
+          //     title="Add Monthly Data"
+          //     onClick={() => openProjectDetails(item, 'Monthly')}
+          //   />
+          // ) : (
+          //   '-'
+          // )
+          '-',
           <ChevronRightIcon
             sx={{ cursor: 'pointer' }}
             key="1"

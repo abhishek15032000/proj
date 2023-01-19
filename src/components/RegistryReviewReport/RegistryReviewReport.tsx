@@ -93,7 +93,6 @@ const RegistryReviewReport = () => {
       }
     }
   }
-
   const sumbitReport = async () => {
     try {
       setLoading(true)
@@ -105,7 +104,8 @@ const RegistryReviewReport = () => {
         projectId: reportData?.report?.projectId,
         current_month: reportData?.report?.current_month,
         next_date: reportData?.report?.next_date,
-        quantity: reportData?.report?.quantity,
+        // quantity: reportData?.report?.quantity,
+        quantity: monthlyVCOT,
         file_attach: reportData?.report?.file_attach,
         issuer_details: reportData?.report?.issuer_details?.user_id,
         verifier_details: reportData?.report?.verifier_details?.user_id,

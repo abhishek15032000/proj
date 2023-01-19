@@ -8,17 +8,24 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
 import { ROLES } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
-import { setUpdateUserPayload } from '../../redux/Slices/profileCompletionSlice'
+import {
+  setProfileComplete,
+  setProfilePercentage,
+  setUpdateUserPayload,
+  setUserDetails,
+} from '../../redux/Slices/profileCompletionSlice'
 import { pathNames } from '../../routes/pathNames'
 import { Images } from '../../theme'
 import ProfileCompletion from '../Projects/ProfileCompletion'
 import IsssuerCompleteProfile from './IsssuerCompleteProfile'
 import LoaderOverlay from '../LoderOverlay'
+import { getLocalItem, setLocalItem } from '../../utils/Storage'
 
 const CompleteProfile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const localStorageUserDetails = getLocalItem('userDetails')
   const userDetails = useAppSelector(
     ({ profileCompletion }) => profileCompletion.userDetails,
     shallowEqual
@@ -39,9 +46,9 @@ const CompleteProfile = () => {
   const setPayloadAccordingToUser = () => {
     let temp = {}
     if (
-      userDetails?.type === ROLES.ISSUER ||
-      userDetails?.type === ROLES.REGISTRY ||
-      userDetails?.type === ROLES.BUYER
+      localStorageUserDetails?.type === ROLES.ISSUER ||
+      localStorageUserDetails?.type === ROLES.REGISTRY ||
+      localStorageUserDetails?.type === ROLES.BUYER
     ) {
       temp = {
         uuid: userDetails?.uuid,
@@ -59,11 +66,32 @@ const CompleteProfile = () => {
     try {
       const userUpdateRes = await USER.updateUserInfo(updateUserPayload)
       if (userUpdateRes?.data.success) {
+        setUserDetailsInLocal()
         alert('User details updated successfully')
-        navigate(pathNames.DASHBOARD)
+        // navigate(pathNames.DASHBOARD)
+        dispatch(setProfileComplete(true))
+        dispatch(setProfilePercentage(100))
       }
     } catch (err) {
       console.log('Error in USER.updateUserInfo api ~ ', err)
+    }
+  }
+
+  const setUserDetailsInLocal = async () => {
+    const uuid = getLocalItem('userDetails')?.uuid
+
+    dispatch(setProfileComplete(true))
+    dispatch(setProfilePercentage(0))
+
+    try {
+      const userRes: any = await USER.getUserInfo(uuid)
+      if (userRes?.data?.success) {
+        dispatch(setUserDetails(userRes?.data?.data))
+        setLocalItem('userDetails2', userRes?.data?.data)
+        navigate(pathNames.DASHBOARD)
+      }
+    } catch (err) {
+      console.log('Error in USER.getUserInfo api ~ ', err)
     }
   }
 
@@ -141,11 +169,15 @@ const CompleteProfile = () => {
                   </CCButton>
                 </Box>
               </Box>
-              {userDetails?.type === ROLES.ISSUER && <IsssuerCompleteProfile />}
-              {userDetails?.type === ROLES.REGISTRY && (
+              {localStorageUserDetails?.type === ROLES.ISSUER && (
                 <IsssuerCompleteProfile />
               )}
-              {userDetails?.type === ROLES.BUYER && <IsssuerCompleteProfile />}
+              {localStorageUserDetails?.type === ROLES.REGISTRY && (
+                <IsssuerCompleteProfile />
+              )}
+              {localStorageUserDetails?.type === ROLES.BUYER && (
+                <IsssuerCompleteProfile />
+              )}
             </Box>
           </Grid>
           <Grid item md={3}>

@@ -23,6 +23,7 @@ import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWi
 
 const ProjectDetailsRegistryAcc = () => {
   const location: any = useLocation()
+  const navigate = useNavigate()
 
   const projectDetails = location?.state?.projectDetails
 
@@ -138,7 +139,7 @@ const ProjectDetailsRegistryAcc = () => {
         </Stack>
       ) : (
         <>
-          <BackHeader title="Project Details" />
+          <BackHeader title="Project Details" onClick={() => navigate(-1)} />
           <ProjectIntro
             title={projectDetails?.company_name}
             location={projectDetails?.location}
