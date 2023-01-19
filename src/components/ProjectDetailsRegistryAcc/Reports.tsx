@@ -45,9 +45,14 @@ const Reports = ({ projectDetails }: reportsProps) => {
   )
   useEffect(() => {
     if (
-      userType === ROLES.VERIFIER &&
-      projectDetails?.project_status ===
-        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+      (userType === ROLES.VERIFIER &&
+        projectDetails?.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT) ||
+      (userType === ROLES.REGISTRY &&
+        (projectDetails?.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+          projectDetails?.project_status ===
+            PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY))
     ) {
       const objRow: any = [
         [
