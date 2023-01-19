@@ -215,21 +215,25 @@ const Reports = ({ projectDetails }: reportsProps) => {
           </Box>,
           'v1',
           renderStatusChips(1),
-          <Box key={1} sx={{ display: 'flex' }}>
-            <img src={Images.FileIcon} width="20px" height={'20px'} />
-            Project Issuance
-            <FileDownloadOutlinedIcon
-              sx={{ color: '#388E81', cursor: 'pointer' }}
-              onClick={() => {
-                if (!projectDetails?.report?.file_attach?.length) return
-                projectDetails?.report?.file_attach.forEach(
-                  (file: any, index: number) => {
-                    downloadFile(file)
-                  }
-                )
-              }}
-            />
-          </Box>,
+          projectDetails?.report?.file_attach?.length ? (
+            <Box key={1} sx={{ display: 'flex' }}>
+              <img src={Images.FileIcon} width="20px" height={'20px'} />
+              Project Issuance
+              <FileDownloadOutlinedIcon
+                sx={{ color: '#388E81', cursor: 'pointer' }}
+                onClick={() => {
+                  if (!projectDetails?.report?.file_attach?.length) return
+                  projectDetails?.report?.file_attach.forEach(
+                    (file: any, index: number) => {
+                      downloadFile(file)
+                    }
+                  )
+                }}
+              />
+            </Box>
+          ) : (
+            '-'
+          ),
           //'--',
           projectDetails?.report?.quantity,
           (userType === ROLES.VERIFIER && projectDetails?.project_status > 5) ||
