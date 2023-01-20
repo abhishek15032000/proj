@@ -114,6 +114,7 @@ const Wallet: FC<WalletProps> = (props) => {
                 </Typography>,
               ]
             })
+
           setTableData(rows)
         }
         setLoading(false)
@@ -214,8 +215,26 @@ const Wallet: FC<WalletProps> = (props) => {
           <Grid item xs={12} md={12} lg={12} xl={12}>
             {loading ? (
               <CCTableSkeleton sx={{ mt: 2 }} />
-            ) : (
+            ) : tableData && tableData.length > 0 ? (
               <TransactionList tableData={tableData} />
+            ) : (
+              <Box
+                sx={{
+                  height: '100%',
+                  width: '100%',
+                  fontSize: 18,
+                  color: Colors.darkPrimary1,
+                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#fff',
+                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+                  borderRadius: '8px',
+                }}
+              >
+                No Project Token Details is available !!!
+              </Box>
             )}
           </Grid>
 
