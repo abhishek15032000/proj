@@ -74,6 +74,7 @@ const SectionD3: FC = () => {
         onChange={({ target: { name, value } }) =>
           dispatch(setD3({ name, value }))
         }
+        required={false}
       />
       <HelpPopUp
         modal={modal}

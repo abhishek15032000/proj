@@ -43,20 +43,13 @@ const SectionA7 = () => {
 
   const A7 = useAppSelector(({ sectionA }) => sectionA.A7)
 
-  const { Level1, Level2a, Level2b, Level3, Level4a, Level4b, Level5 } = A7
-
   useEffect(() => {
     if (
-      currentProjectDetails
-      //TODO: uncomment this once completed key added in BE
-      //&& currentProjectDetails.section_a.step7.completed
+      currentProjectDetails &&
+      currentProjectDetails.section_a.step7.completed
     ) {
       const { Level1, Level2a, Level2b, Level3, Level4a, Level4b, Level5 } =
         currentProjectDetails.section_a.step7
-      console.log(
-        'currentProjectDetails.section_a.step7: ',
-        currentProjectDetails.section_a.step7
-      )
 
       dispatch(setA7({ name: 'Level1', value: Level1 }))
       dispatch(setA7({ name: 'Level2a', value: Level2a }))
@@ -92,7 +85,6 @@ const SectionA7 = () => {
       )
     }
   }, [currentProjectDetails])
-
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -109,7 +101,6 @@ const SectionA7 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA7({ name, value }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -121,7 +112,6 @@ const SectionA7 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA7({ name, value }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -133,7 +123,6 @@ const SectionA7 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA7({ name, value }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -145,7 +134,6 @@ const SectionA7 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA7({ name, value }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -157,7 +145,6 @@ const SectionA7 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA7({ name, value }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -169,7 +156,6 @@ const SectionA7 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA7({ name, value }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -181,7 +167,6 @@ const SectionA7 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setA7({ name, value }))
             }
-            required={false}
           />
         </Grid>
       </Grid>

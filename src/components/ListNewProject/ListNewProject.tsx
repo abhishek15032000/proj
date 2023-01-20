@@ -301,6 +301,7 @@ const ListNewProject = () => {
               placeholder="Enter Project Area"
               value={projectArea}
               onChange={(e) => handleTextChange(e, 'projectArea')}
+              required={false}
             />
           </Box>
           <Box

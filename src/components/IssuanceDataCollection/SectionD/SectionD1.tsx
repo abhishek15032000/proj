@@ -79,6 +79,7 @@ const SectionD1: FC = () => {
           onChange={({ target: { value, name } }) =>
             dispatch(setD1({ name, value }))
           }
+          required={false}
         />
       </Grid>
 
@@ -114,6 +115,7 @@ const SectionD1: FC = () => {
               })
             )
           }}
+          //required={false}
         />
       </Grid>
       <HelpPopUp

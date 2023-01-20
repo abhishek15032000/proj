@@ -28,6 +28,18 @@ export const addSectionPercentages = (row: any) => {
     row.section_a.step3,
     row.section_a.step4,
     row.section_a.step5,
+    row.section_a.step6,
+    row.section_a.step7,
+  ])
+  //row.section_b.completionPercentage = calSectionPercent(row.section_b)
+  //row.section_b.completionPercentage = calSectionPercent(row.section_c)
+  row.section_b.completionPercentage = calSectionPercentSpecificStep([
+    row.section_b.step1,
+    row.section_b.step3,
+  ])
+  row.section_c.completionPercentage = calSectionPercentSpecificStep([
+    row.section_c.step1,
+    row.section_c.step2,
   ])
   row.section_b.completionPercentage = calSectionPercent([row.section_b.step1])
   row.section_c.completionPercentage = calSectionPercent([row.section_c.step1])
@@ -70,7 +82,14 @@ export const checkMandatoryFieldsArrayObjects = (mandatoryFields: any) => {
   let isFilled = false
   Object.keys(mandatoryFields[0]).map((key) => {
     for (let i = 0; i < mandatoryFields.length; i++) {
-      if (key !== 'flag' && mandatoryFields[i][key].length === 0) {
+      if (
+        //excluding optional fields
+        key !== 'flag' &&
+        key !== 'other_info' &&
+        key !== 'deviation_of_methodology' &&
+        key !== 'applicability_of_methodology' &&
+        mandatoryFields[i][key].length === 0
+      ) {
         isFilled = true
         return
       }

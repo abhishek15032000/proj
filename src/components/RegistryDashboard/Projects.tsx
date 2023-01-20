@@ -47,7 +47,7 @@ const Projects = () => {
       )}
       <TabSelectorWithCount
         tabArray={[
-          { name: 'New', count: 1 },
+          { name: 'New', count: 0 },
           { name: 'Under review', count: 0 },
           { name: 'Reviewed', count: 0 },
         ]}

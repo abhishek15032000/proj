@@ -4,7 +4,7 @@ import { strictEqual } from 'assert'
 interface SectionAInterface {
   // A3
   party_and_project_participants: any[]
-
+  A3: any
   // A4
   methodologies: any[]
 
@@ -27,7 +27,7 @@ const initialState: SectionAInterface = {
     project_comissioning_date: '',
     conditions_prior_to_initiation: '',
     project_type_and_sectoral_scope: '',
-    additional_information: '',
+    additional_info: '',
   },
   // A2
   A2: {
@@ -42,6 +42,7 @@ const initialState: SectionAInterface = {
   },
 
   // A3
+  //party_and_project_participants and A3 are used in sectionA -> party_and_project_participants
   party_and_project_participants: [
     {
       party_involved: '',
@@ -49,6 +50,11 @@ const initialState: SectionAInterface = {
       indicate_party_involved: '',
     },
   ],
+  A3: {
+    host_country_attestation: '',
+    host_country_attestation_upload: [],
+    eligibility_criteria: '',
+  },
 
   // A4
   methodologies: [
@@ -58,6 +64,10 @@ const initialState: SectionAInterface = {
       category: '',
       version: '',
       tools: '',
+      applicability_of_methodology: [],
+      applicable_methodology: '',
+      deviation_of_methodology: '',
+      other_info: '',
       flag: false,
     },
   ],
@@ -107,6 +117,10 @@ const sectionA = createSlice({
     setProjectParticipants: (state, action: PayloadAction<any>) => {
       state.party_and_project_participants = action.payload
     },
+    setA3: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.A3[name] = value
+    },
 
     // A4
     setMethodologies: (state, action: PayloadAction<any>) => {
@@ -136,6 +150,7 @@ const sectionA = createSlice({
 export const {
   setA1,
   setA2,
+  setA3,
   setProjectParticipants,
   setMethodologies,
   setA5,

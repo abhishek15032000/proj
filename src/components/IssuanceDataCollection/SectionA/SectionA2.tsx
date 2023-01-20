@@ -166,27 +166,23 @@ const SectionA2 = () => {
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
             label="Geographic coordinates"
-            //type="number"
             sx={{ backgroundColor: ' #FFFFFF' }}
             value={A2.geographic_coordinates}
             name={'geographic_coordinates'}
             onChange={({ target: { value, name } }) =>
               dispatch(setA2({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item xs={12} md={12} lg={6} xl={6}>
           <CCInputField
-            label="link to an aerial photo of the location"
-            //type="number"
+            label="Link to an aerial photo of the location"
             sx={{ backgroundColor: ' #FFFFFF' }}
             value={A2.aerial_photo}
             name={'aerial_photo'}
             onChange={({ target: { value, name } }) =>
               dispatch(setA2({ value, name }))
             }
-            required={false}
           />
         </Grid>
       </Grid>

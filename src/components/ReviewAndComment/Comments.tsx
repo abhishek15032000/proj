@@ -1,7 +1,7 @@
 import { Box } from '@mui/system'
 import React, { useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
-import { COMMENT_ALIGN } from '../../config/constants.config'
+import { COMMENT_ALIGN, ROLES } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { markCommentsAsRead } from '../../utils/reviewAndComment.util'
 import { getLocalItem } from '../../utils/Storage'
@@ -9,6 +9,7 @@ import Comment from './Comment'
 
 const Comments = () => {
   const user_id = getLocalItem('userDetails')?.user_id
+  const userType = getLocalItem('userDetails')?.type
 
   const selectedSection = useAppSelector(
     ({ comments }) => comments.selectedSection,
@@ -62,7 +63,9 @@ const Comments = () => {
           <Box sx={{ color: '#3F4946', textAlign: 'center', width: '50%' }}>
             <Box sx={{ fontSize: 14, fontWeight: 500 }}>No comments yet</Box>
             <Box sx={{ fontSize: 12 }}>
-              Add a comment and send it to the PD to comment on your text
+              {userType === ROLES.VERIFIER
+                ? 'Add a comment and send it to the Project Developer to comment on your text'
+                : 'Add a comment and send it to the Verifier to comment on your text'}
             </Box>
           </Box>
         </Box>

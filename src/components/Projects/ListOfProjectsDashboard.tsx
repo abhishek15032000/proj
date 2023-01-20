@@ -207,16 +207,17 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             key={'1'}
           />,
           moment(item.report?.next_date).format('DD/MM/YYYY'),
-          item.project_status ===
-          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
-            <TextButton
-              key="1"
-              title="Add Monthly Data"
-              onClick={() => openProjectDetails(item, 'Monthly')}
-            />
-          ) : (
-            '-'
-          ),
+          // item.project_status ===
+          // PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
+          //   <TextButton
+          //     key="1"
+          //     title="Add Monthly Data"
+          //     onClick={() => openProjectDetails(item, 'Monthly')}
+          //   />
+          // ) : (
+          //   '-'
+          // ),
+          '-',
           <ChevronRightIcon
             sx={{ cursor: 'pointer' }}
             key="1"

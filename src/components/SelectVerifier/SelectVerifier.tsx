@@ -257,12 +257,23 @@ const SelectVerifier = () => {
                       sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                     />
                     <Typography sx={{ fontSize: 14 }}>
+                      {/* <a
+                        style={{
+                          color: '#25BBD2',
+                          textDecoration: 'underline',
+                        }}
+                        href={verifier?.website}
+                      >
+                        {verifier?.website || '-'}
+                      </a> */}
                       <a
                         style={{
                           color: '#25BBD2',
                           textDecoration: 'underline',
                         }}
                         href={verifier?.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {verifier?.website || '-'}
                       </a>
