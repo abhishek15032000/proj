@@ -186,6 +186,7 @@ const IssuanceDataCollection = () => {
   const A7 = useAppSelector(({ sectionA }) => sectionA.A7)
   const B1 = useAppSelector(({ sectionB }) => sectionB.B1)
   const B2 = useAppSelector(({ sectionB }) => sectionB.B2)
+  const B3 = useAppSelector(({ sectionB }) => sectionB.B3)
   const C1 = useAppSelector(({ sectionC }) => sectionC.C1, shallowEqual)
   const C2 = useAppSelector(({ sectionC }) => sectionC.C2, shallowEqual)
   const D1 = useAppSelector(({ sectionD }) => sectionD.D1, shallowEqual)
@@ -375,6 +376,13 @@ const IssuanceDataCollection = () => {
           currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
         section: 2,
         subSection: 1,
+      },
+      {
+        sectionName: B3,
+        subSectionRow:
+          currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
+        section: 2,
+        subSection: 2,
       },
       {
         sectionName: C1,
