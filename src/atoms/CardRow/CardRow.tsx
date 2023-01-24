@@ -1,5 +1,6 @@
 import { Box, Grid } from '@mui/material'
 import React, { FC } from 'react'
+import { Colors } from '../../theme'
 
 interface CardRowProps {
   title: string
@@ -17,7 +18,16 @@ const CardRow: FC<CardRowProps> = ({
   return (
     <Grid container justifyContent={'space-between'} mt={1}>
       <Grid item xs={9}>
-        <Box sx={{ fontWeight: 500, fontSize: 16, ...titleStyle }}>{title}</Box>
+        <Box
+          sx={{
+            color: Colors.darkPrimary1,
+            fontWeight: 500,
+            fontSize: 16,
+            ...titleStyle,
+          }}
+        >
+          {title}
+        </Box>
       </Grid>
       <Grid item xs={3}>
         <Box
