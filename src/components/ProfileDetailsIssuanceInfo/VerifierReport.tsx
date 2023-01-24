@@ -115,8 +115,11 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                   textAlign="start"
                   sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
                 >
-                  {i?.report?.next_date
-                    ? moment(i?.report?.next_date).format(`DD/MM/YY`)
+                  {i?.project_status ===
+                  PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+                    ? i?.report?.next_date
+                      ? moment(i?.report?.next_date).format(`DD/MM/YY`)
+                      : '-'
                     : '-'}
                 </Typography>,
 
@@ -139,7 +142,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                       color: '#2B2B2B',
                     }}
                   >
-                    {'PDF Report'}
+                    {'Registration Report'}
                   </Typography>
                   <FileDownloadOutlinedIcon
                     sx={{ color: '#388E81', cursor: 'pointer' }}
@@ -161,28 +164,39 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 //   }
                 //   label={'-'}
                 // />,
-                '-',
+                i?.project_status ===
+                PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+                  ? 'Verified'
+                  : 'In-Progress',
                 <Typography
                   key={index}
                   textAlign="start"
                   sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
                 >
-                  {i?.report?.quantity}
+                  {i?.project_status ===
+                  PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+                    ? i?.report?.quantity
+                    : '-'}
                 </Typography>,
+                i?.project_status ===
+                PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT ? (
+                  <DownloadIcon
+                    key={index}
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      if (!i?.report?.file_attach?.length) return
+                      i?.report?.file_attach.forEach(
+                        (file: any, index: number) => {
+                          downloadFile(file)
+                        }
+                      )
+                    }}
+                    style={{ color: Colors.lightPrimary1 }}
+                  />
+                ) : (
+                  '-'
+                ),
 
-                <DownloadIcon
-                  key={index}
-                  sx={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    if (!i?.report?.file_attach?.length) return
-                    i?.report?.file_attach.forEach(
-                      (file: any, index: number) => {
-                        downloadFile(file)
-                      }
-                    )
-                  }}
-                  style={{ color: Colors.lightPrimary1 }}
-                />,
                 <Box onClick={() => handleComments(i)} key={index}>
                   <Typography
                     sx={{

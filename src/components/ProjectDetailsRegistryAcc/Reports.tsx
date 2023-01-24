@@ -45,22 +45,34 @@ const Reports = ({ projectDetails }: reportsProps) => {
   )
   useEffect(() => {
     if (
-      (userType === ROLES.VERIFIER &&
-        projectDetails?.project_status ===
-          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT) ||
-      (userType === ROLES.REGISTRY &&
-        (projectDetails?.project_status ===
-          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
-          projectDetails?.project_status ===
-            PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY))
+      userType === ROLES.VERIFIER &&
+      projectDetails?.project_status ===
+        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+      // ||
+      // (userType === ROLES.REGISTRY &&
+      //   (projectDetails?.project_status ===
+      //     PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+      //     projectDetails?.project_status ===
+      //       PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY))
     ) {
       const objRow: any = [
         [
+          moment(projectDetails?.report?.createdAt).format('DD/MM/YYYY'),
           '-',
-          '-',
-          '-',
-          '-',
-          '-',
+          <Box key={1} sx={{ display: 'flex' }}>
+            <img src={Images.FileIcon} width="20px" height={'20px'} />
+            Registration Report
+            <FileDownloadOutlinedIcon
+              sx={{ color: '#388E81', cursor: 'pointer' }}
+              onClick={() => {
+                if (!projectDetails.project_pdf) return
+                downloadFile(projectDetails?.project_pdf)
+              }}
+            />
+          </Box>,
+          'v1',
+          renderStatusChips(projectDetails?.project_status),
+
           '-',
           '-',
           <CCButton
@@ -209,7 +221,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
           moment(projectDetails?.report?.next_date).format('DD/MM/YYYY'),
           <Box key={1} sx={{ display: 'flex' }}>
             <img src={Images.FileIcon} width="20px" height={'20px'} />
-            Monitoring Report
+            Registration Report
             <FileDownloadOutlinedIcon
               sx={{ color: '#388E81', cursor: 'pointer' }}
               onClick={() => {
@@ -222,7 +234,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
           renderStatusChips(projectDetails?.project_status),
           <Box key={1} sx={{ display: 'flex' }}>
             <img src={Images.FileIcon} width="20px" height={'20px'} />
-            Project Issuance
+            Verification Report
             <FileDownloadOutlinedIcon
               sx={{ color: '#388E81', cursor: 'pointer' }}
               onClick={() => {
@@ -236,7 +248,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
             />
           </Box>,
           //'--',
-          projectDetails?.report?.quantity,
+          projectDetails?.report?.quantity || '-',
           (userType === ROLES.VERIFIER && projectDetails?.project_status > 5) ||
           (userType === ROLES.REGISTRY &&
             projectDetails?.project_status > 7) ? (
@@ -307,6 +319,10 @@ const Reports = ({ projectDetails }: reportsProps) => {
   }, [projectDetails])
 
   const renderStatusChips = (status: number) => {
+    console.log(
+      'status: ' + status,
+      PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+    )
     if (userType === ROLES.VERIFIER) {
       if (
         status <
@@ -323,12 +339,14 @@ const Reports = ({ projectDetails }: reportsProps) => {
       } else if (
         status > PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
       ) {
-        ;<StatusChips
-          text="Rejected"
-          textColor=""
-          backgroundColor={Colors.darkRedBackground}
-          cirlceColor="#fff"
-        />
+        return (
+          <StatusChips
+            text="Rejected"
+            textColor=""
+            backgroundColor={Colors.darkRedBackground}
+            cirlceColor="#fff"
+          />
+        )
       } else {
         return (
           <StatusChips
@@ -340,7 +358,17 @@ const Reports = ({ projectDetails }: reportsProps) => {
         )
       }
     } else if (userType === ROLES.REGISTRY) {
-      if (status < PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT)
+      console.log('registry if')
+      console.log('8', 8)
+      console.log(
+        'cond',
+        status === PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
+        status,
+        PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+      )
+      if (
+        status < PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+      ) {
         return (
           <StatusChips
             text="Pending"
@@ -349,26 +377,31 @@ const Reports = ({ projectDetails }: reportsProps) => {
             cirlceColor="#A8ACAA"
           />
         )
-    } else if (
-      status > PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
-    ) {
-      return (
-        <StatusChips
-          text="Rejected"
-          textColor=""
-          backgroundColor={Colors.darkRedBackground}
-          cirlceColor="#A8ACAA"
-        />
-      )
-    } else {
-      return (
-        <StatusChips
-          text="Completed"
-          textColor=""
-          backgroundColor="#75F8E4"
-          cirlceColor="#00A392"
-        />
-      )
+      } else if (
+        status === PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+      ) {
+        console.log(
+          'status: ' + status,
+          PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+        )
+        return (
+          <StatusChips
+            text="Completed"
+            textColor=""
+            backgroundColor="#75F8E4"
+            cirlceColor="#00A392"
+          />
+        )
+      } else {
+        return (
+          <StatusChips
+            text="Rejected"
+            textColor=""
+            backgroundColor={Colors.darkRedBackground}
+            cirlceColor="#A8ACAA"
+          />
+        )
+      }
     }
   }
 
