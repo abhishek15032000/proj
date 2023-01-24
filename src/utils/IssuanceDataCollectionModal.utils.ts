@@ -10,7 +10,29 @@ export const isDataModifiedCheckFunc = (
   let isDataChanged = false
   if (sectionIndex === 1 && (subSectionIndex === 2 || subSectionIndex === 3)) {
     //in section A methodologies and party_particpants are having array of objects, so conditionally passing it to 'arrayObjectTypeCheck'
-    isDataChanged = arrayObjectTypeCheck(reduxData, currentProjectDetailData)
+    if (subSectionIndex === 3) {
+      isDataChanged = arrayObjectTypeCheck(reduxData, currentProjectDetailData)
+    }
+    // party_and_project_participants clubbed with 2 redux variables so destructuring them and passing them to their respective datatype check
+    if (subSectionIndex === 2) {
+      const {
+        eligibility_criteria,
+        host_country_attestation,
+        host_country_attestation_upload,
+      } = currentProjectDetailData
+      isDataChanged = arrayObjectTypeCheck(
+        reduxData?.party_and_project_participants,
+        currentProjectDetailData?.party_and_project_participants
+      )
+      if (isDataChanged) {
+        return isDataChanged
+      } else
+        isDataChanged = stringTypeCheck(reduxData?.A3, {
+          eligibility_criteria,
+          host_country_attestation,
+          host_country_attestation_upload,
+        })
+    }
   } else isDataChanged = stringTypeCheck(reduxData, currentProjectDetailData)
   return isDataChanged
 }
@@ -23,7 +45,6 @@ export const stringTypeCheck = (
   //iterateKeys is to check only those fields
   const iterateKeys = Object.keys(reduxData)
   let isStringDataChanged = false
-
   iterateKeys.map((key: any) => {
     // line 60 is to check if issuer entering the data for the 1st time
     if (typeof reduxData[key] === 'string' && !currentProjectDetail[key]) {

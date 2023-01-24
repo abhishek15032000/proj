@@ -180,6 +180,7 @@ const IssuanceDataCollection = () => {
   const party_and_project_participants = useAppSelector(
     ({ sectionA }) => sectionA.party_and_project_participants
   )
+  const A3 = useAppSelector(({ sectionA }) => sectionA.A3)
   const methodologies = useAppSelector(({ sectionA }) => sectionA.methodologies)
   const A5 = useAppSelector(({ sectionA }) => sectionA.A5)
   const A6 = useAppSelector(({ sectionA }) => sectionA.A6)
@@ -199,6 +200,7 @@ const IssuanceDataCollection = () => {
   const E5 = useAppSelector(({ sectionE }) => sectionE.E5, shallowEqual)
   const E6 = useAppSelector(({ sectionE }) => sectionE.E6, shallowEqual)
   const E7 = useAppSelector(({ sectionE }) => sectionE.E7, shallowEqual)
+  const E8 = useAppSelector(({ sectionE }) => sectionE.E8, shallowEqual)
 
   const [nextBtn, setNextBtn] = useState<boolean>(true)
   const [modal, setModal] = useState<boolean>(false)
@@ -325,11 +327,9 @@ const IssuanceDataCollection = () => {
         subSection: 1,
       },
       {
-        sectionName: party_and_project_participants,
+        sectionName: { A3, party_and_project_participants },
         subSectionRow:
-          currentProjectDetails?.['section_a']?.[
-            `step${subSectionIndex + 1}`
-          ]?.['party_and_project_participants'],
+          currentProjectDetails?.['section_a']?.[`step${subSectionIndex + 1}`],
         section: 1,
         subSection: 2,
       },
@@ -467,6 +467,13 @@ const IssuanceDataCollection = () => {
           currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
         section: 5,
         subSection: 6,
+      },
+      {
+        sectionName: E8,
+        subSectionRow:
+          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
+        section: 5,
+        subSection: 7,
       },
     ]
     let dataModified = false
