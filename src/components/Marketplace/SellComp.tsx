@@ -7,11 +7,7 @@ import { Colors } from '../../theme'
 
 const SellComp = () => {
   return (
-    <Grid
-      item
-      xs={10}
-      //
-    >
+    <Grid item xs={12} md={10}>
       <Box>
         <CardRow
           title="Wallet Balance for Purchase :"

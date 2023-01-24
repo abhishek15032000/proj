@@ -29,7 +29,7 @@ const Trading = () => {
         <Grid item xs={12} md={3} sx={{ height: '100%', mt: { xs: 2, md: 0 } }}>
           <OrderBook />
         </Grid>
-        <Grid item md={12} sx={{ mt: { xs: 2, md: 0 } }}>
+        <Grid xs={12} item md={12} sx={{ mt: { xs: 2, md: 0 } }}>
           <Orders />
         </Grid>
       </Grid>

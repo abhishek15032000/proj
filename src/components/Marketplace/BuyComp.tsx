@@ -8,7 +8,7 @@ import { Colors } from '../../theme'
 
 const BuyComp = () => {
   return (
-    <Grid item xs={10}>
+    <Grid item sm={12} md={10}>
       <CardRow
         title="Wallet Balance for Purchase :"
         value={`${0} INR`}
