@@ -8,6 +8,8 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { projectDetailsCalls } from '../../../api/projectDetailsCalls.api'
 import BlockchainCalls from '../../../blockchain/Blockchain'
 import LoderOverlay from '../../LoderOverlay'
+import AboutProject from './AboutProject'
+import BuyToken from './BuyToken'
 
 interface ProjectIntroductionProps {
   projectDetailsData?: any
@@ -205,152 +207,9 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               </Grid>
             </Grid>
           </Grid>
-          <Paper
-            sx={{
-              background:
-                'radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)',
-              borderRadius: '5px',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: goingUp ? 'space-around' : 'space-between',
-              alignItems: 'center',
-              pt: 2,
-              px: goingUp ? 38 : 2,
-              pb: 3,
-              height: '20%',
-              width: goingUp ? '100%' : '50%',
-
-              mx: goingUp ? 0 : 45,
-              position: goingUp ? 'fixed' : 'absolute',
-
-              top: goingUp ? '0' : '100%',
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                alignItems: 'start',
-              }}
-            >
-              <TitleValue
-                title={'Tokens Available for Purchase :'}
-                value={'04'}
-                valueStyle={{
-                  fontWeight: 500,
-                  color: Colors.white,
-                  textAlign: 'right',
-                  mb: 2,
-                }}
-                titleStyle={{ fontWeight: 500, color: Colors.white, mb: 2 }}
-              />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'start',
-                  alignItems: 'start',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'start',
-                    alignItems: 'start',
-                  }}
-                >
-                  <Typography
-                    sx={[
-                      { fontWeight: 400, fontSize: 14, color: Colors.white },
-                    ]}
-                  >
-                    {'Unit Price :'}
-                  </Typography>
-                  <InfoOutlinedIcon
-                    sx={{ fontSize: 20, ml: 1 }}
-                    htmlColor={Colors.white}
-                  />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontWeight: 400,
-                    fontSize: 14,
-                    ml: 1,
-                    color: Colors.white,
-                    textAlign: 'right',
-                  }}
-                >
-                  {/* {props.value === undefined || props.value === '' ? '-' : props.value} */}
-                  {'144'}
-                </Typography>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                width: '150px',
-                height: '40px',
-                backgroundColor: '#75F8E4',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '8px',
-                mt: 2,
-              }}
-            >
-              <Typography
-                sx={{ fontSize: 14, fontWeight: 500, textAlign: 'center' }}
-              >
-                {'Buy Tokens'}
-              </Typography>
-            </Box>
-          </Paper>
+          <BuyToken goingUp={goingUp} />
         </Grid>
-        <Grid
-          item
-          sx={{
-            background:
-              'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
-            px: 10,
-            py: 4,
-          }}
-        >
-          <Typography
-            sx={{ color: 'white', fontSize: 14, fontWeight: 400, mt: 10 }}
-          >
-            Project Intro Outside Pittsburgh, Allegheny Land Trust protected 124
-            acres of woodlands from rapid encroaching residential development in
-            southeastern Allegheny County. The 40 year old maple, cherry and
-            oak-hickory forest provides habitat for deer, turkey, and many
-            species of birds. Hikers, birders, and mountain bikers will be able
-            to explore the area, and possibly catch a glimpse of a majestic 200
-            year old oak tree.
-          </Typography>
-          <Typography
-            sx={{ color: 'white', fontSize: 14, fontWeight: 400, mt: 2 }}
-          >
-            Protection of this forest also contributes to maintaining clean
-            drinking water for Pittsburgh region’s residents. Located within the
-            lower Youghiogheny River Watershed, the property is five miles
-            upstream from the confluence with the Monongahela River.
-          </Typography>
-          <Typography
-            sx={{
-              color: 'white',
-              fontSize: 14,
-              fontWeight: 400,
-              mt: 2,
-
-              mb: 10,
-            }}
-          >
-            Revenue generated from the sale of carbon credits will be put
-            towards acquisition costs, land stewardship, and future expansion of
-            this and other conservation lands.
-          </Typography>
-        </Grid>
+        <AboutProject />
       </>
     )
   }

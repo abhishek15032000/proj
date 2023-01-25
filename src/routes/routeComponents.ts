@@ -43,6 +43,7 @@ import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProject
 import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
 import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
 import Wallet from '../pages/Wallet'
+import RiskDashboard from '../pages/RiskDashboard'
 
 export const privateRouteComponents = [
   {
@@ -262,5 +263,11 @@ export const privateRouteComponents = [
     component: Wallet,
     sidebarName: linkLabels.Wallet,
     roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.RISK_DASHBOARD,
+    component: RiskDashboard,
+
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
 ]
