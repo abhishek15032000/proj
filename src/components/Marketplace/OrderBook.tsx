@@ -1,53 +1,57 @@
-import { Grid, Typography } from '@mui/material'
+import { Box, Grid, Skeleton, Typography } from '@mui/material'
 import React, { FC } from 'react'
+import { shallowEqual } from 'react-redux'
 import CCPaper from '../../atoms/CCPaper'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
 
-const headings = ['Price (BTC)', 'Amount (ETH)', 'Total (ETH)']
-const rows = [200, 2, 2]
+const headings = ['Unit Price', 'Quantity', 'Total']
 
 const OrderBook = () => {
+  const sellOrdersList = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.sellOrdersList,
+    shallowEqual
+  )
+  const sellOrdersLoading = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.sellOrdersLoading,
+    shallowEqual
+  )
+
   return (
     <CCPaper customSX={{ height: '100%' }}>
       <Typography sx={{ fontSize: 18, color: Colors.darkPrimary1 }}>
         Order Book
       </Typography>
-      {/* <HeadingRow headings={headings} /> */}
       <Row isHeading rows={headings} />
-      <Row rows={rows} />
-      <Row rows={rows} />
-      <Row rows={rows} />
-      <Row rows={rows} />
-      <Row rows={rows} />
+      {sellOrdersLoading ? (
+        <Box>
+          {[1, 2, 3, 4, 5].map((item: any, index: number) => (
+            <Skeleton
+              data-testid={'cc-table-skeleton-row'}
+              key={index.toString()}
+              variant="rectangular"
+              height={40}
+              sx={{
+                background: index % 2 == 0 ? '#fff' : '#e1eee8',
+                borderRadius: '8px',
+              }}
+            />
+          ))}
+        </Box>
+      ) : sellOrdersList && sellOrdersList.length ? (
+        sellOrdersList.map((sellOrder: any, index: number) => (
+          <Row key={index} rows={sellOrder} />
+        ))
+      ) : (
+        <Typography sx={{ color: Colors.darkPrimary1, fontSize: 14 }}>
+          No Orders yet
+        </Typography>
+      )}
     </CCPaper>
   )
 }
 
 export default OrderBook
-
-// interface HeadingRowProps {
-//   headings: any
-// }
-// const HeadingRow: FC<HeadingRowProps> = ({ headings }) => {
-//   return (
-//     <Grid
-//       container
-//       sx={{ py: 1, px: 2, background: '#CCE8E1', borderRadius: '8px' }}
-//     >
-//       {headings.length > 0 &&
-//         headings.map((heading: string, index: number) => (
-//           <Grid
-//             item
-//             xs={4}
-//             key={index}
-//             sx={{ color: '141D1B', fontSize: 12, fontWeight: 500 }}
-//           >
-//             {heading}
-//           </Grid>
-//         ))}
-//     </Grid>
-//   )
-// }
 
 interface RowProps {
   isHeading?: boolean

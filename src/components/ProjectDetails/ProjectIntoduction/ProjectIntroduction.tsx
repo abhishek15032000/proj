@@ -8,11 +8,15 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { projectDetailsCalls } from '../../../api/projectDetailsCalls.api'
 import BlockchainCalls from '../../../blockchain/Blockchain'
 import LoderOverlay from '../../LoderOverlay'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../../routes/pathNames'
 
 interface ProjectIntroductionProps {
   projectDetailsData?: any
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
+  const navigate = useNavigate()
+
   const data = [
     {
       image: Images.one,
@@ -299,6 +303,14 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                 borderRadius: '8px',
                 mt: 2,
               }}
+              onClick={() =>
+                navigate(pathNames.MARKETPLACE, {
+                  state: {
+                    projectID: projectDetailsData?._id,
+                    projectUUID: projectDetailsData?.uuid,
+                  },
+                })
+              }
             >
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, textAlign: 'center' }}

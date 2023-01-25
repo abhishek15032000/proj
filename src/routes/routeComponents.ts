@@ -83,12 +83,18 @@ export const privateRouteComponents = [
   {
     path: pathNames.MARKETPLACE_OLD,
     component: MarketplaceHome,
-    sidebarName: linkLabels.Marketplace,
+    // sidebarName: linkLabels.Marketplace,
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
     path: pathNames.MARKETPLACE,
     component: Marketplace,
+    // sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.PROJECT_LISTS_WITH_FILTER,
+    component: ProjectListsWithFilter,
     sidebarName: linkLabels.Marketplace,
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },

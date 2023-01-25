@@ -90,6 +90,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionById',
     getTokenBalanceList:
       ENDPOINTS.carbonServiceURL + '/transaction/getWalletBalanceById',
+    getAccountAndExchangeDetails:
+      ENDPOINTS.carbonServiceURL + '/transaction/getAccountAndExchangeDetails',
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
@@ -130,5 +132,9 @@ export const URL_PATH = {
     getComments: ENDPOINTS.carbonServiceURL + '/comment/getCommentByProjectId',
     createComment: ENDPOINTS.carbonServiceURL + '/comment/create',
     updateComment: ENDPOINTS.carbonServiceURL + '/comment/update',
+  },
+  events: {
+    getTokenByProjectUUID:
+      ENDPOINTS.carbonServiceURL + '/event/getTokenByProjectId',
   },
 }

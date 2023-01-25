@@ -1,27 +1,38 @@
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
+import { shallowEqual } from 'react-redux'
 import CardRow from '../../atoms/CardRow/CardRow'
 import CCButton from '../../atoms/CCButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
 
 const BuyComp = () => {
+  const inrTokenBalances = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.inrTokenBalances,
+    shallowEqual
+  )
+  const carbonTokenSymbol = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenSymbol,
+    shallowEqual
+  )
+
   return (
     <Grid item sm={12} md={10}>
       <CardRow
         title="Wallet Balance for Purchase :"
-        value={`${0} INR`}
+        value={`${Math.round(inrTokenBalances?.totalBalances) || 0} INR`}
         titleStyle={{ color: Colors.lightPrimary1 }}
       />
       <CardRow
         title="Approved Token(INR/USD) Balance :"
-        value={`${0} INR`}
+        value={`${Math.round(inrTokenBalances?.allowanceBalance) || 0} INR`}
         titleStyle={{ color: Colors.lightPrimary1 }}
       />
       <CardRow
         title="Balance on Exchange :"
-        value={`${0} INR`}
+        value={`${Math.round(inrTokenBalances?.assetsBalance) || 0} INR`}
         titleStyle={{ color: Colors.lightPrimary1 }}
       />
       <Box sx={{ position: 'relative', pt: 1 }}>
@@ -47,7 +58,7 @@ const BuyComp = () => {
             right: 10,
           }}
         >
-          INR
+          {carbonTokenSymbol}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'end' }}>

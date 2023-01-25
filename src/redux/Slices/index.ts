@@ -33,6 +33,7 @@ import profileCompletion from './profileCompletionSlice'
 import registry from './registrySlice'
 import comments from './commentsSlice'
 import traceability from './traceabilitySlice'
+import newMarketplaceReducer from './newMarketplaceSlice'
 
 // TODO: rename names
 export default {
@@ -68,4 +69,5 @@ export default {
   registry,
   comments,
   traceability,
+  newMarketplaceReducer,
 }
