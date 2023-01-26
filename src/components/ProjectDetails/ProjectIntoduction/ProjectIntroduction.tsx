@@ -88,9 +88,12 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           container
           sx={{
             backgroundImage: `url(${Images.ProjectDetails})`,
-            pb: 8,
+            // pb: 8,
             maxWidth: 'fit-content',
             maxHeight: 'fit-content',
+            borderRadius: '16px',
+            minHeight: '600px',
+            position: 'relative',
           }}
         >
           <Grid
@@ -101,7 +104,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             sx={{
               backgroundColor: 'rgba(0, 107, 94, 0.42)',
               borderRadius: '16px',
-              m: 10,
+              // m: 10,
             }}
           >
             <Grid
@@ -227,7 +230,9 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               mx: goingUp ? 0 : 45,
               position: goingUp ? 'fixed' : 'absolute',
 
-              top: goingUp ? '0' : '100%',
+              top: goingUp ? '0' : '90%',
+              zIndex: 1000,
+              transition:"width 0.3s ease"
             }}
           >
             <Box
@@ -323,14 +328,14 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
         <Grid
           item
           sx={{
-            background:
-              'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
+            // background:'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
             px: 10,
-            py: 4,
+            pt: 4,
+            color:"textColor2.main"
           }}
         >
           <Typography
-            sx={{ color: 'white', fontSize: 14, fontWeight: 400, mt: 10 }}
+            sx={{   fontSize: 14, fontWeight: 400, mt: 10 }}
           >
             Project Intro Outside Pittsburgh, Allegheny Land Trust protected 124
             acres of woodlands from rapid encroaching residential development in
@@ -341,7 +346,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             year old oak tree.
           </Typography>
           <Typography
-            sx={{ color: 'white', fontSize: 14, fontWeight: 400, mt: 2 }}
+            sx={{   fontSize: 14, fontWeight: 400, mt: 2 }}
           >
             Protection of this forest also contributes to maintaining clean
             drinking water for Pittsburgh region’s residents. Located within the
@@ -350,7 +355,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           </Typography>
           <Typography
             sx={{
-              color: 'white',
+               
               fontSize: 14,
               fontWeight: 400,
               mt: 2,
