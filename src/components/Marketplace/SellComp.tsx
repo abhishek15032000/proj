@@ -5,15 +5,17 @@ import CardRow from '../../atoms/CardRow/CardRow'
 import CCButton from '../../atoms/CCButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useMarket } from '../../hooks/useMarket'
 import {
   setSellQuantity,
   setSellUnitPrice,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
-import { createSellOrder } from '../../utils/newMarketplace.utils'
+// import { createSellOrder } from '../../utils/newMarketplace.utils'
 
 const SellComp = () => {
   const dispatch = useAppDispatch()
+  const {createSellOrder} = useMarket()
 
   const carbonTokenBalances = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenBalances,
