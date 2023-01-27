@@ -35,10 +35,12 @@ import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
-import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
+// import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
 import SelectVerifierSkeleton from './SelectVerifierSkeleton'
+import {useProject} from "../../hooks/useProject"
 
 const SelectVerifier = () => {
+  const {getProjectDetails} = useProject()
   const navigate = useNavigate()
   const location: any = useLocation()
 

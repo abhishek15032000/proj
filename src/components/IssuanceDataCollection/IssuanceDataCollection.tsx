@@ -40,7 +40,7 @@ import {
   setIsApiCallSuccess,
   setToMoveSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
-import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
+// import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
@@ -59,6 +59,7 @@ import { resetSectionC } from '../../redux/Slices/sectionCSlice'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 import { usePrompt } from '../../hooks/useCustomBlocker'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import { useProject } from '../../hooks/useProject'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -246,6 +247,8 @@ const IssuanceDataCollection = () => {
       setOnHoverText('Copy To Clipboard')
     }, 3000)
   }
+
+  const {moveToNextSection} = useProject()
 
   const handleSave = () => {
     moveToNextSection(sectionIndex, subSectionIndex)
