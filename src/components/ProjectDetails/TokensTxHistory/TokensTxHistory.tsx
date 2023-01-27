@@ -191,8 +191,10 @@ const TokensTxHistory = () => {
     return <LoderOverlay />
   } else {
     return (
-      <Box sx={{ background: '#111E17', padding: '56px 6vw', color: '#fff' }}>
-        <Typography sx={{ fontSize: '32px', color: '#55DBC8' }}>
+      <Box sx={{ 
+        // background: '#111E17', 
+      padding: '56px 6vw',  }}>
+        <Typography sx={{ fontSize: '32px',  color: 'headingColor.main'}}>
           Tokens Transaction History
         </Typography>
         <Box sx={{ mt: 3 }}>
