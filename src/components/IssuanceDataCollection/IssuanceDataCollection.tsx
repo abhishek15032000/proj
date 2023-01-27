@@ -227,9 +227,9 @@ const IssuanceDataCollection = () => {
       currentProjectDetails &&
       currentProjectDetails?.projectCompleted &&
       sectionIndex === 5
-    )
+    ) {
       setNextBtn(false)
-    else {
+    } else {
       setNextBtn(true)
     }
   }, [currentProjectDetails, sectionIndex])
@@ -279,7 +279,9 @@ const IssuanceDataCollection = () => {
         PROJECT_ALL_STATUS.CREATED_PROJECT
       ) {
         navigate(pathNames.SELECT_VERIFIER)
-      } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      } else {
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      }
     }
   }
 
@@ -505,6 +507,7 @@ const IssuanceDataCollection = () => {
       const dataModified = handleDataCheck()
       if (dataModified) {
         setSubSectionIndexState(index)
+        console.log('handleSubSectionClick')
         setModal(true)
       } else if (!dataModified) {
         dispatch(setSubSectionIndex(index))
@@ -515,7 +518,17 @@ const IssuanceDataCollection = () => {
   const handleQuitWithoutSave = () => {
     setModal(false)
     if (sectionIndex === 5) {
-      handleNextBtnFromSectionE()
+      if (!changeInSection) {
+        //from sectionE if PD moves to different sub-section without saving the data
+        dispatch(setSubSectionIndex(subSectionIndexState))
+      } else if (sectionIndexState === 4) {
+        //from sectionE if PD moves to different section
+        dispatch(setSubSectionIndex(0))
+        dispatch(setSectionIndex(sectionIndexState))
+      } else {
+        //From sectionE if PD is clicking on next btn
+        handleNextBtnFromSectionE()
+      }
     } else {
       handleSectionIndexFromModal()
     }

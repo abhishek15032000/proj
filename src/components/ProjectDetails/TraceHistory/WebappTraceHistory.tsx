@@ -139,8 +139,8 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
   }, [traceOption, traceAllData])
 
   useEffect(() => {
-    getAllDetails()
-  }, [])
+    if (projectId) getAllDetails()
+  }, [projectId])
 
   const getAllDetails = () => {
     setLoading(true)

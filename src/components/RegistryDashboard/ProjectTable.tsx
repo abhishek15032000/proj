@@ -16,6 +16,7 @@ import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { pathNames } from '../../routes/pathNames'
 import { Images } from '../../theme'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { Typography } from '@mui/material'
 
 const headings: any = [
   'Created on',
@@ -35,7 +36,7 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
-
+  console.log('tab_Index from project table:', tabIndex)
   const [newProjects, setNewProjects] = useState<any>([])
   const [underReviewProjects, setUnderReviewProjects] = useState<any>([])
   const [reviewedProjects, setReviewedProjects] = useState<any>([])
@@ -158,7 +159,6 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
       setLoading(false)
     }
   }
-
   const renderStatusChips = (status: number) => {
     switch (status) {
       case 6: {
@@ -205,12 +205,16 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
     <>
       {loading ? (
         <CCTableSkeleton height={40} />
-      ) : (
+      ) : rows && rows.length !== 0 ? (
         <CCTable
           headings={headings}
           rows={rows}
           pagination={location?.pathname === pathNames.REGISTRY_ALL_PROJECTS}
         />
+      ) : (
+        <Typography textAlign={'center'}>
+          No projects under the selected Tab
+        </Typography>
       )}
     </>
   )

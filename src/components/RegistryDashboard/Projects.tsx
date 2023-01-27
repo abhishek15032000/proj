@@ -10,7 +10,6 @@ const Projects = () => {
   const location = useLocation()
 
   const [tabIndex, setTabIndex] = useState(1)
-
   return (
     <Paper
       elevation={2}
