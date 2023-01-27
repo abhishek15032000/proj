@@ -7,7 +7,7 @@ import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
   setSellQuantity,
-  setSellUnitPrice,
+  setSellWantAmount,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
 import { createSellOrder } from '../../utils/newMarketplace.utils'
@@ -27,8 +27,8 @@ const SellComp = () => {
     ({ newMarketplaceReducer }) => newMarketplaceReducer.sellQuantity,
     shallowEqual
   )
-  const sellUnitPrice = useAppSelector(
-    ({ newMarketplaceReducer }) => newMarketplaceReducer.sellUnitPrice,
+  const sellWantAmount = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.sellWantAmount,
     shallowEqual
   )
 
@@ -85,14 +85,14 @@ const SellComp = () => {
         <Box sx={{ position: 'relative', pt: 1 }}>
           <Box>
             <LabelInput
-              label="Unit Price"
+              label="Want Amount"
               sx={{ width: '100%' }}
-              value={sellUnitPrice || ''}
+              value={sellWantAmount || ''}
               setValue={(e: any) => {
                 //Allow only no.s upto 2 decimal places
                 const regexp = /^\d+(\.\d{0,2})?$/
                 if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  dispatch(setSellUnitPrice(e?.target?.value))
+                  dispatch(setSellWantAmount(e?.target?.value))
                 }
               }}
             />
@@ -121,7 +121,7 @@ const SellComp = () => {
               minWidth: 0,
             }}
             onClick={createSellOrder}
-            disabled={!sellQuantity || !sellUnitPrice}
+            disabled={!sellQuantity || !sellWantAmount}
             variant="contained"
           >
             Sell
