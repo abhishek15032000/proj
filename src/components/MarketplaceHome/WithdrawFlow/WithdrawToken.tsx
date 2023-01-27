@@ -10,9 +10,10 @@ import {
   getBalanceOnExchange,
   getWalletBalance,
 } from '../../../utils/Marketplace/marketplaceSellFlow.util'
-import { getApprovedTokensBalance } from '../../../utils/tokenRetire.utils'
+// import { getApprovedTokensBalance } from '../../../utils/tokenRetire.utils'
 import CardRow from '../../../atoms/CardRow/CardRow'
 import TabWithdraw from './TabWithdraw'
+import { useTokenRetire } from '../../../hooks/useTokenRetire'
 
 interface WithdrawTokenProps {}
 
@@ -55,6 +56,7 @@ const WithdrawToken: FC<WithdrawTokenProps> = () => {
   //   )
   //   dispatch(setSellQuantityForApprove(sellQuantityForApproveInLocalStorage))
   // }, [])
+  const {getApprovedTokensBalance} =  useTokenRetire()
 
   useEffect(() => {
     if (accountAddress) {
