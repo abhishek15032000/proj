@@ -81,7 +81,10 @@ import ProjectDetails from '../assets/Images/project-details/projectDetails.png'
 import map from '../assets/Images/Icons/map.png'
 import file from '../assets/Images/Icons/file.png'
 import trending from '../assets/Images/Icons/trending.png'
+import eyeClose from '../assets/Images/Icons/eyeClose.png'
+import eyeOpen from '../assets/Images/Icons/eyeOpen.png'
 import group from '../assets/Images/Icons/group.png'
+
 export const Images = {
   logo,
   ICRLogo,
@@ -165,4 +168,6 @@ export const Images = {
   file,
   trending,
   group,
+  eyeClose,
+  eyeOpen,
 }

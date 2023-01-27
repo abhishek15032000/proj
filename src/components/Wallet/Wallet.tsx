@@ -45,7 +45,9 @@ const Wallet: FC<WalletProps> = (props) => {
   const dispatch: any = useAppDispatch()
 
   const [loading, setLoading] = useState(false)
-  const [balance, setBalance] = useState(0)
+  const [balance, setBalance] = useState(0.0)
+  const [balanceINR, setBalanceINR] = useState(0)
+
   const [tableData, setTableData] = useState([])
   const [privateKey, setPrivateKey] = useState('')
 
@@ -69,6 +71,7 @@ const Wallet: FC<WalletProps> = (props) => {
           )
 
           setBalance(res?.data?.data?.balance)
+          setBalanceINR(res?.data?.data?.inr_token_balance)
           const rows =
             modifiedRows &&
             modifiedRows.map((i: any, index: number) => {
@@ -209,7 +212,9 @@ const Wallet: FC<WalletProps> = (props) => {
                 ml: 2,
               }}
             >
-              {`USD ${balance}` + ' | ' + `MATIC ${balance}`}
+              {`USD ${balanceINR}` +
+                ' | ' +
+                `MATIC ${Math.round(Number(balance) * 1000) / 1000}`}
             </Typography>
           </Grid>
           <Grid item xs={12} md={12} lg={12} xl={12}>
