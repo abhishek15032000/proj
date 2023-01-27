@@ -19,4 +19,13 @@ export const transactionCalls = {
       return res.data
     })
   },
+  getAccountAndExchangeDetails: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.transaction.getAccountAndExchangeDetails,
+      'POST',
+      payload
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }
