@@ -37,13 +37,13 @@ const OtherProjects = () => {
   return (
     <Box
       sx={{
-        background:
-          'linear-gradient(180deg, rgba(7, 19, 13, 0.79) 0%, #222926 66.32%)',
+        // background:
+        //   'linear-gradient(180deg, rgba(7, 19, 13, 0.79) 0%, #222926 66.32%)',
         padding: '56px 6vw',
-        color: '#fff',
+        // color: '#fff',
       }}
     >
-      <Box sx={{ fontSize: '32px', color: '#55DBC8' }}>Other Projects</Box>
+      <Box sx={{ fontSize: '32px',    color: 'headingColor.main' }}>Other Projects</Box>
       <Box
         sx={{
           fontSize: '14px',

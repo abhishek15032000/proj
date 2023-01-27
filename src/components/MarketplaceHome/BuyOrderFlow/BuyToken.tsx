@@ -11,7 +11,7 @@ import {
   getWalletBalanceBuyFlow,
 } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 import { getLocalItem } from '../../../utils/Storage'
-import CardRow from '../CardRow'
+import CardRow from '../../../atoms/CardRow/CardRow'
 import TabBuyApprove from './TabBuyApprove'
 import TabBuyCreateBuyOrder from './TabBuyCreateBuyOrder'
 import TabBuyDeposit from './TabBuyDeposit'

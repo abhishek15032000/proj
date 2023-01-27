@@ -10,6 +10,7 @@ export const pathNames = {
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
   ISSUANCE_DATA_COLLECTION_HELP: '/issuance-data-collection/help',
   PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
+  MARKETPLACE_OLD: '/marketplace-old',
   MARKETPLACE: '/marketplace',
   MARKETPLACE_V2: '/marketplace-v2',
   MARKETPLACE_PROJECT_DETAILS: '/marketplace-project-details',

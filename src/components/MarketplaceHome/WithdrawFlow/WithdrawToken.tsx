@@ -11,7 +11,7 @@ import {
   getWalletBalance,
 } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 import { getApprovedTokensBalance } from '../../../utils/tokenRetire.utils'
-import CardRow from '../CardRow'
+import CardRow from '../../../atoms/CardRow/CardRow'
 import TabWithdraw from './TabWithdraw'
 
 interface WithdrawTokenProps {}

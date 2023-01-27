@@ -19,7 +19,7 @@ const ReportTd: React.FC<ReportTdProps> = ({ name }) => {
     <Box
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      <DescriptionOutlinedIcon />
+      <DescriptionOutlinedIcon sx={{color:"iconColor.main"}} />
       {name}
     </Box>
   )
@@ -33,7 +33,7 @@ const ReportIssuerTd: React.FC<ReportIssuerTdProps> = ({ name }) => {
     <Box
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      <PersonOutlineOutlinedIcon />
+      <PersonOutlineOutlinedIcon sx={{color:"iconColor.main"}}/>
       {name}
     </Box>
   )
@@ -82,9 +82,9 @@ const Reports = () => {
                     <Box
                       key={1}
                       sx={{
-                        background: '#fff',
+                        background: 'bgColor.secondary',
                         py: 1,
-                        color: '#000',
+                        color: 'iconColor.main',
                         borderRadius: '32px',
                         cursor: 'pointer',
                       }}
@@ -113,13 +113,13 @@ const Reports = () => {
     return (
       <Box
         sx={{
-          background: '#111E17',
+          // background: '#111E17',
           padding: '2vw 6vw',
-          color: '#fff',
+          // color: '#fff',
           width: '100%',
         }}
       >
-        <Typography sx={{ fontSize: '32px', color: '#55DBC8' }}>
+        <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
           Reports
         </Typography>
         <Box sx={{ mt: 3 }}>

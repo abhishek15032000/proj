@@ -1,0 +1,173 @@
+import { eventsCalls } from '../api/eventsCalls.api'
+import { marketplaceCalls } from '../api/marketplaceCalls.api'
+import { transactionCalls } from '../api/transactionCalls.api'
+import {
+  setMessageModalText,
+  setShowMessageModal,
+} from '../redux/Slices/appSlice'
+import {
+  setCarbonTokenAddress,
+  setCarbonTokenSymbol,
+  setCreateBuyOrderLoading,
+  setCreateSellOrderLoading,
+  setINRTokenAddress,
+  setProjectsTokenLoading,
+  setSellOrdersList,
+  setSellOrdersLoading,
+  setSellQuantity,
+  setSellWantAmount,
+  setTokenBalanceLoading,
+} from '../redux/Slices/newMarketplaceSlice'
+import { store } from '../redux/store'
+
+export const getProjectsTokenDetails = async (projectUUID: string) => {
+  try {
+    store.dispatch(setProjectsTokenLoading(true))
+    const res = await eventsCalls.getTokenByProjectUUID(
+      `?project_id=${projectUUID}`
+    )
+    if (res?.success) {
+      store.dispatch(setCarbonTokenSymbol(res?.data?.token_symbol))
+      store.dispatch(setCarbonTokenAddress(res?.data?.token_address))
+      store.dispatch(setINRTokenAddress(res?.data?.INR_token_address))
+    }
+  } catch (err) {
+    console.log('Error in eventsCalls.getTokenByProjectUUID api ~ ', err)
+  } finally {
+    store.dispatch(setProjectsTokenLoading(false))
+  }
+}
+
+export const getTokenBalances = async (userID: string, assetID: string) => {
+  try {
+    store.dispatch(setTokenBalanceLoading(true))
+    const payload = {
+      user_id: userID,
+      asset_id: assetID,
+    }
+    const res = await transactionCalls.getAccountAndExchangeDetails(payload)
+    if (res?.success) {
+      return res
+    }
+  } catch (err) {
+    console.log(
+      'Error in transactionCalls.getAccountAndExchangeDetails api ~ ',
+      err
+    )
+  } finally {
+    store.dispatch(setTokenBalanceLoading(false))
+  }
+}
+
+export async function getSellOrdersListData() {
+  try {
+    store.dispatch(setSellOrdersLoading(true))
+    const sellOrderRes = await marketplaceCalls.getSellOrder()
+    if (sellOrderRes.success && sellOrderRes.data.length) {
+      const ordersList = sellOrderRes?.data?.reverse().map((order: any) => {
+        return [
+          order?._wantAmount,
+          order?._offerAmount,
+          order?._wantAmount * order?._offerAmount,
+        ]
+      })
+      store.dispatch(setSellOrdersList(ordersList))
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.getSellOrder api : ', err)
+  } finally {
+    store.dispatch(setSellOrdersLoading(false))
+  }
+}
+
+export const createSellOrder = async () => {
+  const carbonTokenAddress =
+    store.getState()?.newMarketplaceReducer?.carbonTokenAddress
+  const inrTokenAddress =
+    store.getState()?.newMarketplaceReducer?.inrTokenAddress
+  const sellQuantity = store.getState()?.newMarketplaceReducer?.sellQuantity
+  const sellWantAmount = store.getState()?.newMarketplaceReducer?.sellWantAmount
+  const currentProjectUUID =
+    store.getState()?.newMarketplaceReducer?.currentProjectUUID
+
+  const pseudoNonce = new Date().getTime()
+
+  try {
+    store.dispatch(setCreateSellOrderLoading(true))
+    const payload = {
+      _offerAsset: carbonTokenAddress,
+      _wantAsset: inrTokenAddress,
+      _offerAmount: Number(sellQuantity),
+      _wantAmount: Number(sellWantAmount),
+      _feeAsset: carbonTokenAddress,
+      _feeAmount: 0,
+      _nonce: pseudoNonce,
+    }
+
+    const createOrderRes = await marketplaceCalls.createOrder(payload)
+    if (createOrderRes?.success) {
+      getSellOrdersListData()
+      getProjectsTokenDetails(currentProjectUUID)
+      store.dispatch(setSellQuantity(0))
+      store.dispatch(setSellWantAmount(0))
+
+      store.dispatch(setShowMessageModal(true))
+      store.dispatch(
+        setMessageModalText(
+          'Sell Order created successfully. You can chck the status of blockchain transaction from the orders table!!!'
+        )
+      )
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.createOrder api ~ ', err)
+  } finally {
+    store.dispatch(setCreateSellOrderLoading(false))
+  }
+}
+
+export const createBuyOrder = async () => {
+  // const carbonTokenAddress =
+  //   store.getState()?.newMarketplaceReducer?.carbonTokenAddress
+  const inrTokenAddress =
+    store.getState()?.newMarketplaceReducer?.inrTokenAddress
+
+  const buyOrderPayloadOfferHashes =
+    store.getState()?.newMarketplaceReducer?.buyOrderPayloadOfferHashes
+  const buyOrderPayloadAmountsToTake =
+    store.getState()?.newMarketplaceReducer?.buyOrderPayloadAmountsToTake
+  const buyOrderPayloadUUID =
+    store.getState()?.newMarketplaceReducer?.buyOrderPayloadUUID
+  const currentProjectUUID =
+    store.getState()?.newMarketplaceReducer?.currentProjectUUID
+
+  const pseudoNonce = new Date().getTime()
+
+  try {
+    store.dispatch(setCreateBuyOrderLoading(true))
+    const payload = {
+      uuid: buyOrderPayloadUUID,
+      _offerHashes: buyOrderPayloadOfferHashes,
+      _amountsToTake: buyOrderPayloadAmountsToTake,
+      _feeAsset: inrTokenAddress,
+      _feeAmount: 0,
+      _nonce: pseudoNonce,
+    }
+
+    const createOrderRes = await marketplaceCalls.fillOrder(payload)
+    if (createOrderRes?.success) {
+      getSellOrdersListData()
+      getProjectsTokenDetails(currentProjectUUID)
+
+      store.dispatch(setShowMessageModal(true))
+      store.dispatch(
+        setMessageModalText(
+          'Buy Order created successfully. You can chck the status of blockchain transaction from the orders table!!!'
+        )
+      )
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.fillOrder api ~ ', err)
+  } finally {
+    store.dispatch(setCreateBuyOrderLoading(false))
+  }
+}

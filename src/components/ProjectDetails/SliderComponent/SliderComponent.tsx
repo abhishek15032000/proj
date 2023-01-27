@@ -47,8 +47,10 @@ const SliderComponent = () => {
   }
 
   return (
-    <Box sx={{ background: '#111E17', padding: '2vw 6vw', color: '#fff' }}>
-      <Typography sx={{ fontSize: '32px', color: '#55DBC8' }}>
+    <Box sx={{ 
+      // background: '#111E17',
+     padding: '2vw 6vw',   }}>
+      <Typography sx={{ fontSize: '32px',  color: 'headingColor.main'}}>
         Project Images
       </Typography>
       <div className="container">

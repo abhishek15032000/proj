@@ -10,11 +10,18 @@ import BlockchainCalls from '../../../blockchain/Blockchain'
 import LoderOverlay from '../../LoderOverlay'
 import AboutProject from './AboutProject'
 import BuyToken from './BuyToken'
+import { useNavigate } from 'react-router-dom'
+import { pathNames } from '../../../routes/pathNames'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface ProjectIntroductionProps {
   projectDetailsData?: any
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
+  const navigate = useNavigate()
+  //  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  const onWebApp = 1
   const data = [
     {
       image: Images.one,
@@ -86,9 +93,12 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           container
           sx={{
             backgroundImage: `url(${Images.ProjectDetails})`,
-            pb: 8,
+            // pb: 8,
             maxWidth: 'fit-content',
             maxHeight: 'fit-content',
+            borderRadius: '16px',
+            minHeight: '600px',
+            position: 'relative',
           }}
         >
           <Grid
@@ -99,7 +109,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             sx={{
               backgroundColor: 'rgba(0, 107, 94, 0.42)',
               borderRadius: '16px',
-              m: 10,
+              // m: 10,
             }}
           >
             <Grid
