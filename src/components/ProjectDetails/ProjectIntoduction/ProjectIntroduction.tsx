@@ -10,13 +10,16 @@ import BlockchainCalls from '../../../blockchain/Blockchain'
 import LoderOverlay from '../../LoderOverlay'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../../routes/pathNames'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface ProjectIntroductionProps {
   projectDetailsData?: any
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
   const navigate = useNavigate()
-
+//  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+ const onWebApp = 1
   const data = [
     {
       image: Images.one,
@@ -215,7 +218,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           <Paper
             sx={{
               background:
-                'radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)',
+              onWebApp ? "#fff":`radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)`,
               borderRadius: '5px',
               display: 'flex',
               flexDirection: 'row',
@@ -230,7 +233,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               mx: goingUp ? 0 : 45,
               position: goingUp ? 'fixed' : 'absolute',
 
-              top: goingUp ? '0' : '90%',
+              top: goingUp ? '10px' : '90%',
               zIndex: 1000,
               transition:"width 0.3s ease"
             }}
@@ -248,11 +251,11 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                 value={'04'}
                 valueStyle={{
                   fontWeight: 500,
-                  color: Colors.white,
+                  color: 'textColor2.main',
                   textAlign: 'right',
                   mb: 2,
                 }}
-                titleStyle={{ fontWeight: 500, color: Colors.white, mb: 2 }}
+                titleStyle={{ fontWeight: 500, color: 'textColor2.main', mb: 2 }}
               />
               <Box
                 sx={{
@@ -272,23 +275,23 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                 >
                   <Typography
                     sx={[
-                      { fontWeight: 400, fontSize: 14, color: Colors.white },
+                      { fontWeight: 500, fontSize: 14, color: 'textColor2.main' },
                     ]}
                   >
                     {'Unit Price :'}
                   </Typography>
                   <InfoOutlinedIcon
                     sx={{ fontSize: 20, ml: 1 }}
-                    htmlColor={Colors.white}
+                    htmlColor={'textColor2.main'}
                   />
                 </Box>
 
                 <Typography
                   sx={{
-                    fontWeight: 400,
+                    fontWeight: 500,
                     fontSize: 14,
                     ml: 1,
-                    color: Colors.white,
+                    color: 'textColor2.main',
                     textAlign: 'right',
                   }}
                 >
@@ -301,7 +304,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               sx={{
                 width: '150px',
                 height: '40px',
-                backgroundColor: '#75F8E4',
+                backgroundColor: onWebApp ? Colors.accent:'#75F8E4',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -318,7 +321,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               }
             >
               <Typography
-                sx={{ fontSize: 14, fontWeight: 500, textAlign: 'center' }}
+                sx={{ color:'primary.main', fontSize: 14, fontWeight: 500, textAlign: 'center' }}
               >
                 {'Buy Tokens'}
               </Typography>
