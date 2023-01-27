@@ -23,8 +23,9 @@ import InfoIcon from '@mui/icons-material/Info'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { USER } from '../../api/user.api'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
-import { onManualConnectClick } from '../../utils/blockchain.util'
+// import { onManualConnectClick } from '../../utils/blockchain.util'
 import { MUMBAI_TESTNET_NETWORK_ID } from '../../config/constants.config'
+import { useBlockchain } from '../../hooks/useBlockchain'
 
 // let window: any
 declare let window: any
@@ -73,6 +74,7 @@ const LoadWallet = (props: LoadWalletProps) => {
     walletNetwork,
   } = walletReducer
 
+  const {onManualConnectClick} = useBlockchain()
   useEffect(() => {
     console.log('load wallet useffec oopen')
     onManualConnectClick()

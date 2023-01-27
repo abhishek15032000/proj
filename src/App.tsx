@@ -15,12 +15,13 @@ import { shallowEqual } from 'react-redux'
 import { useIdleTimer } from 'react-idle-timer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from './routes/pathNames'
-import { BlockchainListener } from './utils/blockchain.util'
+// import { BlockchainListener } from './utils/blockchain.util'
 import { setLoadWallet } from './redux/Slices/walletSlice'
 import LoadWallet from './components/LoadWallet'
 import BlockchainAlert from './components/BlockchainAlert'
 import AddMetaMaskAccountModal from './components/AddMetaMaskAccountModal/AddMetaMaskAccountModal'
 import { drawerExemptList } from './routes/config'
+import { useBlockchain } from './hooks/useBlockchain'
 
 declare let window: any
 const { ethereum } = window
@@ -124,7 +125,7 @@ const App: FC<AppProps> = () => {
     crossTab: false,
     syncTimers: 0,
   })
-
+ 
   const dispatch = useAppDispatch()
   const getloginStatusFromLocalStorage = getLocalItem('userDetails')
   // const loadWallet = useAppSelector((state) => state.wallet.loadWallet)
@@ -132,6 +133,9 @@ const App: FC<AppProps> = () => {
   const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
 
+  // const {check} = useBlockchain()
+  // console.log("🚀 ~ file: App.tsx ~ line 137 ~ check", check)
+  
   // useEffect(() => {
   // BlockchainListener()
   // }, [])
