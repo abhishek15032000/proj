@@ -20,12 +20,13 @@ import {
   setSenderInitial,
 } from '../../redux/Slices/commentsSlice'
 import { getLocalItem } from '../../utils/Storage'
-import { getComments } from '../../utils/reviewAndComment.util'
+// import { getComments } from '../../utils/reviewAndComment.util'
 import { pathNames } from '../../routes/pathNames'
 import { ROLES } from '../../config/constants.config'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import './index.css'
 import { KeyboardArrowLeft } from '@mui/icons-material'
+import { useComment } from '../../hooks/useComment'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
@@ -62,6 +63,8 @@ const ReviewAndComment = () => {
       setDataForIssuer()
     }
   }, [])
+
+  const {getComments}  = useComment()
 
   useEffect(() => {
     if (sectionIDs && sectionIDs.length) {
