@@ -46,6 +46,7 @@ export const pathNames = {
   COMPLETE_PROFILE: '/complete-profile',
   REVIEW_AND_COMMENT: '/review-and-comment',
   WALLET: '/wallet',
+  RISK_DASHBOARD: '/RiskDashboard',
 }
 
 export const linkLabels = {

@@ -54,9 +54,14 @@ const ProjectList: FC<ProjectListProps> = (props) => {
       >
         Projects
       </Typography>
-      <Grid xs={12} style={{ width: '100%', height: '80%' }}>
+      <Grid xs={12} style={{ width: '100%' }}>
         {userType === ROLES.ISSUER ? (
-          <CCTable headings={headings} rows={tableData} />
+          <CCTable
+            headings={headings}
+            rows={tableData}
+            pagination
+            sx={{ height: '75%' }}
+          />
         ) : (
           <CCTable headings={headingsVerifer} rows={tableData} />
         )}
