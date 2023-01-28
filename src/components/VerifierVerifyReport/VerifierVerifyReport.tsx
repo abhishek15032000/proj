@@ -240,7 +240,30 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             }}
           />
         </Grid>
-
+        <Box
+          sx={{
+            height: 'auto',
+            border: '0px solid',
+            backgroundColor: '#DAE5E1',
+            width: '20px',
+          }}
+        />
+        <Paper sx={{ height: '120vh', flex: 1 }}>
+          {pdfLoading ? (
+            <Box
+              sx={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Spinner />
+            </Box>
+          ) : (
+            pdfURL && <PDFViewer pdfUrl={pdfURL} />
+          )}
+        </Paper>
         <Paper sx={{ border: '0px solid', flex: 1 }}>
           <Box
             sx={{
@@ -443,31 +466,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               setRelevantDocs(deleteIndexInArray(relevantDocs, index))
             }}
           />
-        </Paper>
-
-        <Box
-          sx={{
-            height: 'auto',
-            border: '0px solid',
-            backgroundColor: '#DAE5E1',
-            width: '20px',
-          }}
-        />
-        <Paper sx={{ height: '120vh', flex: 1 }}>
-          {pdfLoading ? (
-            <Box
-              sx={{
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Spinner />
-            </Box>
-          ) : (
-            pdfURL && <PDFViewer pdfUrl={pdfURL} />
-          )}
         </Paper>
       </Grid>
       {/* <MessageModal

@@ -11,7 +11,10 @@ import { getLocalItem } from '../../utils/Storage'
 import ListOfProjectsDashboard from './ListOfProjectsDashboard'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
-import { setSectionIndex, setSubSectionIndex } from '../../redux/Slices/issuanceDataCollection'
+import {
+  setSectionIndex,
+  setSubSectionIndex,
+} from '../../redux/Slices/issuanceDataCollection'
 import { useDispatch } from 'react-redux'
 
 interface ProjectsTabProps {}
@@ -86,7 +89,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         <ListOfProjectsDashboard data={tableData} loading={loading} />
       </Paper>
     )
-  } else if (!loading && tableData.length === 0 ) {
+  } else if (!loading && tableData.length === 0) {
     return (
       <EmptyComponent
         photoType={1}
