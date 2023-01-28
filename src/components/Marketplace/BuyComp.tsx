@@ -6,13 +6,16 @@ import CardRow from '../../atoms/CardRow/CardRow'
 import CCButton from '../../atoms/CCButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useMarket } from '../../hooks/useMarket'
 import { setBuyQuantity } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
-import { createBuyOrder } from '../../utils/newMarketplace.utils'
+// import { createBuyOrder } from '../../utils/newMarketplace.utils'
 import BuyTokenPriceDetails from './BuyTokenPriceDetails'
 
 const BuyComp = () => {
   const dispatch = useAppDispatch()
+
+  const { createBuyOrder } = useMarket()
 
   const inrTokenBalances = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.inrTokenBalances,
