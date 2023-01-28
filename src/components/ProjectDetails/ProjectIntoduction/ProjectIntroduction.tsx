@@ -18,8 +18,8 @@ interface ProjectIntroductionProps {
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
   const navigate = useNavigate()
-//  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
- const onWebApp = 1
+ const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+//  const onWebApp = 1
   const data = [
     {
       image: Images.one,
