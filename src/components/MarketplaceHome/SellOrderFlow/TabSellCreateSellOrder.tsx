@@ -6,15 +6,17 @@ import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModa
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useMarketPlaceSell } from '../../../hooks/useMarketPlaceSell'
 import {
   setSellQuantityForSellOrder,
   setSellUnitPriceForSellOrder,
 } from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import { createSellOrder } from '../../../utils/Marketplace/marketplaceSellFlow.util'
+// import { createSellOrder } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const TabSellCreateSellOrder = () => {
   const dispatch = useAppDispatch()
+  const  { createSellOrder }  = useMarketPlaceSell()
   const [showSecondModal, setShowSecondModal] = useState(false)
   const sellQuantityForSellOrder = useAppSelector(
     ({ marketplaceSellFlow }) => marketplaceSellFlow.sellQuantityForSellOrder,

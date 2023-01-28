@@ -5,6 +5,7 @@ import { shallowEqual } from 'react-redux'
 import CCTable from '../../../atoms/CCTable'
 import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useMarketPlace } from '../../../hooks/useMarketPlace'
 import {
   setOnGoingApproveRedux,
   setSellQuantityForApprove,
@@ -12,13 +13,16 @@ import {
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
 import { getTransaction } from '../../../utils/Marketplace/marketplace.util'
-import { getApprovedTokensBalance } from '../../../utils/Marketplace/marketplaceSellFlow.util'
+// import { getApprovedTokensBalance } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 import { getLocalItem, removeItem, setLocalItem } from '../../../utils/Storage'
+import { useMarketPlaceSell } from '../../../hooks/useMarketPlaceSell'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
 const OngoingApprove = () => {
   const dispatch = useAppDispatch()
+  const  { getApprovedTokensBalance } = useMarketPlaceSell()
+  const { getTransaction } = useMarketPlace()
 
   const onGoingApproveLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_SELL_FLOW

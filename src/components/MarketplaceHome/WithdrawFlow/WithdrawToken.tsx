@@ -6,20 +6,24 @@ import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import { TOKEN_TYPES } from '../../../config/constants.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
-import {
-  getBalanceOnExchange,
-  getWalletBalance,
-} from '../../../utils/Marketplace/marketplaceSellFlow.util'
+// import {
+//   getBalanceOnExchange,
+//   getWalletBalance,
+// } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 // import { getApprovedTokensBalance } from '../../../utils/tokenRetire.utils'
 import CardRow from '../../../atoms/CardRow/CardRow'
 import TabWithdraw from './TabWithdraw'
 import { useTokenRetire } from '../../../hooks/useTokenRetire'
+import { useMarketPlaceSell } from '../../../hooks/useMarketPlaceSell'
 
 interface WithdrawTokenProps {}
 
 const WithdrawToken: FC<WithdrawTokenProps> = () => {
   const [tabIndex, setTabIndex] = useState(1)
-
+  const {
+    getBalanceOnExchange,
+    getWalletBalance,
+  } = useMarketPlaceSell()
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual

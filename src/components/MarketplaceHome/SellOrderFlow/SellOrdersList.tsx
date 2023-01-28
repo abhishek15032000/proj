@@ -7,10 +7,12 @@ import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
 import { TOKEN_CONTRACT_ADDRESS } from '../../../config/token.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useMarketPlace } from '../../../hooks/useMarketPlace'
+import { useMarketPlaceSell } from '../../../hooks/useMarketPlaceSell'
 import { Colors } from '../../../theme'
 import { roundUp } from '../../../utils/commonFunctions'
-import { cancelOrder } from '../../../utils/Marketplace/marketplace.util'
-import { getSellOrdersListData } from '../../../utils/Marketplace/marketplaceSellFlow.util'
+// import { cancelOrder } from '../../../utils/Marketplace/marketplace.util'
+// import { getSellOrdersListData } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const headings = [
   'Order ID',
@@ -32,7 +34,9 @@ const SellOrdersList = () => {
     ({ marketplaceSellFlow }) => marketplaceSellFlow.sellOrdersLoading,
     shallowEqual
   )
+  const { getSellOrdersListData } = useMarketPlaceSell()
 
+  const { cancelOrder } = useMarketPlace()
   const [rows, setRows] = useState<any>(null)
 
   useEffect(() => {

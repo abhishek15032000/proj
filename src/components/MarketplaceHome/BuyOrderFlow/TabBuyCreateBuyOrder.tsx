@@ -18,11 +18,12 @@ import {
   setBuyUnitPrice,
   setTotalAmountForBuying,
 } from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
-import { createBuyOrder } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+// import { createBuyOrder } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+import { useMarketplaceBuy } from '../../../hooks/useMarketPlaceBuy'
 
 const TabBuyCreateBuyOrder = () => {
   const dispatch = useAppDispatch()
-
+  const { createBuyOrder } = useMarketplaceBuy()
   const [showSecondModal, setShowSecondModal] = useState(false)
   const buyQuantityForBuyOrder = useAppSelector(
     ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyQuantityForBuyOrder,
