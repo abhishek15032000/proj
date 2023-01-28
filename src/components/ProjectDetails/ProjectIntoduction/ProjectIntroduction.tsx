@@ -172,6 +172,8 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
+                  alignItems: 'baseline',
+                  justifyContent: 'flex-start'
                 }}
               >
                 {data &&
