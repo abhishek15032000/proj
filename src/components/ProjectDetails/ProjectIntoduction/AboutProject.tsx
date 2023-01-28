@@ -19,14 +19,15 @@ const AboutProject = (props: AboutProjectProps) => {
     <Grid
       item
       sx={{
-        background:
-          'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
+        // background:
+        //   'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
         px: 10,
         py: 4,
+        color:"textColor2.main"
       }}
     >
       <Typography
-        sx={{ color: 'white', fontSize: 14, fontWeight: 400, mt: 10 }}
+        sx={{  fontSize: 14, fontWeight: 400, mt: 10 }}
       >
         Project Intro Outside Pittsburgh, Allegheny Land Trust protected 124
         acres of woodlands from rapid encroaching residential development in
@@ -36,7 +37,7 @@ const AboutProject = (props: AboutProjectProps) => {
         the area, and possibly catch a glimpse of a majestic 200 year old oak
         tree.
       </Typography>
-      <Typography sx={{ color: 'white', fontSize: 14, fontWeight: 400, mt: 2 }}>
+      <Typography sx={{  fontSize: 14, fontWeight: 400, mt: 2 }}>
         Protection of this forest also contributes to maintaining clean drinking
         water for Pittsburgh region’s residents. Located within the lower
         Youghiogheny River Watershed, the property is five miles upstream from
@@ -44,7 +45,7 @@ const AboutProject = (props: AboutProjectProps) => {
       </Typography>
       <Typography
         sx={{
-          color: 'white',
+          
           fontSize: 14,
           fontWeight: 400,
           mt: 2,

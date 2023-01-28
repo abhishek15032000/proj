@@ -8,18 +8,21 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { projectDetailsCalls } from '../../../api/projectDetailsCalls.api'
 import BlockchainCalls from '../../../blockchain/Blockchain'
 import LoderOverlay from '../../LoderOverlay'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface BuyTokenProps {
   goingUp?: any
 }
 const BuyToken = (props: BuyTokenProps) => {
   const { goingUp } = props
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
     <Paper
       sx={{
         background:
-          'radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)',
+        onWebApp ? "#fff":`radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)`,
         borderRadius: '5px',
         display: 'flex',
         flexDirection: 'row',
@@ -50,11 +53,11 @@ const BuyToken = (props: BuyTokenProps) => {
           value={'04'}
           valueStyle={{
             fontWeight: 500,
-            color: Colors.white,
+            color: 'textColor2.main',
             textAlign: 'right',
             mb: 2,
           }}
-          titleStyle={{ fontWeight: 500, color: Colors.white, mb: 2 }}
+          titleStyle={{ fontWeight: 500, color: 'textColor2.main', mb: 2 }}
         />
         <Box
           sx={{
@@ -73,13 +76,13 @@ const BuyToken = (props: BuyTokenProps) => {
             }}
           >
             <Typography
-              sx={[{ fontWeight: 400, fontSize: 14, color: Colors.white }]}
+              sx={{ fontWeight: 500, fontSize: 14, color: 'textColor2.main' }}
             >
               {'Unit Price :'}
             </Typography>
             <InfoOutlinedIcon
               sx={{ fontSize: 20, ml: 1 }}
-              htmlColor={Colors.white}
+              htmlColor={'textColor2.main'}
             />
           </Box>
 
@@ -88,7 +91,7 @@ const BuyToken = (props: BuyTokenProps) => {
               fontWeight: 400,
               fontSize: 14,
               ml: 1,
-              color: Colors.white,
+              color: 'textColor2.main',
               textAlign: 'right',
             }}
           >
@@ -101,7 +104,7 @@ const BuyToken = (props: BuyTokenProps) => {
         sx={{
           width: '150px',
           height: '40px',
-          backgroundColor: '#75F8E4',
+          backgroundColor: onWebApp ? Colors.accent:'#75F8E4',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -109,7 +112,7 @@ const BuyToken = (props: BuyTokenProps) => {
           mt: 2,
         }}
       >
-        <Typography sx={{ fontSize: 14, fontWeight: 500, textAlign: 'center' }}>
+        <Typography   sx={{ color:'primary.main', fontSize: 14, fontWeight: 500, textAlign: 'center' }}>
           {'Buy Tokens'}
         </Typography>
       </Box>
