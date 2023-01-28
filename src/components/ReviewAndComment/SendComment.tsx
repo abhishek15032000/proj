@@ -56,6 +56,7 @@ const SendComment = () => {
         }}
       >
         <textarea
+          className="scroll-container"
           style={{
             width: '100%',
             background: '#DAE5E1',
@@ -63,6 +64,7 @@ const SendComment = () => {
             borderRadius: '8px',
             padding: '4px',
             fontFamily: 'Poppins',
+            borderColor: '#DAE5E1',
           }}
           rows={3}
           value={comment}
