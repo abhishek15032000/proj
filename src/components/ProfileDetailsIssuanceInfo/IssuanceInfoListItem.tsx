@@ -42,7 +42,7 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
         p: 2,
       }}
     >
-      <Grid item xs={6} sx={{ px: 2, display: 'flex', alignItems: 'center' }}>
+      <Grid item xs={7} sx={{ px: 2, display: 'flex', alignItems: 'center' }}>
         <Typography sx={{ fontSize: 16, fontWeight: 500, cursor: 'pointer' }}>
           <CircleIcon sx={{ fontSize: 8, mr: 1 }} />
           {props?.data?.title}
@@ -65,7 +65,6 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
             display: 'flex',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            marginRight: 10,
           }}
         >
           {props?.data?.completionPercent === 100 ? (
@@ -78,8 +77,14 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
           </Typography>
         </Box>
       </Grid>
-      <Grid item container xs={2} justifyContent="center">
-        <Box sx={{ marginRight: 5, display: 'flex', alignItems: 'end' }}>
+      <Grid item container xs={1} justifyContent="center">
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'end',
+          }}
+        >
           <ChevronRightIcon
             sx={{ fontSize: 28, color: '#7ACB9F', cursor: 'pointer' }}
             onClick={() => moveToSection(props?.index)}

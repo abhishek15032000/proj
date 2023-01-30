@@ -79,6 +79,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const [showModal, setShowModal] = useState(false)
   //Action = getSignatureHash api call + verifyPDF call
   const [showActionSuccessModal, setShowActionSuccessModal] = useState(false)
+  const [disableBtn, setDisableBtn] = useState<boolean>(true)
   const [showAddressNotMatchingModal, setShowAddressNotMatchingModal] =
     useState(false)
 
@@ -86,6 +87,23 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     getPDF()
     // getIssuerShineKey()
   }, [])
+
+  useEffect(() => {
+    !selectMonth ||
+      nextSubmissionDate.length === 0 ||
+      explain.length === 0 ||
+      nextSubmissionDate._isValid
+    !Number(quantity) || !lifeTimeQuantity || relevantDocs.length === 0
+      ? setDisableBtn(true)
+      : setDisableBtn(false)
+  }, [
+    selectMonth,
+    nextSubmissionDate,
+    explain,
+    quantity,
+    lifeTimeQuantity,
+    relevantDocs,
+  ])
 
   const getPDF = async () => {
     if (location && location?.state && location.state?.pdf) {
@@ -240,7 +258,30 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
             }}
           />
         </Grid>
-
+        <Box
+          sx={{
+            height: 'auto',
+            border: '0px solid',
+            backgroundColor: '#DAE5E1',
+            width: '20px',
+          }}
+        />
+        <Paper sx={{ height: '120vh', flex: 1 }}>
+          {pdfLoading ? (
+            <Box
+              sx={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Spinner />
+            </Box>
+          ) : (
+            pdfURL && <PDFViewer pdfUrl={pdfURL} />
+          )}
+        </Paper>
         <Paper sx={{ border: '0px solid', flex: 1 }}>
           <Box
             sx={{
@@ -258,8 +299,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
             <TextButton
               onClick={() => verifyPDF()}
-              sx={{ ml: 4 }}
+              sx={{ ml: 4, opacity: disableBtn && '0.5' }}
               title="Sign & Mark Verified"
+              disabled={disableBtn}
             />
           </Box>
 
@@ -443,31 +485,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               setRelevantDocs(deleteIndexInArray(relevantDocs, index))
             }}
           />
-        </Paper>
-
-        <Box
-          sx={{
-            height: 'auto',
-            border: '0px solid',
-            backgroundColor: '#DAE5E1',
-            width: '20px',
-          }}
-        />
-        <Paper sx={{ height: '120vh', flex: 1 }}>
-          {pdfLoading ? (
-            <Box
-              sx={{
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Spinner />
-            </Box>
-          ) : (
-            pdfURL && <PDFViewer pdfUrl={pdfURL} />
-          )}
         </Paper>
       </Grid>
       {/* <MessageModal

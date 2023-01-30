@@ -93,8 +93,8 @@ const lightModeTheme = {
 
 const ProjectDetails = () => {
   const projectDetailsData: any = useLocation()
-  // const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-  const onWebApp = 1
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  // const onWebApp = 1
   const darkTheme = {
     backgroundImage:
       'linear-gradient(#fff 0%,rgba(7, 19, 13, 0.79) 15%,  #111E17 20%,  #111E17 72%, rgba(7, 19, 13, 0.79) 85%, #222926 95%)',

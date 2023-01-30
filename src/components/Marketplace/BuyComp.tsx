@@ -5,10 +5,15 @@ import { shallowEqual } from 'react-redux'
 import CardRow from '../../atoms/CardRow/CardRow'
 import CCButton from '../../atoms/CCButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { setBuyQuantity } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
+import { createBuyOrder } from '../../utils/newMarketplace.utils'
+import BuyTokenPriceDetails from './BuyTokenPriceDetails'
 
 const BuyComp = () => {
+  const dispatch = useAppDispatch()
+
   const inrTokenBalances = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.inrTokenBalances,
     shallowEqual
@@ -17,7 +22,46 @@ const BuyComp = () => {
     ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenSymbol,
     shallowEqual
   )
+  const buyQuantity = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.buyQuantity,
+    shallowEqual
+  )
+  const buyUnitPrice = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.buyUnitPrice,
+    shallowEqual
+  )
+  const totalAmountForBuying = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.totalAmountForBuying,
+    shallowEqual
+  )
+  const buyOrderPayloadOfferHashes = useAppSelector(
+    ({ newMarketplaceReducer }) =>
+      newMarketplaceReducer.buyOrderPayloadOfferHashes,
+    shallowEqual
+  )
+  const buyOrderPayloadAmountsToTake = useAppSelector(
+    ({ newMarketplaceReducer }) =>
+      newMarketplaceReducer.buyOrderPayloadAmountsToTake,
+    shallowEqual
+  )
+  const buyOrderPayloadUUID = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.buyOrderPayloadUUID,
+    shallowEqual
+  )
 
+  const isDisabled = () => {
+    if (
+      !buyUnitPrice ||
+      !totalAmountForBuying ||
+      !totalAmountForBuying ||
+      !buyOrderPayloadAmountsToTake ||
+      !buyOrderPayloadOfferHashes ||
+      !buyOrderPayloadUUID
+    ) {
+      return true
+    }
+    return false
+  }
   return (
     <Grid item sm={12} md={10}>
       <CardRow
@@ -38,14 +82,14 @@ const BuyComp = () => {
       <Box sx={{ position: 'relative', pt: 1 }}>
         <Box>
           <LabelInput
-            label="Quantity "
+            label="Quantity"
             sx={{ width: '100%' }}
-            // value={buyQuantityForApprove}
+            value={buyQuantity}
             setValue={(e: any) => {
-              //Allow only no.s upto 3 decimal places
-              const regexp = /^\d+(\.\d{0,3})?$/
+              //Allow only no.s
+              const regexp = /^\d+?$/
               if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                // dispatch(setBuyQuantityForApprove(e?.target?.value))
+                dispatch(setBuyQuantity(e?.target?.value))
               }
             }}
           />
@@ -61,6 +105,7 @@ const BuyComp = () => {
           {carbonTokenSymbol}
         </Box>
       </Box>
+      <BuyTokenPriceDetails />
       <Box sx={{ display: 'flex', justifyContent: 'end' }}>
         <CCButton
           sx={{
@@ -73,8 +118,8 @@ const BuyComp = () => {
             fontSize: 14,
             minWidth: 0,
           }}
-          // onClick={onApproveToken}
-          // disabled={isThereApproveObject() || !buyQuantityForApprove}
+          onClick={createBuyOrder}
+          disabled={isDisabled()}
           variant="contained"
         >
           Buy

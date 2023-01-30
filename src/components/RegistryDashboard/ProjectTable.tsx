@@ -14,8 +14,9 @@ import { useAppDispatch } from '../../hooks/reduxHooks'
 import { setRegistryProjectDetails } from '../../redux/Slices/registrySlice'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { pathNames } from '../../routes/pathNames'
-import { Images } from '../../theme'
+import { Colors, Images } from '../../theme'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { Typography } from '@mui/material'
 
 const headings: any = [
   'Created on',
@@ -35,7 +36,7 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
-
+  console.log('tab_Index from project table:', tabIndex)
   const [newProjects, setNewProjects] = useState<any>([])
   const [underReviewProjects, setUnderReviewProjects] = useState<any>([])
   const [reviewedProjects, setReviewedProjects] = useState<any>([])
@@ -158,7 +159,6 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
       setLoading(false)
     }
   }
-
   const renderStatusChips = (status: number) => {
     switch (status) {
       case 6: {
@@ -205,6 +205,20 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
     <>
       {loading ? (
         <CCTableSkeleton height={40} />
+      ) : rows && rows?.length <= 0 ? (
+        <Box
+          sx={{
+            bgcolor: Colors.darkPrimary2,
+            color: Colors.darkPrimary1,
+            fontWeight: 500,
+            fontSize: 16,
+            p: 2,
+            textAlign: 'center',
+            borderRadius: '4px',
+          }}
+        >
+          No projects under this tab
+        </Box>
       ) : (
         <CCTable
           headings={headings}

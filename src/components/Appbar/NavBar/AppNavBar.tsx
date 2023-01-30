@@ -136,7 +136,7 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
         horizontal: 'right',
       }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      onClose={() =>  setAnchorEl(null)}
     >
       {userType && <MenuItem onClick={handleMenuClose}>Profile</MenuItem>}
       {userType && <MenuItem onClick={logout}>Logout</MenuItem>}

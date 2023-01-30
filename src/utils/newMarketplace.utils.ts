@@ -2,16 +2,32 @@ import { eventsCalls } from '../api/eventsCalls.api'
 import { marketplaceCalls } from '../api/marketplaceCalls.api'
 import { transactionCalls } from '../api/transactionCalls.api'
 import {
+  setMessageModalText,
+  setShowMessageModal,
+} from '../redux/Slices/appSlice'
+import {
+  setBuyOrderPayloadAmountsToTake,
+  setBuyOrderPayloadOfferHashes,
+  setBuyOrderPayloadUUID,
+  setBuyUnitPrice,
   setCarbonTokenAddress,
   setCarbonTokenSymbol,
+  setCreateBuyOrderLoading,
+  setCreateSellOrderLoading,
   setINRTokenAddress,
+  setProjectsTokenLoading,
   setSellOrdersList,
   setSellOrdersLoading,
+  setSellQuantity,
+  setSellWantAmount,
+  setTokenBalanceLoading,
+  setTotalAmountForBuying,
 } from '../redux/Slices/newMarketplaceSlice'
 import { store } from '../redux/store'
 
 export const getProjectsTokenDetails = async (projectUUID: string) => {
   try {
+    store.dispatch(setProjectsTokenLoading(true))
     const res = await eventsCalls.getTokenByProjectUUID(
       `?project_id=${projectUUID}`
     )
@@ -22,11 +38,14 @@ export const getProjectsTokenDetails = async (projectUUID: string) => {
     }
   } catch (err) {
     console.log('Error in eventsCalls.getTokenByProjectUUID api ~ ', err)
+  } finally {
+    store.dispatch(setProjectsTokenLoading(false))
   }
 }
 
 export const getTokenBalances = async (userID: string, assetID: string) => {
   try {
+    store.dispatch(setTokenBalanceLoading(true))
     const payload = {
       user_id: userID,
       asset_id: assetID,
@@ -40,6 +59,8 @@ export const getTokenBalances = async (userID: string, assetID: string) => {
       'Error in transactionCalls.getAccountAndExchangeDetails api ~ ',
       err
     )
+  } finally {
+    store.dispatch(setTokenBalanceLoading(false))
   }
 }
 
@@ -50,9 +71,9 @@ export async function getSellOrdersListData() {
     if (sellOrderRes.success && sellOrderRes.data.length) {
       const ordersList = sellOrderRes?.data?.reverse().map((order: any) => {
         return [
-          order?._wantAmount,
+          Math.round((order?._wantAmount / order?._offerAmount) * 100) / 100,
           order?._offerAmount,
-          order?._wantAmount * order?._offerAmount,
+          order?._wantAmount,
         ]
       })
       store.dispatch(setSellOrdersList(ordersList))
@@ -70,26 +91,104 @@ export const createSellOrder = async () => {
   const inrTokenAddress =
     store.getState()?.newMarketplaceReducer?.inrTokenAddress
   const sellQuantity = store.getState()?.newMarketplaceReducer?.sellQuantity
-  const sellUnitPrice = store.getState()?.newMarketplaceReducer?.sellUnitPrice
+  const sellWantAmount = store.getState()?.newMarketplaceReducer?.sellWantAmount
+  const currentProjectUUID =
+    store.getState()?.newMarketplaceReducer?.currentProjectUUID
 
   const pseudoNonce = new Date().getTime()
 
   try {
+    store.dispatch(setCreateSellOrderLoading(true))
     const payload = {
       _offerAsset: carbonTokenAddress,
       _wantAsset: inrTokenAddress,
       _offerAmount: Number(sellQuantity),
-      _wantAmount: Number(sellUnitPrice),
+      _wantAmount: Number(sellWantAmount),
       _feeAsset: carbonTokenAddress,
-      _feeAmount: 1,
+      _feeAmount: 0,
       _nonce: pseudoNonce,
     }
 
     const createOrderRes = await marketplaceCalls.createOrder(payload)
     if (createOrderRes?.success) {
-      console.log('createOrderRes?.data', createOrderRes?.data)
+      getSellOrdersListData()
+      getProjectsTokenDetails(currentProjectUUID)
+      store.dispatch(setSellQuantity(0))
+      store.dispatch(setSellWantAmount(0))
+
+      //resetting token addresses
+      store.dispatch(setCarbonTokenSymbol(''))
+      store.dispatch(setCarbonTokenAddress(''))
+      store.dispatch(setINRTokenAddress(''))
+
+      store.dispatch(setShowMessageModal(true))
+      store.dispatch(
+        setMessageModalText(
+          'Sell Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
+        )
+      )
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.createOrder api ~ ', err)
+  } finally {
+    store.dispatch(setCreateSellOrderLoading(false))
+  }
+}
+
+export const createBuyOrder = async () => {
+  // const carbonTokenAddress =
+  //   store.getState()?.newMarketplaceReducer?.carbonTokenAddress
+  const inrTokenAddress =
+    store.getState()?.newMarketplaceReducer?.inrTokenAddress
+
+  const buyOrderPayloadOfferHashes =
+    store.getState()?.newMarketplaceReducer?.buyOrderPayloadOfferHashes
+  const buyOrderPayloadAmountsToTake =
+    store.getState()?.newMarketplaceReducer?.buyOrderPayloadAmountsToTake
+  const buyOrderPayloadUUID =
+    store.getState()?.newMarketplaceReducer?.buyOrderPayloadUUID
+  const currentProjectUUID =
+    store.getState()?.newMarketplaceReducer?.currentProjectUUID
+
+  const pseudoNonce = new Date().getTime()
+
+  try {
+    store.dispatch(setCreateBuyOrderLoading(true))
+    const payload = {
+      uuid: buyOrderPayloadUUID,
+      _offerHashes: buyOrderPayloadOfferHashes,
+      _amountsToTake: buyOrderPayloadAmountsToTake,
+      _feeAsset: inrTokenAddress,
+      _feeAmount: 0,
+      _nonce: pseudoNonce,
+    }
+
+    const createOrderRes = await marketplaceCalls.fillOrder(payload)
+    if (createOrderRes?.success) {
+      store.dispatch(setBuyUnitPrice(0))
+      store.dispatch(setTotalAmountForBuying(0))
+      store.dispatch(setBuyOrderPayloadUUID(null))
+      store.dispatch(setBuyOrderPayloadOfferHashes(null))
+      store.dispatch(setBuyOrderPayloadAmountsToTake(null))
+
+      getSellOrdersListData()
+      getProjectsTokenDetails(currentProjectUUID)
+
+      //resetting token addresses
+      store.dispatch(setCarbonTokenSymbol(''))
+      store.dispatch(setCarbonTokenAddress(''))
+      store.dispatch(setINRTokenAddress(''))
+
+      store.dispatch(setShowMessageModal(true))
+      store.dispatch(
+        setMessageModalText(
+          'Buy Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
+        )
+      )
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.fillOrder api ~ ', err)
+  } finally {
+    store.dispatch(setCreateBuyOrderLoading(false))
   }
 }
