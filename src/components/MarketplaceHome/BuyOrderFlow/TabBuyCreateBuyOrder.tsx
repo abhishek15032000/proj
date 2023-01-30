@@ -9,7 +9,7 @@ import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
-import CardRow from '../CardRow'
+import CardRow from '../../../atoms/CardRow/CardRow'
 import {
   setBuyOrderPayloadAmountsToTake,
   setBuyOrderPayloadOfferHashes,

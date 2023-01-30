@@ -7,8 +7,10 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { TablePagination, Typography } from '@mui/material'
+import { TablePagination, Typography,TableCellProps } from '@mui/material'
 import { Box } from '@mui/system'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 interface CWTableProps {
   headings: string[]
@@ -21,22 +23,33 @@ interface CWTableProps {
   data?: boolean
 }
 
-const StyledTableCell = styled(TableCell)(() => ({
+
+interface CWTableCellProps extends TableCellProps{
+  isLight?: boolean
+} 
+
+const StyledTableCell = styled(TableCell)<CWTableCellProps>(({theme, isLight}) => ({
   [`&.${tableCellClasses.head}`]: {
-    background: 'linear-gradient(180deg, #111E17, #02362f)',
-    padding: 0,
-    color: '#E1E3E1',
+    background: isLight ? theme.palette?.bgColor3?.main:'linear-gradient(180deg, #111E17, #02362f)' ,
+    padding: isLight ? 5:0,
+    fontWeight: '600',
+    color: isLight ? theme.palette.textColor?.main:'#E1E3E1' ,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    backgroundColor: '#000',
-    color: '#E1E3E1',
+    backgroundColor: theme?.palette?.bgColor?.main,
+    color: theme.palette.textColor2?.main,
   },
 }))
 
-const StyledTableRow = styled(TableRow)(() => ({
-  backgroundColor: '#000',
-  borderRadius: 8,
+const StyledTableRow = styled(TableRow)(({theme}) => ({
+  '&:nth-of-type(even)': {
+    backgroundColor: theme?.palette?.bgColor2?.main,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 8,
+  },
 }))
 
 const CWTable = (props: CWTableProps) => {
@@ -70,6 +83,8 @@ const CWTable = (props: CWTableProps) => {
     }
   }, [props?.rows, page, rowsPerPage])
 
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+
   return (
     <>
       <TableContainer
@@ -85,7 +100,7 @@ const CWTable = (props: CWTableProps) => {
               {props?.headings &&
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
-                  <StyledTableCell key={index} align="center">
+                  <StyledTableCell key={index} align="center" isLight={onWebApp}>
                     {heading}
                   </StyledTableCell>
                 ))}
@@ -106,7 +121,7 @@ const CWTable = (props: CWTableProps) => {
               ))}
           </TableBody>
         </Table>
-        <Box sx={{ borderBottom: '1px solid rgba(0, 0, 2, 0.3)' }}></Box>
+        <Box sx={{ borderBottom: '1px solid bgColor.main' }}></Box>
         {props?.pagination && props?.rows && (
           <TablePagination
             rowsPerPageOptions={[]}
@@ -117,8 +132,8 @@ const CWTable = (props: CWTableProps) => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             sx={{
-              backgroundColor: '#000',
-              color: '#E1E3E1',
+              backgroundColor: 'bgColor.main',
+              color: 'textColor2.main',
               border: 'none',
             }}
           />

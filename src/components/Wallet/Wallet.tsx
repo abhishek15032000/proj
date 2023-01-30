@@ -45,7 +45,9 @@ const Wallet: FC<WalletProps> = (props) => {
   const dispatch: any = useAppDispatch()
 
   const [loading, setLoading] = useState(false)
-  const [balance, setBalance] = useState(0)
+  const [balance, setBalance] = useState(0.0)
+  const [balanceINR, setBalanceINR] = useState(0)
+
   const [tableData, setTableData] = useState([])
   const [privateKey, setPrivateKey] = useState('')
 
@@ -69,6 +71,7 @@ const Wallet: FC<WalletProps> = (props) => {
           )
 
           setBalance(res?.data?.data?.balance)
+          setBalanceINR(res?.data?.data?.inr_token_balance)
           const rows =
             modifiedRows &&
             modifiedRows.map((i: any, index: number) => {
@@ -114,6 +117,7 @@ const Wallet: FC<WalletProps> = (props) => {
                 </Typography>,
               ]
             })
+
           setTableData(rows)
         }
         setLoading(false)
@@ -208,14 +212,34 @@ const Wallet: FC<WalletProps> = (props) => {
                 ml: 2,
               }}
             >
-              {`USD ${balance}` + ' | ' + `MATIC ${balance}`}
+              {`USD ${balanceINR}` +
+                ' | ' +
+                `MATIC ${Math.round(Number(balance) * 1000) / 1000}`}
             </Typography>
           </Grid>
           <Grid item xs={12} md={12} lg={12} xl={12}>
             {loading ? (
               <CCTableSkeleton sx={{ mt: 2 }} />
-            ) : (
+            ) : tableData && tableData.length > 0 ? (
               <TransactionList tableData={tableData} />
+            ) : (
+              <Box
+                sx={{
+                  height: '100%',
+                  width: '100%',
+                  fontSize: 18,
+                  color: Colors.darkPrimary1,
+                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#fff',
+                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+                  borderRadius: '8px',
+                }}
+              >
+                No Project Token Details is available !!!
+              </Box>
             )}
           </Grid>
 

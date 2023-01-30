@@ -43,6 +43,8 @@ import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProject
 import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
 import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
 import Wallet from '../pages/Wallet'
+import RiskDashboard from '../pages/RiskDashboard'
+import Marketplace from '../pages/Marketplace/Marketplace'
 
 export const privateRouteComponents = [
   {
@@ -80,8 +82,20 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
-    path: pathNames.MARKETPLACE,
+    path: pathNames.MARKETPLACE_OLD,
     component: MarketplaceHome,
+    // sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.MARKETPLACE,
+    component: Marketplace,
+    // sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.PROJECT_LISTS_WITH_FILTER,
+    component: ProjectListsWithFilter,
     sidebarName: linkLabels.Marketplace,
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
@@ -262,5 +276,11 @@ export const privateRouteComponents = [
     component: Wallet,
     sidebarName: linkLabels.Wallet,
     roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.RISK_DASHBOARD,
+    component: RiskDashboard,
+
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
 ]

@@ -58,8 +58,10 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
     setCardDetails(cardDetails)
   }
   return (
-    <Box sx={{ background: '#111E17', padding: '2vw 6vw', color: '#fff' }}>
-      <Typography sx={{ fontSize: '32px', color: '#55DBC8' }}>
+    <Box sx={{ 
+      // background: '#111E17', 
+      padding: '2vw 6vw',  }}>
+      <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
         Additional Details
       </Typography>
       <Grid container sx={{ mt: 4 }}>
@@ -69,7 +71,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
               sx={{
                 // mt: 2,
                 fontSize: 12,
-                color: '#CCE8E1',
+                color: 'textColor.main'
               }}
             >
               Tags
@@ -135,6 +137,7 @@ const Tag: FC<TagProps> = ({ tag }) => {
         padding: '9px 24px',
         borderRadius: '24px',
         mr: 1,
+        color: '#fff'
       }}
     >
       {tag}
@@ -149,14 +152,14 @@ interface DetailsProps {
 const Details: FC<DetailsProps> = ({ heading, value }) => {
   return (
     <Grid item xs={10} md={5} sx={{ mt: 1 }}>
-      <Box sx={{ fontSize: 14, color: '#CCE8E1', mb: 1 }}>{heading}</Box>
+      <Box sx={{ fontSize: 14, color: 'textColor.main', mb: 1 }}>{heading}</Box>
       {typeof value === 'string' ? (
-        <Box sx={{ fontSize: 16 }}>{value}</Box>
+        <Box sx={{ fontSize: 16, color: 'textColor2.main', }}>{value}</Box>
       ) : (
         value &&
         value.length &&
         value?.map((val: string, index: number) => (
-          <Box key={index} sx={{ fontSize: 16 }}>
+          <Box key={index} sx={{ fontSize: 16 , color: 'textColor2.main',}}>
             {val}
           </Box>
         ))
@@ -172,8 +175,8 @@ interface CardDetailsProps {
 const CardDetails: FC<CardDetailsProps> = ({ heading, value }) => {
   return (
     <Box sx={{ textAlign: 'center', mt: 2 }}>
-      <Box sx={{ fontSize: 10, color: '#CCE8E1' }}>{heading}</Box>
-      <Box sx={{ fontSize: 36, color: '#55DBC8' }}>{value}</Box>
+      <Box sx={{ fontSize: 10, color: 'textColor.main' }}>{heading}</Box>
+      <Box sx={{ fontSize: 36, color: 'textColor2.main' }}>{value}</Box>
     </Box>
   )
 }

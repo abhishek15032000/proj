@@ -12,7 +12,7 @@ import {
   getWalletBalance,
 } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 import { getLocalItem } from '../../../utils/Storage'
-import CardRow from '../CardRow'
+import CardRow from '../../../atoms/CardRow/CardRow'
 import TabSellApprove from './TabSellApprove'
 import TabSellCreateSellOrder from './TabSellCreateSellOrder'
 import TabSellDeposit from './TabSellDeposit'

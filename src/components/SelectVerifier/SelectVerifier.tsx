@@ -185,11 +185,11 @@ const SelectVerifier = () => {
         <Grid item>
           <CCButton
             variant="contained"
-            sx={{ padding: '10px 80px', fontSize: 16, borderRadius: 20 }}
+            sx={{ padding: '10px 40px', fontSize: 16, borderRadius: 20 }}
             onClick={handleClick}
             disabled={buttonDisabled}
           >
-            Save
+            Send for verification
           </CCButton>
         </Grid>
       </Grid>
@@ -208,6 +208,7 @@ const SelectVerifier = () => {
                   borderTop: isThisVerifierSelected(verifier?._id)
                     ? '6px solid #006B5E'
                     : '6px solid transparent',
+                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
                 }}
               >
                 <Grid
@@ -286,10 +287,7 @@ const SelectVerifier = () => {
                     />
                     <Box>
                       <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.designation}
-                      </Typography>
-                      <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.address}
+                        {verifier?.fullName + ',' + verifier?.designation}
                       </Typography>
                     </Box>
                   </Box>
@@ -315,9 +313,10 @@ const SelectVerifier = () => {
                     <Box
                       sx={{
                         background: '#F0FFFB',
-                        width: '100px',
-                        height: '100px',
+                        width: '150px',
+                        height: '150px',
                         position: 'relative',
+                        borderRadius: '24px 0px 0px 24px',
                       }}
                     >
                       <img

@@ -10,6 +10,7 @@ export const pathNames = {
   ISSUANCE_DATA_COLLECTION: '/issuance-data-collection',
   ISSUANCE_DATA_COLLECTION_HELP: '/issuance-data-collection/help',
   PROFILE_DETAILS_ISSUANCE_INFO: '/profile-details-issuance-info',
+  MARKETPLACE_OLD: '/marketplace-old',
   MARKETPLACE: '/marketplace',
   MARKETPLACE_V2: '/marketplace-v2',
   MARKETPLACE_PROJECT_DETAILS: '/marketplace-project-details',
@@ -45,6 +46,7 @@ export const pathNames = {
   COMPLETE_PROFILE: '/complete-profile',
   REVIEW_AND_COMMENT: '/review-and-comment',
   WALLET: '/wallet',
+  RISK_DASHBOARD: '/RiskDashboard',
 }
 
 export const linkLabels = {
