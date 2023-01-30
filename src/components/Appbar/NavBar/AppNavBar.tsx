@@ -108,7 +108,7 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
-    navigate(pathNames.PROFILE)
+    // navigate(pathNames.PROFILE)
   }
 
   const logout = () => {
@@ -138,7 +138,10 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
       open={isMenuOpen}
       onClose={() =>  setAnchorEl(null)}
     >
-      {userType && <MenuItem onClick={handleMenuClose}>Profile</MenuItem>}
+      {userType && <MenuItem onClick={()=>{
+        navigate(pathNames.PROFILE)
+        handleMenuClose()
+      }}>Profile</MenuItem>}
       {userType && <MenuItem onClick={logout}>Logout</MenuItem>}
       {!userType && (
         <MenuItem onClick={() => navigate(pathNames.LOGIN)}>Login</MenuItem>
