@@ -171,6 +171,7 @@ const SectionA4 = () => {
       },
     },
   }
+
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
       <Spinner />
@@ -383,7 +384,15 @@ const SectionA4 = () => {
                     label="Version"
                     placeholder="Enter version of the baseline and monitoring methodology"
                     value={item?.version}
-                    onChange={(e) => handleTextChange(e, index, 'version')}
+                    onChange={(e) => {
+                      const regexp = /^[0-9a-zA-Z ]+$/
+                      if (
+                        regexp.test(e?.target?.value) ||
+                        e?.target?.value === ''
+                      ) {
+                        handleTextChange(e, index, 'version')
+                      }
+                    }}
                     sx={{ background: 'white' }}
                   />
                 </Grid>
@@ -400,7 +409,15 @@ const SectionA4 = () => {
                     label="Tools referred"
                     placeholder="Enter tools to calculate or determine the baseline and monitoring methodology"
                     value={item?.tools}
-                    onChange={(e) => handleTextChange(e, index, 'tools')}
+                    onChange={(e) => {
+                      const regexp = /^[0-9a-zA-Z ]+$/
+                      if (
+                        regexp.test(e?.target?.value) ||
+                        e?.target?.value === ''
+                      ) {
+                        handleTextChange(e, index, 'tools')
+                      }
+                    }}
                     sx={{ background: 'white' }}
                   />
                 </Grid>

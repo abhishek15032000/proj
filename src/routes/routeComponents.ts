@@ -227,7 +227,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROFILE,
     component: Profile,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.HELP_CENTER,
