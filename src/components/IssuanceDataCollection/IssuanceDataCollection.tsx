@@ -1,4 +1,4 @@
-import { Grid, Modal, Paper, Stack, Typography } from '@mui/material'
+import { Container, Grid, Modal, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState, useRef } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -422,18 +422,18 @@ const IssuanceDataCollection = () => {
   }
 
   return (
-    <>
+    <Container maxWidth={'xl'} >
       <Grid
         container
-        sx={{ position: 'fixed', top: 100, left: 260, right: 50 }}
+        // sx={{ height:'50vh' }}
       >
         <Grid
           item
           xs={9}
           md={8}
           lg={9}
-          xl={7}
-          //sx={{ maxWidth: '50%' }}
+          xl={9}
+          sx={{ height:'50vh' }}
         >
           <Paper
             sx={{
@@ -572,7 +572,7 @@ const IssuanceDataCollection = () => {
                   width: '100%',
                   position: 'relative',
                   overflowY: 'scroll',
-                  maxHeight: '100vh',
+                  height: '65vh',
                 }}
               >
                 {renderTab()}
@@ -772,7 +772,7 @@ const IssuanceDataCollection = () => {
           </Typography>
         </Paper>
       </Box>
-    </>
+    </Container>
   )
 }
 
