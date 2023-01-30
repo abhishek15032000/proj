@@ -20,25 +20,29 @@ const BuyToken = (props: BuyTokenProps) => {
 
   return (
     <Paper
-      sx={{
-        background:
-        onWebApp ? "#fff":`radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)`,
-        borderRadius: '5px',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: goingUp ? 'space-around' : 'space-between',
-        alignItems: 'center',
-        pt: 2,
-        px: goingUp ? 38 : 2,
-        pb: 3,
-        height: '20%',
-        width: goingUp ? '100%' : '50%',
+    sx={{
+      background:
+      onWebApp ? "#fff":`radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)`,
+      borderRadius: '5px',
+      display: 'flex',
+      flexDirection:  goingUp ?'row':'column',
+      justifyContent: goingUp ? 'space-around' : 'space-between',
+      alignItems: 'center',
+      pt: 2,
+      px: goingUp ? 38 : 2,
+      pb: 3,
+      height: goingUp ? '20%' :'auto',
+      width: goingUp ? '100%' : '50%',
 
-        mx: goingUp ? 0 : 45,
-        position: goingUp ? 'fixed' : 'absolute',
+      mx: goingUp ? 0 : 45,
+      position: goingUp ? 'fixed' : 'absolute',
 
-        top: goingUp ? '0' : '100%',
-      }}
+      top: goingUp ? '10px' : '90%',
+      zIndex: 1000,
+      transition:"width 0.3s ease",
+      left: 5,
+      right: 0,
+    }}
     >
       <Box
         sx={{
@@ -100,22 +104,23 @@ const BuyToken = (props: BuyTokenProps) => {
           </Typography>
         </Box>
       </Box>
-      <Box
+      <CCButton
         sx={{
-          width: '150px',
+          width:goingUp? '250px': '100%',
           height: '40px',
           backgroundColor: onWebApp ? Colors.accent:'#75F8E4',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: '8px',
+          borderRadius: '100px',
           mt: 2,
+          boxShadow:'0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)'
         }}
       >
         <Typography   sx={{ color:'primary.main', fontSize: 14, fontWeight: 500, textAlign: 'center' }}>
           {'Buy Tokens'}
         </Typography>
-      </Box>
+      </CCButton>
     </Paper>
   )
 }
