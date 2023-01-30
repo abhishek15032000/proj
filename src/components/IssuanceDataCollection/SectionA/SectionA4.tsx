@@ -197,7 +197,7 @@ const SectionA4 = () => {
             key={index}
             container
             sx={{
-              border: ' 1px solid #1d4b44',
+              border: ' 1px solid #DAE5E1',
               borderRadius: '8px',
               padding: '20px',
               marginY: '10px',

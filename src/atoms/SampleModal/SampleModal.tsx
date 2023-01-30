@@ -71,9 +71,16 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
           </Box>
 
           <Box
-            sx={{ maxWidth: '800px', marginTop: '4px', marginBottom: '16px' }}
-            component={'img'}
-            src={props.mediaArray[index]}
+            sx={{
+              maxWidth: '800px',
+              marginTop: '4px',
+              marginBottom: '16px',
+              backgroundImage: `url(${props.mediaArray[index]})`,
+              backgroundOrigin: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+            //component={'img'}
+            //src={props.mediaArray[index]}
           />
 
           {props.mediaArray.length > 1 && (

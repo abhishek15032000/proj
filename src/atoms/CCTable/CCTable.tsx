@@ -10,10 +10,12 @@ import Paper from '@mui/material/Paper'
 import { CCTableProps } from './CCTable.interface'
 import { TablePagination, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import { headings } from '../../components/IssuanceDataCollectionHelp/data'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#BCE2D2',
+    fontSize: 14,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -87,8 +89,18 @@ const CCTable = (props: CCTableProps) => {
               {props?.headings &&
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
-                  <StyledTableCell key={index} align="center">
-                    {heading}
+                  <StyledTableCell
+                    key={index}
+                    align="center"
+                    sx={
+                      heading.style
+                      //{
+                      //fontSize: '',
+                      //textAlign: `${typeof heading === 'string' && 'left'}`,
+                      //}
+                    }
+                  >
+                    {heading?.name || ''}
                   </StyledTableCell>
                 ))}
             </TableRow>
@@ -100,7 +112,16 @@ const CCTable = (props: CCTableProps) => {
                 <StyledTableRow key={index} data-testid={'cc-table-row'}>
                   {row?.length > 0 &&
                     row.map((tdValue: any, tdIndex: number) => (
-                      <StyledTableCell key={tdIndex} align="center">
+                      <StyledTableCell
+                        key={tdIndex}
+                        align="center"
+                        sx={
+                          {
+                            //background: tdIndex % 2 === 0 ? 'blue' : 'pink',
+                            //textAlign: `${typeof tdValue === 'string' && 'left'}`,
+                          }
+                        }
+                      >
                         {tdValue}
                       </StyledTableCell>
                     ))}

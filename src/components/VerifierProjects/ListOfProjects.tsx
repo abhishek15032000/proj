@@ -34,26 +34,54 @@ interface ListOfProjectsProps {
 }
 
 const headingsNew = [
-  'Reference ID',
-  'Recieved On',
-  'Issuer',
-  'Project Name',
-  'Location',
-  'Status',
-  'Action',
+  <Typography key={1} textAlign="left">
+    Reference ID
+  </Typography>,
+  <Typography key={1} textAlign="left">
+    Recieved On
+  </Typography>,
+  <Typography key={1} textAlign="center">
+    Issuer
+  </Typography>,
+  <Typography key={1} textAlign="center">
+    Project Name
+  </Typography>,
+  <Typography key={1} textAlign="left">
+    Location
+  </Typography>,
+  <Typography key={1} textAlign="center">
+    Status
+  </Typography>,
+  <Typography key={1} textAlign="center">
+    Action
+  </Typography>,
   '',
 ]
 
 const headingsRegistered = [
-  'Reference ID',
-  'Recieved On',
-  'Issuer',
-  'Project Name',
-  'Location',
-  'Next Submission Dt',
-  'Status',
-  'Action',
+  //<Typography key={1} textAlign="center">
+  { name: 'Reference ID', style: { textAlign: 'left' } },
+  { name: 'Recieved On', style: { textAlign: 'center' } },
+  { name: 'Issuer', style: { textAlign: 'center' } },
+  { name: 'Project Name', style: { textAlign: 'center' } },
+  { name: 'Location', style: { textAlign: 'center' } },
+  { name: 'Next Submission Dt', style: { textAlign: 'center' } },
+  { name: 'Status', style: { textAlign: 'center' } },
+  { name: 'Action', style: { textAlign: 'center' } },
   '',
+
+  //</Typography>,
+  //'Reference ID',
+  //'Recieved On',
+  //'Issuer',
+  //'Project Name',
+  //'Location',
+  //'Next Submission Dt',
+  ////<Typography key={1} textAlign="center">
+  //  'Status',
+  ////</Typography>,
+  //'Action',
+  //'',
 ]
 
 const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
@@ -86,18 +114,25 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         item?.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
       ) {
         newData.push([
-          <ShortenedIDComp key={index} referenceId={item?.project_id?.uuid} />,
-          moment(item?.createdAt).format('DD/MM/YYYY'),
+          <ShortenedIDComp
+            key={index}
+            referenceId={item?.project_id?.uuid}
+            customStyles={{ justifyContent: 'start' }}
+          />,
+          <Typography textAlign={'left'} key={index}>
+            {moment(item?.createdAt).format('DD/MM/YYYY')}
+          </Typography>,
           <Box
             key={index}
             sx={{
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'left',
               alignItems: 'center',
             }}
           >
             <WorkOutlineIcon />
             <Typography
+              textAlign={'left'}
               sx={{
                 fontSize: 14,
                 fontWeight: 500,
@@ -107,8 +142,12 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
               {item?.project_id?.name}
             </Typography>
           </Box>,
-          item?.project_id?.company_name,
-          item?.project_id?.location,
+          <Typography textAlign={'left'} key={index}>
+            {item?.project_id?.company_name}
+          </Typography>,
+          <Typography textAlign={'left'} sx={{ pl: 1 }} key={index}>
+            {item?.project_id?.location}
+          </Typography>,
           item?.project_status ===
           PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <ApprovalChip key={index} variant={'Pending'} />

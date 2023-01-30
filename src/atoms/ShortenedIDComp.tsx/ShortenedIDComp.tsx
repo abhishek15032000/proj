@@ -8,9 +8,14 @@ import { Colors } from '../../theme'
 interface ShortenedIDCompProps {
   referenceId: string
   width?: string
+  customStyles?: any
 }
 
-const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
+const ShortenedIDComp = ({
+  referenceId,
+  width,
+  customStyles,
+}: ShortenedIDCompProps) => {
   const [onHoverText, setOnHoverText] = useState('Copy To Clipboard')
   const [show, setShow] = useState<boolean>(false)
   const [show2, setShow2] = useState<boolean>(false)
@@ -29,6 +34,7 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            ...customStyles,
           }}
         >
           {' '}
@@ -36,6 +42,8 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
             sx={{
               cursor: 'pointer',
               fontSize: 14,
+              //textAlign: 'left',
+              //backgroundColor: 'pink',
             }}
             onMouseEnter={() => setShow(true)}
             onMouseLeave={() => setShow(false)}
@@ -70,9 +78,10 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
             zIndex: '1000',
             borderRadius: 2,
             boxShadow: '0px 5px 20px rgba(29, 75, 68, 0.1)',
+            textAlign: 'left',
           }}
         >
-          {referenceId}
+          <Typography textAlign={'left'}>{referenceId}</Typography>
         </Paper>
       )}
       {show2 && (
