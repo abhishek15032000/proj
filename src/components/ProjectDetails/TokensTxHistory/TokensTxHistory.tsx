@@ -187,9 +187,9 @@ const TokensTxHistory = () => {
       })
   }
 
-  if (loading) {
-    return <LoderOverlay />
-  } else {
+  // if (loading) {
+  //   return <LoderOverlay />
+  // } else {
     return (
       <Box sx={{ 
         // background: '#111E17', 
@@ -202,11 +202,12 @@ const TokensTxHistory = () => {
             headings={headings}
             rows={transactionHistoryData}
             pagination={true}
+            loading={loading}
           />
         </Box>
       </Box>
     )
-  }
+  // }
 }
 
 export default TokensTxHistory

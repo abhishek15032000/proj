@@ -107,9 +107,9 @@ const Reports = () => {
       })
   }
 
-  if (loading) {
-    return <LoderOverlay />
-  } else {
+  // if (loading) {
+  //   return <LoderOverlay />
+  // } else {
     return (
       <Box
         sx={{
@@ -127,11 +127,12 @@ const Reports = () => {
             headings={headings}
             rows={allReport}
             pagination={allReport.length > 3}
+            loading={loading}
           />
         </Box>
       </Box>
     )
-  }
+  // }
 }
 
 export default Reports
