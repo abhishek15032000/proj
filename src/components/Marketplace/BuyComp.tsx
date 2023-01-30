@@ -26,7 +26,42 @@ const BuyComp = () => {
     ({ newMarketplaceReducer }) => newMarketplaceReducer.buyQuantity,
     shallowEqual
   )
+  const buyUnitPrice = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.buyUnitPrice,
+    shallowEqual
+  )
+  const totalAmountForBuying = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.totalAmountForBuying,
+    shallowEqual
+  )
+  const buyOrderPayloadOfferHashes = useAppSelector(
+    ({ newMarketplaceReducer }) =>
+      newMarketplaceReducer.buyOrderPayloadOfferHashes,
+    shallowEqual
+  )
+  const buyOrderPayloadAmountsToTake = useAppSelector(
+    ({ newMarketplaceReducer }) =>
+      newMarketplaceReducer.buyOrderPayloadAmountsToTake,
+    shallowEqual
+  )
+  const buyOrderPayloadUUID = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.buyOrderPayloadUUID,
+    shallowEqual
+  )
 
+  const isDisabled = () => {
+    if (
+      !buyUnitPrice ||
+      !totalAmountForBuying ||
+      !totalAmountForBuying ||
+      !buyOrderPayloadAmountsToTake ||
+      !buyOrderPayloadOfferHashes ||
+      !buyOrderPayloadUUID
+    ) {
+      return true
+    }
+    return false
+  }
   return (
     <Grid item sm={12} md={10}>
       <CardRow
@@ -84,7 +119,7 @@ const BuyComp = () => {
             minWidth: 0,
           }}
           onClick={createBuyOrder}
-          disabled={!buyQuantity}
+          disabled={isDisabled()}
           variant="contained"
         >
           Buy

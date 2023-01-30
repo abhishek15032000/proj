@@ -206,10 +206,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 ml: 1,
               }}
             >
-              {item?.project_id?.company_name}
+              {item?.project_id?.name}
             </Typography>
           </Box>,
-          item?.verifier_name,
+          item?.project_id?.company_name,
           item?.verifier_address,
           moment(item?.createdAt).format('DD/MM/YYYY'),
           item?.project_status ===
