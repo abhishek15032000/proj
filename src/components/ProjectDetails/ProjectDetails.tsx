@@ -13,6 +13,7 @@ import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWithCount'
+import { initialState } from '../../redux/Slices/themeSlice'
 
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
@@ -91,7 +92,9 @@ const lightModeTheme = {
     gradientColor1: { main: '#fff' },
     gradientColor2: { main: '#fff' },
     gradientColor3: { main: '#fff' },
+    ...initialState.palette
   },
+  
 }
 
 const ProjectDetails = () => {
