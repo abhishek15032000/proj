@@ -21,6 +21,13 @@ interface NewMarketplaceReducerInterface {
   projectsTokenLoading: boolean
   createSellOrderLoading: boolean
   createBuyOrderLoading: boolean
+  openOrders: any
+  checkFulfilLoading: boolean
+  closedOrders: any
+  buyOrders: any
+  openOrdersLoading: boolean
+  buyOrdersLoading: boolean
+  ordersTabIndex: number
 }
 const initialState: NewMarketplaceReducerInterface = {
   currentProjectUUID: '',
@@ -43,6 +50,13 @@ const initialState: NewMarketplaceReducerInterface = {
   projectsTokenLoading: false,
   createSellOrderLoading: false,
   createBuyOrderLoading: false,
+  checkFulfilLoading: false,
+  openOrders: null,
+  closedOrders: null,
+  buyOrders: null,
+  openOrdersLoading: false,
+  buyOrdersLoading: false,
+  ordersTabIndex: 1,
 }
 
 const newMarketplaceReducer = createSlice({
@@ -109,6 +123,27 @@ const newMarketplaceReducer = createSlice({
     setCreateBuyOrderLoading: (state, action: PayloadAction<any>) => {
       state.createBuyOrderLoading = action.payload
     },
+    setCheckFulfilLoading: (state, action: PayloadAction<any>) => {
+      state.checkFulfilLoading = action.payload
+    },
+    setOpenOrders: (state, action: PayloadAction<any>) => {
+      state.openOrders = action.payload
+    },
+    setClosedOrders: (state, action: PayloadAction<any>) => {
+      state.closedOrders = action.payload
+    },
+    setBuyOrders: (state, action: PayloadAction<any>) => {
+      state.buyOrders = action.payload
+    },
+    setOpenOrdersLoading: (state, action: PayloadAction<any>) => {
+      state.openOrdersLoading = action.payload
+    },
+    setBuyOrdersLoading: (state, action: PayloadAction<any>) => {
+      state.buyOrdersLoading = action.payload
+    },
+    setOrdersTabIndex: (state, action: PayloadAction<any>) => {
+      state.ordersTabIndex = action.payload
+    },
   },
 })
 
@@ -133,6 +168,13 @@ export const {
   setProjectsTokenLoading,
   setCreateSellOrderLoading,
   setCreateBuyOrderLoading,
+  setCheckFulfilLoading,
+  setOpenOrders,
+  setClosedOrders,
+  setBuyOrders,
+  setOpenOrdersLoading,
+  setBuyOrdersLoading,
+  setOrdersTabIndex,
 } = newMarketplaceReducer.actions
 
 export default newMarketplaceReducer.reducer

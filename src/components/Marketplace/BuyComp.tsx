@@ -66,17 +66,17 @@ const BuyComp = () => {
     <Grid item sm={12} md={10}>
       <CardRow
         title="Wallet Balance for Purchase :"
-        value={`${Math.round(inrTokenBalances?.totalBalances) || 0} INR`}
+        value={`${Math.round(inrTokenBalances?.totalBalances) || 0} USD`}
         titleStyle={{ color: Colors.lightPrimary1 }}
       />
       <CardRow
         title="Approved Token(INR/USD) Balance :"
-        value={`${Math.round(inrTokenBalances?.allowanceBalance) || 0} INR`}
+        value={`${Math.round(inrTokenBalances?.allowanceBalance) || 0} USD`}
         titleStyle={{ color: Colors.lightPrimary1 }}
       />
       <CardRow
         title="Balance on Exchange :"
-        value={`${Math.round(inrTokenBalances?.assetsBalance) || 0} INR`}
+        value={`${Math.round(inrTokenBalances?.assetsBalance) || 0} USD`}
         titleStyle={{ color: Colors.lightPrimary1 }}
       />
       <Box sx={{ position: 'relative', pt: 1 }}>

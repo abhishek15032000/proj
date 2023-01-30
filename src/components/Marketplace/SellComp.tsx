@@ -105,7 +105,7 @@ const SellComp = () => {
               right: 10,
             }}
           >
-            INR
+            USD
           </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
