@@ -22,10 +22,10 @@ import BlockchainAlert from './components/BlockchainAlert'
 import AddMetaMaskAccountModal from './components/AddMetaMaskAccountModal/AddMetaMaskAccountModal'
 import { drawerExemptList } from './routes/config'
 import { useBlockchain } from './hooks/useBlockchain'
+import { useError } from './context/ErrorController'
 
 declare let window: any
 const { ethereum } = window
-
 // const drawerExemptList = [
 //   pathNames.VERIFIER_VERIFY_REPORT,
 //   pathNames.ISSUANCE_DATA_COLLECTION_HELP,
@@ -45,6 +45,8 @@ type AppProps = {
 }
 
 const App: FC<AppProps> = () => {
+  useError()
+
   const navigate = useNavigate()
   const localloggedIn = getLocalItem('loggedIn')
   const location = useLocation()
@@ -125,7 +127,7 @@ const App: FC<AppProps> = () => {
     crossTab: false,
     syncTimers: 0,
   })
- 
+
   const dispatch = useAppDispatch()
   const getloginStatusFromLocalStorage = getLocalItem('userDetails')
   // const loadWallet = useAppSelector((state) => state.wallet.loadWallet)
@@ -135,7 +137,7 @@ const App: FC<AppProps> = () => {
 
   // const {check} = useBlockchain()
   // console.log("🚀 ~ file: App.tsx ~ line 137 ~ check", check)
-  
+
   // useEffect(() => {
   // BlockchainListener()
   // }, [])
