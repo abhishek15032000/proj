@@ -93,7 +93,8 @@ const Marketplace = () => {
 
   return (
     <>
-      <Button onClick={handleClick}>Open simple snackbarrr</Button>
+      <HeadingStrip />
+      <Trading />
 
       <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
         <Alert
@@ -104,8 +105,7 @@ const Marketplace = () => {
           This is a success message!
         </Alert>
       </Snackbar>
-      <HeadingStrip />
-      <Trading />
+
       <MessageModal
         message={messageModalText}
         btn1Text="Ok"

@@ -6,6 +6,10 @@ import {
   setShowMessageModal,
 } from '../redux/Slices/appSlice'
 import {
+  setBuyOrderPayloadAmountsToTake,
+  setBuyOrderPayloadOfferHashes,
+  setBuyOrderPayloadUUID,
+  setBuyUnitPrice,
   setCarbonTokenAddress,
   setCarbonTokenSymbol,
   setCreateBuyOrderLoading,
@@ -17,6 +21,7 @@ import {
   setSellQuantity,
   setSellWantAmount,
   setTokenBalanceLoading,
+  setTotalAmountForBuying,
 } from '../redux/Slices/newMarketplaceSlice'
 import { store } from '../redux/store'
 
@@ -66,9 +71,9 @@ export async function getSellOrdersListData() {
     if (sellOrderRes.success && sellOrderRes.data.length) {
       const ordersList = sellOrderRes?.data?.reverse().map((order: any) => {
         return [
-          order?._wantAmount,
+          Math.round((order?._wantAmount / order?._offerAmount) * 100) / 100,
           order?._offerAmount,
-          order?._wantAmount * order?._offerAmount,
+          order?._wantAmount,
         ]
       })
       store.dispatch(setSellOrdersList(ordersList))
@@ -111,10 +116,15 @@ export const createSellOrder = async () => {
       store.dispatch(setSellQuantity(0))
       store.dispatch(setSellWantAmount(0))
 
+      //resetting token addresses
+      store.dispatch(setCarbonTokenSymbol(''))
+      store.dispatch(setCarbonTokenAddress(''))
+      store.dispatch(setINRTokenAddress(''))
+
       store.dispatch(setShowMessageModal(true))
       store.dispatch(
         setMessageModalText(
-          'Sell Order created successfully. You can chck the status of blockchain transaction from the orders table!!!'
+          'Sell Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
         )
       )
     }
@@ -155,13 +165,24 @@ export const createBuyOrder = async () => {
 
     const createOrderRes = await marketplaceCalls.fillOrder(payload)
     if (createOrderRes?.success) {
+      store.dispatch(setBuyUnitPrice(0))
+      store.dispatch(setTotalAmountForBuying(0))
+      store.dispatch(setBuyOrderPayloadUUID(null))
+      store.dispatch(setBuyOrderPayloadOfferHashes(null))
+      store.dispatch(setBuyOrderPayloadAmountsToTake(null))
+
       getSellOrdersListData()
       getProjectsTokenDetails(currentProjectUUID)
+
+      //resetting token addresses
+      store.dispatch(setCarbonTokenSymbol(''))
+      store.dispatch(setCarbonTokenAddress(''))
+      store.dispatch(setINRTokenAddress(''))
 
       store.dispatch(setShowMessageModal(true))
       store.dispatch(
         setMessageModalText(
-          'Buy Order created successfully. You can chck the status of blockchain transaction from the orders table!!!'
+          'Buy Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
         )
       )
     }
