@@ -19,8 +19,8 @@ interface ProjectIntroductionProps {
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
   const navigate = useNavigate()
- const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-//  const onWebApp = 1
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  //  const onWebApp = 1
   const data = [
     {
       image: Images.one,
@@ -174,7 +174,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'baseline',
-                  justifyContent: 'flex-start'
+                  justifyContent: 'flex-start',
                 }}
               >
                 {data &&
@@ -218,10 +218,8 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               </Grid>
             </Grid>
           </Grid>
-          <BuyToken goingUp={goingUp} />
-          
+          <BuyToken goingUp={goingUp} projectDetailsData={projectDetailsData} />
         </Grid>
-       
       </>
     )
   }

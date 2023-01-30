@@ -20,7 +20,7 @@ const headings = [
   'All pairs',
   'All Types',
   'Unit Price (USD)',
-  'Price',
+  'Quantity',
   'Amount',
   'Executed',
   'Unexecuted',
@@ -30,7 +30,7 @@ const openOrdersHeadings = [
   'All pairs',
   'All Types',
   'Unit Price (USD)',
-  'Price',
+  'Quantity',
   'Amount',
   'Executed',
   'Unexecuted',
@@ -133,7 +133,7 @@ const Orders = () => {
               const payload = {
                 uuid: item?.uuid,
                 _offerHash: item?.hash,
-                _expectedAvailableAmount: item?.amount,
+                _expectedAvailableAmount: item?.unexecuted,
                 _feeAsset: carbonTokenAddress,
                 _feeAmount: 0,
               }

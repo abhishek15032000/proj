@@ -10,12 +10,17 @@ import BlockchainCalls from '../../../blockchain/Blockchain'
 import LoderOverlay from '../../LoderOverlay'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import { pathNames } from '../../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
 
 interface BuyTokenProps {
   goingUp?: any
+  projectDetailsData?:any
 }
 const BuyToken = (props: BuyTokenProps) => {
-  const { goingUp } = props
+  const navigate = useNavigate()
+  
+  const { goingUp, projectDetailsData } = props
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
@@ -116,6 +121,14 @@ const BuyToken = (props: BuyTokenProps) => {
           mt: 2,
           boxShadow:'0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)'
         }}
+        onClick={() =>
+          navigate(pathNames.MARKETPLACE, {
+            state: {
+              projectID: projectDetailsData?._id,
+              projectUUID: projectDetailsData?.uuid,
+            },
+          })
+        }
       >
         <Typography   sx={{ color:'primary.main', fontSize: 14, fontWeight: 500, textAlign: 'center' }}>
           {'Buy Tokens'}
