@@ -60,4 +60,11 @@ export const marketplaceCalls = {
       }
     )
   },
+  getOpenOrder: (payload?: any) => {
+    return AxiosHelper(URL_PATH.marketplace.getOpenOrder, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }

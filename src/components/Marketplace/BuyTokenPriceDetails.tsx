@@ -1,5 +1,5 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Button, Grid, Menu, Typography } from '@mui/material'
+import { Button, Grid, Menu, Skeleton, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
@@ -12,6 +12,7 @@ import {
   setBuyOrderPayloadOfferHashes,
   setBuyOrderPayloadAmountsToTake,
   setBuyOrderPayloadUUID,
+  setCheckFulfilLoading,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
 
@@ -30,6 +31,10 @@ const BuyTokenPriceDetails = () => {
     ({ newMarketplaceReducer }) => newMarketplaceReducer.totalAmountForBuying,
     shallowEqual
   )
+  const checkFulfilLoading = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.checkFulfilLoading,
+    shallowEqual
+  )
 
   const [tokenAndUnitPriceList, setTokenAndUnitPriceList] = useState<any>(null)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -45,8 +50,8 @@ const BuyTokenPriceDetails = () => {
 
   const checkForFullFillOrder = async () => {
     try {
+      dispatch(setCheckFulfilLoading(true))
       const res = await marketplaceCalls.checkForFullFillOrder(buyQuantity)
-      console.log('res', res)
       if (res?.success && res?.data && res?.data?.length) {
         const offerHashes: any = []
         const amountsToTake: any = []
@@ -72,6 +77,8 @@ const BuyTokenPriceDetails = () => {
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.checkForFullFillOrder api :', err)
+    } finally {
+      dispatch(setCheckFulfilLoading(false))
     }
   }
   return (
@@ -164,16 +171,32 @@ const BuyTokenPriceDetails = () => {
             ))}
         </Box>
       </Menu>
-      <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} INR`} />
-      <CardRow
-        title="Total amount to be paid :"
-        value={`${Math.round(totalAmountForBuying * 100) / 100 || 0} INR`}
-      />
-      {/* {totalAmountForBuying > exchangeBalBuyFlow && (
-        <Typography sx={{ mt: 1, fontSize: 14, color: Colors.tertiary }}>
-          You have less INR balance for buying {buyQuantityForBuyOrder} tokens
-        </Typography>
-      )} */}
+      {checkFulfilLoading ? (
+        <>
+          <Skeleton
+            sx={{
+              fontSize: '1.5rem',
+              bgcolor: '#CCE8E1',
+            }}
+            variant="text"
+          />
+          <Skeleton
+            sx={{
+              fontSize: '1.5rem',
+              bgcolor: '#CCE8E1',
+            }}
+            variant="text"
+          />
+        </>
+      ) : (
+        <>
+          <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} USD`} />
+          <CardRow
+            title="Total amount to be paid :"
+            value={`${Math.round(totalAmountForBuying * 100) / 100 || 0} USD`}
+          />
+        </>
+      )}
     </>
   )
 }

@@ -111,6 +111,7 @@ export const URL_PATH = {
     checkForFullFillOrder:
       ENDPOINTS.orderServiceURL + '/marketplace/checkForFullFillOrder',
     cancelOrder: ENDPOINTS.orderServiceURL + '/marketplace/cancelOrder',
+    getOpenOrder: ENDPOINTS.orderServiceURL + '/marketplace/getOpenOrder',
   },
   buyers: {
     saveRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/retire-token',
