@@ -153,7 +153,6 @@ const Profile: FC<ProfileProps> = (props) => {
       const tempData = response?.data?.data
       setProfileDetails({
         firstname: tempData?.fullName,
-
         email: tempData?.email,
         mobile: tempData?.phone,
         copyMobile: tempData?.phone,
@@ -342,10 +341,10 @@ const Profile: FC<ProfileProps> = (props) => {
       return
     }
 
-    if (!isAlpha(firstname)) {
-      alert('Names cannot contain numbers or special characters!')
-      return
-    }
+    //if (!isAlpha(firstname)) {
+    //  alert('Names cannot contain numbers or special characters!')
+    //  return
+    //}
     setLoading(true)
     const payload = {
       uuid: getLocalItem('userDetails').uuid,
@@ -601,6 +600,7 @@ const Profile: FC<ProfileProps> = (props) => {
               <Grid item xs={12} md={12} lg={6} xl={6}>
                 <EditProfile
                   profileDetails={profileDetails}
+                  setProfileDetails={setProfileDetails}
                   typeOptions={typeOptions}
                   selectedRole={selectedRole}
                   onChangeInput={(key: any, value: any) =>

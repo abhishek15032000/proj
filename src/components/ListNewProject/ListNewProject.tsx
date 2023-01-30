@@ -289,8 +289,9 @@ const ListNewProject = () => {
           label="Project Duration(Years)"
           placeholder="Enter Project Duration(Years)"
           value={projectDuration}
-          onChange={(e) => handleTextChange(e, 'projectDuration')}
-          type="number"
+          onChange={(e) => {
+            handleTextChange(e, 'projectDuration')
+          }}
         />
       </Grid>
       <Grid item xs={12}>

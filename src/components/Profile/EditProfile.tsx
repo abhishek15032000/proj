@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Grid, Box, Typography, Paper, Divider } from '@mui/material'
@@ -24,6 +24,7 @@ interface EditProfileProps {
   onSave?: any
   setSelectedRole?: any
   selectedRole?: any
+  setProfileDetails: any
 }
 
 const EditProfile: FC<EditProfileProps> = (props) => {
@@ -35,7 +36,20 @@ const EditProfile: FC<EditProfileProps> = (props) => {
     onSave,
     setSelectedRole,
     selectedRole,
+    setProfileDetails,
   } = props
+  const nameRegex = /^[A-Za-z\s]*$/
+
+  const [invalidName, setInvalidName] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (profileDetails?.firstname !== '') {
+      nameRegex.test(profileDetails?.firstname)
+        ? setInvalidName(false)
+        : setInvalidName(true)
+    }
+  }, [profileDetails?.firstname])
+
   return (
     <Paper
       sx={{
@@ -84,7 +98,13 @@ const EditProfile: FC<EditProfileProps> = (props) => {
         >
           <CCButtonOutlined
             rounded
-            onClick={() => setEditProfileVisible(false)}
+            onClick={() => {
+              setProfileDetails({
+                ...profileDetails,
+                mobile: profileDetails.copyMobile,
+              })
+              setEditProfileVisible(false)
+            }}
             style={{
               width: '40px',
               height: '40px',
@@ -123,16 +143,11 @@ const EditProfile: FC<EditProfileProps> = (props) => {
         name="firstName"
         size="medium"
         value={profileDetails?.firstname}
-        onChange={(e) => onChangeInput('firstname', e.target.value)}
-        error={
-          profileDetails?.firstname !== '' &&
-          !isAlpha(profileDetails?.firstname)
-        }
-        helperText={
-          profileDetails?.firstname !== '' &&
-          !isAlpha(profileDetails?.firstname) &&
-          'Enter valid Name'
-        }
+        onChange={(e) => {
+          onChangeInput('firstname', e.target.value)
+        }}
+        error={invalidName}
+        helperText={invalidName && 'Enter valid Name'}
         defaultValue={profileDetails?.firstName}
         sx={{ background: '#F5F5F5', width: '400px' }}
       />
@@ -206,7 +221,6 @@ const EditProfile: FC<EditProfileProps> = (props) => {
               .toString()
               .slice(0, 10)
           }}
-          defaultValue={profileDetails?.mobile}
           sx={{ background: '#F5F5F5', ml: 1.5, pl: 1 }}
         />
       </Box>

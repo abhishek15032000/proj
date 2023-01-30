@@ -11,6 +11,7 @@ import { TablePagination, Typography,TableCellProps } from '@mui/material'
 import { Box } from '@mui/system'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import CCTableSkeleton from '../CCTableSkeleton'
 
 interface CWTableProps {
   headings: string[]
@@ -91,7 +92,9 @@ const CWTable = (props: CWTableProps) => {
         component={Paper}
         sx={{ mt: 1, minWidth: 700, maxWidth: props.maxWidth, ...props.sx }}
       >
-        <Table
+        {props.loading && <CCTableSkeleton height={65} items={3} sx={onWebApp ? null : {filter: 'grayscale(1) brightness(0.1)'}}/>}
+     { !props.loading && <>
+       <Table
           sx={{ minWidth: 700, maxWidth: props.maxWidth, ...props.tableSx }}
           aria-label="customized table"
         >
@@ -137,7 +140,7 @@ const CWTable = (props: CWTableProps) => {
               border: 'none',
             }}
           />
-        )}
+        )}</>}
       </TableContainer>
     </>
   )
