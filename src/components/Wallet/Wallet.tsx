@@ -92,7 +92,7 @@ const Wallet: FC<WalletProps> = (props) => {
                   textAlign="center"
                   sx={{ fontSize: 15, fontWeight: 500 }}
                 >
-                  {Number(i?.tokenBalances)}
+                  {Math.round(Number(i?.tokenBalances))}
                 </Typography>,
                 <Typography
                   key={index}
