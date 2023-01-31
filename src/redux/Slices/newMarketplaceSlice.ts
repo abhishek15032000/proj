@@ -28,6 +28,8 @@ interface NewMarketplaceReducerInterface {
   openOrdersLoading: boolean
   buyOrdersLoading: boolean
   ordersTabIndex: number
+  withdrawAmount: number
+  withdrawToken: string
 }
 const initialState: NewMarketplaceReducerInterface = {
   currentProjectUUID: '',
@@ -57,6 +59,8 @@ const initialState: NewMarketplaceReducerInterface = {
   openOrdersLoading: false,
   buyOrdersLoading: false,
   ordersTabIndex: 1,
+  withdrawAmount: 0,
+  withdrawToken: '',
 }
 
 const newMarketplaceReducer = createSlice({
@@ -144,6 +148,12 @@ const newMarketplaceReducer = createSlice({
     setOrdersTabIndex: (state, action: PayloadAction<any>) => {
       state.ordersTabIndex = action.payload
     },
+    setWithdrawAmount: (state, action: PayloadAction<any>) => {
+      state.withdrawAmount = action.payload
+    },
+    setWithdrawToken: (state, action: PayloadAction<any>) => {
+      state.withdrawToken = action.payload
+    },
   },
 })
 
@@ -175,6 +185,8 @@ export const {
   setOpenOrdersLoading,
   setBuyOrdersLoading,
   setOrdersTabIndex,
+  setWithdrawAmount,
+  setWithdrawToken,
 } = newMarketplaceReducer.actions
 
 export default newMarketplaceReducer.reducer

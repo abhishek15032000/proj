@@ -7,4 +7,5 @@ export interface CCTableProps {
   sx?: any
   loading?: boolean
   data?: boolean
+  rowsPerPageProp?: number
 }
