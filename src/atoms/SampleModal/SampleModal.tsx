@@ -49,10 +49,8 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
           sx={{
             backgroundColor: '#FFF',
             borderRadius: '5px',
-            zIndex: 100,
-            padding: '10px',
-            paddingRight: '5px',
-            paddingLeft: '5px',
+            maxHeight: '80%',
+            overflowY: 'scroll',
           }}
         >
           <Box
@@ -61,6 +59,10 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingRight: '5px',
+              position: 'sticky',
+              top: 0,
+              backgroundColor: '#FFF',
+              pl: 1,
             }}
           >
             <Typography>{props.stringArray[index]}</Typography>
@@ -75,12 +77,9 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
               maxWidth: '800px',
               marginTop: '4px',
               marginBottom: '16px',
-              backgroundImage: `url(${props.mediaArray[index]})`,
-              backgroundOrigin: 'center',
-              backgroundRepeat: 'no-repeat',
             }}
-            //component={'img'}
-            //src={props.mediaArray[index]}
+            component={'img'}
+            src={props.mediaArray[index]}
           />
 
           {props.mediaArray.length > 1 && (

@@ -422,19 +422,12 @@ const IssuanceDataCollection = () => {
   }
 
   return (
-    <Container maxWidth={'xl'} >
+    <>
       <Grid
         container
         // sx={{ height:'50vh' }}
       >
-        <Grid
-          item
-          xs={9}
-          md={8}
-          lg={9}
-          xl={9}
-          sx={{ height:'50vh' }}
-        >
+        <Grid item xs={9} sm={12} md={8} lg={9} xl={9}>
           <Paper
             sx={{
               p: 3,
@@ -581,7 +574,6 @@ const IssuanceDataCollection = () => {
           </Paper>
         </Grid>
         <Grid item container xs={3} md={4} lg={3} xl={3}>
-          {/*md={5} lg={4} xl={4}*/}
           <ProjectCompletionProgress sectionIndex={sectionIndex} />
         </Grid>
       </Grid>
@@ -772,7 +764,7 @@ const IssuanceDataCollection = () => {
           </Typography>
         </Paper>
       </Box>
-    </Container>
+    </>
   )
 }
 
