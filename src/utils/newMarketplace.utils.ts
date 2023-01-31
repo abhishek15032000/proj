@@ -240,13 +240,45 @@ export const cancelOrder = async (payload: any) => {
     if (cancelOrderRes.success) {
       store.dispatch(
         setMessageModalText(
-          'Sell order Cancelled. Cancelled Token Amount will reflect in your Wallet.'
+          'Sell order Cancelled. Cancelled Token Amount will reflect in "Balance on Exchange" amount.'
         )
       )
       store.dispatch(setShowMessageModal(true))
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.cancelOrder api ~ ', err)
+  }
+  // finally{
+
+  // }
+}
+
+export const withdraw = async () => {
+  const withdrawAmount = store.getState()?.newMarketplaceReducer?.withdrawAmount
+  const withdrawToken = store.getState()?.newMarketplaceReducer?.withdrawToken
+
+  const pseudoNonce = new Date().getTime()
+
+  const payload = {
+    _token: withdrawToken,
+    _amount: withdrawAmount,
+    _feeAsset: withdrawToken,
+    _feeAmount: 0,
+    _nonce: pseudoNonce,
+  }
+
+  try {
+    const withdrawRes = await marketplaceCalls.withdraw(payload)
+    if (withdrawRes.success) {
+      store.dispatch(
+        setMessageModalText(
+          'Withdraw Successfull. Withdrawn Amount will reflect in your Wallet.'
+        )
+      )
+      store.dispatch(setShowMessageModal(true))
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.withdraw api ~ ', err)
   }
   // finally{
 

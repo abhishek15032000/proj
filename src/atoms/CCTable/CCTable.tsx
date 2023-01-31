@@ -31,7 +31,9 @@ const StyledTableRow = styled(TableRow)(() => ({
 }))
 
 const CCTable = (props: CCTableProps) => {
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10)
+  const { rows, rowsPerPageProp = 10 } = props
+
+  const [rowsPerPage, setRowsPerPage] = useState<number>(rowsPerPageProp)
   const [page, setPage] = useState<number>(0)
   const [tableRowData, setTableRowData] = useState<any>()
 
@@ -42,7 +44,7 @@ const CCTable = (props: CCTableProps) => {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
+    setRowsPerPage(parseInt(event.target.value))
     setPage(0)
   }
 
@@ -60,6 +62,10 @@ const CCTable = (props: CCTableProps) => {
       }
     }
   }, [props?.rows, page, rowsPerPage])
+
+  useEffect(() => {
+    setPage(0)
+  }, [rows])
 
   return (
     <>
