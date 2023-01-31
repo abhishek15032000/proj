@@ -92,15 +92,14 @@ const CCTable = (props: CCTableProps) => {
                   <StyledTableCell
                     key={index}
                     align="center"
-                    sx={
-                      heading.style
-                      //{
-                      //fontSize: '',
-                      //textAlign: `${typeof heading === 'string' && 'left'}`,
-                      //}
-                    }
+                    sx={{
+                      maxWidth: '200px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
                   >
-                    {heading?.name || ''}
+                    {heading}
                   </StyledTableCell>
                 ))}
             </TableRow>
@@ -112,16 +111,7 @@ const CCTable = (props: CCTableProps) => {
                 <StyledTableRow key={index} data-testid={'cc-table-row'}>
                   {row?.length > 0 &&
                     row.map((tdValue: any, tdIndex: number) => (
-                      <StyledTableCell
-                        key={tdIndex}
-                        align="center"
-                        sx={
-                          {
-                            //background: tdIndex % 2 === 0 ? 'blue' : 'pink',
-                            //textAlign: `${typeof tdValue === 'string' && 'left'}`,
-                          }
-                        }
-                      >
+                      <StyledTableCell key={tdIndex} align="center">
                         {tdValue}
                       </StyledTableCell>
                     ))}

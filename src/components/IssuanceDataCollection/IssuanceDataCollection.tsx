@@ -1,5 +1,5 @@
 import { Container, Grid, Modal, Paper, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { KeyboardArrowLeft } from '@mui/icons-material'
@@ -313,37 +313,40 @@ const IssuanceDataCollection = () => {
     }
     const { section_a, section_b, section_c, section_d, section_e } =
       currentProjectDetails
-    const PD = [section_a, section_b, section_c, section_d, section_e].reduce(
-      (acc: any, cur: any, index: any) => {
-        const tempArr = Object.keys(cur)
-          .filter(
-            (key) => typeof cur[key] === 'object' && !Array.isArray(cur[key])
-          )
-          .map((item, stepIndex) => {
-            return {
-              sectionName:
-                index === 0 && item === 'step3'
-                  ? { A3, party_and_project_participants }
-                  : index === 0 && item === 'step4'
-                  ? methodologies
-                  : String.fromCharCode(65 + index) + (stepIndex + 1),
-              subSectionRow:
-                index === 0 && item === 'step4'
-                  ? cur[item]?.methodologies
-                  : cur[item],
-              section: index + 1,
-              subSection: parseInt(item.charAt(item.length - 1)) - 1,
-            }
-          })
-        acc[acc.length] = tempArr
-        return acc
-      },
-      []
-    )
+    const paramsData = [
+      section_a,
+      section_b,
+      section_c,
+      section_d,
+      section_e,
+    ].reduce((acc: any, cur: any, index: any) => {
+      const tempArr = Object.keys(cur)
+        .filter(
+          (key) => typeof cur[key] === 'object' && !Array.isArray(cur[key])
+        )
+        .map((item, stepIndex) => {
+          return {
+            sectionName:
+              index === 0 && item === 'step3'
+                ? { A3, party_and_project_participants }
+                : index === 0 && item === 'step4'
+                ? methodologies
+                : String.fromCharCode(65 + index) + (stepIndex + 1),
+            subSectionRow:
+              index === 0 && item === 'step4'
+                ? cur[item]?.methodologies
+                : cur[item],
+            section: index + 1,
+            subSection: parseInt(item.charAt(item.length - 1)) - 1,
+          }
+        })
+      acc[acc.length] = tempArr
+      return acc
+    }, [])
 
     let dataModified = false
     //finding the obj from paramsData to pass params
-    const params = PD?.flat()?.find((i: any) => {
+    const params = paramsData?.flat()?.find((i: any) => {
       return i?.section === sectionIndex && i?.subSection === subSectionIndex
     })
     if (params) {
@@ -425,6 +428,7 @@ const IssuanceDataCollection = () => {
     <>
       <Grid
         container
+        maxWidth={'xl'}
         // sx={{ height:'50vh' }}
       >
         <Grid item xs={9} sm={12} md={8} lg={9} xl={9}>
@@ -562,10 +566,8 @@ const IssuanceDataCollection = () => {
               )}
               <Box
                 sx={{
+                  paddingLeft: 1,
                   width: '100%',
-                  position: 'relative',
-                  overflowY: 'scroll',
-                  height: '65vh',
                 }}
               >
                 {renderTab()}

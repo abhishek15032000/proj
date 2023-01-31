@@ -8,14 +8,9 @@ import { Colors } from '../../theme'
 interface ShortenedIDCompProps {
   referenceId: string
   width?: string
-  customStyles?: any
 }
 
-const ShortenedIDComp = ({
-  referenceId,
-  width,
-  customStyles,
-}: ShortenedIDCompProps) => {
+const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
   const [onHoverText, setOnHoverText] = useState('Copy To Clipboard')
   const [show, setShow] = useState<boolean>(false)
   const [show2, setShow2] = useState<boolean>(false)
@@ -34,7 +29,6 @@ const ShortenedIDComp = ({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            ...customStyles,
           }}
         >
           {' '}

@@ -105,8 +105,16 @@ const SliderTable = (props: SliderTableProps) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             boxShadow: showBorder ? 5 : 0,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
                           }
-                        : { maxHeight: props.tileHeight }
+                        : {
+                            maxHeight: props.tileHeight,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }
                     }
                     key={index}
                     align="center"

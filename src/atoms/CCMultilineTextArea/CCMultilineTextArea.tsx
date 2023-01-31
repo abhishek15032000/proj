@@ -13,7 +13,7 @@ const CCMultilineTextArea = (props: CCMultilineTextAreaProps) => {
       MuiFormLabel: {
         styleOverrides: {
           asterisk: {
-            color: '#db3131',
+            color: 'red',
           },
         },
       },

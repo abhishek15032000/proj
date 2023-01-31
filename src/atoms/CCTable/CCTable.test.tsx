@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import CCTable from './CCTable'
 
-const headings = [{ name: 'Name', style: { textAlign: 'center' } }]
+const headings = ['Name', 'Age']
 const rows = [
   ['Sam', '22'],
   ['Paul', '25'],
@@ -20,9 +20,9 @@ test('CCTable renders correct no. of data row[s]', () => {
 test('CCTable renders headings', () => {
   render(<CCTable headings={headings} rows={rows} />)
   const value1 = screen.getByText(/Name/i)
-  //const value2 = screen.getByText(/Age/i)
+  const value2 = screen.getByText(/Age/i)
   expect(value1).toBeInTheDocument()
-  //expect(value2).toBeInTheDocument()
+  expect(value2).toBeInTheDocument()
 })
 test('CCTable renders rows', () => {
   render(<CCTable headings={headings} rows={rows} />)
