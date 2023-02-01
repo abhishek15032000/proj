@@ -11,6 +11,7 @@ import Spinner from '../../../atoms/Spinner'
 import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { Box } from '@mui/system'
 
 const SectionE5 = () => {
   const dispatch = useAppDispatch()
@@ -59,51 +60,54 @@ const SectionE5 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Grid container sx={{ mt: 3 }}>
-      <Grid item xs={12}>
-        <CCMultilineTextArea
-          label="Comparison of actual emission reductions or net anthropogenic GHG removals by sinks with estimates in registered PDD"
-          placeholder="Comparison of actual emission reductions or net anthropogenic GHG removals by sinks with estimates in registered PDD, if any"
-          value={E5.comparison_of_actual_emission_reduction}
-          name={'comparison_of_actual_emission_reduction'}
-          onChange={({ target: { value, name } }) =>
-            dispatch(setE5({ name, value }))
-          }
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 3 }}>
+        <Grid item xs={12}>
+          <CCMultilineTextArea
+            label="Comparison of actual emission reductions or net anthropogenic GHG removals by sinks with estimates in registered PDD"
+            placeholder="Comparison of actual emission reductions or net anthropogenic GHG removals by sinks with estimates in registered PDD, if any"
+            value={E5.comparison_of_actual_emission_reduction}
+            name={'comparison_of_actual_emission_reduction'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setE5({ name, value }))
+            }
+            required={false}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <CCDropAndUpload
+            title={'Attach relevant datas & docs'}
+            mediaTitle={[
+              'Sample Report - Comparison of actual emission reductions',
+            ]}
+            mediaItem={[SectionE5ComparisonOfActualEmissionReductions]}
+            imageArray={E5.attach_relevant_docs}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setE5({
+                  name: 'attach_relevant_docs',
+                  value: [...attach_relevant_docs, item],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setE5({
+                  name: 'attach_relevant_docs',
+                  value: deleteIndexInArray(attach_relevant_docs, index),
+                })
+              )
+            }}
+          />
+        </Grid>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.E5}
+          issuanceVisible={true}
         />
       </Grid>
-      <Grid item xs={12}>
-        <CCDropAndUpload
-          title={'Attach relevant datas & docs'}
-          mediaTitle={[
-            'Sample Report - Comparison of actual emission reductions',
-          ]}
-          mediaItem={[SectionE5ComparisonOfActualEmissionReductions]}
-          imageArray={E5.attach_relevant_docs}
-          onImageUpload={(item: any) => {
-            dispatch(
-              setE5({
-                name: 'attach_relevant_docs',
-                value: [...attach_relevant_docs, item],
-              })
-            )
-          }}
-          onDeleteImage={(index: number) => {
-            dispatch(
-              setE5({
-                name: 'attach_relevant_docs',
-                value: deleteIndexInArray(attach_relevant_docs, index),
-              })
-            )
-          }}
-        />
-      </Grid>
-      <HelpPopUp
-        modal={modal}
-        setModal={(item: any) => setModal(item)}
-        data={IssuanceHelpContentData?.E5}
-        issuanceVisible={true}
-      />
-    </Grid>
+    </Box>
   )
 }
 

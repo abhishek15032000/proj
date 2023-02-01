@@ -113,7 +113,7 @@ const Orders = () => {
         item?.pair,
         item?.type,
         item?.unitPrice ? Math.round(item?.unitPrice * 100) / 100 : 0,
-        item?.price,
+        item?.quantity,
         item?.amount,
         item?.executed,
         item?.unexecuted,
@@ -168,6 +168,8 @@ const Orders = () => {
         <CCTable
           headings={ordersTabIndex === 3 ? headings : openOrdersHeadings}
           rows={rows}
+          pagination={rows?.length > 5 ? true : false}
+          rowsPerPageProp={5}
         />
       )}
     </CCPaper>

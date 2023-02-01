@@ -177,7 +177,7 @@ const SectionA4 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <>
+    <Box className="issuance_data_section_scroll">
       <Typography sx={{ mt: 3 }}>
         The methodologies applied for the project activity under consideration
         are* -
@@ -197,7 +197,7 @@ const SectionA4 = () => {
             key={index}
             container
             sx={{
-              border: ' 1px solid #1d4b44',
+              border: ' 1px solid #DAE5E1',
               borderRadius: '8px',
               padding: '20px',
               marginY: '10px',
@@ -517,7 +517,7 @@ const SectionA4 = () => {
           issuanceVisible={true}
         />
       </Grid>
-    </>
+    </Box>
   )
 }
 

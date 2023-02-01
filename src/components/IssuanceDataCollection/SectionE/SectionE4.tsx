@@ -11,6 +11,7 @@ import Spinner from '../../../atoms/Spinner'
 import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { Box } from '@mui/system'
 const SectionE4 = () => {
   const dispatch = useAppDispatch()
 
@@ -57,53 +58,56 @@ const SectionE4 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Grid container sx={{ mt: 3 }}>
-      <Grid item xs={12}>
-        <CCMultilineTextArea
-          label={
-            'Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks'
-          }
-          placeholder="Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks, if any"
-          value={E4.calculation_of_emissions_reduction}
-          name={'calculation_of_emissions_reduction'}
-          onChange={({ target: { value, name } }) =>
-            dispatch(setE4({ name, value }))
-          }
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 3 }}>
+        <Grid item xs={12}>
+          <CCMultilineTextArea
+            label={
+              'Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks'
+            }
+            placeholder="Summary of calculation of emission reductions or net anthropogenic GHG removals by sinks, if any"
+            value={E4.calculation_of_emissions_reduction}
+            name={'calculation_of_emissions_reduction'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setE4({ name, value }))
+            }
+            required={false}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <CCDropAndUpload
+            title={'Attach relevant datas & docs'}
+            mediaTitle={[
+              'Sample Report - Calculation summary of emission reductions',
+            ]}
+            mediaItem={[SectionE4CalculationSummaryOfEmissionReductions]}
+            imageArray={E4.attach_relevant_docs}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setE4({
+                  name: 'attach_relevant_docs',
+                  value: [...attach_relevant_docs, item],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setE4({
+                  name: 'attach_relevant_docs',
+                  value: deleteIndexInArray(attach_relevant_docs, index),
+                })
+              )
+            }}
+          />
+        </Grid>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.E4}
+          issuanceVisible={true}
         />
       </Grid>
-      <Grid item xs={12}>
-        <CCDropAndUpload
-          title={'Attach relevant datas & docs'}
-          mediaTitle={[
-            'Sample Report - Calculation summary of emission reductions',
-          ]}
-          mediaItem={[SectionE4CalculationSummaryOfEmissionReductions]}
-          imageArray={E4.attach_relevant_docs}
-          onImageUpload={(item: any) => {
-            dispatch(
-              setE4({
-                name: 'attach_relevant_docs',
-                value: [...attach_relevant_docs, item],
-              })
-            )
-          }}
-          onDeleteImage={(index: number) => {
-            dispatch(
-              setE4({
-                name: 'attach_relevant_docs',
-                value: deleteIndexInArray(attach_relevant_docs, index),
-              })
-            )
-          }}
-        />
-      </Grid>
-      <HelpPopUp
-        modal={modal}
-        setModal={(item: any) => setModal(item)}
-        data={IssuanceHelpContentData?.E4}
-        issuanceVisible={true}
-      />
-    </Grid>
+    </Box>
   )
 }
 

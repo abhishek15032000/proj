@@ -1,6 +1,6 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import CCTable from './CCTable';
+import React from 'react'
+import { render, screen } from '@testing-library/react'
+import CCTable from './CCTable'
 
 const headings = ['Name', 'Age']
 const rows = [

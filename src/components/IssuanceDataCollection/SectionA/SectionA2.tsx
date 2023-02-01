@@ -75,7 +75,8 @@ const SectionA2 = () => {
   ) : (
     <Grid
       container
-      sx={{ width: '100%' }}
+      className="issuance_data_section_scroll"
+      sx={{ width: '100%', mt: 2 }}
       columnSpacing={{ xs: 0, md: 1 }}
       rowSpacing={1}
       xs={12}
@@ -85,15 +86,15 @@ const SectionA2 = () => {
     >
       <Grid
         container
-        sx={{ width: '100%', mt: 3 }}
+        sx={{ width: '100%' }}
         columnSpacing={{ xs: 0, md: 1 }}
-        rowSpacing={1}
+        rowSpacing={2}
         xs={12}
         md={12}
         lg={12}
         xl={12}
       >
-        <Grid item sx={{ mt: 1 }} xs={12} md={12} lg={12} xl={12}>
+        <Grid item xs={12} md={12} lg={12} xl={12}>
           <Typography>Location of the project activity</Typography>
         </Grid>
         <Grid item xs={12} md={12} lg={6} xl={6}>
@@ -189,7 +190,7 @@ const SectionA2 = () => {
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCDropAndUpload
           mediaTitle={['Sample Report - Implementation of Milestones']}
-          title="Upload location map images *"
+          title={'Upload location map images'}
           mediaItem={[]}
           imageArray={A2.file_attach}
           onImageUpload={(item: any) => {
@@ -205,6 +206,7 @@ const SectionA2 = () => {
               })
             )
           }}
+          required={true}
         />
       </Grid>
       <HelpPopUp

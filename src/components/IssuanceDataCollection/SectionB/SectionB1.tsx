@@ -126,8 +126,8 @@ const SectionB1 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Box>
-      <Grid container sx={{ mt: 4 }} spacing={1}>
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Brief on purpose and general description of project activity "
@@ -158,7 +158,7 @@ const SectionB1 = () => {
           <CCDropAndUpload
             mediaTitle={['Sample Report - Technical Details']}
             mediaItem={[SectionB1TechnicalDescription]}
-            title="Attach Data Tables for Technical Description *"
+            title="Attach Data Tables for Technical Description"
             imageArray={data_tables_technical_description_attach}
             onImageUpload={(item: any) => {
               dispatch(
@@ -179,6 +179,7 @@ const SectionB1 = () => {
                 })
               )
             }}
+            required={true}
           />
         </Grid>
 
