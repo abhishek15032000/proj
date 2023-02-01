@@ -13,7 +13,8 @@ const tags = [
 ]
 
 interface AdditionalDetailsProps {
-  projectDetailsData?: any
+  projectDetailsData?: any,
+  projectData?: any,
 }
 const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
@@ -55,9 +56,9 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
     ]
     setDetails(modifiedArrayTemp)
     const cardDetails = [
-      { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: '8,345.05' },
-      { heading: 'CREDITS RETIRED', value: '8,345.05' },
-      { heading: 'CO2e  SEQUESTERED [LIFETIME]', value: '76888' },
+      { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: props.projectData?.token_detail?.balance },
+      { heading: 'CREDITS RETIRED', value: props.projectData?.token_detail?.retire },
+      { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
     ]
     setCardDetails(cardDetails)
   }

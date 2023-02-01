@@ -1,12 +1,12 @@
 import { Container, Grid, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdditionalDetails from './AdditionalDetails/AdditionalDetails'
 import OtherProjects from './OtherProjects/OtherProjects'
 import ProjectIntroduction from './ProjectIntoduction/ProjectIntroduction'
 import Reports from './Reports/Reports'
 import SliderComponent from './SliderComponent/SliderComponent'
 import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Box } from '@mui/system'
 import WebAppTraceHistory from './TraceHistory/WebappTraceHistory'
 import { shallowEqual } from 'react-redux'
@@ -18,6 +18,7 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import {pathNames} from '../../routes/pathNames'
+import { projectDetailsCalls } from '../../api/projectDetailsCalls.api'
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lightPrimary?: string
@@ -114,9 +115,21 @@ const lightModeTheme = {
 }
 
 const ProjectDetails = () => {
+  
+  const [searchParams] = useSearchParams()
+  const[ projectData, setProjectData] = useState(null)
+    
+
+  useEffect(()=>{
+  const projectId = searchParams.get('projectId')
+    getProjectDetails(projectId)
+  },[])
+  const getProjectDetails = (projectId:any)=>{
+    projectDetailsCalls.getProjectDetailsById(projectId).then(result => setProjectData(result.data))
+  }
+ 
   const projectDetailsData: any = useLocation()
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-  // const onWebApp = 1
   const darkTheme = {
     backgroundImage:
       'linear-gradient(#fff 0%,rgba(7, 19, 13, 0.79) 15%,  #111E17 20%,  #111E17 72%, rgba(7, 19, 13, 0.79) 85%, #222926 95%)',
@@ -207,8 +220,9 @@ const ProjectDetails = () => {
               {tabIndex === 1 && (
                 <>
                   {' '}
-                  <ProjectIntroDescription />{' '}
+                  <ProjectIntroDescription  projectData={projectData}/>{' '}
                   <AdditionalDetails
+                    projectData={projectData}
                     projectDetailsData={projectDetailsData?.state}
                   />{' '}
                   <SliderComponent />
@@ -264,7 +278,7 @@ const ProjectDetails = () => {
 }
 export default ProjectDetails
 
-const ProjectIntroDescription = () => {
+const ProjectIntroDescription = ({projectData}:{projectData:any}) => {
   return (
     <>
       <Typography
@@ -289,22 +303,11 @@ const ProjectIntroDescription = () => {
           columnFill: 'balance',
           breakInside: 'avoid',
           mt: 3,
+          fontSize:16
         }}
       >
         <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
-          Project Intro Outside Pittsburgh, Allegheny Land Trust protected 124
-          acres of woodlands from rapid encroaching residential development in
-          southeastern Allegheny County. The 40 year old maple, cherry and
-          oak-hickory forest provides habitat for deer, turkey, and many species
-          of birds. Hikers, birders, and mountain bikers will be able to explore
-          the area, and possibly catch a glimpse of a majestic 200 year old oak
-          tree. Protection of this forest also contributes to maintaining clean
-          drinking water for Pittsburgh region’s residents. Located within the
-          lower Youghiogheny River Watershed, the property is five miles
-          upstream from the confluence with the Monongahela River. Revenue
-          generated from the sale of carbon credits will be put towards
-          acquisition costs, land stewardship, and future expansion of this and
-          other conservation lands.
+         {projectData?.description?.general_description}
         </Typography>
       </Grid>
     </>

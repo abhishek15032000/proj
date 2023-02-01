@@ -4,7 +4,7 @@ import CCButton from '../../../atoms/CCButton'
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined'
 import { Images } from '../../../theme'
 import { pathNames } from '../../../routes/pathNames'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, createSearchParams } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 
@@ -124,7 +124,13 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
               fontWeight: 500,
             }}
             onClick={() =>
-              navigate(pathNames.PROJECT_DETAILS, { state: project })
+              navigate(
+                {
+                  pathname: pathNames.PROJECT_DETAILS,
+                  search: `?${createSearchParams({ projectId: project.uuid })}`,
+                },
+                { state: project }
+              )
             }
           >
             Buy Credits

@@ -22,4 +22,12 @@ export const projectDetailsCalls = {
       return res?.data
     })
   },
+  getProjectDetailsById: (project_id: any) => {
+    return AxiosHelper(
+      URL_PATH.project.getProjectDetailsById + `?project_id=${project_id}`,
+      'GET'
+    ).then((res) => {
+      return res?.data
+    })
+  },
 }
