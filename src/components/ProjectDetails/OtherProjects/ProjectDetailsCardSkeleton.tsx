@@ -6,24 +6,28 @@ import { useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { pathNames } from '../../../routes/pathNames'
 
-const ProjectDetailsCardSkeleton = () => {
+const ProjectDetailsCardSkeleton = ({items =8}:{items?:any}) => {
   const location = useLocation()
-
+  const itemsArr =  new Array(items).fill({})
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
-  return (
-    <Box
+  return <>
+    {itemsArr.map((item,index) =>{
+    return <Box
+      key={index.toString()}
       sx={{
         width: '280px',
         mb: 2,
         borderRadius: '8px',
         mr: 4,
+        height:'360px',
+        bgcolor: 'white'
       }}
     >
       <Skeleton
         sx={{ bgcolor: onWebApp ? '' : 'grey.900' }}
         variant="rectangular"
-        height={120}
+        height={200}
       />
       <Skeleton
         variant="text"
@@ -66,7 +70,9 @@ const ProjectDetailsCardSkeleton = () => {
         sx={{ fontSize: '1rem', bgcolor: onWebApp ? '' : 'grey.900' }}
       />
     </Box>
-  )
+  })
+  }</>
+  
 }
 
 export default ProjectDetailsCardSkeleton

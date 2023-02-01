@@ -1,6 +1,8 @@
 import { Box, Grid, Typography } from '@mui/material'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 
 const tags = [
   'Project type tag 1',
@@ -14,6 +16,8 @@ interface AdditionalDetailsProps {
   projectDetailsData?: any
 }
 const AdditionalDetails = (props: AdditionalDetailsProps) => {
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+
   const { projectDetailsData } = props
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
@@ -60,18 +64,21 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   return (
     <Box sx={{ 
       // background: '#111E17', 
-      padding: '2vw 6vw',  }}>
-      <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
+      // padding: '2vw 6vw',  
+      pt:8
+      }}>
+      <Typography sx={{ fontSize: 18, fontWeight:'400', color: 'headingColor.main' }}>
         Additional Details
       </Typography>
-      <Grid container sx={{ mt: 4 }}>
-        <Grid item md={8}>
+      <Grid container sx={{ mt: 3 }}>
+        <Grid item md={9}>
           <Box>
             <Typography
               sx={{
                 // mt: 2,
                 fontSize: 12,
-                color: 'textColor.main'
+                color: 'textColor.main',
+                fontWeight:'500'
               }}
             >
               Tags
@@ -83,7 +90,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
                   <Tag key={index} tag={tag} />
                 ))}
             </Box>
-            <Grid container sx={{ mt: 3 }}>
+            <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
               {details &&
                 details.length &&
                 details.map((detail: any, index: number) => (
@@ -97,12 +104,12 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
           </Box>
         </Grid>
         {/* CreditDetails */}
-        <Grid item md={4}>
+        <Grid item md={3}>
           <Box
             sx={{
               py: 2,
               background:
-                'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, #2D5F57 237.11%)',
+              onWebApp ?'linear-gradient(180deg, #FFFFFF 0%, #DAF7F0 100%)':'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, #2D5F57 237.11%)',
               borderRadius: '8px',
             }}
           >
@@ -133,11 +140,11 @@ const Tag: FC<TagProps> = ({ tag }) => {
       sx={{
         mt: 1,
         fontSize: 14,
-        background: '#006B5E',
+        backgroundColor: 'chipBgColor.main',
         padding: '9px 24px',
         borderRadius: '24px',
         mr: 1,
-        color: '#fff'
+        color: 'chipTextColor.main'
       }}
     >
       {tag}
@@ -151,10 +158,10 @@ interface DetailsProps {
 }
 const Details: FC<DetailsProps> = ({ heading, value }) => {
   return (
-    <Grid item xs={10} md={5} sx={{ mt: 1 }}>
-      <Box sx={{ fontSize: 14, color: 'textColor.main', mb: 1 }}>{heading}</Box>
+    <Grid item xs={10} md={4} sx={{ mt: 1 }} >
+      <Box sx={{ fontSize: 14, color: 'textColor.main', mb: 1, width:'100%'}}>{heading}</Box>
       {typeof value === 'string' ? (
-        <Box sx={{ fontSize: 16, color: 'textColor2.main', }}>{value}</Box>
+        <Box sx={{ fontSize: 16, color: 'textColor2.main', width:'100%', mt:1 }}>{value}</Box>
       ) : (
         value &&
         value.length &&
@@ -176,7 +183,7 @@ const CardDetails: FC<CardDetailsProps> = ({ heading, value }) => {
   return (
     <Box sx={{ textAlign: 'center', mt: 2 }}>
       <Box sx={{ fontSize: 10, color: 'textColor.main' }}>{heading}</Box>
-      <Box sx={{ fontSize: 36, color: 'textColor2.main' }}>{value}</Box>
+      <Box sx={{ fontSize: 36, color: 'textColor3.main' }}>{value}</Box>
     </Box>
   )
 }

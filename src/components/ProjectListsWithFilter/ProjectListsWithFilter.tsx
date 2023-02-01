@@ -109,13 +109,15 @@ const ProjectListsWithFilter = () => {
         Projects
       </Box>
       <Grid container columnSpacing={2} sx={{ mt: 3 }}>
-        <Grid item md={2}>
+        <Grid item md={2} >
           <Box
             sx={{
               color: onWebApp ? '#006B5E' : '#DAE5E1',
               background: onWebApp
                 ? '#fff'
                 : 'linear-gradient(180deg, rgba(7, 19, 13, 0.79) 0%, #222926 100%)',
+                borderRadius:3,
+                overflow:'hidden'
             }}
           >
             <Box
@@ -144,7 +146,7 @@ const ProjectListsWithFilter = () => {
                   filters.length &&
                   filters.map((filter, index) => (
                     <Box key={index} sx={{ mt: 2 }}>
-                      <Box sx={{ mb: 1 }}>{filter?.filterType}</Box>
+                      <Box sx={{ mb: 1,  color: onWebApp ? '#00201B' : '#DAE5E1', }}>{filter?.filterType}</Box>
                       {filter?.filters &&
                         filter?.filters.length &&
                         filter?.filters.map((item, index) => (
@@ -156,6 +158,8 @@ const ProjectListsWithFilter = () => {
                               borderBottom: '1px solid #6E7976',
                               display: 'flex',
                               alignItems: 'center',
+                              py:1,
+                              // color: onWebApp ? '#006B5E':"#fff"
                             }}
                           >
                             <Box>
@@ -200,18 +204,21 @@ const ProjectListsWithFilter = () => {
             )}
           </Box>
         </Grid>
-        <Grid item md={10}>
+        <Grid item md={10} alignItems="center" justifyContent="center">
           <Box
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
               flexWrap: 'wrap',
+              maxHeight:'80vh',
+              overflowY: 'scroll',
+              overflowX: 'hidden'
             }}
           >
             {loading ? (
-              ['', '', '', '', '', ''].map((project, index) => (
-                <ProjectDetailsCardSkeleton key={index} />
-              ))
+            
+                <ProjectDetailsCardSkeleton  />
+            
             ) : filteredProjects && filteredProjects.length ? (
               filteredProjects.map((project: any, index: number) => (
                 <ProjectDetailsCard

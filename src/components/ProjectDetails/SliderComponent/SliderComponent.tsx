@@ -3,8 +3,13 @@ import { Box, Grid, Typography } from '@mui/material'
 import './style.css'
 import Arrow from '../../../assets/Images/Icons/arrow-circle.svg'
 import { Images } from '../../../theme'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 const SliderComponent = () => {
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+
+
   const [slideList, setSlideList] = useState([
     {
       bg: Images.ProjectDetails,
@@ -49,8 +54,10 @@ const SliderComponent = () => {
   return (
     <Box sx={{ 
       // background: '#111E17',
-     padding: '2vw 6vw',   }}>
-      <Typography sx={{ fontSize: '32px',  color: 'headingColor.main'}}>
+    //  padding: '2vw 6vw',  
+    pt:8
+      }}>
+      <Typography sx={{ fontSize: 18, fontWeight:'400', color: 'headingColor.main' }}>
         Project Images
       </Typography>
       <div className="container">
@@ -82,13 +89,13 @@ const SliderComponent = () => {
         </div>
         <div className="button-flex">
           <a className="buttons prev" onClick={() => moveSlider('previous')}>
-            <img src={Arrow} alt="previous" />
+            <img src={Arrow} alt="previous" style= {{filter: !onWebApp ? "none":'contrast(0.5)'}} />
           </a>
           <a className="buttons next" onClick={() => moveSlider('next')}>
             <img
               src={Arrow}
-              alt="previous"
-              style={{ transform: 'rotate(180deg)' }}
+              alt="next"
+              style={{ transform: 'rotate(180deg)', filter: !onWebApp ? "none":'contrast(0.5)' }}
             />
           </a>
         </div>

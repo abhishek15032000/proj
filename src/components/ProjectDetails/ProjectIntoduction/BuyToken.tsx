@@ -32,7 +32,7 @@ const BuyToken = (props: BuyTokenProps) => {
       display: 'flex',
       flexDirection:  goingUp ?'row':'column',
       justifyContent: goingUp ? 'space-around' : 'space-between',
-      alignItems: 'center',
+      alignItems: goingUp ? 'center':'flex-start',
       pt: 2,
       px: goingUp ? 38 : 2,
       pb: 3,
@@ -55,6 +55,8 @@ const BuyToken = (props: BuyTokenProps) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           alignItems: 'start',
+          p:5,
+          width: '100%',
         }}
       >
         <TitleValue
@@ -109,7 +111,9 @@ const BuyToken = (props: BuyTokenProps) => {
           </Typography>
         </Box>
       </Box>
+       <Grid container xs={12} sx={{justifyContent:'flex-end'}}> 
       <CCButton
+      variant='contained'
         sx={{
           width:goingUp? '250px': '100%',
           height: '40px',
@@ -119,7 +123,8 @@ const BuyToken = (props: BuyTokenProps) => {
           alignItems: 'center',
           borderRadius: '100px',
           mt: 2,
-          boxShadow:'0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)'
+          boxShadow:'0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)',
+          mx:5
         }}
         onClick={() =>
           navigate(pathNames.MARKETPLACE, {
@@ -134,6 +139,8 @@ const BuyToken = (props: BuyTokenProps) => {
           {'Buy Tokens'}
         </Typography>
       </CCButton>
+      </Grid>
+    
     </Paper>
   )
 }

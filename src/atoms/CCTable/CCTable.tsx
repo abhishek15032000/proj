@@ -17,6 +17,10 @@ const StyledTableCell = styled(TableCell)(() => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    width: '60px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 }))
 

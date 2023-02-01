@@ -238,7 +238,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                   alignItems={'center'}
                   flexDirection="column"
                   display={'flex'}
-                  width={'15%'}
+                  width={'10%'}
                   height={'100%'}
                 >
                   <div
@@ -258,7 +258,9 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                             ? '1px solid #CCE8E1'
                             : '1px solid #006B5E',
                         backgroundColor: '#006B5E',
+                        marginLeft: '-10px',
                       }}
+                      
                       className="traceability-trace-circle"
                     ></Box>
                     <div
@@ -273,7 +275,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         position: 'absolute',
                         height: '170%',
                         top: 0,
-                        left: '50%',
+                        left: '30%',
                         transform: 'translateX(-50%)',
                       }}
                     ></div>

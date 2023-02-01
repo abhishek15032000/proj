@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material'
+import { Container, Grid, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import AdditionalDetails from './AdditionalDetails/AdditionalDetails'
 import OtherProjects from './OtherProjects/OtherProjects'
@@ -6,7 +6,7 @@ import ProjectIntroduction from './ProjectIntoduction/ProjectIntroduction'
 import Reports from './Reports/Reports'
 import SliderComponent from './SliderComponent/SliderComponent'
 import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/system'
 import WebAppTraceHistory from './TraceHistory/WebappTraceHistory'
 import { shallowEqual } from 'react-redux'
@@ -14,7 +14,10 @@ import { useAppSelector } from '../../hooks/reduxHooks'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWithCount'
 import { initialState } from '../../redux/Slices/themeSlice'
-
+import BackHeader from '../../atoms/BackHeader/BackHeader'
+import CCButton from '../../atoms/CCButton'
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import {pathNames} from '../../routes/pathNames'
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lightPrimary?: string
@@ -23,6 +26,7 @@ declare module '@mui/material/styles' {
     headingColor?: Palette['primary']
     textColor?: Palette['primary']
     textColor2?: Palette['primary']
+    textColor3?: Palette['primary']
     bgColor?: Palette['primary']
     bgColor2?: Palette['primary']
     bgColor3?: Palette['primary']
@@ -31,6 +35,8 @@ declare module '@mui/material/styles' {
     gradientColor2?: Palette['primary']
     gradientColor3?: Palette['primary']
     iconColor?: Palette['primary']
+    chipBgColor?: Palette['primary']
+    chipTextColor?: Palette['primary']
   }
 
   // allow configuration using `createTheme`
@@ -38,6 +44,7 @@ declare module '@mui/material/styles' {
     headingColor?: PaletteOptions['primary']
     textColor?: PaletteOptions['primary']
     textColor2?: PaletteOptions['primary']
+    textColor3?: PaletteOptions['primary']
     bgColor?: PaletteOptions['primary']
     bgColor2?: PaletteOptions['primary']
     bgColor3?: PaletteOptions['primary']
@@ -46,6 +53,8 @@ declare module '@mui/material/styles' {
     gradientColor2?: PaletteOptions['primary']
     gradientColor3?: PaletteOptions['primary']
     iconColor?: PaletteOptions['primary']
+    chipBgColor?: PaletteOptions['primary']
+    chipTextColor?: PaletteOptions['primary']
   }
 }
 
@@ -63,6 +72,7 @@ const darkModeTheme = {
     headingColor: { main: '#55DBC8' },
     textColor: { main: '#cce8e1' },
     textColor2: { main: '#ffffff' },
+    textColor3: { main: '#ffffff' },
     bgColor: { main: '#000000', secondary: '#ffffff' },
     bgColor2: { main: '#000000' },
     iconColor: { main: '#000000' },
@@ -71,7 +81,10 @@ const darkModeTheme = {
     },
     gradientColor2: { main: '#349386' },
     gradientColor3: { main: '#01443C' },
+    chipBgColor: { main: '#006B5E' },
+    chipTextColor: { main: '#fff' },
   },
+  typography: initialState.typography,
 }
 
 const lightModeTheme = {
@@ -83,8 +96,9 @@ const lightModeTheme = {
       main: '#1d4b44',
     },
     headingColor: { main: '#1D4B44' },
-    textColor: { main: '#1D4B44' },
+    textColor: { main: '#141D1B' },
     textColor2: { main: '#000000' },
+    textColor3: { main: '#55DBC8' },
     bgColor: { main: 'transparent', secondary: 'transparent' },
     bgColor2: { main: '#E1EEE8' },
     bgColor3: { main: '#CCE8E1' },
@@ -92,9 +106,11 @@ const lightModeTheme = {
     gradientColor1: { main: '#fff' },
     gradientColor2: { main: '#fff' },
     gradientColor3: { main: '#fff' },
-    ...initialState.palette
+    chipBgColor: { main: '#B0FFF2' },
+    chipTextColor: { main: '#191C1B' },
+    ...initialState.palette,
   },
-  
+  typography: initialState.typography,
 }
 
 const ProjectDetails = () => {
@@ -112,20 +128,71 @@ const ProjectDetails = () => {
   }
 
   const [tabIndex, setTabIndex] = useState(1)
-
+  const navigate = useNavigate()
   return (
-    <>
-      <Grid container justifyContent={'space-between'} alignItems={'center'}>
+    <Container maxWidth="xl">
+      <Grid
+        container
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        // sx={{ px: 4 }}
+      >
         <ThemeProvider
           theme={
             onWebApp ? createTheme(lightModeTheme) : createTheme(darkModeTheme)
           }
         >
+          <Grid item sx={{display:"inline-flex",}}>
+            <Typography variant="body1" color="#4A635E">
+            Projects
+            </Typography>
+            <Typography variant="body1" color="#000000" sx={{pl:1}}>
+                {' > Project Details'}
+              </Typography>
+           </Grid>
+          <Grid
+            container
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            mt={'12px'}
+            mb={5}
+          >
+            <Grid item>
+              <BackHeader
+                title="Project Details"
+                onClick={() => navigate(-1)}
+              />
+            </Grid>
+            <Grid item>
+              <CCButton
+              onClick={()=> navigate(pathNames.RISK_DASHBOARD)}
+                variant="contained"
+                sx={{
+                  ml: 3,
+                  padding: '10px 25px',
+                  borderRadius: 10,
+                  fontSize:14,
+                  '&:hover': {
+                    backgroundColor: 'accent.main',
+                    boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
+                    color: "#006B5E"
+                  }
+                }}
+                buttonBackgroundColor={'#006B5E'}
+                buttonColor={'white'}
+                // onClick={btn1OnClick}
+                // disabled={disableBtn1}
+              >
+                 <ArrowOutwardIcon sx={{fontSize:16, fontWeight:'600', mr:1}} />
+                Climate Risk Dashboard
+              </CCButton>
+            </Grid>
+          </Grid>
           <Grid item xs={12} sx={onWebApp ? lightTheme : darkTheme}>
             <ProjectIntroduction
               projectDetailsData={projectDetailsData?.state}
             />
-            <Box sx={{ mt: 14 }}>
+            <Box sx={{ mt: 35 }}>
               <TabSelectorWithCount
                 tabArray={[
                   { name: 'About', count: 0 },
@@ -134,7 +201,7 @@ const ProjectDetails = () => {
                 ]}
                 tabIndex={tabIndex}
                 setTabIndex={setTabIndex}
-                sx={{ mt: 3 , px:10}}
+                sx={{}}
                 // tabWidth="fit-content"
               />
               {tabIndex === 1 && (
@@ -144,7 +211,7 @@ const ProjectDetails = () => {
                   <AdditionalDetails
                     projectDetailsData={projectDetailsData?.state}
                   />{' '}
-                  <SliderComponent /> <OtherProjects />
+                  <SliderComponent />
                 </>
               )}
               {tabIndex === 2 && <Reports />}
@@ -153,17 +220,18 @@ const ProjectDetails = () => {
                   <TokensTxHistory />
                   <Box
                     sx={{
-                      pt: 5,
-                      padding: '2vw 6vw',
+                      // pt: 5,
+                      // padding: '2vw 6vw',
                       // background:
                       //   'linear-gradient(180deg, #111E17 9.55%, rgba(7, 19, 13, 0.79) 100%)',
+                      pt: 5,
                     }}
                   >
                     <Typography
                       sx={{
+                        fontSize: 18,
+                        fontWeight: '400',
                         color: 'headingColor.main',
-                        fontSize: '32px',
-                        fontWeight: 500,
                       }}
                     >
                       Trace History
@@ -173,8 +241,8 @@ const ProjectDetails = () => {
                         background: !onWebApp
                           ? 'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, rgba(64, 96, 91, 0.59) 151.96%, #2D5F57 237.11%)'
                           : 'transparent',
-                        pt: 5,
-                        pl: 5,
+                        pt: 2,
+                        // pl: 5,
                         borderRadius: '8px',
                       }}
                     >
@@ -186,54 +254,59 @@ const ProjectDetails = () => {
                   </Box>
                 </>
               )}
+              <OtherProjects />
             </Box>
           </Grid>
         </ThemeProvider>
       </Grid>
-    </>
+    </Container>
   )
 }
 export default ProjectDetails
 
 const ProjectIntroDescription = () => {
   return (
-    <Grid
-      item
-      sx={{
-        // background:'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
-        px: 10,
-        pt: 4,
-        color: 'textColor2.main',
-      }}
-    >
-      <Typography sx={{ fontSize: 14, fontWeight: 400, mt: 10 }}>
-        Project Intro Outside Pittsburgh, Allegheny Land Trust protected 124
-        acres of woodlands from rapid encroaching residential development in
-        southeastern Allegheny County. The 40 year old maple, cherry and
-        oak-hickory forest provides habitat for deer, turkey, and many species
-        of birds. Hikers, birders, and mountain bikers will be able to explore
-        the area, and possibly catch a glimpse of a majestic 200 year old oak
-        tree.
-      </Typography>
-      <Typography sx={{ fontSize: 14, fontWeight: 400, mt: 2 }}>
-        Protection of this forest also contributes to maintaining clean drinking
-        water for Pittsburgh region’s residents. Located within the lower
-        Youghiogheny River Watershed, the property is five miles upstream from
-        the confluence with the Monongahela River.
-      </Typography>
+    <>
       <Typography
         sx={{
-          fontSize: 14,
-          fontWeight: 400,
-          mt: 2,
-
-          mb: 10,
+          fontSize: 18,
+          fontWeight: '400',
+          color: 'headingColor.main',
+          mt: 5,
         }}
       >
-        Revenue generated from the sale of carbon credits will be put towards
-        acquisition costs, land stewardship, and future expansion of this and
-        other conservation lands.
+        Overview
       </Typography>
-    </Grid>
+      <Grid
+        item
+        sx={{
+          // background:'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
+          // px: 10,
+          // pt:10,
+          color: 'textColor2.main',
+          columnCount: 2,
+          alignContent: 'flex-start',
+          columnFill: 'balance',
+          breakInside: 'avoid',
+          mt: 3,
+        }}
+      >
+        <Typography sx={{ fontSize: 14, fontWeight: 400 }}>
+          Project Intro Outside Pittsburgh, Allegheny Land Trust protected 124
+          acres of woodlands from rapid encroaching residential development in
+          southeastern Allegheny County. The 40 year old maple, cherry and
+          oak-hickory forest provides habitat for deer, turkey, and many species
+          of birds. Hikers, birders, and mountain bikers will be able to explore
+          the area, and possibly catch a glimpse of a majestic 200 year old oak
+          tree. Protection of this forest also contributes to maintaining clean
+          drinking water for Pittsburgh region’s residents. Located within the
+          lower Youghiogheny River Watershed, the property is five miles
+          upstream from the confluence with the Monongahela River. Revenue
+          generated from the sale of carbon credits will be put towards
+          acquisition costs, land stewardship, and future expansion of this and
+          other conservation lands.
+        </Typography>
+      </Grid>
+    </>
   )
 }
