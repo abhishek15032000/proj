@@ -1,12 +1,23 @@
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import { marketplaceCalls } from '../../api/marketplaceCalls.api'
 import CardRow from '../../atoms/CardRow/CardRow'
 import CCButton from '../../atoms/CCButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { setBuyQuantity } from '../../redux/Slices/newMarketplaceSlice'
+import {
+  setBuyQuantity,
+  setCheckFulfilLoading,
+  setBuyUnitPrice,
+  setTotalAmountForBuying,
+  setBuyOrderPayloadOfferHashes,
+  setBuyOrderPayloadAmountsToTake,
+  setBuyOrderPayloadUUID,
+  setOpenSnackbar,
+  setSnackbarErrorMsg,
+} from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
 import { createBuyOrder } from '../../utils/newMarketplace.utils'
 import BuyTokenPriceDetails from './BuyTokenPriceDetails'
@@ -49,6 +60,8 @@ const BuyComp = () => {
     shallowEqual
   )
 
+  const [tokenAndUnitPriceList, setTokenAndUnitPriceList] = useState<any>(null)
+
   const isDisabled = () => {
     if (
       !buyUnitPrice ||
@@ -62,14 +75,57 @@ const BuyComp = () => {
     }
     return false
   }
+
+  const checkForFullFillOrder = async () => {
+    try {
+      dispatch(setCheckFulfilLoading(true))
+      const res = await marketplaceCalls.checkForFullFillOrder(buyQuantity)
+      if (res?.success && res?.data && res?.data?.length) {
+        const offerHashes: any = []
+        const amountsToTake: any = []
+        const uuid: any = []
+        const tokenAndUnitPrice: any[] = []
+
+        const total = res?.data.reduce((prev: any, curr: any) => {
+          offerHashes.push(curr.hash)
+          amountsToTake.push(curr.cab)
+          uuid.push(curr.uuid)
+          tokenAndUnitPrice.push({ tokenQuantity: curr?.cab, rate: curr?.rate })
+          return (prev += curr.cab * curr.rate)
+        }, 0)
+        const unitPriceLocal =
+          Math.round((total / Number(buyQuantity)) * 1000) / 1000
+        dispatch(setTotalAmountForBuying(total))
+        dispatch(setBuyUnitPrice(unitPriceLocal))
+        dispatch(setBuyOrderPayloadOfferHashes(offerHashes))
+        dispatch(setBuyOrderPayloadAmountsToTake(amountsToTake))
+        dispatch(setBuyOrderPayloadUUID(uuid))
+
+        setTokenAndUnitPriceList(tokenAndUnitPrice)
+      } else {
+        const errMsg = res?.data?.error
+          ? res?.data?.error
+          : 'Error in fetching token data to buy'
+        dispatch(setOpenSnackbar(true))
+        dispatch(setSnackbarErrorMsg(errMsg))
+        dispatch(setBuyQuantity(0))
+      }
+    } catch (err) {
+      console.log('Error in marketplaceCalls.checkForFullFillOrder api :', err)
+    } finally {
+      dispatch(setCheckFulfilLoading(false))
+    }
+  }
+
   return (
     <Grid item sm={12} md={10}>
       <CardRow
-        title="Wallet Balance for Purchase :"
+        title="Balance :"
         value={`${Math.round(inrTokenBalances?.totalBalances) || 0} USD`}
-        titleStyle={{ color: Colors.lightPrimary1 }}
+        titleStyle={{ color: '#4A635E' }}
+        partitionBasis={6}
       />
-      <CardRow
+      {/* <CardRow
         title="Approved Token(INR/USD) Balance :"
         value={`${Math.round(inrTokenBalances?.allowanceBalance) || 0} USD`}
         titleStyle={{ color: Colors.lightPrimary1 }}
@@ -78,7 +134,7 @@ const BuyComp = () => {
         title="Balance on Exchange :"
         value={`${Math.round(inrTokenBalances?.assetsBalance) || 0} USD`}
         titleStyle={{ color: Colors.lightPrimary1 }}
-      />
+      /> */}
       <Box sx={{ position: 'relative', pt: 1 }}>
         <Box>
           <LabelInput
@@ -91,6 +147,9 @@ const BuyComp = () => {
               if (regexp.test(e?.target?.value) || e?.target?.value === '') {
                 dispatch(setBuyQuantity(e?.target?.value))
               }
+            }}
+            onBlur={() => {
+              if (buyQuantity) checkForFullFillOrder()
             }}
           />
         </Box>
@@ -106,7 +165,7 @@ const BuyComp = () => {
         </Box>
       </Box>
       <BuyTokenPriceDetails />
-      <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'end' }}>
         <CCButton
           sx={{
             mt: 3,

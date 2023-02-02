@@ -131,6 +131,7 @@ const BuyToken = (props: BuyTokenProps) => {
             state: {
               projectID: projectDetailsData?._id,
               projectUUID: projectDetailsData?.uuid,
+              projectName: projectDetailsData?.company_name,
             },
           })
         }

@@ -8,11 +8,11 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { CCTableProps } from './CCTable.interface'
-import { TablePagination, Typography } from '@mui/material'
+import { TablePagination, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { headings } from '../../components/IssuanceDataCollectionHelp/data'
 
-const StyledTableCell = styled(TableCell)(() => ({
+const StyledTableCell = styled(TableCell)((props) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#BCE2D2',
     fontSize: 14,
@@ -25,8 +25,20 @@ const StyledTableCell = styled(TableCell)(() => ({
     whiteSpace: 'nowrap',
   },
 }))
+const TrimmedStyledTableCell = styled(TableCell)((props) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: '#BCE2D2',
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '70px',
+  },
+}))
 
-const StyledTableRow = styled(TableRow)(() => ({
+const StyledTableRow = styled(TableRow)((props) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: '#E1EEE8',
   },
@@ -72,6 +84,14 @@ const CCTable = (props: CCTableProps) => {
   useEffect(() => {
     setPage(0)
   }, [rows])
+
+  // const middleEllipsis = (text: string, split = 3, dotnumber = 3) => {
+  //   if (!text || text.length <= 10) {
+  //     return text
+  //   }
+  //   const sz = Math.floor(text.length / split)
+  //   return text.slice(0, sz) + ''.padStart(dotnumber, '.') + text.slice(-sz)
+  // }
 
   return (
     <>
@@ -120,11 +140,27 @@ const CCTable = (props: CCTableProps) => {
               tableRowData.map((row: any, index: number) => (
                 <StyledTableRow key={index} data-testid={'cc-table-row'}>
                   {row?.length > 0 &&
-                    row.map((tdValue: any, tdIndex: number) => (
-                      <StyledTableCell key={tdIndex} align="center">
-                        {tdValue}
-                      </StyledTableCell>
-                    ))}
+                    row.map((tdValue: any, tdIndex: number) => {
+                      return typeof tdValue === 'string' &&
+                        !tdValue.includes('/') ? (
+                        <Tooltip title={tdValue}>
+                          <TrimmedStyledTableCell key={tdIndex} align="center">
+                            {
+                              // middleEllipsis(
+                              //   tdValue,
+                              //   tdValue.length > 21 ? 7 : 1,
+                              //   tdValue.length > 21 ? 7 : 1
+                              // )}
+                              tdValue
+                            }
+                          </TrimmedStyledTableCell>
+                        </Tooltip>
+                      ) : (
+                        <StyledTableCell key={tdIndex} align="center">
+                          {tdValue}
+                        </StyledTableCell>
+                      )
+                    })}
                 </StyledTableRow>
               ))}
           </TableBody>

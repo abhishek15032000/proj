@@ -1,7 +1,9 @@
 import { Alert, Button, Snackbar } from '@mui/material'
-import React, { useEffect } from 'react'
+import { Box } from '@mui/system'
+import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
@@ -9,9 +11,12 @@ import {
   setShowMessageModal,
 } from '../../redux/Slices/appSlice'
 import {
+  resetNewMarketplaceReducer,
   setCarbonTokenBalances,
   setCurrentProjectUUID,
   setINRTokenBalances,
+  setOpenSnackbar,
+  setOpenWithdrawModal,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
 import {
@@ -20,11 +25,12 @@ import {
   getTokenBalances,
 } from '../../utils/newMarketplace.utils'
 import { getLocalItem } from '../../utils/Storage'
-import HeadingStrip from './HeadingStrip'
 import Trading from './Trading'
+import WithdrawModal from './WithdrawModal'
 
 const Marketplace = () => {
   const location: any = useLocation()
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const userID = getLocalItem('userDetails')?.user_id
@@ -38,6 +44,14 @@ const Marketplace = () => {
     shallowEqual
   )
 
+  const openSnackbar = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.openSnackbar,
+    shallowEqual
+  )
+  const snackbarErrorMsg = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.snackbarErrorMsg,
+    shallowEqual
+  )
   const carbonTokenAddress = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenAddress,
     shallowEqual
@@ -55,6 +69,10 @@ const Marketplace = () => {
       getProjectsTokenDetails(location?.state?.projectUUID)
     }
     getSellOrdersListData()
+
+    return () => {
+      dispatch(resetNewMarketplaceReducer())
+    }
   }, [])
 
   useEffect(() => {
@@ -84,25 +102,63 @@ const Marketplace = () => {
   }
 
   const handleClick = () => {
-    setOpen(true)
+    dispatch(setOpenSnackbar(true))
   }
 
   const handleClose = () => {
-    setOpen(false)
+    dispatch(setOpenSnackbar(false))
   }
 
   return (
     <>
-      <HeadingStrip />
-      <Trading />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <BackHeader
+          title="Buy & Sell Credits"
+          onClick={() => {
+            navigate(-1)
+          }}
+        />
+        <Box
+          sx={{
+            px: 3,
+            py: 1,
+            background: '#CCE8E1',
+            color: '#061F1C',
+            fontSize: 14,
+            fontWeight: 500,
+            borderRadius: 10,
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            dispatch(setOpenWithdrawModal(true))
+          }}
+        >
+          Withdraw
+        </Box>
+      </Box>
 
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+      <Button onClick={handleClick}>Open simple snackbar</Button>
+      <Trading projectName={location?.state?.projectName} />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={handleClose}
+      >
         <Alert
           onClose={handleClose}
-          severity="success"
-          sx={{ width: '100%', border: `1px solid ${Colors.darkPrimary1}` }}
+          severity="error"
+          sx={{
+            width: '100%',
+            // border: `1px solid ${Colors.darkPrimary1}`
+          }}
         >
-          This is a success message!
+          {snackbarErrorMsg}
         </Alert>
       </Snackbar>
 
@@ -118,6 +174,7 @@ const Marketplace = () => {
           dispatch(setShowMessageModal(closeModal))
         }
       />
+      <WithdrawModal />
     </>
   )
 }

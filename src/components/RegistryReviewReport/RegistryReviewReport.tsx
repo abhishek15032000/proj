@@ -1,7 +1,7 @@
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
 import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
 import moment from 'moment'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { fileUploadCalls } from '../../api/fileUpload.api'
@@ -44,14 +44,24 @@ const RegistryReviewReport = () => {
   const [loading, setLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
 
-  console.log('lifetimeVCOT', lifetimeVCOT)
-  console.log('monthlyVCOT', monthlyVCOT)
+  const [height, setHeight] = useState(0)
+  const [height2, setHeight2] = useState(0)
+
+  const ref: any = useRef(null)
+  const ref2: any = useRef(null)
+
+  useEffect(() => {
+    // if (ref.current && ref.current.clientHeight) {
+    setHeight(ref.current.clientHeight)
+    setHeight2(ref.current.clientHeight)
+    // }
+  })
+
+  console.log('height', height)
+  console.log('height2', height2)
 
   const closeModal = () => setOpenModal(false)
-  console.log(
-    'location?.state?.projectReportDetails?',
-    location?.state?.projectReportDetails
-  )
+
   useEffect(() => {
     setReportData(location?.state?.projectReportDetails)
     console.log(
@@ -130,14 +140,65 @@ const RegistryReviewReport = () => {
 
   return (
     <>
+      <Box sx={{ ml: 4, py: 2, display: 'flex' }}>
+        <Box sx={{ fontSize: 12, color: '#4A635E' }}>
+          {'Project List > Project Details'}{' '}
+        </Box>
+        <Box sx={{ fontSize: 12, color: '#000000' }}>{' > Review Report'} </Box>
+      </Box>
       <Grid container sx={{ background: '#DAE5E1' }} columnSpacing={2}>
         {loading ? <LoderOverlay /> : null}
-        <Grid
-          item
-          // xs={12}
-          md={6}
-          // sx={{mr:2}}
-        >
+
+        <Grid ref={ref2} item md={6} sx={{ height: `${height}px` }}>
+          <Box
+            sx={{
+              height: 'auto',
+              border: '0px solid',
+              backgroundColor: '#DAE5E1',
+              width: '20px',
+            }}
+          />
+          <Paper
+            sx={{
+              height: `${height - 70}px`,
+            }}
+          >
+            <Box
+              sx={{
+                py: 2,
+                pl: 3,
+                pr: 1,
+                display: 'flex',
+              }}
+            >
+              <BackHeader
+                title="Project Issuance Report V1.1 (PDF)"
+                onClick={() => navigate(-1)}
+                titleSx={{ fontSize: 26 }}
+              />
+            </Box>
+
+            {
+              // pdfLoading ? (
+              //   <Box
+              //     sx={{
+              //       height: '100%',
+              //       fontSize: 16,
+              //       color: Colors.tertiary,
+              //       display: 'flex',
+              //       alignItems: 'center',
+              //       justifyContent: 'center',
+              //       pb: '50px',
+              //     }}
+              //   >
+              //     Loading PDF...
+              //   </Box>
+              // ) :
+              pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null
+            }
+          </Paper>
+        </Grid>
+        <Grid item md={6} ref={ref}>
           <Paper sx={{ border: '0px solid' }}>
             <Box
               sx={{
@@ -147,21 +208,17 @@ const RegistryReviewReport = () => {
                 display: 'flex',
               }}
             >
-              {/* <Typography
-                sx={{ fontSize: 28, fontWeight: 400, color: Colors.tertiary }}
-              >
-                Review Report & Add Comments
-              </Typography> */}
               <BackHeader
                 title="Review Report & Add Comments"
                 onClick={() => navigate(-1)}
                 titleSx={{ fontSize: 26 }}
+                iconDisable
               />
 
               <TextButton
                 // onClick={() => setShowModal(true)}
                 onClick={sumbitReport}
-                sx={{ ml: 4, background: '#006B5E' }}
+                sx={{ ml: 4, background: '#006B5E', width: '260px' }}
                 title="Review & Mint Tokens"
               />
             </Box>
@@ -317,23 +374,6 @@ const RegistryReviewReport = () => {
                 onChange={(e) => setExplain(e.target.value)}
               />
             </Box>
-          </Paper>
-        </Grid>
-        <Grid
-          item
-          // xs={12}
-          md={6}
-        >
-          <Box
-            sx={{
-              height: 'auto',
-              border: '0px solid',
-              backgroundColor: '#DAE5E1',
-              width: '20px',
-            }}
-          />
-          <Paper sx={{ height: '120vh', flex: 1 }}>
-            {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
           </Paper>
         </Grid>
       </Grid>
