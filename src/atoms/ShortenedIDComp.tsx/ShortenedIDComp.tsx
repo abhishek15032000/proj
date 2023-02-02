@@ -36,6 +36,8 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
             sx={{
               cursor: 'pointer',
               fontSize: 14,
+              //textAlign: 'left',
+              //backgroundColor: 'pink',
             }}
             onMouseEnter={() => setShow(true)}
             onMouseLeave={() => setShow(false)}
@@ -70,9 +72,10 @@ const ShortenedIDComp = ({ referenceId, width }: ShortenedIDCompProps) => {
             zIndex: '1000',
             borderRadius: 2,
             boxShadow: '0px 5px 20px rgba(29, 75, 68, 0.1)',
+            textAlign: 'left',
           }}
         >
-          {referenceId}
+          <Typography textAlign={'left'}>{referenceId}</Typography>
         </Paper>
       )}
       {show2 && (

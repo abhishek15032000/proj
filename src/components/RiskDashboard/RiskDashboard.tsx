@@ -142,7 +142,7 @@ const RiskDashboard: FC<RiskDashboardProps> = (props) => {
         display="flex"
         flexDirection={'row'}
       >
-        <BackHeader title="Climate Risk Dashboard" />
+        <BackHeader title="Climate Risk Dashboard" onClick={()=> navigate(-1)} />
         <Box
           sx={{
             display: 'flex',

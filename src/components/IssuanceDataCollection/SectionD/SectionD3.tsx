@@ -8,6 +8,7 @@ import Spinner from '../../../atoms/Spinner'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import { Box } from '@mui/system'
 
 const SectionD3: FC = () => {
   const dispatch = useAppDispatch()
@@ -54,35 +55,34 @@ const SectionD3: FC = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Grid
-      container
-      sx={{ width: '100%', mt: 3 }}
-      columnSpacing={{ xs: 0, md: 1 }}
-      rowSpacing={1}
-      xs={12}
-      md={12}
-      lg={12}
-      xl={12}
-    >
-      <Typography sx={{ marginTop: '64px' }}></Typography>
-      <CCMultilineTextArea
-        // aria-label="minimum height"
-        label={'Implementation of sampling plan'}
-        placeholder="Process of Implementation of sampling plan, if applicable"
-        name={'implementation_of_sampling_plan'}
-        value={D3.implementation_of_sampling_plan}
-        onChange={({ target: { name, value } }) =>
-          dispatch(setD3({ name, value }))
-        }
-        required={false}
-      />
-      <HelpPopUp
-        modal={modal}
-        setModal={(item: any) => setModal(item)}
-        data={IssuanceHelpContentData?.D3}
-        issuanceVisible={true}
-      />
-    </Grid>
+    <Box className="issuance_data_section_scroll">
+      <Grid
+        container
+        sx={{ width: '100%', mt: 4 }}
+        //columnSpacing={{ xs: 0, md: 1 }}
+        //rowSpacing={1}
+      >
+        <Grid item xs={12} md={12} lg={12} xl={12}>
+          <CCMultilineTextArea
+            // aria-label="minimum height"
+            label={'Implementation of sampling plan'}
+            placeholder="Process of Implementation of sampling plan, if applicable"
+            name={'implementation_of_sampling_plan'}
+            value={D3.implementation_of_sampling_plan}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setD3({ name, value }))
+            }
+            required={false}
+          />
+        </Grid>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.D3}
+          issuanceVisible={true}
+        />
+      </Grid>
+    </Box>
   )
 }
 

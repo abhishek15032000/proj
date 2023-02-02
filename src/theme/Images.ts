@@ -1,5 +1,5 @@
 import logo from '../assets/Images/logo/logo.svg'
-import ICRLogo from '../assets/Images/logo/ICR-Logo.png'
+import ICRLogo from '../assets/Images/logo/ICR-Logo.svg'
 import illustration1 from '../assets/Images/illustrations/illustration1.svg'
 import illustration2 from '../assets/Images/illustrations/illustration2.svg'
 import illustration3 from '../assets/Images/illustrations/illustration3.svg'

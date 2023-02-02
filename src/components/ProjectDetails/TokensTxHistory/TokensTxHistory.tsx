@@ -193,8 +193,10 @@ const TokensTxHistory = () => {
     return (
       <Box sx={{ 
         // background: '#111E17', 
-      padding: '56px 6vw',  }}>
-        <Typography sx={{ fontSize: '32px',  color: 'headingColor.main'}}>
+      // padding: '56px 6vw', 
+      pt:5
+       }}>
+       <Typography sx={{ fontSize: 18, fontWeight:'400', color: 'headingColor.main' }}>
           Tokens Transaction History
         </Typography>
         <Box sx={{ mt: 3 }}>

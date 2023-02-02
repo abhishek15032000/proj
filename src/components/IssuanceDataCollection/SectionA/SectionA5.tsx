@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import React, { useEffect, useState } from 'react'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
@@ -82,7 +82,7 @@ const SectionA5 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <>
+    <Box className="issuance_data_section_scroll">
       <Typography sx={{ mt: 3 }}> Renewable crediting period:</Typography>
       <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid
@@ -182,7 +182,7 @@ const SectionA5 = () => {
           issuanceVisible={true}
         />
       </Grid>
-    </>
+    </Box>
   )
 }
 

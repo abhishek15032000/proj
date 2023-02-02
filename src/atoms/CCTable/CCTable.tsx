@@ -10,13 +10,19 @@ import Paper from '@mui/material/Paper'
 import { CCTableProps } from './CCTable.interface'
 import { TablePagination, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import { headings } from '../../components/IssuanceDataCollectionHelp/data'
 
 const StyledTableCell = styled(TableCell)((props) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#BCE2D2',
+    fontSize: 14,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    width: '60px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 }))
 const TrimmedStyledTableCell = styled(TableCell)((props) => ({
@@ -113,7 +119,16 @@ const CCTable = (props: CCTableProps) => {
               {props?.headings &&
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
-                  <StyledTableCell key={index} align="center">
+                  <StyledTableCell
+                    key={index}
+                    align="center"
+                    sx={{
+                      maxWidth: '200px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
                     {heading}
                   </StyledTableCell>
                 ))}

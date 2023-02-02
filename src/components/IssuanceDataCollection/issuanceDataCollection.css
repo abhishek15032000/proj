@@ -120,3 +120,8 @@
   line-height: 24px;
   color: #1d4b44;
 }
+.issuance_data_section_scroll {
+  padding-right: 8px;
+  overflow-y: scroll;
+  height: 65vh;
+}

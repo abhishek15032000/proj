@@ -105,23 +105,31 @@ const SliderTable = (props: SliderTableProps) => {
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
                   <StyledTableCell
-                    // sx={
-                    //   index === 0
-                    //     ? {
-                    //         minWidth: 150,
-                    //         position: 'sticky',
-                    //         top: 0,
-                    //         left: 0,
-                    //         zindex: 1999,
-                    //         background: '#CCE8E1',
-                    //         height: props.tileHeight,
-                    //         display: 'flex',
-                    //         justifyContent: 'center',
-                    //         alignItems: 'center',
-                    //         boxShadow: showBorder ? 5 : 0,
-                    //       }
-                    //     : { maxHeight: props.tileHeight }
-                    // }
+                    sx={
+                      index === 0
+                        ? {
+                            // minWidth: 150,
+                            // position: 'sticky',
+                            // top: 0,
+                            // left: 0,
+                            // zindex: 1999,
+                            // background: '#CCE8E1',
+                            // height: props.tileHeight,
+                            // display: 'flex',
+                            // justifyContent: 'center',
+                            // alignItems: 'center',
+                            // boxShadow: showBorder ? 5 : 0,
+                            // overflow: 'hidden',
+                            // textOverflow: 'ellipsis',
+                            // whiteSpace: 'nowrap',
+                          }
+                        : {
+                            maxHeight: props.tileHeight,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }
+                    }
                     key={index}
                     align="center"
                   >
