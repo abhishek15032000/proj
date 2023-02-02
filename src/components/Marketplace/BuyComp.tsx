@@ -15,6 +15,8 @@ import {
   setBuyOrderPayloadOfferHashes,
   setBuyOrderPayloadAmountsToTake,
   setBuyOrderPayloadUUID,
+  setOpenSnackbar,
+  setSnackbarErrorMsg,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
 import { createBuyOrder } from '../../utils/newMarketplace.utils'
@@ -100,6 +102,13 @@ const BuyComp = () => {
         dispatch(setBuyOrderPayloadUUID(uuid))
 
         setTokenAndUnitPriceList(tokenAndUnitPrice)
+      } else {
+        const errMsg = res?.data?.error
+          ? res?.data?.error
+          : 'Error in fetching token data to buy'
+        dispatch(setOpenSnackbar(true))
+        dispatch(setSnackbarErrorMsg(errMsg))
+        dispatch(setBuyQuantity(0))
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.checkForFullFillOrder api :', err)
@@ -156,7 +165,7 @@ const BuyComp = () => {
         </Box>
       </Box>
       <BuyTokenPriceDetails />
-      <Box sx={{ mt: 5, display: 'flex', justifyContent: 'end' }}>
+      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'end' }}>
         <CCButton
           sx={{
             mt: 3,

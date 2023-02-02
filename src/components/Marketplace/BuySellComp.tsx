@@ -1,4 +1,5 @@
 import { Grid, Skeleton } from '@mui/material'
+import { Box } from '@mui/system'
 import React from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../hooks/reduxHooks'
@@ -22,6 +23,10 @@ const BuySellComp = () => {
     ({ newMarketplaceReducer }) => newMarketplaceReducer.createBuyOrderLoading,
     shallowEqual
   )
+  const withdrawLoading = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.withdrawLoading,
+    shallowEqual
+  )
 
   return (
     <Grid container xs={12} sx={{ mt: 3, pr: { xs: '', md: 5 } }}>
@@ -33,7 +38,8 @@ const BuySellComp = () => {
       >
         {tokenBalanceLoading ||
         projectsTokenLoading ||
-        createBuyOrderLoading ? (
+        createBuyOrderLoading ||
+        withdrawLoading ? (
           <LoadingComp />
         ) : (
           <BuyComp />
@@ -50,7 +56,8 @@ const BuySellComp = () => {
       >
         {tokenBalanceLoading ||
         projectsTokenLoading ||
-        createSellOrderLoading ? (
+        createSellOrderLoading ||
+        withdrawLoading ? (
           <LoadingComp />
         ) : (
           <SellComp />
@@ -96,6 +103,14 @@ const LoadingComp = () => {
         height={80}
         sx={{ bgcolor: '#CCE8E1', mt: 2 }}
       />
+      <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+        <Skeleton
+          variant="rectangular"
+          height={40}
+          width={100}
+          sx={{ bgcolor: '#CCE8E1', mt: 2, borderRadius: '32px' }}
+        />
+      </Box>
     </Grid>
   )
 }

@@ -29,8 +29,14 @@ interface NewMarketplaceReducerInterface {
   buyOrdersLoading: boolean
   cancelOrderLoading: boolean
   ordersTabIndex: number
+  openWithdrawModal: boolean
+  withdrawTokenType: string
+  withdrawTokenAddress: string
   withdrawAmount: number
   withdrawToken: string
+  withdrawLoading: boolean
+  openSnackbar: boolean
+  snackbarErrorMsg: string
 }
 const initialState: NewMarketplaceReducerInterface = {
   currentProjectUUID: '',
@@ -61,8 +67,14 @@ const initialState: NewMarketplaceReducerInterface = {
   buyOrdersLoading: false,
   cancelOrderLoading: false,
   ordersTabIndex: 1,
+  openWithdrawModal: false,
+  withdrawTokenType: '',
+  withdrawTokenAddress: '',
   withdrawAmount: 0,
   withdrawToken: '',
+  withdrawLoading: false,
+  openSnackbar: false,
+  snackbarErrorMsg: '',
 }
 
 const newMarketplaceReducer = createSlice({
@@ -153,15 +165,30 @@ const newMarketplaceReducer = createSlice({
     setOrdersTabIndex: (state, action: PayloadAction<any>) => {
       state.ordersTabIndex = action.payload
     },
+    setWithdrawTokenType: (state, action: PayloadAction<any>) => {
+      state.withdrawTokenType = action.payload
+    },
+    setOpenWithdrawModal: (state, action: PayloadAction<any>) => {
+      state.openWithdrawModal = action.payload
+    },
+    setWithdrawTokenAddress: (state, action: PayloadAction<any>) => {
+      state.withdrawTokenAddress = action.payload
+    },
     setWithdrawAmount: (state, action: PayloadAction<any>) => {
       state.withdrawAmount = action.payload
     },
     setWithdrawToken: (state, action: PayloadAction<any>) => {
       state.withdrawToken = action.payload
     },
-    // resetNewMarketplaceReducer: (state) => {
-    //   state = initialState
-    // },
+    setWithdrawLoading: (state, action: PayloadAction<any>) => {
+      state.withdrawLoading = action.payload
+    },
+    setOpenSnackbar: (state, action: PayloadAction<any>) => {
+      state.openSnackbar = action.payload
+    },
+    setSnackbarErrorMsg: (state, action: PayloadAction<any>) => {
+      state.snackbarErrorMsg = action.payload
+    },
     resetNewMarketplaceReducer: () => initialState,
   },
 })
@@ -195,8 +222,14 @@ export const {
   setBuyOrdersLoading,
   setCancelOrderLoading,
   setOrdersTabIndex,
+  setOpenWithdrawModal,
+  setWithdrawTokenType,
+  setWithdrawTokenAddress,
   setWithdrawAmount,
   setWithdrawToken,
+  setWithdrawLoading,
+  setOpenSnackbar,
+  setSnackbarErrorMsg,
   resetNewMarketplaceReducer,
 } = newMarketplaceReducer.actions
 

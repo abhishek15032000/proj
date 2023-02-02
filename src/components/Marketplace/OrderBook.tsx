@@ -17,8 +17,6 @@ const OrderBook = () => {
     shallowEqual
   )
 
-  console.log('sellOrdersList', sellOrdersList)
-
   return (
     <CCPaper
       customSX={
@@ -32,7 +30,6 @@ const OrderBook = () => {
           Order Book
         </Typography>
       )}
-      {/* <Row isHeading rows={headings} /> */}
       {sellOrdersLoading ? (
         <Box>
           {[1, 2, 3, 4, 5].map((item: any, index: number) => (
@@ -68,7 +65,9 @@ const OrderBook = () => {
               justifyContent: 'center',
             }}
           >
-            <Box sx={{ mb: 1 }}>Order book will show here</Box>
+            <Box sx={{ mb: 1, textAlign: 'center' }}>
+              Order book will show here
+            </Box>
           </Box>
           <Box
             sx={{

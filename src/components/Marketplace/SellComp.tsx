@@ -109,7 +109,7 @@ const SellComp = () => {
             USD
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'end' }}>
           <CCButton
             sx={{
               mt: 3,

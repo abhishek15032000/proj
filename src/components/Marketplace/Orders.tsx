@@ -138,7 +138,7 @@ const Orders = () => {
         item?.executed,
         item?.unexecuted,
       ]
-      if (ordersTabIndex === 1 || ordersTabIndex === 2) {
+      if (ordersTabIndex === 1) {
         const actionBtn = (
           <CCButton
             sx={{
@@ -159,11 +159,10 @@ const Orders = () => {
               }
               cancelOrder(payload)
             }}
-            // disabled={isDisabled()}
+            disabled={!item?.unexecuted}
             variant="contained"
           >
-            {/* {ordersTabIndex === 1 ? 'Cancel' : 'Withdraw'} */}
-            {ordersTabIndex === 1 ? 'Cancel' : '-'}
+            Cancel
           </CCButton>
         )
         row.push(actionBtn)
@@ -172,13 +171,6 @@ const Orders = () => {
     })
     setRows(tempRows)
   }
-
-  console.log('openOrders', openOrders)
-  console.log('closedOrders', closedOrders)
-  console.log('buyOrders', buyOrders)
-  console.log('rows', rows)
-
-  console.log('cancelOrderLoading', cancelOrderLoading)
 
   return (
     <>

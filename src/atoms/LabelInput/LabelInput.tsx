@@ -13,6 +13,7 @@ interface LabelInputProps {
   sx?: any
   textFieldSx?: any
   onBlur?: any
+  placeholder?: string
 }
 
 const LabelInput: FC<LabelInputProps> = (props) => {
@@ -31,6 +32,7 @@ const LabelInput: FC<LabelInputProps> = (props) => {
         inputProps={{ 'data-testid': 'label-input' }}
         id="outlined-basic"
         label={props.label}
+        placeholder={props.placeholder}
         variant="outlined"
         sx={{ width: '100%', ...props.textFieldSx }}
         value={props.value ? props.value : ''}
