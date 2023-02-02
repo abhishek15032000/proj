@@ -90,7 +90,7 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
           sx={{ p: 0, border: '0px solid' }}
           justifyContent={'space-between'}
         >
-          <Grid item xs={12}>
+          <Grid item xs={12}  mb={5}>
             <BackHeader title="Project Details" onClick={() => navigate(-1)} />
           </Grid>
 
