@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
@@ -39,21 +39,25 @@ const OtherProjects = () => {
       sx={{
         // background:
         //   'linear-gradient(180deg, rgba(7, 19, 13, 0.79) 0%, #222926 66.32%)',
-        padding: '56px 6vw',
+        // padding: '56px 6vw',
         // color: '#fff',
+        pt:10
       }}
     >
-      <Box sx={{ fontSize: '32px',    color: 'headingColor.main' }}>Other Projects</Box>
+     <Typography sx={{ fontSize: 18, fontWeight:'400', color: 'headingColor.main' }}>Other Projects</Typography>
       <Box
         sx={{
           fontSize: '14px',
           fontWeight: '500',
-          color: '#55DBC8',
+          color: 'headingColor.main',
           textAlign: 'right',
+          cursor:"pointer",
+          marginTop:"-15px"
+
         }}
         onClick={() => navigate(pathNames.PROJECT_LISTS_WITH_FILTER)}
       >
-        See All
+       View All
       </Box>
       <Box
         sx={{

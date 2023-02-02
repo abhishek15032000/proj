@@ -49,10 +49,8 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
           sx={{
             backgroundColor: '#FFF',
             borderRadius: '5px',
-            zIndex: 100,
-            padding: '10px',
-            paddingRight: '5px',
-            paddingLeft: '5px',
+            maxHeight: '80%',
+            overflowY: 'scroll',
           }}
         >
           <Box
@@ -61,17 +59,25 @@ const SampleModal: FC<SampleModalProps> = (props: SampleModalProps) => {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingRight: '5px',
+              position: 'sticky',
+              top: 0,
+              backgroundColor: '#FFF',
+              pl: 1,
             }}
           >
             <Typography>{props.stringArray[index]}</Typography>
             <CloseIcon
               onClick={() => props.setModalVisibility(false)}
-              style={{ color: '#388E81', cursor: 'pointer' }}
+              style={{ color: '#388E81', cursor: 'pointer', marginTop: '1px' }}
             />
           </Box>
 
           <Box
-            sx={{ maxWidth: '800px', marginTop: '4px', marginBottom: '16px' }}
+            sx={{
+              maxWidth: '800px',
+              marginTop: '4px',
+              marginBottom: '16px',
+            }}
             component={'img'}
             src={props.mediaArray[index]}
           />

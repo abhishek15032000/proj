@@ -72,8 +72,8 @@ const SectionE8 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Box>
-      <Grid container sx={{ mt: 4 }} spacing={1}>
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Use appendices for supporting information and add any additional documents"
@@ -86,7 +86,7 @@ const SectionE8 = () => {
             required={false}
           />
         </Grid>
-        <Grid item sx={{ mt: 1 }} xs={12}>
+        <Grid item xs={12}>
           <CCDropAndUpload
             mediaTitle={[]}
             title="Use appendices for supporting information and add any additional documents"

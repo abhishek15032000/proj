@@ -107,31 +107,33 @@ const Reports = () => {
       })
   }
 
-  if (loading) {
-    return <LoderOverlay />
-  } else {
+  // if (loading) {
+  //   return <LoderOverlay />
+  // } else {
     return (
       <Box
         sx={{
           // background: '#111E17',
-          padding: '2vw 6vw',
+          // padding: '2vw 6vw',
           // color: '#fff',
           width: '100%',
+          pt:5
         }}
       >
-        <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
+        {/* <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
           Reports
-        </Typography>
-        <Box sx={{ mt: 3 }}>
+        </Typography> */}
+        <Box sx={{  }}>
           <CWTable
             headings={headings}
             rows={allReport}
             pagination={allReport.length > 3}
+            loading={loading}
           />
         </Box>
       </Box>
     )
-  }
+  // }
 }
 
 export default Reports

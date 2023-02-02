@@ -20,6 +20,7 @@ import TabSelector from '../../atoms/TabSelector/TabSelector'
 import ReportsTab from './ReportsTab'
 import TraceabilityTab from './TraceabilityTab'
 import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWithCount'
+import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectIntroduction'
 
 const ProjectDetailsRegistryAcc = () => {
   const location: any = useLocation()
@@ -140,9 +141,10 @@ const ProjectDetailsRegistryAcc = () => {
       ) : (
         <>
           <BackHeader title="Project Details" onClick={() => navigate(-1)} />
-          <ProjectIntro
-            title={projectDetails?.company_name}
-            location={projectDetails?.location}
+          <ProjectIntroduction
+          projectDetailsData={projectDetails}
+            // title={projectDetails?.company_name}
+            // location={projectDetails?.location}
           />
 
           <TabSelectorWithCount

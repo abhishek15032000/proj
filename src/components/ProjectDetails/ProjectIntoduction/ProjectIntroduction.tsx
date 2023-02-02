@@ -12,14 +12,16 @@ import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../../routes/pathNames'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import BuyToken from './BuyToken'
 
 interface ProjectIntroductionProps {
-  projectDetailsData?: any
+  projectDetailsData?: any,
+  showBuyToken?: boolean
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
   const navigate = useNavigate()
- const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-//  const onWebApp = 1
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  //  const onWebApp = 1
   const data = [
     {
       image: Images.one,
@@ -58,7 +60,8 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
       name: 'Affordable & Clean Energy',
     },
   ]
-  const { projectDetailsData } = props
+  const { projectDetailsData ,showBuyToken} = props
+  console.log("🚀 ~ file: ProjectIntroduction.tsx ~ line 63 ~ ProjectIntroduction ~ projectDetailsData", projectDetailsData)
   const prevScrollY = useRef(0)
 
   const [goingUp, setGoingUp] = useState(false)
@@ -92,36 +95,42 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           sx={{
             backgroundImage: `url(${Images.ProjectDetails})`,
             // pb: 8,
-            maxWidth: 'fit-content',
+            // maxWidth: 'fit-content',
             maxHeight: 'fit-content',
             borderRadius: '16px',
             minHeight: '600px',
             position: 'relative',
+            maxWidth: '100%',
+            justifyContent:'center'
           }}
+          xs={12}
         >
           <Grid
+          xs={12}
             container
             justifyContent={'space-between'}
-            alignItems={'center'}
+            alignItems={'flex-start'}
             flexDirection="row"
             sx={{
               backgroundColor: 'rgba(0, 107, 94, 0.42)',
               borderRadius: '16px',
               // m: 10,
+                 p: 3
             }}
           >
             <Grid
               item
-              justifyContent={'space-between'}
-              alignItems={'center'}
+              justifyContent={'flex-start'}
+              alignItems={'flex-start'}
               flexDirection="row"
-              width={'50%'}
+              // width={'50%'}
               sx={{ p: 2 }}
+              xs={6}
             >
               <Typography
-                sx={{ color: 'white', fontSize: 40, fontWeight: 500, mt: -4 }}
+                sx={{ color: 'white', fontSize: 40, fontWeight: 500,}}
               >
-                {projectDetailsData?.name}
+                {projectDetailsData?.company_name}
               </Typography>
               <Typography
                 sx={{ color: 'white', fontSize: 16, fontWeight: 400, mt: 2 }}
@@ -136,53 +145,64 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                 alignItems={'center'}
                 display="flex"
                 flexDirection="row"
-                sx={{ p: 2, mt: 2, width: '50%' }}
+                sx={{  mt: 2, width: '50%' }}
               >
-                <Box sx={{ flexDirection: 'column', width: '40%' }}>
+                <Box sx={{ flexDirection: 'column', width: '40%', pt:1 }}>
                   <img
                     data-testid="logo-img"
                     className="logoImage"
-                    src={Images.logo}
-                    style={{ width: '150px' }}
+                    src={Images.ICRLogo}
+                    // style={{ width: '150px' }}
                   />
                 </Box>
               </Grid>
             </Grid>
             <Grid
+              xs={6}
               item
-              justifyContent={'space-between'}
-              alignItems={'center'}
+              justifyContent={'flex-start'}
+              alignItems={'flex-start'}
               flexDirection="row"
-              width={'50%'}
+              // width={'50%'}
               sx={{ p: 2 }}
             >
-              <Typography
+           
+             <Typography
                 sx={{
                   color: 'white',
                   fontSize: 12,
                   fontWeight: 500,
-                  ml: 3,
-                  mt: 1,
+                  // ml: 3,
+                
+                  textAlign:'left'
                 }}
               >
                 SDGs Covered
               </Typography>
+           
               <Grid
+                columns={5}
+                columnSpacing={4}
+                rowSpacing={4}
+                // columnSpacing={4}
                 container
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'baseline',
-                  justifyContent: 'flex-start'
+                  justifyContent: 'flex-start',
                 }}
               >
                 {data &&
                   data.length > 0 &&
                   data.map((item: any, index: any) => (
                     <Grid
+                      // columns={1}
+                      // columnSpacing={5}
                       item
                       key={index}
                       sx={{
+                        mt: '13px',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -190,9 +210,9 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                         // border: '1px solid #B1CCC6',
                         // borderRadius: '12px',
 
-                        minWidth: '120px',
+                        // minWidth: '80px',
                         height: '120px',
-                        m: 2,
+                        // m: 2,
                       }}
                     >
                       <img
@@ -208,6 +228,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                           fontWeight: 400,
                           textAlign: 'center',
                           width: '70px',
+                          mt:'5px'
                         }}
                       >
                         {item?.name}
@@ -217,161 +238,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               </Grid>
             </Grid>
           </Grid>
-          <Paper
-            sx={{
-              background:
-              onWebApp ? "#fff":`radial-gradient(230.87% 7320.24% at -130.87% 216.67%, #75F8E4 0%, #349386 56.94%, #01443C 100%)`,
-              borderRadius: '5px',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: goingUp ? 'space-around' : 'space-between',
-              alignItems: 'center',
-              pt: 2,
-              px: goingUp ? 38 : 2,
-              pb: 3,
-              height: '20%',
-              width: goingUp ? '100%' : '50%',
-
-              mx: goingUp ? 0 : 45,
-              position: goingUp ? 'fixed' : 'absolute',
-
-              top: goingUp ? '10px' : '90%',
-              zIndex: 1000,
-              transition:"width 0.3s ease"
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                alignItems: 'start',
-              }}
-            >
-              <TitleValue
-                title={'Tokens Available for Purchase :'}
-                value={'04'}
-                valueStyle={{
-                  fontWeight: 500,
-                  color: 'textColor2.main',
-                  textAlign: 'right',
-                  mb: 2,
-                }}
-                titleStyle={{ fontWeight: 500, color: 'textColor2.main', mb: 2 }}
-              />
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'start',
-                  alignItems: 'start',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'start',
-                    alignItems: 'start',
-                  }}
-                >
-                  <Typography
-                    sx={[
-                      { fontWeight: 500, fontSize: 14, color: 'textColor2.main' },
-                    ]}
-                  >
-                    {'Unit Price :'}
-                  </Typography>
-                  <InfoOutlinedIcon
-                    sx={{ fontSize: 20, ml: 1 }}
-                    htmlColor={'textColor2.main'}
-                  />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontWeight: 500,
-                    fontSize: 14,
-                    ml: 1,
-                    color: 'textColor2.main',
-                    textAlign: 'right',
-                  }}
-                >
-                  {/* {props.value === undefined || props.value === '' ? '-' : props.value} */}
-                  {'144'}
-                </Typography>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                width: '150px',
-                height: '40px',
-                backgroundColor: onWebApp ? Colors.accent:'#75F8E4',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '8px',
-                mt: 2,
-              }}
-              onClick={() =>
-                navigate(pathNames.MARKETPLACE, {
-                  state: {
-                    projectID: projectDetailsData?._id,
-                    projectUUID: projectDetailsData?.uuid,
-                  },
-                })
-              }
-            >
-              <Typography
-                sx={{ color:'primary.main', fontSize: 14, fontWeight: 500, textAlign: 'center' }}
-              >
-                {'Buy Tokens'}
-              </Typography>
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid
-          item
-          sx={{
-            // background:'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
-            px: 10,
-            pt: 4,
-            color:"textColor2.main"
-          }}
-        >
-          <Typography
-            sx={{   fontSize: 14, fontWeight: 400, mt: 10 }}
-          >
-            Project Intro Outside Pittsburgh, Allegheny Land Trust protected 124
-            acres of woodlands from rapid encroaching residential development in
-            southeastern Allegheny County. The 40 year old maple, cherry and
-            oak-hickory forest provides habitat for deer, turkey, and many
-            species of birds. Hikers, birders, and mountain bikers will be able
-            to explore the area, and possibly catch a glimpse of a majestic 200
-            year old oak tree.
-          </Typography>
-          <Typography
-            sx={{   fontSize: 14, fontWeight: 400, mt: 2 }}
-          >
-            Protection of this forest also contributes to maintaining clean
-            drinking water for Pittsburgh region’s residents. Located within the
-            lower Youghiogheny River Watershed, the property is five miles
-            upstream from the confluence with the Monongahela River.
-          </Typography>
-          <Typography
-            sx={{
-               
-              fontSize: 14,
-              fontWeight: 400,
-              mt: 2,
-
-              mb: 10,
-            }}
-          >
-            Revenue generated from the sale of carbon credits will be put
-            towards acquisition costs, land stewardship, and future expansion of
-            this and other conservation lands.
-          </Typography>
+         {showBuyToken && <BuyToken goingUp={goingUp} projectDetailsData={projectDetailsData} />}
         </Grid>
       </>
     )

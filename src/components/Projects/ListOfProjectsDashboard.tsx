@@ -108,7 +108,8 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         item.project_status === PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT
       ) {
         newData.push([
-          <ShortenedIDComp key={index} referenceId={item.uuid} />,
+          // <ShortenedIDComp key={index} referenceId={item.uuid} />,
+          item.uuid,
           moment(item.createdAt).format('DD/MM/YYYY'),
           item.company_name,
           item.location,
@@ -259,7 +260,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             rows={tabIndex === 1 ? rowsNew : rowsRegistered}
             sx={{ minWidth: 100 }}
             maxWidth={'100%'}
-            tileHeight={'105px'}
+            // tileHeight={'105px'}
             tableSx={{ minWidth: 100 }}
           />
         )}

@@ -113,8 +113,8 @@ const SectionB3 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Box>
-      <Grid container sx={{ mt: 4 }} spacing={1}>
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Project Boundary"
@@ -166,7 +166,7 @@ const SectionB3 = () => {
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCDropAndUpload
             mediaTitle={[]}
-            title="Ownership*"
+            title="Ownership"
             mediaItem={[]}
             imageArray={B3.ownership_file_attach}
             onImageUpload={(item: any) => {
@@ -185,6 +185,7 @@ const SectionB3 = () => {
                 })
               )
             }}
+            required={true}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>

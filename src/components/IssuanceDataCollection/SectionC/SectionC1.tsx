@@ -119,8 +119,8 @@ const SectionC1 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Box>
-      <Grid container sx={{ mt: 4 }} spacing={1}>
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Description of monitoring system "
@@ -149,7 +149,7 @@ const SectionC1 = () => {
               'Sample Report - Organizational Structure & Responsibilities Chart',
             ]}
             mediaItem={[SectionCOrganisationalStructure]}
-            title="Attach organizational structure & responsibilities chart*"
+            title="Attach organizational structure & responsibilities chart"
             imageArray={attach_org_structure_and_responsibilities_chart}
             onImageUpload={(item: any) => {
               dispatch(
@@ -173,6 +173,7 @@ const SectionC1 = () => {
                 })
               )
             }}
+            required={true}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>

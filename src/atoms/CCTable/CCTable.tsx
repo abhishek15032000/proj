@@ -8,19 +8,37 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { CCTableProps } from './CCTable.interface'
-import { TablePagination, Typography } from '@mui/material'
+import { TablePagination, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import { headings } from '../../components/IssuanceDataCollectionHelp/data'
 
-const StyledTableCell = styled(TableCell)(() => ({
+const StyledTableCell = styled(TableCell)((props) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: '#BCE2D2',
+    fontSize: 14,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    width: '60px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+}))
+const TrimmedStyledTableCell = styled(TableCell)((props) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#BCE2D2',
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '70px',
   },
 }))
 
-const StyledTableRow = styled(TableRow)(() => ({
+const StyledTableRow = styled(TableRow)((props) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: '#E1EEE8',
   },
@@ -31,7 +49,9 @@ const StyledTableRow = styled(TableRow)(() => ({
 }))
 
 const CCTable = (props: CCTableProps) => {
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10)
+  const { rows, rowsPerPageProp = 10 } = props
+
+  const [rowsPerPage, setRowsPerPage] = useState<number>(rowsPerPageProp)
   const [page, setPage] = useState<number>(0)
   const [tableRowData, setTableRowData] = useState<any>()
 
@@ -42,7 +62,7 @@ const CCTable = (props: CCTableProps) => {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
+    setRowsPerPage(parseInt(event.target.value))
     setPage(0)
   }
 
@@ -60,6 +80,18 @@ const CCTable = (props: CCTableProps) => {
       }
     }
   }, [props?.rows, page, rowsPerPage])
+
+  useEffect(() => {
+    setPage(0)
+  }, [rows])
+
+  // const middleEllipsis = (text: string, split = 3, dotnumber = 3) => {
+  //   if (!text || text.length <= 10) {
+  //     return text
+  //   }
+  //   const sz = Math.floor(text.length / split)
+  //   return text.slice(0, sz) + ''.padStart(dotnumber, '.') + text.slice(-sz)
+  // }
 
   return (
     <>
@@ -87,7 +119,16 @@ const CCTable = (props: CCTableProps) => {
               {props?.headings &&
                 props?.headings?.length > 0 &&
                 props?.headings?.map((heading, index) => (
-                  <StyledTableCell key={index} align="center">
+                  <StyledTableCell
+                    key={index}
+                    align="center"
+                    sx={{
+                      maxWidth: '200px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
                     {heading}
                   </StyledTableCell>
                 ))}
@@ -99,11 +140,27 @@ const CCTable = (props: CCTableProps) => {
               tableRowData.map((row: any, index: number) => (
                 <StyledTableRow key={index} data-testid={'cc-table-row'}>
                   {row?.length > 0 &&
-                    row.map((tdValue: any, tdIndex: number) => (
-                      <StyledTableCell key={tdIndex} align="center">
-                        {tdValue}
-                      </StyledTableCell>
-                    ))}
+                    row.map((tdValue: any, tdIndex: number) => {
+                      return typeof tdValue === 'string' &&
+                        !tdValue.includes('/') ? (
+                        <Tooltip title={tdValue}>
+                          <TrimmedStyledTableCell key={tdIndex} align="center">
+                            {
+                              // middleEllipsis(
+                              //   tdValue,
+                              //   tdValue.length > 21 ? 7 : 1,
+                              //   tdValue.length > 21 ? 7 : 1
+                              // )}
+                              tdValue
+                            }
+                          </TrimmedStyledTableCell>
+                        </Tooltip>
+                      ) : (
+                        <StyledTableCell key={tdIndex} align="center">
+                          {tdValue}
+                        </StyledTableCell>
+                      )
+                    })}
                 </StyledTableRow>
               ))}
           </TableBody>
