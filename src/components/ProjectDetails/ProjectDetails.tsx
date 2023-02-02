@@ -19,6 +19,8 @@ import CCButton from '../../atoms/CCButton'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import {pathNames} from '../../routes/pathNames'
 import { projectDetailsCalls } from '../../api/projectDetailsCalls.api'
+import LoaderOverlay from '../../components/LoderOverlay'
+
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lightPrimary?: string
@@ -118,14 +120,15 @@ const ProjectDetails = () => {
   
   const [searchParams] = useSearchParams()
   const[ projectData, setProjectData] = useState(null)
-    
+  const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
   const projectId = searchParams.get('projectId')
     getProjectDetails(projectId)
   },[])
   const getProjectDetails = (projectId:any)=>{
-    projectDetailsCalls.getProjectDetailsById(projectId).then(result => setProjectData(result.data))
+    setLoading(true)
+    projectDetailsCalls.getProjectDetailsById(projectId).then(result => setProjectData(result.data)).catch(e=>e).finally(()=>setLoading(false))
   }
  
   const projectDetailsData: any = useLocation()
@@ -144,7 +147,7 @@ const ProjectDetails = () => {
   const navigate = useNavigate()
   return (
     <Container maxWidth="xl">
-      <Grid
+      {!loading && <Grid
         container
         justifyContent={'space-between'}
         alignItems={'center'}
@@ -272,8 +275,10 @@ const ProjectDetails = () => {
               <OtherProjects />
             </Box>
           </Grid>
+         
         </ThemeProvider>
-      </Grid>
+      </Grid>}
+      {loading && <LoaderOverlay />}
     </Container>
   )
 }
