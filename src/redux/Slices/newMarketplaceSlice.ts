@@ -21,6 +21,22 @@ interface NewMarketplaceReducerInterface {
   projectsTokenLoading: boolean
   createSellOrderLoading: boolean
   createBuyOrderLoading: boolean
+  openOrders: any
+  checkFulfilLoading: boolean
+  closedOrders: any
+  buyOrders: any
+  openOrdersLoading: boolean
+  buyOrdersLoading: boolean
+  cancelOrderLoading: boolean
+  ordersTabIndex: number
+  openWithdrawModal: boolean
+  withdrawTokenType: string
+  withdrawTokenAddress: string
+  withdrawAmount: number
+  withdrawToken: string
+  withdrawLoading: boolean
+  openSnackbar: boolean
+  snackbarErrorMsg: string
 }
 const initialState: NewMarketplaceReducerInterface = {
   currentProjectUUID: '',
@@ -43,6 +59,22 @@ const initialState: NewMarketplaceReducerInterface = {
   projectsTokenLoading: false,
   createSellOrderLoading: false,
   createBuyOrderLoading: false,
+  checkFulfilLoading: false,
+  openOrders: [],
+  closedOrders: [],
+  buyOrders: [],
+  openOrdersLoading: false,
+  buyOrdersLoading: false,
+  cancelOrderLoading: false,
+  ordersTabIndex: 1,
+  openWithdrawModal: false,
+  withdrawTokenType: '',
+  withdrawTokenAddress: '',
+  withdrawAmount: 0,
+  withdrawToken: '',
+  withdrawLoading: false,
+  openSnackbar: false,
+  snackbarErrorMsg: '',
 }
 
 const newMarketplaceReducer = createSlice({
@@ -109,6 +141,55 @@ const newMarketplaceReducer = createSlice({
     setCreateBuyOrderLoading: (state, action: PayloadAction<any>) => {
       state.createBuyOrderLoading = action.payload
     },
+    setCheckFulfilLoading: (state, action: PayloadAction<any>) => {
+      state.checkFulfilLoading = action.payload
+    },
+    setOpenOrders: (state, action: PayloadAction<any>) => {
+      state.openOrders = action.payload
+    },
+    setClosedOrders: (state, action: PayloadAction<any>) => {
+      state.closedOrders = action.payload
+    },
+    setBuyOrders: (state, action: PayloadAction<any>) => {
+      state.buyOrders = action.payload
+    },
+    setOpenOrdersLoading: (state, action: PayloadAction<any>) => {
+      state.openOrdersLoading = action.payload
+    },
+    setBuyOrdersLoading: (state, action: PayloadAction<any>) => {
+      state.buyOrdersLoading = action.payload
+    },
+    setCancelOrderLoading: (state, action: PayloadAction<any>) => {
+      state.cancelOrderLoading = action.payload
+    },
+    setOrdersTabIndex: (state, action: PayloadAction<any>) => {
+      state.ordersTabIndex = action.payload
+    },
+    setWithdrawTokenType: (state, action: PayloadAction<any>) => {
+      state.withdrawTokenType = action.payload
+    },
+    setOpenWithdrawModal: (state, action: PayloadAction<any>) => {
+      state.openWithdrawModal = action.payload
+    },
+    setWithdrawTokenAddress: (state, action: PayloadAction<any>) => {
+      state.withdrawTokenAddress = action.payload
+    },
+    setWithdrawAmount: (state, action: PayloadAction<any>) => {
+      state.withdrawAmount = action.payload
+    },
+    setWithdrawToken: (state, action: PayloadAction<any>) => {
+      state.withdrawToken = action.payload
+    },
+    setWithdrawLoading: (state, action: PayloadAction<any>) => {
+      state.withdrawLoading = action.payload
+    },
+    setOpenSnackbar: (state, action: PayloadAction<any>) => {
+      state.openSnackbar = action.payload
+    },
+    setSnackbarErrorMsg: (state, action: PayloadAction<any>) => {
+      state.snackbarErrorMsg = action.payload
+    },
+    resetNewMarketplaceReducer: () => initialState,
   },
 })
 
@@ -133,6 +214,23 @@ export const {
   setProjectsTokenLoading,
   setCreateSellOrderLoading,
   setCreateBuyOrderLoading,
+  setCheckFulfilLoading,
+  setOpenOrders,
+  setClosedOrders,
+  setBuyOrders,
+  setOpenOrdersLoading,
+  setBuyOrdersLoading,
+  setCancelOrderLoading,
+  setOrdersTabIndex,
+  setOpenWithdrawModal,
+  setWithdrawTokenType,
+  setWithdrawTokenAddress,
+  setWithdrawAmount,
+  setWithdrawToken,
+  setWithdrawLoading,
+  setOpenSnackbar,
+  setSnackbarErrorMsg,
+  resetNewMarketplaceReducer,
 } = newMarketplaceReducer.actions
 
 export default newMarketplaceReducer.reducer

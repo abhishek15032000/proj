@@ -107,7 +107,9 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
     <Box sx={{ py: 2, px: { md: 3, lg: 4 } }}>
       <Box sx={{ display: 'flex' }}>
         <img src={Images.ProjectCompletion} />
-        <Typography sx={{ fontSize: 18, color: Colors.darkPrimary1 }}>
+        <Typography
+          sx={{ pl: '5px', fontSize: 18, color: Colors.darkPrimary1 }}
+        >
           Project Completion
         </Typography>
       </Box>
@@ -172,20 +174,21 @@ const ProjectCompletionProgress = (props: { sectionIndex: number }) => {
                   {item.completionPercent}% Complete
                 </Typography>
               </Box>
-              {stepsCompletionData && index < stepsCompletionData?.length - 1 && (
-                <Box
-                  className="trace-line position-absolute"
-                  sx={{
-                    top: 0,
-                    left: 4,
-                    bottom: -17,
-                    width: '1px',
-                    background:
-                      index < props?.sectionIndex + 1 ? '#000000' : '#DAE5E1',
-                    position: 'absolute',
-                  }}
-                />
-              )}
+              {stepsCompletionData &&
+                index < stepsCompletionData?.length - 1 && (
+                  <Box
+                    className="trace-line position-absolute"
+                    sx={{
+                      top: 0,
+                      left: 4,
+                      bottom: -17,
+                      width: '1px',
+                      background:
+                        index < props?.sectionIndex + 1 ? '#000000' : '#DAE5E1',
+                      position: 'absolute',
+                    }}
+                  />
+                )}
               <Box
                 className="trace-circle position-absolute"
                 sx={{

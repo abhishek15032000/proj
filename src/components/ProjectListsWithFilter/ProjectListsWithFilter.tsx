@@ -1,4 +1,4 @@
-import { Box, Checkbox, Grid } from '@mui/material'
+import { Box, Checkbox, Container, Grid } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
@@ -95,7 +95,8 @@ const ProjectListsWithFilter = () => {
   }
 
   return (
-    <Box
+    <Container
+    maxWidth="xl"
       sx={{
         background: onWebApp
           ? ''
@@ -104,18 +105,21 @@ const ProjectListsWithFilter = () => {
       }}
     >
       <Box
-        sx={{ fontSize: '32px', color: onWebApp ? Colors.tertiary : '#55DBC8' }}
+        sx={{ fontSize: '28px', color: onWebApp ? Colors.tertiary : '#55DBC8', mb:4 }}
       >
         Projects
       </Box>
-      <Grid container columnSpacing={2} sx={{ mt: 3 }}>
-        <Grid item md={2}>
+      <Grid container  sx={{ mt: 3 }} spacing={{md:1, lg:2}}>
+        <Grid item md={4} lg={2} >
           <Box
             sx={{
+              // width:264,
               color: onWebApp ? '#006B5E' : '#DAE5E1',
               background: onWebApp
                 ? '#fff'
                 : 'linear-gradient(180deg, rgba(7, 19, 13, 0.79) 0%, #222926 100%)',
+                borderRadius:3,
+                overflow:'hidden'
             }}
           >
             <Box
@@ -134,7 +138,7 @@ const ProjectListsWithFilter = () => {
               sx={{
                 px: 2,
                 py: 1,
-                maxHeight: onWebApp ? '65vh' : '70vh',
+                maxHeight: onWebApp ? '70vh' : '70vh',
                 overflow: 'auto',
                 overflowX: 'hidden',
               }}
@@ -144,7 +148,7 @@ const ProjectListsWithFilter = () => {
                   filters.length &&
                   filters.map((filter, index) => (
                     <Box key={index} sx={{ mt: 2 }}>
-                      <Box sx={{ mb: 1 }}>{filter?.filterType}</Box>
+                      <Box sx={{ mb: 1,  color: onWebApp ? '#00201B' : '#DAE5E1', }}>{filter?.filterType}</Box>
                       {filter?.filters &&
                         filter?.filters.length &&
                         filter?.filters.map((item, index) => (
@@ -156,6 +160,8 @@ const ProjectListsWithFilter = () => {
                               borderBottom: '1px solid #6E7976',
                               display: 'flex',
                               alignItems: 'center',
+                              py:1,
+                              // color: onWebApp ? '#006B5E':"#fff"
                             }}
                           >
                             <Box>
@@ -200,25 +206,33 @@ const ProjectListsWithFilter = () => {
             )}
           </Box>
         </Grid>
-        <Grid item md={10}>
-          <Box
+        <Grid item md={8} lg={10} alignItems="flex-start" justifyContent="flex-start">
+          <Grid container
+         spacing={{ sm: 1.5, md:1.5, lg:1.5, xl:1.5}} 
+         columns={{ sm: 12 , md:12, lg:12, xl:12}}
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
               flexWrap: 'wrap',
+              maxHeight:'80vh',
+              overflowY: 'scroll',
+              overflowX: 'hidden'
             }}
           >
+
             {loading ? (
-              ['', '', '', '', '', ''].map((project, index) => (
-                <ProjectDetailsCardSkeleton key={index} />
-              ))
+            
+                <ProjectDetailsCardSkeleton  />
+            
             ) : filteredProjects && filteredProjects.length ? (
-              filteredProjects.map((project: any, index: number) => (
-                <ProjectDetailsCard
-                  key={index}
-                  project={project}
-                  navigationAction={(item: any) => navigate(item)}
-                />
+              filteredProjects?.map((project: any, index: number) => (
+              
+                   <ProjectDetailsCard
+                   key={index}
+                            project={project}
+                            navigationAction={(item: any) => navigate(item)}
+                          />
+          
               ))
             ) : (
               <Box
@@ -239,10 +253,10 @@ const ProjectListsWithFilter = () => {
                 No Projects matching the selected filter for now!!!
               </Box>
             )}
-          </Box>
+          </Grid>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   )
 }
 

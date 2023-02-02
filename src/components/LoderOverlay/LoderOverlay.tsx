@@ -16,6 +16,7 @@ const LoderOverlay = (props: LoderOverlayProps) => {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 100000,
+        overflow: 'hidden'
       }}
     >
       <Spinner />

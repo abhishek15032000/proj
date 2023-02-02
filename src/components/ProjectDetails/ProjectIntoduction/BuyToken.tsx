@@ -10,12 +10,17 @@ import BlockchainCalls from '../../../blockchain/Blockchain'
 import LoderOverlay from '../../LoderOverlay'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import { pathNames } from '../../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
 
 interface BuyTokenProps {
   goingUp?: any
+  projectDetailsData?:any
 }
 const BuyToken = (props: BuyTokenProps) => {
-  const { goingUp } = props
+  const navigate = useNavigate()
+  
+  const { goingUp, projectDetailsData } = props
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
@@ -27,8 +32,8 @@ const BuyToken = (props: BuyTokenProps) => {
       display: 'flex',
       flexDirection:  goingUp ?'row':'column',
       justifyContent: goingUp ? 'space-around' : 'space-between',
-      alignItems: 'center',
-      pt: 2,
+      alignItems: goingUp ? 'center':'flex-start',
+      pt: goingUp ?4:2,
       px: goingUp ? 38 : 2,
       pb: 3,
       height: goingUp ? '20%' :'auto',
@@ -40,8 +45,8 @@ const BuyToken = (props: BuyTokenProps) => {
       top: goingUp ? '10px' : '90%',
       zIndex: 1000,
       transition:"width 0.3s ease",
-      left: 5,
-      right: 0,
+      // left: '5px',
+      // right: 0,
     }}
     >
       <Box
@@ -50,6 +55,8 @@ const BuyToken = (props: BuyTokenProps) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           alignItems: 'start',
+          p:5,
+          width: '100%',
         }}
       >
         <TitleValue
@@ -104,7 +111,9 @@ const BuyToken = (props: BuyTokenProps) => {
           </Typography>
         </Box>
       </Box>
+       <Grid container xs={12} sx={{justifyContent:'flex-end'}}> 
       <CCButton
+      variant='contained'
         sx={{
           width:goingUp? '250px': '100%',
           height: '40px',
@@ -114,13 +123,25 @@ const BuyToken = (props: BuyTokenProps) => {
           alignItems: 'center',
           borderRadius: '100px',
           mt: 2,
-          boxShadow:'0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)'
+          boxShadow:'0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)',
+          mx:5
         }}
+        onClick={() =>
+          navigate(pathNames.MARKETPLACE, {
+            state: {
+              projectID: projectDetailsData?._id,
+              projectUUID: projectDetailsData?.uuid,
+              projectName: projectDetailsData?.company_name,
+            },
+          })
+        }
       >
         <Typography   sx={{ color:'primary.main', fontSize: 14, fontWeight: 500, textAlign: 'center' }}>
           {'Buy Tokens'}
         </Typography>
       </CCButton>
+      </Grid>
+    
     </Paper>
   )
 }

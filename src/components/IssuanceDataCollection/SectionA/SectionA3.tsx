@@ -116,7 +116,7 @@ const SectionA3 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Box sx={{ mt: 3 }}>
+    <Box sx={{ mt: 3 }} className="issuance_data_section_scroll">
       <Typography>Parties & project participants involved</Typography>
 
       <Grid

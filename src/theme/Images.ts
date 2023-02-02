@@ -1,5 +1,5 @@
 import logo from '../assets/Images/logo/logo.svg'
-import ICRLogo from '../assets/Images/logo/ICR-Logo.png'
+import ICRLogo from '../assets/Images/logo/ICR-Logo.svg'
 import illustration1 from '../assets/Images/illustrations/illustration1.svg'
 import illustration2 from '../assets/Images/illustrations/illustration2.svg'
 import illustration3 from '../assets/Images/illustrations/illustration3.svg'
@@ -84,6 +84,8 @@ import trending from '../assets/Images/Icons/trending.png'
 import eyeClose from '../assets/Images/Icons/eyeClose.png'
 import eyeOpen from '../assets/Images/Icons/eyeOpen.png'
 import group from '../assets/Images/Icons/group.png'
+import Orders from '../assets/Images/illustrations/orders.svg'
+import OrderHistory from '../assets/Images/illustrations/order-history.svg'
 
 export const Images = {
   logo,
@@ -170,4 +172,6 @@ export const Images = {
   group,
   eyeClose,
   eyeOpen,
+  Orders,
+  OrderHistory,
 }

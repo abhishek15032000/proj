@@ -1,6 +1,7 @@
 import { eventsCalls } from '../api/eventsCalls.api'
 import { marketplaceCalls } from '../api/marketplaceCalls.api'
 import { transactionCalls } from '../api/transactionCalls.api'
+import { TOKEN_TYPES } from '../config/constants.config'
 import {
   setMessageModalText,
   setShowMessageModal,
@@ -9,19 +10,30 @@ import {
   setBuyOrderPayloadAmountsToTake,
   setBuyOrderPayloadOfferHashes,
   setBuyOrderPayloadUUID,
+  setBuyOrders,
+  setBuyOrdersLoading,
   setBuyUnitPrice,
+  setCancelOrderLoading,
   setCarbonTokenAddress,
   setCarbonTokenSymbol,
+  setClosedOrders,
   setCreateBuyOrderLoading,
   setCreateSellOrderLoading,
   setINRTokenAddress,
+  setOpenOrders,
+  setOpenOrdersLoading,
+  setOpenSnackbar,
+  setOpenWithdrawModal,
   setProjectsTokenLoading,
   setSellOrdersList,
   setSellOrdersLoading,
   setSellQuantity,
   setSellWantAmount,
+  setSnackbarErrorMsg,
   setTokenBalanceLoading,
   setTotalAmountForBuying,
+  setWithdrawAmount,
+  setWithdrawLoading,
 } from '../redux/Slices/newMarketplaceSlice'
 import { store } from '../redux/store'
 
@@ -88,6 +100,10 @@ export async function getSellOrdersListData() {
 export const createSellOrder = async () => {
   const carbonTokenAddress =
     store.getState()?.newMarketplaceReducer?.carbonTokenAddress
+  const carbonTokenSymbol =
+    store.getState()?.newMarketplaceReducer?.carbonTokenSymbol
+  const carbonTokenBalances =
+    store.getState()?.newMarketplaceReducer?.carbonTokenBalances
   const inrTokenAddress =
     store.getState()?.newMarketplaceReducer?.inrTokenAddress
   const sellQuantity = store.getState()?.newMarketplaceReducer?.sellQuantity
@@ -96,6 +112,17 @@ export const createSellOrder = async () => {
     store.getState()?.newMarketplaceReducer?.currentProjectUUID
 
   const pseudoNonce = new Date().getTime()
+
+  const balToCheck = parseInt(carbonTokenBalances?.totalBalances)
+  if (sellQuantity > balToCheck) {
+    store.dispatch(setOpenSnackbar(true))
+    store.dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
+
+    store.dispatch(setWithdrawAmount(0))
+    store.dispatch(setOpenWithdrawModal(false))
+
+    return
+  }
 
   try {
     store.dispatch(setCreateSellOrderLoading(true))
@@ -107,11 +134,14 @@ export const createSellOrder = async () => {
       _feeAsset: carbonTokenAddress,
       _feeAmount: 0,
       _nonce: pseudoNonce,
+      _offerAssetName: carbonTokenSymbol,
+      _wantAssetName: 'USD',
     }
 
     const createOrderRes = await marketplaceCalls.createOrder(payload)
     if (createOrderRes?.success) {
       getSellOrdersListData()
+      getOpenOrders()
       getProjectsTokenDetails(currentProjectUUID)
       store.dispatch(setSellQuantity(0))
       store.dispatch(setSellWantAmount(0))
@@ -140,7 +170,10 @@ export const createBuyOrder = async () => {
   //   store.getState()?.newMarketplaceReducer?.carbonTokenAddress
   const inrTokenAddress =
     store.getState()?.newMarketplaceReducer?.inrTokenAddress
-
+  const inrTokenBalances =
+    store.getState()?.newMarketplaceReducer?.inrTokenBalances
+  const totalAmountForBuying =
+    store.getState()?.newMarketplaceReducer?.totalAmountForBuying
   const buyOrderPayloadOfferHashes =
     store.getState()?.newMarketplaceReducer?.buyOrderPayloadOfferHashes
   const buyOrderPayloadAmountsToTake =
@@ -152,16 +185,28 @@ export const createBuyOrder = async () => {
 
   const pseudoNonce = new Date().getTime()
 
+  const balToCheck = parseInt(inrTokenBalances?.totalBalances)
+  if (totalAmountForBuying > balToCheck) {
+    store.dispatch(setOpenSnackbar(true))
+    store.dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
+
+    store.dispatch(setWithdrawAmount(0))
+    store.dispatch(setOpenWithdrawModal(false))
+
+    return
+  }
+
+  const payload = {
+    uuid: buyOrderPayloadUUID,
+    _offerHashes: buyOrderPayloadOfferHashes,
+    _amountsToTake: buyOrderPayloadAmountsToTake,
+    _feeAsset: inrTokenAddress,
+    _feeAmount: 0,
+    _nonce: pseudoNonce,
+  }
+
   try {
     store.dispatch(setCreateBuyOrderLoading(true))
-    const payload = {
-      uuid: buyOrderPayloadUUID,
-      _offerHashes: buyOrderPayloadOfferHashes,
-      _amountsToTake: buyOrderPayloadAmountsToTake,
-      _feeAsset: inrTokenAddress,
-      _feeAmount: 0,
-      _nonce: pseudoNonce,
-    }
 
     const createOrderRes = await marketplaceCalls.fillOrder(payload)
     if (createOrderRes?.success) {
@@ -172,6 +217,7 @@ export const createBuyOrder = async () => {
       store.dispatch(setBuyOrderPayloadAmountsToTake(null))
 
       getSellOrdersListData()
+      getBuyOrders()
       getProjectsTokenDetails(currentProjectUUID)
 
       //resetting token addresses
@@ -190,5 +236,133 @@ export const createBuyOrder = async () => {
     console.log('Error in marketplaceCalls.fillOrder api ~ ', err)
   } finally {
     store.dispatch(setCreateBuyOrderLoading(false))
+  }
+}
+
+export const getOpenOrders = async () => {
+  try {
+    store.dispatch(setOpenOrdersLoading(true))
+    const res = await marketplaceCalls.getOpenOrder()
+    if (res?.success) {
+      if (res?.data?.openOrder && res?.data?.openOrder.length) {
+        store.dispatch(setOpenOrders(res?.data?.openOrder))
+      }
+      if (res?.data?.closeOrder && res?.data?.closeOrder.length) {
+        store.dispatch(setClosedOrders(res?.data?.closeOrder))
+      }
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.getOpenOrder api ~ ', err)
+  } finally {
+    store.dispatch(setOpenOrdersLoading(false))
+  }
+}
+
+export async function getBuyOrders() {
+  const accountAddress = store.getState()?.wallet?.accountAddress
+  try {
+    store.dispatch(setBuyOrdersLoading(true))
+    const buyOrderRes = await marketplaceCalls.getBuyOrder(accountAddress)
+    if (buyOrderRes.success && buyOrderRes?.data?.buyOrder?.length) {
+      store.dispatch(setBuyOrders(buyOrderRes?.data?.buyOrder))
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.getBuyOrder api : ', err)
+  } finally {
+    store.dispatch(setBuyOrdersLoading(false))
+  }
+}
+
+export const cancelOrder = async (payload: any) => {
+  const currentProjectUUID =
+    store.getState()?.newMarketplaceReducer?.currentProjectUUID
+
+  try {
+    store.dispatch(setCancelOrderLoading(true))
+    const cancelOrderRes = await marketplaceCalls.cancelOrder(payload)
+    if (cancelOrderRes.success) {
+      store.dispatch(
+        setMessageModalText(
+          'Sell order Cancelled. Cancelled Token Amount will reflect in "Balance on Exchange" amount.'
+        )
+      )
+      store.dispatch(setShowMessageModal(true))
+
+      store.dispatch(setOpenOrders([]))
+
+      getOpenOrders()
+      getProjectsTokenDetails(currentProjectUUID)
+
+      //resetting token addresses
+      store.dispatch(setCarbonTokenSymbol(''))
+      store.dispatch(setCarbonTokenAddress(''))
+      store.dispatch(setINRTokenAddress(''))
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.cancelOrder api ~ ', err)
+  } finally {
+    store.dispatch(setCancelOrderLoading(false))
+  }
+}
+
+export const withdraw = async () => {
+  const withdrawAmount = store.getState()?.newMarketplaceReducer?.withdrawAmount
+  const withdrawToken = store.getState()?.newMarketplaceReducer?.withdrawToken
+  const withdrawTokenAddress =
+    store.getState()?.newMarketplaceReducer?.withdrawTokenAddress
+  const carbonTokenBalances =
+    store.getState()?.newMarketplaceReducer?.carbonTokenBalances
+  const inrTokenBalances =
+    store.getState()?.newMarketplaceReducer?.inrTokenBalances
+  const currentProjectUUID =
+    store.getState()?.newMarketplaceReducer?.currentProjectUUID
+
+  const pseudoNonce = new Date().getTime()
+
+  const balToCheck =
+    withdrawToken === TOKEN_TYPES.CARBON
+      ? parseInt(carbonTokenBalances?.assetsBalance)
+      : parseInt(inrTokenBalances?.assetsBalance)
+  if (!balToCheck) {
+    store.dispatch(setOpenSnackbar(true))
+    store.dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
+
+    store.dispatch(setWithdrawAmount(0))
+    store.dispatch(setOpenWithdrawModal(false))
+
+    return
+  }
+
+  const payload = {
+    _token: withdrawTokenAddress,
+    _amount: withdrawAmount,
+    _feeAsset: withdrawTokenAddress,
+    _feeAmount: 0,
+    _nonce: pseudoNonce,
+  }
+
+  try {
+    store.dispatch(setOpenWithdrawModal(false))
+    store.dispatch(setWithdrawLoading(true))
+    const withdrawRes = await marketplaceCalls.withdraw(payload)
+    if (withdrawRes.success) {
+      store.dispatch(
+        setMessageModalText(
+          'Withdraw Successfull. Withdrawn Amount will reflect in your Wallet.'
+        )
+      )
+      store.dispatch(setShowMessageModal(true))
+
+      getProjectsTokenDetails(currentProjectUUID)
+
+      //resetting token addresses
+      store.dispatch(setCarbonTokenSymbol(''))
+      store.dispatch(setCarbonTokenAddress(''))
+      store.dispatch(setINRTokenAddress(''))
+    }
+  } catch (err) {
+    console.log('Error in marketplaceCalls.withdraw api ~ ', err)
+  } finally {
+    store.dispatch(setWithdrawLoading(false))
   }
 }

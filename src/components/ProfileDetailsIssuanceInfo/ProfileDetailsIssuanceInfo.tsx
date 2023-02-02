@@ -22,6 +22,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import ProjectIntro from '../ProjectDetailsRegistryAcc/ProjectIntro'
 import WebAppTraceHistory from '../ProjectDetails/TraceHistory/WebappTraceHistory'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectIntroduction'
 
 const projectDetails = {
   company_name:
@@ -129,9 +130,10 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Typography>
       </Box>
       {/*<Paper sx={{ mt: 3 }}>*/}
-      <ProjectIntro
-        title={currentProjectDetails?.company_name}
-        location={currentProjectDetails?.location}
+      <ProjectIntroduction
+        projectDetailsData={currentProjectDetails}
+        // title={currentProjectDetails?.company_name}
+        // location={currentProjectDetails?.location}
       />
       {/*<Grid container>
           <Grid item xs={10} sx={{ p: 2 }}>
