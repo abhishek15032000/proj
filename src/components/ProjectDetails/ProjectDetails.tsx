@@ -147,7 +147,7 @@ const ProjectDetails = () => {
   const navigate = useNavigate()
   return (
     <Container maxWidth="xl">
-      {!loading && <Grid
+      {  <Grid
         container
         justifyContent={'space-between'}
         alignItems={'center'}
@@ -278,7 +278,7 @@ const ProjectDetails = () => {
          
         </ThemeProvider>
       </Grid>}
-      {loading && <LoaderOverlay />}
+      { <LoaderOverlay show={loading} />}
     </Container>
   )
 }

@@ -112,7 +112,7 @@ const Projects = () => {
   return (
     <>
       {loader ? (
-        <LoaderOverlay />
+        <LoaderOverlay  show/>
       ) : (
         <>
           {/* <Typography sx={{ color: Colors.error, mb: 1 }}>

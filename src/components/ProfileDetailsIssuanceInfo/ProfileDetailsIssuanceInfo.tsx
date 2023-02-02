@@ -23,6 +23,7 @@ import ProjectIntro from '../ProjectDetailsRegistryAcc/ProjectIntro'
 import WebAppTraceHistory from '../ProjectDetails/TraceHistory/WebappTraceHistory'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectIntroduction'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 
 const projectDetails = {
   company_name:
@@ -118,17 +119,9 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   console.log('currentProjectDetails', currentProjectDetails)
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <KeyboardArrowLeft
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            navigate(pathNames.DASHBOARD, { replace: true })
-          }}
-        />
-        <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
-          Project Details
-        </Typography>
-      </Box>
+      <Grid item mb={5}>
+        <BackHeader title="Project Details" onClick={() => navigate(-1)} />
+      </Grid>
       {/*<Paper sx={{ mt: 3 }}>*/}
       <ProjectIntroduction
         projectDetailsData={currentProjectDetails}

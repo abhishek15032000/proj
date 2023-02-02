@@ -8,22 +8,28 @@ import { useLocation, useNavigate, createSearchParams } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Grid } from '@mui/material'
+import { limitTitle } from '../../../utils/commonFunctions'
 
 interface ProjectDetailsCardProps {
   project: any
   navigationAction: any
+  justifyContent?: string
+  [x:string]: any;
 }
-const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
-  project,
-  navigationAction,
-}) => {
+const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const navigate = useNavigate()
   const location = useLocation()
+
+  const {
+    project,
+    navigationAction,
+    justifyContent="center"
+  } = props
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
-    <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent="center" alignItems="flex-start">
+    <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start" {...props}>
     <Box
       sx={{
         width: '264px',
@@ -74,8 +80,8 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           borderBottom: '1px solid #899390',
         }}
       >
-        <Box sx={{ fontSize: 16, fontWeight: 500, wordBreak: 'break-word' }}>
-          {project?.company_name || 'King County Urban Forest Council'}
+        <Box sx={{ fontSize: 16, fontWeight: 500, wordBreak: 'break-word', minHeight:'48px'}}>
+          {limitTitle(project?.company_name, 45) || '--'}
         </Box>
         <Box
           sx={{
@@ -86,7 +92,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           }}
         >
           <FmdGoodOutlinedIcon sx={{ color: '#667080', ml: '-3px' }} />
-          <Box sx={{ fontSize: 10, fontWeight: 500 }}>
+          <Box sx={{ fontSize: 10, fontWeight: 500 , minHeight:'30px'}}>
             {`Project Location ${
               project?.location || 'Lexington, Ohio, United States'
             } | Project Area ${project?.area || '53.4'} Sq.Km`}

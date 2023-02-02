@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
@@ -140,7 +140,9 @@ const ProjectDetailsRegistryAcc = () => {
         </Stack>
       ) : (
         <>
-          <BackHeader title="Project Details" onClick={() => navigate(-1)} />
+          <Grid item  mb={5}>
+            <BackHeader title="Project Details" onClick={() => navigate(-1)} />
+          </Grid>
           <ProjectIntroduction
           projectDetailsData={projectDetails}
             // title={projectDetails?.company_name}

@@ -97,20 +97,23 @@ const ProjectListsWithFilter = () => {
   return (
     <Container
     maxWidth="xl"
+    disableGutters
       sx={{
         background: onWebApp
           ? ''
           : 'linear-gradient(180deg, #222926 63.19%, #121E18 100%)',
-        padding: onWebApp ? '' : '56px 6vw',
+        padding: onWebApp ? 0 : '56px 6vw',
+        maxHeight:'85vh'
       }}
+    
     >
       <Box
         sx={{ fontSize: '28px', color: onWebApp ? Colors.tertiary : '#55DBC8', mb:4 }}
       >
         Projects
       </Box>
-      <Grid container  sx={{ mt: 3 }} spacing={{md:1, lg:2}}>
-        <Grid item md={4} lg={2} >
+      <Grid container  sx={{ mt: 3 }} spacing={{md:0, lg:0}}>
+        <Grid item md={4} lg={3}  xl={2}  pt={0}>
           <Box
             sx={{
               // width:264,
@@ -138,7 +141,7 @@ const ProjectListsWithFilter = () => {
               sx={{
                 px: 2,
                 py: 1,
-                maxHeight: onWebApp ? '70vh' : '70vh',
+                maxHeight: onWebApp ? '72vh' : '70vh',
                 overflow: 'auto',
                 overflowX: 'hidden',
               }}
@@ -206,17 +209,18 @@ const ProjectListsWithFilter = () => {
             )}
           </Box>
         </Grid>
-        <Grid item md={8} lg={10} alignItems="flex-start" justifyContent="flex-start">
+        <Grid item pl={1} md={8} lg={9} xl={10} alignItems="flex-start" justifyContent="flex-start">
           <Grid container
-         spacing={{ sm: 1.5, md:1.5, lg:1.5, xl:1.5}} 
+         spacing={{ sm: 1, md:1, lg:1, xl:1}} 
          columns={{ sm: 12 , md:12, lg:12, xl:12}}
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
               flexWrap: 'wrap',
-              maxHeight:'80vh',
+              maxHeight:'75vh',
               overflowY: 'scroll',
-              overflowX: 'hidden'
+              overflowX: 'hidden',
+              pb:1
             }}
           >
 

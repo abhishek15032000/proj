@@ -262,7 +262,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         backgroundColor: Colors.background,
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Box sx={{ ml: 4, py: 2, display: 'flex' }}>
         <Box sx={{ fontSize: 12, color: '#4A635E' }}>
           {'Project List > Project Details'}{' '}

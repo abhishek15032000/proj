@@ -30,7 +30,7 @@ const MarketplaceHome: FC<MarketplaceHomeProps> = (props) => {
   const localloggedIn = getLocalItem('loggedIn')
   return (
     <Box sx={{ p: 0 }}>
-      {marketplaceLoading ? <LoaderOverlay /> : null}
+      {marketplaceLoading ? <LoaderOverlay show /> : null}
       <Grid
         container
         xs={12}

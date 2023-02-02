@@ -1,9 +1,25 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Spinner from '../../atoms/Spinner'
 import { LoderOverlayProps } from './LoderOverlay.interface'
 const LoderOverlay = (props: LoderOverlayProps) => {
-  return (
+  const {show = true} = props
+  console.log("🚀 ~ file: LoderOverlay.tsx ~ line 7 ~ LoderOverlay ~ show", show)
+  // document.body.style.overflow = 'hidden';
+  useEffect(()=>{
+   show?lockScroll():unlockScroll()
+   return ()=> unlockScroll();
+  },[show])
+
+  const lockScroll = React.useCallback(() => {
+    document.body.style.overflow = 'hidden';
+  }, [])
+  
+  const unlockScroll = React.useCallback(() => {
+    document.body.style.overflow = '';
+  }, [])
+
+  return show ?(
     <Box
       sx={{
         backgroundColor: 'rgb(218 247 240 / 0.5)',
@@ -19,8 +35,9 @@ const LoderOverlay = (props: LoderOverlayProps) => {
         overflow: 'hidden'
       }}
     >
+      
       <Spinner />
     </Box>
-  )
+  ): null
 }
 export default LoderOverlay
