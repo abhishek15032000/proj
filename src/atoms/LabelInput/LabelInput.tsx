@@ -12,6 +12,7 @@ interface LabelInputProps {
   setValue?: any
   sx?: any
   textFieldSx?: any
+  onBlur?: any
 }
 
 const LabelInput: FC<LabelInputProps> = (props) => {
@@ -41,6 +42,7 @@ const LabelInput: FC<LabelInputProps> = (props) => {
               }
         }
         // {...props}
+        onBlur={props?.onBlur}
       />
     </Box>
   )

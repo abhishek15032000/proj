@@ -27,6 +27,7 @@ interface NewMarketplaceReducerInterface {
   buyOrders: any
   openOrdersLoading: boolean
   buyOrdersLoading: boolean
+  cancelOrderLoading: boolean
   ordersTabIndex: number
   withdrawAmount: number
   withdrawToken: string
@@ -53,11 +54,12 @@ const initialState: NewMarketplaceReducerInterface = {
   createSellOrderLoading: false,
   createBuyOrderLoading: false,
   checkFulfilLoading: false,
-  openOrders: null,
-  closedOrders: null,
-  buyOrders: null,
+  openOrders: [],
+  closedOrders: [],
+  buyOrders: [],
   openOrdersLoading: false,
   buyOrdersLoading: false,
+  cancelOrderLoading: false,
   ordersTabIndex: 1,
   withdrawAmount: 0,
   withdrawToken: '',
@@ -145,6 +147,9 @@ const newMarketplaceReducer = createSlice({
     setBuyOrdersLoading: (state, action: PayloadAction<any>) => {
       state.buyOrdersLoading = action.payload
     },
+    setCancelOrderLoading: (state, action: PayloadAction<any>) => {
+      state.cancelOrderLoading = action.payload
+    },
     setOrdersTabIndex: (state, action: PayloadAction<any>) => {
       state.ordersTabIndex = action.payload
     },
@@ -154,6 +159,10 @@ const newMarketplaceReducer = createSlice({
     setWithdrawToken: (state, action: PayloadAction<any>) => {
       state.withdrawToken = action.payload
     },
+    // resetNewMarketplaceReducer: (state) => {
+    //   state = initialState
+    // },
+    resetNewMarketplaceReducer: () => initialState,
   },
 })
 
@@ -184,9 +193,11 @@ export const {
   setBuyOrders,
   setOpenOrdersLoading,
   setBuyOrdersLoading,
+  setCancelOrderLoading,
   setOrdersTabIndex,
   setWithdrawAmount,
   setWithdrawToken,
+  resetNewMarketplaceReducer,
 } = newMarketplaceReducer.actions
 
 export default newMarketplaceReducer.reducer

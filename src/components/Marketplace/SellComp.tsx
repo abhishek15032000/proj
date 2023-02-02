@@ -36,13 +36,14 @@ const SellComp = () => {
     <Grid item xs={12} md={10}>
       <Box>
         <CardRow
-          title="Wallet Balance for Purchase :"
+          title="Balance :"
           value={`${
             Math.round(carbonTokenBalances?.totalBalances) || 0
           } ${carbonTokenSymbol}`}
-          titleStyle={{ color: Colors.lightPrimary1 }}
+          titleStyle={{ color: '#4A635E' }}
+          partitionBasis={6}
         />
-        <CardRow
+        {/* <CardRow
           title={`Approved ${carbonTokenSymbol} Token Balance :`}
           value={`${
             Math.round(carbonTokenBalances?.allowanceBalance) || 0
@@ -55,7 +56,7 @@ const SellComp = () => {
             Math.round(carbonTokenBalances?.assetsBalance) || 0
           } ${carbonTokenSymbol}`}
           titleStyle={{ color: Colors.lightPrimary1 }}
-        />
+        /> */}
         <Box sx={{ position: 'relative', pt: 1 }}>
           <Box>
             <LabelInput
@@ -85,7 +86,7 @@ const SellComp = () => {
         <Box sx={{ position: 'relative', pt: 1 }}>
           <Box>
             <LabelInput
-              label="Want Amount"
+              label="Unit Price"
               sx={{ width: '100%' }}
               value={sellWantAmount || ''}
               setValue={(e: any) => {

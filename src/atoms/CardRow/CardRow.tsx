@@ -7,6 +7,7 @@ interface CardRowProps {
   value: string
   titleStyle?: any
   valueStyle?: any
+  partitionBasis?: number
 }
 
 const CardRow: FC<CardRowProps> = ({
@@ -14,10 +15,11 @@ const CardRow: FC<CardRowProps> = ({
   value,
   titleStyle,
   valueStyle,
+  partitionBasis = 9,
 }) => {
   return (
     <Grid container justifyContent={'space-between'} mt={1}>
-      <Grid item xs={9}>
+      <Grid item xs={partitionBasis}>
         <Box
           sx={{
             color: Colors.darkPrimary1,
@@ -29,7 +31,7 @@ const CardRow: FC<CardRowProps> = ({
           {title}
         </Box>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={12 - partitionBasis}>
         <Box
           sx={{
             fontWeight: 500,

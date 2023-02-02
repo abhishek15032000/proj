@@ -84,6 +84,8 @@ import trending from '../assets/Images/Icons/trending.png'
 import eyeClose from '../assets/Images/Icons/eyeClose.png'
 import eyeOpen from '../assets/Images/Icons/eyeOpen.png'
 import group from '../assets/Images/Icons/group.png'
+import Orders from '../assets/Images/illustrations/orders.svg'
+import OrderHistory from '../assets/Images/illustrations/order-history.svg'
 
 export const Images = {
   logo,
@@ -170,4 +172,6 @@ export const Images = {
   group,
   eyeClose,
   eyeOpen,
+  Orders,
+  OrderHistory,
 }

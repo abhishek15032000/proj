@@ -1,7 +1,8 @@
 import { Alert, Button, Snackbar } from '@mui/material'
 import React, { useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
@@ -9,6 +10,7 @@ import {
   setShowMessageModal,
 } from '../../redux/Slices/appSlice'
 import {
+  resetNewMarketplaceReducer,
   setCarbonTokenBalances,
   setCurrentProjectUUID,
   setINRTokenBalances,
@@ -25,7 +27,10 @@ import Trading from './Trading'
 
 const Marketplace = () => {
   const location: any = useLocation()
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  console.log('location', location)
 
   const userID = getLocalItem('userDetails')?.user_id
 
@@ -55,6 +60,10 @@ const Marketplace = () => {
       getProjectsTokenDetails(location?.state?.projectUUID)
     }
     getSellOrdersListData()
+
+    return () => {
+      dispatch(resetNewMarketplaceReducer())
+    }
   }, [])
 
   useEffect(() => {
@@ -93,8 +102,16 @@ const Marketplace = () => {
 
   return (
     <>
-      <HeadingStrip />
-      <Trading />
+      {/* <HeadingStrip /> */}
+      <BackHeader
+        title="Buy & Sell Credits"
+        // sx={{ ml: 4, mt: 3, mb: 2, cursor: 'pointer' }}
+        // titleSx={{ fontSize: 14 }}
+        onClick={() => {
+          navigate(-1)
+        }}
+      />
+      <Trading projectName={location?.state?.projectName} />
 
       <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
         <Alert

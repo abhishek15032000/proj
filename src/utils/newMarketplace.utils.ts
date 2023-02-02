@@ -12,6 +12,7 @@ import {
   setBuyOrders,
   setBuyOrdersLoading,
   setBuyUnitPrice,
+  setCancelOrderLoading,
   setCarbonTokenAddress,
   setCarbonTokenSymbol,
   setClosedOrders,
@@ -209,8 +210,12 @@ export const getOpenOrders = async () => {
     store.dispatch(setOpenOrdersLoading(true))
     const res = await marketplaceCalls.getOpenOrder()
     if (res?.success) {
-      store.dispatch(setOpenOrders(res?.data?.openOrder))
-      store.dispatch(setClosedOrders(res?.data?.closeOrder))
+      if (res?.data?.openOrder && res?.data?.openOrder.length) {
+        store.dispatch(setOpenOrders(res?.data?.openOrder))
+      }
+      if (res?.data?.closeOrder && res?.data?.closeOrder.length) {
+        store.dispatch(setClosedOrders(res?.data?.closeOrder))
+      }
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.getOpenOrder api ~ ', err)
@@ -235,7 +240,11 @@ export async function getBuyOrders() {
 }
 
 export const cancelOrder = async (payload: any) => {
+  const currentProjectUUID =
+    store.getState()?.newMarketplaceReducer?.currentProjectUUID
+
   try {
+    store.dispatch(setCancelOrderLoading(true))
     const cancelOrderRes = await marketplaceCalls.cancelOrder(payload)
     if (cancelOrderRes.success) {
       store.dispatch(
@@ -244,13 +253,22 @@ export const cancelOrder = async (payload: any) => {
         )
       )
       store.dispatch(setShowMessageModal(true))
+
+      store.dispatch(setOpenOrders([]))
+
+      getOpenOrders()
+      getProjectsTokenDetails(currentProjectUUID)
+
+      //resetting token addresses
+      store.dispatch(setCarbonTokenSymbol(''))
+      store.dispatch(setCarbonTokenAddress(''))
+      store.dispatch(setINRTokenAddress(''))
     }
   } catch (err) {
     console.log('Error in marketplaceCalls.cancelOrder api ~ ', err)
+  } finally {
+    store.dispatch(setCancelOrderLoading(false))
   }
-  // finally{
-
-  // }
 }
 
 export const withdraw = async () => {

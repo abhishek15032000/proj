@@ -1,5 +1,5 @@
 // React Imports
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 // MUI Imports
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
@@ -87,6 +87,22 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     getPDF()
     // getIssuerShineKey()
   }, [])
+
+  const [height, setHeight] = useState(0)
+  const [height2, setHeight2] = useState(0)
+
+  const ref: any = useRef(null)
+  const ref2: any = useRef(null)
+
+  useEffect(() => {
+    // if (ref.current && ref.current.clientHeight) {
+    setHeight(ref.current.clientHeight)
+    setHeight2(ref.current.clientHeight)
+    // }
+  })
+
+  console.log('height', height)
+  console.log('height2', height2)
 
   useEffect(() => {
     !selectMonth ||
@@ -247,147 +263,269 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       }}
     >
       {loading ? <LoaderOverlay /> : null}
-      <Grid container>
-        <Grid item xs={12}>
-          <BackHeader
-            title="Back"
-            sx={{ ml: 4, mt: 3, mb: 2, cursor: 'pointer' }}
-            titleSx={{ fontSize: 14 }}
-            onClick={() => {
-              navigate(-1)
-            }}
-          />
-        </Grid>
-        <Box
+      <Box sx={{ ml: 4, py: 2, display: 'flex' }}>
+        <Box sx={{ fontSize: 12, color: '#4A635E' }}>
+          {'Project List > Project Details'}{' '}
+        </Box>
+        <Box sx={{ fontSize: 12, color: '#000000' }}>{' > Verify'} </Box>
+      </Box>
+      <Grid
+        container
+        columnSpacing={2}
+        sx={{
+          background: Colors.lightGreenBackground,
+          height: '100vh',
+          overflow: 'scroll',
+          //
+        }}
+      >
+        <Grid
+          item
+          xs={12}
+          md={6}
+          ref={ref2}
           sx={{
-            height: 'auto',
-            border: '0px solid',
-            backgroundColor: '#DAE5E1',
-            width: '20px',
+            height: `${height}px`,
           }}
-        />
-        <Paper sx={{ height: '120vh', flex: 1 }}>
-          {pdfLoading ? (
+        >
+          <Paper
+            ref={ref2}
+            sx={{
+              height: '100%',
+              flex: 1,
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <BackHeader
+                title=""
+                sx={{ ml: 4, mt: 3, mb: 2, cursor: 'pointer' }}
+                titleSx={{ fontSize: 14 }}
+                onClick={() => {
+                  navigate(-1)
+                }}
+              />
+              <Typography
+                sx={{
+                  mt: 1,
+                  fontSize: 28,
+                  fontWeight: 400,
+                  color: Colors.tertiary,
+                  // py: 2,
+                }}
+              >
+                Project Issuance Report V1.1 (PDF)
+              </Typography>
+            </Box>
+
+            <Divider />
+            {pdfLoading ? (
+              <Box
+                sx={{
+                  height: '100vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spinner />
+              </Box>
+            ) : (
+              pdfURL && <PDFViewer pdfUrl={pdfURL} />
+            )}
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6} ref={ref}>
+          <Paper ref={ref} sx={{ border: '0px solid', height: '100%' }}>
             <Box
               sx={{
-                height: '100vh',
+                mx: 4,
+                // height: '80px',
                 display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'center',
+                alignItems: 'center',
+                py: 2,
               }}
             >
-              <Spinner />
+              <Typography
+                sx={{
+                  fontSize: 28,
+                  fontWeight: 400,
+                  color: Colors.tertiary,
+                }}
+              >
+                Verify & Submit Conclusive Report
+              </Typography>
+
+              <TextButton
+                onClick={() => verifyPDF()}
+                sx={{ ml: 4, opacity: disableBtn && '0.5', width: '340px' }}
+                title="Authorise & Mark Verified"
+                disabled={disableBtn}
+              />
             </Box>
-          ) : (
-            pdfURL && <PDFViewer pdfUrl={pdfURL} />
-          )}
-        </Paper>
-        <Paper sx={{ border: '0px solid', flex: 1 }}>
-          <Box
-            sx={{
-              height: '80px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+
+            <Divider />
+
             <Typography
-              sx={{ fontSize: 28, fontWeight: 400, color: Colors.tertiary }}
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                mt: 4,
+                ml: 4,
+              }}
             >
-              Verify & Submit Conclusive Report
+              How much GHG reduction can occur from this project?
             </Typography>
 
-            <TextButton
-              onClick={() => verifyPDF()}
-              sx={{ ml: 4, opacity: disableBtn && '0.5' }}
-              title="Sign & Mark Verified"
-              disabled={disableBtn}
+            <CCMultilineTextArea
+              sx={{ m: 3, ml: 4, width: '90%' }}
+              label="Explain"
+              placeholder="Explain it here"
+              value={explain}
+              onChange={(e) => setExplain(e.target.value)}
             />
-          </Box>
 
-          <Divider />
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                ml: 4,
+              }}
+            >
+              How much quantity of VCOT can be authorised for the current month?
+            </Typography>
 
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: Colors.darkPrimary1,
-              mt: 4,
-              ml: 4,
-            }}
-          >
-            How much GHG reduction can occur from this project?
-          </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                // justifyContent: 'center',
+                alignItems: 'center',
+                mt: 2,
+              }}
+            >
+              <Box sx={{ width: '42%', ml: 4 }}>
+                <DatePicker
+                  label="Select Month"
+                  views={['month']}
+                  inputFormat="MMMM"
+                  value={selectMonth}
+                  components={{
+                    OpenPickerIcon: CalendarMonthOutlinedIcon,
+                  }}
+                  // renderInput={(pa)}
+                  renderInput={(params) => (
+                    <CCInputField
+                      {...params}
+                      style={{ backgroundColor: 'white' }}
+                      InputLabelProps={{
+                        style: { color: '#3F4946' },
+                      }}
+                    />
+                  )}
+                  // onChange={(e) => undefined}
+                  onChange={(e) => {
+                    if (e !== null) {
+                      setSelectMonth(e)
+                    }
+                  }}
+                />
+              </Box>
 
-          <CCMultilineTextArea
-            sx={{ m: 3, ml: 4, width: '90%' }}
-            label="Explain"
-            placeholder="Explain it here"
-            value={explain}
-            onChange={(e) => setExplain(e.target.value)}
-          />
+              <Box sx={{ width: '43%', ml: 4 }}>
+                <CCInputField
+                  label="Enter Quantity of VCOTs"
+                  placeholder="Enter Quantity of VCOTs"
+                  variant="outlined"
+                  // sx={{ mt: 1 }}
+                  value={quantity}
+                  onChange={(e) => {
+                    const regexp = /^\d+(\.\d{0,3})?$/
+                    if (
+                      regexp.test(e?.target?.value) ||
+                      e?.target?.value === ''
+                    ) {
+                      setQuantity(e?.target?.value)
+                    }
+                  }}
+                  InputLabelProps={{
+                    style: { color: '#3F4946' },
+                  }}
+                />
+              </Box>
+            </Box>
 
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: Colors.darkPrimary1,
-              ml: 4,
-            }}
-          >
-            How much quantity of VCOT can be authorised for the current month?
-          </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              // justifyContent: 'center',
-              alignItems: 'center',
-              mt: 2,
-            }}
-          >
-            <Box sx={{ width: '42%', ml: 4 }}>
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                ml: 4,
+                mt: 3,
+                mb: 2,
+              }}
+            >
+              Please enter next monthly report submission date for issuer
+            </Typography>
+            <Box sx={{ width: '90%', ml: 4 }}>
               <DatePicker
-                label="Select Month"
-                views={['month']}
-                inputFormat="MMMM"
-                value={selectMonth}
+                label="Next submission date"
+                // views={['month']}
+                value={nextSubmissionDate}
                 components={{
                   OpenPickerIcon: CalendarMonthOutlinedIcon,
                 }}
-                // renderInput={(pa)}
-                renderInput={(params) => (
-                  <CCInputField
-                    {...params}
-                    style={{ backgroundColor: 'white' }}
-                    InputLabelProps={{
-                      style: { color: '#3F4946' },
-                    }}
-                  />
-                )}
-                // onChange={(e) => undefined}
+                minDate={moment().add(1, 'd')}
+                renderInput={(params) => {
+                  return (
+                    <CCInputField
+                      {...params}
+                      style={{ backgroundColor: 'white' }}
+                      InputLabelProps={{
+                        style: { color: '#3F4946' },
+                      }}
+                    />
+                  )
+                }}
                 onChange={(e) => {
                   if (e !== null) {
-                    setSelectMonth(e)
+                    setNextSubmissionDate(e)
                   }
                 }}
               />
             </Box>
 
-            <Box sx={{ width: '43%', ml: 4 }}>
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                ml: 4,
+                mt: 3,
+                mb: 2,
+              }}
+            >
+              Please enter the lifetime value of VCOT
+            </Typography>
+            <Box
+              sx={{
+                m: 3,
+                mx: 4,
+              }}
+            >
               <CCInputField
-                label="Enter Quantity of VCOTs"
-                placeholder="Enter Quantity of VCOTs"
+                label="Enter lifetime value of VCOT"
+                placeholder="Enter lifetime value of VCOT"
                 variant="outlined"
-                // sx={{ mt: 1 }}
-                value={quantity}
+                value={lifeTimeQuantity}
                 onChange={(e) => {
                   const regexp = /^\d+(\.\d{0,3})?$/
                   if (
                     regexp.test(e?.target?.value) ||
                     e?.target?.value === ''
                   ) {
-                    setQuantity(e?.target?.value)
+                    setLifetimeQuantity(e?.target?.value)
                   }
                 }}
                 InputLabelProps={{
@@ -395,98 +533,24 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 }}
               />
             </Box>
-          </Box>
 
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: Colors.darkPrimary1,
-              ml: 4,
-              mt: 3,
-              mb: 2,
-            }}
-          >
-            Please enter next monthly report submission date for issuer
-          </Typography>
-          <Box sx={{ width: '90%', ml: 4 }}>
-            <DatePicker
-              label="Next submission date"
-              // views={['month']}
-              value={nextSubmissionDate}
-              components={{
-                OpenPickerIcon: CalendarMonthOutlinedIcon,
+            <CCDropAndUpload
+              sx={{ m: 4, mr: 5 }}
+              mediaTitle={[]}
+              title="Attach relevant docs"
+              mediaItem={[]}
+              imageArray={relevantDocs}
+              onImageUpload={(item: any) => {
+                setRelevantDocs([item, ...relevantDocs])
               }}
-              minDate={moment().add(1, 'd')}
-              renderInput={(params) => {
-                return (
-                  <CCInputField
-                    {...params}
-                    style={{ backgroundColor: 'white' }}
-                    InputLabelProps={{
-                      style: { color: '#3F4946' },
-                    }}
-                  />
-                )
-              }}
-              onChange={(e) => {
-                if (e !== null) {
-                  setNextSubmissionDate(e)
-                }
+              onDeleteImage={(index: number) => {
+                setRelevantDocs(deleteIndexInArray(relevantDocs, index))
               }}
             />
-          </Box>
-
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: Colors.darkPrimary1,
-              ml: 4,
-              mt: 3,
-              mb: 2,
-            }}
-          >
-            Please enter the lifetime value of VCOT
-          </Typography>
-          <Box
-            sx={{
-              m: 3,
-              mx: 4,
-            }}
-          >
-            <CCInputField
-              label="Enter lifetime value of VCOT"
-              placeholder="Enter lifetime value of VCOT"
-              variant="outlined"
-              value={lifeTimeQuantity}
-              onChange={(e) => {
-                const regexp = /^\d+(\.\d{0,3})?$/
-                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  setLifetimeQuantity(e?.target?.value)
-                }
-              }}
-              InputLabelProps={{
-                style: { color: '#3F4946' },
-              }}
-            />
-          </Box>
-
-          <CCDropAndUpload
-            sx={{ m: 4, mr: 5 }}
-            mediaTitle={[]}
-            title="Attach relevant docs"
-            mediaItem={[]}
-            imageArray={relevantDocs}
-            onImageUpload={(item: any) => {
-              setRelevantDocs([item, ...relevantDocs])
-            }}
-            onDeleteImage={(index: number) => {
-              setRelevantDocs(deleteIndexInArray(relevantDocs, index))
-            }}
-          />
-        </Paper>
+          </Paper>{' '}
+        </Grid>
       </Grid>
+      {/* </Grid> */}
       {/* <MessageModal
         message={
           <>

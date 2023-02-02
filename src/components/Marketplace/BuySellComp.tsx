@@ -24,7 +24,7 @@ const BuySellComp = () => {
   )
 
   return (
-    <Grid container xs={12} sx={{ mt: 4, pr: { xs: '', md: 5 } }}>
+    <Grid container xs={12} sx={{ mt: 3, pr: { xs: '', md: 5 } }}>
       <Grid
         item
         xs={12}
@@ -65,7 +65,7 @@ export default BuySellComp
 const LoadingComp = () => {
   return (
     <Grid item sm={12} md={10}>
-      <Skeleton
+      {/* <Skeleton
         sx={{
           fontSize: '1.5rem',
           bgcolor: '#CCE8E1',
@@ -78,7 +78,7 @@ const LoadingComp = () => {
           bgcolor: '#CCE8E1',
         }}
         variant="text"
-      />
+      /> */}
       <Skeleton
         sx={{
           fontSize: '1.5rem',
