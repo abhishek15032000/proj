@@ -266,7 +266,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   }
 
   if (loading) {
-    return <LoaderOverlay />
+    return <LoaderOverlay  show />
   } else {
     return (
       <Box sx={{ p: 0 }}>

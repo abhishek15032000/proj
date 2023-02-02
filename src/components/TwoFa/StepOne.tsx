@@ -74,7 +74,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
         justifyContent: 'space-between',
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show/> : null}
       <Box
         sx={{
           width: {

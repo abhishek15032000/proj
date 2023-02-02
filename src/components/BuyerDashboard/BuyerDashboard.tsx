@@ -83,7 +83,7 @@ const BuyerDashboard = () => {
   return (
     <>
       {loader ? (
-        <LoaderOverlay />
+        <LoaderOverlay show />
       ) : (
         <>
           <Typography
