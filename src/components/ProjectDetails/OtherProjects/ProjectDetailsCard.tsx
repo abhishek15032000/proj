@@ -12,18 +12,23 @@ import { Grid } from '@mui/material'
 interface ProjectDetailsCardProps {
   project: any
   navigationAction: any
+  justifyContent?: string
+  [x:string]: any;
 }
-const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
-  project,
-  navigationAction,
-}) => {
+const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const navigate = useNavigate()
   const location = useLocation()
+
+  const {
+    project,
+    navigationAction,
+    justifyContent="center"
+  } = props
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
-    <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent="center" alignItems="flex-start">
+    <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start" {...props}>
     <Box
       sx={{
         width: '264px',

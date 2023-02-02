@@ -110,7 +110,7 @@ const ProjectListsWithFilter = () => {
         Projects
       </Box>
       <Grid container  sx={{ mt: 3 }} spacing={{md:1, lg:2}}>
-        <Grid item md={4} lg={2} >
+        <Grid item md={4} lg={3}  xl={2}>
           <Box
             sx={{
               // width:264,
@@ -206,9 +206,9 @@ const ProjectListsWithFilter = () => {
             )}
           </Box>
         </Grid>
-        <Grid item md={8} lg={10} alignItems="flex-start" justifyContent="flex-start">
+        <Grid item md={8} lg={9} xl={10} alignItems="flex-start" justifyContent="flex-start">
           <Grid container
-         spacing={{ sm: 1.5, md:1.5, lg:1.5, xl:1.5}} 
+         spacing={{ sm: 1, md:1, lg:1, xl:1}} 
          columns={{ sm: 12 , md:12, lg:12, xl:12}}
             sx={{
               display: 'flex',
