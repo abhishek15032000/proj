@@ -70,7 +70,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
     ]
     setCardDetails(cardDetails)
-    setTags(props.projectData.tags)
+    setTags(props.projectData?.tags)
   },[props.projectData])
   return (
     <Box sx={{ 
