@@ -4,13 +4,13 @@ import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 
-const tags = [
-  'Project type tag 1',
-  'Impacted SDG 1',
-  'Project type tag 2',
-  'Impacted SDG 2',
-  'Agritech',
-]
+// const tags = [
+//   'Project type tag 1',
+//   'Impacted SDG 1',
+//   'Project type tag 2',
+//   'Impacted SDG 2',
+//   'Agritech',
+// ]
 
 interface AdditionalDetailsProps {
   projectDetailsData?: any,
@@ -18,10 +18,11 @@ interface AdditionalDetailsProps {
 }
 const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-
+  const [tags, setTags] = useState([])
   const { projectDetailsData } = props
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
+
   useEffect(() => {
     getAllDetails()
   }, [])
@@ -69,6 +70,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
     ]
     setCardDetails(cardDetails)
+    setTags(props.projectData.tags)
   },[props.projectData])
   return (
     <Box sx={{ 
