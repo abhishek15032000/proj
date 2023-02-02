@@ -155,14 +155,14 @@ const ProjectDetails = () => {
             onWebApp ? createTheme(lightModeTheme) : createTheme(darkModeTheme)
           }
         >
-          <Grid item sx={{display:"inline-flex",}}>
+        {onWebApp ?  <Grid item sx={{display:"inline-flex",}}>
             <Typography variant="body1" color="#4A635E">
             Projects
             </Typography>
             <Typography variant="body1" color="#000000" sx={{pl:1}}>
                 {' > Project Details'}
               </Typography>
-           </Grid>
+           </Grid> : null}
           <Grid
             container
             justifyContent={'space-between'}
@@ -201,9 +201,10 @@ const ProjectDetails = () => {
               </CCButton>
             </Grid>
           </Grid>
-          <Grid item xs={12} sx={onWebApp ? lightTheme : darkTheme}>
+          <Grid item xs={12} sx={onWebApp ? lightTheme : darkTheme} >
             <ProjectIntroduction
               projectDetailsData={projectDetailsData?.state}
+              showBuyToken
             />
             <Box sx={{ mt: 35 }}>
               <TabSelectorWithCount

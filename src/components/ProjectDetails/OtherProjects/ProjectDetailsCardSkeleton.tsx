@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/material'
+import { Grid, Skeleton } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
 import { shallowEqual } from 'react-redux'
@@ -13,7 +13,8 @@ const ProjectDetailsCardSkeleton = ({items =8}:{items?:any}) => {
 
   return <>
     {itemsArr.map((item,index) =>{
-    return <Box
+    return <Grid item sm={12}  md={6} lg={4} xl={3} key={index} display="flex" justifyContent="center" alignItems="flex-start">
+    <Box
       key={index.toString()}
       sx={{
         width: '280px',
@@ -70,6 +71,7 @@ const ProjectDetailsCardSkeleton = ({items =8}:{items?:any}) => {
         sx={{ fontSize: '1rem', bgcolor: onWebApp ? '' : 'grey.900' }}
       />
     </Box>
+    </Grid>
   })
   }</>
   

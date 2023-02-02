@@ -54,14 +54,22 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
         value: [`Start:${'DD/MM/YY'} `, `End:${'DD/MM/YY'}`],
       },
     ]
-    setDetails(modifiedArrayTemp)
+    // setDetails(modifiedArrayTemp)
+    // const cardDetails = [
+    //   { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: props.projectData?.token_detail?.balance },
+    //   { heading: 'CREDITS RETIRED', value: props.projectData?.token_detail?.retire },
+    //   { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
+    // ]
+    // setCardDetails(cardDetails)
+  }
+  useEffect(()=>{
     const cardDetails = [
       { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: props.projectData?.token_detail?.balance },
       { heading: 'CREDITS RETIRED', value: props.projectData?.token_detail?.retire },
       { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
     ]
     setCardDetails(cardDetails)
-  }
+  },[props.projectData])
   return (
     <Box sx={{ 
       // background: '#111E17', 

@@ -33,7 +33,7 @@ const BuyToken = (props: BuyTokenProps) => {
       flexDirection:  goingUp ?'row':'column',
       justifyContent: goingUp ? 'space-around' : 'space-between',
       alignItems: goingUp ? 'center':'flex-start',
-      pt: 2,
+      pt: goingUp ?4:2,
       px: goingUp ? 38 : 2,
       pb: 3,
       height: goingUp ? '20%' :'auto',
@@ -45,8 +45,8 @@ const BuyToken = (props: BuyTokenProps) => {
       top: goingUp ? '10px' : '90%',
       zIndex: 1000,
       transition:"width 0.3s ease",
-      left: 5,
-      right: 0,
+      // left: '5px',
+      // right: 0,
     }}
     >
       <Box

@@ -7,6 +7,7 @@ import { pathNames } from '../../../routes/pathNames'
 import { useLocation, useNavigate, createSearchParams } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
+import { Grid } from '@mui/material'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -22,12 +23,13 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
+    <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent="center" alignItems="flex-start">
     <Box
       sx={{
-        width: '280px',
-        mb: 2,
+        width: '264px',
+        // mb: 2,
         borderRadius: '8px',
-        mr: 4,
+        // mr: 4,
         height: '100%',
         boxShadow: onWebApp ? '0px 5px 25px rgba(0, 0, 0, 0.12)' : '',
       }}
@@ -138,6 +140,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
         </Box>
       </Box>
     </Box>
+    </Grid>
   )
 }
 

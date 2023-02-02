@@ -15,7 +15,8 @@ import { shallowEqual } from 'react-redux'
 import BuyToken from './BuyToken'
 
 interface ProjectIntroductionProps {
-  projectDetailsData?: any
+  projectDetailsData?: any,
+  showBuyToken?: boolean
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
   const navigate = useNavigate()
@@ -59,7 +60,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
       name: 'Affordable & Clean Energy',
     },
   ]
-  const { projectDetailsData } = props
+  const { projectDetailsData ,showBuyToken} = props
   console.log("🚀 ~ file: ProjectIntroduction.tsx ~ line 63 ~ ProjectIntroduction ~ projectDetailsData", projectDetailsData)
   const prevScrollY = useRef(0)
 
@@ -100,6 +101,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             minHeight: '600px',
             position: 'relative',
             maxWidth: '100%',
+            justifyContent:'center'
           }}
           xs={12}
         >
@@ -118,15 +120,15 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           >
             <Grid
               item
-              justifyContent={'space-between'}
-              alignItems={'center'}
+              justifyContent={'flex-start'}
+              alignItems={'flex-start'}
               flexDirection="row"
               // width={'50%'}
               sx={{ p: 2 }}
               xs={6}
             >
               <Typography
-                sx={{ color: 'white', fontSize: 40, fontWeight: 500, mt: -4 }}
+                sx={{ color: 'white', fontSize: 40, fontWeight: 500,}}
               >
                 {projectDetailsData?.company_name}
               </Typography>
@@ -236,7 +238,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               </Grid>
             </Grid>
           </Grid>
-          <BuyToken goingUp={goingUp} projectDetailsData={projectDetailsData} />
+         {showBuyToken && <BuyToken goingUp={goingUp} projectDetailsData={projectDetailsData} />}
         </Grid>
       </>
     )
