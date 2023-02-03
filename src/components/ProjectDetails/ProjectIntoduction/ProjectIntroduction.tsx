@@ -237,7 +237,8 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                           fontWeight: 400,
                           textAlign: 'center',
                           width: '70px',
-                          mt:'5px'
+                          mt:'5px',
+                          lineHeight:"16px"
                         }}
                       >
                         {item?.name}

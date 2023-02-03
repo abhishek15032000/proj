@@ -20,6 +20,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [tags, setTags] = useState([])
   const { projectDetailsData } = props
+  console.log("🚀 ~ file: AdditionalDetails.tsx ~ line 23 ~ AdditionalDetails ~ projectDetailsData", projectDetailsData)
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
 
@@ -52,10 +53,10 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       },
       {
         heading: 'CREDITING PERIOD',
-        value: [`Start:${'DD/MM/YY'} `, `End:${'DD/MM/YY'}`],
+        value: [`Start: ${moment(projectDetailsData?.start_date).format(`DD/MM/YY`)} `, `End: ${moment(projectDetailsData?.end_date).format(`DD/MM/YY`)}`],
       },
     ]
-    // setDetails(modifiedArrayTemp)
+    setDetails(modifiedArrayTemp)
     // const cardDetails = [
     //   { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: props.projectData?.token_detail?.balance },
     //   { heading: 'CREDITS RETIRED', value: props.projectData?.token_detail?.retire },
