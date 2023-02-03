@@ -30,6 +30,8 @@ import {
   setStartDate,
   setEndDate,
   resetSectionNewProjectDetails,
+  setBannerImage,
+  setProjectImage,
 } from '../../redux/Slices/newProjectSlice'
 import Spinner from '../../atoms/Spinner'
 import _without from 'lodash/without'
@@ -38,6 +40,8 @@ import HelpPopUp from '../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../Appbar/NavBar/Help/SectionA/helpContentData'
 import { setShowPopUp } from '../../redux/Slices/issuanceDataCollection'
 import { PROJECT_TYPES } from '../../config/constants.config'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 
@@ -97,6 +101,14 @@ const ListNewProject = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+  const bannerImage = useAppSelector(
+    ({ newProject }) => newProject.bannerImage,
+    shallowEqual
+  )
+  const projectImage = useAppSelector(
+    ({ newProject }) => newProject.projectImage,
+    shallowEqual
+  )
 
   useEffect(() => {
     dispatch(resetSectionNewProjectDetails())
@@ -112,6 +124,8 @@ const ListNewProject = () => {
         end_date,
         duration,
         area,
+        banner_image = null,
+        project_image = null,
       } = currentProjectDetails
       dispatch(setProjectName(company_name))
       dispatch(setProjectType(type))
@@ -120,6 +134,8 @@ const ListNewProject = () => {
       end_date && dispatch(setEndDate(end_date))
       dispatch(setProjectDuration(duration))
       dispatch(setProjectArea(area))
+      dispatch(setBannerImage(banner_image))
+      dispatch(setProjectImage(project_image))
     }
   }, [currentProjectDetails])
 
@@ -163,6 +179,9 @@ const ListNewProject = () => {
       }
     }
   }
+
+  console.log('bannerImage', bannerImage)
+  console.log('projectImage', projectImage)
 
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
@@ -311,6 +330,39 @@ const ListNewProject = () => {
             SqKm
           </Box>
         </Box>
+      </Grid>
+      <Grid item sx={{ mt: 1 }} xs={12}>
+        <CCDropAndUpload
+          title={'Upload Project Banner Image'}
+          imageArray={bannerImage}
+          onImageUpload={(item: any) => {
+            // console.log('[...bannerImage, item]', [...bannerImage, item])
+            console.log('item', item)
+            const temp = bannerImage ? [...bannerImage] : []
+            temp.push(item)
+            console.log('temp', temp)
+            dispatch(setBannerImage(temp))
+          }}
+          onDeleteImage={(index: number) => {
+            dispatch(setBannerImage(deleteIndexInArray(bannerImage, index)))
+          }}
+          // required={true}
+        />
+      </Grid>
+      <Grid item sx={{ mt: 1 }} xs={12}>
+        <CCDropAndUpload
+          title={'Upload Project Images'}
+          imageArray={projectImage}
+          onImageUpload={(item: any) => {
+            const temp = projectImage ? [...projectImage] : []
+            temp.push(item)
+            dispatch(setProjectImage(temp))
+          }}
+          onDeleteImage={(index: number) => {
+            dispatch(setProjectImage(deleteIndexInArray(projectImage, index)))
+          }}
+          // required={true}
+        />
       </Grid>
       <HelpPopUp
         modal={modal}
