@@ -175,32 +175,32 @@ const SliderTable = (props: SliderTableProps) => {
                     row.map((tdValue: any, tdIndex: number) => {
                       return typeof tdValue === 'string' &&
                         !tdValue.includes('/') ? (
-                        <Tooltip title={tdValue}>
-                          <TrimmedStyledTableCell
-                            // sx={
-                            //   tdIndex === 0
-                            //     ? {
-                            //         minWidth: 150,
-                            //         position: 'sticky',
-                            //         top: 0,
-                            //         left: 0,
-                            //         zindex: 1999,
-                            //         background:
-                            //           index % 2 === 0 ? '#E1EEE8' : '#FFF',
-                            //         height: props.tileHeight,
-                            //         display: 'flex',
-                            //         justifyContent: 'center',
-                            //         alignItems: 'center',
-                            //         boxShadow: showBorder ? 5 : 0,
-                            //       }
-                            //     : { maxHeight: props.tileHeight }
-                            // }
-                            key={tdIndex}
-                            align="center"
-                          >
-                            {tdValue}
-                          </TrimmedStyledTableCell>
-                        </Tooltip>
+                        <TrimmedStyledTableCell
+                          // sx={
+                          //   tdIndex === 0
+                          //     ? {
+                          //         minWidth: 150,
+                          //         position: 'sticky',
+                          //         top: 0,
+                          //         left: 0,
+                          //         zindex: 1999,
+                          //         background:
+                          //           index % 2 === 0 ? '#E1EEE8' : '#FFF',
+                          //         height: props.tileHeight,
+                          //         display: 'flex',
+                          //         justifyContent: 'center',
+                          //         alignItems: 'center',
+                          //         boxShadow: showBorder ? 5 : 0,
+                          //       }
+                          //     : { maxHeight: props.tileHeight }
+                          // }
+                          key={tdIndex}
+                          align="center"
+                        >
+                          <Tooltip title={tdValue}>
+                            <Box>{tdValue}</Box>
+                          </Tooltip>
+                        </TrimmedStyledTableCell>
                       ) : (
                         <StyledTableCell
                           // sx={

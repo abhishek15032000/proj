@@ -116,7 +116,9 @@ export const createSellOrder = async () => {
   const balToCheck = parseInt(carbonTokenBalances?.totalBalances)
   if (sellQuantity > balToCheck) {
     store.dispatch(setOpenSnackbar(true))
-    store.dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
+    store.dispatch(
+      setSnackbarErrorMsg('Not enough balance to create Sell order')
+    )
 
     store.dispatch(setWithdrawAmount(0))
     store.dispatch(setOpenWithdrawModal(false))
@@ -188,7 +190,9 @@ export const createBuyOrder = async () => {
   const balToCheck = parseInt(inrTokenBalances?.totalBalances)
   if (totalAmountForBuying > balToCheck) {
     store.dispatch(setOpenSnackbar(true))
-    store.dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
+    store.dispatch(
+      setSnackbarErrorMsg('Not enough balance to create Buy order')
+    )
 
     store.dispatch(setWithdrawAmount(0))
     store.dispatch(setOpenWithdrawModal(false))

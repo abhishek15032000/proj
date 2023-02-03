@@ -143,18 +143,19 @@ const CCTable = (props: CCTableProps) => {
                     row.map((tdValue: any, tdIndex: number) => {
                       return typeof tdValue === 'string' &&
                         !tdValue.includes('/') ? (
-                        <Tooltip title={tdValue}>
-                          <TrimmedStyledTableCell key={tdIndex} align="center">
-                            {
+                        <TrimmedStyledTableCell key={tdIndex} align="center">
+                          {/* {
                               // middleEllipsis(
-                              //   tdValue,
-                              //   tdValue.length > 21 ? 7 : 1,
-                              //   tdValue.length > 21 ? 7 : 1
-                              // )}
-                              tdValue
-                            }
-                          </TrimmedStyledTableCell>
-                        </Tooltip>
+                                //   tdValue,
+                                //   tdValue.length > 21 ? 7 : 1,
+                                //   tdValue.length > 21 ? 7 : 1
+                                // )}
+                                tdValue
+                              } */}
+                          <Tooltip title={tdValue}>
+                            <Box>{tdValue}</Box>
+                          </Tooltip>
+                        </TrimmedStyledTableCell>
                       ) : (
                         <StyledTableCell key={tdIndex} align="center">
                           {tdValue}
