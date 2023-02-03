@@ -14,8 +14,8 @@ import { ENDPOINTS } from '../../api/configs/Endpoints'
 interface CCDropAndUploadProps {
   title?: string | number
   sx?: any
-  mediaItem: Array<any>
-  mediaTitle: Array<any>
+  mediaItem?: Array<any>
+  mediaTitle?: Array<any>
   imageArray?: any
   onImageUpload?: any
   onDeleteImage?: any
@@ -68,7 +68,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
             <span style={{ color: 'red', fontSize: '12px' }}>*</span>
           )}
         </Typography>
-        {props.mediaItem.length > 0 && (
+        {props.mediaItem && props.mediaItem.length > 0 && (
           <Typography
             onClick={() => setShowModal(true)}
             sx={{
@@ -129,33 +129,34 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         <FileTab key={-1} title={'Uploading...'} index={-1} fileSize={0} />
       )}
 
-      {props.imageArray.map((item: any, index: number) => {
-        if (typeof item === 'string') {
-          return (
-            <FileTab
-              key={index}
-              title={item}
-              index={index}
-              deleteImage={deleteImage}
-              fileSize={0}
-            />
-          )
-        } else {
-          return (
-            <FileTab
-              key={index}
-              title={item.fileName}
-              index={index}
-              deleteImage={deleteImage}
-              fileSize={item.fileSize}
-            />
-          )
-        }
-      })}
+      {props.imageArray &&
+        props.imageArray.map((item: any, index: number) => {
+          if (typeof item === 'string') {
+            return (
+              <FileTab
+                key={index}
+                title={item}
+                index={index}
+                deleteImage={deleteImage}
+                fileSize={0}
+              />
+            )
+          } else {
+            return (
+              <FileTab
+                key={index}
+                title={item.fileName}
+                index={index}
+                deleteImage={deleteImage}
+                fileSize={item.fileSize}
+              />
+            )
+          }
+        })}
 
       <SampleModal
-        mediaArray={[...props.mediaItem]}
-        stringArray={[...props.mediaTitle]}
+        mediaArray={props.mediaItem ? [...props.mediaItem] : []}
+        stringArray={props.mediaTitle ? [...props.mediaTitle] : []}
         modalVisibility={showModal}
         setModalVisibility={setShowModal}
       />

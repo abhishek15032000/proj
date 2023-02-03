@@ -42,6 +42,9 @@ export function useProject(){
           const endDate: any = newProjectData?.endDate
           const projectDuration = newProjectData?.projectDuration
           const projectArea = newProjectData?.projectArea
+          const bannerImage = newProjectData?.bannerImage
+          const projectImage = newProjectData?.projectImage
+          
           if (
             projectName &&
             projectType &&
@@ -55,7 +58,8 @@ export function useProject(){
               location: projectLocation,
               start_date: startDate,
               duration: Number(projectDuration),
-              monthly_update: false,
+              monthly_update: false,banner_image: bannerImage,
+              project_image: projectImage,
             }
             //endData, area is optional
             if (endDate) {
