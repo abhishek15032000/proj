@@ -10,6 +10,7 @@ import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Grid, Tooltip } from '@mui/material'
 import { limitTitle } from '../../../utils/commonFunctions'
 import { FileDownloadSharp } from '@mui/icons-material'
+import { fileUploadCalls } from '../../../api/fileUpload.api'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -29,6 +30,14 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [fields, setFields] = useState<any>([])
+
+  const [bannerImage, setBannerImage] = useState<any>(false)
+  useEffect(() => {
+     const data = project
+    fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+      
+   },[project])
+
 
   useEffect(()=>{
     const {tokens, totalToken} = props.project
@@ -74,9 +83,11 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
         >
           <Box sx={{ borderRadius: '8px 8px 0 0' }}>
             <img
-              src={onWebApp ? Images.ProjectLight : Images.Project}
+              src={onWebApp ? bannerImage ?bannerImage :Images.ProjectLight : bannerImage ? bannerImage: Images.Project}
               alt=""
               width="100%"
+              height="147px"
+              style={{objectFit:"cover"}}
             />
           </Box>
           <Box

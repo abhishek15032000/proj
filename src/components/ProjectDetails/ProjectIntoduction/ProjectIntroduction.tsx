@@ -90,12 +90,13 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
  
    
   const [bannerImage, setBannerImage] = useState<any>(false)
-  console.log("🚀 ~ file: ProjectIntroduction.tsx ~ line 93 ~ ProjectIntroduction ~ bannerImage", bannerImage)
+  // console.log("🚀 ~ file: ProjectIntroduction.tsx ~ line 93 ~ ProjectIntroduction ~ bannerImage", bannerImage)
 
   useEffect(() => {
-   fileUploadCalls.getFile(projectData?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+    const data = projectData? projectData:projectDetailsData
+   fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
      
-  },[projectData])
+  },[projectData,projectDetailsData])
     return (
       <>
         <Grid
