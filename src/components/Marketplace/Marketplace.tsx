@@ -149,7 +149,6 @@ const Marketplace = () => {
         </Box>
       </Box>
 
-      <Button onClick={handleClick}>Open simple snackbar</Button>
       <Trading projectName={location?.state?.projectName} />
       <Snackbar
         open={openSnackbar}
