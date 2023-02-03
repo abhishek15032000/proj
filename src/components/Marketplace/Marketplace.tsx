@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useMarket } from '../../hooks/useMarket'
 import {
   setMessageModalText,
   setShowMessageModal,
@@ -19,11 +20,11 @@ import {
   setOpenWithdrawModal,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
-import {
-  getProjectsTokenDetails,
-  getSellOrdersListData,
-  getTokenBalances,
-} from '../../utils/newMarketplace.utils'
+// import {
+//   getProjectsTokenDetails,
+//   getSellOrdersListData,
+//   getTokenBalances,
+// } from '../../utils/newMarketplace.utils'
 import { getLocalItem } from '../../utils/Storage'
 import Trading from './Trading'
 import WithdrawModal from './WithdrawModal'
@@ -32,6 +33,11 @@ const Marketplace = () => {
   const location: any = useLocation()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const {
+    getProjectsTokenDetails,
+    getSellOrdersListData,
+    getTokenBalances,
+  } = useMarket()
 
   const userID = getLocalItem('userDetails')?.user_id
 

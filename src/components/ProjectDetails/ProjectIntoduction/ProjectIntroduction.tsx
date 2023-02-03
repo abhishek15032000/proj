@@ -13,9 +13,11 @@ import { pathNames } from '../../../routes/pathNames'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import BuyToken from './BuyToken'
+import { fileUploadCalls } from '../../../api/fileUpload.api'
 
 interface ProjectIntroductionProps {
   projectDetailsData?: any,
+  projectData?: any,
   showBuyToken?: boolean
 }
 const ProjectIntroduction = (props: ProjectIntroductionProps) => {
@@ -60,7 +62,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
       name: 'Affordable & Clean Energy',
     },
   ]
-  const { projectDetailsData ,showBuyToken} = props
+  const { projectDetailsData ,showBuyToken, projectData} = props
   console.log("🚀 ~ file: ProjectIntroduction.tsx ~ line 63 ~ ProjectIntroduction ~ projectDetailsData", projectDetailsData)
   const prevScrollY = useRef(0)
 
@@ -85,15 +87,22 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [goingUp])
 
-  if (loading) {
-    return <LoderOverlay />
-  } else {
+ 
+   
+  const [bannerImage, setBannerImage] = useState<any>(false)
+  // console.log("🚀 ~ file: ProjectIntroduction.tsx ~ line 93 ~ ProjectIntroduction ~ bannerImage", bannerImage)
+
+  useEffect(() => {
+    const data = projectData? projectData:projectDetailsData
+   fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+     
+  },[projectData,projectDetailsData])
     return (
       <>
         <Grid
           container
           sx={{
-            backgroundImage: `url(${Images.ProjectDetails})`,
+            backgroundImage: `url(${ !bannerImage ? Images.ProjectDetails : bannerImage})`,
             // pb: 8,
             // maxWidth: 'fit-content',
             maxHeight: 'fit-content',
@@ -112,7 +121,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             alignItems={'flex-start'}
             flexDirection="row"
             sx={{
-              backgroundColor: 'rgba(0, 107, 94, 0.42)',
+              backgroundColor: 'rgba(0, 107, 94, 0.72)',
               borderRadius: '16px',
               // m: 10,
                  p: 3
@@ -242,6 +251,6 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
         </Grid>
       </>
     )
-  }
+   
 }
 export default ProjectIntroduction

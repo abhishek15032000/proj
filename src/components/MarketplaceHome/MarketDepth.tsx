@@ -1,9 +1,10 @@
 import React, { FC, useEffect } from 'react'
 import { Box, Grid, Paper, Skeleton, Typography } from '@mui/material'
 import { Colors } from '../../theme'
-import { getMarketplaceDepthData } from '../../utils/Marketplace/marketDepth.util'
+// import { getMarketplaceDepthData } from '../../utils/Marketplace/marketDepth.util'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
+import { useMarketDepth } from '../../hooks/useMarketDepth'
 
 interface MarketDepthProps {}
 
@@ -16,6 +17,8 @@ const MarketDepth: FC<MarketDepthProps> = (props) => {
     ({ marketDepth }) => marketDepth.marketDepthDataLoading,
     shallowEqual
   )
+
+  const {getMarketplaceDepthData} = useMarketDepth()
 
   useEffect(() => {
     getMarketplaceDepthData()

@@ -23,8 +23,8 @@ import {
   setOngoingBuyOrderTransaction,
   setOngoingDepositTransactionBuyFlow,
 } from '../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
-import { checkBlockchainTransactionComplete } from '../../utils/Marketplace/marketplace.util'
-
+// import { checkBlockchainTransactionComplete } from '../../utils/Marketplace/marketplace.util'
+import {useMarketPlace} from '../../hooks/useMarketPlace'
 interface BuySellComponentProps {}
 
 const BuySellComponent: FC<BuySellComponentProps> = (props) => {
@@ -42,6 +42,8 @@ const BuySellComponent: FC<BuySellComponentProps> = (props) => {
   const onGoingBuyOrderTxIdLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_BUY_ORDER_TX_ID
   )
+
+  const { checkBlockchainTransactionComplete } = useMarketPlace()
 
   useEffect(() => {
     checkForTransactionToComplete()

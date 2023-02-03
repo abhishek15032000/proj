@@ -65,9 +65,9 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   }
   useEffect(()=>{
     const cardDetails = [
-      { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: props.projectData?.token_detail?.balance },
-      { heading: 'CREDITS RETIRED', value: props.projectData?.token_detail?.retire },
-      { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
+      { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: Number(props.projectData?.token_detail?.balance || 0 ).toFixed(2)},
+      { heading: 'CREDITS RETIRED', value: Number(props.projectData?.token_detail?.retire || 0 ).toFixed(2)},
+      { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:Number(props.projectData?.token_detail?.lifetime || 0).toFixed(2) },
     ]
     setCardDetails(cardDetails)
     setTags(props.projectData?.tags)
@@ -96,21 +96,21 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
               {tags &&
-                tags.length &&
+                tags.length ?
                 tags.map((tag: string, index: number) => (
                   <Tag key={index} tag={tag} />
-                ))}
+                )): null}
             </Box>
             <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
               {details &&
-                details.length &&
+                details.length ?
                 details.map((detail: any, index: number) => (
                   <Details
                     key={index}
                     heading={detail?.heading}
                     value={detail?.value}
                   />
-                ))}
+                )): null}
             </Grid>
           </Box>
         </Grid>

@@ -119,7 +119,7 @@ const lightModeTheme = {
 const ProjectDetails = () => {
   
   const [searchParams] = useSearchParams()
-  const[ projectData, setProjectData] = useState(null)
+  const[ projectData, setProjectData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
@@ -206,6 +206,7 @@ const ProjectDetails = () => {
           </Grid>
           <Grid item xs={12} sx={onWebApp ? lightTheme : darkTheme} >
             <ProjectIntroduction
+            projectData={projectData}
               projectDetailsData={projectDetailsData?.state}
               showBuyToken
             />
@@ -229,7 +230,7 @@ const ProjectDetails = () => {
                     projectData={projectData}
                     projectDetailsData={projectDetailsData?.state}
                   />{' '}
-                  <SliderComponent />
+                {projectData?.project_image?.length ?  <SliderComponent  projectData={projectData}/> : null}
                 </>
               )}
               {tabIndex === 2 && <Reports />}

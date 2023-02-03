@@ -8,13 +8,14 @@ import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useMarket } from '../../hooks/useMarket'
 import { setOrdersTabIndex } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors, Images } from '../../theme'
-import {
-  cancelOrder,
-  getBuyOrders,
-  getOpenOrders,
-} from '../../utils/newMarketplace.utils'
+// import {
+//   cancelOrder,
+//   getBuyOrders,
+//   getOpenOrders,
+// } from '../../utils/newMarketplace.utils'
 
 const headings = [
   'Time',
@@ -39,6 +40,7 @@ const openOrdersHeadings = [
 ]
 
 const Orders = () => {
+  const {  cancelOrder,getBuyOrders,getOpenOrders} =  useMarket()
   const dispatch = useAppDispatch()
   const carbonTokenAddress = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenAddress,

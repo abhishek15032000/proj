@@ -1,5 +1,5 @@
 import { Box } from '@mui/system'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined'
 import { Images } from '../../../theme'
@@ -7,8 +7,10 @@ import { pathNames } from '../../../routes/pathNames'
 import { useLocation, useNavigate, createSearchParams } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { Grid } from '@mui/material'
+import { Grid, Tooltip } from '@mui/material'
 import { limitTitle } from '../../../utils/commonFunctions'
+import { FileDownloadSharp } from '@mui/icons-material'
+import { fileUploadCalls } from '../../../api/fileUpload.api'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -27,7 +29,39 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   } = props
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  const [fields, setFields] = useState<any>([])
 
+  const [bannerImage, setBannerImage] = useState<any>(false)
+  useEffect(() => {
+     const data = project
+    fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+      
+   },[project])
+
+
+  useEffect(()=>{
+    const {tokens, totalToken} = props.project
+    const fieldList = [
+      {
+        label: 'Total Tokens :',
+        value:totalToken
+      },
+      {
+        label: 'Tokens Name :',
+        value: tokens?.token_name
+      },
+      {
+        label: 'Token Type :',
+        value:tokens?.token_type
+      },
+      {
+        label: 'Unit Price :',
+        value:tokens?.unit_rate
+      },
+      
+    ]
+    setFields(fieldList)
+  },[props.project])
   return (
     <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start" {...props}>
     <Box
@@ -49,9 +83,11 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
         >
           <Box sx={{ borderRadius: '8px 8px 0 0' }}>
             <img
-              src={onWebApp ? Images.ProjectLight : Images.Project}
+              src={onWebApp ? bannerImage ?bannerImage :Images.ProjectLight : bannerImage ? bannerImage: Images.Project}
               alt=""
               width="100%"
+              height="147px"
+              style={{objectFit:"cover"}}
             />
           </Box>
           <Box
@@ -110,14 +146,15 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
         }}
       >
         <Box sx={{ fontSize: 12, fontWeight: 500 }}>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ width: '50%' }}>PRICE PER OFFSET:</Box>
-            <Box sx={{ width: '50%' }}>$-$$</Box>
+          {fields.map((field:any, index:number) =>{
+            return <Box key={index.toString()} sx={{ display: 'flex', justifyContent:'space-between' }}>
+            <Box sx={{ width: '50%' }}>{field?.label}</Box>
+            <Tooltip title={field?.value} >
+              <Box sx={{ width: '50%' }}>{limitTitle(field.value, 10 )|| '--'}</Box>
+            </Tooltip>
           </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ width: '50%' }}>AVAILABLE:</Box>
-            <Box sx={{ width: '50%' }}>XX.XXX</Box>
-          </Box>
+          })}
+          
         </Box>
         <Box>
           <CCButton

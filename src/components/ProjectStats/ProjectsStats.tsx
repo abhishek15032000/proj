@@ -13,12 +13,15 @@ import { useAppSelector } from '../../hooks/reduxHooks'
 import { useLocation } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { buyerCalls } from '../../api/buyerCalls.api'
-import { getTokensBalance } from '../../utils/tokenRetire.utils'
+// import { getTokensBalance } from '../../utils/tokenRetire.utils'
 import { registryCalls } from '../../api/registry.api'
+import { useTokenRetire } from '../../hooks/useTokenRetire'
 
 const ProjectsStats = () => {
   const scrollRef = useHorizontalScroll()
   const location = useLocation()
+
+  const {getTokensBalance} = useTokenRetire()
 
   const accountAddress = useAppSelector(({ wallet }) => wallet.accountAddress)
   const verifierStatsReload = useAppSelector(

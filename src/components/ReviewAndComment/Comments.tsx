@@ -3,7 +3,8 @@ import React, { useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
 import { COMMENT_ALIGN, ROLES } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
-import { markCommentsAsRead } from '../../utils/reviewAndComment.util'
+import { useComment } from '../../hooks/useComment'
+// import { markCommentsAsRead } from '../../utils/reviewAndComment.util'
 import { getLocalItem } from '../../utils/Storage'
 import Comment from './Comment'
 
@@ -15,7 +16,7 @@ const Comments = () => {
     ({ comments }) => comments.selectedSection,
     shallowEqual
   )
-
+    const {markCommentsAsRead}  = useComment()
   useEffect(() => {
     if (
       selectedSection &&
