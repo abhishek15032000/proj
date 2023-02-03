@@ -18,14 +18,16 @@ const MarketplaceProjectDetails: FC<MarketplaceProjectDetailsProps> = (
 ) => {
   const localloggedIn = getLocalItem('loggedIn')
   return (
-    <Box sx={{ p: localloggedIn ?0: 3 }}>
+    <Box sx={{ p: localloggedIn ? 0 : 3 }}>
       <Grid
         container
         xs={12}
         sx={{ p: 0, border: '0px solid' }}
         justifyContent={'space-between'}
       >
-        <BackHeader title="Project Details" iconDisable />
+        <Grid item mb={5}>
+          <BackHeader title="Project Details" iconDisable />
+        </Grid>
 
         <VitalProjectDetails />
 

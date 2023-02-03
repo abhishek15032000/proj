@@ -181,7 +181,7 @@ const RegisterPage = (props: RegisterPageProps) => {
         justifyContent: 'space-between',
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Box
         sx={{
           width: {

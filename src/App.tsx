@@ -150,7 +150,7 @@ const App: FC<AppProps> = () => {
   }, [])
 
   return waitingAccessCheck ? (
-    <LoaderOverlay show />
+    <LoaderOverlay show ={waitingAccessCheck} />
   ) : (
     <>
       {/* For using mui DatePicker */}

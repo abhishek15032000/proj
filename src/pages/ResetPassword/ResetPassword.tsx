@@ -103,7 +103,7 @@ export default function ResetPassword(props: any) {
       alignItems={'stretch'}
       display="flex"
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Grid
         item
         md={6}

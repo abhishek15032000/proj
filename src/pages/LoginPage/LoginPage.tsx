@@ -132,7 +132,7 @@ const Login = () => {
         justifyContent: 'space-between',
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Box
         sx={{
           width: {
