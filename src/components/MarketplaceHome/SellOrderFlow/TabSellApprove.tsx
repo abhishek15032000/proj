@@ -6,12 +6,14 @@ import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModa
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useMarketPlaceSell } from '../../../hooks/useMarketPlaceSell'
 import { setSellQuantityForApprove } from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import { requestApprovalForTokenSelling } from '../../../utils/Marketplace/marketplaceSellFlow.util'
+// import { requestApprovalForTokenSelling } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const TabSellApprove = () => {
   const dispatch = useAppDispatch()
+  const { requestApprovalForTokenSelling } = useMarketPlaceSell()
   const [showSecondModal, setShowSecondModal] = useState(false)
   const sellQuantityForApprove = useAppSelector(
     ({ marketplaceSellFlow }) => marketplaceSellFlow.sellQuantityForApprove,

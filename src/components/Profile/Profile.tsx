@@ -29,7 +29,7 @@ import ForgotPasswordModal from '../../pages/LoginPage/ForgotPasswordModal'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { ROLES, WalletStats } from '../../config/constants.config'
 import { verifierCalls } from '../../api/verifierCalls.api'
-import { getTokensBalance } from '../../utils/tokenRetire.utils'
+// import { getTokensBalance } from '../../utils/tokenRetire.utils'
 import { buyerCalls } from '../../api/buyerCalls.api'
 import { capitaliseFirstLetter, limitTitle } from '../../utils/commonFunctions'
 import EditProfile from './EditProfile'
@@ -43,6 +43,7 @@ import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.p
 import BlockchainCalls from '../../blockchain/Blockchain'
 import isAlpha from 'validator/lib/isAlpha'
 import { setWalletAdded } from '../../redux/Slices/walletSlice'
+import { useTokenRetire } from '../../hooks/useTokenRetire'
 interface ProfileProps {}
 const statsIssuer = [
   {
@@ -114,6 +115,9 @@ const Profile: FC<ProfileProps> = (props) => {
     ({ marketplaceSellFlow }) => marketplaceSellFlow.exchangeBal,
     shallowEqual
   )
+
+  const {getTokensBalance} = useTokenRetire()
+
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
