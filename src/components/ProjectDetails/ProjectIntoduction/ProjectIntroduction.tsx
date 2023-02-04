@@ -110,7 +110,9 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             minHeight: '600px',
             position: 'relative',
             maxWidth: '100%',
-            justifyContent:'center'
+            justifyContent:'center',
+            padding: !onWebApp ? "6vw 6vw":0,
+           
           }}
           xs={12}
         >
@@ -124,7 +126,8 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               backgroundColor: 'rgba(0, 107, 94, 0.72)',
               borderRadius: '16px',
               // m: 10,
-                 p: 3
+                 p: 3,
+                 marginTop: onWebApp ? 0 : '48px'
             }}
           >
             <Grid

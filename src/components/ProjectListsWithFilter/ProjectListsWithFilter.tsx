@@ -93,21 +93,9 @@ const ProjectListsWithFilter = () => {
     setFilteredProjects(projects)
     setAction(FILTER_ACTION.APPLY)
   }
-
-  return (
-    <Container
-    maxWidth="xl"
-    disableGutters
-      sx={{
-        background: onWebApp
-          ? ''
-          : 'linear-gradient(180deg, #222926 63.19%, #121E18 100%)',
-        padding: onWebApp ? 0 : '56px 6vw',
-        maxHeight:'85vh'
-      }}
-    
-    >
-      <Box
+  
+  const viewRenderer = () =>{return <>
+  <Box
         sx={{ fontSize: '28px', color: onWebApp ? Colors.tertiary : '#55DBC8', mb:4 }}
       >
         Projects
@@ -141,9 +129,9 @@ const ProjectListsWithFilter = () => {
               sx={{
                 px: 2,
                 py: 1,
-                maxHeight: onWebApp ? '72vh' : '70vh',
+                maxHeight: '72vh',
                 overflow: 'auto',
-                overflowX: 'hidden',
+                overflowX: onWebApp ?'hidden': 'auto',
               }}
             >
               <Box>
@@ -259,9 +247,36 @@ const ProjectListsWithFilter = () => {
             )}
           </Grid>
         </Grid>
-      </Grid>
+      </Grid></>}
+  return  onWebApp ?<Container
+    maxWidth="xl"
+    disableGutters
+      sx={{
+        background: onWebApp
+          ? ''
+          : 'linear-gradient(180deg, #222926 63.19%, #121E18 100%)',
+        padding: onWebApp ? 0 : '56px 6vw',
+        maxHeight: '85vh'
+      }}
+    
+    >
+      {viewRenderer()}
     </Container>
-  )
+    :
+    <Box
+    
+      sx={{
+        background: onWebApp
+          ? ''
+          : 'linear-gradient(180deg, #222926 63.19%, #121E18 100%)',
+        padding: onWebApp ? 0 : '56px 6vw',
+        // maxHeight:'85vh'
+      }}
+    
+    >
+      {viewRenderer()}
+    </Box>
+  
 }
 
 export default ProjectListsWithFilter

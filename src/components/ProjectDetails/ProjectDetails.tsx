@@ -145,9 +145,50 @@ const ProjectDetails = () => {
 
   const [tabIndex, setTabIndex] = useState(1)
   const navigate = useNavigate()
-  return (
-    <Container maxWidth="xl">
-      {  <Grid
+
+  const headerRenderer = ()=>{
+    return <Grid
+    container
+    justifyContent={'space-between'}
+    alignItems={'center'}
+    mt={'12px'}
+    mb={5}
+  >
+    <Grid item>
+      <BackHeader
+        title="Project Details"
+        onClick={() => navigate(-1)}
+      />
+    </Grid>
+    <Grid item>
+      <CCButton
+      onClick={()=> navigate(pathNames.RISK_DASHBOARD)}
+        variant="contained"
+        sx={{
+          ml: 3,
+          padding: '10px 25px',
+          borderRadius: 10,
+          fontSize:14,
+          '&:hover': {
+            backgroundColor: 'accent.main',
+            boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
+            color: "#006B5E"
+          }
+        }}
+        buttonBackgroundColor={'#006B5E'}
+        buttonColor={'white'}
+        // onClick={btn1OnClick}
+        // disabled={disableBtn1}
+      >
+         <ArrowOutwardIcon sx={{fontSize:16, fontWeight:'600', mr:1}} />
+        Climate Risk Dashboard
+      </CCButton>
+    </Grid>
+  </Grid>
+  }
+  const viewRenderer =()=>{
+    return <>
+     {  <Grid
         container
         justifyContent={'space-between'}
         alignItems={'center'}
@@ -165,52 +206,15 @@ const ProjectDetails = () => {
             <Typography variant="body1" color="#000000" sx={{pl:1}}>
                 {' > Project Details'}
               </Typography>
-           </Grid> : null}
-          <Grid
-            container
-            justifyContent={'space-between'}
-            alignItems={'center'}
-            mt={'12px'}
-            mb={5}
-          >
-            <Grid item>
-              <BackHeader
-                title="Project Details"
-                onClick={() => navigate(-1)}
-              />
-            </Grid>
-            <Grid item>
-              <CCButton
-              onClick={()=> navigate(pathNames.RISK_DASHBOARD)}
-                variant="contained"
-                sx={{
-                  ml: 3,
-                  padding: '10px 25px',
-                  borderRadius: 10,
-                  fontSize:14,
-                  '&:hover': {
-                    backgroundColor: 'accent.main',
-                    boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
-                    color: "#006B5E"
-                  }
-                }}
-                buttonBackgroundColor={'#006B5E'}
-                buttonColor={'white'}
-                // onClick={btn1OnClick}
-                // disabled={disableBtn1}
-              >
-                 <ArrowOutwardIcon sx={{fontSize:16, fontWeight:'600', mr:1}} />
-                Climate Risk Dashboard
-              </CCButton>
-            </Grid>
-          </Grid>
+           </Grid> : <></>}
+          {onWebApp ? headerRenderer() : null}
           <Grid item xs={12} sx={onWebApp ? lightTheme : darkTheme} >
             <ProjectIntroduction
             projectData={projectData}
               projectDetailsData={projectDetailsData?.state}
               showBuyToken
             />
-            <Box sx={{ mt: 35 }}>
+            <Box sx={{ mt: 35 , px: !onWebApp? "6vw":0}}>
               <TabSelectorWithCount
                 tabArray={[
                   { name: 'About', count: 0 },
@@ -280,8 +284,13 @@ const ProjectDetails = () => {
         </ThemeProvider>
       </Grid>}
       { <LoaderOverlay show={loading} />}
-    </Container>
-  )
+      </>
+  }
+ 
+   return onWebApp ? <Container maxWidth="xl">
+     {viewRenderer()}
+    </Container> : viewRenderer()
+ 
 }
 export default ProjectDetails
 
