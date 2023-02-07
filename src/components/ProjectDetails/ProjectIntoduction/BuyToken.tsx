@@ -12,15 +12,17 @@ import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { pathNames } from '../../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
+import { formatNumberMinify } from '../../../utils/commonFunctions'
 
 interface BuyTokenProps {
   goingUp?: any
   projectDetailsData?:any
+  projectData?:any
 }
 const BuyToken = (props: BuyTokenProps) => {
   const navigate = useNavigate()
   
-  const { goingUp, projectDetailsData } = props
+  const { goingUp, projectDetailsData ,projectData} = props
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
   return (
@@ -61,7 +63,7 @@ const BuyToken = (props: BuyTokenProps) => {
       >
         <TitleValue
           title={'Tokens Available for Purchase :'}
-          value={'04'}
+          value={formatNumberMinify(projectData?.token_detail?.balance) || '--'}
           valueStyle={{
             fontWeight: 500,
             color: 'textColor2.main',
@@ -107,7 +109,7 @@ const BuyToken = (props: BuyTokenProps) => {
             }}
           >
             {/* {props.value === undefined || props.value === '' ? '-' : props.value} */}
-            {'144'}
+            {projectDetailsData?.tokens?.unit_rate || '--'}
           </Typography>
         </Box>
       </Box>
