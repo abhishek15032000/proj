@@ -1,5 +1,5 @@
 import { Grid, Skeleton } from '@mui/material'
-import { Box } from '@mui/system'
+import { Box, Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { verifierCalls } from '../../api/verifierCalls.api'
@@ -16,12 +16,77 @@ import { buyerCalls } from '../../api/buyerCalls.api'
 // import { getTokensBalance } from '../../utils/tokenRetire.utils'
 import { registryCalls } from '../../api/registry.api'
 import { useTokenRetire } from '../../hooks/useTokenRetire'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 const ProjectsStats = () => {
+  let the_slider: any
+
+  const settings = {
+    // className: 'slider variable-width',
+    className: "",
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    variableWidth: true,
+    initialSlide: 0,
+    adaptiveHeight: true,
+    pauseOnHover: false,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow iconClassName="fa fa-chevron-left" />,
+    responsive: [
+      {
+        breakpoint: 1440,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 960,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 3,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 0,
+        },
+      },
+      {
+        breakpoint: 320,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 0,
+        },
+      },
+    ],
+  }
+
   const scrollRef = useHorizontalScroll()
   const location = useLocation()
 
-  const {getTokensBalance} = useTokenRetire()
+  const { getTokensBalance } = useTokenRetire()
 
   const accountAddress = useAppSelector(({ wallet }) => wallet.accountAddress)
   const verifierStatsReload = useAppSelector(
@@ -164,12 +229,12 @@ const ProjectsStats = () => {
     }
   }
   const renderSkeleton = () => {
-    const temp = new Array(5).fill(1)
+    const temp = new Array(4).fill(1)
     return (
       <Box
         ref={scrollRef}
         sx={{
-          mt: 3,
+          // mt: 3,
           paddingBottom: 2,
         }}
         style={{
@@ -211,25 +276,28 @@ const ProjectsStats = () => {
   }
 
   return (
-    <Grid>
-      {loading === true ? (
-        renderSkeleton()
-      ) : (
-        <>
-          <Box
-            ref={scrollRef}
-            sx={{
-              mt: 3,
-              paddingBottom: 2,
-            }}
-            style={{ marginLeft: -10 }}
-            className="stats-row"
-            id="stats-row"
+    <Grid    sx={{margin:0}}>
+      <Grid
+        container
+        // direction="column"
+        // xs={12}
+      
+      >
+        <div   style={{ width: '100%', maxWidth: 'calc(100vw - 260px)' }}>
+        {loading ? (
+          renderSkeleton()
+        ) : (
+          <Slider
+            {...settings}
+            className="slider"
+            ref={(slider) => (the_slider = slider)}
           >
-            {stats &&
-              stats.length &&
-              stats?.map((stat, index) => (
-                <Box key={index} className="stats-container">
+            {stats?.map((stat, index) => (
+              <div key={index.toString()}>
+                <Box
+                  className="stats-container"
+                  style={{ height: '120px', width: '282px', marginRight: 24 }}
+                >
                   <Box className="content-container">
                     <Box className="stats-title">{stat?.title}</Box>
                     <Box className="stats-value">
@@ -241,12 +309,113 @@ const ProjectsStats = () => {
                     sx={{ bgcolor: getColoredDivColor(index) }}
                   ></Box>
                 </Box>
-              ))}
-          </Box>
-        </>
-      )}
+              </div>
+            ))}
+          </Slider>
+        )}
+        </div>
+       
+      </Grid>
     </Grid>
+
+    // <Grid>
+    //               <SliderTest />
+
+    //   {loading === true ? (
+    //     renderSkeleton()
+    //   ) : (
+    //     <>
+    //       <Box
+    //         ref={scrollRef}
+    //         sx={{
+    //           mt: 3,
+    //           paddingBottom: 2,
+    //         }}
+    //         style={{ marginLeft: -10 }}
+    //         className="stats-row"
+    //         id="stats-row"
+    //       >
+    //         {stats &&
+    //           stats.length &&
+    //           stats?.map((stat, index) => (
+    //             <Box key={index} className="stats-container">
+    //               <Box className="content-container">
+    //                 <Box className="stats-title">{stat?.title}</Box>
+    //                 <Box className="stats-value">
+    //                   {stat?.value ? stat?.value : stat?.value === 0 ? 0 : '-'}
+    //                 </Box>
+    //               </Box>
+    //               <Box
+    //                 className="colored-div"
+    //                 sx={{ bgcolor: getColoredDivColor(index) }}
+    //               ></Box>
+    //             </Box>
+    //           ))}
+    //       </Box>
+    //     </>
+    //   )}
+    // </Grid>
   )
 }
 
 export default ProjectsStats
+
+const SampleNextArrow = (props: any) => {
+  const {
+    className,
+    style,
+    onClick,
+    iconClassName = 'fa fa-chevron-right',
+  } = props
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: onClick ?'flex':'none',
+        right: '-5px',
+        background: '#DAE5E1',
+        borderRadius: '50%',
+        boxShadow: '0 4px 10px 0 #eddfd5',
+        height: 32,
+        width: 32,
+        justifyContent:'center',
+        alignItems:"center",
+        filter: 'drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.161))'
+      }}
+      onClick={onClick}
+    >
+       <PlayArrowIcon sx={{color:"#006B5E"}} />
+      
+    </div>
+  )
+}
+const SamplePrevArrow = (props: any) => {
+  const {
+    className,
+    style,
+    onClick,
+    iconClassName = 'fa fa-chevron-left',
+  } = props
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: onClick ?'flex':'none',
+        // left: "-5px",
+        background: '#DAE5E1',
+        borderRadius: '50%',
+        boxShadow: '0 4px 10px 0 #eddfd5',
+        height: 32,
+        width: 32,
+        justifyContent:'center',
+        alignItems:"center",
+        filter: 'drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.161))'
+      }}
+      onClick={onClick}
+    >
+      <PlayArrowIcon sx={{color:"#006B5E", transform:'rotate(180deg)'}} />
+    </div>
+  )
+}
