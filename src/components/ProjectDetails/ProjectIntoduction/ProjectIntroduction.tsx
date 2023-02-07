@@ -251,7 +251,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               </Grid>
             </Grid>
           </Grid>
-         {showBuyToken && <BuyToken goingUp={goingUp} projectDetailsData={projectDetailsData} />}
+         {showBuyToken && <BuyToken goingUp={goingUp} projectData={projectData} projectDetailsData={projectDetailsData} />}
         </Grid>
       </>
     )
