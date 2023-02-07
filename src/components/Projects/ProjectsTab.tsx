@@ -75,7 +75,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
           </Typography>
           <Typography
             sx={{
-              color: '#F3BA4D',
+              color: 'darkPrimary1.main',
               fontSize: 14,
               fontWeight: 400,
               cursor: 'pointer',

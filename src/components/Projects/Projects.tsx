@@ -125,6 +125,8 @@ const Projects = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              mt:2,
+              mb:3
             }}
           >
             <Typography
@@ -140,8 +142,8 @@ const Projects = () => {
                   textTransform: 'none',
                   width: '260px',
                   borderRadius: '100px',
-                  marginBottom: 4,
-                  marginTop: 3,
+                  // marginBottom: 4,
+                  // marginTop: 3,
                   padding: '10px 24px 10px 16px',
                 }}
                 startIcon={<AddIcon style={{ color: '#005046' }} />}

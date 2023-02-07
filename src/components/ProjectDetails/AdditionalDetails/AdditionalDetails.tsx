@@ -123,6 +123,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
               background:
               onWebApp ?'linear-gradient(180deg, #FFFFFF 0%, #DAF7F0 100%)':'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, #2D5F57 237.11%)',
               borderRadius: '8px',
+              overflow:'hidden'
             }}
           >
             {cardDetails &&
