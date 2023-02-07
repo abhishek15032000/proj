@@ -5,7 +5,7 @@ import TokenRetirementProjectList from './TokenRetirementProjectList'
 
 const TokenRetirement = () => {
   return (
-    <Grid container>
+    <Grid container px={1}>
       <Grid item>
         <Typography sx={{ fontSize: 28, fontWeight: 400, color: '#F15D5F' }}>
           Token Retirement
