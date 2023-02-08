@@ -16,10 +16,11 @@ import { TOKEN_CONTRACT_ADDRESS } from '../../config/token.config'
 import Web3 from 'web3'
 import { shallowEqual } from 'react-redux'
 import { ethers } from 'ethers'
-import { getApprovedTokensBalance } from '../../utils/tokenRetire.utils'
+// import { getApprovedTokensBalance } from '../../utils/tokenRetire.utils'
 import PreBlockchainCallModal from '../../atoms/PreBlockchainCallModal/PreBlockchainCallModal'
 import BalanceCheckModal from '../../atoms/BalanceCheckModal/BalanceCheckModal'
 import { buyerCalls } from '../../api/buyerCalls.api'
+import { useTokenRetire } from '../../hooks/useTokenRetire'
 
 declare let window: any
 
@@ -45,6 +46,8 @@ const RetireTokens = (props: RetireTokensProps) => {
   const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [showSecondModal, setShowSecondModal] = useState(false)
+
+  const {getApprovedTokensBalance} =  useTokenRetire()
 
   useEffect(() => {
     if (accountAddress) {

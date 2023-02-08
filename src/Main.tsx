@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
 import { shallowEqual } from 'react-redux'
 import App from './App'
+import { ErrorProvider } from './context/ErrorController'
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
 import { setThroughIFrame } from './redux/Slices/appSlice'
 
@@ -35,10 +36,12 @@ const Main = (props: Props) => {
   }
 
   return loader() ? (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <ErrorProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </ErrorProvider>
   ) : (
     <></>
   )

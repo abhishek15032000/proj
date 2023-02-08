@@ -28,7 +28,7 @@ import { pathNames } from '../../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setLoadWallet } from '../../../redux/Slices/walletSlice'
-import { Colors } from '../../../theme'
+import { Colors, Images } from '../../../theme'
 import NotificationList from '../../../atoms/NotificationList'
 import NotificationIcon from './NotificationIcon'
 import Help from './Help/Help'
@@ -79,11 +79,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppNavBar({ handleDrawerToggle, user }: any) {
   const dispatch = useAppDispatch()
-  const openWallet = () => {
-    console.log('load wallet')
-    dispatch(setLoadWallet(true))
-    console.log('done')
-  }
+  // const openWallet = () => {
+  //   console.log('load wallet')
+  //   dispatch(setLoadWallet(true))
+  //   console.log('done')
+  // }
   const userType = getLocalItem('userDetails')?.type
   // if(userDetails){
   //   const { type: userType } = userDetails
@@ -94,7 +94,7 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-  const walletConnected = useAppSelector((state) => state.wallet.isConnected)
+  // const walletConnected = useAppSelector((state) => state.wallet.isConnected)
   const navigate = useNavigate()
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -108,7 +108,7 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
-    navigate(pathNames.PROFILE)
+    // navigate(pathNames.PROFILE)
   }
 
   const logout = () => {
@@ -136,9 +136,18 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
         horizontal: 'right',
       }}
       open={isMenuOpen}
-      onClose={() =>  setAnchorEl(null)}
+      onClose={() => setAnchorEl(null)}
     >
-      {userType && <MenuItem onClick={handleMenuClose}>Profile</MenuItem>}
+      {userType && (
+        <MenuItem
+          onClick={() => {
+            navigate(pathNames.PROFILE)
+            handleMenuClose()
+          }}
+        >
+          Profile
+        </MenuItem>
+      )}
       {userType && <MenuItem onClick={logout}>Logout</MenuItem>}
       {!userType && (
         <MenuItem onClick={() => navigate(pathNames.LOGIN)}>Login</MenuItem>
@@ -230,7 +239,7 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
         <Box sx={{ display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
           {/* <SelectDropdown /> */}
 
-          <Box
+          {/* <Box
             sx={{
               flexGrow: 1,
               // mx: ,
@@ -250,7 +259,7 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
                   textTransform: 'none',
                 }}
               >
-                <CreditCardRoundedIcon />
+               <img alt="wallet_icon_chainflux" src={Images.wallet} width="24px" height="24px"/>
                 {walletConnected && (
                   <CheckCircleIcon
                     sx={{
@@ -262,10 +271,10 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
                     }}
                   />
                 )}
-                <Typography sx={{ mx: 1, fontWeight: 500 }}>Wallet</Typography>
+                <Typography sx={{ mx: 1, fontWeight: 700, fontSize:14 }}>Wallet</Typography>
               </Button>
             )}
-          </Box>
+          </Box> */}
           {userType === ROLES.ISSUER && <Help />}
 
           {/* <IconButton
@@ -289,7 +298,13 @@ export default function AppNavBar({ handleDrawerToggle, user }: any) {
             onClick={handleProfileMenuOpen}
             color="primary"
           >
-            <PersonOutlineOutlinedIcon />
+            {/* <PersonOutlineOutlinedIcon /> */}
+            <img
+              alt="user_icon_chainflux"
+              src={Images.user}
+              width="24px"
+              height="24px"
+            />
           </IconButton>
         </Box>
         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

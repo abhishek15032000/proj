@@ -21,9 +21,13 @@ const CCButtonOutlined: React.FC<CCButtonOutlinedProps> = (props) => {
           minWidth: '168px',
           boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.15)`,
           '&:hover': {
-            backgroundColor: 'darkPrimary1.main',
+            backgroundColor: props?.onHoverBgColor
+              ? props?.onHoverBgColor
+              : 'darkPrimary1.main',
             boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
-            color: '#ffffff',
+            color: props?.onHoverTextColor
+              ? props?.onHoverTextColor
+              : '#ffffff',
           },
           ...props.sx,
         }}

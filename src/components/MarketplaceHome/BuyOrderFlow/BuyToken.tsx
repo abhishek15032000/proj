@@ -5,23 +5,28 @@ import TabSelector from '../../../atoms/TabSelector/TabSelector'
 import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { Colors } from '../../../theme'
-import {
-  getApprovedTokensBalanceBuyFlow,
-  getBalanceOnExchangeBuyFlow,
-  getWalletBalanceBuyFlow,
-} from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+// import {
+//   getApprovedTokensBalanceBuyFlow,
+//   getBalanceOnExchangeBuyFlow,
+//   getWalletBalanceBuyFlow,
+// } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 import { getLocalItem } from '../../../utils/Storage'
 import CardRow from '../../../atoms/CardRow/CardRow'
 import TabBuyApprove from './TabBuyApprove'
 import TabBuyCreateBuyOrder from './TabBuyCreateBuyOrder'
 import TabBuyDeposit from './TabBuyDeposit'
+import { useMarketplaceBuy } from '../../../hooks/useMarketPlaceBuy'
 
 interface BuyTokenProps {}
 
 const BuyToken: FC<BuyTokenProps> = () => {
   const dispatch = useAppDispatch()
   const [tabIndex, setTabIndex] = useState(1)
-
+  const {
+    getApprovedTokensBalanceBuyFlow,
+    getBalanceOnExchangeBuyFlow,
+    getWalletBalanceBuyFlow,
+  }  = useMarketplaceBuy()
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual

@@ -205,7 +205,7 @@ export default function ResponsiveDrawer(props: any) {
       </Grid>
 
       <Grid container xs={12} sx={{ height: '100%', width: '100%' }}>
-        <List sx={{ mt: 1, width: '100%' }}>
+        <List sx={{ mt: 1, width: '100%' , overflowY:'auto'}}>
           {midMenu().map((text, index) => (
             <NavLink
               key={index.toString()}
@@ -267,7 +267,7 @@ export default function ResponsiveDrawer(props: any) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          background: 'background',
+          backgroundColor: 'appBarBg.main',
         }}
       >
         <AppNavBar handleDrawerToggle={handleDrawerToggle} user={props.user} />

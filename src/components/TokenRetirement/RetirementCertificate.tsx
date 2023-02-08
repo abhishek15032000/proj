@@ -1,4 +1,5 @@
 import { Grid, Paper, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
@@ -9,14 +10,15 @@ import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
 
 const headings = [
-  'Date of retirement',
+  'Retirement ID',
+  'Project Name',
   'Time',
-  'Quantity',
-  'Footprint offset',
-  'Country',
-  'Account holder',
+  'Total Tokens',
+  'Retired',
+  'After Retirement',
+  'Footprint Offset',
   'Beneficial owner',
-  'Retirement reason',
+  'Retirement Reason',
 ]
 
 const RetirementCertificate = () => {
@@ -51,6 +53,7 @@ const RetirementCertificate = () => {
                 i?.token_quantity,
                 '-',
                 '-',
+                '-',
                 i?.beneficialOwner,
                 i?.reason,
               ]
@@ -65,9 +68,17 @@ const RetirementCertificate = () => {
   }
   return (
     <Grid item xs={12} sx={{ mt: 4 }}>
-      <Paper elevation={2} sx={{ py: 2, px: 2 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          py: 2,
+          px: 2,
+          borderRadius: '8px',
+          boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+        }}
+      >
         <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
-          Retirement Certificate
+          Token Retirement History
         </Typography>
         {loading ? (
           <CCTableSkeleton />
@@ -78,17 +89,27 @@ const RetirementCertificate = () => {
             maxWidth={'100%'}
           />
         ) : (
-          <Typography
+          <Box
             sx={{
-              mt: 2,
-              bgcolor: Colors?.darkPrimary2,
-              p: 1,
-              borderRadius: 2,
-              textAlign: 'center',
+              display: 'flex',
+              height: '200px',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            No Records to Show
-          </Typography>
+            <Typography
+              sx={{
+                mt: 2,
+                bgcolor: Colors?.darkPrimary2,
+                p: 1,
+                borderRadius: 2,
+                textAlign: 'center',
+                width: '100%',
+              }}
+            >
+              No Records to Show
+            </Typography>
+          </Box>
         )}
       </Paper>
     </Grid>

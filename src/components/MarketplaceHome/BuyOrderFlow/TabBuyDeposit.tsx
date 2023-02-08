@@ -8,13 +8,14 @@ import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setBuyQuantityForDeposit } from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
-import { depositERC20BuyFlow } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+// import { depositERC20BuyFlow } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+import { useMarketplaceBuy } from '../../../hooks/useMarketPlaceBuy'
 
 const TabBuyDeposit = () => {
   const dispatch = useAppDispatch()
 
   const [showSecondModal, setShowSecondModal] = useState(false)
-
+  const { depositERC20BuyFlow }  = useMarketplaceBuy()
   const buyQuantityForDeposit = useAppSelector(
     ({ marketplaceBuyFlow }) => marketplaceBuyFlow.buyQuantityForDeposit,
     shallowEqual

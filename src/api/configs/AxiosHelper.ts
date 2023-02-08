@@ -12,6 +12,8 @@ export const AxiosHelper = async (
     req.headers.Authorization =
       'Bearer ' + getLocalItem('userDetails')?.jwtToken
     return req
+  },(error: any) => {
+    return Promise.reject(error)
   })
   const jwtToken = getLocalItem('userDetails')?.jwtToken
   const call = () => {

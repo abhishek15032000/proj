@@ -83,11 +83,12 @@ const BuyerDashboard = () => {
   return (
     <>
       {loader ? (
-        <LoaderOverlay />
+        <LoaderOverlay show />
       ) : (
         <>
           <Typography
-            sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400 }}
+            sx={{ color: Colors.tertiary, fontSize: 28, fontWeight: 400, mt:2,
+              mb:3 }}
           >
             Dashboard
           </Typography>

@@ -4,11 +4,12 @@ import React from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { setComment } from '../../redux/Slices/commentsSlice'
-import { sendComment } from '../../utils/reviewAndComment.util'
-import '../ProjectDetails/TraceHistory/TraceHistory.css'
+// import { sendComment } from '../../utils/reviewAndComment.util'
+import { useComment } from '../../hooks/useComment'
+
 const SendComment = () => {
   const dispatch = useAppDispatch()
-
+  const {sendComment} = useComment()
   const comment = useAppSelector(
     ({ comments }) => comments.comment,
     shallowEqual

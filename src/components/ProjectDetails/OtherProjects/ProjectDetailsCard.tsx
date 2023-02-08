@@ -1,33 +1,78 @@
 import { Box } from '@mui/system'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined'
 import { Images } from '../../../theme'
 import { pathNames } from '../../../routes/pathNames'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, createSearchParams } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
+import { Grid, Tooltip } from '@mui/material'
+import { limitTitle } from '../../../utils/commonFunctions'
+import { FileDownloadSharp } from '@mui/icons-material'
+import { fileUploadCalls } from '../../../api/fileUpload.api'
 
 interface ProjectDetailsCardProps {
   project: any
   navigationAction: any
+  justifyContent?: string
+  [x:string]: any;
 }
-const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
-  project,
-  navigationAction,
-}) => {
+const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  const {
+    project,
+    navigationAction,
+    justifyContent="center"
+  } = props
 
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  const [fields, setFields] = useState<any>([])
+
+  const [bannerImage, setBannerImage] = useState<any>(false)
+  useEffect(() => {
+    if(!bannerImage && project?.banner_image[0]){
+
+      const data = project
+      fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+    }
+      
+   },[project])
+
+
+  useEffect(()=>{
+    const {tokens, totalToken} = props.project
+    const fieldList = [
+      {
+        label: 'Total Tokens :',
+        value:totalToken
+      },
+      {
+        label: 'Tokens Name :',
+        value: tokens?.token_name
+      },
+      {
+        label: 'Token Type :',
+        value:tokens?.token_type
+      },
+      {
+        label: 'Unit Price :',
+        value:tokens?.unit_rate
+      },
+      
+    ]
+    setFields(fieldList)
+  },[props.project])
   return (
+    <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start" {...props}>
     <Box
       sx={{
-        width: '280px',
-        mb: 2,
+        width: '264px',
+        // mb: 2,
         borderRadius: '8px',
-        mr: 4,
+        // mr: 4,
         height: '100%',
         boxShadow: onWebApp ? '0px 5px 25px rgba(0, 0, 0, 0.12)' : '',
       }}
@@ -41,9 +86,11 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
         >
           <Box sx={{ borderRadius: '8px 8px 0 0' }}>
             <img
-              src={onWebApp ? Images.ProjectLight : Images.Project}
+              src={onWebApp ? bannerImage ?bannerImage :Images.ProjectLight : bannerImage ? bannerImage: Images.Project}
               alt=""
               width="100%"
+              height="147px"
+              style={{objectFit:"cover"}}
             />
           </Box>
           <Box
@@ -72,8 +119,8 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           borderBottom: '1px solid #899390',
         }}
       >
-        <Box sx={{ fontSize: 16, fontWeight: 500, wordBreak: 'break-word' }}>
-          {project?.company_name || 'King County Urban Forest Council'}
+        <Box sx={{ fontSize: 16, fontWeight: 500, wordBreak: 'break-word', minHeight:'48px'}}>
+          {limitTitle(project?.company_name, 45) || '--'}
         </Box>
         <Box
           sx={{
@@ -84,7 +131,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
           }}
         >
           <FmdGoodOutlinedIcon sx={{ color: '#667080', ml: '-3px' }} />
-          <Box sx={{ fontSize: 10, fontWeight: 500 }}>
+          <Box sx={{ fontSize: 10, fontWeight: 500 , minHeight:'30px'}}>
             {`Project Location ${
               project?.location || 'Lexington, Ohio, United States'
             } | Project Area ${project?.area || '53.4'} Sq.Km`}
@@ -102,14 +149,15 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
         }}
       >
         <Box sx={{ fontSize: 12, fontWeight: 500 }}>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ width: '50%' }}>PRICE PER OFFSET:</Box>
-            <Box sx={{ width: '50%' }}>$-$$</Box>
+          {fields.map((field:any, index:number) =>{
+            return <Box key={index.toString()} sx={{ display: 'flex', justifyContent:'space-between' }}>
+            <Box sx={{ width: '50%' }}>{field?.label}</Box>
+            <Tooltip title={field?.value} >
+              <Box sx={{ width: '50%' }}>{limitTitle(field.value, 10 )|| '--'}</Box>
+            </Tooltip>
           </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ width: '50%' }}>AVAILABLE:</Box>
-            <Box sx={{ width: '50%' }}>XX.XXX</Box>
-          </Box>
+          })}
+          
         </Box>
         <Box>
           <CCButton
@@ -124,7 +172,13 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
               fontWeight: 500,
             }}
             onClick={() =>
-              navigate(pathNames.PROJECT_DETAILS, { state: project })
+              navigate(
+                {
+                  pathname: pathNames.PROJECT_DETAILS,
+                  search: `?${createSearchParams({ projectId: project.uuid })}`,
+                },
+                { state: project }
+              )
             }
           >
             Buy Credits
@@ -132,6 +186,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = ({
         </Box>
       </Box>
     </Box>
+    </Grid>
   )
 }
 

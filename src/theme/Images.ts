@@ -1,5 +1,5 @@
 import logo from '../assets/Images/logo/logo.svg'
-import ICRLogo from '../assets/Images/logo/ICR-Logo.png'
+import ICRLogo from '../assets/Images/logo/ICR-Logo.svg'
 import illustration1 from '../assets/Images/illustrations/illustration1.svg'
 import illustration2 from '../assets/Images/illustrations/illustration2.svg'
 import illustration3 from '../assets/Images/illustrations/illustration3.svg'
@@ -72,7 +72,7 @@ import ten from '../assets/Images/project-details/10.png'
 import twelve from '../assets/Images/project-details/12.png'
 import thirteen from '../assets/Images/project-details/13.png'
 import fifteen from '../assets/Images/project-details/15.png'
-import user from '../assets/Images/Icons/user.png'
+// import user from '../assets/Images/Icons/user.png'
 import UserDark from '../assets/Images/Icons/user-icon-dark.png'
 import List from '../assets/Images/help/List.png'
 import Project from '../assets/Images/illustrations/Project.png'
@@ -84,6 +84,13 @@ import trending from '../assets/Images/Icons/trending.png'
 import eyeClose from '../assets/Images/Icons/eyeClose.png'
 import eyeOpen from '../assets/Images/Icons/eyeOpen.png'
 import group from '../assets/Images/Icons/group.png'
+import Orders from '../assets/Images/illustrations/orders.svg'
+import OrderHistory from '../assets/Images/illustrations/order-history.svg'
+import bell from '../assets/Images/Icons/bell.svg'
+import help from '../assets/Images/Icons/help-circle.svg'
+import user from '../assets/Images/Icons/user.svg'
+import settings from '../assets/Images/Icons/settings.svg'
+import wallet from '../assets/Images/Icons/credit-card.svg'
 
 export const Images = {
   logo,
@@ -170,4 +177,10 @@ export const Images = {
   group,
   eyeClose,
   eyeOpen,
+  Orders,
+  OrderHistory,
+  bell,
+  help,
+  settings,
+  wallet
 }

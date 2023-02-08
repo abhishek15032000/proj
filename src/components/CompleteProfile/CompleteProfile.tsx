@@ -112,7 +112,7 @@ const CompleteProfile = () => {
   return (
     <>
       {profileCompletionLoading ? (
-        <LoaderOverlay />
+        <LoaderOverlay show />
       ) : (
         <Grid container columnSpacing={1}>
           <Grid item md={9}>

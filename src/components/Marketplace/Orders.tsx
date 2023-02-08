@@ -1,3 +1,5 @@
+import { Tooltip } from '@mui/material'
+import { Box } from '@mui/system'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
@@ -7,15 +9,18 @@ import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useMarket } from '../../hooks/useMarket'
 import { setOrdersTabIndex } from '../../redux/Slices/newMarketplaceSlice'
-import { Colors } from '../../theme'
-import {
-  cancelOrder,
-  getBuyOrders,
-  getOpenOrders,
-} from '../../utils/newMarketplace.utils'
+import { Colors, Images } from '../../theme'
+import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
+// import {
+//   cancelOrder,
+//   getBuyOrders,
+//   getOpenOrders,
+// } from '../../utils/newMarketplace.utils'
 
 const headings = [
+  // 'Tx',
   'Time',
   'All pairs',
   'All Types',
@@ -26,6 +31,7 @@ const headings = [
   'Unexecuted',
 ]
 const openOrdersHeadings = [
+  // 'Tx',
   'Time',
   'All pairs',
   'All Types',
@@ -38,6 +44,7 @@ const openOrdersHeadings = [
 ]
 
 const Orders = () => {
+  const { cancelOrder, getBuyOrders, getOpenOrders } = useMarket()
   const dispatch = useAppDispatch()
   const carbonTokenAddress = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenAddress,
@@ -67,6 +74,10 @@ const Orders = () => {
     ({ newMarketplaceReducer }) => newMarketplaceReducer.buyOrdersLoading,
     shallowEqual
   )
+  const cancelOrderLoading = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.cancelOrderLoading,
+    shallowEqual
+  )
 
   const [rows, setRows] = useState<any>(null)
 
@@ -89,36 +100,74 @@ const Orders = () => {
     let data: any
     switch (ordersTabIndex) {
       case 1: {
-        data = openOrders
+        if (openOrders && openOrders.length) {
+          data = openOrders
+        }
         break
       }
       case 2: {
+        if (closedOrders && closedOrders.length) {
+          data = closedOrders
+        }
         data = closedOrders
         break
       }
-      case 3: {
-        data = [...openOrders, ...closedOrders, ...buyOrders]
-        data.sort((a: any, b: any) => {
-          const aTime: any = new Date(a.time)
-          const bTime: any = new Date(b.time)
-          return bTime - aTime
-        })
+      case 3:
+        {
+          // if (
+          //   openOrders &&
+          //   openOrders.length &&
+          //   closedOrders &&
+          //   closedOrders.length &&
+          //   buyOrders &&
+          //   buyOrders.length
+          // ) {
+          data = [...openOrders, ...closedOrders, ...buyOrders]
+          data.sort((a: any, b: any) => {
+            const aTime: any = new Date(a.time)
+            const bTime: any = new Date(b.time)
+            return bTime - aTime
+          })
+        }
         break
-      }
+      // }
     }
 
     const tempRows = data?.map((item: any) => {
       const row = [
+        // <Tooltip key={item?.hash} title={item?.hash}>
+        //   <Box
+        //     sx={{
+        //       whiteSpace: 'nowrap',
+        //       overflow: 'hidden',
+        //       textOverflow: 'ellipsis',
+        //       maxWidth: '80px',
+        //     }}
+        //   >
+        //     <a
+        //       href={`https://mumbai.polygonscan.com/tx/${item?.hash}`}
+        //       // href={`https://mumbai.polygonscan.com/address/${'0x69ed2cd5f4676a1751b389e0295fe7b238921aeb'}`}
+        //       target="_blank"
+        //       rel="noreferrer"
+        //       // style={{ color: '#1A8EF5' }}
+        //     >
+        //       {/* {txIDForTab} */}
+        //       {item?.hash}
+        //     </a>
+        //   </Box>
+        // </Tooltip>,
         moment(item?.time).format('LT, L'),
         item?.pair,
         item?.type,
-        item?.unitPrice ? Math.round(item?.unitPrice * 100) / 100 : 0,
+        item?.unitPrice
+          ? convertToInternationalCurrencySystem(item?.unitPrice)
+          : 0,
         item?.quantity,
-        item?.amount,
+        item?.amount ? convertToInternationalCurrencySystem(item?.amount) : 0,
         item?.executed,
         item?.unexecuted,
       ]
-      if (ordersTabIndex === 1 || ordersTabIndex === 2) {
+      if (ordersTabIndex === 1) {
         const actionBtn = (
           <CCButton
             sx={{
@@ -139,10 +188,10 @@ const Orders = () => {
               }
               cancelOrder(payload)
             }}
-            // disabled={isDisabled()}
+            disabled={!item?.unexecuted}
             variant="contained"
           >
-            {ordersTabIndex === 1 ? 'Cancel' : 'Withdraw'}
+            Cancel
           </CCButton>
         )
         row.push(actionBtn)
@@ -153,26 +202,79 @@ const Orders = () => {
   }
 
   return (
-    <CCPaper>
-      <TabSelector
-        tabArray={['Open Orders', 'Closed Order', 'Order History']}
-        tabIndex={ordersTabIndex}
-        setTabIndex={(tabIndex: number) =>
-          dispatch(setOrdersTabIndex(tabIndex))
-        }
-        sx={{ mt: 0 }}
-      />
-      {openOrdersLoading || buyOrdersLoading ? (
-        <CCTableSkeleton sx={{ mt: 2 }} />
-      ) : (
-        <CCTable
-          headings={ordersTabIndex === 3 ? headings : openOrdersHeadings}
-          rows={rows}
-          pagination={rows?.length > 5 ? true : false}
-          rowsPerPageProp={5}
-        />
-      )}
-    </CCPaper>
+    <>
+      <CCPaper>
+        {(openOrders && openOrders.length) ||
+        (closedOrders && closedOrders.length) ||
+        (buyOrders && buyOrders.length) ? (
+          <TabSelector
+            tabArray={['Open Orders', 'Closed Orders', 'Order History']}
+            tabIndex={ordersTabIndex}
+            setTabIndex={(tabIndex: number) =>
+              dispatch(setOrdersTabIndex(tabIndex))
+            }
+            sx={{ mt: 0 }}
+          />
+        ) : null}
+        {openOrdersLoading || buyOrdersLoading || cancelOrderLoading ? (
+          <CCTableSkeleton items={5} sx={{ mt: 2 }} />
+        ) : (!openOrders || !openOrders.length) &&
+          (!closedOrders || !closedOrders.length) &&
+          (!buyOrders || !buyOrders.length) ? (
+          <Box sx={{ background: Colors.lightGreenBackground, height: '33vh' }}>
+            <Box
+              sx={{
+                height: '40%',
+                display: 'flex',
+                alignItems: 'end',
+                justifyContent: 'center',
+              }}
+            >
+              <Box sx={{ mb: 1 }}>Your Orders details are shown here</Box>
+            </Box>
+            <Box
+              sx={{
+                textAlign: 'center',
+                // display: 'flex',
+                // justifyContent: 'center',
+                // backgroundImage: `url(${Images.Orders})`,
+                // // height: '100%',
+                // backgroundRepeat: 'no-repeat',
+                // backgroundPosition: 'center top',
+                // overflow: 'hidden',
+                // height: '100%',
+                // objectFit: 'cover',
+                // objectPosition: '25% 25%',
+              }}
+            >
+              <img src={Images.OrderHistory} alt="" />
+            </Box>
+          </Box>
+        ) : rows && rows.length > 0 ? (
+          <CCTable
+            headings={ordersTabIndex === 3 ? headings : openOrdersHeadings}
+            rows={rows}
+            pagination={rows?.length > 5 ? true : false}
+            rowsPerPageProp={5}
+          />
+        ) : (
+          <Box
+            sx={{
+              mt: 1,
+              bgcolor: Colors.darkPrimary2,
+              color: Colors.darkPrimary1,
+              fontWeight: 500,
+              fontSize: 14,
+              p: 2,
+              textAlign: 'center',
+              borderRadius: '4px',
+            }}
+          >
+            No Orders under this tab
+          </Box>
+        )}
+      </CCPaper>
+    </>
   )
 }
 

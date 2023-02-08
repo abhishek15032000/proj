@@ -20,7 +20,8 @@ import SavedAccountPopup from './SavedAccountPopup'
 import TransactionHistoryTable from './TransactionHistory'
 import WithdrawPopup from './WithdrawPopup'
 import LoaderOverlay from '../../components/LoderOverlay'
-import { getBalanceOnExchange } from '../../utils/Marketplace/marketplaceSellFlow.util'
+import { useMarketPlaceSell } from '../../hooks/useMarketPlaceSell'
+// import { getBalanceOnExchange } from '../../utils/Marketplace/marketplaceSellFlow.util'
 const stats = [
   {
     title: WalletStats.WALLET_BALANCE,
@@ -45,7 +46,7 @@ const stats = [
 
 const IssuerWallet = (props: IssuerWalletProps) => {
   const dispatch: any = useAppDispatch()
-
+  const { getBalanceOnExchange }  = useMarketPlaceSell()
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
@@ -266,7 +267,7 @@ const IssuerWallet = (props: IssuerWalletProps) => {
   }
 
   if (loading) {
-    return <LoaderOverlay />
+    return <LoaderOverlay  show />
   } else {
     return (
       <Box sx={{ p: 0 }}>

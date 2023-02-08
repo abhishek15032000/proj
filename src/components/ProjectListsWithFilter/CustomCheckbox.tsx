@@ -25,7 +25,7 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({
       checked={selectedFilters.includes(label)}
       sx={{
         // color: '#55DBC8',
-        color: '#DAE5E1',
+        color: onWebApp ? '#4A635E' : '#DAE5E1',
         '&.Mui-checked': {
           // color: '#55DBC8',
           color: onWebApp ? '#4A635E' : '#DAE5E1',

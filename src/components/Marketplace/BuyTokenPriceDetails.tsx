@@ -1,28 +1,14 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Button, Grid, Menu, Skeleton, Typography } from '@mui/material'
+import { Button, Grid, Menu, Skeleton } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
+import React from 'react'
 import { shallowEqual } from 'react-redux'
-import { marketplaceCalls } from '../../api/marketplaceCalls.api'
 import CardRow from '../../atoms/CardRow/CardRow'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import {
-  setBuyUnitPrice,
-  setTotalAmountForBuying,
-  setBuyOrderPayloadOfferHashes,
-  setBuyOrderPayloadAmountsToTake,
-  setBuyOrderPayloadUUID,
-  setCheckFulfilLoading,
-} from '../../redux/Slices/newMarketplaceSlice'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
+import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
 
-const BuyTokenPriceDetails = () => {
-  const dispatch = useAppDispatch()
-
-  const buyQuantity = useAppSelector(
-    ({ newMarketplaceReducer }) => newMarketplaceReducer.buyQuantity,
-    shallowEqual
-  )
+const BuyTokenPriceDetails = (props: any) => {
   const buyUnitPrice = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.buyUnitPrice,
     shallowEqual
@@ -36,7 +22,6 @@ const BuyTokenPriceDetails = () => {
     shallowEqual
   )
 
-  const [tokenAndUnitPriceList, setTokenAndUnitPriceList] = useState<any>(null)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -48,64 +33,8 @@ const BuyTokenPriceDetails = () => {
     setAnchorEl(null)
   }
 
-  const checkForFullFillOrder = async () => {
-    try {
-      dispatch(setCheckFulfilLoading(true))
-      const res = await marketplaceCalls.checkForFullFillOrder(buyQuantity)
-      if (res?.success && res?.data && res?.data?.length) {
-        const offerHashes: any = []
-        const amountsToTake: any = []
-        const uuid: any = []
-        const tokenAndUnitPrice: any[] = []
-
-        const total = res?.data.reduce((prev: any, curr: any) => {
-          offerHashes.push(curr.hash)
-          amountsToTake.push(curr.cab)
-          uuid.push(curr.uuid)
-          tokenAndUnitPrice.push({ tokenQuantity: curr?.cab, rate: curr?.rate })
-          return (prev += curr.cab * curr.rate)
-        }, 0)
-        const unitPriceLocal =
-          Math.round((total / Number(buyQuantity)) * 1000) / 1000
-        dispatch(setTotalAmountForBuying(total))
-        dispatch(setBuyUnitPrice(unitPriceLocal))
-        dispatch(setBuyOrderPayloadOfferHashes(offerHashes))
-        dispatch(setBuyOrderPayloadAmountsToTake(amountsToTake))
-        dispatch(setBuyOrderPayloadUUID(uuid))
-
-        setTokenAndUnitPriceList(tokenAndUnitPrice)
-      }
-    } catch (err) {
-      console.log('Error in marketplaceCalls.checkForFullFillOrder api :', err)
-    } finally {
-      dispatch(setCheckFulfilLoading(false))
-    }
-  }
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography
-          sx={{
-            mt: 1,
-            fontSize: 14,
-            fontWeight: 500,
-            color: buyQuantity ? Colors.textColorLightGreen : Colors.lightGray,
-            cursor: buyQuantity ? 'pointer' : 'not-allowed',
-            textDecoration: 'underline',
-            width: 'fit-content',
-          }}
-          onClick={() => {
-            if (buyQuantity) {
-              checkForFullFillOrder()
-            }
-          }}
-        >
-          Click to check for Token and Unit Price
-        </Typography>
-        <Button sx={{ mt: 1, p: 0, ml: 1, minWidth: 0 }} onClick={handleClick}>
-          <InfoOutlinedIcon sx={{ fontSize: 20 }} />
-        </Button>
-      </Box>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -148,9 +77,9 @@ const BuyTokenPriceDetails = () => {
               Unit Price
             </Grid>
           </Grid>
-          {tokenAndUnitPriceList &&
-            tokenAndUnitPriceList.length > 0 &&
-            tokenAndUnitPriceList.map((item: any, index: number) => (
+          {props?.tokenAndUnitPriceList &&
+            props?.tokenAndUnitPriceList.length > 0 &&
+            props?.tokenAndUnitPriceList.map((item: any, index: number) => (
               <Grid
                 container
                 key={index}
@@ -172,7 +101,7 @@ const BuyTokenPriceDetails = () => {
         </Box>
       </Menu>
       {checkFulfilLoading ? (
-        <>
+        <Box sx={{ mt: 1 }}>
           <Skeleton
             sx={{
               fontSize: '1.5rem',
@@ -187,15 +116,68 @@ const BuyTokenPriceDetails = () => {
             }}
             variant="text"
           />
-        </>
+        </Box>
       ) : (
-        <>
-          <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} USD`} />
+        <Box sx={{ mt: 2 }}>
           <CardRow
-            title="Total amount to be paid :"
-            value={`${Math.round(totalAmountForBuying * 100) / 100 || 0} USD`}
+            title="Unit Price :"
+            value={`${
+              convertToInternationalCurrencySystem(buyUnitPrice) || 0
+            } USD`}
           />
-        </>
+          <Grid container justifyContent={'space-between'} mt={1}>
+            <Grid item xs={9}>
+              <Box
+                sx={{
+                  color: Colors.darkPrimary1,
+                  fontWeight: 500,
+                  fontSize: 16,
+                  display: 'flex',
+                  alignItems: 'end',
+                }}
+              >
+                <Box>Total amount to be paid</Box>
+                <Button
+                  sx={{
+                    p: 0,
+                    minWidth: 0,
+                    margin: '0 4px 2px',
+                  }}
+                  onClick={handleClick}
+                >
+                  <InfoOutlinedIcon sx={{ fontSize: 20 }} />
+                </Button>
+                <Box sx={{}}>:</Box>
+                {/* <Box
+                  sx={
+                    {
+                      // display: 'flex',
+                      // alignItems: 'center',
+                      // justifyContent: 'flex-start',
+                    }
+                  }
+                >
+                  Total amount to be paid{' '}
+                  <InfoOutlinedIcon sx={{ fontSize: 20 }} /> :
+                </Box> */}
+              </Box>
+            </Grid>
+            <Grid item xs={3}>
+              <Box
+                sx={{
+                  fontWeight: 500,
+                  fontSize: 16,
+                  textAlign: 'right',
+                }}
+              >
+                {/* {`${Math.round(totalAmountForBuying * 100) / 100 || 0} USD`} */}
+                {`${convertToInternationalCurrencySystem(
+                  totalAmountForBuying
+                )} USD`}
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
       )}
     </>
   )

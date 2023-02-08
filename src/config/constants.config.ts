@@ -63,6 +63,8 @@ export const LOCAL_STORAGE_VARS = {
 export const TOKEN_TYPES = {
   VCOT: 'VCOT',
   INR: 'INR',
+  CARBON: 'CARBON',
+  USD: 'USD',
 }
 
 export const FILTER_ACTION = {

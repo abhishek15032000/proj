@@ -36,7 +36,7 @@ import CCButton from '../../atoms/CCButton'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import SelectDate from '../SelectDate'
-import { moveToNextSection } from '../../utils/monthlyReportUpdate.utils'
+// import { moveToNextSection } from '../../utils/monthlyReportUpdate.utils'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { isDataModifiedCheckFunc } from '../../utils/IssuanceDataCollectionModal.utils'
 import CloseIcon from '@mui/icons-material/Close'
@@ -46,6 +46,7 @@ import { resetSectionC } from '../../redux/Slices/MonthlyReport/sectionCMonthly'
 import { resetSectionD } from '../../redux/Slices/MonthlyReport/sectionDMonthly'
 import { resetSectionE } from '../../redux/Slices/MonthlyReport/sectionEMonthly'
 import { resetSelectDate } from '../../redux/Slices/SelectDateSlice'
+import { useReport } from '../../hooks/useReport'
 
 const sections = [
   { name: 'Select Time Period' },
@@ -241,7 +242,7 @@ const MonthlyReportUpdate = () => {
   const getSectionName = () => {
     return sections[sectionIndex]?.name
   }
-
+  const {moveToNextSection} = useReport()
   const handleSave = () => {
     moveToNextSection(sectionIndex, subSectionIndex)
   }

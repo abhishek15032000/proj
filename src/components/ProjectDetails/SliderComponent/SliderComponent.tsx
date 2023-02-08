@@ -1,21 +1,41 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Box, Grid, Typography } from '@mui/material'
 import './style.css'
 import Arrow from '../../../assets/Images/Icons/arrow-circle.svg'
 import { Images } from '../../../theme'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
+import { fileUploadCalls } from '../../../api/fileUpload.api'
+const SliderComponent = (props: any) => {
+  const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  const { projectData } = props
 
-const SliderComponent = () => {
-  const [slideList, setSlideList] = useState([
-    {
-      bg: Images.ProjectDetails,
-    },
-    {
-      bg: 'https://cdn.pixabay.com/photo/2022/01/28/18/32/leaves-6975462_960_720.png',
-    },
-    {
-      bg: Images.ProjectDetails,
-    },
-  ])
+  const [slideList, setSlideList] = useState<any>([])
+
+  useEffect(() => {
+   
+    getImages()
+
+    //  fileUploadCalls.getFile(projectData?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res)))
+  }, [projectData])
+
+  const getImages = async()=>{
+    if (projectData?.project_image.length) {
+      const arr = await Promise.all(
+        projectData?.project_image?.map((item: any, index: any) => {
+          return fileUploadCalls.getFile(item).then((res: any) => {
+            console.log("🚀 ~ file: SliderComponent.tsx ~ line 20 ~ fileUploadCalls.getFile ~ res", res)
+            const image =  URL.createObjectURL(res)
+            console.log("🚀 ~ file: SliderComponent.tsx ~ line 22 ~ fileUploadCalls.getFile ~ image", image)
+            return image
+          })
+        })
+      )
+      console.log('🚀 ~ file: SliderComponent.tsx ~ line 20 ~ arr ~ arr', arr)
+
+      setSlideList(arr)
+  }
+}
 
   const moveSlider = (val: string) => {
     const lastList = document.getElementById('last-list')
@@ -47,48 +67,62 @@ const SliderComponent = () => {
   }
 
   return (
-    <Box sx={{ 
-      // background: '#111E17',
-     padding: '2vw 6vw',   }}>
-      <Typography sx={{ fontSize: '32px',  color: 'headingColor.main'}}>
+    <Box
+      sx={{
+        // background: '#111E17',
+        //  padding: '2vw 6vw',
+        pt: 8,
+      }}
+    >
+      <Typography
+        sx={{ fontSize: 18, fontWeight: '400', color: 'headingColor.main' }}
+      >
         Project Images
       </Typography>
       <div className="container">
         <div className="card-stack">
           <ul className="card-list">
-            {slideList.map((item, index) => {
-              return (
-                <li
-                  key={index}
-                  id={
-                    slideList?.length === index + 1
-                      ? 'last-list'
-                      : slideList?.length - 1 === index + 1
-                      ? 'prev-list'
-                      : ''
-                  }
-                  className="card"
-                  style={{
-                    backgroundImage: `url(${item.bg})`,
-                    right: `calc(100px * (${index}))`,
-                    height: `calc(100% - 15% * (${
-                      slideList.length - (index + 1)
-                    }))`,
-                  }}
-                ></li>
-              )
-            })}
+            {slideList.length &&
+              slideList.map((item: any, index: number) => {
+                return (
+                  <li
+                    key={index.toString()}
+                    id={
+                      slideList?.length === index + 1
+                        ? 'last-list'
+                        : slideList?.length - 1 === index + 1
+                        ? 'prev-list'
+                        : ''
+                    }
+                    className="card"
+                    style={{
+                      backgroundImage: `url(${item})`,
+                      right: `calc(100px * (${index}))`,
+                      height: `calc(100% - 15% * (${
+                        slideList.length - (index + 1)
+                      }))`,
+                    }}
+                  ></li>
+                )
+              })}
           </ul>
         </div>
         <div className="button-flex">
           <a className="buttons prev" onClick={() => moveSlider('previous')}>
-            <img src={Arrow} alt="previous" />
+            <img
+              src={Arrow}
+              alt="previous"
+              style={{ filter: !onWebApp ? 'none' : 'contrast(0.5)' }}
+            />
           </a>
           <a className="buttons next" onClick={() => moveSlider('next')}>
             <img
               src={Arrow}
-              alt="previous"
-              style={{ transform: 'rotate(180deg)' }}
+              alt="next"
+              style={{
+                transform: 'rotate(180deg)',
+                filter: !onWebApp ? 'none' : 'contrast(0.5)',
+              }}
             />
           </a>
         </div>

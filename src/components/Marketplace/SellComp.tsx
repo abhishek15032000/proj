@@ -5,15 +5,21 @@ import CardRow from '../../atoms/CardRow/CardRow'
 import CCButton from '../../atoms/CCButton'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useMarket } from '../../hooks/useMarket'
 import {
   setSellQuantity,
   setSellWantAmount,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
-import { createSellOrder } from '../../utils/newMarketplace.utils'
+import {
+  convertToInternationalCurrencySystem,
+  formatNumberMinify,
+} from '../../utils/commonFunctions'
+// import { createSellOrder } from '../../utils/newMarketplace.utils'
 
 const SellComp = () => {
   const dispatch = useAppDispatch()
+  const { createSellOrder } = useMarket()
 
   const carbonTokenBalances = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenBalances,
@@ -32,17 +38,68 @@ const SellComp = () => {
     shallowEqual
   )
 
+  // console.log(
+  //   'Max',
+  //   convertToInternationalCurrencySystem(9007199254740991),
+  //   formatNumberMinify(9007199254740991)
+  // )
+  // console.log(
+  //   'Normal 1',
+  //   convertToInternationalCurrencySystem(123),
+  //   formatNumberMinify(123)
+  // )
+  // console.log(
+  //   'Normal 2',
+  //   convertToInternationalCurrencySystem(123123),
+  //   formatNumberMinify(123123)
+  // )
+  // console.log(
+  //   'Million',
+  //   convertToInternationalCurrencySystem(12312312),
+  //   formatNumberMinify(12312312)
+  // )
+  // console.log(
+  //   'Billion',
+  //   convertToInternationalCurrencySystem(12312312311),
+  //   formatNumberMinify(12312312311)
+  // )
+  // console.log(
+  //   'Million',
+  //   convertToInternationalCurrencySystem(99999999),
+  //   formatNumberMinify(99999999)
+  // )
+  // console.log(
+  //   'Billion',
+  //   convertToInternationalCurrencySystem(87657765767),
+  //   formatNumberMinify(87657765767)
+  // )
+  // console.log(
+  //   'Billion',
+  //   convertToInternationalCurrencySystem(80000000000),
+  //   formatNumberMinify(80000000000)
+  // )
+  // console.log(
+  //   'Exp',
+  //   convertToInternationalCurrencySystem(123123123123),
+  //   formatNumberMinify(123123123123)
+  // )
+
   return (
     <Grid item xs={12} md={10}>
       <Box>
         <CardRow
-          title="Wallet Balance for Purchase :"
+          title="Balance :"
           value={`${
-            Math.round(carbonTokenBalances?.totalBalances) || 0
+            carbonTokenBalances?.totalBalances
+              ? convertToInternationalCurrencySystem(
+                  carbonTokenBalances?.totalBalances
+                )
+              : 0
           } ${carbonTokenSymbol}`}
-          titleStyle={{ color: Colors.lightPrimary1 }}
+          titleStyle={{ color: '#4A635E' }}
+          partitionBasis={6}
         />
-        <CardRow
+        {/* <CardRow
           title={`Approved ${carbonTokenSymbol} Token Balance :`}
           value={`${
             Math.round(carbonTokenBalances?.allowanceBalance) || 0
@@ -55,7 +112,7 @@ const SellComp = () => {
             Math.round(carbonTokenBalances?.assetsBalance) || 0
           } ${carbonTokenSymbol}`}
           titleStyle={{ color: Colors.lightPrimary1 }}
-        />
+        /> */}
         <Box sx={{ position: 'relative', pt: 1 }}>
           <Box>
             <LabelInput
@@ -85,7 +142,7 @@ const SellComp = () => {
         <Box sx={{ position: 'relative', pt: 1 }}>
           <Box>
             <LabelInput
-              label="Want Amount"
+              label="Unit Price"
               sx={{ width: '100%' }}
               value={sellWantAmount || ''}
               setValue={(e: any) => {
@@ -108,7 +165,7 @@ const SellComp = () => {
             USD
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'end' }}>
           <CCButton
             sx={{
               mt: 3,

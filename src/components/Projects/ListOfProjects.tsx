@@ -244,7 +244,9 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   }, [props])
 
   return (
-    <Paper sx={{ p: 2, pt: 0.5, mt: 2, borderRadius: '8px' }}>
+    <Paper sx={{ p: 2, pt: 0.5, mt: 3, borderRadius: '8px' , 
+    minHeight:location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
+    }}>
       <TabSelector
         sx={{ mt: 2, mb: 2 }}
         tabArray={['New', 'Registered']}

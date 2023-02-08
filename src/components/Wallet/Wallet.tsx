@@ -10,6 +10,7 @@ import {
   Divider,
   Modal,
   Stack,
+  Container,
 } from '@mui/material'
 
 // Local Imports
@@ -140,118 +141,122 @@ const Wallet: FC<WalletProps> = (props) => {
   }
 
   return (
-    <Box sx={{ p: 0 }}>
+    <Container maxWidth="xl" disableGutters>
+      <Typography
+        sx={{
+          fontSize: 28,
+          fontWeight: 400,
+          color: Colors.tertiary,
+          my: 2,
+        }}
+      >
+        Wallet
+      </Typography>
       <Grid
         container
         xs={12}
         md={12}
         lg={12}
         xl={12}
-        sx={{ border: '0px solid' }}
+        // sx={{ border: '0px solid' }}
         justifyContent={'space-between'}
+        alignItems={'stretch'}
         display="flex"
         flexDirection={'row'}
+        spacing={1}
       >
-        <Grid container xs={12} md={12} lg={8} xl={8}>
-          <Grid
-            item
-            xs={12}
-            md={12}
-            lg={12}
-            xl={12}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography
+        <Grid item  xs={12} md={12} lg={8} xl={8}>
+          <Grid container>
+            {/* <Grid
+              item
+              xs={12}
+              md={12}
+              lg={12}
+              xl={12}
               sx={{
-                fontSize: 28,
-                fontWeight: 400,
-                color: Colors.tertiary,
-                my: 2,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            ></Grid> */}
+            <Grid
+              item
+              xs={12}
+              md={12}
+              lg={12}
+              xl={12}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                py: 3,
+                boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+           
               }}
             >
-              Wallet
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={12}
-            lg={12}
-            xl={12}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              backgroundColor: 'white',
-              borderRadius: '8px',
-              py: 3,
-              boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-              my: 3,
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: 22,
-                fontWeight: 400,
-
-                mt: 1,
-                ml: 4,
-              }}
-            >
-              Wallet Balance
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: 22,
-                fontWeight: 400,
-                color: '#C12902',
-                mt: 1,
-                ml: 2,
-              }}
-            >
-              {`USD ${balanceINR}` +
-                ' | ' +
-                `MATIC ${Math.round(Number(balance) * 1000) / 1000}`}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={12} lg={12} xl={12}>
-            {loading ? (
-              <CCTableSkeleton sx={{ mt: 2 }} />
-            ) : tableData && tableData.length > 0 ? (
-              <TransactionList tableData={tableData} />
-            ) : (
-              <Box
+              <Typography
                 sx={{
-                  height: '100%',
-                  width: '100%',
-                  fontSize: 18,
-                  color: Colors.darkPrimary1,
-                  fontWeight: 500,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: '#fff',
-                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-                  borderRadius: '8px',
+                  fontSize: 22,
+                  fontWeight: 400,
+                  letterSpacing: '0.01em',
+                  mt: 1,
+                  ml: 4,
                 }}
               >
-                No Project Token Details is available !!!
-              </Box>
-            )}
-          </Grid>
+                Wallet Balance
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: 22,
+                  fontWeight: 400,
+                  color: '#C12902',
+                  mt: 1,
+                  ml: 2,
+                }}
+              >
+                {`USD ${balanceINR}` +
+                  ' | ' +
+                  `MATIC ${Math.round(Number(balance) * 1000) / 1000}`}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={12} lg={12} xl={12}>
+              {loading ? (
+                <CCTableSkeleton sx={{ mt: 2 }} />
+              ) : tableData && tableData.length > 0 ? (
+                <TransactionList tableData={tableData} />
+              ) : (
+                <Box
+                  sx={{
+                    height: '100%',
+                    width: '100%',
+                    fontSize: 18,
+                    color: Colors.darkPrimary1,
+                    fontWeight: 500,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#fff',
+                    boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+                    borderRadius: '8px',
+                  }}
+                >
+                  No Project Token Details is available !!!
+                </Box>
+              )}
+            </Grid>
 
-          <Grid item xs={12} md={12} lg={12} xl={12} mt={2}>
-            <WalletCred privateKey={privateKey} />
+            <Grid item xs={12} md={12} lg={12} xl={12} mt={2}>
+              <WalletCred privateKey={privateKey} />
+            </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={12} lg={4} xl={4} mt={10}>
+
+        <Grid item xs={12} md={12} lg={4} xl={4}>
           <WalletTab />
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   )
 }
 
