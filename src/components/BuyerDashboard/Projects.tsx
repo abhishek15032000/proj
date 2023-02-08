@@ -17,7 +17,7 @@ const heading = [
 const Projects = () => {
   const rows: any = []
   return (
-    <Paper sx={{ p: 2 }}>
+    <Paper sx={{ p: 2, minHeight:'55vh' }}>
       <Typography sx={{ fontSize: 22, color: Colors.darkPrimary1, mb: 2 }}>
         Purchased Projects
       </Typography>
