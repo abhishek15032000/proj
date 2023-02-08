@@ -163,7 +163,7 @@ const Wallet: FC<WalletProps> = (props) => {
         alignItems={'stretch'}
         display="flex"
         flexDirection={'row'}
-        spacing={1}
+        spacing={3}
       >
         <Grid item  xs={12} md={12} lg={8} xl={8}>
           <Grid container>
