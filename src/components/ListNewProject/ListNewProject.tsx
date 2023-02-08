@@ -346,7 +346,7 @@ const ListNewProject = () => {
           onDeleteImage={(index: number) => {
             dispatch(setBannerImage(deleteIndexInArray(bannerImage, index)))
           }}
-          // required={true}
+          required={true}
         />
       </Grid>
       <Grid item sx={{ mt: 1 }} xs={12}>
@@ -361,7 +361,7 @@ const ListNewProject = () => {
           onDeleteImage={(index: number) => {
             dispatch(setProjectImage(deleteIndexInArray(projectImage, index)))
           }}
-          // required={true}
+          required={true}
         />
       </Grid>
       <HelpPopUp
