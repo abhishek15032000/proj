@@ -45,6 +45,7 @@ import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
 import Wallet from '../pages/Wallet'
 import RiskDashboard from '../pages/RiskDashboard'
 import Marketplace from '../pages/Marketplace/Marketplace'
+import ProjectPage from '../pages/ProjectPage'
 
 export const privateRouteComponents = [
   {
@@ -104,31 +105,33 @@ export const privateRouteComponents = [
     component: MarketplaceProjectDetails,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.PROJECTS,
-    component: ProjectsPage,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.PROJECTS,
+  //   component: ProjectsPage,
+  //   roles: [ROLES.ISSUER],
+  // },
   {
     path: pathNames.PROJECTS_LIST,
     component: ProjectList,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.SEE_ALL_PROJECTS,
-    component: SeeAllProject,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.SEE_ALL_PROJECTS,
+  //   component: SeeAllProject,
+  //   roles: [ROLES.ISSUER],
+  //   sidebarName: linkLabels.Projects,
+  // },
   {
     path: pathNames.LIST_NEW_PROJECT,
     component: ListNewProject,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.SEE_ALL_PROJECTS,
-    component: SeeAllProject,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.REGISTRY_ALL_PROJECTS,
+  //   component: RegistryAllProjects,
+  //   roles: [ROLES.REGISTRY],
+  //   sidebarName: linkLabels.Projects,
+  // },
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
     component: ProfileDetailsIssuanceInfo,
@@ -250,10 +253,10 @@ export const privateRouteComponents = [
     roles: [ROLES.REGISTRY, ROLES.VERIFIER],
   },
   {
-    path: pathNames.REGISTRY_ALL_PROJECTS,
-    component: RegistryAllProjects,
-    roles: [ROLES.REGISTRY],
-    sidebarName: linkLabels.Dashboard,
+    path: pathNames.PROJECTS,
+    component: ProjectPage,
+    roles: [ROLES.REGISTRY, ROLES.ISSUER],
+    sidebarName: linkLabels.Projects,
   },
   {
     path: pathNames.COMPLETE_PROFILE,

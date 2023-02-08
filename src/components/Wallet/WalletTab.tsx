@@ -25,10 +25,10 @@ const WalletTab: FC<WalletTabProps> = (props) => {
         alignItems: 'center',
         borderRadius: '8px',
 
-        mt: 2,
+        // mt: 2,
         background:
           'linear-gradient(0deg, rgba(0, 107, 94, 0.05), rgba(0, 107, 94, 0.05)), #FAFDFA',
-        ml: 2,
+        // ml: 2,
         // height: '700px',
       }}
     >
@@ -44,7 +44,7 @@ const WalletTab: FC<WalletTabProps> = (props) => {
             fontSize: 20,
             fontWeight: 400,
             color: Colors.textColorDarkGreen,
-            mt: 1,
+            // mt: 1,
           }}
         >
           Climat Admin Account Details
