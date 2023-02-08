@@ -6,6 +6,7 @@ import { shallowEqual } from 'react-redux'
 import CardRow from '../../atoms/CardRow/CardRow'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
+import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
 
 const BuyTokenPriceDetails = (props: any) => {
   const buyUnitPrice = useAppSelector(
@@ -118,7 +119,12 @@ const BuyTokenPriceDetails = (props: any) => {
         </Box>
       ) : (
         <Box sx={{ mt: 2 }}>
-          <CardRow title="Unit Price :" value={`${buyUnitPrice || 0} USD`} />
+          <CardRow
+            title="Unit Price :"
+            value={`${
+              convertToInternationalCurrencySystem(buyUnitPrice) || 0
+            } USD`}
+          />
           <Grid container justifyContent={'space-between'} mt={1}>
             <Grid item xs={9}>
               <Box
@@ -164,7 +170,10 @@ const BuyTokenPriceDetails = (props: any) => {
                   textAlign: 'right',
                 }}
               >
-                {`${Math.round(totalAmountForBuying * 100) / 100 || 0} USD`}
+                {/* {`${Math.round(totalAmountForBuying * 100) / 100 || 0} USD`} */}
+                {`${convertToInternationalCurrencySystem(
+                  totalAmountForBuying
+                )} USD`}
               </Box>
             </Grid>
           </Grid>

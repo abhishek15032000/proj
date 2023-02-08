@@ -25,10 +25,6 @@ const TrimmedStyledTableCell = styled(TableCell)(() => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    maxWidth: '70px',
     textAlign: 'left',
   },
   [`&.${tableCellClasses.root}`]: {},
@@ -198,7 +194,16 @@ const SliderTable = (props: SliderTableProps) => {
                           align="center"
                         >
                           <Tooltip title={tdValue}>
-                            <Box>{tdValue}</Box>
+                            <Box
+                              sx={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                maxWidth: '70px',
+                              }}
+                            >
+                              {tdValue}
+                            </Box>
                           </Tooltip>
                         </TrimmedStyledTableCell>
                       ) : (
