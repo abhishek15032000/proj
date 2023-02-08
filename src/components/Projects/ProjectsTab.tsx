@@ -5,7 +5,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { Grid, Box, Typography, IconButton, Chip, Paper } from '@mui/material'
 
 // Local Imports
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { getLocalItem } from '../../utils/Storage'
 import ListOfProjectsDashboard from './ListOfProjectsDashboard'
@@ -22,6 +22,8 @@ interface ProjectsTabProps {}
 const ProjectsTab: FC<ProjectsTabProps> = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location:any = useLocation()
+  console.log("🚀 ~ file: ProjectsTab.tsx ~ line 26 ~ location", location)
 
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -61,6 +63,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
           borderRadius: '8px',
           boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
           marginTop: 3,
+          minHeight: location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
         }}
       >
         <Box
@@ -73,17 +76,17 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
           <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
             Projects
           </Typography>
-          <Typography
+        { location.pathname.includes(pathNames.PROJECTS) ? null : <Typography
             sx={{
-              color: 'darkPrimary1.main',
+              color: 'darkPrimary1',
               fontSize: 14,
               fontWeight: 400,
               cursor: 'pointer',
             }}
-            onClick={() => navigate(pathNames.SEE_ALL_PROJECTS)}
+            onClick={() => navigate(pathNames.PROJECTS)}
           >
             See All
-          </Typography>
+          </Typography>}
         </Box>
 
         <ListOfProjectsDashboard data={tableData} loading={loading} />

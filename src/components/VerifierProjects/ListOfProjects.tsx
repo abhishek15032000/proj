@@ -272,6 +272,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         borderRadius: '8px',
         mt: 4,
         p: 2,
+        minHeight:location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
       }}
     >
       <Box
@@ -284,17 +285,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         }}
       >
         <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
-        <Typography
+        {/* {location.pathname.includes(pathNames.PROJECTS) ? null : <Typography
           sx={{
             fontSize: 14,
             fontWeight: 400,
-            color: Colors.accent,
             cursor: 'pointer',
+            color: 'darkPrimary1.main',
           }}
-          onClick={() => navigate(pathNames.VERIFIER_PROJECTS_LIST)}
+          onClick={() => navigate(pathNames.PROJECTS)}
         >
           See All
-        </Typography>
+        </Typography>} */}
       </Box>
 
       {newRequests === 0 && (
@@ -322,7 +323,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           <CCTable
             headings={tabIndex === 1 ? headingsNew : headingsRegistered}
             rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-            sx={{ minWidth: 100 }}
+            sx={{ minWidth: 100,}}
             maxWidth={'100%'}
             tableSx={{ minWidth: 100 }}
           />

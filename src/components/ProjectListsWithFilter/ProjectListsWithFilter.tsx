@@ -19,8 +19,9 @@ const staticProjects = [
 ]
 
 const ProjectListsWithFilter = () => {
+  console.log("Reloadeed ProjectListsWithFilter **")
   const navigate = useNavigate()
-  const location = useLocation()
+  // const location = useLocation()
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
@@ -98,15 +99,16 @@ const ProjectListsWithFilter = () => {
   const viewRenderer = () => {
     return (
       <>
-        <Box
+        <Typography
           sx={{
             fontSize: '28px',
             color: onWebApp ? Colors.tertiary : '#55DBC8',
             mb: 4,
+            mt:2
           }}
         >
           Projects
-        </Box>
+        </Typography>
         <Grid container sx={{ mt: 3 }} spacing={{ md: 0, lg: 0 }}>
           <Grid item md={4} lg={3} xl={2} pt={0}>
             <Box
@@ -166,7 +168,7 @@ const ProjectListsWithFilter = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 py: 1,
-                                // color: onWebApp ? '#006B5E':"#fff"
+                                color: onWebApp ? '#4A635E':"#fff"
                               }}
                             >
                               <Box>
@@ -201,7 +203,7 @@ const ProjectListsWithFilter = () => {
                       color: onWebApp ? '#fff' : '#000',
                       padding: onWebApp ? '4px 8px' : '0 8px',
                     }}
-                    onClick={handleClick}
+                    onClick={()=> handleClick()}
                   >
                     {action === FILTER_ACTION.APPLY
                       ? FILTER_ACTION.APPLY

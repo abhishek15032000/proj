@@ -16,6 +16,7 @@ import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpC
 import CCMultilineTextArea from '../../../atoms/CCMultilineTextArea'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
+import CCMultiChipInput from '../../../atoms/CCMultiChipInput/CCMultiChipInput'
 
 const SectionA3 = () => {
   const dispatch = useAppDispatch()
@@ -106,6 +107,36 @@ const SectionA3 = () => {
     dispatch(setProjectParticipants(dataCopy))
   }
 
+  const handleMultiInputChange = (
+    chipValue: string,
+    chipIndex: number,
+    method: string,
+    key: string,
+    objectIndex: number
+  ) => {
+    const updatedData = party_and_project_participants.map((obj, index) => {
+      if (index === objectIndex) {
+        if (method === 'delete') {
+          let arrayToModify = obj[key]
+          const arrayModified = arrayToModify.filter(
+            (i: string, index: number) => index !== chipIndex
+          )
+          arrayToModify = [...arrayModified]
+          obj = { ...obj, [key]: arrayToModify }
+        }
+        if (method === 'add') {
+          let arrayToModify = obj[key]
+          const arrayCopy = [...arrayToModify]
+          arrayCopy.push(chipValue)
+          arrayToModify = [...arrayCopy]
+          obj = { ...obj, [key]: arrayToModify }
+        }
+      }
+      return obj
+    })
+    dispatch(setProjectParticipants(updatedData))
+  }
+
   const handleSelectChange = (e: SelectChangeEvent, index: number) => {
     const dataCopy = [...party_and_project_participants]
     dataCopy[index].isProjectParticipant = e.target.value
@@ -157,36 +188,39 @@ const SectionA3 = () => {
           spacing={1}
         >
           <Grid item xs={4}>
-            <input
-              style={{
-                height: '100%',
-                width: '100%',
-                border: '0px',
-                paddingLeft: '10px',
-                paddingRight: '10px',
-              }}
-              placeholder="Enter host party name"
+            <CCMultiChipInput
               value={item?.party_involved}
-              onChange={(e) => handleTextChange(e, index, 'party_involved')}
-              required
+              placeholder="Enter Host"
+              onChange={(
+                chipValue: string,
+                chipIndex: number,
+                method: string
+              ) =>
+                handleMultiInputChange(
+                  chipValue,
+                  chipIndex,
+                  method,
+                  'party_involved',
+                  index
+                )
+              }
             />
           </Grid>
           <Grid item xs={4}>
-            <input
-              style={{
-                height: '100%',
-                width: '100%',
-                border: '0px',
-                paddingLeft: '10px',
-                paddingRight: '10px',
-              }}
-              placeholder="Enter private/public entity name"
+            <CCMultiChipInput
               value={item?.private_or_public_project_participant}
-              onChange={(e) =>
-                handleTextChange(
-                  e,
-                  index,
-                  'private_or_public_project_participant'
+              placeholder="Enter Participant"
+              onChange={(
+                chipValue: string,
+                chipIndex: number,
+                method: string
+              ) =>
+                handleMultiInputChange(
+                  chipValue,
+                  chipIndex,
+                  method,
+                  'private_or_public_project_participant',
+                  index
                 )
               }
             />
