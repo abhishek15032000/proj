@@ -22,6 +22,7 @@ import { useMarket } from '../../hooks/useMarket'
 import { Colors } from '../../theme'
 // import { createBuyOrder } from '../../utils/newMarketplace.utils'
 import BuyTokenPriceDetails from './BuyTokenPriceDetails'
+import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
 
 const BuyComp = () => {
   const dispatch = useAppDispatch()
@@ -124,7 +125,12 @@ const BuyComp = () => {
     <Grid item sm={12} md={10}>
       <CardRow
         title="Balance :"
-        value={`${Math.round(inrTokenBalances?.totalBalances) || 0} USD`}
+        // value={`${Math.round(inrTokenBalances?.totalBalances) || 0} USD`}
+        value={`${
+          convertToInternationalCurrencySystem(
+            inrTokenBalances?.totalBalances
+          ) || 0
+        } USD`}
         titleStyle={{ color: '#4A635E' }}
         partitionBasis={6}
       />
@@ -167,7 +173,7 @@ const BuyComp = () => {
           {carbonTokenSymbol}
         </Box>
       </Box>
-      <BuyTokenPriceDetails />
+      <BuyTokenPriceDetails tokenAndUnitPriceList={tokenAndUnitPriceList} />
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'end' }}>
         <CCButton
           sx={{

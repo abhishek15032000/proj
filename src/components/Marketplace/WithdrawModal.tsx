@@ -77,13 +77,13 @@ const WithdrawModal = () => {
           </Typography>
           <Grid container sx={{ mt: 3, color: '#1D4B44', fontWeight: 500 }}>
             <Grid item xs={9}>
-              Total available Balance :
+              Total available Balance to Withdraw :
             </Grid>
             <Grid item xs={3} sx={{ textAlign: 'right' }}>
               {`${
                 withdrawTokenType === TOKEN_TYPES.CARBON
-                  ? Math.round(carbonTokenBalances?.totalBalances) || 0
-                  : Math.round(inrTokenBalances?.totalBalances) || 0
+                  ? Math.round(carbonTokenBalances?.assetsBalance) || 0
+                  : Math.round(inrTokenBalances?.assetsBalance) || 0
               } ${
                 withdrawTokenType === TOKEN_TYPES.CARBON
                   ? carbonTokenSymbol
