@@ -45,8 +45,8 @@ const initialState: SectionAInterface = {
   //party_and_project_participants and A3 are used in sectionA -> party_and_project_participants
   party_and_project_participants: [
     {
-      party_involved: '',
-      private_or_public_project_participant: '',
+      party_involved: [],
+      private_or_public_project_participant: [],
       indicate_party_involved: '',
     },
   ],
