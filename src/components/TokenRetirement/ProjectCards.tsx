@@ -55,6 +55,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
     ]
     setFields(fieldList)
   }, [props.project])
+
   return (
     <Grid
       item
@@ -65,6 +66,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
       display="flex"
       justifyContent={justifyContent}
       alignItems="flex-start"
+      sx={{ mt: 2 }}
       {...props}
     >
       <Box
@@ -141,19 +143,26 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
             sx={{
               mt: 1,
               display: 'flex',
-              justifyContent: 'center',
+              // justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <FmdGoodOutlinedIcon sx={{ color: '#667080', ml: '-3px' }} />
-            <Box sx={{ fontSize: 10, fontWeight: 500, minHeight: '30px' }}>
+            <FmdGoodOutlinedIcon sx={{ color: '#006B5E', ml: '-3px' }} />
+            <Box
+              sx={{
+                fontSize: 10,
+                fontWeight: 500,
+                minHeight: '30px',
+                color: '#006B5E',
+              }}
+            >
               {`Project Location ${
                 project?.location || 'Lexington, Ohio, United States'
               } | Project Area ${project?.area || '53.4'} Sq.Km`}
             </Box>
           </Box>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             p: 2,
             bgcolor: '#fff',
@@ -172,7 +181,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
               }
             }}
           />
-        </Box>
+        </Box> */}
         <Box
           sx={{
             px: 2,
@@ -202,6 +211,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
           </Box>
           <Box>
             <CCButton
+              variant="contained"
               sx={{
                 mt: 3,
                 background: Colors.textColorLightGreen,
@@ -213,16 +223,14 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
                 fontWeight: 500,
               }}
               onClick={() =>
-                navigate(
-                  {
-                    pathname: pathNames.PROJECT_DETAILS,
-                    search: `?${createSearchParams({
-                      projectId: project.uuid,
-                    })}`,
+                navigate(pathNames.RETIRE_TOKENS, {
+                  state: {
+                    tokenDetails: props?.project?.tokens,
+                    projectID: props?.project?._id,
                   },
-                  { state: project }
-                )
+                })
               }
+              disabled={!props?.project?.tokens?.token_symbol}
             >
               Retire
             </CCButton>
