@@ -8,6 +8,8 @@ import ProjectTable from './ProjectTable'
 const Projects = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  console.log("🚀 ~ file: Projects.tsx ~ line 11 ~ Projects ~ location", location)
+  console.log("🚀 ~ file: Projects.tsx ~ line 11 ~ Projects ~ location", location.pathname.includes(pathNames.PROJECTS))
 
   const [tabIndex, setTabIndex] = useState(1)
   return (
@@ -18,9 +20,10 @@ const Projects = () => {
         borderRadius: '8px',
         boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
         marginTop: 3,
+        height:location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
       }}
     >
-      {location.pathname === pathNames.REGISTRY_ALL_PROJECTS ? null : (
+   
         <Box
           sx={{
             display: 'flex',
@@ -31,19 +34,19 @@ const Projects = () => {
           <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
             Projects
           </Typography>
-          <Typography
+          {location.pathname.includes(pathNames.PROJECTS)? null :<Typography
             sx={{
               color: 'darkPrimary1.main',
               fontSize: 14,
               fontWeight: 400,
               cursor: 'pointer',
             }}
-            onClick={() => navigate(pathNames.REGISTRY_ALL_PROJECTS)}
+            onClick={() => navigate(pathNames.PROJECTS)}
           >
             See All
-          </Typography>
+          </Typography>}
         </Box>
-      )}
+       
       <TabSelectorWithCount
         tabArray={[
           { name: 'New', count: 0 },

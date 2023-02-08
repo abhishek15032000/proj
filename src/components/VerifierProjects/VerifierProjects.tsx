@@ -136,7 +136,7 @@ const VerifierProjects = () => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader title="Dashboard" iconDisable />
+          <BackHeader title="Dashboard" iconDisable sx={{mb:3}}/>
         </Grid>
 
         <Grid item sm={12} sx={{ pr: 2 }}>

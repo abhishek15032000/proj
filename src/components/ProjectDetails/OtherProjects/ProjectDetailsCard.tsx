@@ -33,8 +33,11 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
 
   const [bannerImage, setBannerImage] = useState<any>(false)
   useEffect(() => {
-     const data = project
-    fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+    if(!bannerImage && project?.banner_image[0]){
+
+      const data = project
+      fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+    }
       
    },[project])
 
