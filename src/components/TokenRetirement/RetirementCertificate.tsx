@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@mui/material'
+import { Grid, Paper, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
@@ -6,8 +6,10 @@ import { shallowEqual } from 'react-redux'
 import { buyerCalls } from '../../api/buyerCalls.api'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
+import { getLocalItem } from '../../utils/Storage'
 
 const headings = [
   'Retirement ID',
@@ -22,50 +24,91 @@ const headings = [
 ]
 
 const RetirementCertificate = () => {
-  const accountAddress = useAppSelector(
-    ({ wallet }: { wallet: any }) => wallet?.accountAddress,
-    shallowEqual
-  )
+  const userID = getLocalItem('userDetails')?.user_id
+
+  // const accountAddress = useAppSelector(
+  //   ({ wallet }: { wallet: any }) => wallet?.accountAddress,
+  //   shallowEqual
+  // )
   const [retireTokenList, setRetireTokenList] = useState<any>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (accountAddress) getAllRetireTokens()
-  }, [accountAddress])
+  // useEffect(() => {
+  //   if (accountAddress) getAllRetireTokens()
+  // }, [accountAddress])
 
-  const getAllRetireTokens = () => {
+  // const getAllRetireTokens = () => {
+  //   setLoading(true)
+  //   const payload = {
+  //     user: accountAddress,
+  //   }
+  //   buyerCalls
+  //     .getAllRetireToken(payload)
+  //     .then((res: any) => {
+  //       if (res?.success && res?.data.length) {
+  //         const modifiedRows = res?.data
+  //         const rows =
+  //           modifiedRows &&
+  //           modifiedRows.map((i: any) => {
+  //             return [
+  //               moment(i?.createdAt).format(`DD/MM/YY`),
+  //               moment(i?.createdAt).format(`HH:mm:SS`),
+  //               i?.token_quantity,
+  //               i?.token_quantity,
+  //               '-',
+  //               '-',
+  //               '-',
+  //               i?.beneficialOwner,
+  //               i?.reason,
+  //             ]
+  //           })
+  //         setRetireTokenList(rows)
+  //       }
+  //     })
+  //     .catch((err) => console.log(err))
+  //     .finally(() => {
+  //       setLoading(false)
+  //     })
+  // }
+
+  useEffect(() => {
+    getTokenRetireTxs()
+  }, [])
+
+  const getTokenRetireTxs = async () => {
     setLoading(true)
-    const payload = {
-      user: accountAddress,
+    try {
+      const res = await buyerCalls.getRetirements({ user: userID })
+      if (res?.success && res?.data.length) {
+        const modifiedRows = res?.data
+        const rows =
+          modifiedRows &&
+          modifiedRows.map((i: any) => {
+            return [
+              <LimitedText key={i?._id} text={i?._id} ellispsisAtStart />,
+              <LimitedText key={i?._id} text={i?.projectId?.company_name} />,
+              moment(i?.createdAt).format(`HH:mm:SS`),
+              <LimitedText
+                key={i?._id}
+                text={i?.token_quantity}
+                alignText="right"
+              />,
+              <LimitedText key={i?._id} text={i?.retiring} alignText="right" />,
+              <LimitedText key={i?._id} text={'-'} alignText="right" />,
+              <LimitedText key={i?._id} text={i?.retiring} alignText="right" />,
+              <LimitedText key={i?._id} text={i?.beneficialOwner} />,
+              <LimitedText key={i?._id} text={i?.reason} />,
+            ]
+          })
+        setRetireTokenList(rows)
+      }
+    } catch (e) {
+      console.log('Error in buyerCalls.getRetirements api ~ ', e)
+    } finally {
+      setLoading(false)
     }
-    buyerCalls
-      .getAllRetireToken(payload)
-      .then((res: any) => {
-        if (res?.success && res?.data.length) {
-          const modifiedRows = res?.data
-          const rows =
-            modifiedRows &&
-            modifiedRows.map((i: any) => {
-              return [
-                moment(i?.createdAt).format(`DD/MM/YY`),
-                moment(i?.createdAt).format(`HH:mm:SS`),
-                i?.token_quantity,
-                i?.token_quantity,
-                '-',
-                '-',
-                '-',
-                i?.beneficialOwner,
-                i?.reason,
-              ]
-            })
-          setRetireTokenList(rows)
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        setLoading(false)
-      })
   }
+
   return (
     <Grid item xs={12} sx={{ mt: 4 }}>
       <Paper

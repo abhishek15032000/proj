@@ -52,7 +52,7 @@ const WalletCred: FC<WalletCredProps> = (props) => {
         >
           <Typography
             sx={{
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: 400,
               color: Colors.textColorDarkGreen,
               mt: 1,
@@ -70,14 +70,17 @@ const WalletCred: FC<WalletCredProps> = (props) => {
           >
             Your wallet credential, which we created- xxxxxxxxxxxxxxxxxx
           </Typography>
-        </Box>
-        <CCButton
+    
+       <Box  sx={{ mt: 4, display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
+       <CCButton
           sx={{
             backgroundColor: '#006B5E',
-            padding: '8px 15px',
-            borderRadius: '20px',
+            // padding: '8px 15px',
+            borderRadius: '100px',
             color: '#FFFFFF',
-            ml: 1,
+            fontSize:14,
+            padding:'10px 24px',
+            // width:199
           }}
           variant="contained"
           // onClick={addMethodology}
@@ -85,6 +88,8 @@ const WalletCred: FC<WalletCredProps> = (props) => {
         >
           Download Wallet Key
         </CCButton>
+       </Box>
+        </Box>
       </Box>
     </Paper>
   )

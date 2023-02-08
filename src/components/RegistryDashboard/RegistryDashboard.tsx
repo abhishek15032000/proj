@@ -78,10 +78,11 @@ const RegistryDashboard = () => {
       {!profileComplete ? (
         <Typography
           sx={{
-            mt: 2,
             color: Colors.tertiary,
             fontSize: 28,
             fontWeight: 400,
+            mt:2,
+            mb:3
           }}
         >
           Dashboard
@@ -96,6 +97,7 @@ const RegistryDashboard = () => {
               color: Colors.tertiary,
               fontSize: 28,
               fontWeight: 400,
+              mb:3
             }}
           >
             Overview

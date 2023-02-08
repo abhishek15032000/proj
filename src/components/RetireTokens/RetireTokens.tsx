@@ -5,7 +5,7 @@ import { Colors } from '../../theme'
 import { RetireTokensProps } from './RetireTokens.interface'
 import tokenRetirement from '../../assets/Images/illustrations/tokenRetirement.png'
 import CCInputField from '../../atoms/CCInputField'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import Spinner from '../../atoms/Spinner'
 import CCButton from '../../atoms/CCButton'
@@ -13,24 +13,31 @@ import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { TOKEN_CONTRACT_ADDRESS } from '../../config/token.config'
-import Web3 from 'web3'
+// import Web3 from 'web3'
 import { shallowEqual } from 'react-redux'
-import { ethers } from 'ethers'
+// import { ethers } from 'ethers'
 // import { getApprovedTokensBalance } from '../../utils/tokenRetire.utils'
 import PreBlockchainCallModal from '../../atoms/PreBlockchainCallModal/PreBlockchainCallModal'
 import BalanceCheckModal from '../../atoms/BalanceCheckModal/BalanceCheckModal'
 import { buyerCalls } from '../../api/buyerCalls.api'
 import { useTokenRetire } from '../../hooks/useTokenRetire'
+import { getLocalItem } from '../../utils/Storage'
 
-declare let window: any
+// declare let window: any
 
-const provider =
-  window.ethereum != null
-    ? new ethers.providers.Web3Provider(window.ethereum)
-    : ethers.getDefaultProvider()
+// const provider =
+//   window.ethereum != null
+//     ? new ethers.providers.Web3Provider(window.ethereum)
+//     : ethers.getDefaultProvider()
 
 const RetireTokens = (props: RetireTokensProps) => {
   const navigate = useNavigate()
+  const location: any = useLocation()
+
+  const userName = getLocalItem('userDetails')?.fullName || ''
+
+  const tokenDetails = location?.state?.tokenDetails
+  const projectID = location?.state?.projectID
 
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
@@ -44,10 +51,10 @@ const RetireTokens = (props: RetireTokensProps) => {
   const [retiring, setRetiring] = useState('')
   const [explain, setExplain] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-  const [showSecondModal, setShowSecondModal] = useState(false)
+  // const [showModal, setShowModal] = useState(false)
+  // const [showSecondModal, setShowSecondModal] = useState(false)
 
-  const {getApprovedTokensBalance} =  useTokenRetire()
+  const { getApprovedTokensBalance } = useTokenRetire()
 
   useEffect(() => {
     if (accountAddress) {
@@ -55,65 +62,83 @@ const RetireTokens = (props: RetireTokensProps) => {
     }
   }, [accountAddress])
 
-  async function getHashAndVRS() {
-    try {
-      // const sellUnitPriceCopy: any = Number(sellUnitPrice)
-      const hash = new Web3().utils.soliditySha3(
-        { type: 'string', value: 'burn' },
-        { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
-        { type: 'address', value: accountAddress },
-        { type: 'uint256', value: retiring }
-      )
+  // async function getHashAndVRS() {
+  //   try {
+  //     // const sellUnitPriceCopy: any = Number(sellUnitPrice)
+  //     const hash = new Web3().utils.soliditySha3(
+  //       { type: 'string', value: 'burn' },
+  //       { type: 'address', value: TOKEN_CONTRACT_ADDRESS },
+  //       { type: 'address', value: accountAddress },
+  //       { type: 'uint256', value: retiring }
+  //     )
 
-      if (!hash) throw new Error('No hash generated')
-      const toPassParam = [accountAddress, hash]
-      const signature = await BlockchainCalls.requestMethodCalls(
-        'personal_sign',
-        toPassParam
-      )
-      const sig = signature.slice(2)
-      const v = new Web3().utils.toDecimal(`0x${sig.slice(128, 130)}`)
-      const r = `0x${sig.slice(0, 64)}`
-      const s = `0x${sig.slice(64, 128)}`
-      return { v, r, s, hash }
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  //     if (!hash) throw new Error('No hash generated')
+  //     const toPassParam = [accountAddress, hash]
+  //     const signature = await BlockchainCalls.requestMethodCalls(
+  //       'personal_sign',
+  //       toPassParam
+  //     )
+  //     const sig = signature.slice(2)
+  //     const v = new Web3().utils.toDecimal(`0x${sig.slice(128, 130)}`)
+  //     const r = `0x${sig.slice(0, 64)}`
+  //     const s = `0x${sig.slice(64, 128)}`
+  //     return { v, r, s, hash }
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
+  // const retireTokens = async () => {
+  //   if (Number(retiring) > Number(tokensApprovedForRetiring)) {
+  //     setShowSecondModal(true)
+  //     return
+  //   }
+  //   setLoading(true)
+  //   const hashAnd = await getHashAndVRS()
+
+  //   if (hashAnd) {
+  //     const { r = '', s = '', v = '' } = hashAnd
+  //     const payload = {
+  //       // uuid: getLocalItem('userDetails').uuid,
+  //       token_quantity: Number(retiring),
+  //       beneficialOwner: accountAddress,
+  //       retiring: Number(retiring),
+  //       reason: explain,
+  //       user: accountAddress,
+  //       asset: TOKEN_CONTRACT_ADDRESS,
+  //       _r: r,
+  //       _s: s,
+  //       _v: v,
+  //       signer: accountAddress,
+  //     }
+
+  //     buyerCalls
+  //       .retireToken(payload)
+  //       .then((response) => {
+  //         getApprovedTokensBalance()
+  //         navigate(pathNames.TOKENS_RETIREMENT, { replace: true })
+  //         setLoading(false)
+  //       })
+  //       .catch((e) => {
+  //         setLoading(false)
+  //       })
+  //   }
+  // }
+
   const retireTokens = async () => {
-    if (Number(retiring) > Number(tokensApprovedForRetiring)) {
-      setShowSecondModal(true)
-      return
+    const payload = {
+      reason: explain,
+      asset: tokenDetails?.token_address,
+      beneficialOwner: userName,
+      token_quantity: Number(retiring),
+      retiring: Number(retiring),
+      projectId: projectID,
     }
-    setLoading(true)
-    const hashAnd = await getHashAndVRS()
 
-    if (hashAnd) {
-      const { r = '', s = '', v = '' } = hashAnd
-      const payload = {
-        // uuid: getLocalItem('userDetails').uuid,
-        token_quantity: Number(retiring),
-        beneficialOwner: accountAddress,
-        retiring: Number(retiring),
-        reason: explain,
-        user: accountAddress,
-        asset: TOKEN_CONTRACT_ADDRESS,
-        _r: r,
-        _s: s,
-        _v: v,
-        signer: accountAddress,
-      }
-
-      buyerCalls
-        .retireToken(payload)
-        .then((response) => {
-          getApprovedTokensBalance()
-          navigate(pathNames.TOKENS_RETIREMENT, { replace: true })
-          setLoading(false)
-        })
-        .catch((e) => {
-          setLoading(false)
-        })
+    try {
+      const res = await buyerCalls.retireToken(payload)
+      console.log('res', res)
+    } catch (e) {
+      console.log('')
     }
   }
 
@@ -137,13 +162,14 @@ const RetireTokens = (props: RetireTokensProps) => {
         sx={{ p: 0, border: '0px solid' }}
         justifyContent={'space-between'}
       >
-        <Grid item xs={9} sx={{ pr: 1 }}>
+        <Grid item xs={12} sx={{ pr: 1 }}>
           <Paper
             sx={{
               width: '100%',
               borderRadius: '8px',
               backgroundColor: Colors.white,
-              p: 2,
+              px: 2,
+              pt: 2,
               position: 'relative',
             }}
           >
@@ -175,7 +201,8 @@ const RetireTokens = (props: RetireTokensProps) => {
                       alert('Fill all the Fields!')
                       return
                     }
-                    setShowModal(true)
+                    // setShowModal(true)
+                    retireTokens()
                   }}
                   disabled={isDisabled()}
                   variant="contained"
@@ -184,14 +211,14 @@ const RetireTokens = (props: RetireTokensProps) => {
                 </CCButton>
               </Grid>
             </Box>
-            <Box sx={{ mt: 1, color: Colors.darkPrimary1, fontWeight: 500 }}>
+            {/* <Box sx={{ mt: 1, color: Colors.darkPrimary1, fontWeight: 500 }}>
               No. of Tokens that can be retired :{' '}
               {tokensApprovedForRetiring
                 ? tokensApprovedForRetiring
                 : tokensApprovedForRetiring === 0
                 ? 0
                 : '-'}
-            </Box>
+            </Box> */}
             <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 1, mb: 2 }}>
               Go carbon neutral by retiring carbon tokens and claiming the
               underlying environmental benefit of the carbon offset.
@@ -228,15 +255,17 @@ const RetireTokens = (props: RetireTokensProps) => {
             />
             <Box
               sx={{
-                mt: 2,
+                mt: 5,
+                display: 'flex',
+                justifyContent: 'end',
               }}
             >
-              <img src={tokenRetirement} width="100%" />
+              <img src={tokenRetirement} width="50%" />
             </Box>
           </Paper>
         </Grid>
       </Grid>
-      <PreBlockchainCallModal
+      {/* <PreBlockchainCallModal
         btn1OnClick={() => {
           setShowModal(false)
           retireTokens()
@@ -244,8 +273,8 @@ const RetireTokens = (props: RetireTokensProps) => {
         btn2OnClick={() => setShowModal(false)}
         showModal={showModal}
         setShowModal={setShowModal}
-      />
-      <BalanceCheckModal
+      /> */}
+      {/* <BalanceCheckModal
         msg1="Retiring more tokens than Approved. Please lessen the retiring token quantity."
         msg2="Approved Tokens for Retiring"
         tokenBal={tokensApprovedForRetiring}
@@ -255,7 +284,7 @@ const RetireTokens = (props: RetireTokensProps) => {
         }}
         showModal={showSecondModal}
         setShowModal={setShowSecondModal}
-      />
+      /> */}
     </Box>
   )
 }

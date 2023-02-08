@@ -2,7 +2,6 @@ import { Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import ApproveTokenCard from './ApproveTokenCard'
 import ProjectCards from './ProjectCards'
 import RetirementCertificate from './RetirementCertificate'
 

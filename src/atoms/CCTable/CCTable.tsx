@@ -19,10 +19,6 @@ const StyledTableCell = styled(TableCell)((props) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    width: '60px',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
   },
 }))
 const TrimmedStyledTableCell = styled(TableCell)((props) => ({
@@ -31,10 +27,11 @@ const TrimmedStyledTableCell = styled(TableCell)((props) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    maxWidth: '70px',
+    // whiteSpace: 'nowrap',
+    // overflow: 'hidden',
+    // textOverflow: 'ellipsis',
+    // maxWidth: '70px',
+    // textAlign: 'left',
   },
 }))
 
@@ -153,7 +150,16 @@ const CCTable = (props: CCTableProps) => {
                                 tdValue
                               } */}
                           <Tooltip title={tdValue}>
-                            <Box>{tdValue}</Box>
+                            <Box
+                              sx={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                maxWidth: '70px',
+                              }}
+                            >
+                              {tdValue}
+                            </Box>
                           </Tooltip>
                         </TrimmedStyledTableCell>
                       ) : (

@@ -37,7 +37,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
     getTokenAndContractStats:
       ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
-    getProjectDetailsById: ENDPOINTS.carbonServiceURL + '/project/getProjectDetails'
+    getProjectDetailsById:
+      ENDPOINTS.carbonServiceURL + '/project/getProjectDetails',
   },
   projectSections: {
     updateProjectSectionA:
@@ -118,6 +119,7 @@ export const URL_PATH = {
     saveRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/retire-token',
     getAllRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
     getTokenAndRetirementStats: ENDPOINTS.carbonServiceURL + '/buyer/getStats',
+    getRetirements: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
   },
   notification: {
     getNotification:
