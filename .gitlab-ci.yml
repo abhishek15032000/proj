@@ -90,7 +90,7 @@ build-cache:
   script:
     - apk update && apk add git
     - npm cache clean --force
-    - npm install --no-audit
+    - npm ci
   artifacts:
     paths:
       - node_modules
