@@ -284,7 +284,7 @@ const ProjectListsWithFilter = () => {
           ? ''
           : 'linear-gradient(180deg, #222926 63.19%, #121E18 100%)',
         padding: onWebApp ? 0 : '56px 6vw',
-        // maxHeight:'85vh'
+        height:'100vh'
       }}
     >
       {viewRenderer()}
