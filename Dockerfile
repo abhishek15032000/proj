@@ -29,7 +29,7 @@
 
 # RUN npm run build
 
-FROM node:13.12.0-alpine as react-build
+FROM node:14.15.0-alpine as react-build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
