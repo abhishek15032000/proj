@@ -50,7 +50,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
       },
       {
         label: 'TOKENS LEFT AFTER RETIRING:',
-        value: tokens?.token_type,
+        value: '-',
       },
     ]
     setFields(fieldList)
@@ -227,6 +227,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
                   state: {
                     tokenDetails: props?.project?.tokens,
                     projectID: props?.project?._id,
+                    projectUUID: props?.project?.uuid,
                   },
                 })
               }
