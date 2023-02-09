@@ -8,6 +8,7 @@ import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import { Colors, Images } from '../../theme'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 
 const heading = [
   'Reference ID',
@@ -31,7 +32,7 @@ const Projects = () => {
     if (res?.success) {
       const tableBodyData = res?.data.map((item: any, index: number) => {
         return [
-          item?.uuid,
+          <LimitedText key={index} text={item?.uuid} />,
           moment(item?.receive_on).format('DD/MM/YYYY'),
           item?.issuer,
           <Box
@@ -40,26 +41,26 @@ const Projects = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              columnGap: '5px',
             }}
           >
             <img src={Images.BriefcaseIcon} />
-            <Typography sx={{ fontWeight: 500, fontSize: 16 }}>
-              {item?.name}
-            </Typography>
+            <LimitedText text={item?.name} />
           </Box>,
-          <Box key={index} sx={{ display: 'flex', flexDirection: 'column' }}>
-            {item?.type.map((type: string, index: number) => {
-              return <Box key={index}>{type} </Box>
-            })}
+          <Box
+            key={index}
+            sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+          >
+            <LimitedText key={'1'} text={item?.type.toString()} />
           </Box>,
-          <Typography key={index} textAlign={'end'} sx={{ pr: '12%' }}>
+          <Typography key={index} textAlign={'end'} sx={{ pr: '10%' }}>
             {item?.Co2_Sequestered}
           </Typography>,
           <Typography key={index} textAlign={'end'} sx={{ pr: '12%' }}>
-            ${item?.unitPrice}
+            {item?.unitPrice}
           </Typography>,
           <Typography key={index} textAlign={'end'} sx={{ pr: '12%' }}>
-            ${item?.finalPrice}
+            {item?.finalPrice}
           </Typography>,
           <Box
             key={index}
@@ -75,7 +76,7 @@ const Projects = () => {
             {item?.status !== 'success' && (
               <ApprovalChip variant={'Rejected'} />
             )}
-            <ChevronRightIcon sx={{ cursor: 'pointer' }} key="1" />
+            {/*<ChevronRightIcon sx={{ cursor: 'pointer' }} key="1" />*/}
           </Box>,
         ]
       })
@@ -84,7 +85,7 @@ const Projects = () => {
   }
 
   return (
-    <Paper sx={{ p: 2, mt: 2 }}>
+    <Paper sx={{ p: 2, minHeight: '55vh', mt: 2 }}>
       <Typography sx={{ fontSize: 22, color: Colors.darkPrimary1, mb: 2 }}>
         Purchased Projects
       </Typography>
