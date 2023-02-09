@@ -29,7 +29,7 @@ import ForgotPasswordModal from '../../pages/LoginPage/ForgotPasswordModal'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { ROLES, WalletStats } from '../../config/constants.config'
 import { verifierCalls } from '../../api/verifierCalls.api'
-import { getTokensBalance } from '../../utils/tokenRetire.utils'
+// import { getTokensBalance } from '../../utils/tokenRetire.utils'
 import { buyerCalls } from '../../api/buyerCalls.api'
 import { capitaliseFirstLetter, limitTitle } from '../../utils/commonFunctions'
 import EditProfile from './EditProfile'
@@ -43,6 +43,7 @@ import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.p
 import BlockchainCalls from '../../blockchain/Blockchain'
 import isAlpha from 'validator/lib/isAlpha'
 import { setWalletAdded } from '../../redux/Slices/walletSlice'
+import { useTokenRetire } from '../../hooks/useTokenRetire'
 interface ProfileProps {}
 const statsIssuer = [
   {
@@ -115,6 +116,9 @@ const Profile: FC<ProfileProps> = (props) => {
     shallowEqual
   )
 
+  const {getTokensBalance} = useTokenRetire()
+
+
   useEffect(() => {
     setCaptchaTokenFromUUID()
   }, [isChangePassowrdVisible])
@@ -149,7 +153,6 @@ const Profile: FC<ProfileProps> = (props) => {
       const tempData = response?.data?.data
       setProfileDetails({
         firstname: tempData?.fullName,
-
         email: tempData?.email,
         mobile: tempData?.phone,
         copyMobile: tempData?.phone,
@@ -338,10 +341,10 @@ const Profile: FC<ProfileProps> = (props) => {
       return
     }
 
-    if (!isAlpha(firstname)) {
-      alert('Names cannot contain numbers or special characters!')
-      return
-    }
+    //if (!isAlpha(firstname)) {
+    //  alert('Names cannot contain numbers or special characters!')
+    //  return
+    //}
     setLoading(true)
     const payload = {
       uuid: getLocalItem('userDetails').uuid,
@@ -597,6 +600,7 @@ const Profile: FC<ProfileProps> = (props) => {
               <Grid item xs={12} md={12} lg={6} xl={6}>
                 <EditProfile
                   profileDetails={profileDetails}
+                  setProfileDetails={setProfileDetails}
                   typeOptions={typeOptions}
                   selectedRole={selectedRole}
                   onChangeInput={(key: any, value: any) =>

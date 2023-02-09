@@ -13,15 +13,17 @@ import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { TOKEN_TYPES } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useMarketPlaceWithdraw } from '../../../hooks/useMarketPlaceWithdraw'
 import {
   setWithdrawQuantity,
   setWithdrawTokenType,
 } from '../../../redux/Slices/Marketplace/marketplaceWithdrawFlowSlice'
 import { Colors } from '../../../theme'
-import { createWithdrawOrder } from '../../../utils/Marketplace/marketplaceWithdraw.util'
+// import { createWithdrawOrder } from '../../../utils/Marketplace/marketplaceWithdraw.util'
 
 const TabWithdraw = () => {
   const dispatch = useAppDispatch()
+  const { createWithdrawOrder } = useMarketPlaceWithdraw()
 
   const withdrawQuantity = useAppSelector(
     ({ marketplaceWithdrawFlow }) => marketplaceWithdrawFlow.withdrawQuantity,

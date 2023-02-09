@@ -12,6 +12,7 @@ interface TextButtonProps {
   title?: string | number
   textStyle?: any
   onClick?: any
+  disabled?: boolean
 }
 
 const TextButton: FC<TextButtonProps> = (props) => {
@@ -26,6 +27,7 @@ const TextButton: FC<TextButtonProps> = (props) => {
         ...props.sx,
       }}
       onClick={props.onClick}
+      disabled={props?.disabled}
     >
       <Typography
         sx={{

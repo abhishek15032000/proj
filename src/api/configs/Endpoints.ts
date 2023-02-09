@@ -17,6 +17,7 @@ export const URL_PATH = {
     forgotPassword: ENDPOINTS.userServiceURL + '/users/forgotPassword',
     resetPassword: ENDPOINTS.userServiceURL + '/users/resetPassword',
     changePassword: ENDPOINTS.userServiceURL + '/users/changePassword',
+    getPrivateKey: ENDPOINTS.userServiceURL + '/users/getWalletDetailsById',
   },
   authRoutes: {
     login: ENDPOINTS.authServiceURL + '/auth/login',
@@ -36,6 +37,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
     getTokenAndContractStats:
       ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
+    getProjectDetailsById:
+      ENDPOINTS.carbonServiceURL + '/project/getProjectDetails',
   },
   projectSections: {
     updateProjectSectionA:
@@ -61,6 +64,14 @@ export const URL_PATH = {
     getPDFHash: ENDPOINTS.carbonServiceURL + '/verifier/utils/getHash',
     verifyPDFAndMintToken:
       ENDPOINTS.carbonServiceURL + '/verifier/report/submit',
+    verifierAllReport: ENDPOINTS.carbonServiceURL + '/verifier/report/all',
+    getVerifierById: ENDPOINTS.carbonServiceURL + '/verifier/getVerifierById',
+  },
+  registry: {
+    getRegistryReports: ENDPOINTS.carbonServiceURL + '/registry/report/submit',
+    registryUpdate: ENDPOINTS.carbonServiceURL + '/registry/update',
+    getRegistryDashboardStats:
+      ENDPOINTS.carbonServiceURL + '/registry/getRegistryProjectDashboardStats',
   },
   department: {
     getDepartment: ENDPOINTS.userServiceURL + '/department/getAllDepartment',
@@ -79,6 +90,10 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
     getTransactionById:
       ENDPOINTS.carbonServiceURL + '/transaction/getTransactionById',
+    getTokenBalanceList:
+      ENDPOINTS.carbonServiceURL + '/transaction/getWalletBalanceById',
+    getAccountAndExchangeDetails:
+      ENDPOINTS.carbonServiceURL + '/transaction/getAccountAndExchangeDetails',
   },
   issuer: {
     getIssuerTokenStats: ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
@@ -98,11 +113,13 @@ export const URL_PATH = {
     checkForFullFillOrder:
       ENDPOINTS.orderServiceURL + '/marketplace/checkForFullFillOrder',
     cancelOrder: ENDPOINTS.orderServiceURL + '/marketplace/cancelOrder',
+    getOpenOrder: ENDPOINTS.orderServiceURL + '/marketplace/getOpenOrder',
   },
   buyers: {
     saveRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/retire-token',
     getAllRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
     getTokenAndRetirementStats: ENDPOINTS.carbonServiceURL + '/buyer/getStats',
+    getRetirements: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
   },
   notification: {
     getNotification:
@@ -110,5 +127,18 @@ export const URL_PATH = {
     updateRead:
       ENDPOINTS.notificationServiceURL +
       '/notification/updateInAppNotification',
+  },
+  projectDetails: {
+    getAllTransactionHistory:
+      ENDPOINTS.carbonServiceURL + '/transaction/getTransactionByUser',
+  },
+  comments: {
+    getComments: ENDPOINTS.carbonServiceURL + '/comment/getCommentByProjectId',
+    createComment: ENDPOINTS.carbonServiceURL + '/comment/create',
+    updateComment: ENDPOINTS.carbonServiceURL + '/comment/update',
+  },
+  events: {
+    getTokenByProjectUUID:
+      ENDPOINTS.carbonServiceURL + '/event/getTokenByProjectId',
   },
 }

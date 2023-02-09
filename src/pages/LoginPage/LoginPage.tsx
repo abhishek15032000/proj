@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid, InputAdornment, Typography } from '@mui/material'
 
 // Functional Imports
 import { v4 as uuidv4 } from 'uuid'
@@ -27,6 +27,8 @@ import isEmail from 'validator/lib/isEmail'
 import ForgotPasswordModal from './ForgotPasswordModal'
 import { setWalletAdded } from '../../redux/Slices/walletSlice'
 
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 declare let window: any
 
 const Login = () => {
@@ -39,7 +41,7 @@ const Login = () => {
   const [pwdCopy, setPwdCopy] = useState('')
   const [loading, setLoading] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-
+  const [showPassword, setShowPassword] = useState(false)
   useEffect(() => {
     setCaptchaTokenFromUUID()
   }, [])
@@ -130,7 +132,7 @@ const Login = () => {
         justifyContent: 'space-between',
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Box
         sx={{
           width: {
@@ -182,14 +184,11 @@ const Login = () => {
               defaultValue={values?.email}
               clearFn={() => handleChange({ target: { value: '' } })}
             />
+
             <CCInputField
-              type="password"
               label="Password"
-              // placeholder="Password"
-              defaultValue={values?.password}
-              name="password"
               variant="outlined"
-              // error={errors?.password}
+              name="password"
               onChange={(e) => {
                 handleChange(e)
                 setPwdCopy(e.target.value)
@@ -201,7 +200,24 @@ const Login = () => {
                   handleChange(e)
                 }
               }}
-              sx={{ maxWidth: '900px' }}
+              defaultValue={values?.password}
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    {!showPassword ? (
+                      <VisibilityOffIcon
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    ) : (
+                      <VisibilityIcon
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ width: '400px', mb: 2 }}
             />
             <Box
               sx={{
@@ -247,7 +263,7 @@ const Login = () => {
               type="submit"
               sx={{
                 height: '40px',
-                width: '320px',
+                width: '100%',
                 borderRadius: '6px',
                 marginTop: 4,
               }}

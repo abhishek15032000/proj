@@ -1,12 +1,19 @@
 import logo from '../assets/Images/logo/logo.svg'
+import ICRLogo from '../assets/Images/logo/ICR-Logo.svg'
 import illustration1 from '../assets/Images/illustrations/illustration1.svg'
 import illustration2 from '../assets/Images/illustrations/illustration2.svg'
 import illustration3 from '../assets/Images/illustrations/illustration3.svg'
 import check1 from '../assets/Images/illustrations/check1.svg'
+import IssuerOnboardingBg from '../assets/Images/illustrations/issuer-onboarding-bg.png'
+import ProfileCompletionBg from '../assets/Images/illustrations/profile-completion-bg.png'
+import CompleteProfileBg from '../assets/Images/illustrations/complete-profile-bg.png'
 import ProjectCompletion from '../assets/Images/Icons/project-completion.svg'
 import BriefcaseIcon from '../assets/Images/Icons/briefcase.svg'
 import HelpIcon from '../assets/Images/Icons/help-icon.svg'
 import FileIcon from '../assets/Images/Icons/file-icon.svg'
+import LifetimeVCOTIcon from '../assets/Images/Icons/lifetime-vcot.png'
+import MonthlyVCOTIcon from '../assets/Images/Icons/monthly-vcot.png'
+import DashboardPencil from '../assets/Images/Icons/DashboardPencil.png'
 import OpenExternallyIcon from '../assets/Images/Icons/open-externally-icon.svg'
 import ListNewProject from '../assets/Images/help/list-new-project.png'
 import DemoImg from '../assets/Images/help/demo.png'
@@ -55,18 +62,54 @@ import D2EMPTY from '../assets/Images/help/D2EMPTY.png'
 import D2FILLED from '../assets/Images/help/D2FILLED.png'
 import D3EMPTY from '../assets/Images/help/D3EMPTY.png'
 import D3FILLED from '../assets/Images/help/D3FILLED.png'
+
+import one from '../assets/Images/project-details/1.png'
+import three from '../assets/Images/project-details/3.png'
+import six from '../assets/Images/project-details/6.png'
+import seven from '../assets/Images/project-details/7.png'
+import eight from '../assets/Images/project-details/8.png'
+import ten from '../assets/Images/project-details/10.png'
+import twelve from '../assets/Images/project-details/12.png'
+import thirteen from '../assets/Images/project-details/13.png'
+import fifteen from '../assets/Images/project-details/15.png'
+// import user from '../assets/Images/Icons/user.png'
+import UserDark from '../assets/Images/Icons/user-icon-dark.png'
 import List from '../assets/Images/help/List.png'
+import Project from '../assets/Images/illustrations/Project.png'
+import ProjectLight from '../assets/Images/illustrations/project-light.png'
+import ProjectDetails from '../assets/Images/project-details/projectDetails.png'
+import map from '../assets/Images/Icons/map.png'
+import file from '../assets/Images/Icons/file.png'
+import trending from '../assets/Images/Icons/trending.png'
+import eyeClose from '../assets/Images/Icons/eyeClose.png'
+import eyeOpen from '../assets/Images/Icons/eyeOpen.png'
+import group from '../assets/Images/Icons/group.png'
+import Orders from '../assets/Images/illustrations/orders.svg'
+import OrderHistory from '../assets/Images/illustrations/order-history.svg'
+import bell from '../assets/Images/Icons/bell.svg'
+import help from '../assets/Images/Icons/help-circle.svg'
+import user from '../assets/Images/Icons/user.svg'
+import settings from '../assets/Images/Icons/settings.svg'
+import wallet from '../assets/Images/Icons/credit-card.svg'
+
 export const Images = {
   logo,
+  ICRLogo,
   illustration1,
   illustration2,
   illustration3,
+  IssuerOnboardingBg,
+  ProfileCompletionBg,
+  CompleteProfileBg,
   check1,
   ProjectCompletion,
   BriefcaseIcon,
   HelpIcon,
   OpenExternallyIcon,
   FileIcon,
+  MonthlyVCOTIcon,
+  LifetimeVCOTIcon,
+  DashboardPencil,
   ListNewProject,
   DemoImg,
   DemoImg2,
@@ -114,4 +157,30 @@ export const Images = {
   D2FILLED,
   D3EMPTY,
   D3FILLED,
+  one,
+  three,
+  six,
+  seven,
+  eight,
+  ten,
+  twelve,
+  thirteen,
+  fifteen,
+  user,
+  UserDark,
+  Project,
+  ProjectLight,
+  ProjectDetails,
+  map,
+  file,
+  trending,
+  group,
+  eyeClose,
+  eyeOpen,
+  Orders,
+  OrderHistory,
+  bell,
+  help,
+  settings,
+  wallet
 }

@@ -30,6 +30,7 @@ import CircleIcon from '@mui/icons-material/Circle'
 import { addSectionPercentages } from '../../utils/newProject.utils'
 import DashboardPencil from '../../assets/Images/Icons/DashboardPencil.png'
 import './style.css'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 const headingItems = [
   {
@@ -198,7 +199,10 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                         sx={{
                           pl: 1,
                           backgroundColor:
-                            data?.project_status === 3 ? '#75F8E4' : '#DAE5E1',
+                            data?.project_status ===
+                            PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                              ? '#75F8E4'
+                              : '#DAE5E1',
                         }}
                         key="1"
                         icon={
@@ -206,19 +210,25 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                             sx={{
                               fontSize: 10,
                               color:
-                                data?.project_status === 3
+                                data?.project_status ===
+                                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
                                   ? '#00A392'
                                   : '#96B1AB',
                             }}
                           />
                         }
                         label={
-                          data?.project_status === 0
+                          data?.project_status ===
+                          PROJECT_ALL_STATUS.CREATED_PROJECT
                             ? 'Yet to select'
-                            : data?.project_status === 1 ||
-                              data?.project_status === 2
+                            : data?.project_status ===
+                                PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
+                              data?.project_status ===
+                                PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT
                             ? 'Selected'
-                            : data?.project_status === 3 && 'Finalised'
+                            : data?.project_status ===
+                                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT &&
+                              'Finalised'
                         }
                       />
                     </TableCell>
@@ -240,7 +250,8 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                           textAlign={'start'}
                           sx={{ fontSize: 15, fontWeight: 500, pl: 1 }}
                         >
-                          {data?.project_status === 3 &&
+                          {data?.project_status ===
+                            PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT &&
                           data?.verifier_details_id
                             ? data?.verifier_details_id?.verifier_name
                             : '-'}
@@ -251,7 +262,8 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
                       <Grid container flexDirection="row" alignItems={'center'}>
                         <Grid item xs={10} sx={{ pl: 1 }}>
                           {!data?.verifier_details_id &&
-                            data?.project_status !== 3 && (
+                            data?.project_status !==
+                              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
                               <img src={DashboardPencil} />
                             )}
                         </Grid>

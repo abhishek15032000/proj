@@ -1,5 +1,5 @@
 // React Imports
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 // MUI Imports
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
@@ -66,6 +66,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
   const [explain, setExplain] = useState('')
   const [quantity, setQuantity] = useState<null | number>(null)
+  const [lifeTimeQuantity, setLifetimeQuantity] = useState<null | number>(null)
   const [selectMonth, setSelectMonth] = useState(new Date())
   const [nextSubmissionDate, setNextSubmissionDate] = useState<any>(
     moment().add(1, 'd')
@@ -78,13 +79,47 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   const [showModal, setShowModal] = useState(false)
   //Action = getSignatureHash api call + verifyPDF call
   const [showActionSuccessModal, setShowActionSuccessModal] = useState(false)
+  const [disableBtn, setDisableBtn] = useState<boolean>(true)
   const [showAddressNotMatchingModal, setShowAddressNotMatchingModal] =
     useState(false)
 
   useEffect(() => {
     getPDF()
-    getIssuerShineKey()
+    // getIssuerShineKey()
   }, [])
+
+  const [height, setHeight] = useState(0)
+  const [height2, setHeight2] = useState(0)
+
+  const ref: any = useRef(null)
+  const ref2: any = useRef(null)
+
+  useEffect(() => {
+    // if (ref.current && ref.current.clientHeight) {
+    setHeight(ref.current.clientHeight)
+    setHeight2(ref.current.clientHeight)
+    // }
+  })
+
+  console.log('height', height)
+  console.log('height2', height2)
+
+  useEffect(() => {
+    !selectMonth ||
+      nextSubmissionDate.length === 0 ||
+      explain.length === 0 ||
+      nextSubmissionDate._isValid
+    !Number(quantity) || !lifeTimeQuantity || relevantDocs.length === 0
+      ? setDisableBtn(true)
+      : setDisableBtn(false)
+  }, [
+    selectMonth,
+    nextSubmissionDate,
+    explain,
+    quantity,
+    lifeTimeQuantity,
+    relevantDocs,
+  ])
 
   const getPDF = async () => {
     if (location && location?.state && location.state?.pdf) {
@@ -104,82 +139,83 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     }
   }
 
-  const getIssuerShineKey = async () => {
-    try {
-      const userResponse = await USER.getUsersById(project?.user_id)
-      if (userResponse) {
-        setIssuerShineKey(userResponse?.data.shineKey)
-      } else {
-        alert("Couldn't get issuer shine key. Please try again!!!")
-      }
-    } catch (err) {
-      console.log('Error in USER.getUsersById api : ', err)
-    }
-  }
+  // const getIssuerShineKey = async () => {
+  //   try {
+  //     const userResponse = await USER.getUsersById(project?.user_id)
+  //     if (userResponse) {
+  //       setIssuerShineKey(userResponse?.data.shineKey)
+  //     } else {
+  //       alert("Couldn't get issuer shine key. Please try again!!!")
+  //     }
+  //   } catch (err) {
+  //     console.log('Error in USER.getUsersById api : ', err)
+  //   }
+  // }
 
-  const signAndVerify = async () => {
-    const { shineKey = '' } = getLocalItem('userDetails2')
+  // const signAndVerify = async () => {
+  //   const { shineKey = '' } = getLocalItem('userDetails2')
 
-    if (!isConnected) {
-      alert('Please connect Wallet before continuing!!!')
-      return
-    }
-    if (!issuerShineKey) {
-      alert("Couldn't get issuer shine key. Please try again!!!")
-      return
-    }
-    if (
-      !accountAddress ||
-      !shineKey ||
-      accountAddress?.toLowerCase() !== shineKey?.toLowerCase()
-    ) {
-      setShowAddressNotMatchingModal(true)
-      return
-    }
-    if (nextSubmissionDate && selectMonth && quantity) {
-      setLoading(true)
-      getSignatureHash()
-    } else {
-      alert('Please enter all fields!!!')
-      return
-    }
-  }
+  //   if (!isConnected) {
+  //     alert('Please connect Wallet before continuing!!!')
+  //     return
+  //   }
+  //   if (!issuerShineKey) {
+  //     alert("Couldn't get issuer shine key. Please try again!!!")
+  //     return
+  //   }
+  //   if (
+  //     !accountAddress ||
+  //     !shineKey ||
+  //     accountAddress?.toLowerCase() !== shineKey?.toLowerCase()
+  //   ) {
+  //     setShowAddressNotMatchingModal(true)
+  //     return
+  //   }
+  //   if (nextSubmissionDate && selectMonth && quantity) {
+  //     setLoading(true)
+  //     getSignatureHash()
+  //   } else {
+  //     alert('Please enter all fields!!!')
+  //     return
+  //   }
+  // }
 
-  const getSignatureHash = async () => {
-    // const nonce = await provider.getTransactionCount(accountAddress)
-    //Using random number as Nonce since getTransactionCount not working properly
-    const pseudoNonce = new Date().getTime()
-    const signatureHashPayload = {
-      recipient: issuerShineKey,
-      _amount: Number(quantity),
-      _project_data: JSON.stringify({ projectId: project?.uuid }),
-      _nonce: pseudoNonce,
-    }
-    try {
-      const signatureHashRes = await verifierCalls.getPDFHash(
-        signatureHashPayload
-      )
-      if (signatureHashRes?.data?.success && signatureHashRes?.data?.data) {
-        const toPassParam = [accountAddress, signatureHashRes?.data?.data?.data]
-        const personalSignRes = await BlockchainCalls.requestMethodCalls(
-          'personal_sign',
-          toPassParam
-        )
-        if (personalSignRes) {
-          verifyPDF(personalSignRes, pseudoNonce)
-        } else {
-          alert("Couldn't sign successfully. Please try again!!!")
-          return
-        }
-      }
-    } catch (err) {
-      console.log('Error in verifierCalls.getPDFHash api :', err)
-      setLoading(false)
-      alert('Error in verifierCalls.getPDFHash api')
-    }
-  }
+  // const getSignatureHash = async () => {
+  //   // const nonce = await provider.getTransactionCount(accountAddress)
+  //   //Using random number as Nonce since getTransactionCount not working properly
+  //   const pseudoNonce = new Date().getTime()
+  //   const signatureHashPayload = {
+  //     recipient: issuerShineKey,
+  //     _amount: Number(quantity),
+  //     _project_data: JSON.stringify({ projectId: project?.uuid }),
+  //     _nonce: pseudoNonce,
+  //   }
+  //   try {
+  //     const signatureHashRes = await verifierCalls.getPDFHash(
+  //       signatureHashPayload
+  //     )
+  //     if (signatureHashRes?.data?.success && signatureHashRes?.data?.data) {
+  //       const toPassParam = [accountAddress, signatureHashRes?.data?.data?.data]
+  //       const personalSignRes = await BlockchainCalls.requestMethodCalls(
+  //         'personal_sign',
+  //         toPassParam
+  //       )
+  //       if (personalSignRes) {
+  //         verifyPDF(personalSignRes, pseudoNonce)
+  //       } else {
+  //         alert("Couldn't sign successfully. Please try again!!!")
+  //         return
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log('Error in verifierCalls.getPDFHash api :', err)
+  //     setLoading(false)
+  //     alert('Error in verifierCalls.getPDFHash api')
+  //   }
+  // }
 
-  const verifyPDF = async (signatureHash: string, pseudoNonce: number) => {
+  const verifyPDF = async () => {
+    setLoading(true)
     const {
       state: { project },
     } = location
@@ -190,21 +226,24 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       project_id: project?.uuid,
       current_month: selectMonth,
       next_date: nextSubmissionDate,
-      quantity: Number(quantity),
       ghg_reduction_explanation: explain,
-      signature_hash: signatureHash,
-      signer: accountAddress,
+      quantity: Number(quantity),
+      monthly_carbon_tokens: Number(quantity),
+      lifetime_carbon_tokens: Number(lifeTimeQuantity),
+      // signature_hash: signatureHash,
+      // signer: accountAddress,
       file_attach: stringExtractor(relevantDocs, 'fileName'),
-      nonce: pseudoNonce,
+      // nonce: pseudoNonce,
     }
     try {
       const verifyPDFAndMintTokenRes =
         await verifierCalls.verifyPDFAndMintToken(verifyPDFAndMintTokenpayload)
-      if (verifyPDFAndMintTokenRes?.data.success) {
-        if (verifyPDFAndMintTokenRes?.data?.data.success) {
+
+      if (verifyPDFAndMintTokenRes?.data?.success) {
+        if (verifyPDFAndMintTokenRes?.data?.success) {
           setShowActionSuccessModal(true)
         } else {
-          alert(verifyPDFAndMintTokenRes?.data?.data.error)
+          alert(verifyPDFAndMintTokenRes?.data?.error)
         }
       }
     } catch (err) {
@@ -223,123 +262,270 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         backgroundColor: Colors.background,
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
-      <Grid container>
-        <Grid item xs={12}>
-          <BackHeader
-            title="Back"
-            sx={{ ml: 4, mt: 3, mb: 2, cursor: 'pointer' }}
-            titleSx={{ fontSize: 14 }}
-            onClick={() => {
-              navigate(-1)
-            }}
-          />
-        </Grid>
-
-        <Paper sx={{ border: '0px solid', flex: 1 }}>
-          <Box
+      {loading ? <LoaderOverlay show /> : null}
+      <Box sx={{ ml: 4, py: 2, display: 'flex' }}>
+        <Box sx={{ fontSize: 12, color: '#4A635E' }}>
+          {'Project List > Project Details'}{' '}
+        </Box>
+        <Box sx={{ fontSize: 12, color: '#000000' }}>{' > Verify'} </Box>
+      </Box>
+      <Grid
+        container
+        columnSpacing={2}
+        sx={{
+          background: Colors.lightGreenBackground,
+          height: '100vh',
+          overflow: 'scroll',
+          //
+        }}
+      >
+        <Grid
+          item
+          xs={12}
+          md={6}
+          ref={ref2}
+          sx={{
+            height: `${height}px`,
+          }}
+        >
+          <Paper
+            ref={ref2}
             sx={{
-              height: '80px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              height: '100%',
+              flex: 1,
             }}
           >
-            <Typography
-              sx={{ fontSize: 28, fontWeight: 400, color: Colors.tertiary }}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <BackHeader
+                title=""
+                sx={{ ml: 4, mt: 3, mb: 2, cursor: 'pointer' }}
+                titleSx={{ fontSize: 14 }}
+                onClick={() => {
+                  navigate(-1)
+                }}
+              />
+              <Typography
+                sx={{
+                  mt: 1,
+                  fontSize: 28,
+                  fontWeight: 400,
+                  color: Colors.tertiary,
+                  // py: 2,
+                }}
+              >
+                Project Issuance Report V1.1 (PDF)
+              </Typography>
+            </Box>
+
+            <Divider />
+            {pdfLoading ? (
+              <Box
+                sx={{
+                  height: '100vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spinner />
+              </Box>
+            ) : (
+              pdfURL && <PDFViewer pdfUrl={pdfURL} />
+            )}
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6} ref={ref}>
+          <Paper ref={ref} sx={{ border: '0px solid', height: '100%' }}>
+            <Box
+              sx={{
+                mx: 4,
+                // height: '80px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                py: 2,
+              }}
             >
-              Verify & Submit Conclusive Report
+              <Typography
+                sx={{
+                  fontSize: 28,
+                  fontWeight: 400,
+                  color: Colors.tertiary,
+                }}
+              >
+                Verify & Submit Conclusive Report
+              </Typography>
+
+              <TextButton
+                onClick={() => verifyPDF()}
+                sx={{ ml: 4, opacity: disableBtn && '0.5', width: '340px' }}
+                title="Authorise & Mark Verified"
+                disabled={disableBtn}
+              />
+            </Box>
+
+            <Divider />
+
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                mt: 4,
+                ml: 4,
+              }}
+            >
+              How much GHG reduction can occur from this project?
             </Typography>
 
-            <TextButton
-              onClick={() => setShowModal(true)}
-              sx={{ ml: 4 }}
-              title="Sign & Mark Verified"
+            <CCMultilineTextArea
+              sx={{ m: 3, ml: 4, width: '90%' }}
+              label="Explain"
+              placeholder="Explain it here"
+              value={explain}
+              onChange={(e) => setExplain(e.target.value)}
             />
-          </Box>
 
-          <Divider />
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                ml: 4,
+              }}
+            >
+              How much quantity of VCOT can be authorised for the current month?
+            </Typography>
 
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: Colors.darkPrimary1,
-              mt: 4,
-              ml: 4,
-            }}
-          >
-            How much GHG reduction can occur from this project?
-          </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                // justifyContent: 'center',
+                alignItems: 'center',
+                mt: 2,
+              }}
+            >
+              <Box sx={{ width: '42%', ml: 4 }}>
+                <DatePicker
+                  label="Select Month"
+                  views={['month']}
+                  inputFormat="MMMM"
+                  value={selectMonth}
+                  components={{
+                    OpenPickerIcon: CalendarMonthOutlinedIcon,
+                  }}
+                  // renderInput={(pa)}
+                  renderInput={(params) => (
+                    <CCInputField
+                      {...params}
+                      style={{ backgroundColor: 'white' }}
+                      InputLabelProps={{
+                        style: { color: '#3F4946' },
+                      }}
+                    />
+                  )}
+                  // onChange={(e) => undefined}
+                  onChange={(e) => {
+                    if (e !== null) {
+                      setSelectMonth(e)
+                    }
+                  }}
+                />
+              </Box>
 
-          <CCMultilineTextArea
-            sx={{ m: 3, ml: 4, width: '90%' }}
-            label="Explain"
-            placeholder="Explain it here"
-            value={explain}
-            onChange={(e) => setExplain(e.target.value)}
-          />
+              <Box sx={{ width: '43%', ml: 4 }}>
+                <CCInputField
+                  label="Enter Quantity of VCOTs"
+                  placeholder="Enter Quantity of VCOTs"
+                  variant="outlined"
+                  // sx={{ mt: 1 }}
+                  value={quantity}
+                  onChange={(e) => {
+                    const regexp = /^\d+(\.\d{0,3})?$/
+                    if (
+                      regexp.test(e?.target?.value) ||
+                      e?.target?.value === ''
+                    ) {
+                      setQuantity(e?.target?.value)
+                    }
+                  }}
+                  InputLabelProps={{
+                    style: { color: '#3F4946' },
+                  }}
+                />
+              </Box>
+            </Box>
 
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: Colors.darkPrimary1,
-              ml: 4,
-            }}
-          >
-            How much quantity of VCOT can be authorised for the current month?
-          </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              // justifyContent: 'center',
-              alignItems: 'center',
-              mt: 2,
-            }}
-          >
-            <Box sx={{ width: '42%', ml: 4 }}>
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                ml: 4,
+                mt: 3,
+                mb: 2,
+              }}
+            >
+              Please enter next monthly report submission date for issuer
+            </Typography>
+            <Box sx={{ width: '90%', ml: 4 }}>
               <DatePicker
-                label="Select Month"
-                views={['month']}
-                inputFormat="MMMM"
-                value={selectMonth}
+                label="Next submission date"
+                // views={['month']}
+                value={nextSubmissionDate}
                 components={{
                   OpenPickerIcon: CalendarMonthOutlinedIcon,
                 }}
-                // renderInput={(pa)}
-                renderInput={(params) => (
-                  <CCInputField
-                    {...params}
-                    style={{ backgroundColor: 'white' }}
-                    InputLabelProps={{
-                      style: { color: '#3F4946' },
-                    }}
-                  />
-                )}
-                // onChange={(e) => undefined}
+                minDate={moment().add(1, 'd')}
+                renderInput={(params) => {
+                  return (
+                    <CCInputField
+                      {...params}
+                      style={{ backgroundColor: 'white' }}
+                      InputLabelProps={{
+                        style: { color: '#3F4946' },
+                      }}
+                    />
+                  )
+                }}
                 onChange={(e) => {
                   if (e !== null) {
-                    setSelectMonth(e)
+                    setNextSubmissionDate(e)
                   }
                 }}
               />
             </Box>
 
-            <Box sx={{ width: '43%', ml: 4 }}>
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: Colors.darkPrimary1,
+                ml: 4,
+                mt: 3,
+                mb: 2,
+              }}
+            >
+              Please enter the lifetime value of VCOT
+            </Typography>
+            <Box
+              sx={{
+                m: 3,
+                mx: 4,
+              }}
+            >
               <CCInputField
-                label="Enter Quantity of VCOT"
+                label="Enter lifetime value of VCOT"
+                placeholder="Enter lifetime value of VCOT"
                 variant="outlined"
-                // sx={{ mt: 1 }}
-                value={quantity}
+                value={lifeTimeQuantity}
                 onChange={(e) => {
                   const regexp = /^\d+(\.\d{0,3})?$/
                   if (
                     regexp.test(e?.target?.value) ||
                     e?.target?.value === ''
                   ) {
-                    setQuantity(e?.target?.value)
+                    setLifetimeQuantity(e?.target?.value)
                   }
                 }}
                 InputLabelProps={{
@@ -347,89 +533,25 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 }}
               />
             </Box>
-          </Box>
 
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: Colors.darkPrimary1,
-              ml: 4,
-              mt: 3,
-              mb: 2,
-            }}
-          >
-            Please enter next monthly report submission date for issuer
-          </Typography>
-
-          <Box sx={{ width: '90%', ml: 4 }}>
-            <DatePicker
-              label="Next submission date"
-              // views={['month']}
-              value={nextSubmissionDate}
-              components={{
-                OpenPickerIcon: CalendarMonthOutlinedIcon,
+            <CCDropAndUpload
+              sx={{ m: 4, mr: 5 }}
+              mediaTitle={[]}
+              title="Attach relevant docs"
+              mediaItem={[]}
+              imageArray={relevantDocs}
+              onImageUpload={(item: any) => {
+                setRelevantDocs([item, ...relevantDocs])
               }}
-              minDate={moment().add(1, 'd')}
-              renderInput={(params) => {
-                return (
-                  <CCInputField
-                    {...params}
-                    style={{ backgroundColor: 'white' }}
-                    InputLabelProps={{
-                      style: { color: '#3F4946' },
-                    }}
-                  />
-                )
-              }}
-              onChange={(e) => {
-                if (e !== null) {
-                  setNextSubmissionDate(e)
-                }
+              onDeleteImage={(index: number) => {
+                setRelevantDocs(deleteIndexInArray(relevantDocs, index))
               }}
             />
-          </Box>
-          <CCDropAndUpload
-            sx={{ m: 4, mr: 5 }}
-            mediaTitle={[]}
-            title="Attach relevant docs"
-            mediaItem={[]}
-            imageArray={relevantDocs}
-            onImageUpload={(item: any) => {
-              setRelevantDocs([item, ...relevantDocs])
-            }}
-            onDeleteImage={(index: number) => {
-              setRelevantDocs(deleteIndexInArray(relevantDocs, index))
-            }}
-          />
-        </Paper>
-
-        <Box
-          sx={{
-            height: 'auto',
-            border: '0px solid',
-            backgroundColor: '#DAE5E1',
-            width: '20px',
-          }}
-        />
-        <Paper sx={{ height: '120vh', flex: 1 }}>
-          {pdfLoading ? (
-            <Box
-              sx={{
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Spinner />
-            </Box>
-          ) : (
-            pdfURL && <PDFViewer pdfUrl={pdfURL} />
-          )}
-        </Paper>
+          </Paper>{' '}
+        </Grid>
       </Grid>
-      <MessageModal
+      {/* </Grid> */}
+      {/* <MessageModal
         message={
           <>
             <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
@@ -466,14 +588,14 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         disableBtn1={!accountBalance ? true : false}
         btn1OnClick={() => {
           setShowModal(false)
-          signAndVerify()
+          // signAndVerify()
         }}
         btn2OnClick={() => setShowModal(false)}
         btn2Text="Cancel"
         showModal={showModal}
         setShowModal={setShowModal}
-      />
-      <MessageModal
+      /> */}
+      {/* <MessageModal
         message={
           'Please use the same Wallet address submitted at the start while completing the Profile!!!'
         }
@@ -481,9 +603,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         btn1OnClick={() => setShowAddressNotMatchingModal(false)}
         showModal={showAddressNotMatchingModal}
         setShowModal={setShowAddressNotMatchingModal}
-      />
+      /> */}
       <MessageModal
-        message={'PDF Verified and Token Minted Successfully!!!'}
+        message={'PDF Verified and sent to Registry!!!'}
         btn1Text="Ok"
         btn1OnClick={() => {
           setShowActionSuccessModal(false)

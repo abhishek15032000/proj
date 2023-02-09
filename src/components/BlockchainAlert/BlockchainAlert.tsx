@@ -24,7 +24,7 @@ import InfoIcon from '@mui/icons-material/Info'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { USER } from '../../api/user.api'
 import { getLocalItem, setLocalItem } from '../../utils/Storage'
-import { onManualConnectClick } from '../../utils/blockchain.util'
+// import { onManualConnectClick } from '../../utils/blockchain.util'
 import CloseIcon from '@mui/icons-material/Close'
 import { pathNames } from '../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
@@ -40,7 +40,7 @@ const BlockchainAlert = (props: BlockchainAlertProps) => {
     (state) => state.wallet.loadWalletAlert
   )
 
-  const { user_id } = getLocalItem('userDetails')
+  // const { user_id } = getLocalItem('userDetails')
 
   const closeModal = () => dispatch(setLoadWallet(false))
 

@@ -23,6 +23,7 @@ import NoData from '../../atoms/NoData/NoData'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { getLocalItem } from '../../utils/Storage'
 import { downloadFile } from '../../utils/commonFunctions'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 
 const headings = [
   'Submitted On',
@@ -175,7 +176,8 @@ const ReportsTable: FC<ReportsTableProps> = (props) => {
       {!props.loading && props.data.length === 0 && (
         <>
           <Typography sx={{ fontSize: 16, fontWeight: 500, mt: 2, mb: 2 }}>
-            {props?.projectDetails?.project_status === 1
+            {props?.projectDetails?.project_status ===
+            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED
               ? 'Please Approve or Reject the Project Request first'
               : 'Response awaiting from Project Developer'}
           </Typography>

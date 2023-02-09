@@ -44,14 +44,26 @@ const SectionA2 = () => {
       currentProjectDetails &&
       currentProjectDetails.section_a.step2.completed
     ) {
-      const { country, state, city, pincode, landmark, file_attach } =
-        currentProjectDetails.section_a.step2
+      const {
+        country,
+        state,
+        city,
+        pincode,
+        landmark,
+        file_attach,
+        geographic_coordinates,
+        aerial_photo,
+      } = currentProjectDetails.section_a.step2
 
       dispatch(setA2({ name: 'city', value: city }))
       dispatch(setA2({ name: 'country', value: country }))
       dispatch(setA2({ name: 'state', value: state }))
       dispatch(setA2({ name: 'pincode', value: pincode }))
       dispatch(setA2({ name: 'landmark', value: landmark }))
+      dispatch(
+        setA2({ name: 'geographic_coordinates', value: geographic_coordinates })
+      )
+      dispatch(setA2({ name: 'aerial_photo', value: aerial_photo }))
       dispatch(setA2({ name: 'file_attach', value: file_attach }))
     }
   }, [currentProjectDetails])
@@ -63,7 +75,8 @@ const SectionA2 = () => {
   ) : (
     <Grid
       container
-      sx={{ width: '100%' }}
+      className="issuance_data_section_scroll"
+      sx={{ width: '100%', mt: 2 }}
       columnSpacing={{ xs: 0, md: 1 }}
       rowSpacing={1}
       xs={12}
@@ -73,15 +86,15 @@ const SectionA2 = () => {
     >
       <Grid
         container
-        sx={{ width: '100%', mt: 3 }}
+        sx={{ width: '100%' }}
         columnSpacing={{ xs: 0, md: 1 }}
-        rowSpacing={1}
+        rowSpacing={2}
         xs={12}
         md={12}
         lg={12}
         xl={12}
       >
-        <Grid item sx={{ mt: 1 }} xs={12} md={12} lg={12} xl={12}>
+        <Grid item xs={12} md={12} lg={12} xl={12}>
           <Typography>Location of the project activity</Typography>
         </Grid>
         <Grid item xs={12} md={12} lg={6} xl={6}>
@@ -151,11 +164,33 @@ const SectionA2 = () => {
             }
           />
         </Grid>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
+          <CCInputField
+            label="Geographic coordinates"
+            sx={{ backgroundColor: ' #FFFFFF' }}
+            value={A2.geographic_coordinates}
+            name={'geographic_coordinates'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setA2({ value, name }))
+            }
+          />
+        </Grid>
+        <Grid item xs={12} md={12} lg={6} xl={6}>
+          <CCInputField
+            label="Link to an aerial photo of the location"
+            sx={{ backgroundColor: ' #FFFFFF' }}
+            value={A2.aerial_photo}
+            name={'aerial_photo'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setA2({ value, name }))
+            }
+          />
+        </Grid>
       </Grid>
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCDropAndUpload
           mediaTitle={['Sample Report - Implementation of Milestones']}
-          title="Upload location map images *"
+          title={'Upload location map images'}
           mediaItem={[]}
           imageArray={A2.file_attach}
           onImageUpload={(item: any) => {
@@ -171,6 +206,7 @@ const SectionA2 = () => {
               })
             )
           }}
+          required={true}
         />
       </Grid>
       <HelpPopUp

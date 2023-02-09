@@ -35,6 +35,17 @@ import BankDetails from '../pages/BankDetails'
 import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
 import Profile from '../pages/Profile'
 import HelpCentre from '../pages/HelpCentre/HelpCentre'
+import ProjectDetails from '../pages/ProjectDetails'
+import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
+import ProjectDetailsRegistryAcc from '../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc'
+import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewReport'
+import RegistryAllProjects from '../pages/RegistryAllProjects/RegistryAllProjects'
+import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
+import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
+import Wallet from '../pages/Wallet'
+import RiskDashboard from '../pages/RiskDashboard'
+import Marketplace from '../pages/Marketplace/Marketplace'
+import ProjectPage from '../pages/ProjectPage'
 
 export const privateRouteComponents = [
   {
@@ -43,7 +54,7 @@ export const privateRouteComponents = [
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.TOKEN_CONTRACT,
@@ -64,7 +75,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUANCE_DATA_COLLECTION_HELP,
     component: IssuanceDataCollectionHelp,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
   },
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
@@ -72,8 +83,20 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
-    path: pathNames.MARKETPLACE,
+    path: pathNames.MARKETPLACE_OLD,
     component: MarketplaceHome,
+    // sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.MARKETPLACE,
+    component: Marketplace,
+    // sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.PROJECT_LISTS_WITH_FILTER,
+    component: ProjectListsWithFilter,
     sidebarName: linkLabels.Marketplace,
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
@@ -82,31 +105,33 @@ export const privateRouteComponents = [
     component: MarketplaceProjectDetails,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.PROJECTS,
-    component: ProjectsPage,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.PROJECTS,
+  //   component: ProjectsPage,
+  //   roles: [ROLES.ISSUER],
+  // },
   {
     path: pathNames.PROJECTS_LIST,
     component: ProjectList,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.SEE_ALL_PROJECTS,
-    component: SeeAllProject,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.SEE_ALL_PROJECTS,
+  //   component: SeeAllProject,
+  //   roles: [ROLES.ISSUER],
+  //   sidebarName: linkLabels.Projects,
+  // },
   {
     path: pathNames.LIST_NEW_PROJECT,
     component: ListNewProject,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.SEE_ALL_PROJECTS,
-    component: SeeAllProject,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.REGISTRY_ALL_PROJECTS,
+  //   component: RegistryAllProjects,
+  //   roles: [ROLES.REGISTRY],
+  //   sidebarName: linkLabels.Projects,
+  // },
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
     component: ProfileDetailsIssuanceInfo,
@@ -116,7 +141,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.SELECT_VERIFIER,
@@ -156,7 +181,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUER_WALLET,
     component: IssuerWallet,
-    sidebarName: linkLabels.Wallet,
+
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
@@ -205,11 +230,60 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROFILE,
     component: Profile,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.HELP_CENTER,
     component: HelpCentre,
     roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.PROJECT_DETAILS,
+    component: ProjectDetails,
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+    component: ProjectDetailsRegistryAcc,
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.REGISTRY_REVIEW_REPORT,
+    component: RegistryReviewReport,
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.PROJECTS,
+    component: ProjectPage,
+    roles: [ROLES.REGISTRY, ROLES.ISSUER],
+    sidebarName: linkLabels.Projects,
+  },
+  {
+    path: pathNames.COMPLETE_PROFILE,
+    component: CompleteProfile,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.MARKETPLACE_V2,
+    component: ProjectListsWithFilter,
+    // component: MarketplaceV2,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.REVIEW_AND_COMMENT,
+    component: ReviewAndComment,
+    roles: [ROLES.VERIFIER, ROLES.ISSUER],
+  },
+  {
+    path: pathNames.WALLET,
+    component: Wallet,
+    sidebarName: linkLabels.Wallet,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.RISK_DASHBOARD,
+    component: RiskDashboard,
+
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
 ]

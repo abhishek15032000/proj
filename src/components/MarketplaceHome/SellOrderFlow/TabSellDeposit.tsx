@@ -6,12 +6,14 @@ import BalanceCheckModal from '../../../atoms/BalanceCheckModal/BalanceCheckModa
 import CCButton from '../../../atoms/CCButton'
 import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
+import { useMarketPlaceSell } from '../../../hooks/useMarketPlaceSell'
 import { setSellQuantityForDeposit } from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import { depositERC20 } from '../../../utils/Marketplace/marketplaceSellFlow.util'
+// import { depositERC20 } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 
 const TabSellDeposit = () => {
   const dispatch = useAppDispatch()
+  const { depositERC20 } = useMarketPlaceSell()
   const [showSecondModal, setShowSecondModal] = useState(false)
   const sellQuantityForDeposit = useAppSelector(
     ({ marketplaceSellFlow }) => marketplaceSellFlow.sellQuantityForDeposit,

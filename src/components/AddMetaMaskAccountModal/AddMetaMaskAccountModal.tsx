@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../atoms/CCButton'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useBlockchain } from '../../hooks/useBlockchain'
 import { setShowAddMetaMaskAccountModal } from '../../redux/Slices/walletSlice'
 import { Colors } from '../../theme'
-import { updateUserWithShineKey } from '../../utils/blockchain.util'
+// import { updateUserWithShineKey } from '../../utils/blockchain.util'
 
 const AddMetaMaskAccountModal = () => {
   const dispatch = useAppDispatch()
@@ -13,7 +14,7 @@ const AddMetaMaskAccountModal = () => {
   const [open, setOpen] = useState(false)
 
   const closeModal = () => dispatch(setShowAddMetaMaskAccountModal(false))
-
+  const {updateUserWithShineKey} = useBlockchain()
   const accountAddressToConnectWith = useAppSelector(
     ({ wallet }) => wallet.accountAddressToConnectWith,
     shallowEqual

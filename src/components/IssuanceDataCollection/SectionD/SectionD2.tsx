@@ -76,72 +76,72 @@ const SectionD2: FC = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Grid
-      container
-      sx={{ width: '100%', mt: 3 }}
-      columnSpacing={{ xs: 0, md: 1 }}
-      rowSpacing={1}
-      xs={12}
-      md={12}
-      lg={12}
-      xl={12}
-    >
-      <CCMultilineTextArea
-        // aria-label="minimum height"
-        label={'Data and parameters monitored ex-post (actuals)'}
-        placeholder="If data for this project is monitored and calculated based on an ex-post method, please explain."
-        value={D2.data_and_parameter_monitored_ExPost}
-        name={'data_and_parameter_monitored_ExPost'}
-        onChange={({ target: { value, name } }) =>
-          dispatch(setD2({ name, value }))
-        }
-      />
-
+    <Box className="issuance_data_section_scroll">
       <Grid
-        item
-        xs={12}
-        md={12}
-        lg={12}
-        xl={12}
-        sx={{ mt: 1 }}
-        justifyContent="center"
-        alignItems={'center'}
-        direction="column"
+        container
+        sx={{ width: '100%', mt: 4 }}
+        columnSpacing={{ xs: 0, md: 1 }}
+        rowSpacing={1}
       >
-        <CCDropAndUpload
-          mediaTitle={[
-            'Sample Report - Monitored ex - post',
-            'Sample Report - Project emissions',
-            'Sample Report - Leakage emissions',
-          ]}
-          mediaItem={[sampleD2, sampleD3, sampleD4]}
-          title=" Attach datas & parameters fixed ex-ante table"
-          imageArray={D2.attach_ex_ante_table}
-          onImageUpload={(item: any) => {
-            dispatch(
-              setD2({
-                name: 'attach_ex_ante_table',
-                value: [...attach_ex_ante_table, item],
-              })
-            )
-          }}
-          onDeleteImage={(index: number) => {
-            dispatch(
-              setD2({
-                name: 'attach_ex_ante_table',
-                value: deleteIndexInArray(attach_ex_ante_table, index),
-              })
-            )
-          }}
+        <Grid item xs={12} md={12} lg={12} xl={12}>
+          <CCMultilineTextArea
+            // aria-label="minimum height"
+            label={'Data and parameters monitored ex-post (actuals)'}
+            placeholder="If data for this project is monitored and calculated based on an ex-post method, please explain."
+            value={D2.data_and_parameter_monitored_ExPost}
+            name={'data_and_parameter_monitored_ExPost'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setD2({ name, value }))
+            }
+            required={false}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          lg={12}
+          xl={12}
+          sx={{ mt: 1 }}
+          justifyContent="center"
+          alignItems={'center'}
+          direction="column"
+        >
+          <CCDropAndUpload
+            mediaTitle={[
+              'Sample Report - Monitored ex - post',
+              'Sample Report - Project emissions',
+              'Sample Report - Leakage emissions',
+            ]}
+            mediaItem={[sampleD2, sampleD3, sampleD4]}
+            title=" Attach datas & parameters fixed ex-ante table"
+            imageArray={D2.attach_ex_ante_table}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setD2({
+                  name: 'attach_ex_ante_table',
+                  value: [...attach_ex_ante_table, item],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setD2({
+                  name: 'attach_ex_ante_table',
+                  value: deleteIndexInArray(attach_ex_ante_table, index),
+                })
+              )
+            }}
+          />
+        </Grid>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.D2}
+          issuanceVisible={true}
         />
       </Grid>
-      <HelpPopUp
-        modal={modal}
-        setModal={(item: any) => setModal(item)}
-        data={IssuanceHelpContentData?.D2}
-        issuanceVisible={true}
-      />
-    </Grid>
+    </Box>
   )
 }
 

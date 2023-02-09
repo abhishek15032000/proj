@@ -27,7 +27,7 @@ import { shallowEqual } from 'react-redux'
 // Local Imports
 import CCButton from '../../atoms/CCButton/CCButton'
 import { department } from '../../api/department.api'
-import { ROLES } from '../../config/constants.config'
+import { PROJECT_ALL_STATUS, ROLES } from '../../config/constants.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
@@ -35,10 +35,12 @@ import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
-import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
+// import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
 import SelectVerifierSkeleton from './SelectVerifierSkeleton'
+import {useProject} from "../../hooks/useProject"
 
 const SelectVerifier = () => {
+  const {getProjectDetails} = useProject()
   const navigate = useNavigate()
   const location: any = useLocation()
 
@@ -98,7 +100,7 @@ const SelectVerifier = () => {
     const payload: any = selectedVerifiers.map((verifierDetials: any) => {
       return {
         project_id: currentProjectDetails?._id,
-        project_status: 1,
+        project_status: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
         verifier_id: verifierDetials?._id,
         verifier_name: verifierDetials?.fullName,
         verifier_address: verifierDetials?.address,
@@ -117,7 +119,7 @@ const SelectVerifier = () => {
     } catch (err) {
       console.log(err)
     } finally {
-      setLoading(false)    
+      setLoading(false)
     }
   }
 
@@ -185,11 +187,11 @@ const SelectVerifier = () => {
         <Grid item>
           <CCButton
             variant="contained"
-            sx={{ padding: '10px 80px', fontSize: 16, borderRadius: 20 }}
+            sx={{ padding: '10px 40px', fontSize: 16, borderRadius: 20 }}
             onClick={handleClick}
             disabled={buttonDisabled}
           >
-            Save
+            Send for verification
           </CCButton>
         </Grid>
       </Grid>
@@ -208,6 +210,7 @@ const SelectVerifier = () => {
                   borderTop: isThisVerifierSelected(verifier?._id)
                     ? '6px solid #006B5E'
                     : '6px solid transparent',
+                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
                 }}
               >
                 <Grid
@@ -257,12 +260,23 @@ const SelectVerifier = () => {
                       sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                     />
                     <Typography sx={{ fontSize: 14 }}>
+                      {/* <a
+                        style={{
+                          color: '#25BBD2',
+                          textDecoration: 'underline',
+                        }}
+                        href={verifier?.website}
+                      >
+                        {verifier?.website || '-'}
+                      </a> */}
                       <a
                         style={{
                           color: '#25BBD2',
                           textDecoration: 'underline',
                         }}
                         href={verifier?.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {verifier?.website || '-'}
                       </a>
@@ -275,10 +289,7 @@ const SelectVerifier = () => {
                     />
                     <Box>
                       <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.designation}
-                      </Typography>
-                      <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.address}
+                        {verifier?.fullName + ',' + verifier?.designation}
                       </Typography>
                     </Box>
                   </Box>
@@ -304,9 +315,10 @@ const SelectVerifier = () => {
                     <Box
                       sx={{
                         background: '#F0FFFB',
-                        width: '100px',
-                        height: '100px',
+                        width: '150px',
+                        height: '150px',
                         position: 'relative',
+                        borderRadius: '24px 0px 0px 24px',
                       }}
                     >
                       <img

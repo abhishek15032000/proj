@@ -1,5 +1,5 @@
-import { Grid, Modal, Paper, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState, useRef } from 'react'
+import { Container, Grid, Modal, Paper, Stack, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { KeyboardArrowLeft } from '@mui/icons-material'
@@ -23,6 +23,11 @@ import SectionD3 from './SectionD/SectionD3'
 import SectionB2 from './SectionB/SectionB2'
 import SectionB1 from './SectionB/SectionB1'
 import SectionC1 from './SectionC/SectionC1'
+import SectionA6 from './SectionA/SectionA6'
+import SectionA7 from './SectionA/SectionA7'
+import SectionB3 from './SectionB/SectionB3'
+import SectionC2 from './SectionC/SectionC2'
+import SectionE8 from './SectionE/SectionE8'
 import ProjectCompletionProgress from './ProjectCompletionProgress'
 import ListNewProject from '../ListNewProject'
 import './issuanceDataCollection.css'
@@ -35,7 +40,7 @@ import {
   setIsApiCallSuccess,
   setToMoveSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
-import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
+// import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
@@ -53,6 +58,8 @@ import { resetSectionB } from '../../redux/Slices/sectionBSlice'
 import { resetSectionC } from '../../redux/Slices/sectionCSlice'
 import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlice'
 import { usePrompt } from '../../hooks/useCustomBlocker'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import { useProject } from '../../hooks/useProject'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -73,6 +80,8 @@ const sectionATabs = [
     { name: 'A3: Parties & Project Participants', component: SectionA3 },
     { name: 'A4: Reference & Applied Methodology', component: SectionA4 },
     { name: 'A5: Crediting Period', component: SectionA5 },
+    { name: 'A6: Safeguards', component: SectionA6 },
+    { name: 'A7: Additionaly', component: SectionA7 },
   ],
   [
     {
@@ -80,11 +89,16 @@ const sectionATabs = [
       component: SectionB1,
     },
     { name: 'B2: Post registration changes', component: SectionB2 },
+    { name: 'B3: Additional details', component: SectionB3 },
   ],
   [
     {
-      name: 'Section C: Description of Monitoring Activity',
+      name: 'C1: Description of Monitoring Activity',
       component: SectionC1,
+    },
+    {
+      name: 'C2: Quantification of GHG emission mitigations',
+      component: SectionC2,
     },
   ],
   [
@@ -118,15 +132,17 @@ const sectionATabs = [
       name: 'E7: Actual emission reductions or net anthropogenic GHG removals during 1st commitment period',
       component: SectionE7,
     },
+    {
+      name: 'E8: Appendix',
+      component: SectionE8,
+    },
   ],
 ]
 
 const IssuanceDataCollection = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const ref = useRef()
   const sectionA = store.getState()?.sectionA
-
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -163,11 +179,16 @@ const IssuanceDataCollection = () => {
   const party_and_project_participants = useAppSelector(
     ({ sectionA }) => sectionA.party_and_project_participants
   )
+  const A3 = useAppSelector(({ sectionA }) => sectionA.A3)
   const methodologies = useAppSelector(({ sectionA }) => sectionA.methodologies)
   const A5 = useAppSelector(({ sectionA }) => sectionA.A5)
+  const A6 = useAppSelector(({ sectionA }) => sectionA.A6)
+  const A7 = useAppSelector(({ sectionA }) => sectionA.A7)
   const B1 = useAppSelector(({ sectionB }) => sectionB.B1)
   const B2 = useAppSelector(({ sectionB }) => sectionB.B2)
+  const B3 = useAppSelector(({ sectionB }) => sectionB.B3)
   const C1 = useAppSelector(({ sectionC }) => sectionC.C1, shallowEqual)
+  const C2 = useAppSelector(({ sectionC }) => sectionC.C2, shallowEqual)
   const D1 = useAppSelector(({ sectionD }) => sectionD.D1, shallowEqual)
   const D2 = useAppSelector(({ sectionD }) => sectionD.D2, shallowEqual)
   const D3 = useAppSelector(({ sectionD }) => sectionD.D3, shallowEqual)
@@ -178,6 +199,7 @@ const IssuanceDataCollection = () => {
   const E5 = useAppSelector(({ sectionE }) => sectionE.E5, shallowEqual)
   const E6 = useAppSelector(({ sectionE }) => sectionE.E6, shallowEqual)
   const E7 = useAppSelector(({ sectionE }) => sectionE.E7, shallowEqual)
+  const E8 = useAppSelector(({ sectionE }) => sectionE.E8, shallowEqual)
 
   const [nextBtn, setNextBtn] = useState<boolean>(true)
   const [modal, setModal] = useState<boolean>(false)
@@ -187,6 +209,11 @@ const IssuanceDataCollection = () => {
   const [blockRouting, setBlockRouting] = useState<boolean>(false)
   const [onHoverText, setOnHoverText] = useState('Copy To Clipboard')
   const [show, setShow] = useState<boolean>(false)
+  const [storeSectionIndex, setStoreSectionIndex] = useState<any>({
+    sectionIndex: sectionIndex,
+    subSectionIndex: 0,
+  })
+
   useEffect(() => {
     return () => {
       dispatch(resetSectionA())
@@ -204,9 +231,9 @@ const IssuanceDataCollection = () => {
       currentProjectDetails &&
       currentProjectDetails?.projectCompleted &&
       sectionIndex === 5
-    )
+    ) {
       setNextBtn(false)
-    else {
+    } else {
       setNextBtn(true)
     }
   }, [currentProjectDetails, sectionIndex])
@@ -227,205 +254,108 @@ const IssuanceDataCollection = () => {
     }, 3000)
   }
 
+  const {moveToNextSection} = useProject()
+
   const handleSave = () => {
     moveToNextSection(sectionIndex, subSectionIndex)
   }
 
   const handlePrevious = () => {
-    if (sectionIndex > 0) {
-      const isDataModified = handleDataCheck()
-
-      if (isDataModified) {
-        setModal(true)
-        setChangeInSection(true)
-        setSectionIndexState(sectionIndex - 1)
-        setSubSectionIndexState(0)
-      } else if (!isDataModified) {
-        dispatch(setSectionIndex(sectionIndex - 1))
-        dispatch(setSubSectionIndex(0))
-      }
+    const isDataEdited = handleDataCheck()
+    if (isDataEdited) {
+      setStoreSectionIndex({
+        subSectionIndex: 0,
+        sectionIndex: sectionIndex - 1,
+      })
+      setModal(true)
+      return
     }
+    dispatch(setSectionIndex(sectionIndex - 1))
+    dispatch(setSubSectionIndex(0))
+  }
+
+  const handleNext = () => {
+    if (!currentProjectDetails) {
+      return
+    }
+    const isDataEdited = handleDataCheck()
+    if (isDataEdited) {
+      setStoreSectionIndex({
+        sectionIndex: sectionIndex + 1,
+        subSectionIndex: 0,
+      })
+      setModal(true)
+      return
+    }
+    if (sectionIndex === 5) {
+      handleNextBtnFromSectionE()
+      return
+    }
+    dispatch(setSectionIndex(sectionIndex + 1))
+    dispatch(setSubSectionIndex(0))
   }
 
   const handleNextBtnFromSectionE = () => {
     if (nextBtn) {
       navigate(pathNames.DASHBOARD)
     } else if (!nextBtn) {
-      if (currentProjectDetails?.project_status === 0) {
+      if (
+        currentProjectDetails?.project_status ===
+        PROJECT_ALL_STATUS.CREATED_PROJECT
+      ) {
         navigate(pathNames.SELECT_VERIFIER)
-      } else navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
-    }
-  }
-
-  const handleNext = () => {
-    //Restrct issuer from going to next Sections if New Project hasn't been created
-    if (!currentProjectDetails) {
-      return
-    }
-    if (sectionIndex > 0) {
-      const isDataModified = handleDataCheck()
-      if (isDataModified) {
-        setModal(true)
-        setChangeInSection(true)
-        setSectionIndexState(sectionIndex + 1)
-        setSubSectionIndexState(0)
-      } else if (!isDataModified) {
-        //Don't increase section index in case user is in Section E - (CC-210 bug fix)
-        if (sectionIndex !== 5) {
-          dispatch(setSectionIndex(sectionIndex + 1))
-        }
-        dispatch(setSubSectionIndex(0))
+      } else {
+        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
       }
-      //handling next btn as per section data collection percentage
-      !isDataModified && sectionIndex === 5 && handleNextBtnFromSectionE()
-    } else if (sectionIndex === 0) dispatch(setSectionIndex(sectionIndex + 1))
+    }
   }
 
   const handleDataCheck = () => {
     if (!currentProjectDetails) {
       return
     }
+    const { section_a, section_b, section_c, section_d, section_e } =
+      currentProjectDetails
     const paramsData = [
-      {
-        sectionName: A1,
-        subSectionRow:
-          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
-        section: 1,
-        subSection: 0,
-      },
-      {
-        sectionName: A2,
-        subSectionRow:
-          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
-        section: 1,
-        subSection: 1,
-      },
-      {
-        sectionName: party_and_project_participants,
-        subSectionRow:
-          currentProjectDetails?.['section_a']?.[
-            `step${subSectionIndex + 1}`
-          ]?.['party_and_project_participants'],
-        section: 1,
-        subSection: 2,
-      },
-      {
-        sectionName: methodologies,
-        subSectionRow:
-          currentProjectDetails?.['section_a']?.[
-            `step${subSectionIndex + 1}`
-          ]?.['methodologies'],
-        section: 1,
-        subSection: 3,
-      },
-      {
-        sectionName: A5,
-        subSectionRow:
-          currentProjectDetails['section_a'][`step${subSectionIndex + 1}`],
-        section: 1,
-        subSection: 4,
-      },
-      {
-        sectionName: B1,
-        subSectionRow:
-          currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
-        section: 2,
-        subSection: 0,
-      },
-      {
-        sectionName: B2,
-        subSectionRow:
-          currentProjectDetails['section_b'][`step${subSectionIndex + 1}`],
-        section: 2,
-        subSection: 1,
-      },
-      {
-        sectionName: C1,
-        subSectionRow:
-          currentProjectDetails['section_c'][`step${subSectionIndex + 1}`],
-        section: 3,
-        subSection: 0,
-      },
-      {
-        sectionName: D1,
-        subSectionRow:
-          currentProjectDetails['section_d'][`step${subSectionIndex + 1}`],
-        section: 4,
-        subSection: 0,
-      },
-      {
-        sectionName: D2,
-        subSectionRow:
-          currentProjectDetails['section_d'][`step${subSectionIndex + 1}`],
-        section: 4,
-        subSection: 1,
-      },
-      {
-        sectionName: D3,
-        subSectionRow:
-          currentProjectDetails['section_d'][`step${subSectionIndex + 1}`],
-        section: 4,
-        subSection: 2,
-      },
-      {
-        sectionName: E1,
-        subSectionRow:
-          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
-        section: 5,
-        subSection: 0,
-      },
-      {
-        sectionName: E2,
-        subSectionRow:
-          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
-        section: 5,
-        subSection: 1,
-      },
-      {
-        sectionName: E3,
-        subSectionRow:
-          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
-        section: 5,
-        subSection: 2,
-      },
-      {
-        sectionName: E4,
-        subSectionRow:
-          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
-        section: 5,
-        subSection: 3,
-      },
-      {
-        sectionName: E5,
-        subSectionRow:
-          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
-        section: 5,
-        subSection: 4,
-      },
-      {
-        sectionName: E6,
-        subSectionRow:
-          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
-        section: 5,
-        subSection: 5,
-      },
-      {
-        sectionName: E7,
-        subSectionRow:
-          currentProjectDetails['section_e'][`step${subSectionIndex + 1}`],
-        section: 5,
-        subSection: 6,
-      },
-    ]
+      section_a,
+      section_b,
+      section_c,
+      section_d,
+      section_e,
+    ].reduce((acc: any, cur: any, index: any) => {
+      const tempArr = Object.keys(cur)
+        .filter(
+          (key) => typeof cur[key] === 'object' && !Array.isArray(cur[key])
+        )
+        .map((item, stepIndex) => {
+          return {
+            sectionName:
+              index === 0 && item === 'step3'
+                ? { A3, party_and_project_participants }
+                : index === 0 && item === 'step4'
+                ? methodologies
+                : String.fromCharCode(65 + index) + (stepIndex + 1),
+            subSectionRow:
+              index === 0 && item === 'step4'
+                ? cur[item]?.methodologies
+                : cur[item],
+            section: index + 1,
+            subSection: parseInt(item.charAt(item.length - 1)) - 1,
+          }
+        })
+      acc[acc.length] = tempArr
+      return acc
+    }, [])
+
     let dataModified = false
-    //filtering the params from data to pass to function
-    const params = paramsData.filter((i: any) => {
+    //finding the obj from paramsData to pass params
+    const params = paramsData?.flat()?.find((i: any) => {
       return i?.section === sectionIndex && i?.subSection === subSectionIndex
     })
-    if (params.length) {
+    if (params) {
       dataModified = isDataModifiedCheckFunc(
-        params[0].sectionName,
-        params[0].subSectionRow,
+        eval(params.sectionName),
+        eval(params.subSectionRow),
         sectionIndex,
         subSectionIndex
       )
@@ -434,32 +364,36 @@ const IssuanceDataCollection = () => {
   }
 
   useEffect(() => {
-    //kept no dependency to check the dat is modified and make blockRouting state to true or false
-    handleDataCheck() ? setBlockRouting(true) : setBlockRouting(false)
+    //kept no dependency to check the data is modified and make blockRouting state to true or false
+    !loading && handleDataCheck()
+      ? setBlockRouting(true)
+      : setBlockRouting(false)
   })
   //calling custom hook to block route if necessary and passing message and when param
   usePrompt('This page have unsaved data', blockRouting)
 
-  const handleSubSectionClick = (index?: number) => {
-    //will only check if issuer is clicking on other subsection
-    if (index !== subSectionIndex) {
-      const dataModified = handleDataCheck()
-      if (dataModified) {
-        setSubSectionIndexState(index)
+  const handleSubSectionClick = (selectedSubSectionIndex?: any) => {
+    if (selectedSubSectionIndex !== subSectionIndex) {
+      if (handleDataCheck()) {
+        setStoreSectionIndex({
+          sectionIndex: sectionIndex,
+          subSectionIndex: parseInt(selectedSubSectionIndex),
+        })
         setModal(true)
-      } else if (!dataModified) {
-        dispatch(setSubSectionIndex(index))
+      } else {
+        dispatch(setSubSectionIndex(selectedSubSectionIndex))
       }
     }
   }
 
   const handleQuitWithoutSave = () => {
     setModal(false)
-    if (sectionIndex === 5) {
+    if (storeSectionIndex?.sectionIndex === 6) {
       handleNextBtnFromSectionE()
-    } else {
-      handleSectionIndexFromModal()
+      return
     }
+    dispatch(setSubSectionIndex(storeSectionIndex?.subSectionIndex))
+    dispatch(setSectionIndex(storeSectionIndex?.sectionIndex))
   }
 
   const handleModalSave = () => {
@@ -469,12 +403,14 @@ const IssuanceDataCollection = () => {
   }
 
   const handleSectionIndexFromModal = () => {
-    dispatch(setSubSectionIndex(subSectionIndexState))
-    //ChangeInSection is to know whether the issuer has clicked on section level next or he clicked on subSection level
-    if (changeInSection) {
-      dispatch(setSectionIndex(sectionIndexState))
-      setChangeInSection(false)
+    //as there is no section 6 (last section is 5) so taking user to navigate to other pages
+    if (storeSectionIndex?.sectionIndex === 6) {
+      handleNextBtnFromSectionE()
+      return
     }
+    dispatch(setSubSectionIndex(storeSectionIndex?.subSectionIndex))
+    dispatch(setSectionIndex(storeSectionIndex?.sectionIndex))
+
     dispatch(setIsApiCallSuccess(false))
   }
 
@@ -493,9 +429,19 @@ const IssuanceDataCollection = () => {
 
   return (
     <>
-      <Grid container>
-        <Grid item xs={9}>
-          <Paper sx={{ p: 3 }}>
+      <Grid
+        container
+        maxWidth={'xl'}
+        // sx={{ height:'50vh' }}
+      >
+        <Grid item xs={9} sm={12} md={8} lg={9} xl={9}>
+          <Paper
+            sx={{
+              p: 3,
+              borderRadius: '15px',
+            }}
+            elevation={5}
+          >
             <Grid
               container
               xs={12}
@@ -573,7 +519,7 @@ const IssuanceDataCollection = () => {
                     sx={{
                       color: '#006B5E',
                       fontWeight: 500,
-                      mr: 1,
+                      //mr: 1,
                     }}
                   >
                     {nextBtn ? 'Next' : 'Complete'}
@@ -621,11 +567,18 @@ const IssuanceDataCollection = () => {
                   </Box>
                 </Box>
               )}
-              <Box sx={{ width: '100%' }}>{renderTab()}</Box>
+              <Box
+                sx={{
+                  paddingLeft: 1,
+                  width: '100%',
+                }}
+              >
+                {renderTab()}
+              </Box>
             </Grid>
           </Paper>
         </Grid>
-        <Grid item container xs={3}>
+        <Grid item container xs={3} md={4} lg={3} xl={3}>
           <ProjectCompletionProgress sectionIndex={sectionIndex} />
         </Grid>
       </Grid>

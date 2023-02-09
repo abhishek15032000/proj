@@ -11,6 +11,8 @@ interface NewProjectReducerInterface {
   endDate: Date | null
   //Will get from create new project call
   newProjectUUID: string
+  bannerImage: any
+  projectImage: any
 }
 const initialState: NewProjectReducerInterface = {
   projectName: '',
@@ -24,6 +26,8 @@ const initialState: NewProjectReducerInterface = {
 
   //Will get from create new project call
   newProjectUUID: '',
+  bannerImage: null,
+  projectImage: null,
 }
 const newProject = createSlice({
   name: 'newProject',
@@ -56,6 +60,12 @@ const newProject = createSlice({
     setEndDate: (state, action: PayloadAction<any>) => {
       state.endDate = action.payload
     },
+    setBannerImage: (state, action: PayloadAction<any>) => {
+      state.bannerImage = action.payload
+    },
+    setProjectImage: (state, action: PayloadAction<any>) => {
+      state.projectImage = action.payload
+    },
     resetSectionNewProjectDetails: () => initialState,
   },
 })
@@ -71,6 +81,8 @@ export const {
   setLoading,
   setEndDate,
   resetSectionNewProjectDetails,
+  setBannerImage,
+  setProjectImage,
 } = newProject.actions
 
 export default newProject.reducer

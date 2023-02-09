@@ -4,9 +4,10 @@ import { shallowEqual } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import CCButton from '../../atoms/CCButton'
 import { useAppSelector } from '../../hooks/reduxHooks'
+import { useTokenRetire } from '../../hooks/useTokenRetire'
 import { pathNames } from '../../routes/pathNames'
 import { Colors } from '../../theme'
-import { getApprovedTokensBalance } from '../../utils/tokenRetire.utils'
+// import { getApprovedTokensBalance } from '../../utils/tokenRetire.utils'
 import CardRow from './CardRow'
 
 const ApprovedTokenDetails = () => {
@@ -25,6 +26,7 @@ const ApprovedTokenDetails = () => {
     shallowEqual
   )
 
+  const {getApprovedTokensBalance} =  useTokenRetire()
   useEffect(() => {
     if (accountAddress) {
       getApprovedTokensBalance()

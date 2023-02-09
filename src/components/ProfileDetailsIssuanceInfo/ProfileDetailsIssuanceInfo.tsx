@@ -18,6 +18,12 @@ import { pathNames } from '../../routes/pathNames'
 import moment from 'moment'
 import TextButton from '../../atoms/TextButton/TextButton'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import ProjectIntro from '../ProjectDetailsRegistryAcc/ProjectIntro'
+import WebAppTraceHistory from '../ProjectDetails/TraceHistory/WebappTraceHistory'
+import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectIntroduction'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 
 const projectDetails = {
   company_name:
@@ -31,7 +37,7 @@ const projectDetails = {
   duration: 2,
   area: '1000',
 }
-const tabs = ['Registration Details', 'Verifier & Reports']
+const tabs = ['Registration Details', 'Verifier & Reports', 'Traceability']
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
@@ -109,21 +115,20 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       setIssuanceInfo(issuanceInfoTabData)
     }
   }, [currentProjectDetails])
+
+  console.log('currentProjectDetails', currentProjectDetails)
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <KeyboardArrowLeft
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            navigate(pathNames.DASHBOARD, { replace: true })
-          }}
-        />
-        <Typography sx={{ fontSize: 28, color: Colors.tertiary }}>
-          Project Details
-        </Typography>
-      </Box>
-      <Paper sx={{ mt: 3 }}>
-        <Grid container>
+      <Grid item mb={5}>
+        <BackHeader title="Project Details" onClick={() => navigate(-1)} />
+      </Grid>
+      {/*<Paper sx={{ mt: 3 }}>*/}
+      <ProjectIntroduction
+        projectDetailsData={currentProjectDetails}
+        // title={currentProjectDetails?.company_name}
+        // location={currentProjectDetails?.location}
+      />
+      {/*<Grid container>
           <Grid item xs={10} sx={{ p: 2 }}>
             <Typography sx={{ fontSize: 24 }}>
               {currentProjectDetails?.company_name}
@@ -171,45 +176,101 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               }}
             ></Box>
           </Grid>
-        </Grid>
-      </Paper>
+        </Grid>*/}
+      {/*</Paper>*/}
 
       <Paper sx={{ mt: 2, px: 2, py: 2 }}>
-        <Box sx={{ display: 'flex', mt: 1 }}>
-          {tabs.map((tab, index) => (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box sx={{ display: 'flex', mt: 1 }}>
+            {tabs.map((tab, index) => (
+              <Box
+                key={index}
+                sx={{
+                  py: 1,
+                  mr: 2,
+                  fontSize: 16,
+                  fontWeight: 500,
+                  color: tabIndex === index ? Colors.darkPrimary1 : '#7B9690',
+                  cursor: 'pointer',
+                  borderBottom:
+                    tabIndex === index
+                      ? `2px solid ${Colors.darkPrimary1}`
+                      : '1px solid #7B9690',
+                }}
+                onClick={() => setTabIndex(index)}
+              >
+                {tab}
+              </Box>
+            ))}
+          </Box>
+          {currentProjectDetails?.project_status >=
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <Box
-              key={index}
               sx={{
-                py: 1,
-                mr: 2,
-                fontSize: 16,
-                fontWeight: 500,
-                color: tabIndex === index ? Colors.darkPrimary1 : '#7B9690',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 cursor: 'pointer',
-                borderBottom:
-                  tabIndex === index
-                    ? `2px solid ${Colors.darkPrimary1}`
-                    : '1px solid #7B9690',
               }}
-              onClick={() => setTabIndex(index)}
+              onClick={() =>
+                navigate(pathNames.REVIEW_AND_COMMENT, {
+                  state: {
+                    project: currentProjectDetails,
+                    pdf: currentProjectDetails?.project_pdf,
+                    verifierName:
+                      currentProjectDetails?.verifier_details_id?.verifier_name,
+                    verifierID:
+                      currentProjectDetails?.verifier_details_id?.verifier_id,
+                  },
+                })
+              }
             >
-              {tab}
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 500,
+                  color: Colors.tertiary,
+                  textDecoration: 'underline',
+                }}
+              >
+                {' '}
+                View Comments
+              </Typography>
+              <Box>
+                <OpenInNewIcon sx={{ ml: 1, color: Colors.darkPrimary1 }} />
+              </Box>
             </Box>
-          ))}
+          ) : null}
         </Box>
 
-        {tabIndex === 0 && (
-          <IssuanceInfoList
-            data={issuanceInfo && issuanceInfo}
-            projectStatus={projectStatus}
-          />
-        )}
-        {tabIndex === 1 && (
-          <VerifierReport
-            currentProjectId={currentProjectDetails?._id}
-            currentProjectUUID={currentProjectDetails?.uuid}
-          />
-        )}
+        <Box>
+          {tabIndex === 0 && (
+            <IssuanceInfoList
+              data={issuanceInfo && issuanceInfo}
+              projectStatus={projectStatus}
+            />
+          )}
+          {tabIndex === 1 && (
+            <VerifierReport
+              currentProjectId={currentProjectDetails?._id}
+              currentProjectUUID={currentProjectDetails?.uuid}
+            />
+          )}
+          {tabIndex === 2 && (
+            <Box sx={{ mt: 5 }}>
+              <Typography sx={{ fontSize: 18, color: '#1D4B44', mb: 2 }}>
+                Trace History
+              </Typography>
+              <WebAppTraceHistory projectId={currentProjectDetails?.uuid} />
+            </Box>
+          )}
+        </Box>
       </Paper>
     </Box>
   )

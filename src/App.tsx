@@ -15,25 +15,38 @@ import { shallowEqual } from 'react-redux'
 import { useIdleTimer } from 'react-idle-timer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { pathNames } from './routes/pathNames'
-import { BlockchainListener } from './utils/blockchain.util'
+// import { BlockchainListener } from './utils/blockchain.util'
 import { setLoadWallet } from './redux/Slices/walletSlice'
 import LoadWallet from './components/LoadWallet'
 import BlockchainAlert from './components/BlockchainAlert'
 import AddMetaMaskAccountModal from './components/AddMetaMaskAccountModal/AddMetaMaskAccountModal'
+import { drawerExemptList } from './routes/config'
+import { useBlockchain } from './hooks/useBlockchain'
+import { useError } from './context/ErrorController'
 
 declare let window: any
 const { ethereum } = window
-
-const drawerExemptList = [
-  pathNames.VERIFIER_VERIFY_REPORT,
-  pathNames.ISSUANCE_DATA_COLLECTION_HELP,
-]
+// const drawerExemptList = [
+//   pathNames.VERIFIER_VERIFY_REPORT,
+//   pathNames.ISSUANCE_DATA_COLLECTION_HELP,
+//   pathNames.PROJECT_DETAILS,
+//   pathNames.PROJECT_LISTS_WITH_FILTER,
+//   pathNames.REGISTRY_REVIEW_REPORT,
+//   pathNames.LOGIN,
+//   pathNames.LOGOUT,
+//   pathNames.RESET_PASSWORD,
+//   pathNames.MAINTENANCE_PAGE,
+//   pathNames.TWOFA,
+//   pathNames.REGISTER,
+// ]
 
 type AppProps = {
   appName?: string
 }
 
 const App: FC<AppProps> = () => {
+  useError()
+
   const navigate = useNavigate()
   const localloggedIn = getLocalItem('loggedIn')
   const location = useLocation()
@@ -122,9 +135,12 @@ const App: FC<AppProps> = () => {
   const userData = useAppSelector((state) => state.auth.loggedIn, shallowEqual)
   const [waitingAccessCheck, setWatingAccessCheck] = useState<any>(true)
 
-  useEffect(() => {
-    BlockchainListener()
-  }, [])
+  // const {check} = useBlockchain()
+  // console.log("🚀 ~ file: App.tsx ~ line 137 ~ check", check)
+
+  // useEffect(() => {
+  // BlockchainListener()
+  // }, [])
 
   useEffect(() => {
     //const getloginStatusFromLocalStorage = getLocalItem('loggedIn')
@@ -140,20 +156,20 @@ const App: FC<AppProps> = () => {
   }, [])
 
   return waitingAccessCheck ? (
-    <LoaderOverlay show />
+    <LoaderOverlay show ={waitingAccessCheck} />
   ) : (
     <>
       {/* For using mui DatePicker */}
       <LocalizationProvider dateAdapter={AdapterMoment}>
-        {userData && showDrawer && (
-          <AppDrawer>
-            <BlockchainAlert />
-            <LoadWallet />
-            <AddMetaMaskAccountModal />
-            <RouteController />
-          </AppDrawer>
-        )}
-        {userData && !showDrawer && (
+        {/* {userData && showDrawer && ( */}
+        <AppDrawer show={showDrawer} user={userData}>
+          {/* {userData && <BlockchainAlert />} */}
+          {/* {userData && <LoadWallet />} */}
+          {/* {userData && <AddMetaMaskAccountModal />} */}
+          <RouteController />
+        </AppDrawer>
+
+        {/* {userData && !showDrawer && (
           // <AppDrawer>
           <>
             <BlockchainAlert />
@@ -162,8 +178,8 @@ const App: FC<AppProps> = () => {
             <RouteController />
           </>
           // </AppDrawer>
-        )}
-        {!userData && (
+        )} */}
+        {/* {!userData && (
           <Box
             component="main"
             sx={{
@@ -175,7 +191,7 @@ const App: FC<AppProps> = () => {
             {userData && <Toolbar />}
             <RouteController />
           </Box>
-        )}
+        )} */}
       </LocalizationProvider>
     </>
   )

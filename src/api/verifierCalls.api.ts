@@ -72,4 +72,22 @@ export const verifierCalls = {
       return response
     })
   },
+  getAllReportVerifiers: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.verifierAllReport + '?user_id=' + payload,
+      'GET',
+      payload
+    ).then((res) => {
+      return res
+    })
+  },
+  getVerifierById: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.getVerifierById + '?id=' + payload,
+      'GET',
+      payload
+    ).then((res) => {
+      return res?.data
+    })
+  },
 }

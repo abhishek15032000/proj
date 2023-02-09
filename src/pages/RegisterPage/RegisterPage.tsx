@@ -181,7 +181,7 @@ const RegisterPage = (props: RegisterPageProps) => {
         justifyContent: 'space-between',
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Box
         sx={{
           width: {
@@ -352,7 +352,7 @@ const RegisterPage = (props: RegisterPageProps) => {
           onClick={onBoardingNewUser}
           sx={{
             height: '40px',
-            width: '320px',
+            width: '55%',
             borderRadius: '6px',
             marginTop: 2,
           }}

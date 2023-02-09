@@ -1,3 +1,4 @@
+import millify from 'millify'
 import { fileUploadCalls } from '../api/fileUpload.api'
 import { getLocalItem } from './Storage'
 
@@ -30,7 +31,7 @@ export const limitTitle = (title: string, limit: number) => {
     }, 0)
 
     // return the result
-    return `${newTitle.join('')} ...`
+    return `${newTitle.join('')}...`
   }
   return title
 }
@@ -87,4 +88,57 @@ export const roundUp = (value: number, places = 2) => {
   if (value) {
     return Math.round(Number(value) * 10 ** places) / 10 ** places
   }
+}
+
+export const convertToInternationalCurrencySystem = (value: number) => {
+  // 12 Zeroes and higher
+  // return Math.abs(Number(value)) >= 1.0e12
+  //   ? Number(value).toExponential()
+  //   : //Nine Zeores for Billions
+  //   Math.abs(Number(value)) >= 1.0e9
+  //   ? (Math.abs(Number(value)) / 1.0e9).toFixed(2) + 'B'
+  //   : // Six Zeroes for Millions
+  //   Math.abs(Number(value)) >= 1.0e6
+  //   ? (Math.abs(Number(value)) / 1.0e6).toFixed(2) + 'M'
+  //   : // : // Three Zeroes for Thousands
+  //     // Math.abs(Number(value)) >= 1.0e3
+  //     // ? (Math.abs(Number(value)) / 1.0e3).toFixed(2) + 'K'
+  //     Math.abs(Number(value))
+
+  //Display Million or Billion if value > 999999
+  if (value) {
+    return Math.abs(Number(value)) >= 1.0e12
+      ? Number(value).toExponential()
+      : //Nine Zeores for Billions
+      Math.abs(Number(value)) >= 1.0e9
+      ? Math.round((Math.abs(Number(value)) / 1.0e9) * 100) / 100 + 'B'
+      : // Six Zeroes for Millions
+      Math.abs(Number(value)) >= 1.0e6
+      ? Math.round((Math.abs(Number(value)) / 1.0e6) * 100) / 100 + 'M'
+      : // : // Three Zeroes for Thousands
+        // Math.abs(Number(value)) >= 1.0e3
+        // ? (Math.abs(Number(value)) / 1.0e3)+ 'K'
+        Math.abs(Number(value))
+  } else {
+    return 0
+  }
+}
+
+export const formatNumberMinify = (value: number, precision = 3) => {
+  const max = Math.min(value, Number.MAX_SAFE_INTEGER)
+  const min = Math.max(max, Number.MIN_SAFE_INTEGER)
+  const safeInt = Math.round(min)
+  // console.log(
+  //   'file: commonFunctions.ts ~ line 94 ~ formatNumberMinify ~ value',
+  //   value
+  // )
+  const val = millify(Number(safeInt), {
+    precision: precision,
+    // lowercase: true
+  })
+  // console.log(
+  //   ':rocket: ~ file: commonFunctions.ts ~ line 98 ~ formatNumberMinify ~ val',
+  //   val
+  // )
+  return val
 }

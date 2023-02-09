@@ -11,6 +11,7 @@ import Spinner from '../../../atoms/Spinner'
 import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
+import { Box } from '@mui/system'
 
 const SectionE7 = () => {
   const dispatch = useAppDispatch()
@@ -60,51 +61,54 @@ const SectionE7 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Grid container sx={{ mt: 3 }}>
-      <Grid item xs={12}>
-        <CCMultilineTextArea
-          label="Actual emission reductions or net anthropogenic GHG removals during 1st commitment period"
-          placeholder="Actual emission reductions or net anthropogenic GHG removals during 1st commitment period, if any"
-          value={E7.actual_emission_reductions}
-          name={'actual_emission_reductions'}
-          onChange={({ target: { value, name } }) =>
-            dispatch(setE7({ name, value }))
-          }
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 4 }}>
+        <Grid item xs={12}>
+          <CCMultilineTextArea
+            label="Actual emission reductions or net anthropogenic GHG removals during 1st commitment period"
+            placeholder="Actual emission reductions or net anthropogenic GHG removals during 1st commitment period, if any"
+            value={E7.actual_emission_reductions}
+            name={'actual_emission_reductions'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setE7({ name, value }))
+            }
+            required={false}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <CCDropAndUpload
+            title={'Attach relevant datas & docs'}
+            mediaTitle={[
+              'Sample Report - Actual emission reductions in 1st commitment period',
+            ]}
+            mediaItem={[SectionE7ActualReductionInFirstEmission]}
+            imageArray={E7.attach_relevant_docs}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setE7({
+                  name: 'attach_relevant_docs',
+                  value: [...attach_relevant_docs, item],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setE7({
+                  name: 'attach_relevant_docs',
+                  value: deleteIndexInArray(attach_relevant_docs, index),
+                })
+              )
+            }}
+          />
+        </Grid>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.E7}
+          issuanceVisible={true}
         />
       </Grid>
-      <Grid item xs={12}>
-        <CCDropAndUpload
-          title={'Attach relevant datas & docs'}
-          mediaTitle={[
-            'Sample Report - Actual emission reductions in 1st commitment period',
-          ]}
-          mediaItem={[SectionE7ActualReductionInFirstEmission]}
-          imageArray={E7.attach_relevant_docs}
-          onImageUpload={(item: any) => {
-            dispatch(
-              setE7({
-                name: 'attach_relevant_docs',
-                value: [...attach_relevant_docs, item],
-              })
-            )
-          }}
-          onDeleteImage={(index: number) => {
-            dispatch(
-              setE7({
-                name: 'attach_relevant_docs',
-                value: deleteIndexInArray(attach_relevant_docs, index),
-              })
-            )
-          }}
-        />
-      </Grid>
-      <HelpPopUp
-        modal={modal}
-        setModal={(item: any) => setModal(item)}
-        data={IssuanceHelpContentData?.E7}
-        issuanceVisible={true}
-      />
-    </Grid>
+    </Box>
   )
 }
 
