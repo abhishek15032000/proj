@@ -81,6 +81,8 @@ const Projects = () => {
         ]
       })
       setTableRows(tableBodyData)
+    } else if (!res?.success) {
+      alert('Something went wrong!')
     }
   }
 
