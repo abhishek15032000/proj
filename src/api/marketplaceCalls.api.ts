@@ -67,4 +67,11 @@ export const marketplaceCalls = {
       }
     )
   },
+  getPurchasedProject: () => {
+    return AxiosHelper(URL_PATH.marketplace.getPurchasedProject, 'GET').then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }

@@ -37,7 +37,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/project/getReportByProjectId',
     getTokenAndContractStats:
       ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
-    getProjectDetailsById: ENDPOINTS.carbonServiceURL + '/project/getProjectDetails'
+    getProjectDetailsById:
+      ENDPOINTS.carbonServiceURL + '/project/getProjectDetails',
   },
   projectSections: {
     updateProjectSectionA:
@@ -113,6 +114,8 @@ export const URL_PATH = {
       ENDPOINTS.orderServiceURL + '/marketplace/checkForFullFillOrder',
     cancelOrder: ENDPOINTS.orderServiceURL + '/marketplace/cancelOrder',
     getOpenOrder: ENDPOINTS.orderServiceURL + '/marketplace/getOpenOrder',
+    getPurchasedProject:
+      ENDPOINTS.orderServiceURL + '/marketplace/getPurchasedProject',
   },
   buyers: {
     saveRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/retire-token',
