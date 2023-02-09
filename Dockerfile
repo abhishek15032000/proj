@@ -46,6 +46,7 @@ RUN npm cache clean --force
 RUN npm install --no-audit
 # RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
+RUN npx browserslist@latest --update-db
 RUN npm run build
 
 # production environment
