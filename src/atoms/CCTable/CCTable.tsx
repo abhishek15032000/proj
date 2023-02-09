@@ -11,6 +11,7 @@ import { CCTableProps } from './CCTable.interface'
 import { TablePagination, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { headings } from '../../components/IssuanceDataCollectionHelp/data'
+import EmptyComponent from '../EmptyComponent/EmptyComponent'
 
 const StyledTableCell = styled(TableCell)((props) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -92,7 +93,7 @@ const CCTable = (props: CCTableProps) => {
 
   return (
     <>
-      <TableContainer
+     { rows?.length ? <TableContainer
         component={Paper}
         sx={{
           mt: 1,
@@ -209,7 +210,7 @@ const CCTable = (props: CCTableProps) => {
             }}
           />
         )}
-      </TableContainer>
+      </TableContainer> : <EmptyComponent elevation={0}/>}
     </>
   )
 }

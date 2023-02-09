@@ -142,14 +142,14 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               <Typography
                 sx={{ color: 'white', fontSize: 40, fontWeight: 500,}}
               >
-                {projectDetailsData?.company_name}
+                {projectDetailsData?.company_name || projectData?.name}
               </Typography>
               <Typography
                 sx={{ color: 'white', fontSize: 16, fontWeight: 400, mt: 2 }}
               >
-                {projectDetailsData?.location +
+                {projectDetailsData?.location || projectData?.location +
                   ' | ' +
-                  projectDetailsData?.area}
+                  projectDetailsData?.area || projectData?.area}
               </Typography>
               <Grid
                 item

@@ -69,6 +69,7 @@ const SeeAllProjects = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            mt:2,
           }}
         >
           <BackHeader
