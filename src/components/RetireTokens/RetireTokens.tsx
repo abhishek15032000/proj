@@ -7,6 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import React, { FC, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 // import tokenRetirement from '../../assets/Images/illustrations/tokenRetirement.png'
@@ -63,6 +64,7 @@ const RetireTokens = (props: RetireTokensProps) => {
   //   shallowEqual
   // )
 
+  const [showTip, setShowTip] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [balanceToRetire, setBalanceToRetire] = useState<number | string>(0)
   const [tokenBalanceLoading, setTokenBalanceLoading] = useState(false)
@@ -98,7 +100,7 @@ const RetireTokens = (props: RetireTokensProps) => {
         setTokenBalanceLoading(true)
         const tokenBalances = await getTokenBalances(
           userID,
-          res?.data?.INR_token_address
+          res?.data?.token_address
         )
         if (tokenBalances?.success) {
           const bal = convertToInternationalCurrencySystem(
@@ -284,7 +286,9 @@ const RetireTokens = (props: RetireTokensProps) => {
                 </Grid>
               </Box>
 
-              <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 1 }}>
+              <Typography
+                sx={{ fontSize: 14, fontWeight: 500, mt: 1, color: '#141D1B' }}
+              >
                 Go carbon neutral by retiring carbon tokens and claiming the
                 underlying environmental benefit of the carbon offset.
               </Typography>
@@ -301,13 +305,35 @@ const RetireTokens = (props: RetireTokensProps) => {
                 </Box>
               ) : (
                 <Box
-                  sx={{ mt: 1, color: Colors.darkPrimary1, fontWeight: 500 }}
+                  sx={{
+                    mt: 1,
+                    color: Colors.darkPrimary1,
+                    fontWeight: 500,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
                 >
-                  No. of Tokens that can be retired :{' '}
-                  {balanceToRetire ? balanceToRetire : 0}
+                  <Box>No. of Tokens that can be retired</Box>
+                  <InfoOutlinedIcon
+                    sx={{ ml: 1, fontSize: 20, cursor: 'pointer' }}
+                    onClick={() => setShowTip((showTip) => !showTip)}
+                  />
+                  <Box sx={{ mx: 1 }}>:</Box>
+                  <Box>{balanceToRetire ? balanceToRetire : 0}</Box>
                 </Box>
               )}
-              <Box sx={{ mt: 4 }}>
+              {showTip ? (
+                <Box
+                  sx={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: Colors.lightPrimary1,
+                  }}
+                >
+                  Withdraw Carbon tokens if any to increase the balance!
+                </Box>
+              ) : null}
+              <Box sx={{ mt: 3 }}>
                 <CardRow
                   title="Total token retiring :"
                   value={
