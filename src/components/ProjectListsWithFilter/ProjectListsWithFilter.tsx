@@ -37,13 +37,13 @@ const ProjectListsWithFilter = () => {
   const getAllProjects = async () => {
     try {
       setLoading(true)
-      const projectRes = await dataCollectionCalls.getAllProjects()
-      if (projectRes.data.success) {
-        setProjects(projectRes.data.data)
-        setFilteredProjects(projectRes.data.data)
+      const projectRes = await dataCollectionCalls.getVerifiedProjects()
+      if (projectRes.success) {
+        setProjects(projectRes.data)
+        setFilteredProjects(projectRes.data)
       }
     } catch (e) {
-      console.log('Error in dataCollectionCalls.getAllProjects api ~ ', e)
+      console.log('Error in dataCollectionCalls.getVerifiedProjects api ~ ', e)
     } finally {
       setLoading(false)
     }

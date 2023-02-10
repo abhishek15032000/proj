@@ -21,6 +21,9 @@ import ReportsTab from './ReportsTab'
 import TraceabilityTab from './TraceabilityTab'
 import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWithCount'
 import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectIntroduction'
+import { pathNames } from '../../routes/pathNames'
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import CCButton from '../../atoms/CCButton'
 
 const ProjectDetailsRegistryAcc = () => {
   const location: any = useLocation()
@@ -140,9 +143,44 @@ const ProjectDetailsRegistryAcc = () => {
         </Stack>
       ) : (
         <>
-          <Grid item  mb={5}>
-            <BackHeader title="Project Details" onClick={() => navigate(-1)} />
-          </Grid>
+          <Grid
+    container
+    justifyContent={'space-between'}
+    alignItems={'center'}
+    mt={'12px'}
+    mb={5}
+  >
+    <Grid item>
+      <BackHeader
+        title="Project Details"
+        onClick={() => navigate(-1)}
+      />
+    </Grid>
+    <Grid item>
+      <CCButton
+      onClick={()=> navigate(pathNames.RISK_DASHBOARD)}
+        variant="contained"
+        sx={{
+          ml: 3,
+          padding: '10px 25px',
+          borderRadius: 10,
+          fontSize:14,
+          '&:hover': {
+            backgroundColor: 'accent.main',
+            boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
+            color: "#006B5E"
+          }
+        }}
+        buttonBackgroundColor={'#006B5E'}
+        buttonColor={'white'}
+        // onClick={btn1OnClick}
+        // disabled={disableBtn1}
+      >
+         <ArrowOutwardIcon sx={{fontSize:16, fontWeight:'600', mr:1}} />
+        Climate Risk Dashboard
+      </CCButton>
+    </Grid>
+  </Grid>
           <ProjectIntroduction
           projectDetailsData={projectDetails}
             // title={projectDetails?.company_name}
