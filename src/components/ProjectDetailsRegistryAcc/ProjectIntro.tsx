@@ -56,6 +56,7 @@ const ProjectIntro = ({ title, location }: projectIntroProps) => {
         maxHeight: 'fit-content',
         borderRadius: '8px',
         mt: 3,
+        backgroundSize:'cover'
       }}
     >
       <Grid item md={6}>

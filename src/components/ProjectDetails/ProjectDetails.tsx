@@ -123,6 +123,7 @@ const ProjectDetails = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
+  window.scrollTo(0, 0)
   const projectId = searchParams.get('projectId')
     getProjectDetails(projectId)
   },[])
@@ -199,14 +200,14 @@ const ProjectDetails = () => {
             onWebApp ? createTheme(lightModeTheme) : createTheme(darkModeTheme)
           }
         >
-        {onWebApp ?  <Grid item sx={{display:"inline-flex",}}>
+        {/* {onWebApp ?  <Grid item sx={{display:"inline-flex",}}>
             <Typography variant="body1" color="#4A635E">
             Projects
             </Typography>
             <Typography variant="body1" color="#000000" sx={{pl:1}}>
                 {' > Project Details'}
               </Typography>
-           </Grid> : <></>}
+           </Grid> : <></>} */}
           {onWebApp ? headerRenderer() : null}
           <Grid item xs={12} sx={onWebApp ? lightTheme : darkTheme} >
             <ProjectIntroduction
