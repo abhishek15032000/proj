@@ -34,9 +34,9 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # Set env variable
-ARG REACT_APP_BASE_URL
-ENV REACT_APP_BASE_URL=${REACT_APP_BASE_URL}
-RUN echo "Api endpoint = " $REACT_APP_BASE_URL
+ARG REACT_APP_ENDPOINT
+ENV REACT_APP_ENDPOINT=${REACT_APP_ENDPOINT}
+RUN echo "Api Base Url = " $REACT_APP_ENDPOINT
 
 COPY package.json ./
 COPY package-lock.json ./
