@@ -126,7 +126,8 @@ const ProjectDetails = () => {
   window.scrollTo(0, 0)
   const projectId = searchParams.get('projectId')
     getProjectDetails(projectId)
-  },[])
+    return () =>{ setProjectData(null)}
+  },[searchParams])
   const getProjectDetails = (projectId:any)=>{
     setLoading(true)
     projectDetailsCalls.getProjectDetailsById(projectId).then(result => setProjectData(result.data)).catch(e=>e).finally(()=>setLoading(false))

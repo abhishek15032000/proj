@@ -69,13 +69,29 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
     <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start" {...props}>
     <Box
       sx={{
+        cursor:'pointer',
         width: '264px',
         // mb: 2,
         borderRadius: '8px',
+        transition:'transform .1s',
         // mr: 4,
         height: '100%',
         boxShadow: onWebApp ? '0px 5px 25px rgba(0, 0, 0, 0.12)' : '',
+        "&:hover": {
+          transform:'scale(1.01)'
+        },
       }}
+      onClick={() =>{
+        window.scrollTo(0, 0)
+        navigate(
+          {
+            pathname: pathNames.PROJECT_DETAILS,
+            search: `?${createSearchParams({ projectId: project.uuid })}`,
+          },
+          { state: project }
+        )}
+        
+      }
     >
       <Box sx={{ borderRadius: '8px 8px 0 0' }}>
         <Box
@@ -171,15 +187,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
               fontSize: 14,
               fontWeight: 500,
             }}
-            onClick={() =>
-              navigate(
-                {
-                  pathname: pathNames.PROJECT_DETAILS,
-                  search: `?${createSearchParams({ projectId: project.uuid })}`,
-                },
-                { state: project }
-              )
-            }
+           
           >
             Buy Credits
           </CCButton>
