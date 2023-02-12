@@ -32,18 +32,11 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const [fields, setFields] = useState<any>([])
 
   const [bannerImage, setBannerImage] = useState<any>(false)
-  useEffect(() => {
-    if(!bannerImage && project?.banner_image[0]){
-
-      const data = project
-      fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
-    }
-      
-   },[project])
-
+ 
+  const {tokens, totalToken} = props.project
 
   useEffect(()=>{
-    const {tokens, totalToken} = props.project
+   
     const fieldList = [
       {
         label: 'Total Tokens :',
@@ -64,7 +57,25 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
       
     ]
     setFields(fieldList)
-  },[props.project])
+    //get bannerImage
+    if(!bannerImage && project?.banner_image[0]){
+
+      const data = project
+      fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+    }
+
+  },[project])
+
+  const onClickHandler = () =>{
+    window.scrollTo(0, 0)
+    navigate(
+      {
+        pathname: pathNames.PROJECT_DETAILS,
+        search: `?${createSearchParams({ projectId: project.uuid })}`,
+      },
+      { state: project }
+    )}
+
   return (
     <Grid item sm={12}  md={6} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start" {...props}>
     <Box
@@ -81,17 +92,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
           transform:'scale(1.01)'
         },
       }}
-      onClick={() =>{
-        window.scrollTo(0, 0)
-        navigate(
-          {
-            pathname: pathNames.PROJECT_DETAILS,
-            search: `?${createSearchParams({ projectId: project.uuid })}`,
-          },
-          { state: project }
-        )}
-        
-      }
+      onClick={() =>onClickHandler()}
     >
       <Box sx={{ borderRadius: '8px 8px 0 0' }}>
         <Box
