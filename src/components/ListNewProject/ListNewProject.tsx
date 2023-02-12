@@ -335,13 +335,14 @@ const ListNewProject = () => {
         <CCDropAndUpload
           title={'Upload Project Banner Image'}
           imageArray={bannerImage}
+          multiple={false}
           onImageUpload={(item: any) => {
             // console.log('[...bannerImage, item]', [...bannerImage, item])
             console.log('item', item)
-            const temp = bannerImage ? [...bannerImage] : []
-            temp.push(item)
-            console.log('temp', temp)
-            dispatch(setBannerImage(temp))
+            // const temp = bannerImage ? [...bannerImage] : []
+            // temp.push(item)
+            // console.log('temp', temp)
+            dispatch(setBannerImage([item[1]]))
           }}
           onDeleteImage={(index: number) => {
             dispatch(setBannerImage(deleteIndexInArray(bannerImage, index)))
@@ -356,7 +357,7 @@ const ListNewProject = () => {
           onImageUpload={(item: any) => {
             const temp = projectImage ? [...projectImage] : []
             temp.push(item)
-            dispatch(setProjectImage(temp))
+            dispatch(setProjectImage([...item]))
           }}
           onDeleteImage={(index: number) => {
             dispatch(setProjectImage(deleteIndexInArray(projectImage, index)))

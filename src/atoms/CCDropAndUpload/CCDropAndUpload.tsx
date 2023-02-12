@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import SampleModal from '../SampleModal/SampleModal'
 import { ImageUpload } from './ImageHandle'
 import { ENDPOINTS } from '../../api/configs/Endpoints'
+import { resizeFile } from '../../utils/Filehandler.util'
 
 // Local Imports
 
@@ -20,31 +21,42 @@ interface CCDropAndUploadProps {
   onImageUpload?: any
   onDeleteImage?: any
   required?: boolean
+  multiple?: boolean
 }
 
 const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
+  const { multiple = true } = props
   const [showModal, setShowModal] = useState(false)
   const [uploading, setUploading] = useState(false)
 
-  const addMoreImageUpload = (event: any) => {
+  const addMoreImageUpload = async (event: any) => {
     if (event?.target?.files?.length) {
-      const selectedFile = event.target.files[0]
-      const objectUrl = URL.createObjectURL(selectedFile)
-      const sizeTemp = selectedFile.size / 1000000
-      setUploading(true)
-      ImageUpload(selectedFile, selectedFile.name)
-        .then((result) => {
-          result?.success
-            ? props.onImageUpload(
-                result.data[0].ipfs_hash
-                //fileSize: Math.round(sizeTemp * 100) / 100,
+      let all_files: any = [...props.imageArray]
+      Promise.all(
+        Array.from(event?.target?.files).map(async (selectedFile: any) => {
+          const image = await resizeFile(selectedFile)
+          setUploading(true)
+
+          // const objectUrl = URL.createObjectURL(image)
+          // const sizeTemp = selectedFile.size / 1000000
+
+          return ImageUpload(image, selectedFile?.name)
+            .then((result) => {
+              setUploading(false)
+              all_files = result?.success
+                ? [...all_files, result.data[0].ipfs_hash]
+                : null
+              return all_files
+            })
+            .catch((error) => {
+              console.log(
+                '🚀 ~ file: CCDropAndUpload.tsx ~ line 56 ~ Promise.all ~ error',
+                error
               )
-            : alert('File not uploaded, please try again')
-          setUploading(false)
+              // setUploading(false)
+            })
         })
-        .catch((error) => {
-          setUploading(false)
-        })
+      ).then(() => props.onImageUpload([...all_files]))
     }
   }
 
@@ -112,12 +124,13 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         }}
         variant="contained"
         component="label"
+        disabled={uploading}
       >
-        Upload
+        {uploading ? 'Uploading' : 'Upload'}
         <input
           hidden
           accept="image/*"
-          multiple
+          multiple={multiple}
           type="file"
           onChange={(event: any) => {
             addMoreImageUpload(event)
@@ -125,9 +138,9 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         />
       </Button>
 
-      {uploading && (
+      {/* {uploading && (
         <FileTab key={-1} title={'Uploading...'} index={-1} fileSize={0} />
-      )}
+      )} */}
 
       {props.imageArray &&
         props.imageArray.map((item: any, index: number) => {
