@@ -342,7 +342,7 @@ const ListNewProject = () => {
             // const temp = bannerImage ? [...bannerImage] : []
             // temp.push(item)
             // console.log('temp', temp)
-            dispatch(setBannerImage([item[1]]))
+            dispatch(setBannerImage([item[item.length-1]]))
           }}
           onDeleteImage={(index: number) => {
             dispatch(setBannerImage(deleteIndexInArray(bannerImage, index)))
@@ -355,9 +355,9 @@ const ListNewProject = () => {
           title={'Upload Project Images'}
           imageArray={projectImage}
           onImageUpload={(item: any) => {
-            const temp = projectImage ? [...projectImage] : []
-            temp.push(item)
-            dispatch(setProjectImage([...item]))
+            // const temp = projectImage ? [...projectImage] : []
+            // temp.push(item)
+            dispatch(setProjectImage(item))
           }}
           onDeleteImage={(index: number) => {
             dispatch(setProjectImage(deleteIndexInArray(projectImage, index)))

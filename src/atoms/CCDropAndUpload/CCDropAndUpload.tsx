@@ -1,14 +1,16 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Grid, Box, Typography, Button } from '@mui/material'
+import { Grid, Box, Typography, Button, Paper } from '@mui/material'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import CloseIcon from '@mui/icons-material/Close'
 import SampleModal from '../SampleModal/SampleModal'
 import { ImageUpload } from './ImageHandle'
 import { ENDPOINTS } from '../../api/configs/Endpoints'
 import { resizeFile } from '../../utils/Filehandler.util'
+import CCDocViewer from '../CCDocViewer'
+import { fileUploadCalls } from '../../api/fileUpload.api'
 
 // Local Imports
 
@@ -25,9 +27,14 @@ interface CCDropAndUploadProps {
 }
 
 const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
+  const hiddenFileInput = React.useRef<any>(null)
   const { multiple = true } = props
   const [showModal, setShowModal] = useState(false)
   const [uploading, setUploading] = useState(false)
+
+  const handleClick = (event: any) => {
+    hiddenFileInput.current.click()
+  }
 
   const addMoreImageUpload = async (event: any) => {
     if (event?.target?.files?.length) {
@@ -46,6 +53,10 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
               all_files = result?.success
                 ? [...all_files, result.data[0].ipfs_hash]
                 : null
+              console.log(
+                '🚀 ~ file: CCDropAndUpload.tsx ~ line 49 ~ .then ~ all_files',
+                all_files
+              )
               return all_files
             })
             .catch((error) => {
@@ -66,88 +77,102 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
 
   return (
     <Box sx={{ ...props.sx }}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mt: 2,
-        }}
-      >
-        <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}>
-          {props.title}
-          {props?.required && (
-            <span style={{ color: 'red', fontSize: '12px' }}>*</span>
-          )}
-        </Typography>
-        {props.mediaItem && props.mediaItem.length > 0 && (
-          <Typography
-            onClick={() => setShowModal(true)}
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: '#2B2B2B',
-              textDecoration: 'underline',
-              cursor: 'pointer',
-            }}
-          >
-            Check Sample Data
-          </Typography>
-        )}
-      </Box>
-
-      <Box
-        sx={{
-          width: '100%',
-          height: '90px',
-          border: '2px dashed #1D4B44',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          mt: 1,
-        }}
-      >
-        <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#141D1B' }}>
-          Drop files or upload manually
-        </Typography>
-      </Box>
-
-      <Button
-        sx={{
-          backgroundColor: '#F3BA4D',
-          textTransform: 'none',
-          width: '100%',
-          borderRadius: '8px',
-          mt: 2,
-          mb: 1,
-          color: '#005046',
-        }}
-        variant="contained"
-        component="label"
-        disabled={uploading}
-      >
-        {uploading ? 'Uploading' : 'Upload'}
+      <div style={{position:'relative'}}>
         <input
-          hidden
-          accept="image/*"
+          ref={hiddenFileInput}
+          style={{
+            opacity: 0,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1,
+          }}
+          accept=".png,.jpeg,.pdf,.jpg"
           multiple={multiple}
           type="file"
           onChange={(event: any) => {
             addMoreImageUpload(event)
           }}
         />
-      </Button>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mt: 2,
+          }}
+        >
+          <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}>
+            {props.title}
+            {props?.required && (
+              <span style={{ color: 'red', fontSize: '12px' }}>*</span>
+            )}
+          </Typography>
+          {props.mediaItem && props.mediaItem.length > 0 && (
+            <Typography
+              onClick={() => setShowModal(true)}
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: '#2B2B2B',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+            >
+              Check Sample Data
+            </Typography>
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            width: '100%',
+            height: '90px',
+            border: '2px dashed #1D4B44',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            mt: 1,
+          }}
+          onClick={handleClick}
+        >
+          <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#141D1B' }}>
+            Drop files or upload manually
+          </Typography>
+        </Box>
+
+        <Button
+          sx={{
+            backgroundColor: '#F3BA4D',
+            textTransform: 'none',
+            width: '100%',
+            borderRadius: '8px',
+            mt: 2,
+            mb: 1,
+            color: '#005046',
+          }}
+          variant="contained"
+          component="label"
+          disabled={uploading}
+          onClick={handleClick}
+        >
+          {uploading ? 'Uploading' : 'Upload'}
+        </Button>
+      </div>
 
       {/* {uploading && (
         <FileTab key={-1} title={'Uploading...'} index={-1} fileSize={0} />
       )} */}
 
       {props.imageArray &&
+        props.imageArray.length ?
         props.imageArray.map((item: any, index: number) => {
           if (typeof item === 'string') {
             return (
               <FileTab
-                key={index}
+                key={index.toString()}
                 title={item}
                 index={index}
                 deleteImage={deleteImage}
@@ -157,7 +182,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
           } else {
             return (
               <FileTab
-                key={index}
+                key={index.toString()}
                 title={item.fileName}
                 index={index}
                 deleteImage={deleteImage}
@@ -165,7 +190,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
               />
             )
           }
-        })}
+        }): null}
 
       <SampleModal
         mediaArray={props.mediaItem ? [...props.mediaItem] : []}
@@ -185,11 +210,44 @@ interface FileTabProps {
 }
 
 const FileTab: FC<FileTabProps> = (props) => {
+  const item: any = props.title
+  const [file, setFile] = useState<any>()
+  useEffect(() => {
+    getImages()
+  }, [item])
+  const getImages = async () => {
+    try {
+      // setLoading(true)
+      if (item) {
+        fileUploadCalls.getFile(item).then((res: any) => {
+          console.log(
+            '🚀 ~ file: SliderComponent.tsx ~ line 20 ~ fileUploadCalls.getFile ~ res',
+            res
+          )
+          const image = URL.createObjectURL(res)
+          console.log(
+            '🚀 ~ file: SliderComponent.tsx ~ line 22 ~ fileUploadCalls.getFile ~ image',
+            image
+          )
+          setFile(image)
+          return image
+        })
+      }
+    } catch (error) {
+      console.log(
+        '🚀 ~ file: SliderComponent.tsx ~ line 59 ~ getImages ~ error',
+        error
+      )
+    } finally {
+      // setLoading(false)
+    }
+  }
+
   return (
     <Box
       sx={{
         width: '100%',
-        height: '40px',
+        // height: '40px',
         backgroundColor: '#DAF7F0',
         display: 'flex',
         justifyContent: 'space-between',
@@ -209,9 +267,25 @@ const FileTab: FC<FileTabProps> = (props) => {
       >
         <InsertDriveFileIcon style={{ color: '#388E81' }} />
 
+        <Box sx={{ height: 50, width: 50, m: 1, background: 'white' }}>
+          {file ? (
+            <CCDocViewer
+              documents={[
+                {
+                  uri: file,
+                  fileName: props.title,
+                },
+              ]}
+              width={50}
+              height={50}
+            />
+          ) : null}
+        </Box>
+
         <Box
           sx={{
             ml: 1,
+            flexDirection: 'row',
           }}
         >
           <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
