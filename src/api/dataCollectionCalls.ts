@@ -97,4 +97,11 @@ export const dataCollectionCalls = {
       }
     )
   },
+  getVerifiedProjects: (email?: string) => {
+    return AxiosHelper(URL_PATH.project.getVerifiedProjects, 'GET').then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }

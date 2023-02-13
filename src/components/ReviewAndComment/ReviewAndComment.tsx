@@ -210,7 +210,7 @@ const ReviewAndComment = () => {
               cursor: 'pointer',
             }}
             onClick={() => {
-              setShowCommentSection(true)
+              setShowCommentSection(!showCommentSection)
             }}
           >
             <ChatBubbleOutlineOutlinedIcon
@@ -225,7 +225,7 @@ const ReviewAndComment = () => {
           <OpenInFullOutlinedIcon
             sx={{ ml: 2, color: '#006B5E', fontSize: 18, cursor: 'pointer' }}
             onClick={() => {
-              setShowCommentSection(false)
+              setShowCommentSection(!showCommentSection)
             }}
           />
         </Box>
@@ -277,7 +277,7 @@ const ReviewAndComment = () => {
           <Grid item xs={12} md={5} sx={{ height: 'calc( 100vh - 60px)' }}>
             <CommentBox
               closeChatbox={() => {
-                setShowCommentSection(false)
+                setShowCommentSection(!showCommentSection)
               }}
             />
           </Grid>
