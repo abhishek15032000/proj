@@ -112,6 +112,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             maxWidth: '100%',
             justifyContent:'center',
             padding: !onWebApp ? "6vw 6vw":0,
+            backgroundSize:'cover'
            
           }}
           xs={12}

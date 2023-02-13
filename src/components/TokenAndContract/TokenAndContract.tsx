@@ -27,12 +27,12 @@ const TokenAndContract = () => {
 
   const getAllProjects = () => {
     dataCollectionCalls
-      .getAllProjects(email)
+      .getVerifiedProjects(email)
       .then((res: any) => {
-        if (res?.data?.success) {
-          setProjects(res.data.data)
-        } else if (res?.data?.error) {
-          alert(res?.data?.error[0])
+        if (res?.success) {
+          setProjects(res.data)
+        } else if (res?.error) {
+          alert(res?.error[0])
         }
       })
       .catch((e) => {
