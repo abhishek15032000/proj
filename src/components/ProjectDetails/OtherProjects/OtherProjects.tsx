@@ -20,9 +20,9 @@ const OtherProjects = () => {
   const getAllProjects = async () => {
     try {
       setLoading(true)
-      const projectRes = await dataCollectionCalls.getAllProjects()
-      if (projectRes.data.success) {
-        const filterProject = projectRes.data.data.filter(
+      const projectRes = await dataCollectionCalls.getVerifiedProjects()
+      if (projectRes.success) {
+        const filterProject = projectRes.data.filter(
           (item: any, index: number) => index <= 3 && item
         )
 

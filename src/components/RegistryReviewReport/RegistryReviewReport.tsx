@@ -47,15 +47,15 @@ const RegistryReviewReport = () => {
   const [height, setHeight] = useState(0)
   const [height2, setHeight2] = useState(0)
 
-  const ref: any = useRef(null)
-  const ref2: any = useRef(null)
+  // const ref: any = useRef(null)
+  // const ref2: any = useRef(null)
 
-  useEffect(() => {
-    // if (ref.current && ref.current.clientHeight) {
-    setHeight(ref.current.clientHeight)
-    setHeight2(ref.current.clientHeight)
-    // }
-  })
+  // useEffect(() => {
+  //   // if (ref.current && ref.current.clientHeight) {
+  //   setHeight(ref.current.clientHeight)
+  //   setHeight2(ref.current.clientHeight)
+  //   // }
+  // })
 
   console.log('height', height)
   console.log('height2', height2)
@@ -146,21 +146,60 @@ const RegistryReviewReport = () => {
         </Box>
         <Box sx={{ fontSize: 12, color: '#000000' }}>{' > Review Report'} </Box>
       </Box>
-      <Grid container sx={{ background: '#DAE5E1' }} columnSpacing={2}>
+      <Grid
+        container
+        sx={{
+          background: '#DAE5E1',
+          height: 'calc(100vh - 50px)',
+          alignItems: 'stretch',
+          overflow: 'hidden',
+        }}
+        columnSpacing={3}
+      >
         {loading ? <LoderOverlay /> : null}
 
-        <Grid ref={ref2} item md={6} sx={{ height: `${height}px` }}>
-          <Box
-            sx={{
-              height: 'auto',
-              border: '0px solid',
-              backgroundColor: '#DAE5E1',
-              width: '20px',
-            }}
+        <Grid
+          item
+          md={6}
+          flexDirection="column"
+          sx={{
+            display: 'flex',
+            width: '100%',
+            height: `100%`,
+            backgroundColor: Colors.white,
+          }}
+        >
+          <BackHeader
+            title="Project Issuance Report V1.1 (PDF)"
+            onClick={() => navigate(-1)}
+            titleSx={{ fontSize: 26 }}
+            sx={{ pl: 3, pr: 1, py: 2 }}
           />
+
+          {pdfURL ? (
+            <Box
+              sx={{ height: 'calc( 100vh - 60px)', backgroundColor: 'white' }}
+            >
+              <PDFViewer pdfUrl={pdfURL} />
+            </Box>
+          ) : null}
+        </Grid>
+        <Grid
+          item
+          md={6}
+          sx={{
+            display: 'flex',
+            height: `100%`,
+            overflowY: 'auto',
+            alignItems: 'stretch',
+          }}
+        >
           <Paper
             sx={{
-              height: `${height - 70}px`,
+              width: '100%',
+              height: `auto`,
+              borderRadius: 0,
+              boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
             }}
           >
             <Box
@@ -169,43 +208,7 @@ const RegistryReviewReport = () => {
                 pl: 3,
                 pr: 1,
                 display: 'flex',
-              }}
-            >
-              <BackHeader
-                title="Project Issuance Report V1.1 (PDF)"
-                onClick={() => navigate(-1)}
-                titleSx={{ fontSize: 26 }}
-              />
-            </Box>
-
-            {
-              // pdfLoading ? (
-              //   <Box
-              //     sx={{
-              //       height: '100%',
-              //       fontSize: 16,
-              //       color: Colors.tertiary,
-              //       display: 'flex',
-              //       alignItems: 'center',
-              //       justifyContent: 'center',
-              //       pb: '50px',
-              //     }}
-              //   >
-              //     Loading PDF...
-              //   </Box>
-              // ) :
-              pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null
-            }
-          </Paper>
-        </Grid>
-        <Grid item md={6} ref={ref}>
-          <Paper sx={{ border: '0px solid' }}>
-            <Box
-              sx={{
-                py: 2,
-                pl: 3,
-                pr: 1,
-                display: 'flex',
+                // height: `100%`
               }}
             >
               <BackHeader

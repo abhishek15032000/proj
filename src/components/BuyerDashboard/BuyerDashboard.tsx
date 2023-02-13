@@ -99,14 +99,15 @@ const BuyerDashboard = () => {
                 <Grid item md={12} sm={12} sx={{ pr: 2 }}>
                   {!profileComplete ? <OnBoardingIssuer /> : null}
                   <Grid container columnSpacing={1}>
-                    <Grid item xs={profileComplete ? 9 : 12}>
+                    {/* <Grid item xs={profileComplete ? 9 : 12}> */}
+                    <Grid item xs={  12}>
                       <ProjectsStats />
                     </Grid>
-                    {profileComplete ? (
+                    {/* {profileComplete ? (
                       <Grid item xs={3}>
                         <MarketplaceCard />
                       </Grid>
-                    ) : null}
+                    ) : null} */}
                   </Grid>
                   <Projects />
                 </Grid>
