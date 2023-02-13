@@ -66,9 +66,9 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   }
   useEffect(()=>{
     const cardDetails = [
-      { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: Number(props.projectData?.token_detail?.balance || 0 ).toFixed(2)},
-      { heading: 'CREDITS RETIRED', value: Number(props.projectData?.token_detail?.retire || 0 ).toFixed(2)},
-      { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:Number(props.projectData?.token_detail?.lifetime || 0).toFixed(2) },
+      { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: Number(props.projectData?.token_detail?.balance || 0 )},
+      { heading: 'CREDITS RETIRED', value: Number(props.projectData?.token_detail?.retire || 0 )},
+      { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:Number(props.projectData?.token_detail?.lifetime || 0) },
     ]
     setCardDetails(cardDetails)
     setTags(props.projectData?.tags)
