@@ -1,12 +1,18 @@
-import { Grid, Typography } from '@mui/material'
+import { Grid, Skeleton, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { buyerCalls } from '../../api/buyerCalls.api'
+import { getLocalItem } from '../../utils/Storage'
 import ProjectCards from './ProjectCards'
 import RetirementCertificate from './RetirementCertificate'
 
 const TokenRetirementProjectList = () => {
+  const userID = getLocalItem('userDetails')?.user_id || ''
+
   const [projects, setProjects] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+
   const navigate = useNavigate()
   useEffect(() => {
     getAllProjects()
@@ -14,16 +20,18 @@ const TokenRetirementProjectList = () => {
 
   const getAllProjects = async () => {
     try {
-      // setLoading(true)
-      const projectRes = await dataCollectionCalls.getAllProjects()
-      if (projectRes.data.success) {
-        setProjects(projectRes.data.data)
+      setLoading(true)
+      const projectRes = await buyerCalls.getPurchasedProjectToRetire({
+        user: userID,
+      })
+      if (projectRes.success) {
+        setProjects(projectRes.data)
         // setFilteredProjects(projectRes.data.data)
       }
     } catch (e) {
-      console.log('Error in dataCollectionCalls.getAllProjects api ~ ', e)
+      console.log('Error in buyerCalls.getPurchasedProjectToRetire api ~ ', e)
     } finally {
-      // setLoading(false)
+      setLoading(false)
     }
   }
 
@@ -33,9 +41,10 @@ const TokenRetirementProjectList = () => {
         <Typography sx={{ color: '#2B2B2B', fontSize: '22px', mb: 3 }}>
           Token Retirement Projects
         </Typography>
+
         <Grid
           container
-          spacing={{ sm: 0.5, md: 0.5, lg: 0.5, xl: 0.5 }}
+          spacing={{ sm: 2, md: 2, lg: 2, xl: 2 }}
           columns={{ sm: 12, md: 12, lg: 12, xl: 12 }}
           sx={{
             display: 'flex',
@@ -47,7 +56,11 @@ const TokenRetirementProjectList = () => {
             pb: 1,
           }}
         >
-          {projects && projects.length
+          {loading
+            ? ['', '', ''].map((item, index: number) => (
+                <ProjectCardLoading key={index} />
+              ))
+            : projects && projects.length
             ? projects?.map((project: any, index: number) => (
                 <ProjectCards
                   key={index}
@@ -65,3 +78,85 @@ const TokenRetirementProjectList = () => {
 }
 
 export default TokenRetirementProjectList
+
+const ProjectCardLoading = () => {
+  return (
+    <Grid
+      item
+      sm={12}
+      md={6}
+      lg={4}
+      xl={3}
+      display="flex"
+      alignItems="flex-start"
+      sx={{ mt: 2, width: '100%' }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        <Skeleton
+          sx={{ bgcolor: '#CCE8E1' }}
+          variant="rectangular"
+          height={147}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ mt: 1, fontSize: '2rem', bgcolor: '#CCE8E1' }}
+        />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+            sx={{
+              width: '20%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Skeleton
+              sx={{ bgcolor: '#CCE8E1' }}
+              variant="rectangular"
+              height={20}
+              width={'20px'}
+            />
+          </Box>
+          <Box sx={{ width: '80%' }}>
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: '1rem', bgcolor: '#CCE8E1' }}
+            />
+          </Box>
+        </Box>
+        <Skeleton
+          variant="text"
+          sx={{ mt: 1, fontSize: '1rem', bgcolor: '#CCE8E1' }}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: '1rem', bgcolor: '#CCE8E1' }}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: '1rem', bgcolor: '#CCE8E1' }}
+        />
+        <Skeleton
+          variant="rectangular"
+          sx={{
+            mt: 2,
+            bgcolor: '#CCE8E1',
+            width: '100%',
+            height: '30px',
+            borderRadius: '30px',
+          }}
+        />
+      </Box>
+    </Grid>
+  )
+}

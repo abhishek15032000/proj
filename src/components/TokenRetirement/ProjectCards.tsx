@@ -21,11 +21,8 @@ interface ProjectDetailsCardProps {
 }
 const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
   const navigate = useNavigate()
-  const location = useLocation()
-  const [retiring, setRetiring] = useState('')
 
   const { project, navigationAction, justifyContent = 'center' } = props
-
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [fields, setFields] = useState<any>([])
 
@@ -38,19 +35,19 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
   }, [project])
 
   useEffect(() => {
-    const { tokens, totalToken } = props.project
+    const { balance = 0, retire = 0 } = props.project
     const fieldList = [
       {
         label: 'CURRENTLY AVAILABLE: ',
-        value: totalToken,
+        value: balance,
       },
       {
         label: 'RETIREMENT AMOUNT:',
-        value: tokens?.token_name,
+        value: retire,
       },
       {
         label: 'TOKENS LEFT AFTER RETIRING:',
-        value: '-',
+        value: balance,
       },
     ]
     setFields(fieldList)
@@ -202,7 +199,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
                   <Box sx={{ width: '70%' }}>{field?.label}</Box>
                   <Tooltip title={field?.value}>
                     <Box sx={{ width: '30%' }}>
-                      {limitTitle(field.value, 10) || '--'}
+                      {limitTitle(field.value, 10) || 0}
                     </Box>
                   </Tooltip>
                 </Box>
@@ -231,7 +228,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
                   },
                 })
               }
-              disabled={!props?.project?.tokens?.token_symbol}
+              // disabled={!props?.project?.tokens?.token_symbol}
             >
               Retire
             </CCButton>

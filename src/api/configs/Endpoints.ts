@@ -122,6 +122,8 @@ export const URL_PATH = {
     getAllRetireToken: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
     getTokenAndRetirementStats: ENDPOINTS.carbonServiceURL + '/buyer/getStats',
     getRetirements: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
+    getPurchasedProjectToRetire:
+      ENDPOINTS.carbonServiceURL + '/buyer/getPurchasedProjectToRetire',
   },
   notification: {
     getNotification:
