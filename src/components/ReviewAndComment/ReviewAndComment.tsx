@@ -255,7 +255,7 @@ const ReviewAndComment = () => {
           }}
         >
           <Grid
-            className="hide-scrollbar"
+            className="review-and-comment-scrollbar"
             item
             xs={12}
             md={7}

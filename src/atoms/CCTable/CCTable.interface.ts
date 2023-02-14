@@ -1,5 +1,5 @@
 export interface CCTableProps {
-  headings: string[]
+  headings: any
   rows?: any[]
   maxWidth?: any
   pagination?: boolean
@@ -8,4 +8,5 @@ export interface CCTableProps {
   loading?: boolean
   data?: boolean
   rowsPerPageProp?: number
+  hideScrollbar?: boolean
 }

@@ -35,28 +35,32 @@ import {
 } from '../../redux/Slices/MonthlyReportUpdate'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import CCTable from '../../atoms/CCTable'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
+import { Images } from '../../theme'
 
+let index = 0
 const headingsNew = [
-  'Reference ID',
-  'Creation Dt',
-  'Project Name',
-  'Location',
-  'Verifier Status',
-  'Verifier',
-  'Action',
-  '',
+  <LimitedText key={index++} text='Reference ID'/>,
+  <LimitedText key={index++} text='Creation Dt'/>,
+  <LimitedText key={index++} text='Project Name'/>,
+  <LimitedText key={index++} text='Location'/>,
+  <LimitedText key={index++} text='Verifier Status'/>,
+  <LimitedText key={index++} text='Verifier'/>,
+  <LimitedText key={index++} text='Action'/>,
+  <LimitedText key={index++} text=''/>,
 ]
 
 const headingsRegistered = [
-  'Reference ID',
-  'Creation Dt',
-  'Project Name',
-  'Location',
-  'Verifier',
-  'Report Status',
-  'Next Report Submission Dt',
-  'Action',
-  '',
+  <LimitedText key={index++} text='Reference ID'/>,
+  <LimitedText key={index++} text='Creation Dt'/>,
+  <LimitedText key={index++} text='Project Name'/>,
+  <LimitedText key={index++} text='Location'/>,
+  <LimitedText key={index++} text='Verifier'/>,
+  <LimitedText key={index++} text='Report Status'/>,
+  <LimitedText key={index++} text='Next Report Submission Dt'/>,
+  <LimitedText key={index++} text='Action'/>,
+  <LimitedText key={index++} text=''/>,
 ]
 
 interface ListOfProjectsDashboardProps {
@@ -109,10 +113,10 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       ) {
         newData.push([
           // <ShortenedIDComp key={index} referenceId={item.uuid} />,
-          item.uuid,
-          moment(item.createdAt).format('DD/MM/YYYY'),
-          item.company_name,
-          item.location,
+          <LimitedText key={index} text={item.uuid} ellispsisAtStart />,
+          <LimitedText key={index} text={moment(item.createdAt).format('DD/MM/YYYY')}  />,
+          <LimitedText key={index} text={item.company_name}  />,
+          <LimitedText key={index} text={item.location}  />,
           item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
             <ApprovalChip variant="Yet to Select" key={index} />
           ) : item.project_status ===
@@ -132,7 +136,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               key={'1'}
               sx={{
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'start',
                 alignItems: 'center',
               }}
             >
@@ -177,23 +181,34 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         ].includes(item.project_status)
       ) {
         registeredData.push([
-          <ShortenedIDComp key={index} referenceId={item.uuid} />,
-          moment(item.createdAt).format('DD/MM/YYYY'),
-          item.company_name,
-          item.location,
+          <LimitedText key={index} text={item.uuid} ellispsisAtStart />,
+          <LimitedText key={index} text={moment(item.createdAt).format('DD/MM/YYYY')}  />,
+          <LimitedText key={index} text={item.company_name}  />,
+          <LimitedText key={index} text={item.location}  />,
           item.verifier_details_id ? (
             <Box
-              key={'1'}
+              key={index}
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                columnGap: '5px',
               }}
             >
-              <WorkOutlineIcon />
-              <Typography sx={{ fontSize: 14, fontWeight: 400, ml: 1 }}>
-                {item.verifier_details_id?.verifier_name}
-              </Typography>
+              <Box
+                sx={{
+                  bgcolor: '#F0FFFB',
+                  width: 40,
+                  height: 40,
+                  borderRadius: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <img height={24} width={24} src={Images.BriefcaseIcon} />
+              </Box>
+              <LimitedText text={item?.name} />
             </Box>
           ) : (
             '-'
@@ -255,14 +270,23 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       {!props.loading &&
         ((tabIndex === 2 && Object.keys(rowsRegistered[0]).length > 0) ||
           (tabIndex === 1 && Object.keys(rowsNew[0]).length > 0)) && (
-          <SliderTable
+          // <SliderTable
+          //   headings={tabIndex === 1 ? headingsNew : headingsRegistered}
+          //   rows={tabIndex === 1 ? rowsNew : rowsRegistered}
+          //   sx={{ minWidth: 100 }}
+          //   maxWidth={'100%'}
+          //   // tileHeight={'105px'}
+          //   tableSx={{ minWidth: 100 }}
+          // />
+            <CCTable
             headings={tabIndex === 1 ? headingsNew : headingsRegistered}
             rows={tabIndex === 1 ? rowsNew : rowsRegistered}
             sx={{ minWidth: 100 }}
             maxWidth={'100%'}
             // tileHeight={'105px'}
             tableSx={{ minWidth: 100 }}
-          />
+            hideScrollbar
+            />
         )}
 
       {!props.loading &&
