@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
 import { verifierCalls } from '../../../api/verifierCalls.api'
+import Spinner from '../../../atoms/Spinner'
 import { PROJECT_ALL_STATUS, TX_TYPE } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import {
@@ -22,7 +23,7 @@ interface WebAppTraceHistoryProps {
   theme?: string
 }
 const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
-  const dispatch:any = useAppDispatch()
+  const dispatch: any = useAppDispatch()
 
   const projectDeveloper = useAppSelector(
     ({ traceability }) => traceability?.projectDeveloper,
@@ -100,7 +101,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
   const [traceOption, setTraceOption] = useState(0)
   const [traceAllData, setTraceAllData] = useState<any>([])
   const [traceTabList, setTraceTabList] = useState<any>([])
-  const [tx,setTx] = useState<any>("")
+  const [tx, setTx] = useState<any>('')
 
   useEffect(() => {
     //setting dark or light theme based on roles
@@ -127,21 +128,23 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
   }, [projectDeveloper, verifier, traceAllData])
 
   useEffect(() => {
-    if (traceAllData) {
+    if (traceAllData && traceTabList && traceTabList.length) {
       const tabData = traceTabList[traceOption]
       const txTypeToSearch = tabData?.txType
       if (txTypeToSearch || txTypeToSearch === 0) {
-        const txIDObj = traceAllData?.tx.find(
-          (tx: any) => tx.type === txTypeToSearch
-        )
-        // dispatch(setTxIDForTab(txIDObj?.tx_id))
-        setTx(txIDObj?.tx_id)
+        if (traceAllData?.tx && traceAllData?.tx.length) {
+          const txIDObj = traceAllData?.tx?.find(
+            (tx: any) => tx.type === txTypeToSearch
+          )
+          // dispatch(setTxIDForTab(txIDObj?.tx_id))
+          setTx(txIDObj?.tx_id)
+        }
       } else {
         // dispatch(setTxIDForTab(''))
         setTx('')
       }
     }
-  }, [traceOption, traceAllData])
+  }, [traceOption, traceAllData, traceTabList])
 
   useEffect(() => {
     if (projectId) getAllDetails()
@@ -196,7 +199,18 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
     }
   }
 
-  return (
+  return loading ? (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '300px',
+      }}
+    >
+      <Spinner />
+    </Box>
+  ) : (
     <Grid
       container
       justifyContent={'space-between'}
@@ -265,7 +279,6 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         backgroundColor: '#006B5E',
                         marginLeft: '-10px',
                       }}
-                      
                       className="traceability-trace-circle"
                     ></Box>
                     <div
@@ -280,7 +293,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         position: 'absolute',
                         height: '170%',
                         top: 0,
-                        left: '11%',
+                        left: '21%',
                         transform: 'translateX(-50%)',
                       }}
                     ></div>

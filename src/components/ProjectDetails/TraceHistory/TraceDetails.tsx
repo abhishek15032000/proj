@@ -23,11 +23,11 @@ export interface TraceDetailsProps {
   projectId?: any
   projectDetails?: any
   traceTab?: any
-  txID?:""
+  txID?: ''
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
-  const { traceOption, theme, projectDetails,txID } = props
+  const { traceOption, theme, projectDetails, txID } = props
 
   const renderTab = [
     <CreateProject key={0} {...props} />,
@@ -41,34 +41,10 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
     <Buyer key={8} {...props} />,
   ]
 
-  const txIDForTab = useAppSelector(
-    ({ traceability }) => traceability?.txIDForTab,
-    shallowEqual
-  )
   const reportPDF = useAppSelector(
     ({ traceability }) => traceability?.reportPDF,
     shallowEqual
   )
-console.log("txIDForTab",txIDForTab)
-// console.log("traceTab",props?.traceTab)
-// console.log("traceOption",traceOption)
-
-// const [tx,setTx] = useState<any>("")
-
-// useEffect(()=>{
-//   console.log("useeffect 2 ran")
-//   const tabData = traceTabList[traceOption]
-//       const txTypeToSearch = tabData?.txType
-//       if (txTypeToSearch || txTypeToSearch === 0) {
-//         const txIDObj = traceAllData?.tx.find(
-//           (tx: any) => tx.type === txTypeToSearch
-//         )
-//         setTx(txIDObj?.tx_id)
-//       } else {
-//         setTx('')
-//       }
-// },[])
-
 
   return (
     <Paper
