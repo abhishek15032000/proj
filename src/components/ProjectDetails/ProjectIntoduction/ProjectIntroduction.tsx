@@ -63,7 +63,6 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
     },
   ]
   const { projectDetailsData ,showBuyToken, projectData} = props
-  console.log("🚀 ~ file: ProjectIntroduction.tsx ~ line 63 ~ ProjectIntroduction ~ projectDetailsData", projectDetailsData)
   const prevScrollY = useRef(0)
 
   const [goingUp, setGoingUp] = useState(false)

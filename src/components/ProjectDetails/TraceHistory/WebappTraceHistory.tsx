@@ -22,7 +22,7 @@ interface WebAppTraceHistoryProps {
   theme?: string
 }
 const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
-  const dispatch = useAppDispatch()
+  const dispatch:any = useAppDispatch()
 
   const projectDeveloper = useAppSelector(
     ({ traceability }) => traceability?.projectDeveloper,
@@ -100,6 +100,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
   const [traceOption, setTraceOption] = useState(0)
   const [traceAllData, setTraceAllData] = useState<any>([])
   const [traceTabList, setTraceTabList] = useState<any>([])
+  const [tx,setTx] = useState<any>("")
 
   useEffect(() => {
     //setting dark or light theme based on roles
@@ -133,9 +134,11 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
         const txIDObj = traceAllData?.tx.find(
           (tx: any) => tx.type === txTypeToSearch
         )
-        dispatch(setTxIDForTab(txIDObj?.tx_id))
+        // dispatch(setTxIDForTab(txIDObj?.tx_id))
+        setTx(txIDObj?.tx_id)
       } else {
-        dispatch(setTxIDForTab(''))
+        // dispatch(setTxIDForTab(''))
+        setTx('')
       }
     }
   }, [traceOption, traceAllData])
@@ -384,6 +387,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
               projectId={projectId}
               projectDetails={traceAllData}
               traceTab={traceTab}
+              txID={tx}
             />
           </Box>
         </Grid>
