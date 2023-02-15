@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from '@mui/material'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
 import moment from 'moment'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import ApproveReport from './AllTraceTabDetails/ApproveReport'
@@ -23,10 +23,11 @@ export interface TraceDetailsProps {
   projectId?: any
   projectDetails?: any
   traceTab?: any
+  txID?:""
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
-  const { traceOption, theme, projectDetails } = props
+  const { traceOption, theme, projectDetails,txID } = props
 
   const renderTab = [
     <CreateProject key={0} {...props} />,
@@ -48,6 +49,26 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
     ({ traceability }) => traceability?.reportPDF,
     shallowEqual
   )
+console.log("txIDForTab",txIDForTab)
+// console.log("traceTab",props?.traceTab)
+// console.log("traceOption",traceOption)
+
+// const [tx,setTx] = useState<any>("")
+
+// useEffect(()=>{
+//   console.log("useeffect 2 ran")
+//   const tabData = traceTabList[traceOption]
+//       const txTypeToSearch = tabData?.txType
+//       if (txTypeToSearch || txTypeToSearch === 0) {
+//         const txIDObj = traceAllData?.tx.find(
+//           (tx: any) => tx.type === txTypeToSearch
+//         )
+//         setTx(txIDObj?.tx_id)
+//       } else {
+//         setTx('')
+//       }
+// },[])
+
 
   return (
     <Paper
@@ -80,7 +101,7 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
           ' | ' +
           moment(projectDetails?.createdAt).format(`HH:MM:SS`)}
       </Typography>
-      {txIDForTab ? (
+      {/* {txIDForTab ? (
         <Typography
           sx={{
             color: '#1A8EF5',
@@ -97,6 +118,26 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
             style={{ color: '#1A8EF5' }}
           >
             {txIDForTab}
+          </a>
+        </Typography>
+      ) : null} */}
+      {txID ? (
+        <Typography
+          sx={{
+            color: '#1A8EF5',
+            fontSize: 12,
+            fontWeight: 500,
+            mt: 1,
+            wordBreak: 'break-all',
+          }}
+        >
+          <a
+            href={`https://mumbai.polygonscan.com/tx/${txID}`}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#1A8EF5' }}
+          >
+            {txID}
           </a>
         </Typography>
       ) : null}
