@@ -39,24 +39,59 @@ import {
 
 export function useMarket() {
   const dispatch = useAppDispatch()
-  const sellQuantity = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.sellQuantity)
-  const sellWantAmount = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.sellWantAmount)
+  const sellQuantity = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.sellQuantity
+  )
+  const sellWantAmount = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.sellWantAmount
+  )
 
-  const carbonTokenAddress = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.carbonTokenAddress)
-  const inrTokenAddress = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.inrTokenAddress)
-  const currentProjectUUID = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.currentProjectUUID)
-  const buyOrderPayloadOfferHashes = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.buyOrderPayloadOfferHashes)
-  const buyOrderPayloadAmountsToTake = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.buyOrderPayloadAmountsToTake)
-  const buyOrderPayloadUUID = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.buyOrderPayloadUUID)
-  const carbonTokenSymbol = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.carbonTokenSymbol)
+  const carbonTokenAddress = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.carbonTokenAddress
+  )
+  const inrTokenAddress = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.inrTokenAddress
+  )
+  const currentProjectUUID = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.currentProjectUUID
+  )
+  const buyOrderPayloadOfferHashes = useAppSelector(
+    ({ newMarketplaceReducer }) =>
+      newMarketplaceReducer?.buyOrderPayloadOfferHashes
+  )
+  const buyOrderPayloadAmountsToTake = useAppSelector(
+    ({ newMarketplaceReducer }) =>
+      newMarketplaceReducer?.buyOrderPayloadAmountsToTake
+  )
+  const buyOrderPayloadUUID = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.buyOrderPayloadUUID
+  )
+  const carbonTokenSymbol = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.carbonTokenSymbol
+  )
 
-  const carbonTokenBalances = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.carbonTokenBalances)
-  const withdrawToken = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.withdrawToken)
-  const inrTokenBalances = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.inrTokenBalances)
-  const totalAmountForBuying = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer?.totalAmountForBuying)
+  const carbonTokenBalances = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.carbonTokenBalances
+  )
+  const withdrawToken = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.withdrawToken
+  )
+  const withdrawTokenType = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.withdrawTokenType
+  )
+  const inrTokenBalances = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.inrTokenBalances
+  )
+  const totalAmountForBuying = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer?.totalAmountForBuying
+  )
   const accountAddress = useAppSelector(({ wallet }) => wallet.accountAddress)
-  const withdrawTokenAddress = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer.withdrawTokenAddress)
-  const withdrawAmount = useAppSelector(({ newMarketplaceReducer }) => newMarketplaceReducer.withdrawAmount)
+  const withdrawTokenAddress = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.withdrawTokenAddress
+  )
+  const withdrawAmount = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.withdrawAmount
+  )
 
   const getProjectsTokenDetails = async (projectUUID: string) => {
     try {
@@ -327,6 +362,7 @@ export function useMarket() {
   }
 
   const withdraw = async () => {
+    console.log('withdraw called')
     // const withdrawAmount = getState()?.newMarketplaceReducer?.withdrawAmount
     // const withdrawToken = getState()?.newMarketplaceReducer?.withdrawToken
     // const withdrawTokenAddress =
@@ -341,7 +377,7 @@ export function useMarket() {
     const pseudoNonce = new Date().getTime()
 
     const balToCheck =
-      withdrawToken === TOKEN_TYPES.CARBON
+      withdrawTokenType === TOKEN_TYPES.CARBON
         ? parseInt(carbonTokenBalances?.assetsBalance)
         : parseInt(inrTokenBalances?.assetsBalance)
     if (!balToCheck) {
@@ -397,6 +433,6 @@ export function useMarket() {
     getOpenOrders,
     getBuyOrders,
     cancelOrder,
-    withdraw
+    withdraw,
   }
 }

@@ -1,27 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Grid, Paper, Stack, Typography } from '@mui/material'
-import BackHeader from '../../atoms/BackHeader/BackHeader'
-import { Colors } from '../../theme'
-import { RetireTokensProps } from './RetireTokens.interface'
-import tokenRetirement from '../../assets/Images/illustrations/tokenRetirement.png'
-import CCInputField from '../../atoms/CCInputField'
+import {
+  Box,
+  Grid,
+  InputAdornment,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import React, { FC, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { pathNames } from '../../routes/pathNames'
-import Spinner from '../../atoms/Spinner'
+// import tokenRetirement from '../../assets/Images/illustrations/tokenRetirement.png'
+import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
+import CCInputField from '../../atoms/CCInputField'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
+import Spinner from '../../atoms/Spinner'
 import BlockchainCalls from '../../blockchain/Blockchain'
-import { useAppSelector } from '../../hooks/reduxHooks'
 import { TOKEN_CONTRACT_ADDRESS } from '../../config/token.config'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { pathNames } from '../../routes/pathNames'
+import { Colors, Images } from '../../theme'
+import { RetireTokensProps } from './RetireTokens.interface'
 // import Web3 from 'web3'
 import { shallowEqual } from 'react-redux'
 // import { ethers } from 'ethers'
 // import { getApprovedTokensBalance } from '../../utils/tokenRetire.utils'
-import PreBlockchainCallModal from '../../atoms/PreBlockchainCallModal/PreBlockchainCallModal'
-import BalanceCheckModal from '../../atoms/BalanceCheckModal/BalanceCheckModal'
 import { buyerCalls } from '../../api/buyerCalls.api'
+import { eventsCalls } from '../../api/eventsCalls.api'
+import BalanceCheckModal from '../../atoms/BalanceCheckModal/BalanceCheckModal'
+import MessageModal from '../../atoms/MessageModal/MessageModal'
+import PreBlockchainCallModal from '../../atoms/PreBlockchainCallModal/PreBlockchainCallModal'
+import { useMarket } from '../../hooks/useMarket'
 import { useTokenRetire } from '../../hooks/useTokenRetire'
+import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
+import LoderOverlay from '../LoderOverlay'
 
 // declare let window: any
 
@@ -34,20 +48,27 @@ const RetireTokens = (props: RetireTokensProps) => {
   const navigate = useNavigate()
   const location: any = useLocation()
 
-  const userName = getLocalItem('userDetails')?.fullName || ''
+  const userName = getLocalItem('userDetails2')?.fullName || ''
+  const userID = getLocalItem('userDetails')?.user_id || ''
 
   const tokenDetails = location?.state?.tokenDetails
   const projectID = location?.state?.projectID
+  const projectUUID = location?.state?.projectUUID
 
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual
   )
-  const tokensApprovedForRetiring = useAppSelector(
-    ({ tokenRetire }) => tokenRetire.tokensApprovedForRetiring,
-    shallowEqual
-  )
+  // const tokensApprovedForRetiring = useAppSelector(
+  //   ({ tokenRetire }) => tokenRetire.tokensApprovedForRetiring,
+  //   shallowEqual
+  // )
 
+  const [showTip, setShowTip] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [balanceToRetire, setBalanceToRetire] = useState<number | string>(0)
+  const [tokenBalanceLoading, setTokenBalanceLoading] = useState(false)
+  const [projectTokensLoading, setProjectTokensLoading] = useState(false)
   const [retiring, setRetiring] = useState('')
   const [explain, setExplain] = useState('')
   const [loading, setLoading] = useState(false)
@@ -55,12 +76,46 @@ const RetireTokens = (props: RetireTokensProps) => {
   // const [showSecondModal, setShowSecondModal] = useState(false)
 
   const { getApprovedTokensBalance } = useTokenRetire()
+  const { getTokenBalances } = useMarket()
+
+  useEffect(() => {
+    if (projectUUID) {
+      getProjectsTokenDetails(projectUUID)
+    }
+  }, [projectUUID])
 
   useEffect(() => {
     if (accountAddress) {
       getApprovedTokensBalance()
     }
   }, [accountAddress])
+
+  const getProjectsTokenDetails = async (projectUUID: string) => {
+    try {
+      setProjectTokensLoading(true)
+      const res = await eventsCalls.getTokenByProjectUUID(
+        `?project_id=${projectUUID}`
+      )
+      if (res?.success) {
+        setTokenBalanceLoading(true)
+        const tokenBalances = await getTokenBalances(
+          userID,
+          res?.data?.token_address
+        )
+        if (tokenBalances?.success) {
+          const bal = convertToInternationalCurrencySystem(
+            Number(tokenBalances?.data?.assetsBalance)
+          )
+          setBalanceToRetire(bal)
+        }
+        setTokenBalanceLoading(false)
+      }
+    } catch (err) {
+      console.log('Error in eventsCalls.getTokenByProjectUUID api ~ ', err)
+    } finally {
+      setProjectTokensLoading(false)
+    }
+  }
 
   // async function getHashAndVRS() {
   //   try {
@@ -135,10 +190,22 @@ const RetireTokens = (props: RetireTokensProps) => {
     }
 
     try {
-      const res = await buyerCalls.retireToken(payload)
+      setLoading(true)
+      const res: any = await buyerCalls.retireToken(payload)
       console.log('res', res)
+      if (res?.data?.success) {
+        setShowModal(true)
+      } else {
+        if (res?.data?.error) {
+          alert(res?.data?.error)
+        }
+      }
     } catch (e) {
-      console.log('')
+      console.log('Error in buyerCalls.retireToken api ~ ', e)
+    } finally {
+      setRetiring('')
+      setExplain('')
+      setLoading(false)
     }
   }
 
@@ -150,122 +217,179 @@ const RetireTokens = (props: RetireTokensProps) => {
     return shouldDisable
   }
 
-  return loading ? (
-    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
-      <Spinner />
-    </Stack>
-  ) : (
-    <Box sx={{ p: 0 }}>
-      <Grid
-        container
-        xs={12}
-        sx={{ p: 0, border: '0px solid' }}
-        justifyContent={'space-between'}
-      >
-        <Grid item xs={12} sx={{ pr: 1 }}>
-          <Paper
-            sx={{
-              width: '100%',
-              borderRadius: '8px',
-              backgroundColor: Colors.white,
-              px: 2,
-              pt: 2,
-              position: 'relative',
-            }}
-          >
-            <Box
+  return (
+    // loading ? (
+    //   <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
+    //     <Spinner />
+    //   </Stack>
+    // ) : (
+    <>
+      {loading ? <LoderOverlay /> : null}
+      <Box sx={{ p: 0 }}>
+        <Grid
+          container
+          xs={12}
+          sx={{ p: 0, border: '0px solid' }}
+          justifyContent={'space-between'}
+        >
+          <Grid item xs={12} sx={{ pr: 1 }}>
+            <Paper
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                width: '100%',
+                borderRadius: '8px',
+                backgroundColor: Colors.white,
+                px: 2,
+                pt: 2,
+                position: 'relative',
               }}
             >
-              <BackHeader
-                title="Retire Tokens"
-                onClick={() => navigate(pathNames.TOKENS_RETIREMENT)}
-              />
-              <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'end' }}>
-                <CCButton
-                  sx={{
-                    backgroundColor: Colors.darkPrimary1,
-                    padding: '8px 24px',
-                    minWidth: '50px',
-                    color: '#fff',
-                    borderRadius: 10,
-                    fontSize: 14,
-                    mr: 1,
-                  }}
-                  onClick={() => {
-                    console.log({ retiring, explain })
-                    if (!retiring || !explain) {
-                      alert('Fill all the Fields!')
-                      return
-                    }
-                    // setShowModal(true)
-                    retireTokens()
-                  }}
-                  disabled={isDisabled()}
-                  variant="contained"
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <BackHeader
+                  title="Retire Tokens"
+                  onClick={() => navigate(pathNames.TOKENS_RETIREMENT)}
+                />
+                <Grid
+                  item
+                  xs={6}
+                  sx={{ display: 'flex', justifyContent: 'end' }}
                 >
-                  Retire
-                </CCButton>
-              </Grid>
-            </Box>
-            {/* <Box sx={{ mt: 1, color: Colors.darkPrimary1, fontWeight: 500 }}>
-              No. of Tokens that can be retired :{' '}
-              {tokensApprovedForRetiring
-                ? tokensApprovedForRetiring
-                : tokensApprovedForRetiring === 0
-                ? 0
-                : '-'}
-            </Box> */}
-            <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 1, mb: 2 }}>
-              Go carbon neutral by retiring carbon tokens and claiming the
-              underlying environmental benefit of the carbon offset.
-            </Typography>
-            <CCInputField
-              label="Retiring"
-              placeholder="Enter Retiring"
-              sx={{ mb: 1.5 }}
-              value={retiring}
-              onChange={(e: any) => {
-                //Allow only no.s upto 3 decimal places
-                const regexp = /^\d+(\.\d{0,3})?$/
-                if (regexp.test(e?.target?.value) || e?.target?.value === '') {
-                  setRetiring(e?.target?.value)
-                }
-              }}
-            />
-            <CCInputField
-              disabled
-              label="Tonnes of Carbon to Offset"
-              placeholder="Enter Tonnes of Carbon to Offset"
-              sx={{ mb: 1.5, mr: 2 }}
-              value={retiring}
-            />
+                  <CCButton
+                    sx={{
+                      backgroundColor: Colors.darkPrimary1,
+                      padding: '8px 24px',
+                      minWidth: '50px',
+                      color: '#fff',
+                      borderRadius: 10,
+                      fontSize: 14,
+                      mr: 1,
+                    }}
+                    onClick={() => {
+                      console.log({ retiring, explain })
+                      if (!retiring || !explain) {
+                        alert('Fill all the Fields!')
+                        return
+                      }
+                      // setShowModal(true)
+                      retireTokens()
+                    }}
+                    disabled={isDisabled()}
+                    variant="contained"
+                  >
+                    Retire
+                  </CCButton>
+                </Grid>
+              </Box>
 
-            <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
-              What is your reason for retirement ?
-            </Typography>
-            <CCMultilineTextArea
-              label="Explain"
-              placeholder="Explain it here"
-              value={explain}
-              onChange={(event) => setExplain(event.target.value)}
-            />
-            <Box
-              sx={{
-                mt: 5,
-                display: 'flex',
-                justifyContent: 'end',
-              }}
-            >
-              <img src={tokenRetirement} width="50%" />
-            </Box>
-          </Paper>
+              <Typography
+                sx={{ fontSize: 14, fontWeight: 500, mt: 1, color: '#141D1B' }}
+              >
+                Go carbon neutral by retiring carbon tokens and claiming the
+                underlying environmental benefit of the carbon offset.
+              </Typography>
+              {projectTokensLoading || tokenBalanceLoading ? (
+                <Box sx={{ mt: 1 }}>
+                  <Skeleton
+                    sx={{
+                      fontSize: '1.5rem',
+                      bgcolor: '#CCE8E1',
+                      maxWidth: '400px',
+                    }}
+                    variant="text"
+                  />
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    mt: 1,
+                    color: Colors.darkPrimary1,
+                    fontWeight: 500,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Box>No. of Tokens that can be retired</Box>
+                  <InfoOutlinedIcon
+                    sx={{ ml: 1, fontSize: 20, cursor: 'pointer' }}
+                    onClick={() => setShowTip((showTip) => !showTip)}
+                  />
+                  <Box sx={{ mx: 1 }}>:</Box>
+                  <Box>{balanceToRetire ? balanceToRetire : 0}</Box>
+                </Box>
+              )}
+              {showTip ? (
+                <Box
+                  sx={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: Colors.lightPrimary1,
+                  }}
+                >
+                  Withdraw Carbon tokens if any to increase the balance!
+                </Box>
+              ) : null}
+              <Box sx={{ mt: 3 }}>
+                <CardRow
+                  title="Total token retiring :"
+                  value={
+                    <CCInputField
+                      placeholder="Quantity"
+                      value={retiring}
+                      onChange={(e: any) => {
+                        //Allow only no.s
+                        const regexp = /^\d+(\d{0})?$/
+                        if (
+                          regexp.test(e?.target?.value) ||
+                          e?.target?.value === ''
+                        ) {
+                          setRetiring(e?.target?.value)
+                        }
+                      }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            {tokenDetails?.token_symbol}
+                          </InputAdornment>
+                        ),
+                      }}
+                      sx={{ maxWidth: '200px' }}
+                    />
+                  }
+                />
+                <CardRow
+                  title="Total carbon offset :"
+                  value={retiring || '-'}
+                />
+                <CardRow title="Beneficial owner :" value={userName} />
+              </Box>
+
+              <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 2, mb: 2 }}>
+                What is your reason for retirement ?
+              </Typography>
+              <CCMultilineTextArea
+                label="Explain"
+                placeholder="Explain it here"
+                value={explain}
+                onChange={(event) => setExplain(event.target.value)}
+              />
+              <Box
+                sx={{
+                  mt: 5,
+                  display: 'flex',
+                  justifyContent: 'end',
+                }}
+              >
+                <img src={Images.RetireTokens} width="50%" />
+              </Box>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-      {/* <PreBlockchainCallModal
+        {/* <PreBlockchainCallModal
         btn1OnClick={() => {
           setShowModal(false)
           retireTokens()
@@ -274,7 +398,7 @@ const RetireTokens = (props: RetireTokensProps) => {
         showModal={showModal}
         setShowModal={setShowModal}
       /> */}
-      {/* <BalanceCheckModal
+        {/* <BalanceCheckModal
         msg1="Retiring more tokens than Approved. Please lessen the retiring token quantity."
         msg2="Approved Tokens for Retiring"
         tokenBal={tokensApprovedForRetiring}
@@ -285,8 +409,47 @@ const RetireTokens = (props: RetireTokensProps) => {
         showModal={showSecondModal}
         setShowModal={setShowSecondModal}
       /> */}
-    </Box>
+        <MessageModal
+          message={
+            <Typography
+              sx={{ fontSize: 20, fontWeight: 500, color: Colors.darkPrimary1 }}
+            >
+              Tokens Retired Sucessfully!!!
+            </Typography>
+          }
+          btn1Text="Okay"
+          btn1OnClick={() => {
+            setShowModal(false)
+            navigate(pathNames?.TOKENS_RETIREMENT)
+          }}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      </Box>
+    </>
   )
 }
 
 export default RetireTokens
+
+interface CardRowProps {
+  title: string
+  value: any
+}
+const CardRow: FC<CardRowProps> = ({ title, value }) => {
+  return (
+    <Grid container sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
+      <Grid
+        item
+        xs={12}
+        md={4}
+        sx={{ color: Colors.lightPrimary1, fontWeight: 500 }}
+      >
+        {title}
+      </Grid>
+      <Grid item xs={12} md={8} sx={{ color: '#141D1B' }}>
+        {value}
+      </Grid>
+    </Grid>
+  )
+}

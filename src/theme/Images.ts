@@ -91,6 +91,7 @@ import help from '../assets/Images/Icons/help-circle.svg'
 import user from '../assets/Images/Icons/user.svg'
 import settings from '../assets/Images/Icons/settings.svg'
 import wallet from '../assets/Images/Icons/credit-card.svg'
+import RetireTokens from '../assets/Images/illustrations/retire-tokens.svg'
 
 export const Images = {
   logo,
@@ -182,5 +183,6 @@ export const Images = {
   bell,
   help,
   settings,
-  wallet
+  wallet,
+  RetireTokens,
 }
