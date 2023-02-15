@@ -47,11 +47,13 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
       key: 1,
       showFromStatus: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
       value: `Project Developer ${projectDeveloper} Submitted For verification`,
+      txType: TX_TYPE.CREATE_PROJECT,
     },
     {
       key: 2,
       showFromStatus: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
       value: `Verifier ${verifier} received verification request`,
+      txType: TX_TYPE.CREATE_PROJECT,
     },
     {
       key: 3,
@@ -86,12 +88,12 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
         PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
       value: `Project Developer ${projectDeveloper} get verification report`,
     },
-    {
-      key: 8,
-      showFromStatus:
-        PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
-      value: `Buyer buy VCOT By Project Developer`,
-    },
+    // {
+    //   key: 8,
+    //   showFromStatus:
+    //     PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
+    //   value: `Buyer buy VCOT By Project Developer`,
+    // },
   ]
   const { projectId, theme = 'light' } = props
   const [loading, setLoading] = useState(false)
@@ -275,7 +277,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         position: 'absolute',
                         height: '170%',
                         top: 0,
-                        left: '30%',
+                        left: '11%',
                         transform: 'translateX(-50%)',
                       }}
                     ></div>
