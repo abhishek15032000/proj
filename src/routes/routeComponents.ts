@@ -41,46 +41,85 @@ import { ROLES } from '../config/constants.config'
 // import Wallet from '../pages/Wallet'
 import { linkLabels, pathNames } from './pathNames'
 
-
-const BankDetails = loadable(()=>import ('../pages/BankDetails'))
-const BuyerOnboarding = loadable(()=>import ('../pages/BuyerOnboarding'))
-const CompleteProfile = loadable(()=>import ('../pages/CompleteProfile/CompleteProfile'))
-const HelpCentre = loadable(()=>import ('../pages/HelpCentre/HelpCentre'))
-const IssuanceDataCollection = loadable(()=>import ('../pages/IssuanceDataCollection'))
-const IssuanceDataCollectionHelp = loadable(()=>import ('../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'))
-const ProjectsPage = loadable(()=>import ('../pages/Issuer/ProjectsPage/ProjectsPage'))
-const SelectVerifier = loadable(()=>import ('../pages/Issuer/SelectVerifierPage/SelectVerifier'))
-const IssuerWallet = loadable(()=>import ('../pages/IssuerWallet'))
-const ListNewProject = loadable(()=>import ('../pages/ListNewProject'))
-const LogoutPage = loadable(()=>import ('../pages/LogoutPage'))
-const Marketplace = loadable(()=>import ('../pages/Marketplace/Marketplace'))
-const MarketplaceHome = loadable(()=>import ('../pages/MarketplaceHome'))
-const MarketplaceProjectDetails = loadable(()=>import ('../pages/MarketplaceProjectDetails'))
-const MonthlyReportUpdate = loadable(()=>import ('../pages/MonthlyReportUpdate'))
-const Onboarding = loadable(()=>import ('../pages/OnboardingOld'))
-const OrganisationalDetails = loadable(()=>import ('../pages/OrganisationalDetails'))
-const Profile = loadable(()=>import ('../pages/Profile'))
-const ProfileDetailsIssuanceInfo = loadable(()=>import ('../pages/ProfileDetailsIssuanceInfo'))
-const ProjectDetails = loadable(()=>import ('../pages/ProjectDetails'))
-const ProjectDetailsRegistryAcc = loadable(()=>import ('../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc'))
-const ProjectList = loadable(()=>import ('../pages/ProjectList'))
-const ProjectListsWithFilter = loadable(()=>import ('../pages/ProjectListsWithFilter/ProjectListsWithFilter'))
-const ProjectPage = loadable(()=>import ('../pages/ProjectPage'))
-const RegistryReviewReport = loadable(()=>import ('../pages/RegistryReviewReport/RegistryReviewReport'))
-const ReportsViewCommentsPage = loadable(()=>import ('../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'))
-const RetireTokens = loadable(()=>import ('../pages/RetireTokens'))
-const ReviewAndComment = loadable(()=>import ('../pages/ReviewAndComment/ReviewAndComment'))
-const RiskDashboard = loadable(()=>import ('../pages/RiskDashboard'))
-const TokenAndContractPage = loadable(()=>import ('../pages/TokenAndContractPage/TokenAndContractPage'))
-const TokenRetirementPage = loadable(()=>import ('../pages/TokenRetirementPage/TokenRetirementPage'))
-const TransactionHistory = loadable(()=>import ('../pages/TransactionHistory'))
-const VerifierDashboard = loadable(()=>import ('../pages/VerifierDashboard'))
-const VerifierProfileSetup = loadable(()=>import ('../pages/VerifierProfileSetup'))
-const VerifierProjectDetails = loadable(()=>import ('../pages/VerifierProjectDetails'))
-const VerifierProjects = loadable(()=>import ('../pages/VerifierProjects'))
-const VerifierProjectsList = loadable(()=>import ('../pages/VerifierProjectsList'))
-const VerifierVerifyReport = loadable(()=>import ('../pages/VerifierVerifyReport'))
-const Wallet = loadable(() => import('../pages/Wallet')) 
+const BankDetails = loadable(() => import('../pages/BankDetails'))
+const BuyerOnboarding = loadable(() => import('../pages/BuyerOnboarding'))
+const CompleteProfile = loadable(
+  () => import('../pages/CompleteProfile/CompleteProfile')
+)
+const HelpCentre = loadable(() => import('../pages/HelpCentre/HelpCentre'))
+const IssuanceDataCollection = loadable(
+  () => import('../pages/IssuanceDataCollection')
+)
+const IssuanceDataCollectionHelp = loadable(
+  () => import('../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp')
+)
+const ProjectsPage = loadable(
+  () => import('../pages/Issuer/ProjectsPage/ProjectsPage')
+)
+const SelectVerifier = loadable(
+  () => import('../pages/Issuer/SelectVerifierPage/SelectVerifier')
+)
+const IssuerWallet = loadable(() => import('../pages/IssuerWallet'))
+const ListNewProject = loadable(() => import('../pages/ListNewProject'))
+const LogoutPage = loadable(() => import('../pages/LogoutPage'))
+const Marketplace = loadable(() => import('../pages/Marketplace/Marketplace'))
+const MarketplaceHome = loadable(() => import('../pages/MarketplaceHome'))
+const MarketplaceProjectDetails = loadable(
+  () => import('../pages/MarketplaceProjectDetails')
+)
+const MonthlyReportUpdate = loadable(
+  () => import('../pages/MonthlyReportUpdate')
+)
+const Onboarding = loadable(() => import('../pages/OnboardingOld'))
+const OrganisationalDetails = loadable(
+  () => import('../pages/OrganisationalDetails')
+)
+const Profile = loadable(() => import('../pages/Profile'))
+const ProfileDetailsIssuanceInfo = loadable(
+  () => import('../pages/ProfileDetailsIssuanceInfo')
+)
+const ProjectDetails = loadable(() => import('../pages/ProjectDetails'))
+const ProjectDetailsRegistryAcc = loadable(
+  () => import('../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc')
+)
+const ProjectList = loadable(() => import('../pages/ProjectList'))
+const ProjectListsWithFilter = loadable(
+  () => import('../pages/ProjectListsWithFilter/ProjectListsWithFilter')
+)
+const ProjectPage = loadable(() => import('../pages/ProjectPage'))
+const RegistryReviewReport = loadable(
+  () => import('../pages/RegistryReviewReport/RegistryReviewReport')
+)
+const ReportsViewCommentsPage = loadable(
+  () => import('../pages/ReportsViewCommentsPage/ReportsViewCommentsPage')
+)
+const RetireTokens = loadable(() => import('../pages/RetireTokens'))
+const ReviewAndComment = loadable(
+  () => import('../pages/ReviewAndComment/ReviewAndComment')
+)
+const RiskDashboard = loadable(() => import('../pages/RiskDashboard'))
+const TokenAndContractPage = loadable(
+  () => import('../pages/TokenAndContractPage/TokenAndContractPage')
+)
+const TokenRetirementPage = loadable(
+  () => import('../pages/TokenRetirementPage/TokenRetirementPage')
+)
+const TransactionHistory = loadable(() => import('../pages/TransactionHistory'))
+const VerifierDashboard = loadable(() => import('../pages/VerifierDashboard'))
+const VerifierProfileSetup = loadable(
+  () => import('../pages/VerifierProfileSetup')
+)
+const VerifierProjectDetails = loadable(
+  () => import('../pages/VerifierProjectDetails')
+)
+const VerifierProjects = loadable(() => import('../pages/VerifierProjects'))
+const VerifierProjectsList = loadable(
+  () => import('../pages/VerifierProjectsList')
+)
+const VerifierVerifyReport = loadable(
+  () => import('../pages/VerifierVerifyReport')
+)
+const Wallet = loadable(() => import('../pages/Wallet'))
 
 export const privateRouteComponents = [
   {
@@ -319,6 +358,6 @@ export const privateRouteComponents = [
     path: pathNames.RISK_DASHBOARD,
     component: RiskDashboard,
 
-    roles: [ROLES.ISSUER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER],
   },
 ]
