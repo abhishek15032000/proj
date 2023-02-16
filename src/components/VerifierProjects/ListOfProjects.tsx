@@ -272,7 +272,9 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         borderRadius: '8px',
         mt: 4,
         p: 2,
-        minHeight:location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
+        minHeight: location.pathname.includes(pathNames.PROJECTS)
+          ? '80vh'
+          : '55vh',
       }}
     >
       <Box
@@ -285,17 +287,19 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         }}
       >
         <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
-        {/* {location.pathname.includes(pathNames.PROJECTS) ? null : <Typography
-          sx={{
-            fontSize: 14,
-            fontWeight: 400,
-            cursor: 'pointer',
-            color: 'darkPrimary1.main',
-          }}
-          onClick={() => navigate(pathNames.PROJECTS)}
-        >
-          See All
-        </Typography>} */}
+        {location.pathname.includes(pathNames.PROJECTS) ? null : (
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 400,
+              cursor: 'pointer',
+              color: 'darkPrimary1.main',
+            }}
+            onClick={() => navigate(pathNames.PROJECTS)}
+          >
+            See All
+          </Typography>
+        )}
       </Box>
 
       {newRequests === 0 && (
@@ -323,7 +327,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           <CCTable
             headings={tabIndex === 1 ? headingsNew : headingsRegistered}
             rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-            sx={{ minWidth: 100,}}
+            sx={{ minWidth: 100 }}
             maxWidth={'100%'}
             tableSx={{ minWidth: 100 }}
           />
