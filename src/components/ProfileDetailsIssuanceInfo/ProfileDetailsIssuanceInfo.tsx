@@ -54,6 +54,11 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   const [tabIndex, setTabIndex] = useState(0)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
   const [projectStatus, setProjectStatus] = useState<number>()
+
+  useEffect(() => {
+    if (!currentProjectDetails) navigate(pathNames.DASHBOARD)
+  }, [])
+
   useEffect(() => {
     if (location?.state?.status !== 0) {
       setTabIndex(1)
@@ -118,7 +123,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     }
   }, [currentProjectDetails])
 
-  console.log('currentProjectDetails', currentProjectDetails)
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
      <Grid
