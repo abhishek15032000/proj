@@ -87,6 +87,7 @@ const SliderComponent = (props: any) => {
         // background: '#111E17',
         //  padding: '2vw 6vw',
         pt: 8,
+        width: '100%'
       }}
     >
       <Typography
