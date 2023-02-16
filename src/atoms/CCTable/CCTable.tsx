@@ -19,16 +19,17 @@ const StyledTableCell = styled(TableCell)((props) => ({
     backgroundColor: '#DAF7F0',
     fontSize: 12,
     fontWeight: 500,
+    textTransform: 'uppercase',
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
-  '&:last-child td, &:last-child th': {
-    background: "blue",
+  '&:last-child': {
+    paddingRight: '24px',
   },
-  color:Colors.black,
-  border:"none",
-  padding:"20px 0 20px 24px"
+  color: Colors.black,
+  border: 'none',
+  padding: '20px 0 20px 24px',
 }))
 const TrimmedStyledTableCell = styled(TableCell)((props) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,14 +53,14 @@ const StyledTableRow = styled(TableRow)((props) => ({
   '&:last-child td, &:last-child th': {
     border: 0,
   },
-  '&:hover':{
-    boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.16)"
+  '&:hover': {
+    boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.16)',
   },
-  borderBottom:"0.4px solid #C4C7C5",
+  borderBottom: '0.4px solid #C4C7C5',
 }))
 
 const CCTable = (props: CCTableProps) => {
-  const { rows, rowsPerPageProp = 10 ,hideScrollbar=false} = props
+  const { rows, rowsPerPageProp = 10, hideScrollbar = false } = props
 
   const [rowsPerPage, setRowsPerPage] = useState<number>(rowsPerPageProp)
   const [page, setPage] = useState<number>(0)
@@ -105,120 +106,120 @@ const CCTable = (props: CCTableProps) => {
 
   return (
     <>
-     { rows?.length ? <TableContainer
-     className={`${hideScrollbar? "hide-scrollbar":""}`}
-        component={Paper}
-        sx={{
-          mt: 1,
-          // minWidth: 700,
-          maxWidth: props.maxWidth,
-          // width: '100%',
-          ...props.sx,
-        }}
-      >
-        <Table
+      {rows?.length ? (
+        <TableContainer
+          className={`${hideScrollbar ? 'hide-scrollbar' : ''}`}
+          component={Paper}
           sx={{
+            mt: 1,
             // minWidth: 700,
-            // width: '100%',
             maxWidth: props.maxWidth,
-            ...props.tableSx,
+            // width: '100%',
+            ...props.sx,
           }}
-          aria-label="customized table"
         >
-          <TableHead>
-            <TableRow data-testid={'cc-table-heading'}>
-              {props?.headings &&
-                props?.headings?.length > 0 &&
-                props?.headings?.map((heading:any, index:number) => (
-                  <StyledTableCell
-                    key={index}
-                  >
-                    {heading}
-                  </StyledTableCell>
-                ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tableRowData &&
-              tableRowData?.length > 0 &&
-              tableRowData.map((row: any, index: number) => (
-                <StyledTableRow key={index} data-testid={'cc-table-row'}>
-                  {row?.length > 0 &&
-                    row.map((tdValue: any, tdIndex: number) => {
-                      // return 
-                      // typeof tdValue === 'string' &&
-                      //   !tdValue.includes('/') ? (
-                      //   <TrimmedStyledTableCell key={tdIndex} align="center">
-                      //     {/* {
-                      //         // middleEllipsis(
-                      //           //   tdValue,
-                      //           //   tdValue.length > 21 ? 7 : 1,
-                      //           //   tdValue.length > 21 ? 7 : 1
-                      //           // )}
-                      //           tdValue
-                      //         } */}
-                      //     <Tooltip title={tdValue}>
-                      //       <Box
-                      //         sx={{
-                      //           whiteSpace: 'nowrap',
-                      //           overflow: 'hidden',
-                      //           textOverflow: 'ellipsis',
-                      //           maxWidth: '70px',
-                      //         }}
-                      //       >
-                      //         {tdValue}
-                      //       </Box>
-                      //     </Tooltip>
-                      //   </TrimmedStyledTableCell>
-                      // ) : (
-                        return <StyledTableCell key={tdIndex} align="left">
-                          {tdValue}
-                        </StyledTableCell>
-                      // )
-                    })}
-                </StyledTableRow>
-              ))}
-          </TableBody>
-        </Table>
-        {props?.pagination && props?.rows && (
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 20]}
-            labelRowsPerPage={
-              <Typography
-                sx={{ fontSize: 12, fontWeight: 500 }}
-              >
-                Rows per page:
-              </Typography>
-            }
-            component="div"
-            count={props?.rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+          <Table
             sx={{
-              '.MuiTablePagination-actions': {
-                //next icons
-                color: '#000000',
-              },
-              '.MuiTablePagination-selectIcon': {
-                //rows per page arrows
-                color: '#000000',
-                //<check />
-              },
-              '.MuiTablePagination-select': {
-                //color of numbers in rows per page
-                color: '#000',
-              },
-              '.MuiTablePagination-displayedRows': {
-                fontSize:12,
-                fontWeight:500,
-                color: '#000000',
-              },
+              // minWidth: 700,
+              // width: '100%',
+              maxWidth: props.maxWidth,
+              ...props.tableSx,
             }}
-          />
-        )}
-      </TableContainer> : <EmptyComponent elevation={0}/>}
+            aria-label="customized table"
+          >
+            <TableHead>
+              <TableRow data-testid={'cc-table-heading'}>
+                {props?.headings &&
+                  props?.headings?.length > 0 &&
+                  props?.headings?.map((heading: any, index: number) => (
+                    <StyledTableCell key={index}>{heading}</StyledTableCell>
+                  ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {tableRowData &&
+                tableRowData?.length > 0 &&
+                tableRowData.map((row: any, index: number) => (
+                  <StyledTableRow key={index} data-testid={'cc-table-row'}>
+                    {row?.length > 0 &&
+                      row.map((tdValue: any, tdIndex: number) => {
+                        // return
+                        // typeof tdValue === 'string' &&
+                        //   !tdValue.includes('/') ? (
+                        //   <TrimmedStyledTableCell key={tdIndex} align="center">
+                        //     {/* {
+                        //         // middleEllipsis(
+                        //           //   tdValue,
+                        //           //   tdValue.length > 21 ? 7 : 1,
+                        //           //   tdValue.length > 21 ? 7 : 1
+                        //           // )}
+                        //           tdValue
+                        //         } */}
+                        //     <Tooltip title={tdValue}>
+                        //       <Box
+                        //         sx={{
+                        //           whiteSpace: 'nowrap',
+                        //           overflow: 'hidden',
+                        //           textOverflow: 'ellipsis',
+                        //           maxWidth: '70px',
+                        //         }}
+                        //       >
+                        //         {tdValue}
+                        //       </Box>
+                        //     </Tooltip>
+                        //   </TrimmedStyledTableCell>
+                        // ) : (
+                        return (
+                          <StyledTableCell key={tdIndex} align="left">
+                            {tdValue}
+                          </StyledTableCell>
+                        )
+                        // )
+                      })}
+                  </StyledTableRow>
+                ))}
+            </TableBody>
+          </Table>
+          {props?.pagination && props?.rows && (
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 20]}
+              labelRowsPerPage={
+                <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+                  Rows per page:
+                </Typography>
+              }
+              component="div"
+              count={props?.rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{
+                '.MuiTablePagination-actions': {
+                  //next icons
+                  color: '#000000',
+                },
+                '.MuiTablePagination-selectIcon': {
+                  //rows per page arrows
+                  color: '#000000',
+                  //<check />
+                },
+                '.MuiTablePagination-select': {
+                  //color of numbers in rows per page
+                  color: '#000',
+                },
+                '.MuiTablePagination-displayedRows': {
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: '#000000',
+                },
+              }}
+            />
+          )}
+        </TableContainer>
+      ) : (
+        <EmptyComponent elevation={0} />
+      )}
     </>
   )
 }

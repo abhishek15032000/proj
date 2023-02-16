@@ -41,26 +41,26 @@ import { Images } from '../../theme'
 
 let index = 0
 const headingsNew = [
-  <LimitedText key={index++} text='Reference ID'/>,
-  <LimitedText key={index++} text='Creation Dt'/>,
-  <LimitedText key={index++} text='Project Name'/>,
-  <LimitedText key={index++} text='Location'/>,
-  <LimitedText key={index++} text='Verifier Status'/>,
-  <LimitedText key={index++} text='Verifier'/>,
-  <LimitedText key={index++} text='Action'/>,
-  <LimitedText key={index++} text=''/>,
+  <LimitedText key={index++} text="Reference ID" />,
+  <LimitedText key={index++} text="Creation Dt" />,
+  <LimitedText key={index++} text="Project Name" />,
+  <LimitedText key={index++} text="Location" />,
+  <LimitedText key={index++} text="Verifier Status" />,
+  <LimitedText key={index++} text="Verifier" />,
+  <LimitedText key={index++} text="Action" />,
+  <LimitedText key={index++} text="" />,
 ]
 
 const headingsRegistered = [
-  <LimitedText key={index++} text='Reference ID'/>,
-  <LimitedText key={index++} text='Creation Dt'/>,
-  <LimitedText key={index++} text='Project Name'/>,
-  <LimitedText key={index++} text='Location'/>,
-  <LimitedText key={index++} text='Verifier'/>,
-  <LimitedText key={index++} text='Report Status'/>,
-  <LimitedText key={index++} text='Next Report Submission Dt'/>,
-  <LimitedText key={index++} text='Action'/>,
-  <LimitedText key={index++} text=''/>,
+  <LimitedText key={index++} text="Reference ID" />,
+  <LimitedText key={index++} text="Creation Dt" />,
+  <LimitedText key={index++} text="Project Name" />,
+  <LimitedText key={index++} text="Location" />,
+  <LimitedText key={index++} text="Verifier" />,
+  <LimitedText key={index++} text="Report Status" />,
+  <LimitedText key={index++} text="Next Report Submission Dt" />,
+  <LimitedText key={index++} text="Action" />,
+  <LimitedText key={index++} text="" />,
 ]
 
 interface ListOfProjectsDashboardProps {
@@ -114,9 +114,12 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         newData.push([
           // <ShortenedIDComp key={index} referenceId={item.uuid} />,
           <LimitedText key={index} text={item.uuid} ellispsisAtStart />,
-          <LimitedText key={index} text={moment(item.createdAt).format('DD/MM/YYYY')}  />,
-          <LimitedText key={index} text={item.company_name}  />,
-          <LimitedText key={index} text={item.location}  />,
+          <LimitedText
+            key={index}
+            text={moment(item.createdAt).format('DD/MM/YYYY')}
+          />,
+          <LimitedText key={index} text={item.company_name} />,
+          <LimitedText key={index} text={item.location} />,
           item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
             <ApprovalChip variant="Yet to Select" key={index} />
           ) : item.project_status ===
@@ -164,11 +167,12 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ) : (
             '-'
           ),
-          <ChevronRightIcon
-            sx={{ cursor: 'pointer' }}
-            key="1"
-            onClick={() => openProjectDetails(item, 'Details')}
-          />,
+          <Box key="1">
+            <ChevronRightIcon
+              sx={{ cursor: 'pointer' }}
+              onClick={() => openProjectDetails(item, 'Details')}
+            />
+          </Box>,
         ])
       }
 
@@ -182,9 +186,12 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       ) {
         registeredData.push([
           <LimitedText key={index} text={item.uuid} ellispsisAtStart />,
-          <LimitedText key={index} text={moment(item.createdAt).format('DD/MM/YYYY')}  />,
-          <LimitedText key={index} text={item.company_name}  />,
-          <LimitedText key={index} text={item.location}  />,
+          <LimitedText
+            key={index}
+            text={moment(item.createdAt).format('DD/MM/YYYY')}
+          />,
+          <LimitedText key={index} text={item.company_name} />,
+          <LimitedText key={index} text={item.location} />,
           item.verifier_details_id ? (
             <Box
               key={index}
@@ -234,11 +241,19 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           //   '-'
           // ),
           '-',
-          <ChevronRightIcon
-            sx={{ cursor: 'pointer' }}
+          <Box
             key="1"
-            onClick={() => openProjectDetails(item, 'Details')}
-          />,
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <ChevronRightIcon
+              sx={{ cursor: 'pointer' }}
+              onClick={() => openProjectDetails(item, 'Details')}
+            />
+          </Box>,
         ])
       }
     })
@@ -278,7 +293,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           //   // tileHeight={'105px'}
           //   tableSx={{ minWidth: 100 }}
           // />
-            <CCTable
+          <CCTable
             headings={tabIndex === 1 ? headingsNew : headingsRegistered}
             rows={tabIndex === 1 ? rowsNew : rowsRegistered}
             sx={{ minWidth: 100 }}
@@ -286,7 +301,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             // tileHeight={'105px'}
             tableSx={{ minWidth: 100 }}
             hideScrollbar
-            />
+          />
         )}
 
       {!props.loading &&
