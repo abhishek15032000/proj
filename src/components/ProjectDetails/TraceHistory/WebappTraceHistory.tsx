@@ -130,18 +130,31 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
   useEffect(() => {
     if (traceAllData && traceTabList && traceTabList.length) {
       const tabData = traceTabList[traceOption]
-      const txTypeToSearch = tabData?.txType
-      if (txTypeToSearch || txTypeToSearch === 0) {
-        if (traceAllData?.tx && traceAllData?.tx.length) {
-          const txIDObj = traceAllData?.tx?.find(
-            (tx: any) => tx.type === txTypeToSearch
-          )
-          // dispatch(setTxIDForTab(txIDObj?.tx_id))
-          setTx(txIDObj?.tx_id)
+      if (traceOption === 6 || traceOption === 7) {
+        if (
+          traceAllData &&
+          traceAllData?.report &&
+          traceAllData?.report?.tx &&
+          traceAllData?.report?.tx?.length
+        ) {
+          setTx(traceAllData?.report?.tx[0]?.tx_id)
+        } else {
+          setTx('')
         }
       } else {
-        // dispatch(setTxIDForTab(''))
-        setTx('')
+        const txTypeToSearch = tabData?.txType
+        if (txTypeToSearch || txTypeToSearch === 0) {
+          if (traceAllData?.tx && traceAllData?.tx.length) {
+            const txIDObj = traceAllData?.tx?.find(
+              (tx: any) => tx.type === txTypeToSearch
+            )
+            // dispatch(setTxIDForTab(txIDObj?.tx_id))
+            setTx(txIDObj?.tx_id)
+          }
+        } else {
+          // dispatch(setTxIDForTab(''))
+          setTx('')
+        }
       }
     }
   }, [traceOption, traceAllData, traceTabList])
