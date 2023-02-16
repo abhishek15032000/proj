@@ -123,7 +123,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     }
   }, [currentProjectDetails])
 
-  console.log('currentProjectDetails', currentProjectDetails)
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
      <Grid

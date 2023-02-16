@@ -53,6 +53,7 @@ const RegsitryVerificationReport: FC<RegsitryVerificationReportProps> = (
         theme={theme}
       />
       <TitleValue
+        bolder
         title="Number of VCOT authorised :"
         value={projectDetails?.report?.updated_quantity || '-'}
         theme={theme}

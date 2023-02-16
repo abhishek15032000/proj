@@ -5,15 +5,21 @@ interface TitleValueProps {
   title: string
   value: string
   theme?: string
+  bolder?: boolean
 }
 
-const TitleValue: FC<TitleValueProps> = ({ title, value, theme = 'light' }) => {
+const TitleValue: FC<TitleValueProps> = ({
+  title,
+  value,
+  theme = 'light',
+  bolder = false,
+}) => {
   return (
     <Grid container sx={{ mt: 2 }}>
       <Grid item md={5}>
         <Typography
           sx={{
-            fontWeight: 500,
+            fontWeight: bolder ? 600 : 500,
             fontSize: 14,
             color: theme === 'light' ? '#2B2B2B' : '#CCE8E1',
           }}
@@ -24,7 +30,7 @@ const TitleValue: FC<TitleValueProps> = ({ title, value, theme = 'light' }) => {
       <Grid item md={7}>
         <Typography
           sx={{
-            fontWeight: 400,
+            fontWeight: bolder ? 600 : 400,
             fontSize: 14,
             color: theme === 'light' ? '#2B2B2B' : '#CCE8E1',
           }}
