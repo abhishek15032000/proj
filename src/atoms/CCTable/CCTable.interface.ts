@@ -9,4 +9,5 @@ export interface CCTableProps {
   data?: boolean
   rowsPerPageProp?: number
   hideScrollbar?: boolean
+  lastTwoColsSticky?: boolean
 }

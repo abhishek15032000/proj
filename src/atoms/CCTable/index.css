@@ -1,0 +1,15 @@
+.sticky-last-column {
+    position: sticky;
+    right: 0;
+    /* box-shadow: 5px 2px 5px red; */
+    background: white;
+}
+.sticky-second-last-column {
+    position: sticky;
+    right: 72px;
+    /* box-shadow: 5px 2px 5px red; */
+    background: white;
+}
+.sticky-last-column:hover,.sticky-second-last-column:hover{
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
+}

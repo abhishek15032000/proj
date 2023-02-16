@@ -13,6 +13,7 @@ import { Box } from '@mui/system'
 import { headings } from '../../components/IssuanceDataCollectionHelp/data'
 import EmptyComponent from '../EmptyComponent/EmptyComponent'
 import { Colors } from '../../theme'
+import './index.css'
 
 const StyledTableCell = styled(TableCell)((props) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -60,7 +61,12 @@ const StyledTableRow = styled(TableRow)((props) => ({
 }))
 
 const CCTable = (props: CCTableProps) => {
-  const { rows, rowsPerPageProp = 10, hideScrollbar = false } = props
+  const {
+    rows,
+    rowsPerPageProp = 10,
+    hideScrollbar = false,
+    lastTwoColsSticky = false,
+  } = props
 
   const [rowsPerPage, setRowsPerPage] = useState<number>(rowsPerPageProp)
   const [page, setPage] = useState<number>(0)
@@ -132,7 +138,20 @@ const CCTable = (props: CCTableProps) => {
                 {props?.headings &&
                   props?.headings?.length > 0 &&
                   props?.headings?.map((heading: any, index: number) => (
-                    <StyledTableCell key={index}>{heading}</StyledTableCell>
+                    <StyledTableCell
+                      key={index}
+                      className={`${
+                        lastTwoColsSticky &&
+                        index === props?.headings.length - 1
+                          ? 'sticky-last-column'
+                          : lastTwoColsSticky &&
+                            index === props?.headings.length - 2
+                          ? 'sticky-second-last-column'
+                          : ''
+                      }`}
+                    >
+                      {heading}
+                    </StyledTableCell>
                   ))}
               </TableRow>
             </TableHead>
@@ -170,7 +189,18 @@ const CCTable = (props: CCTableProps) => {
                         //   </TrimmedStyledTableCell>
                         // ) : (
                         return (
-                          <StyledTableCell key={tdIndex} align="left">
+                          <StyledTableCell
+                            key={tdIndex}
+                            align="left"
+                            className={`${
+                              lastTwoColsSticky && tdIndex === row.length - 1
+                                ? 'sticky-last-column'
+                                : lastTwoColsSticky &&
+                                  tdIndex === row.length - 2
+                                ? 'sticky-second-last-column'
+                                : ''
+                            }`}
+                          >
                             {tdValue}
                           </StyledTableCell>
                         )

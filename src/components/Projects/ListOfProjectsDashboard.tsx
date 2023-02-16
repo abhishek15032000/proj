@@ -113,28 +113,28 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       ) {
         newData.push([
           // <ShortenedIDComp key={index} referenceId={item.uuid} />,
-          <LimitedText key={index} text={item.uuid} ellispsisAtStart />,
+          <LimitedText key={index} text={item?.uuid} ellispsisAtStart />,
           <LimitedText
             key={index}
-            text={moment(item.createdAt).format('DD/MM/YYYY')}
+            text={moment(item?.createdAt).format('DD/MM/YYYY')}
           />,
-          <LimitedText key={index} text={item.company_name} />,
-          <LimitedText key={index} text={item.location} />,
-          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
+          <LimitedText key={index} text={item?.company_name} />,
+          <LimitedText key={index} text={item?.location} />,
+          item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
             <ApprovalChip variant="Yet to Select" key={index} />
-          ) : item.project_status ===
+          ) : item?.project_status ===
             PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <ApprovalChip variant="Selected" key={index} />
-          ) : item.project_status ===
+          ) : item?.project_status ===
             PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
             <ApprovalChip variant="Selected" key={index} />
           ) : (
-            item.project_status ===
+            item?.project_status ===
               PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
               <ApprovalChip variant="Finalised" key={index} />
             )
           ),
-          item.verifier_details_id ? (
+          item?.verifier_details_id ? (
             <Box
               key={'1'}
               sx={{
@@ -301,6 +301,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             // tileHeight={'105px'}
             tableSx={{ minWidth: 100 }}
             hideScrollbar
+            lastTwoColsSticky
           />
         )}
 
