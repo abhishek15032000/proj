@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import { Typography } from '@mui/material'
 import AccountCreatedImage from '../../assets/Images/AccountCreatedImage.png'
-import { Images } from '../../theme'
+import { Colors, Images } from '../../theme'
 import CCButton from '../../atoms/CCButton'
 import { useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
@@ -36,6 +36,7 @@ const StepTwoTwoFa = (props: TwoFaProps) => {
             sx={{
               fontWeight: 500,
               fontSize: 40,
+              color: '#325743',
             }}
           >
             Congratulations
@@ -44,6 +45,7 @@ const StepTwoTwoFa = (props: TwoFaProps) => {
             sx={{
               fontWeight: 400,
               fontSize: 16,
+              color: '#325743',
             }}
           >
             Your account has been successfully created

@@ -8,6 +8,7 @@ import BlockchainCalls from '../../../blockchain/Blockchain'
 import { verifierCalls } from '../../../api/verifierCalls.api'
 import moment from 'moment'
 import LoderOverlay from '../../LoderOverlay'
+import { getLocalItem } from '../../../utils/Storage'
 
 const headings = ['DATE', 'REPORT NAME', 'REPORT ISSUER', '']
 
@@ -19,7 +20,7 @@ const ReportTd: React.FC<ReportTdProps> = ({ name }) => {
     <Box
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      <DescriptionOutlinedIcon sx={{color:"iconColor.main"}} />
+      <DescriptionOutlinedIcon sx={{ color: 'iconColor.main' }} />
       {name}
     </Box>
   )
@@ -33,7 +34,7 @@ const ReportIssuerTd: React.FC<ReportIssuerTdProps> = ({ name }) => {
     <Box
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      <PersonOutlineOutlinedIcon sx={{color:"iconColor.main"}}/>
+      <PersonOutlineOutlinedIcon sx={{ color: 'iconColor.main' }} />
       {name}
     </Box>
   )
@@ -47,69 +48,129 @@ const Reports = () => {
     getAllReport()
   }, [])
 
+  // const getAllReport = async () => {
+  //   setLoading(true)
+
+  //   const userAddress =
+  //     await BlockchainCalls.getConnectionStatusAndAddress().then((response) => {
+
+  //       verifierCalls
+  //         .getAllReportVerifiers(response && response.address)
+  //         .then((res: any) => {
+
+  //           if (res?.data?.success) {
+  //             const rows =
+  //               res?.data?.data &&
+  //               res?.data?.data.map((i: any, index: number) => {
+  //                 return [
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {moment(i?.createdAt).format(`DD/MM/YY`)}
+  //                   </Typography>,
+  //                   <ReportTd
+  //                     key="Verification Report 1"
+  //                     name={i?.file_attach[0]?.replace('.png', '')}
+  //                   />,
+  //                   <ReportIssuerTd
+  //                     key="Issuer Name 1"
+  //                     name={i?.issuer_details?.name}
+  //                   />,
+  //                   <Box
+  //                     key={1}
+  //                     sx={{
+  //                       background: 'bgColor.secondary',
+  //                       py: 1,
+  //                       color: 'iconColor.main',
+  //                       borderRadius: '32px',
+  //                       cursor: 'pointer',
+  //                     }}
+  //                   >
+  //                     View Report
+  //                   </Box>,
+  //                 ]
+  //               })
+
+  //             setAllReport(rows)
+  //             setLoading(false)
+  //             // if (res?.data?.main_project) {
+  //             //   setMonthlyReportsList(rows)
+  //             // }
+  //           }
+  //         })
+  //         .catch((err) => console.log(err))
+  //         .finally(() => {
+  //           setLoading(false)
+  //         })
+  //     })
+  // }
+
   const getAllReport = async () => {
     setLoading(true)
-    const userAddress =
-      await BlockchainCalls.getConnectionStatusAndAddress().then((response) => {
-        verifierCalls
-          .getAllReportVerifiers(response?.address)
-          .then((res: any) => {
-            console.log('res', res)
-            if (res?.data?.success) {
-              const rows =
-                res?.data?.data &&
-                res?.data?.data.map((i: any, index: number) => {
-                  return [
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {moment(i?.createdAt).format(`DD/MM/YY`)}
-                    </Typography>,
-                    <ReportTd
-                      key="Verification Report 1"
-                      name={i?.file_attach[0]?.replace('.png', '')}
-                    />,
-                    <ReportIssuerTd
-                      key="Issuer Name 1"
-                      name={i?.issuer_details?.name}
-                    />,
-                    <Box
-                      key={1}
-                      sx={{
-                        background: 'bgColor.secondary',
-                        py: 1,
-                        color: 'iconColor.main',
-                        borderRadius: '32px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      View Report
-                    </Box>,
-                  ]
-                })
 
-              setAllReport(rows)
-              // if (res?.data?.main_project) {
-              //   setMonthlyReportsList(rows)
-              // }
-            }
-          })
-          .catch((err) => console.log(err))
-          .finally(() => {
-            setLoading(false)
-          })
+    verifierCalls
+      .getAllReportVerifiers(getLocalItem('userDetails')?.user_id)
+      .then((res: any) => {
+        if (res?.data?.success) {
+          const rows =
+            res?.data?.data &&
+            res?.data?.data.map((i: any, index: number) => {
+              return [
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {moment(i?.createdAt).format(`DD/MM/YY`)}
+                </Typography>,
+                <ReportTd
+                  key="Verification Report 1"
+                  name={i?.file_attach[0]?.replace('.png', '')}
+                />,
+                <ReportIssuerTd
+                  key="Issuer Name 1"
+                  name={i?.issuer_details?.name}
+                />,
+                <Box
+                  key={1}
+                  sx={{
+                    background: 'bgColor.secondary',
+                    py: 1,
+                    color: 'iconColor.main',
+                    borderRadius: '32px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  View Report
+                </Box>,
+              ]
+            })
+
+          setAllReport(rows)
+          setLoading(false)
+          // if (res?.data?.main_project) {
+          //   setMonthlyReportsList(rows)
+          // }
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false)
       })
   }
-
-  // if (loading) {
-  //   return <LoderOverlay />
-  // } else {
+  if (loading) {
+    return <LoderOverlay />
+  } else {
     return (
       <Box
         sx={{
@@ -117,13 +178,13 @@ const Reports = () => {
           // padding: '2vw 6vw',
           // color: '#fff',
           width: '100%',
-          pt:5
+          pt: 5,
         }}
       >
         {/* <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
           Reports
         </Typography> */}
-        <Box sx={{  }}>
+        <Box sx={{}}>
           <CWTable
             headings={headings}
             rows={allReport}
@@ -133,7 +194,7 @@ const Reports = () => {
         </Box>
       </Box>
     )
-  // }
+  }
 }
 
 export default Reports
