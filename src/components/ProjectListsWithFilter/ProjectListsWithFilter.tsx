@@ -265,7 +265,7 @@ const ProjectListsWithFilter = () => {
         </>
       )
     },
-    [projects],
+    [projects, loading],
   )
   
   return onWebApp ? (
