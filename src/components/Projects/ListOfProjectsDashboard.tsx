@@ -29,7 +29,7 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 import { pathNames } from '../../routes/pathNames'
 import {
-  setSectionIndex,
+  setSectionIndex as setMonthlyReportSectionIndex,
   setSubSectionIndex,
   setMainProjectDetails,
 } from '../../redux/Slices/MonthlyReportUpdate'
@@ -38,6 +38,7 @@ import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import CCTable from '../../atoms/CCTable'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { Images } from '../../theme'
+import { setSectionIndex  } from '../../redux/Slices/issuanceDataCollection'
 
 let index = 0
 const headingsNew = [
@@ -90,7 +91,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           },
         })
       } else if (redirect === 'Monthly') {
-        dispatch(setSectionIndex(0))
+        dispatch(setMonthlyReportSectionIndex(0))
         dispatch(setSubSectionIndex(0))
         dispatch(setMainProjectDetails(projectDetails))
         navigate(pathNames.MONTHLY_REPORT_UPDATE)
@@ -161,8 +162,8 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               <CreateIcon
                 sx={{ cursor: 'pointer' }}
                 key="1"
-                onClick={() => openProjectDetails(item, 'Details')}
-              />
+                onClick={()=>moveToSection(item)}
+                />
             )
           ) : (
             '-'
@@ -259,17 +260,31 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
     })
 
     if (newData.length !== 0) {
-      setRowsNew(newData.slice(0, 6))
+      // setRowsNew(newData.slice(0, 6))
+      setRowsNew(newData)
     } else {
       setRowsNew([{}])
     }
 
     if (registeredData.length !== 0) {
-      setRowsRegistered(registeredData.slice(0, 6))
+      // setRowsRegistered(registeredData.slice(0, 6))
+      setRowsRegistered(registeredData)
     } else {
       setRowsRegistered([{}])
     }
   }, [props])
+
+  const moveToSection = (projectDetails:any) => {
+    if (projectDetails) {
+      const percentageAddedData = addSectionPercentages(projectDetails)
+      dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
+      dispatch(setCurrentProjectDetails(percentageAddedData))
+
+    //Redirect to Section A (To continue editing/filling data )
+    dispatch(setSectionIndex(1))
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+    }
+  }
 
   return (
     <>
@@ -280,7 +295,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         sx={{ marginBottom: 2 }}
       />
 
-      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
+      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} items={5} />}
 
       {!props.loading &&
         ((tabIndex === 2 && Object.keys(rowsRegistered[0]).length > 0) ||
@@ -301,7 +316,10 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             // tileHeight={'105px'}
             tableSx={{ minWidth: 100 }}
             hideScrollbar
-            lastTwoColsSticky
+            pagination
+            rowsPerPageProp={5}
+            stickyLastCol
+            stickySecondLastCol
           />
         )}
 

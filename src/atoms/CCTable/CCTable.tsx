@@ -32,19 +32,19 @@ const StyledTableCell = styled(TableCell)((props) => ({
   border: 'none',
   padding: '20px 0 20px 24px',
 }))
-const TrimmedStyledTableCell = styled(TableCell)((props) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#DAF7F0',
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    // whiteSpace: 'nowrap',
-    // overflow: 'hidden',
-    // textOverflow: 'ellipsis',
-    // maxWidth: '70px',
-    // textAlign: 'left',
-  },
-}))
+// const TrimmedStyledTableCell = styled(TableCell)((props) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: '#DAF7F0',
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//     // whiteSpace: 'nowrap',
+//     // overflow: 'hidden',
+//     // textOverflow: 'ellipsis',
+//     // maxWidth: '70px',
+//     // textAlign: 'left',
+//   },
+// }))
 
 const StyledTableRow = styled(TableRow)((props) => ({
   // '&:nth-of-type(odd)': {
@@ -65,7 +65,9 @@ const CCTable = (props: CCTableProps) => {
     rows,
     rowsPerPageProp = 10,
     hideScrollbar = false,
-    lastTwoColsSticky = false,
+    stickyLastCol = false,
+    stickySecondLastCol = false,
+
   } = props
 
   const [rowsPerPage, setRowsPerPage] = useState<number>(rowsPerPageProp)
@@ -140,11 +142,12 @@ const CCTable = (props: CCTableProps) => {
                   props?.headings?.map((heading: any, index: number) => (
                     <StyledTableCell
                       key={index}
+                      id="column"
                       className={`${
-                        lastTwoColsSticky &&
+                        stickyLastCol &&
                         index === props?.headings.length - 1
                           ? 'sticky-last-column'
-                          : lastTwoColsSticky &&
+                          : stickySecondLastCol &&
                             index === props?.headings.length - 2
                           ? 'sticky-second-last-column'
                           : ''
@@ -193,9 +196,9 @@ const CCTable = (props: CCTableProps) => {
                             key={tdIndex}
                             align="left"
                             className={`${
-                              lastTwoColsSticky && tdIndex === row.length - 1
+                              stickyLastCol && tdIndex === row.length - 1
                                 ? 'sticky-last-column'
-                                : lastTwoColsSticky &&
+                                : stickySecondLastCol &&
                                   tdIndex === row.length - 2
                                 ? 'sticky-second-last-column'
                                 : ''

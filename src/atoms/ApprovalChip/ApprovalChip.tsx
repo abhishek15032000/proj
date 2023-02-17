@@ -102,10 +102,10 @@ const ApprovalChipTemplate: FC<ApprovalChipTemplateProps> = (props) => {
     <Chip
       sx={{
         backgroundColor: props.backgroundColor,
-        m: 1,
         color: props.textColor,
         fontWeight: 400,
         fontSize: 14,
+        width:"120px"
       }}
       icon={<CircleIcon 
         style={{ color: props.tintColor, height:"8px",width:"8px"  }} 
