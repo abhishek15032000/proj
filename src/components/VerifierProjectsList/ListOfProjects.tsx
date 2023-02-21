@@ -176,8 +176,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             <ChevronRightIcon
               key={index}
               onClick={() => {
-                navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                  state: { project_uuid: item.project_id.uuid },
+                // navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+                //   state: { project_uuid: item.project_id.uuid },
+                // })
+                navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                  state: {
+                    project_uuid: item?.project_id.uuid,
+                    projectDetails: item?.project_id,
+                  },
                 })
               }}
             />
@@ -210,19 +216,19 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 ml: 1,
               }}
             >
-              {item.project_id.company_name}
+              {item?.project_id?.company_name}
             </Typography>
           </Box>,
-          item.verifier_name,
-          item.verifier_address,
-          moment(item.createdAt).format('DD/MM/YYYY'),
-          item.project_status ===
+          item?.verifier_name,
+          item?.verifier_address,
+          moment(item?.createdAt).format('DD/MM/YYYY'),
+          item?.project_status ===
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <ApprovalChip key={index} variant={'Pending'} />
           ) : (
             <ApprovalChip key={index} variant={'Verified'} />
           ),
-          item.project_status ===
+          item?.project_status ===
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <TextButton
               key={index}
@@ -244,8 +250,14 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             sx={{ cursor: 'pointer' }}
             key={index}
             onClick={() =>
-              navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-                state: { project_uuid: item.project_id.uuid },
+              // navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
+              //   state: { project_uuid: item.project_id.uuid },
+              // })
+              navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                state: {
+                  project_uuid: item?.project_id.uuid,
+                  projectDetails: item?.project_id,
+                },
               })
             }
           />,
