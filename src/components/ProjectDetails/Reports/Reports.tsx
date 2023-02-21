@@ -9,6 +9,8 @@ import { verifierCalls } from '../../../api/verifierCalls.api'
 import moment from 'moment'
 import LoderOverlay from '../../LoderOverlay'
 import { getLocalItem } from '../../../utils/Storage'
+import CCTable from '../../../atoms/CCTable'
+import { downloadFile } from '../../../utils/commonFunctions'
 
 const headings = ['DATE', 'REPORT NAME', 'REPORT ISSUER', '']
 
@@ -40,7 +42,8 @@ const ReportIssuerTd: React.FC<ReportIssuerTdProps> = ({ name }) => {
   )
 }
 
-const Reports = () => {
+const Reports = (props: any) => {
+  console.log('props', props)
   const [loading, setLoading] = useState(false)
   const [allReport, setAllReport] = useState<any>([])
 
@@ -115,12 +118,13 @@ const Reports = () => {
     setLoading(true)
 
     verifierCalls
-      .getAllReportVerifiers(getLocalItem('userDetails')?.user_id)
+      .getAllReportVerifiers(props?.projectUUID)
       .then((res: any) => {
         if (res?.data?.success) {
+          const reports = res?.data?.data
           const rows =
-            res?.data?.data &&
-            res?.data?.data.map((i: any, index: number) => {
+            reports &&
+            reports.map((i: any, index: number) => {
               return [
                 <Typography
                   key={index}
@@ -150,13 +154,53 @@ const Reports = () => {
                     borderRadius: '32px',
                     cursor: 'pointer',
                   }}
+                  onClick={() => downloadFile(i?.file_attach[0])}
                 >
-                  View Report
+                  Download Report
                 </Box>,
               ]
             })
 
-          setAllReport(rows)
+          const regsitrationReportRow = [
+            [
+              <Typography
+                key={1}
+                textAlign="start"
+                sx={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textAlign: 'center',
+                }}
+              >
+                {moment(reports[0]?.createdAt).format(`DD/MM/YY`)}
+              </Typography>,
+              <ReportTd
+                key="Verification Report 1"
+                name={'Registration Report'}
+              />,
+              <ReportIssuerTd
+                key="Issuer Name 1"
+                name={reports[0].issuer_details?.name}
+              />,
+              <Box
+                key={1}
+                sx={{
+                  background: 'bgColor.secondary',
+                  py: 1,
+                  color: 'iconColor.main',
+                  borderRadius: '32px',
+                  cursor: 'pointer',
+                }}
+                onClick={() => downloadFile(props?.project_pdf)}
+              >
+                Download Report
+              </Box>,
+            ],
+          ]
+
+          const newRows = [...regsitrationReportRow, ...rows]
+
+          setAllReport(newRows)
           setLoading(false)
           // if (res?.data?.main_project) {
           //   setMonthlyReportsList(rows)
@@ -185,11 +229,13 @@ const Reports = () => {
           Reports
         </Typography> */}
         <Box sx={{}}>
-          <CWTable
+          {/* <CWTable */}
+          <CCTable
             headings={headings}
             rows={allReport}
             pagination={allReport.length > 3}
             loading={loading}
+            rowsPerPageProp={3}
           />
         </Box>
       </Box>
