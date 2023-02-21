@@ -32,4 +32,13 @@ export const buyerCalls = {
       }
     )
   },
+  getPurchasedProjectToRetire: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.buyers.getPurchasedProjectToRetire,
+      'POST',
+      payload
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }

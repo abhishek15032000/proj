@@ -41,6 +41,7 @@ const ApproveReport: FC<ApproveReportProps> = (props) => {
         theme={theme}
       />
       <TitleValue
+        bolder
         title="Number of VCOT authorised :"
         value={projectDetails?.report?.quantity || '-'}
         theme={theme}

@@ -6,6 +6,7 @@ import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
 import { TOKEN_TYPES } from '../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useMarket } from '../../hooks/useMarket'
 import {
   setOpenWithdrawModal,
   setWithdrawAmount,
@@ -13,10 +14,11 @@ import {
   setWithdrawTokenType,
 } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors } from '../../theme'
-import { withdraw } from '../../utils/newMarketplace.utils'
 
 const WithdrawModal = () => {
   const dispatch = useDispatch()
+
+  const { withdraw } = useMarket()
 
   const openWithdrawModal = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.openWithdrawModal,
