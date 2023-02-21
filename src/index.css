@@ -39,3 +39,9 @@ code {
 	display: none;
 }
 
+.td-as-link{
+  color: #0068C6;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}

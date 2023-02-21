@@ -51,9 +51,9 @@ const StyledTableRow = styled(TableRow)((props) => ({
   //   backgroundColor: '#E1EEE8',
   // },
   // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
+  // '&:last-child td, &:last-child th': {
+  //   border: 0,
+  // },
   '&:hover': {
     boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.16)',
   },
@@ -67,7 +67,6 @@ const CCTable = (props: CCTableProps) => {
     hideScrollbar = false,
     stickyLastCol = false,
     stickySecondLastCol = false,
-
   } = props
 
   const [rowsPerPage, setRowsPerPage] = useState<number>(rowsPerPageProp)
@@ -115,104 +114,106 @@ const CCTable = (props: CCTableProps) => {
   return (
     <>
       {rows?.length ? (
-        <TableContainer
-          className={`${hideScrollbar ? 'hide-scrollbar' : ''}`}
-          component={Paper}
-          sx={{
-            mt: 1,
-            // minWidth: 700,
-            maxWidth: props.maxWidth,
-            // width: '100%',
-            ...props.sx,
-          }}
-        >
-          <Table
+        <Paper>
+          <TableContainer
+            className={`${hideScrollbar ? 'hide-scrollbar' : ''}`}
+            // component={Paper}
             sx={{
+              mt: 1,
               // minWidth: 700,
-              // width: '100%',
               maxWidth: props.maxWidth,
-              ...props.tableSx,
+              // width: '100%',
+              borderBottom: '0.4px solid #C4C7C5',
+              ...props.sx,
             }}
-            aria-label="customized table"
           >
-            <TableHead>
-              <TableRow data-testid={'cc-table-heading'}>
-                {props?.headings &&
-                  props?.headings?.length > 0 &&
-                  props?.headings?.map((heading: any, index: number) => (
-                    <StyledTableCell
-                      key={index}
-                      id="column"
-                      className={`${
-                        stickyLastCol &&
-                        index === props?.headings.length - 1
-                          ? 'sticky-last-column'
-                          : stickySecondLastCol &&
-                            index === props?.headings.length - 2
-                          ? 'sticky-second-last-column'
-                          : ''
-                      }`}
-                    >
-                      {heading}
-                    </StyledTableCell>
+            <Table
+              sx={{
+                // minWidth: 700,
+                // width: '100%',
+                maxWidth: props.maxWidth,
+                ...props.tableSx,
+              }}
+              aria-label="customized table"
+            >
+              <TableHead>
+                <TableRow data-testid={'cc-table-heading'}>
+                  {props?.headings &&
+                    props?.headings?.length > 0 &&
+                    props?.headings?.map((heading: any, index: number) => (
+                      <StyledTableCell
+                        key={index}
+                        id="column"
+                        className={`${
+                          stickyLastCol && index === props?.headings.length - 1
+                            ? 'sticky-last-column'
+                            : stickySecondLastCol &&
+                              index === props?.headings.length - 2
+                            ? 'sticky-second-last-column'
+                            : ''
+                        }`}
+                      >
+                        {heading}
+                      </StyledTableCell>
+                    ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {tableRowData &&
+                  tableRowData?.length > 0 &&
+                  tableRowData.map((row: any, index: number) => (
+                    <StyledTableRow key={index} data-testid={'cc-table-row'}>
+                      {row?.length > 0 &&
+                        row.map((tdValue: any, tdIndex: number) => {
+                          // return
+                          // typeof tdValue === 'string' &&
+                          //   !tdValue.includes('/') ? (
+                          //   <TrimmedStyledTableCell key={tdIndex} align="center">
+                          //     {/* {
+                          //         // middleEllipsis(
+                          //           //   tdValue,
+                          //           //   tdValue.length > 21 ? 7 : 1,
+                          //           //   tdValue.length > 21 ? 7 : 1
+                          //           // )}
+                          //           tdValue
+                          //         } */}
+                          //     <Tooltip title={tdValue}>
+                          //       <Box
+                          //         sx={{
+                          //           whiteSpace: 'nowrap',
+                          //           overflow: 'hidden',
+                          //           textOverflow: 'ellipsis',
+                          //           maxWidth: '70px',
+                          //         }}
+                          //       >
+                          //         {tdValue}
+                          //       </Box>
+                          //     </Tooltip>
+                          //   </TrimmedStyledTableCell>
+                          // ) : (
+                          return (
+                            <StyledTableCell
+                              key={tdIndex}
+                              align="left"
+                              className={`${
+                                stickyLastCol && tdIndex === row.length - 1
+                                  ? 'sticky-last-column'
+                                  : stickySecondLastCol &&
+                                    tdIndex === row.length - 2
+                                  ? 'sticky-second-last-column'
+                                  : ''
+                              }`}
+                            >
+                              {tdValue}
+                            </StyledTableCell>
+                          )
+                          // )
+                        })}
+                    </StyledTableRow>
                   ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableRowData &&
-                tableRowData?.length > 0 &&
-                tableRowData.map((row: any, index: number) => (
-                  <StyledTableRow key={index} data-testid={'cc-table-row'}>
-                    {row?.length > 0 &&
-                      row.map((tdValue: any, tdIndex: number) => {
-                        // return
-                        // typeof tdValue === 'string' &&
-                        //   !tdValue.includes('/') ? (
-                        //   <TrimmedStyledTableCell key={tdIndex} align="center">
-                        //     {/* {
-                        //         // middleEllipsis(
-                        //           //   tdValue,
-                        //           //   tdValue.length > 21 ? 7 : 1,
-                        //           //   tdValue.length > 21 ? 7 : 1
-                        //           // )}
-                        //           tdValue
-                        //         } */}
-                        //     <Tooltip title={tdValue}>
-                        //       <Box
-                        //         sx={{
-                        //           whiteSpace: 'nowrap',
-                        //           overflow: 'hidden',
-                        //           textOverflow: 'ellipsis',
-                        //           maxWidth: '70px',
-                        //         }}
-                        //       >
-                        //         {tdValue}
-                        //       </Box>
-                        //     </Tooltip>
-                        //   </TrimmedStyledTableCell>
-                        // ) : (
-                        return (
-                          <StyledTableCell
-                            key={tdIndex}
-                            align="left"
-                            className={`${
-                              stickyLastCol && tdIndex === row.length - 1
-                                ? 'sticky-last-column'
-                                : stickySecondLastCol &&
-                                  tdIndex === row.length - 2
-                                ? 'sticky-second-last-column'
-                                : ''
-                            }`}
-                          >
-                            {tdValue}
-                          </StyledTableCell>
-                        )
-                        // )
-                      })}
-                  </StyledTableRow>
-                ))}
-            </TableBody>
-          </Table>
+              </TableBody>
+            </Table>
+          </TableContainer>
           {props?.pagination && props?.rows && (
             <TablePagination
               rowsPerPageOptions={[5, 10, 20]}
@@ -249,7 +250,7 @@ const CCTable = (props: CCTableProps) => {
               }}
             />
           )}
-        </TableContainer>
+        </Paper>
       ) : (
         <EmptyComponent elevation={0} />
       )}

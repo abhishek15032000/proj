@@ -38,7 +38,7 @@ import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import CCTable from '../../atoms/CCTable'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { Images } from '../../theme'
-import { setSectionIndex  } from '../../redux/Slices/issuanceDataCollection'
+import { setSectionIndex } from '../../redux/Slices/issuanceDataCollection'
 
 let index = 0
 const headingsNew = [
@@ -59,7 +59,11 @@ const headingsRegistered = [
   <LimitedText key={index++} text="Location" />,
   <LimitedText key={index++} text="Verifier" />,
   <LimitedText key={index++} text="Report Status" />,
-  <LimitedText key={index++} text="Next Report Submission Dt" />,
+  <LimitedText
+    key={index++}
+    text="Next Date"
+    tooltipText="Next Report Submission Dt"
+  />,
   <LimitedText key={index++} text="Action" />,
   <LimitedText key={index++} text="" />,
 ]
@@ -114,12 +118,29 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       ) {
         newData.push([
           // <ShortenedIDComp key={index} referenceId={item.uuid} />,
-          <LimitedText key={index} text={item?.uuid} ellispsisAtStart />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText
+              key={index}
+              text={item?.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
           <LimitedText
             key={index}
             text={moment(item?.createdAt).format('DD/MM/YYYY')}
           />,
-          <LimitedText key={index} text={item?.company_name} />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText text={item?.company_name} widthLimit="200px" />
+          </Box>,
           <LimitedText key={index} text={item?.location} />,
           item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
             <ApprovalChip variant="Yet to Select" key={index} />
@@ -162,8 +183,8 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               <CreateIcon
                 sx={{ cursor: 'pointer' }}
                 key="1"
-                onClick={()=>moveToSection(item)}
-                />
+                onClick={() => moveToSection(item)}
+              />
             )
           ) : (
             '-'
@@ -186,12 +207,30 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
         ].includes(item.project_status)
       ) {
         registeredData.push([
-          <LimitedText key={index} text={item.uuid} ellispsisAtStart />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            {' '}
+            <LimitedText
+              key={index}
+              text={item.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
           <LimitedText
             key={index}
             text={moment(item.createdAt).format('DD/MM/YYYY')}
           />,
-          <LimitedText key={index} text={item.company_name} />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText key={index} text={item.company_name} />
+          </Box>,
           <LimitedText key={index} text={item.location} />,
           item.verifier_details_id ? (
             <Box
@@ -203,7 +242,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
                 columnGap: '5px',
               }}
             >
-              <Box
+              {/* <Box
                 sx={{
                   bgcolor: '#F0FFFB',
                   width: 40,
@@ -215,8 +254,8 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
                 }}
               >
                 <img height={24} width={24} src={Images.BriefcaseIcon} />
-              </Box>
-              <LimitedText text={item?.name} />
+              </Box> */}
+              <LimitedText text={item?.verifier_details_id?.verifier_name} />
             </Box>
           ) : (
             '-'
@@ -230,7 +269,10 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             }
             key={'1'}
           />,
-          moment(item.report?.next_date).format('DD/MM/YYYY'),
+          <LimitedText
+            key={index}
+            text={moment(item.report?.next_date).format('DD/MM/YYYY')}
+          />,
           // item.project_status ===
           // PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
           //   <TextButton
@@ -274,15 +316,15 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
     }
   }, [props])
 
-  const moveToSection = (projectDetails:any) => {
+  const moveToSection = (projectDetails: any) => {
     if (projectDetails) {
       const percentageAddedData = addSectionPercentages(projectDetails)
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(percentageAddedData))
 
-    //Redirect to Section A (To continue editing/filling data )
-    dispatch(setSectionIndex(1))
-    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+      //Redirect to Section A (To continue editing/filling data )
+      dispatch(setSectionIndex(1))
+      navigate(pathNames.ISSUANCE_DATA_COLLECTION)
     }
   }
 
