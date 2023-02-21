@@ -34,7 +34,7 @@ import registry from './registrySlice'
 import comments from './commentsSlice'
 import traceability from './traceabilitySlice'
 import newMarketplaceReducer from './newMarketplaceSlice'
-
+import marketPlaceFiltersDrawer from './marketPlaceFiltersDrawerSlice'
 // TODO: rename names
 export default {
   app,
@@ -70,4 +70,5 @@ export default {
   comments,
   traceability,
   newMarketplaceReducer,
+  marketPlaceFiltersDrawer,
 }
