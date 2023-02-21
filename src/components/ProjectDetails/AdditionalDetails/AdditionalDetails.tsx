@@ -3,7 +3,8 @@ import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 // const tags = [
 //   'Project type tag 1',
 //   'Impacted SDG 1',
@@ -26,7 +27,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   )
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
-
+  const [seeMore, setSeeMore] = useState(false)
   useEffect(() => {
     getAllDetails()
   }, [])
@@ -100,7 +101,14 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       }}
     >
       <Typography
-        sx={{ fontSize: 32, fontWeight: '600', color: 'headingColor.main' }}
+        sx={{
+          fontSize: 32,
+          fontWeight: '600',
+          color: 'headingColor.main',
+          lineHeight: '48px',
+
+          fontStyle: 'normal',
+        }}
       >
         Additional Details
       </Typography>
@@ -114,6 +122,9 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
                 color: 'textColor5.main',
                 fontWeight: '600',
                 textTransform: 'uppercase',
+                lineHeight: '21px',
+                letterSpacing: '0.02em',
+                fontStyle: 'normal',
               }}
             >
               Tags
@@ -125,32 +136,83 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
                   ))
                 : null}
             </Box>
-            <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
-              {details && details.length
-                ? details.map((detail: any, index: number) => (
-                    <Details
-                      key={index}
-                      heading={detail?.heading}
-                      value={detail?.value}
-                    />
-                  ))
-                : null}
-            </Grid>
+            {seeMore ? (
+              <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
+                {details && details.length
+                  ? details.map((detail: any, index: number) => (
+                      <Details
+                        key={index}
+                        heading={detail?.heading}
+                        value={detail?.value}
+                      />
+                    ))
+                  : null}
+              </Grid>
+            ) : (
+              <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
+                {details && details.length
+                  ? details.map((detail: any, index: number) =>
+                      index <= 1 ? (
+                        <Details
+                          key={index}
+                          heading={detail?.heading}
+                          value={detail?.value}
+                        />
+                      ) : null
+                    )
+                  : null}
+              </Grid>
+            )}
           </Box>
         </Grid>
         {/* CreditDetails */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'start',
+            alignItems: 'start',
+            mb: 4,
+            mt: 6,
+          }}
+          onClick={() => setSeeMore(!seeMore)}
+        >
+          {!seeMore ? (
+            <ArrowDownwardIcon
+              style={{ color: '#006B5E' }}
+              fontSize={'small'}
+            />
+          ) : (
+            <ArrowUpwardIcon style={{ color: '#006B5E' }} fontSize={'small'} />
+          )}
+          <Typography
+            sx={{
+              color: '#006B5E',
+              fontSize: 14,
+              fontWeight: 500,
+              textAlign: 'center',
+              lineHeight: '21px',
+              letterSpacing: '0.02em',
+              fontStyle: 'normal',
+            }}
+          >
+            {!seeMore ? 'SEE MORE' : 'SEE LESS'}
+          </Typography>
+        </Box>
         <Grid item md={12}>
           <Box
             sx={{
               py: 2,
               background: onWebApp
-                ? 'linear-gradient(180deg, #FFFFFF 0%, #DAF7F0 100%)'
+                ? 'linear-gradient(180deg, #F1FCF9 0%, #B0FFF2 100%)'
                 : 'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, #2D5F57 237.11%)',
               borderRadius: '8px',
               overflow: 'hidden',
               flexDirection: 'row',
               display: 'flex',
-              justifyContent:'space-around'
+              justifyContent: 'space-around',
+              mr: 2,
+              mt: 2,
             }}
           >
             {cardDetails &&
@@ -185,6 +247,10 @@ const Tag: FC<TagProps> = ({ tag }) => {
         borderRadius: '24px',
         mr: 1,
         color: 'chipTextColor.main',
+        fontWeight: 500,
+        lineHeight: '20px',
+        letterSpacing: '0.1px',
+        fontStyle: 'normal',
       }}
     >
       {tag}
@@ -198,8 +264,19 @@ interface DetailsProps {
 }
 const Details: FC<DetailsProps> = ({ heading, value }) => {
   return (
-    <Grid item xs={10} md={4} sx={{ mt: 1 }}>
-      <Box sx={{ fontSize: 14, fontWeight:'600', color: 'textColor5.main', mb: 1, width: '100%' }}>
+    <Grid item xs={10} md={5.5} sx={{ mt: 1 }}>
+      <Box
+        sx={{
+          fontSize: 14,
+          fontWeight: '600',
+          color: 'textColor5.main',
+          mb: 1,
+          width: '100%',
+          lineHeight: '21px',
+          letterSpacing: '0.02em',
+          fontStyle: 'normal',
+        }}
+      >
         {heading}
       </Box>
       {typeof value === 'string' ? (
@@ -212,7 +289,16 @@ const Details: FC<DetailsProps> = ({ heading, value }) => {
         value &&
         value.length &&
         value?.map((val: string, index: number) => (
-          <Box key={index} sx={{ fontSize: 16, color: 'textColor2.main' }}>
+          <Box
+            key={index}
+            sx={{
+              fontSize: 16,
+              color: 'textColor2.main',
+              lineHeight: '21px',
+              letterSpacing: '0.02em',
+              fontStyle: 'normal',
+            }}
+          >
             {val}
           </Box>
         ))
@@ -228,10 +314,28 @@ interface CardDetailsProps {
 const CardDetails: FC<CardDetailsProps> = ({ heading, value }) => {
   return (
     <Box sx={{ textAlign: 'center', mt: 2 }}>
-      <Box sx={{ fontSize: 12, fontWeight: '600', color: 'textColor.main' }}>
+      <Box
+        sx={{
+          fontSize: 12,
+          fontWeight: '600',
+          color: 'textColor.main',
+          lineHeight: '18px',
+          letterSpacing: '0.01em',
+          fontStyle: 'normal',
+        }}
+      >
         {heading}
       </Box>
-      <Box sx={{ fontSize: 32, fontWeight: '600', color: 'textColor4.main' }}>
+      <Box
+        sx={{
+          fontSize: 32,
+          fontWeight: '600',
+          color: 'textColor4.main',
+          lineHeight: '48px',
+
+          fontStyle: 'normal',
+        }}
+      >
         {value}
       </Box>
     </Box>
