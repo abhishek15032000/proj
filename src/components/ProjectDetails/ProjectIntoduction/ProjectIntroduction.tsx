@@ -1,15 +1,11 @@
 import { Grid, Typography, Box, Paper } from '@mui/material'
 
 import React, { useEffect, useRef, useState } from 'react'
-import CCButton from '../../../atoms/CCButton'
-import { Colors, Images } from '../../../theme'
-import TitleValue from '../../Profile/TitleValue'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { projectDetailsCalls } from '../../../api/projectDetailsCalls.api'
-import BlockchainCalls from '../../../blockchain/Blockchain'
-import LoderOverlay from '../../LoderOverlay'
+
+import { Images } from '../../../theme'
+
 import { useNavigate } from 'react-router-dom'
-import { pathNames } from '../../../routes/pathNames'
+
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import BuyToken from './BuyToken'
@@ -104,14 +100,14 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           !bannerImage ? Images.ProjectDetails : bannerImage
         })`,
         // pb: 8,
-        // maxWidth: 'fit-content',
-
+        width: '100%',
+        height: 'fit-content',
         borderRadius: '16px',
         minHeight: '372px',
         position: 'relative',
-        maxWidth: '100%',
+
         justifyContent: 'center',
-        // padding: !onWebApp ? '2vw 2vw' : 0,
+
         backgroundSize: 'cover',
       }}
       xs={12}
@@ -203,87 +199,6 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
             </Typography>
           </Box>
         </Grid>
-        {/* <Grid
-              xs={6}
-              item
-              justifyContent={'flex-start'}
-              alignItems={'flex-start'}
-              flexDirection="row"
-              // width={'50%'}
-              sx={{ p: 2 }}
-            >
-           
-             <Typography
-                sx={{
-                  color: 'white',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  // ml: 3,
-                
-                  textAlign:'left'
-                }}
-              >
-                SDGs Covered
-              </Typography>
-           
-              <Grid
-                columns={5}
-                columnSpacing={4}
-                rowSpacing={4}
-                // columnSpacing={4}
-                container
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'baseline',
-                  justifyContent: 'flex-start',
-                }}
-              >
-                {data &&
-                  data.length > 0 &&
-                  data.map((item: any, index: any) => (
-                    <Grid
-                      // columns={1}
-                      // columnSpacing={5}
-                      item
-                      key={index}
-                      sx={{
-                        mt: '13px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        // border: '1px solid #B1CCC6',
-                        // borderRadius: '12px',
-
-                        // minWidth: '80px',
-                        height: '120px',
-                        // m: 2,
-                      }}
-                    >
-                      <img
-                        data-testid="logo-img"
-                        className="logoImage"
-                        src={item?.image}
-                        style={{ width: '70px' }}
-                      />
-                      <Typography
-                        sx={{
-                          color: 'white',
-                          fontSize: 12,
-                          fontWeight: 400,
-                          textAlign: 'center',
-                          width: '70px',
-                          mt:'5px',
-                          lineHeight:"16px"
-                        }}
-                      >
-                        {item?.name}
-                      </Typography>
-                    </Grid>
-                  ))}
-              </Grid>
-            </Grid> */}
       </Grid>
       {showBuyToken && (
         <BuyToken

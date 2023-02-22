@@ -1,13 +1,9 @@
 import { Grid, Typography, Box, Paper } from '@mui/material'
 
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC } from 'react'
 import CCButton from '../../../atoms/CCButton'
-import { Colors, Images } from '../../../theme'
-import TitleValue from '../../Profile/TitleValue'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { projectDetailsCalls } from '../../../api/projectDetailsCalls.api'
-import BlockchainCalls from '../../../blockchain/Blockchain'
-import LoderOverlay from '../../LoderOverlay'
+import { Colors } from '../../../theme'
+
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { pathNames } from '../../../routes/pathNames'
@@ -73,15 +69,15 @@ const BuyToken = (props: BuyTokenProps) => {
       <Grid
         item
         xs={12}
-        lg={10}
-        md={10}
-        xl={10}
+        lg={8}
+        md={8}
+        xl={8}
         sx={{
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'start',
-          px: 2,
+          px: 1,
         }}
       >
         {tokenDetails &&
@@ -94,7 +90,7 @@ const BuyToken = (props: BuyTokenProps) => {
             />
           ))}
       </Grid>
-      <Grid item xs={12} lg={2.5} md={2.5} xl={2.5}>
+      <Grid item xs={12} lg={4} md={4} xl={4}>
         <CCButton
           variant="contained"
           sx={{
@@ -105,7 +101,7 @@ const BuyToken = (props: BuyTokenProps) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: '100px',
-
+            pl: 1,
             boxShadow:
               '0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)',
             // mx: 5,
@@ -159,7 +155,7 @@ const TokenDetails: FC<TokenDetailsProps> = ({ heading, value }) => {
       <Typography
         sx={{
           fontWeight: 500,
-          fontSize: 18,
+          fontSize: 16,
           color: Colors.darkPrimary1,
           lineHeight: '22px',
 

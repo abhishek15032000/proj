@@ -1,17 +1,12 @@
-import { Container, Grid, Skeleton, Typography } from '@mui/material'
+import { Container, Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AdditionalDetails from './AdditionalDetails/AdditionalDetails'
-import OtherProjects from './OtherProjects/OtherProjects'
+
 import ProjectIntroduction from './ProjectIntoduction/ProjectIntroduction'
 import Reports from './Reports/Reports'
 import SliderComponent from './SliderComponent/SliderComponent'
 import TokensTxHistory from './TokensTxHistory/TokensTxHistory'
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { Box } from '@mui/system'
 import WebAppTraceHistory from './TraceHistory/WebappTraceHistory'
 import { shallowEqual } from 'react-redux'
@@ -24,12 +19,14 @@ import CCButton from '../../atoms/CCButton'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import { pathNames } from '../../routes/pathNames'
 import { projectDetailsCalls } from '../../api/projectDetailsCalls.api'
-import LoaderOverlay from '../../components/LoderOverlay'
+
 import { Images } from '../../theme'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import Overview from './Skeleton/Overview'
 import ProjectIntro from './Skeleton/ProjectIntro'
+import SDGSComponent from './Skeleton/SDGSComponent'
+import AdditionalDetailsSkeleton from './Skeleton/AdditionalDetailsSkeleton'
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lightPrimary?: string
@@ -238,8 +235,6 @@ const ProjectDetails = () => {
             }}
             buttonBackgroundColor={'#006B5E'}
             buttonColor={'white'}
-            // onClick={btn1OnClick}
-            // disabled={disableBtn1}
           >
             <ArrowOutwardIcon sx={{ fontSize: 16, fontWeight: '600', mr: 1 }} />
             Climate Risk Dashboard
@@ -265,14 +260,6 @@ const ProjectDetails = () => {
                   : createTheme(darkModeTheme)
               }
             >
-              {/* {onWebApp ?  <Grid item sx={{display:"inline-flex",}}>
-            <Typography variant="body1" color="#4A635E">
-            Projects
-            </Typography>
-            <Typography variant="body1" color="#000000" sx={{pl:1}}>
-                {' > Project Details'}
-              </Typography>
-           </Grid> : <></>} */}
               {onWebApp ? headerRenderer() : null}
               <Grid item xs={12} sx={onWebApp ? lightTheme : darkTheme}>
                 {loading ? (
@@ -304,147 +291,156 @@ const ProjectDetails = () => {
                         ) : (
                           <ProjectIntroDescription projectData={projectData} />
                         )}
-                        <AdditionalDetails
-                          projectData={projectData}
-                          projectDetailsData={projectDetailsData?.state}
-                        />
+                        {loading ? (
+                          <AdditionalDetailsSkeleton />
+                        ) : (
+                          <AdditionalDetails
+                            projectData={projectData}
+                            projectDetailsData={projectDetailsData?.state}
+                          />
+                        )}
                       </Grid>
                       <Grid item xs={12} lg={5}>
-                        <Grid
-                          container
-                          sx={{
-                            p: 2,
-                            background: '#294A45',
-                            borderRadius: '8px',
-                            mt: 6,
-                          }}
-                        >
+                        {loading ? (
+                          <SDGSComponent />
+                        ) : (
                           <Grid
-                            xs={12}
-                            item
-                            justifyContent={'flex-start'}
-                            alignItems={'flex-start'}
-                            flexDirection="row"
-                            // width={'50%'}
+                            container
+                            sx={{
+                              p: 2,
+                              background: '#294A45',
+                              borderRadius: '8px',
+                              mt: 6,
+                            }}
                           >
-                            <Typography
-                              sx={{
-                                color: '#B0FFF2',
-                                fontSize: 24,
-                                fontWeight: 600,
-                                ml: 2,
-
-                                textAlign: 'left',
-                                mt: 2,
-                                lineHeight: '36px',
-
-                                fontStyle: 'normal',
-                              }}
-                            >
-                              SDGs Covered
-                            </Typography>
-
                             <Grid
-                              columns={5}
-                              columnSpacing={4}
-                              rowSpacing={4}
-                              // columnSpacing={4}
-                              container
-                              sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'baseline',
-                                justifyContent: 'flex-start',
-                                pr: 2,
-                                pl: 3,
-                              }}
+                              xs={12}
+                              item
+                              justifyContent={'flex-start'}
+                              alignItems={'flex-start'}
+                              flexDirection="row"
+                              // width={'50%'}
                             >
-                              {data &&
-                                data.length > 0 &&
-                                data.map((item: any, index: any) => (
-                                  <Grid
-                                    // columns={1}
-                                    // columnSpacing={5}
-                                    item
-                                    key={index}
-                                    sx={{
-                                      mt: '13px',
-                                      display: 'flex',
-                                      flexDirection: 'column',
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
-                                      // border: '1px solid #B1CCC6',
-                                      // borderRadius: '12px',
+                              <Typography
+                                sx={{
+                                  color: '#B0FFF2',
+                                  fontSize: 24,
+                                  fontWeight: 600,
+                                  ml: 2,
 
-                                      // minWidth: '80px',
-                                      height: '120px',
-                                      // m: 2,
-                                    }}
-                                  >
-                                    <img
-                                      data-testid="logo-img"
-                                      className="logoImage"
-                                      src={item?.image}
-                                      style={{ width: '70px' }}
-                                    />
-                                    <Typography
+                                  textAlign: 'left',
+                                  mt: 2,
+                                  lineHeight: '36px',
+
+                                  fontStyle: 'normal',
+                                }}
+                              >
+                                SDGs Covered
+                              </Typography>
+
+                              <Grid
+                                columns={5}
+                                columnSpacing={4}
+                                rowSpacing={4}
+                                // columnSpacing={4}
+                                container
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  alignItems: 'baseline',
+                                  justifyContent: 'flex-start',
+                                  pr: 2,
+                                  pl: 3,
+                                }}
+                              >
+                                {data &&
+                                  data.length > 0 &&
+                                  data.map((item: any, index: any) => (
+                                    <Grid
+                                      // columns={1}
+                                      // columnSpacing={5}
+                                      item
+                                      key={index}
                                       sx={{
-                                        color: 'white',
-                                        fontSize: 12,
-                                        fontWeight: 400,
-                                        textAlign: 'center',
-                                        width: '70px',
-                                        mt: '5px',
-                                        lineHeight: '16px',
+                                        mt: '13px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        // border: '1px solid #B1CCC6',
+                                        // borderRadius: '12px',
 
-                                        letterSpacing: '0.5px',
-                                        fontStyle: 'normal',
+                                        width: '85px',
+                                        height: '120px',
+                                        // m: 2,
+                                        mx: 1,
                                       }}
                                     >
-                                      {item?.name}
-                                    </Typography>
-                                  </Grid>
-                                ))}
+                                      <img
+                                        data-testid="logo-img"
+                                        className="logoImage"
+                                        src={item?.image}
+                                        style={{ width: '70px' }}
+                                      />
+                                      <Typography
+                                        sx={{
+                                          color: 'white',
+                                          fontSize: 12,
+                                          fontWeight: 400,
+                                          textAlign: 'center',
+                                          width: '85px',
+                                          mt: '5px',
+                                          lineHeight: '16px',
+
+                                          letterSpacing: '0.5px',
+                                          fontStyle: 'normal',
+                                        }}
+                                      >
+                                        {item?.name}
+                                      </Typography>
+                                    </Grid>
+                                  ))}
+                              </Grid>
+                            </Grid>
+                            <Grid
+                              item
+                              justifyContent={'start'}
+                              alignItems={'start'}
+                              display="flex"
+                              flexDirection="column"
+                              sx={{ mt: 6, width: '50%', ml: 2 }}
+                            >
+                              <Typography
+                                sx={{
+                                  color: '#B0FFF2',
+                                  fontSize: 24,
+                                  fontWeight: 500,
+
+                                  textAlign: 'left',
+                                  lineHeight: '24px',
+
+                                  fontStyle: 'normal',
+                                }}
+                              >
+                                Registry
+                              </Typography>
+                              <Box
+                                sx={{
+                                  flexDirection: 'column',
+                                  width: '40%',
+                                  pt: 1,
+                                }}
+                              >
+                                <img
+                                  data-testid="logo-img"
+                                  className="logoImage"
+                                  src={Images.ICRLogo}
+                                  style={{ width: '200px', height: '70px' }}
+                                />
+                              </Box>
                             </Grid>
                           </Grid>
-                          <Grid
-                            item
-                            justifyContent={'start'}
-                            alignItems={'start'}
-                            display="flex"
-                            flexDirection="column"
-                            sx={{ mt: 6, width: '50%', ml: 2 }}
-                          >
-                            <Typography
-                              sx={{
-                                color: '#B0FFF2',
-                                fontSize: 24,
-                                fontWeight: 500,
-
-                                textAlign: 'left',
-                                lineHeight: '24px',
-
-                                fontStyle: 'normal',
-                              }}
-                            >
-                              Registry
-                            </Typography>
-                            <Box
-                              sx={{
-                                flexDirection: 'column',
-                                width: '40%',
-                                pt: 1,
-                              }}
-                            >
-                              <img
-                                data-testid="logo-img"
-                                className="logoImage"
-                                src={Images.ICRLogo}
-                                style={{ width: '200px', height: '70px' }}
-                              />
-                            </Box>
-                          </Grid>
-                        </Grid>
+                        )}
                       </Grid>
 
                       {projectData?.project_image?.length ? (
@@ -458,10 +454,6 @@ const ProjectDetails = () => {
                       <TokensTxHistory />
                       <Box
                         sx={{
-                          // pt: 5,
-                          // padding: '2vw 6vw',
-                          // background:
-                          //   'linear-gradient(180deg, #111E17 9.55%, rgba(7, 19, 13, 0.79) 100%)',
                           pt: 5,
                         }}
                       >
@@ -515,7 +507,8 @@ const ProjectIntroDescription = ({ projectData }: { projectData: any }) => {
 
   const dataForDisplay = seeMore
     ? projectData?.description?.general_description
-    : projectData?.description?.general_description.slice(0, 480)
+    : projectData?.description?.general_description &&
+      projectData?.description?.general_description.slice(0, 480)
   return (
     <>
       <Typography
@@ -534,9 +527,6 @@ const ProjectIntroDescription = ({ projectData }: { projectData: any }) => {
       <Grid
         item
         sx={{
-          // background:'linear-gradient(360deg, #111E17 54.15%, rgba(7, 19, 13, 0.79) 100.62%)',
-          // px: 10,
-          // pt:10,
           color: 'textColor2.main',
           columnCount: 1,
           alignContent: 'flex-start',
@@ -566,6 +556,7 @@ const ProjectIntroDescription = ({ projectData }: { projectData: any }) => {
           justifyContent: 'start',
           alignItems: 'start',
           mt: 4,
+          cursor: 'pointer',
         }}
         onClick={() => setSeeMore(!seeMore)}
       >

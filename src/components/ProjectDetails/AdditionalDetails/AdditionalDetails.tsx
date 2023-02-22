@@ -5,13 +5,6 @@ import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
-// const tags = [
-//   'Project type tag 1',
-//   'Impacted SDG 1',
-//   'Project type tag 2',
-//   'Impacted SDG 2',
-//   'Agritech',
-// ]
 
 interface AdditionalDetailsProps {
   projectDetailsData?: any
@@ -66,12 +59,6 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       },
     ]
     setDetails(modifiedArrayTemp)
-    // const cardDetails = [
-    //   { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: props.projectData?.token_detail?.balance },
-    //   { heading: 'CREDITS RETIRED', value: props.projectData?.token_detail?.retire },
-    //   { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
-    // ]
-    // setCardDetails(cardDetails)
   }
   useEffect(() => {
     const cardDetails = [
@@ -94,8 +81,6 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   return (
     <Box
       sx={{
-        // background: '#111E17',
-        // padding: '2vw 6vw',
         pt: 8,
         flexDirection: 'column',
       }}
@@ -129,7 +114,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
             >
               Tags
             </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
               {tags && tags.length
                 ? tags.map((tag: string, index: number) => (
                     <Tag key={index} tag={tag} />
@@ -137,7 +122,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
                 : null}
             </Box>
             {seeMore ? (
-              <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
+              <Grid container sx={{ mt: 2 }} rowGap={'28px'}>
                 {details && details.length
                   ? details.map((detail: any, index: number) => (
                       <Details
@@ -174,6 +159,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
             alignItems: 'start',
             mb: 4,
             mt: 6,
+            cursor: 'pointer',
           }}
           onClick={() => setSeeMore(!seeMore)}
         >
