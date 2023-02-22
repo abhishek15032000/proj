@@ -14,7 +14,7 @@ const CommentBox: FC<CommentBoxProps> = ({ closeChatbox }) => {
   return (
     <Box
       sx={{
-        color: '#000',
+        color: 'white',
         mb: 2,
         // height: 'calc(100vh - 180px)',
         height: '100%',
@@ -25,9 +25,8 @@ const CommentBox: FC<CommentBoxProps> = ({ closeChatbox }) => {
     >
       <Box
         sx={{
-          mt: 2,
           p: 2,
-          background: '#B1CCC6',
+          background: '#005046',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -35,9 +34,9 @@ const CommentBox: FC<CommentBoxProps> = ({ closeChatbox }) => {
           flex: '0 1 auto',
         }}
       >
-        <Typography sx={{ fontWeight: 500 }}>Comments</Typography>
+        <Typography sx={{ fontWeight: 500, fontSize: 16 }}>Comments</Typography>
         <CloseOutlinedIcon
-          sx={{ color: '#006B5E', cursor: 'pointer' }}
+          sx={{ color: 'white', cursor: 'pointer' }}
           onClick={closeChatbox}
         />
       </Box>

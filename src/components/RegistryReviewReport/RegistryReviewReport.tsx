@@ -16,6 +16,9 @@ import { getLocalItem } from '../../utils/Storage'
 import EditTokensModal from './EditTokensModal'
 import LoderOverlay from '../LoderOverlay'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
+import CCButton from '../../atoms/CCButton'
+import { ArrowOutward } from '@mui/icons-material'
+declare let window: any
 
 const pdfLoading = false
 
@@ -56,9 +59,6 @@ const RegistryReviewReport = () => {
   //   setHeight2(ref.current.clientHeight)
   //   // }
   // })
-
-  console.log('height', height)
-  console.log('height2', height2)
 
   const closeModal = () => setOpenModal(false)
 
@@ -139,249 +139,443 @@ const RegistryReviewReport = () => {
   }
 
   return (
-    <>
-      <Box sx={{ ml: 4, py: 2, display: 'flex' }}>
-        <Box sx={{ fontSize: 12, color: '#4A635E' }}>
-          {'Project List > Project Details'}{' '}
-        </Box>
-        <Box sx={{ fontSize: 12, color: '#000000' }}>{' > Review Report'} </Box>
-      </Box>
-      <Grid
-        container
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <Box
         sx={{
-          background: '#DAE5E1',
-          height: 'calc(100vh - 50px)',
-          alignItems: 'stretch',
-          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          px: 4,
         }}
-        columnSpacing={3}
       >
-        {loading ? <LoderOverlay /> : null}
-
-        <Grid
-          item
-          md={6}
-          flexDirection="column"
+        <Box
           sx={{
+            py: 2,
+            fontSize: 12,
+            color: '#4A635E',
             display: 'flex',
-            width: '100%',
-            height: `100%`,
-            backgroundColor: Colors.white,
+            gap: '5px',
           }}
         >
-          <BackHeader
-            title="Project Issuance Report V1.1 (PDF)"
-            onClick={() => navigate(-1)}
-            titleSx={{ fontSize: 26 }}
-            sx={{ pl: 3, pr: 1, py: 2 }}
-          />
-
-          {pdfURL ? (
-            <Box
-              sx={{ height: 'calc( 100vh - 60px)', backgroundColor: 'white' }}
-            >
-              <PDFViewer pdfUrl={pdfURL} />
-            </Box>
-          ) : null}
-        </Grid>
-        <Grid
-          item
-          md={6}
-          sx={{
-            display: 'flex',
-            height: `100%`,
-            overflowY: 'auto',
-            alignItems: 'stretch',
-          }}
-        >
-          <Paper
-            sx={{
-              width: '100%',
-              height: `auto`,
-              overflowY: 'auto',
-              borderRadius: 0,
-              boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+          <Box
+            onClick={() => navigate(pathNames.DASHBOARD)}
+            sx={{ cursor: 'pointer' }}
+          >
+            Project List
+          </Box>
+          <Box>{'>'}</Box>
+          <Box
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                state: {
+                  projectDetails: location?.state?.projectReportDetails,
+                },
+              })
             }}
           >
-            <Box
+            Project Details
+          </Box>
+          <Box>{'>'}</Box>
+          <Box sx={{ fontSize: 12, color: '#000000' }}>Review Report </Box>
+        </Box>
+        {/* <Box sx={{ ml: 4, py: 2, display: 'flex' }}>
+          <Box sx={{ fontSize: 12, color: '#4A635E' }}>
+            {'Project List > Project Details'}{' '}
+          </Box>
+          <Box sx={{ fontSize: 12, color: '#000000' }}>
+            {' > Review Report'}{' '}
+          </Box>
+        </Box> */}
+        <Box>
+          <CCButton
+            onClick={sumbitReport}
+            buttonBackgroundColor={Colors.darkPrimary1}
+            buttonColor="white"
+            sx={{
+              px: 3,
+              py: 1,
+              borderRadius: '40px',
+              color: 'white',
+              fontSize: 14,
+            }}
+          >
+            Review & Mint Tokens
+          </CCButton>
+          {/* <TextButton
+            // onClick={() => setShowModal(true)}
+            onClick={sumbitReport}
+            sx={{ ml: 4, background: '#006B5E', width: '260px' }}
+            title="Review & Mint Tokens"
+          /> */}
+        </Box>
+      </Box>
+      <Box sx={{ flexGrow: '1', overflow: 'hidden' }}>
+        <Grid
+          container
+          sx={{
+            background: '#FAFDFA',
+            height: '100%',
+            // alignItems: 'stretch',
+            overflow: 'hidden',
+            px: 4,
+            // py: 2,
+          }}
+          columnSpacing={2}
+        >
+          {loading ? <LoderOverlay /> : null}
+
+          <Grid
+            item
+            md={7}
+            flexDirection="column"
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: `100%`,
+              py: 1,
+
+              // backgroundColor: Colors.white,
+            }}
+          >
+            <Paper
               sx={{
-                py: 2,
-                pl: 3,
-                pr: 1,
-                display: 'flex',
-                // height: `100%`
+                height: '100%',
+                boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+                // flex: 1,
               }}
             >
-              <BackHeader
-                title="Review Report & Add Comments"
-                onClick={() => navigate(-1)}
-                titleSx={{ fontSize: 26 }}
-                iconDisable
-              />
-
-              <TextButton
-                // onClick={() => setShowModal(true)}
-                onClick={sumbitReport}
-                sx={{ ml: 4, background: '#006B5E', width: '260px' }}
-                title="Review & Mint Tokens"
-              />
-            </Box>
-
-            <Divider />
-
-            <Box sx={{ py: 2, pl: 3, pr: 1 }}>
               <Box
                 sx={{
-                  background: '#E5F2FF',
-                  p: 1,
                   display: 'flex',
                   alignItems: 'center',
-                  width: 'fit-content',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
                 }}
               >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mr: 1,
+                <BackHeader
+                  title="Project Issuance Report V1.1 (PDF)"
+                  onClick={() =>
+                    navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                      state: {
+                        projectDetails: location?.state?.projectReportDetails,
+                      },
+                    })
+                  }
+                  titleSx={{
+                    fontSize: 28,
+                    fontWeight: 500,
+                    color: Colors.tertiary,
+                    pl: 1,
                   }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                      src={Images.LifetimeVCOTIcon}
-                      style={{ marginRight: '8px' }}
-                    />
-                    <Box sx={{ whiteSpace: 'nowrap' }}>
-                      Lifetime Credit Value :{' '}
-                    </Box>
-                  </Box>
-                  <Box>{lifetimeVCOT || '-'}</Box>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-                  <Box>
-                    <img
-                      src={Images.MonthlyVCOTIcon}
-                      style={{ marginRight: '8px' }}
-                    />
-                  </Box>
-                  <Box sx={{ whiteSpace: 'nowrap' }}>
-                    Monthly/ Quarterly VCOT Authorised :
-                  </Box>
-                  <Box>{monthlyVCOT || '-'}</Box>
-                </Box>
+                  sx={{ pl: 2, pr: 1, py: 2 }}
+                />
                 <Box
                   sx={{
+                    px: 2,
                     display: 'flex',
                     alignItems: 'center',
                     cursor: 'pointer',
                   }}
-                  onClick={() => setOpenModal((openModal) => !openModal)}
+                  onClick={() => {
+                    window.open().location.href = pdfURL
+                  }}
                 >
-                  <img src={Images.DashboardPencil} />
+                  <ArrowOutward sx={{ color: '#006B5E', width: '20px' }} />
+                  <Typography
+                    sx={{
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: '#006B5E',
+                      paddingLeft: '3px',
+                    }}
+                  >
+                    Open
+                  </Typography>
                 </Box>
               </Box>
-            </Box>
 
-            <Box sx={{ mt: 2, py: 2, pl: 3, pr: 1 }}>
-              <Typography
-                sx={{ color: '#4A635E', fontSize: 14, fontWeight: 500 }}
-              >
-                Other project details
-              </Typography>
-              <Grid container sx={{ mt: 2 }}>
-                <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14, fontWeight: 500 }}>
-                    Date of report submission
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14 }}>
-                    {moment(reportData?.report?.createdAt).format('DD-MM-YYYY')}
-                  </Box>
-                </Grid>
-              </Grid>
-              <Grid container sx={{ mt: 2 }}>
-                <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14, fontWeight: 500 }}>
-                    Next Submission Date
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14 }}>
-                    {moment(reportData?.report?.next_date).format('DD-MM-YYYY')}
-                  </Box>
-                </Grid>
-              </Grid>
-              <Grid container sx={{ mt: 2 }}>
-                <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14, fontWeight: 500 }}>Report Name</Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ fontSize: 14 }}>Project Issuance Report</Box>
-                </Grid>
-              </Grid>
-            </Box>
+              {/* <Divider /> */}
 
-            <Box sx={{ py: 2, pl: 3, pr: 1 }}>
-              <Typography
-                sx={{ fontSize: 14, fontWeight: 500, color: '#4A635E' }}
-              >
-                Relevant Docs{' '}
-              </Typography>
+              {pdfURL ? (
+                <Box sx={{ height: '90%', px: 4 }}>
+                  <PDFViewer pdfUrl={pdfURL} />
+                </Box>
+              ) : null}
+            </Paper>
+          </Grid>
+          <Grid
+            item
+            md={5}
+            sx={{
+              display: 'flex',
+              height: `100%`,
+              overflowY: 'auto',
+              alignItems: 'stretch',
+
+              py: 1,
+            }}
+          >
+            <Paper
+              sx={{
+                width: '100%',
+                height: `100%`,
+                overflowY: 'hidden',
+                boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {/* <Box
+                sx={{
+                  py: 2,
+                  pl: 3,
+                  pr: 1,
+                  display: 'flex',
+                  // height: `100%`
+                }}
+              > */}
               <Box>
-                {reportData?.report?.file_attach &&
-                reportData?.report?.file_attach.length
-                  ? reportData?.report?.file_attach?.map(
-                      (doc: any, index: number) => (
-                        <FileDetails key={index} doc={doc} />
-                      )
-                    )
-                  : '-'}
+                <Typography
+                  sx={{
+                    mt: 1,
+                    fontSize: 28,
+                    fontWeight: 500,
+                    color: Colors.tertiary,
+                    px: 2,
+                    py: 1,
+                  }}
+                >
+                  Review Report & Add Comments
+                </Typography>
+                {/* <BackHeader
+                  title="Review Report & Add Comments"
+                  onClick={() => navigate(-1)}
+                  titleSx={{ fontSize: 26 }}
+                  iconDisable
+                /> */}
+                {/* </Box> */}
+
+                <Divider />
               </Box>
-            </Box>
+              <Box sx={{ flexGrow: '1', overflow: 'auto' }}>
+                <Box sx={{ pt: 4, pl: 3, pr: 1 }}>
+                  <Box
+                    sx={{
+                      background: '#E5F2FF',
+                      p: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: 'fit-content',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      flexWrap: 'wrap',
+                      fontWeight: '500',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        mr: 1,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                        }}
+                      >
+                        <Box sx={{ width: '18px', height: '18px' }}>
+                          <img
+                            src={Images.LifetimeVCOTIcon}
+                            style={{
+                              marginRight: '8px',
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'contain',
+                            }}
+                          />
+                        </Box>
+                        <Box sx={{ whiteSpace: 'nowrap', color: '#4A635E' }}>
+                          Lifetime Credit Value
+                        </Box>
+                      </Box>
+                      <Box sx={{ color: '#006B5E' }}>{lifetimeVCOT || '-'}</Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        width: '100%',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          mr: 2,
+                          mt: 1,
+                        }}
+                      >
+                        <Box sx={{ width: '18px', height: '18px' }}>
+                          <img
+                            src={Images.MonthlyVCOTIcon}
+                            style={{
+                              marginRight: '8px',
+                              width: '100%',
+                              height: '100&',
+                              objectFit: 'contain',
+                            }}
+                          />
+                        </Box>
+                        <Box sx={{ whiteSpace: 'nowrap', color: '#4A635E' }}>
+                          {/* Monthly/ Quarterly VCOT Authorised&nbsp; */}
+                          VCOT Authorised for the month
+                        </Box>
+                        <Box sx={{ color: '#006B5E' }}>
+                          {monthlyVCOT || '-'}
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() =>
+                            setOpenModal((openModal) => !openModal)
+                          }
+                        >
+                          <img src={Images.DashboardPencil} />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
 
-            <Box sx={{ py: 2, pl: 3, pr: 1 }}>
-              <Typography
-                sx={{ fontSize: 14, fontWeight: 500, color: '#4A635E' }}
-              >
-                Photos/Videos Added{' '}
-              </Typography>
-              <Box>
-                {/* {docs?.map((doc: any, index: number) => (
+                <Box sx={{ mt: 1, py: 2, pl: 3, pr: 1 }}>
+                  <Typography
+                    sx={{ color: '#1D4B44', fontSize: 14, fontWeight: 500 }}
+                  >
+                    Other project details
+                  </Typography>
+
+                  <Grid container sx={{ mt: 2 }}>
+                    <Grid item xs={4}>
+                      <Typography
+                        sx={{
+                          color: '#006B5E',
+                          fontSize: '14px',
+                          fontWeight: 500,
+                        }}
+                      >
+                        Date of report submission
+                      </Typography>
+                      <Box sx={{ fontSize: '14px', mt: 1 }}>
+                        {moment(reportData?.report?.createdAt).format(
+                          'DD/MM/YYYY'
+                        )}
+                      </Box>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography
+                        sx={{
+                          fontSize: '14px',
+                          color: '#006B5E',
+                          fontWeight: 500,
+                        }}
+                      >
+                        Next Submission Date
+                      </Typography>
+                      <Box sx={{ fontSize: '14px', mt: 1 }}>
+                        {moment(reportData?.report?.next_date).format(
+                          'DD/MM/YYYY'
+                        )}
+                      </Box>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography
+                        sx={{
+                          color: '#006B5E',
+                          fontWeight: 500,
+                          fontSize: '14px',
+                        }}
+                      >
+                        Report <br /> Name
+                      </Typography>
+                      <Box sx={{ fontSize: '14px', mt: 1 }}>
+                        Project Issuance Report
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
+
+                <Box sx={{ pb: 2, pl: 3, pr: 1 }}>
+                  <Typography
+                    sx={{ fontSize: 14, fontWeight: 500, color: '#1D4B44' }}
+                  >
+                    Relevant Docs{' '}
+                  </Typography>
+                  <Box>
+                    {reportData?.report?.file_attach &&
+                    reportData?.report?.file_attach.length
+                      ? reportData?.report?.file_attach?.map(
+                          (doc: any, index: number) => (
+                            <FileDetails key={index} doc={doc} />
+                          )
+                        )
+                      : '-'}
+                  </Box>
+                </Box>
+
+                <Box sx={{ py: 2, pl: 3, pr: 1 }}>
+                  <Typography
+                    sx={{ fontSize: 14, fontWeight: 500, color: '#1D4B44' }}
+                  >
+                    Photos/Videos Added{' '}
+                  </Typography>
+                  <Box>
+                    {/* {docs?.map((doc: any, index: number) => (
                   <FileDetails key={index} doc={doc} />
                 ))} */}
-                -
+                    -
+                  </Box>
+                </Box>
+
+                <Box sx={{ py: 2, pl: 3, pr: 1 }}>
+                  <Typography
+                    sx={{
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: '#1D4B44',
+                      // mt: 4,
+                      // ml: 4,
+                      mb: 2,
+                    }}
+                  >
+                    Comment on the report with your feedback.
+                  </Typography>
+
+                  <CCMultilineTextArea
+                    label="Comment"
+                    //label = {reportData?.report?.ghg_reduction_explanation}
+                    placeholder="Explain it here"
+                    value={explain}
+                    onChange={(e) => setExplain(e.target.value)}
+                  />
+                </Box>
               </Box>
-            </Box>
-
-            <Box sx={{ py: 2, pl: 3, pr: 1 }}>
-              <Typography
-                sx={{
-                  fontSize: 16,
-                  fontWeight: 500,
-                  color: Colors.darkPrimary1,
-                  // mt: 4,
-                  // ml: 4,
-                  mb:1
-                }}
-              >
-                Comment on the report with your feedback.
-              </Typography>
-
-              <CCMultilineTextArea
-                label="Explain"
-                //label = {reportData?.report?.ghg_reduction_explanation}
-                placeholder="Explain it here"
-                value={explain}
-                onChange={(e) => setExplain(e.target.value)}
-              />
-            </Box>
-          </Paper>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
       <EditTokensModal
         showModal={openModal}
         setShowModal={setOpenModal}
@@ -391,7 +585,7 @@ const RegistryReviewReport = () => {
         setLifetimeVCOT={setLifetimeVCOT}
         closeModal={closeModal}
       />
-    </>
+    </Box>
   )
 }
 

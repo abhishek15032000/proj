@@ -46,7 +46,7 @@ export default function SelectSections() {
       sx={{
         p: 2,
         background: '#fff',
-        borderBottom: '1px solid #899390',
+        borderBottom: '1px solid #A8ACAA',
       }}
     >
       <Button
@@ -57,9 +57,10 @@ export default function SelectSections() {
         onClick={handleClick}
         sx={{ p: 0 }}
       >
-        <Typography sx={{ fontWeight: 500, fontSize: 16 }}>
+        <Typography sx={{ fontWeight: 500, fontSize: 16, color: 'black' }}>
           {selectedSection ? selectedSection?.name : ''}
         </Typography>
+        &nbsp;
         <ArrowDropDownIcon sx={{ color: Colors.darkPrimary1 }} />
       </Button>
       <Menu

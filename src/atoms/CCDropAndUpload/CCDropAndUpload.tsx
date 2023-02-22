@@ -20,6 +20,7 @@ interface CCDropAndUploadProps {
   onImageUpload?: any
   onDeleteImage?: any
   required?: boolean
+  fontSize?: any
 }
 
 const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
@@ -62,7 +63,13 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
           mt: 2,
         }}
       >
-        <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}>
+        <Typography
+          sx={{
+            fontSize: props?.fontSize || 16,
+            fontWeight: 500,
+            color: '#1D4B44',
+          }}
+        >
           {props.title}
           {props?.required && (
             <span style={{ color: 'red', fontSize: '12px' }}>*</span>
