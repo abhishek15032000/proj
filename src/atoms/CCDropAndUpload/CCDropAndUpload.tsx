@@ -11,7 +11,7 @@ import { ENDPOINTS } from '../../api/configs/Endpoints'
 import { resizeFile } from '../../utils/Filehandler.util'
 import CCDocViewer from '../CCDocViewer'
 import { fileUploadCalls } from '../../api/fileUpload.api'
-import CCFilePreview from '../CCFilePreview/CCFilePreview'
+import CCFileViewer from '../CCFileViewer/CCFileViewer'
 
 // Local Imports
 
@@ -173,7 +173,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         props.imageArray.map((item: any, index: number) => {
           if (typeof item === 'string') {
             return (
-              <CCFilePreview
+              <CCFileViewer
                 key={index.toString()}
                 title={item}
                 index={index}
@@ -183,7 +183,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
             )
           } else {
             return (
-              <CCFilePreview
+              <CCFileViewer
                 key={index.toString()}
                 title={item.fileName}
                 index={index}

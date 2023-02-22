@@ -8,14 +8,14 @@ import CloseIcon from '@mui/icons-material/Close'
 import CCDocViewer from '../CCDocViewer'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 
-interface CCFilePreviewProps {
+interface CCFileViewerProps {
   title?: string | number
   index?: number
   deleteImage?: any
   fileSize: number | string
 }
 
-const CCFilePreview: FC<CCFilePreviewProps> = (props) => {
+const CCFileViewer: FC<CCFileViewerProps> = (props) => {
   const item: any = props.title
   const [file, setFile] = useState<any>()
   useEffect(() => {
@@ -137,4 +137,4 @@ const CCFilePreview: FC<CCFilePreviewProps> = (props) => {
   )
 }
 
-export default CCFilePreview
+export default CCFileViewer
