@@ -74,7 +74,7 @@ export const verifierCalls = {
   },
   getAllReportVerifiers: (payload: any) => {
     return AxiosHelper(
-      URL_PATH.verifier.verifierAllReport + '?user_id=' + payload,
+      URL_PATH.verifier.verifierAllReport + '?project_id=' + payload,
       'GET',
       payload
     ).then((res) => {

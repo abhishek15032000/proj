@@ -11,6 +11,7 @@ import { ENDPOINTS } from '../../api/configs/Endpoints'
 import { resizeFile } from '../../utils/Filehandler.util'
 import CCDocViewer from '../CCDocViewer'
 import { fileUploadCalls } from '../../api/fileUpload.api'
+import CCFilePreview from '../CCFilePreview/CCFilePreview'
 
 // Local Imports
 
@@ -41,7 +42,8 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
       let all_files: any = [...props.imageArray]
       Promise.all(
         Array.from(event?.target?.files).map(async (selectedFile: any) => {
-          const image = await resizeFile(selectedFile)
+          console.log(selectedFile)
+           const image = selectedFile?.type !== "application/pdf"? await resizeFile(selectedFile) : selectedFile
           setUploading(true)
 
           // const objectUrl = URL.createObjectURL(image)
@@ -171,7 +173,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         props.imageArray.map((item: any, index: number) => {
           if (typeof item === 'string') {
             return (
-              <FileTab
+              <CCFilePreview
                 key={index.toString()}
                 title={item}
                 index={index}
@@ -181,7 +183,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
             )
           } else {
             return (
-              <FileTab
+              <CCFilePreview
                 key={index.toString()}
                 title={item.fileName}
                 index={index}
@@ -197,111 +199,6 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         stringArray={props.mediaTitle ? [...props.mediaTitle] : []}
         modalVisibility={showModal}
         setModalVisibility={setShowModal}
-      />
-    </Box>
-  )
-}
-
-interface FileTabProps {
-  title?: string | number
-  index?: number
-  deleteImage?: any
-  fileSize: number | string
-}
-
-const FileTab: FC<FileTabProps> = (props) => {
-  const item: any = props.title
-  const [file, setFile] = useState<any>()
-  useEffect(() => {
-    getImages()
-  }, [item])
-  const getImages = async () => {
-    try {
-      // setLoading(true)
-      if (item) {
-        fileUploadCalls.getFile(item).then((res: any) => {
-          console.log(
-            '🚀 ~ file: SliderComponent.tsx ~ line 20 ~ fileUploadCalls.getFile ~ res',
-            res
-          )
-          const image = URL.createObjectURL(res)
-          console.log(
-            '🚀 ~ file: SliderComponent.tsx ~ line 22 ~ fileUploadCalls.getFile ~ image',
-            image
-          )
-          setFile(image)
-          return image
-        })
-      }
-    } catch (error) {
-      console.log(
-        '🚀 ~ file: SliderComponent.tsx ~ line 59 ~ getImages ~ error',
-        error
-      )
-    } finally {
-      // setLoading(false)
-    }
-  }
-
-  return (
-    <Box
-      sx={{
-        width: '100%',
-        // height: '40px',
-        backgroundColor: '#DAF7F0',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderRadius: '8px',
-        pr: 1,
-        mt: 1,
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          pl: 1,
-        }}
-      >
-        <InsertDriveFileIcon style={{ color: '#388E81' }} />
-
-        <Box sx={{ height: 50, width: 50, m: 1, background: 'white' }}>
-          {file ? (
-            <CCDocViewer
-              documents={[
-                {
-                  uri: file,
-                  fileName: props.title,
-                },
-              ]}
-              width={50}
-              height={50}
-            />
-          ) : null}
-        </Box>
-
-        <Box
-          sx={{
-            ml: 1,
-            flexDirection: 'row',
-          }}
-        >
-          <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-            {props.title}
-          </Typography>
-          {props.fileSize > 0 && (
-            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {props.fileSize} MB
-            </Typography>
-          )}
-        </Box>
-      </Box>
-
-      <CloseIcon
-        onClick={() => props.deleteImage(props.index)}
-        style={{ color: '#388E81', cursor: 'pointer' }}
       />
     </Box>
   )

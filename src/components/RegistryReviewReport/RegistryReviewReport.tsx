@@ -198,6 +198,7 @@ const RegistryReviewReport = () => {
             sx={{
               width: '100%',
               height: `auto`,
+              overflowY: 'auto',
               borderRadius: 0,
               boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
             }}
@@ -364,6 +365,7 @@ const RegistryReviewReport = () => {
                   color: Colors.darkPrimary1,
                   // mt: 4,
                   // ml: 4,
+                  mb:1
                 }}
               >
                 Comment on the report with your feedback.

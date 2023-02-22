@@ -37,166 +37,327 @@ const TokensTxHistory = () => {
 
   const getAllTransactionHistory = async () => {
     setLoading(true)
-    const userAddress =
-      await BlockchainCalls.getConnectionStatusAndAddress().then((response) => {
-        projectDetailsCalls
-          .getAllTransactionHistory(response?.address)
-          .then((res: any) => {
-            if (res?.data?.success) {
-              const rows =
-                res?.data?.data &&
-                res?.data?.data.map((i: any, index: number) => {
-                  return [
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                        width: '50px',
-                      }}
-                    >
-                      {limitTitle(i?.transaction_data?.transactionHash, 7)}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {limitTitle(i?.transaction_id, 7)}
-                    </Typography>,
+    setLoading(true)
 
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {'-'}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {moment(i?.createdAt).format(`DD/MM/YY`)}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {moment(i?.next_date).format(`HH:MM:SS`)}
-                    </Typography>,
+    setLoading(true)
+    projectDetailsCalls
+      .getAllTransactionHistory(getLocalItem('userDetails')?.user_id)
+      .then((res: any) => {
+        if (res?.data?.success) {
+          const rows =
+            res?.data?.data &&
+            res?.data?.data.map((i: any, index: number) => {
+              return [
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                    width: '50px',
+                  }}
+                >
+                  {limitTitle(i?.transaction_data?.transactionHash, 7)}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {limitTitle(i?.transaction_id, 7)}
+                </Typography>,
 
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {'-'}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {'-'}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {'-'}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {'-'}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {'-'}
-                    </Typography>,
-                    <Typography
-                      key={index}
-                      textAlign="start"
-                      sx={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {'-'}
-                    </Typography>,
-                  ]
-                })
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'-'}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {moment(i?.createdAt).format(`DD/MM/YY`)}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {moment(i?.next_date).format(`HH:MM:SS`)}
+                </Typography>,
 
-              setTransactionHistoryData(rows)
-              // if (res?.data?.main_project) {
-              //   setMonthlyReportsList(rows)
-              // }
-            }
-          })
-          .catch((err) => console.log(err))
-          .finally(() => {
-            setLoading(false)
-          })
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'-'}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'-'}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'-'}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'-'}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'-'}
+                </Typography>,
+                <Typography
+                  key={index}
+                  textAlign="start"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                >
+                  {'-'}
+                </Typography>,
+              ]
+            })
+
+          setTransactionHistoryData(rows)
+          setLoading(false)
+          // if (res?.data?.main_project) {
+          //   setMonthlyReportsList(rows)
+          // }
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false)
       })
   }
 
-  // if (loading) {
-  //   return <LoderOverlay />
-  // } else {
+  // const getAllTransactionHistory = async () => {
+  //   setLoading(true)
+  //   setLoading(true)
+
+  //   const userAddress =
+  //     await BlockchainCalls.getConnectionStatusAndAddress().then((response) => {
+  //       setLoading(true)
+
+  //       projectDetailsCalls
+  //         .getAllTransactionHistory(response && response.address)
+  //         .then((res: any) => {
+  //           if (res?.data?.success) {
+  //             const rows =
+  //               res?.data?.data &&
+  //               res?.data?.data.map((i: any, index: number) => {
+  //                 return [
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                       width: '50px',
+  //                     }}
+  //                   >
+  //                     {limitTitle(i?.transaction_data?.transactionHash, 7)}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {limitTitle(i?.transaction_id, 7)}
+  //                   </Typography>,
+
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {'-'}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {moment(i?.createdAt).format(`DD/MM/YY`)}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {moment(i?.next_date).format(`HH:MM:SS`)}
+  //                   </Typography>,
+
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {'-'}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {'-'}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {'-'}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {'-'}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {'-'}
+  //                   </Typography>,
+  //                   <Typography
+  //                     key={index}
+  //                     textAlign="start"
+  //                     sx={{
+  //                       fontSize: 15,
+  //                       fontWeight: 500,
+  //                       textAlign: 'center',
+  //                     }}
+  //                   >
+  //                     {'-'}
+  //                   </Typography>,
+  //                 ]
+  //               })
+
+  //             setTransactionHistoryData(rows)
+  //             // if (res?.data?.main_project) {
+  //             //   setMonthlyReportsList(rows)
+  //             // }
+  //           }
+  //         })
+  //         .catch((err) => console.log(err))
+  //         .finally(() => {
+  //           setLoading(false)
+  //         })
+  //     })
+  // }
+
+  if (loading) {
+    return <LoderOverlay />
+  } else {
     return (
-      <Box sx={{ 
-        // background: '#111E17', 
-      // padding: '56px 6vw', 
-      pt:5
-       }}>
-       <Typography sx={{ fontSize: 18, fontWeight:'400', color: 'headingColor.main' }}>
+      <Box
+        sx={{
+          // background: '#111E17',
+          // padding: '56px 6vw',
+          pt: 5,
+        }}
+      >
+        <Typography
+          sx={{ fontSize: 18, fontWeight: '400', color: 'headingColor.main' }}
+        >
           Tokens Transaction History
         </Typography>
         <Box sx={{ mt: 3 }}>
@@ -209,7 +370,7 @@ const TokensTxHistory = () => {
         </Box>
       </Box>
     )
-  // }
+  }
 }
 
 export default TokensTxHistory

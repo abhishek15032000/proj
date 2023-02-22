@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import CloseIcon from '@mui/icons-material/Close'
 import IconButton from '@mui/material/IconButton'
+import "./style.css"
 
 const style = {
   position: 'absolute' as const,
@@ -20,7 +21,7 @@ const style = {
   // left: '50%',
   // transform: 'translate(-50%, -50%)',
   // width: 400,
-  bgcolor: 'rgba(255,255,255,0.9)',
+  bgcolor: 'white',
   // border: '2px solid #000',
   // boxShadow: 24,
   p: 4,
@@ -31,13 +32,13 @@ const style = {
 
 const CCDocViewer = (props: CCDocViewerProps) => {
   const [docs, setDocs] = useState([])
-  const {documents} = props
+  const { documents } = props
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  useEffect(()=>{
+  useEffect(() => {
     setDocs(documents)
-  },[props.documents])
+  }, [props.documents])
   // const docs = [{ uri: 'https://i.imgur.com/Hw3kOF5.jpeg' }]
   return (
     <>
@@ -66,11 +67,11 @@ const CCDocViewer = (props: CCDocViewerProps) => {
               style={{
                 width: props.width || 500,
                 height: props.height || 500,
-                background: 'white',
-                borderRadius: 8,
-                backgroundColor: 'white',
+                borderRadius: 2,
+                backgroundColor: props.background || 'white',
+                
               }}
-              documents={docs }
+              documents={docs}
               pluginRenderers={DocViewerRenderers}
             />
           </Box>
@@ -117,7 +118,6 @@ const CCDocViewer = (props: CCDocViewerProps) => {
               style={{
                 // width: 500,
                 height: '90vh',
-                background: '#fff',
                 backgroundColor: '#fff',
                 borderRadius: 8,
               }}

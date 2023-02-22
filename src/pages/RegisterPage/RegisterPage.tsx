@@ -380,10 +380,11 @@ const RegisterPage = (props: RegisterPageProps) => {
           <Typography
             onClick={() => navigate(pathNames.LOGIN)}
             sx={{
-              fontWeight: '500',
+              fontWeight: '600',
               fontSize: 18,
               px: 1,
               cursor: 'pointer',
+              color: Colors.textColorDarkGreen,
             }}
           >
             {' '}

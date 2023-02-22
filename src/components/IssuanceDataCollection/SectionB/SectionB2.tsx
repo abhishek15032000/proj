@@ -39,8 +39,9 @@ const SectionB2 = () => {
 
   useEffect(() => {
     if (
-      currentProjectDetails &&
-      currentProjectDetails.section_b.step2.completed
+      currentProjectDetails 
+      // &&
+      // currentProjectDetails.section_b.step2.completed
     ) {
       const {
         temporary_deviation,

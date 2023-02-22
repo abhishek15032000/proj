@@ -38,6 +38,7 @@ import { limitTitle } from '../../utils/commonFunctions'
 import moment from 'moment'
 import { USER } from '../../api/user.api'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import { eventsCalls } from '../../api/eventsCalls.api'
 
 interface WalletProps {}
 
@@ -50,11 +51,11 @@ const Wallet: FC<WalletProps> = (props) => {
   const [balanceINR, setBalanceINR] = useState(0)
 
   const [tableData, setTableData] = useState([])
-  const [privateKey, setPrivateKey] = useState('')
+  const [lastUpdatedAt, setLastUpdatedAt] = useState('')
 
   useEffect(() => {
     getAllProjects()
-    getPrivateKey()
+    // getPrivateKey()
   }, [])
 
   const openInNewTab = (url: any) => {
@@ -62,82 +63,84 @@ const Wallet: FC<WalletProps> = (props) => {
   }
 
   const getAllProjects = () => {
+    const publicKey = getLocalItem('userDetails2')?.eth_active_pub_key
+
     setLoading(true)
-    USER.getTokenBalanceList(getLocalItem('userDetails')?.user_id).then(
-      (res: any) => {
-        if (res?.data?.success) {
-          let modifiedRows = res?.data?.data?.token
-          modifiedRows = modifiedRows.filter(
-            (item: any, index: number) => item.tokenBalances > 0 && item
-          )
+    eventsCalls.getWalletBalance(publicKey).then((res: any) => {
+      if (res?.success) {
+        let modifiedRows = res?.data?.token_balance
+        console.log('pre', modifiedRows)
+        modifiedRows = modifiedRows.filter(
+          (item: any, index: number) => item.balance > 0 && item
+        )
+        const lasupdated = modifiedRows[0]?.updatedAt
+        setLastUpdatedAt(lasupdated)
 
-          setBalance(res?.data?.data?.balance)
-          setBalanceINR(res?.data?.data?.inr_token_balance)
-          const rows =
-            modifiedRows &&
-            modifiedRows.map((i: any, index: number) => {
-              return [
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  {i?.tokenInfo?.company_name}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  {i?.tokenInfo?.symbol}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  {Math.round(Number(i?.tokenBalances))}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textDecoration: 'underline',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() =>
-                    openInNewTab(
-                      'https://mumbai.polygonscan.com/token/' +
-                        i?.tokenInfo?.address
-                    )
-                  }
-                >
-                  {limitTitle(i?.tokenInfo?.address, 20)}
-                </Typography>,
-              ]
-            })
+        setBalance(res?.data?.walletBalance?.balance)
+        setBalanceINR(res?.data?.walletBalance?.inr_token_balance)
+        const rows =
+          modifiedRows &&
+          modifiedRows.map((i: any, index: number) => {
+            return [
+              <Typography
+                key={index}
+                textAlign="center"
+                sx={{ fontSize: 15, fontWeight: 500 }}
+              >
+                {i?.company_name}
+              </Typography>,
+              <Typography
+                key={index}
+                textAlign="center"
+                sx={{ fontSize: 15, fontWeight: 500 }}
+              >
+                {i?.symbol}
+              </Typography>,
+              <Typography
+                key={index}
+                textAlign="center"
+                sx={{ fontSize: 15, fontWeight: 500 }}
+              >
+                {Math.round(Number(i?.balance))}
+              </Typography>,
+              <Typography
+                key={index}
+                textAlign="center"
+                sx={{ fontSize: 15, fontWeight: 500 }}
+              >
+                {Math.round(Number(i?.deposited_balance))}
+              </Typography>,
+              <Typography
+                key={index}
+                textAlign="center"
+                sx={{ fontSize: 15, fontWeight: 500 }}
+              >
+                {Math.round(Number(i?.on_sell_balance))}
+              </Typography>,
+              <Typography
+                key={index}
+                textAlign="center"
+                sx={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+                onClick={() =>
+                  openInNewTab(
+                    'https://mumbai.polygonscan.com/token/' + i?.token_address
+                  )
+                }
+              >
+                {limitTitle(i?.token_address, 20)}
+              </Typography>,
+            ]
+          })
 
-          setTableData(rows)
-        }
-        setLoading(false)
+        setTableData(rows)
       }
-    )
-  }
-
-  const getPrivateKey = () => {
-    USER.getPrivateKey(getLocalItem('userDetails')?.user_id)
-      .then((res: any) => {
-        if (res?.success) {
-          setPrivateKey(res?.data?.private_key)
-        } else if (res?.error) {
-          alert(res?.error[0])
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+      setLoading(false)
+    })
   }
 
   return (
@@ -165,7 +168,7 @@ const Wallet: FC<WalletProps> = (props) => {
         flexDirection={'row'}
         spacing={3}
       >
-        <Grid item  xs={12} md={12} lg={8} xl={8}>
+        <Grid item xs={12} md={12} lg={8} xl={8}>
           <Grid container>
             {/* <Grid
               item
@@ -192,7 +195,6 @@ const Wallet: FC<WalletProps> = (props) => {
                 borderRadius: '8px',
                 py: 3,
                 boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-           
               }}
             >
               <Typography
@@ -224,7 +226,10 @@ const Wallet: FC<WalletProps> = (props) => {
               {loading ? (
                 <CCTableSkeleton sx={{ mt: 2 }} />
               ) : tableData && tableData.length > 0 ? (
-                <TransactionList tableData={tableData} />
+                <TransactionList
+                  tableData={tableData}
+                  lastUpdatedAt={lastUpdatedAt}
+                />
               ) : (
                 <Box
                   sx={{
@@ -237,8 +242,8 @@ const Wallet: FC<WalletProps> = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     background: '#fff',
-                    boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-                    borderRadius: '8px',
+                    // boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+                    // borderRadius: '8px',
                   }}
                 >
                   No Project Token Details is available !!!
@@ -247,7 +252,7 @@ const Wallet: FC<WalletProps> = (props) => {
             </Grid>
 
             <Grid item xs={12} md={12} lg={12} xl={12} mt={2}>
-              <WalletCred privateKey={privateKey} />
+              <WalletCred />
             </Grid>
           </Grid>
         </Grid>

@@ -10,12 +10,29 @@ import { Colors } from '../../theme'
 import moment from 'moment'
 import THTile from '../TransactionHistory/THTile'
 import CCButton from '../../atoms/CCButton'
+import { USER } from '../../api/user.api'
+import { getLocalItem } from '../../utils/Storage'
+import { downloadText } from '../../utils/commonFunctions'
 
 interface WalletCredProps {
   privateKey?: any
 }
 
 const WalletCred: FC<WalletCredProps> = (props) => {
+  const getPrivateKey = () => {
+    USER.getPrivateKey(getLocalItem('userDetails')?.user_id)
+      .then((res: any) => {
+        if (res?.success) {
+          downloadText(res?.data?.private_key, 'private-key.txt')
+        } else if (res?.error) {
+          alert(res?.error[0])
+        }
+      })
+      .catch((e) => {
+        console.log('Error in USER.getPrivateKey api ~ ', e)
+      })
+  }
+
   return (
     <Paper
       sx={{
@@ -70,25 +87,32 @@ const WalletCred: FC<WalletCredProps> = (props) => {
           >
             Your wallet credential, which we created- xxxxxxxxxxxxxxxxxx
           </Typography>
-    
-       <Box  sx={{ mt: 4, display: 'flex', alignItems: 'start', justifyContent: 'start' }}>
-       <CCButton
-          sx={{
-            backgroundColor: '#006B5E',
-            // padding: '8px 15px',
-            borderRadius: '100px',
-            color: '#FFFFFF',
-            fontSize:14,
-            padding:'10px 24px',
-            // width:199
-          }}
-          variant="contained"
-          // onClick={addMethodology}
-          href={`data:application/octet-stream,Private-Key:${props.privateKey}`}
-        >
-          Download Wallet Key
-        </CCButton>
-       </Box>
+
+          <Box
+            sx={{
+              mt: 4,
+              display: 'flex',
+              alignItems: 'start',
+              justifyContent: 'start',
+            }}
+          >
+            <CCButton
+              sx={{
+                backgroundColor: '#006B5E',
+                // padding: '8px 15px',
+                borderRadius: '100px',
+                color: '#FFFFFF',
+                fontSize: 14,
+                padding: '10px 24px',
+                // width:199
+              }}
+              variant="contained"
+              // onClick={addMethodology}
+              onClick={getPrivateKey}
+            >
+              Download Wallet Key
+            </CCButton>
+          </Box>
         </Box>
       </Box>
     </Paper>
