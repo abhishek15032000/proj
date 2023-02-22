@@ -35,6 +35,8 @@ import ProjectLocation from './ProjectLocation'
 
 interface RiskDashboardProps {}
 
+const projectName = 'Shaoguan City Shaoneng Biomass Power Generation Project'
+
 const RiskDashboard: FC<RiskDashboardProps> = (props) => {
   const navigate = useNavigate()
   const dispatch: any = useAppDispatch()
@@ -45,91 +47,91 @@ const RiskDashboard: FC<RiskDashboardProps> = (props) => {
   const [privateKey, setPrivateKey] = useState('')
 
   useEffect(() => {
-    getAllProjects()
-    getPrivateKey()
+    // getAllProjects()
+    // getPrivateKey()
   }, [])
 
   const openInNewTab = (url: any) => {
     window.open(url, '_blank', 'noreferrer')
   }
 
-  const getAllProjects = () => {
-    setLoading(true)
-    USER.getTokenBalanceList(getLocalItem('userDetails')?.user_id).then(
-      (res: any) => {
-        if (res?.data?.success) {
-          let modifiedRows = res?.data?.data?.token
-          modifiedRows = modifiedRows.filter(
-            (item: any, index: number) => item.tokenBalances > 0 && item
-          )
+  // const getAllProjects = () => {
+  //   setLoading(true)
+  //   USER.getTokenBalanceList(getLocalItem('userDetails')?.user_id).then(
+  //     (res: any) => {
+  //       if (res?.data?.success) {
+  //         let modifiedRows = res?.data?.data?.token
+  //         modifiedRows = modifiedRows.filter(
+  //           (item: any, index: number) => item.tokenBalances > 0 && item
+  //         )
 
-          setBalance(res?.data?.data?.balance)
-          const rows =
-            modifiedRows &&
-            modifiedRows.map((i: any, index: number) => {
-              return [
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  {i?.tokenInfo?.company_name}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  {i?.tokenInfo?.symbol}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  {Number(i?.tokenBalances)}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="center"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textDecoration: 'underline',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() =>
-                    openInNewTab(
-                      'https://mumbai.polygonscan.com/token/' +
-                        i?.tokenInfo?.address
-                    )
-                  }
-                >
-                  {limitTitle(i?.tokenInfo?.address, 20)}
-                </Typography>,
-              ]
-            })
+  //         setBalance(res?.data?.data?.balance)
+  //         const rows =
+  //           modifiedRows &&
+  //           modifiedRows.map((i: any, index: number) => {
+  //             return [
+  //               <Typography
+  //                 key={index}
+  //                 textAlign="center"
+  //                 sx={{ fontSize: 15, fontWeight: 500 }}
+  //               >
+  //                 {i?.tokenInfo?.company_name}
+  //               </Typography>,
+  //               <Typography
+  //                 key={index}
+  //                 textAlign="center"
+  //                 sx={{ fontSize: 15, fontWeight: 500 }}
+  //               >
+  //                 {i?.tokenInfo?.symbol}
+  //               </Typography>,
+  //               <Typography
+  //                 key={index}
+  //                 textAlign="center"
+  //                 sx={{ fontSize: 15, fontWeight: 500 }}
+  //               >
+  //                 {Number(i?.tokenBalances)}
+  //               </Typography>,
+  //               <Typography
+  //                 key={index}
+  //                 textAlign="center"
+  //                 sx={{
+  //                   fontSize: 15,
+  //                   fontWeight: 500,
+  //                   textDecoration: 'underline',
+  //                   cursor: 'pointer',
+  //                 }}
+  //                 onClick={() =>
+  //                   openInNewTab(
+  //                     'https://mumbai.polygonscan.com/token/' +
+  //                       i?.tokenInfo?.address
+  //                   )
+  //                 }
+  //               >
+  //                 {limitTitle(i?.tokenInfo?.address, 20)}
+  //               </Typography>,
+  //             ]
+  //           })
 
-          setTableData(rows)
-        }
-        setLoading(false)
-      }
-    )
-  }
+  //         setTableData(rows)
+  //       }
+  //       setLoading(false)
+  //     }
+  //   )
+  // }
 
-  const getPrivateKey = () => {
-    USER.getPrivateKey(getLocalItem('userDetails')?.user_id)
-      .then((res: any) => {
-        if (res?.success) {
-          setPrivateKey(res?.data?.private_key)
-        } else if (res?.error) {
-          alert(res?.error[0])
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
+  // const getPrivateKey = () => {
+  //   USER.getPrivateKey(getLocalItem('userDetails')?.user_id)
+  //     .then((res: any) => {
+  //       if (res?.success) {
+  //         setPrivateKey(res?.data?.private_key)
+  //       } else if (res?.error) {
+  //         alert(res?.error[0])
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       console.log(e)
+  //     })
+  // }
 
   return (
     <Box sx={{ p: 0 }}>
@@ -142,7 +144,10 @@ const RiskDashboard: FC<RiskDashboardProps> = (props) => {
         display="flex"
         flexDirection={'row'}
       >
-        <BackHeader title="Climate Risk Dashboard" onClick={()=> navigate(-1)} />
+        <BackHeader
+          title="Climate Risk Dashboard"
+          onClick={() => navigate(-1)}
+        />
         <Box
           sx={{
             display: 'flex',
@@ -169,9 +174,7 @@ const RiskDashboard: FC<RiskDashboardProps> = (props) => {
               textAlign: 'center',
             }}
           >
-            {
-              '3.66 MW poultry litter based power generation project by Raus Power in India'
-            }
+            {projectName}
           </Typography>
         </Box>
       </Grid>
