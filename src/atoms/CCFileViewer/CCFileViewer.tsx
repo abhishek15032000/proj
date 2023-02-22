@@ -1,11 +1,11 @@
 // React Imports
 import React, { FC, useEffect, useState } from 'react'
-
 // MUI Imports
 import { Grid, Box, Typography, Button, Paper } from '@mui/material'
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import CloseIcon from '@mui/icons-material/Close'
+// Comp Imports
 import CCDocViewer from '../CCDocViewer'
+// API Imports
 import { fileUploadCalls } from '../../api/fileUpload.api'
 
 interface CCFileViewerProps {
@@ -96,8 +96,8 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
             borderRadius:"2px"
           }}
         />}
-          <CloseIcon
-            onClick={() => props.deleteImage(props.index)}
+         {props?.deleteImage && <CloseIcon
+            onClick={() => props.deleteImage(props?.index)}
             style={{
               color: '#001E31',
               cursor: 'pointer',
@@ -106,7 +106,7 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
               right: 0,
               fontSize: 20,
             }}
-          />
+          />}
         </Box>
         <Box
           sx={{
