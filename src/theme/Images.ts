@@ -92,6 +92,10 @@ import user from '../assets/Images/Icons/user.svg'
 import settings from '../assets/Images/Icons/settings.svg'
 import wallet from '../assets/Images/Icons/credit-card.svg'
 import RetireTokens from '../assets/Images/illustrations/retire-tokens.svg'
+import Shaogong from '../assets/Images/risk-dashboard/shaogong.jpeg'
+import Shaogong2 from '../assets/Images/risk-dashboard/shaogong-2.jpeg'
+import BioFuel from '../assets/Images/risk-dashboard/bio-fuel.jpeg'
+import BioFuel2 from '../assets/Images/risk-dashboard/bio-fuel2.jpeg'
 
 export const Images = {
   logo,
@@ -185,4 +189,8 @@ export const Images = {
   settings,
   wallet,
   RetireTokens,
+  Shaogong,
+  Shaogong2,
+  BioFuel,
+  BioFuel2,
 }
