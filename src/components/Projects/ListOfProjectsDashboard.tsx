@@ -44,7 +44,7 @@ let index = 0
 const headingsNew = [
   <LimitedText key={index++} text="Reference ID" />,
   <LimitedText key={index++} text="Creation Dt" />,
-  <LimitedText key={index++} text="Project Name" />,
+  <LimitedText key={index++} text="Project Name" widthLimit="200px" />,
   <LimitedText key={index++} text="Location" />,
   <LimitedText key={index++} text="Verifier Status" />,
   <LimitedText key={index++} text="Verifier" />,
@@ -55,7 +55,7 @@ const headingsNew = [
 const headingsRegistered = [
   <LimitedText key={index++} text="Reference ID" />,
   <LimitedText key={index++} text="Creation Dt" />,
-  <LimitedText key={index++} text="Project Name" />,
+  <LimitedText key={index++} text="Project Name" widthLimit="200px" />,
   <LimitedText key={index++} text="Location" />,
   <LimitedText key={index++} text="Verifier" />,
   <LimitedText key={index++} text="Report Status" />,
@@ -229,7 +229,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             className="td-as-link"
             onClick={() => openProjectDetails(item, 'Details')}
           >
-            <LimitedText key={index} text={item.company_name} />
+            <LimitedText
+              key={index}
+              text={item.company_name}
+              widthLimit="200px"
+            />
           </Box>,
           <LimitedText key={index} text={item.location} />,
           item.verifier_details_id ? (

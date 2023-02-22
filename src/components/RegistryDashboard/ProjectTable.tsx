@@ -17,15 +17,17 @@ import { pathNames } from '../../routes/pathNames'
 import { Colors, Images } from '../../theme'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Typography } from '@mui/material'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 
+let index = 0
 const headings: any = [
-  'Created on',
-  'Received on',
-  'Project Developer',
-  'Project name',
-  'Monthly Report Submission Dt',
-  'Review Status',
-  'Action',
+  <LimitedText key={index++} text="Created on" />,
+  <LimitedText key={index++} text="Received on" />,
+  <LimitedText key={index++} text="Project Developer" />,
+  <LimitedText key={index++} text="Project name" widthLimit="200px" />,
+  <LimitedText key={index++} text="Monthly Report Submission Dt" />,
+  <LimitedText key={index++} text="Review Status" />,
+  <LimitedText key={index++} text="Action" />,
 ]
 
 interface ProjectTableProps {
@@ -36,7 +38,6 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
-  console.log('tab_Index from project table:', tabIndex)
   const [newProjects, setNewProjects] = useState<any>([])
   const [underReviewProjects, setUnderReviewProjects] = useState<any>([])
   const [reviewedProjects, setReviewedProjects] = useState<any>([])
@@ -82,38 +83,62 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
         if (projects && projects.length) {
           projectRes.data.data.forEach((project: any, index: number) => {
             const row = [
-              moment(project.createdAt).format('l'),
-              project?.report?.createdAt
-                ? moment(project?.report?.createdAt).format('l')
-                : '-',
+              <LimitedText
+                key={index}
+                text={moment(project.createdAt).format('l')}
+              />,
+              project?.report?.createdAt ? (
+                <LimitedText
+                  key={index}
+                  text={moment(project.createdAt).format('l')}
+                />
+              ) : (
+                '-'
+              ),
+              // <Box
+              //   key={index}
+              //   sx={{
+              //     display: 'flex',
+              //     alignItems: 'center',
+              //     justifyContent: 'center',
+              //   }}
+              // >
+              //   <Box
+              //     sx={{
+              //       background: '#F0FFFB',
+              //       height: '40px',
+              //       width: '40px',
+              //       borderRadius: '50%',
+              //       display: 'flex',
+              //       alignItems: 'center',
+              //       justifyContent: 'center',
+              //       mr: 1,
+              //     }}
+              //   >
+              //     <img src={Images.BriefcaseIcon} height="24px" width="24px" />{' '}
+              //   </Box>
+              //   <Box>Project Developer</Box>
+              // </Box>,
+              <LimitedText key={index} text={project?.name} />,
               <Box
                 key={index}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                className="td-as-link"
+                onClick={() => onClickStartHandler(project)}
               >
-                <Box
-                  sx={{
-                    background: '#F0FFFB',
-                    height: '40px',
-                    width: '40px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mr: 1,
-                  }}
-                >
-                  <img src={Images.BriefcaseIcon} height="24px" width="24px" />{' '}
-                </Box>
-                <Box>Project Developer</Box>
+                <LimitedText
+                  key={index}
+                  text={project?.company_name}
+                  widthLimit="200px"
+                />
               </Box>,
-              project?.company_name,
-              project?.report?.next_date
-                ? moment(project?.report?.next_date).format('l')
-                : '-',
+              project?.report?.next_date ? (
+                <LimitedText
+                  key={index}
+                  text={moment(project?.report?.next_date).format('l')}
+                />
+              ) : (
+                '-'
+              ),
               renderStatusChips(project?.project_status),
               project?.project_status === 8 ? (
                 <ChevronRightIcon
@@ -130,6 +155,7 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
                     px: 3,
                     py: 1,
                     minWidth: 0,
+                    whiteSpace: 'nowrap',
                   }}
                   onClick={() => onClickStartHandler(project)}
                 >
