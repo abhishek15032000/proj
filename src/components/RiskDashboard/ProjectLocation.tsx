@@ -15,6 +15,8 @@ interface ProjectLocationProps {
   privateKey?: any
 }
 
+const projectLocation = 'https://goo.gl/maps/7yX3tMfMcH2TBDhs7'
+
 const ProjectLocation: FC<ProjectLocationProps> = (props) => {
   return (
     <Grid
@@ -56,7 +58,7 @@ const ProjectLocation: FC<ProjectLocationProps> = (props) => {
         }}
       >
         <img
-          src={Images.map}
+          src={Images.Shaogong}
           alt="bg iamges"
           style={{ height: '20px', width: '20px', marginTop: 2 }}
         />
@@ -69,7 +71,15 @@ const ProjectLocation: FC<ProjectLocationProps> = (props) => {
             ml: 2,
           }}
         >
-          {'https://www.google.com/maps'}
+          {/* {'https://www.google.com/maps'} */}
+          <a
+            href={projectLocation}
+            target={'_blank'}
+            rel="noopener noreferrer"
+            style={{ color: '#1A8EF5' }}
+          >
+            {projectLocation}
+          </a>
         </Typography>
       </Box>
       <Box
@@ -83,7 +93,7 @@ const ProjectLocation: FC<ProjectLocationProps> = (props) => {
         }}
       >
         <img
-          src={Images.ProjectDetails}
+          src={Images.Shaogong}
           alt="bg iamges"
           style={{
             height: '280px',

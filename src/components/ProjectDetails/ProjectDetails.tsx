@@ -192,6 +192,7 @@ const ProjectDetails = () => {
   }
 
   const projectDetailsData: any = useLocation()
+  console.log('projectDetailsData1', projectDetailsData)
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const darkTheme = {
     backgroundImage:
