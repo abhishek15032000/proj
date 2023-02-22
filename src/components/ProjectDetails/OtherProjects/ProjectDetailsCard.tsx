@@ -78,7 +78,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
     )}
 
   return (
-    <Grid item sm={12}  md={4} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start"  sx={{width: '360px', height:'415px',   borderRadius: '8px',}} {...props}>
+    <Grid item sm={12}  md={4} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start"  sx={{width: '360px', height:'465px',   borderRadius: '8px',}} {...props}>
     <Box
       sx={{
         cursor:'pointer',
@@ -137,8 +137,8 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
             </Typography>
           </Grid>
         </Grid>
-        <Box sx={{ fontSize: 16, fontWeight: 600, wordBreak: 'break-word',  }}>
-          {limitTitle(project?.company_name, 35) || '--'}
+        <Box sx={{height:48, fontSize: 16, fontWeight: 500, wordBreak: "break-all" }}>
+          {limitTitle(project?.company_name, 47) || '--'}
         </Box>
         <Box
           sx={{
@@ -149,10 +149,10 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
           }}
         >
           <FmdGoodOutlinedIcon sx={{ color: '#006B5E', ml: '-3px' }} />
-          <Box sx={{ fontSize: 10, fontWeight: 500 , minHeight:'30px'}}>
-            {`Project Location ${
+          <Box sx={{ minHeight:'30px',display:'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Typography sx={{  fontSize: 10, fontWeight: 500 ,}}>  {`Project Location ${
               project?.location || 'Lexington, Ohio, United States'
-            } | Project Area ${project?.area || '53.4'} Sq.Km`}
+            } | Project Area ${project?.area || '53.4'} Sq.Km`}</Typography>
           </Box>
         </Box>
       </Box>

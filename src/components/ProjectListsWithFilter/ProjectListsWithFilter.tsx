@@ -227,8 +227,9 @@ const ProjectListsWithFilter = () => {
       marketPlaceFiltersDrawer.filterApplicableProjects
   )
   const filtersApplied = useAppSelector(
-    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.filtersApplied
+    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.filtersApplied, shallowEqual
   )
+  console.log("🚀 ~ file: ProjectListsWithFilter.tsx ~ line 232 ~ ProjectListsWithFilter ~ filtersApplied", filtersApplied)
   const appliedFiltersCount = useAppSelector(
     ({ marketPlaceFiltersDrawer }) =>
       marketPlaceFiltersDrawer.appliedFiltersCount
@@ -333,7 +334,7 @@ const ProjectListsWithFilter = () => {
             {`filter(${appliedFiltersCount})`}
           </Typography>
         </Stack>
-        <Box
+      {filtersApplied ? <Box
           sx={{
             width: '100%',
             display: 'flex',
@@ -373,10 +374,11 @@ const ProjectListsWithFilter = () => {
           >
             Clear All
           </CCButton>
-        </Box>
+        </Box> : null}
         <Grid
           container
-          spacing={{ sm: 2, md: 2, lg: 2, xl: 3 }}
+          spacing={{ sm: 2, md: 3, lg:3, xl: 3 }}
+          rowSpacing={3}
           columns={{ sm: 10, md: 9, lg: 12, xl: 12 }}
           sx={{
             display: 'flex',
