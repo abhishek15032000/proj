@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Chip } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
@@ -6,34 +6,44 @@ import {
   setRemoveFilters,
 } from '../../redux/Slices/marketPlaceFiltersDrawerSlice'
 import CloseIcon from '@mui/icons-material/Close'
+interface MarketPlaceFilterChipProps {
+  onDelete?: any
+  selectedFilters: any
+}
 
-const MarketPlaceFilterChip = () => {
+const MarketPlaceFilterChip =({selectedFilters,onDelete}:MarketPlaceFilterChipProps) => {
   const dispatch = useAppDispatch()
 
-  const selectedFilters = useAppSelector(
-    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.selectedFilters
-  )
+  const [chips, setChips] = useState<any>([])
+
+  // const selectedFilters = useAppSelector(
+  //   ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.selectedFilters
+  // )
   const filtersApplied = useAppSelector(
     ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.filtersApplied
   )
+  
 
   useEffect(() => {
+    setChips(selectedFilters)
     if (Object.values(selectedFilters).length && filtersApplied)
       dispatch(
         setAppliedFiltersCount(Object.values(selectedFilters).flat().length)
       )
+
   }, [selectedFilters, filtersApplied])
 
   return (
     <div>
-      {Object.keys(selectedFilters)?.map((type: string) =>
-        selectedFilters[type]?.map((item: string, index: number) => (
+      {Object.keys(chips)?.map((type: string) =>
+        chips[type]?.map((item: string, index: number) => (
           <Chip
-            key={index}
+            key={index.toString()}
             label={item}
-            onDelete={() =>
-              dispatch(setRemoveFilters({ type: type, filterValue: item }))
-            }
+            onDelete={() =>{
+              onDelete(type,item)
+              // dispatch(setRemoveFilters({ type: type, filterValue: item }))
+            }}
             deleteIcon={
               <CloseIcon sx={{ color: '#4A635E', fontWeight: 500 }} />
             }

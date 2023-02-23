@@ -55,6 +55,11 @@ const marketPlaceFiltersDrawer = createSlice({
         (item: string) => item !== filterValue
       )
     },
+    resetFilter: (state) =>{
+      state.selectedFilters= initialState.selectedFilters
+      state.appliedFiltersCount = 0
+      state.filtersApplied = false
+    }
   },
 })
 
@@ -66,5 +71,6 @@ export const {
   setRemoveFilters,
   setFiltersApplied,
   setAppliedFiltersCount,
+  resetFilter
 } = marketPlaceFiltersDrawer.actions
 export default marketPlaceFiltersDrawer.reducer

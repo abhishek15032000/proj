@@ -24,6 +24,10 @@ import {
   setFilterApplicableProjects,
   setFiltersApplied,
   setMarketPlaceProjects,
+  resetFilter,
+  setSelectedFilters as redux_setSelectedFilters,
+  setAppliedFiltersCount,
+  setRemoveFilters
 } from '../../redux/Slices/marketPlaceFiltersDrawerSlice'
 import MarketPlaceFilterChip from '../../atoms/MarketPlaceFilterChip/MarketPlaceFilterChip'
 import CCButton from '../../atoms/CCButton'
@@ -210,7 +214,7 @@ const ProjectListsWithFilter = () => {
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
 
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+  const [selectedFilters, setSelectedFilters] = useState<any[]>([])
   const [projects, setProjects] = useState<any>(null)
   const [filteredProjects, setFilteredProjects] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(false)
@@ -229,15 +233,31 @@ const ProjectListsWithFilter = () => {
   const filtersApplied = useAppSelector(
     ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.filtersApplied, shallowEqual
   )
-  console.log("🚀 ~ file: ProjectListsWithFilter.tsx ~ line 232 ~ ProjectListsWithFilter ~ filtersApplied", filtersApplied)
-  const appliedFiltersCount = useAppSelector(
-    ({ marketPlaceFiltersDrawer }) =>
-      marketPlaceFiltersDrawer.appliedFiltersCount
-  )
 
+  const redux_selectedFilters = useAppSelector(
+    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.selectedFilters, shallowEqual
+    )
+  const appliedFiltersCount = useAppSelector(
+    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.appliedFiltersCount, shallowEqual
+    )
+ 
   useEffect(() => {
     getAllProjects()
   }, [])
+
+  useEffect(()=>{
+    setSelectedFilters(redux_selectedFilters)
+    dispatch(setAppliedFiltersCount(Object.values(redux_selectedFilters).flat().length))
+    dispatch(setFiltersApplied(Object.values(redux_selectedFilters).flat().length))
+  },[redux_selectedFilters])
+
+  useEffect(()=>{
+    if(!filtersApplied ){
+      setProjects(marketPlaceProjects)
+    }else{
+      setProjects(filterApplicableProjects)
+    }
+  },[filtersApplied, filterApplicableProjects])
 
   const getAllProjects = async () => {
     try {
@@ -256,52 +276,26 @@ const ProjectListsWithFilter = () => {
     }
   }
 
-  const handleChange = (e: any, filter: string) => {
-    let selectedFiltersCopy
-    if (e.target.checked) {
-      selectedFiltersCopy = [...selectedFilters]
-      selectedFiltersCopy.push(filter)
-    } else {
-      selectedFiltersCopy = selectedFilters.filter(
-        (selectedFilter: string) => selectedFilter !== filter
-      )
-    }
-    setSelectedFilters(selectedFiltersCopy)
-    setAction(FILTER_ACTION.APPLY)
-  }
-
-  const handleClick = () => {
-    if (action === FILTER_ACTION.APPLY) {
-      filterProjects()
-    } else {
-      resetFilters()
-    }
-  }
-  const filterProjects = () => {
-    if (!selectedFilters.length) {
-      setFilteredProjects(projects)
-      return
-    }
-    if (projects && projects?.length) {
-      const projectsMatchingFilter: any[] = []
-      projects.forEach((project: any) => {
-        const projectType = project?.type
-        if (
-          projectType.some((item: string) => selectedFilters.includes(item))
-        ) {
-          projectsMatchingFilter.push(project)
-        }
-      })
-      setFilteredProjects(projectsMatchingFilter)
-      setAction(FILTER_ACTION.RESET)
-    }
-  }
-
-  const resetFilters = () => {
-    setSelectedFilters([])
-    setFilteredProjects(projects)
-    setAction(FILTER_ACTION.APPLY)
-  }
+ 
+  // const filterProjects = () => {
+  //   if (!selectedFilters.length) {
+  //     setFilteredProjects(projects)
+  //     return
+  //   }
+  //   if (projects && projects?.length) {
+  //     const projectsMatchingFilter: any[] = []
+  //     projects.forEach((project: any) => {
+  //       const projectType = project?.type
+  //       if (
+  //         projectType.some((item: string) => selectedFilters.includes(item))
+  //       ) {
+  //         projectsMatchingFilter.push(project)
+  //       }
+  //     })
+  //     setFilteredProjects(projectsMatchingFilter)
+  //     setAction(FILTER_ACTION.RESET)
+  //   }
+  // }
 
   const viewRenderer = useCallback(() => {
     console.log('viewRenderer')
@@ -311,7 +305,7 @@ const ProjectListsWithFilter = () => {
           flexDirection={'row'}
           alignItems="flex-end"
           justifyContent={'space-between'}
-          sx={{ mb: 4, mt: 2 }}
+          sx={{ mb: filtersApplied ? 3: 5, mt: 2 }}
         >
           <Typography
             sx={{
@@ -324,14 +318,16 @@ const ProjectListsWithFilter = () => {
           <Typography
             sx={{
               color: onWebApp ? Colors.textColorLightGreen : '#55DBC8',
-              padding: '8px 10px',
+              padding: '10px 24px',
               border: '1px solid #6E7976',
               borderRadius: '40px',
               cursor: 'pointer',
+              fontSize:14,
+              fontWeight: 500
             }}
             onClick={() => setShowDrawer(true)}
           >
-            {`filter(${appliedFiltersCount})`}
+           Filter { appliedFiltersCount? `(${appliedFiltersCount.toString()})`: null}
           </Typography>
         </Stack>
       {filtersApplied ? <Box
@@ -340,7 +336,7 @@ const ProjectListsWithFilter = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: 4,
+            mb: 2,
           }}
         >
           <Box
@@ -351,15 +347,21 @@ const ProjectListsWithFilter = () => {
               flexWrap: 'wrap',
             }}
           >
-            <Typography sx={{ color: '#006B5E' }}>
+            <Typography sx={{ color: '#006B5E' , fontSize:14, fontWeight: 500, marginRight:5}}>
               Showing results for:{' '}
             </Typography>
-            {filtersApplied && <MarketPlaceFilterChip />}
+            {filtersApplied && <MarketPlaceFilterChip selectedFilters={selectedFilters} onDelete={(type:any, value:any)=>{
+                //  dispatch(setRemoveFilters({ type: type, filterValue: value }))
+             const foundKey:any = Object.keys(selectedFilters).find(i=> i === type)
+             const toApplyFilter = {...selectedFilters,[foundKey]: selectedFilters[foundKey].filter((i:any)=> i !==value)}
+             dispatch(redux_setSelectedFilters(toApplyFilter))
+
+          }}/>}
           </Box>
           <CCButton
             sx={{
               textAlign: 'end',
-              padding: '5px 18px',
+              padding: '4px 24px',
               minWidth: 0,
               borderRadius: 30,
               background: '#006B5E',
@@ -370,6 +372,7 @@ const ProjectListsWithFilter = () => {
             onClick={() => {
               dispatch(setFilterApplicableProjects(marketPlaceProjects))
               dispatch(setFiltersApplied(false))
+              dispatch(resetFilter())
             }}
           >
             Clear All
@@ -392,9 +395,9 @@ const ProjectListsWithFilter = () => {
         >
           {loading ? (
             <ProjectDetailsCardSkeleton />
-          ) : filterApplicableProjects &&
-            filterApplicableProjects.length !== 0 ? (
-            filterApplicableProjects?.map((project: any, index: number) => (
+          ) :  
+            projects?.length !== 0 ? (
+            projects?.map((project: any, index: number) => (
               <ProjectDetailsCard
                 key={index}
                 project={project}
@@ -413,14 +416,14 @@ const ProjectListsWithFilter = () => {
                 title=" No Projects matching the selected filter for now."
                 // listNewProject
                 // action={() => listNewProject()}
-                sx={{ width: '100%', height: '100%' }}
+                sx={{ width: '100%', height: '100%', mt:0 }}
               />
             </Grid>
           )}
         </Grid>
       </>
     )
-  }, [filterApplicableProjects, loading])
+  }, [filterApplicableProjects, loading, selectedFilters, filtersApplied, appliedFiltersCount])
 
   return onWebApp ? (
     <Container
@@ -439,7 +442,7 @@ const ProjectListsWithFilter = () => {
         open={showDrawer}
         onClose={() => setShowDrawer(false)}
       >
-        <MarketPlaceFiltersDrawer />
+      {showDrawer &&  <MarketPlaceFiltersDrawer  onClose={() => setShowDrawer(false)} showDrawer={showDrawer}/>}
       </Drawer>
       {viewRenderer()}
     </Container>

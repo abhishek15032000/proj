@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   AccordionSummary,
   Checkbox,
@@ -27,7 +27,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(() => ({
 interface CCAccordionCheckBoxProps {
   title?: any
   dropList?: any
-  selectedFilters?: any
+  selectedFilters:any
   filters?: any
   handleFilters?: any
   addFilters?: any
@@ -35,12 +35,14 @@ interface CCAccordionCheckBoxProps {
 }
 
 const CCAccordionCheckBox = (props: CCAccordionCheckBoxProps) => {
+ 
   const [expanded, setExpanded] = useState<boolean>(false)
 
   const handleChange: any = (name?: string) => {
     console.log(name)
     setExpanded(!expanded)
   }
+ 
 
   return (
     <div>
@@ -61,7 +63,7 @@ const CCAccordionCheckBox = (props: CCAccordionCheckBoxProps) => {
                     <Checkbox
                       sx={{ color: '#4A635E' }}
                       value={item}
-                      //checked = {}
+                      checked = {Object.values(props.selectedFilters).flat()?.includes(item)}
                       onChange={(e) => {
                         //props?.handleFilters(props.title, e.target.value)
                         e.target.checked
