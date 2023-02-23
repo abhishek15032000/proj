@@ -3,27 +3,24 @@ import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-
-// const tags = [
-//   'Project type tag 1',
-//   'Impacted SDG 1',
-//   'Project type tag 2',
-//   'Impacted SDG 2',
-//   'Agritech',
-// ]
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 
 interface AdditionalDetailsProps {
-  projectDetailsData?: any,
-  projectData?: any,
+  projectDetailsData?: any
+  projectData?: any
 }
 const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [tags, setTags] = useState([])
   const { projectDetailsData } = props
-  console.log("🚀 ~ file: AdditionalDetails.tsx ~ line 23 ~ AdditionalDetails ~ projectDetailsData", projectDetailsData)
+  console.log(
+    '🚀 ~ file: AdditionalDetails.tsx ~ line 23 ~ AdditionalDetails ~ projectDetailsData',
+    projectDetailsData
+  )
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
-
+  const [seeMore, setSeeMore] = useState(false)
   useEffect(() => {
     getAllDetails()
   }, [])
@@ -53,77 +50,155 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       },
       {
         heading: 'CREDITING PERIOD',
-        value: [`Start: ${moment(projectDetailsData?.start_date).format(`DD/MM/YY`)} `, `End: ${moment(projectDetailsData?.end_date).format(`DD/MM/YY`)}`],
+        value: [
+          `Start: ${moment(projectDetailsData?.start_date).format(
+            `DD/MM/YY`
+          )} `,
+          `End: ${moment(projectDetailsData?.end_date).format(`DD/MM/YY`)}`,
+        ],
       },
     ]
     setDetails(modifiedArrayTemp)
-    // const cardDetails = [
-    //   { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: props.projectData?.token_detail?.balance },
-    //   { heading: 'CREDITS RETIRED', value: props.projectData?.token_detail?.retire },
-    //   { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:props.projectData?.token_detail?.lifetime },
-    // ]
-    // setCardDetails(cardDetails)
   }
-  useEffect(()=>{
+  useEffect(() => {
     const cardDetails = [
-      { heading: 'TOTAL CREDITS / TOKENS AVAILABLE', value: Number(props.projectData?.token_detail?.balance || 0 ).toFixed(2)},
-      { heading: 'CREDITS RETIRED', value: Number(props.projectData?.token_detail?.retire || 0 ).toFixed(2)},
-      { heading: 'CO2e  SEQUESTERED [LIFETIME]', value:Number(props.projectData?.token_detail?.lifetime || 0).toFixed(2) },
+      {
+        heading: 'TOTAL CREDITS / TOKENS AVAILABLE',
+        value: Number(props.projectData?.token_detail?.balance || 0),
+      },
+      {
+        heading: 'CREDITS RETIRED',
+        value: Number(props.projectData?.token_detail?.retire || 0),
+      },
+      {
+        heading: 'CO2e  SEQUESTERED [LIFETIME]',
+        value: Number(props.projectData?.token_detail?.lifetime || 0),
+      },
     ]
     setCardDetails(cardDetails)
     setTags(props.projectData?.tags)
-  },[props.projectData])
+  }, [props.projectData])
   return (
-    <Box sx={{ 
-      // background: '#111E17', 
-      // padding: '2vw 6vw',  
-      pt:8
-      }}>
-      <Typography sx={{ fontSize: 18, fontWeight:'400', color: 'headingColor.main' }}>
+    <Box
+      sx={{
+        pt: 8,
+        flexDirection: 'column',
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: 32,
+          fontWeight: '600',
+          color: 'headingColor.main',
+          lineHeight: '48px',
+
+          fontStyle: 'normal',
+        }}
+      >
         Additional Details
       </Typography>
-      <Grid container sx={{ mt: 3 }}>
-        <Grid item md={9}>
+      <Grid container sx={{ mt: 3 }} flexDirection="column">
+        <Grid item md={12}>
           <Box>
             <Typography
               sx={{
                 // mt: 2,
-                fontSize: 12,
-                color: 'textColor.main',
-                fontWeight:'500'
+                fontSize: 14,
+                color: 'textColor5.main',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                lineHeight: '21px',
+                letterSpacing: '0.02em',
+                fontStyle: 'normal',
               }}
             >
               Tags
             </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
-              {tags &&
-                tags.length ?
-                tags.map((tag: string, index: number) => (
-                  <Tag key={index} tag={tag} />
-                )): null}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              {tags && tags.length
+                ? tags.map((tag: string, index: number) => (
+                    <Tag key={index} tag={tag} />
+                  ))
+                : null}
             </Box>
-            <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
-              {details &&
-                details.length ?
-                details.map((detail: any, index: number) => (
-                  <Details
-                    key={index}
-                    heading={detail?.heading}
-                    value={detail?.value}
-                  />
-                )): null}
-            </Grid>
+            {seeMore ? (
+              <Grid container sx={{ mt: 2 }} rowGap={'28px'}>
+                {details && details.length
+                  ? details.map((detail: any, index: number) => (
+                      <Details
+                        key={index}
+                        heading={detail?.heading}
+                        value={detail?.value}
+                      />
+                    ))
+                  : null}
+              </Grid>
+            ) : (
+              <Grid container sx={{ mt: 3 }} rowGap={'28px'}>
+                {details && details.length
+                  ? details.map((detail: any, index: number) =>
+                      index <= 1 ? (
+                        <Details
+                          key={index}
+                          heading={detail?.heading}
+                          value={detail?.value}
+                        />
+                      ) : null
+                    )
+                  : null}
+              </Grid>
+            )}
           </Box>
         </Grid>
         {/* CreditDetails */}
-        <Grid item md={3}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'start',
+            alignItems: 'start',
+            mb: 4,
+            mt: 6,
+            cursor: 'pointer',
+          }}
+          onClick={() => setSeeMore(!seeMore)}
+        >
+          {!seeMore ? (
+            <ArrowDownwardIcon
+              style={{ color: '#006B5E' }}
+              fontSize={'small'}
+            />
+          ) : (
+            <ArrowUpwardIcon style={{ color: '#006B5E' }} fontSize={'small'} />
+          )}
+          <Typography
+            sx={{
+              color: '#006B5E',
+              fontSize: 14,
+              fontWeight: 500,
+              textAlign: 'center',
+              lineHeight: '21px',
+              letterSpacing: '0.02em',
+              fontStyle: 'normal',
+            }}
+          >
+            {!seeMore ? 'SEE MORE' : 'SEE LESS'}
+          </Typography>
+        </Box>
+        <Grid item md={12}>
           <Box
             sx={{
               py: 2,
-              background:
-              onWebApp ?'linear-gradient(180deg, #FFFFFF 0%, #DAF7F0 100%)':'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, #2D5F57 237.11%)',
+              background: onWebApp
+                ? 'linear-gradient(180deg, #F1FCF9 0%, #B0FFF2 100%)'
+                : 'linear-gradient(179.8deg, rgba(98, 98, 98, 0) 0.18%, #2D5F57 237.11%)',
               borderRadius: '8px',
-              overflow:'hidden'
+              overflow: 'hidden',
+              flexDirection: 'row',
+              display: 'flex',
+              justifyContent: 'space-around',
+              mr: 2,
+              mt: 2,
             }}
           >
             {cardDetails &&
@@ -157,7 +232,11 @@ const Tag: FC<TagProps> = ({ tag }) => {
         padding: '9px 24px',
         borderRadius: '24px',
         mr: 1,
-        color: 'chipTextColor.main'
+        color: 'chipTextColor.main',
+        fontWeight: 500,
+        lineHeight: '20px',
+        letterSpacing: '0.1px',
+        fontStyle: 'normal',
       }}
     >
       {tag}
@@ -171,15 +250,41 @@ interface DetailsProps {
 }
 const Details: FC<DetailsProps> = ({ heading, value }) => {
   return (
-    <Grid item xs={10} md={4} sx={{ mt: 1 }} >
-      <Box sx={{ fontSize: 14, color: 'textColor.main', mb: 1, width:'100%'}}>{heading}</Box>
+    <Grid item xs={10} md={5.5} sx={{ mt: 1 }}>
+      <Box
+        sx={{
+          fontSize: 14,
+          fontWeight: '600',
+          color: 'textColor5.main',
+          mb: 1,
+          width: '100%',
+          lineHeight: '21px',
+          letterSpacing: '0.02em',
+          fontStyle: 'normal',
+        }}
+      >
+        {heading}
+      </Box>
       {typeof value === 'string' ? (
-        <Box sx={{ fontSize: 16, color: 'textColor2.main', width:'100%', mt:1 }}>{value}</Box>
+        <Box
+          sx={{ fontSize: 16, color: 'textColor2.main', width: '100%', mt: 1 }}
+        >
+          {value}
+        </Box>
       ) : (
         value &&
         value.length &&
         value?.map((val: string, index: number) => (
-          <Box key={index} sx={{ fontSize: 16 , color: 'textColor2.main',}}>
+          <Box
+            key={index}
+            sx={{
+              fontSize: 16,
+              color: 'textColor2.main',
+              lineHeight: '21px',
+              letterSpacing: '0.02em',
+              fontStyle: 'normal',
+            }}
+          >
             {val}
           </Box>
         ))
@@ -195,8 +300,30 @@ interface CardDetailsProps {
 const CardDetails: FC<CardDetailsProps> = ({ heading, value }) => {
   return (
     <Box sx={{ textAlign: 'center', mt: 2 }}>
-      <Box sx={{ fontSize: 10, color: 'textColor.main' }}>{heading}</Box>
-      <Box sx={{ fontSize: 36, color: 'textColor3.main' }}>{value}</Box>
+      <Box
+        sx={{
+          fontSize: 12,
+          fontWeight: '600',
+          color: 'textColor.main',
+          lineHeight: '18px',
+          letterSpacing: '0.01em',
+          fontStyle: 'normal',
+        }}
+      >
+        {heading}
+      </Box>
+      <Box
+        sx={{
+          fontSize: 32,
+          fontWeight: '600',
+          color: 'textColor4.main',
+          lineHeight: '48px',
+
+          fontStyle: 'normal',
+        }}
+      >
+        {value}
+      </Box>
     </Box>
   )
 }
