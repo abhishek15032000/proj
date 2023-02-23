@@ -17,6 +17,8 @@ interface CommentsReducerInterface {
   sectionCComments: any
   sectionDComments: any
   sectionEComments: any
+  verifierName: string
+  issuerName: string
 }
 const initialState: CommentsReducerInterface = {
   projectID: '',
@@ -35,6 +37,8 @@ const initialState: CommentsReducerInterface = {
   sectionCComments: null,
   sectionDComments: null,
   sectionEComments: null,
+  verifierName: '',
+  issuerName: '',
 }
 const comments = createSlice({
   name: 'auth',
@@ -88,6 +92,12 @@ const comments = createSlice({
     setSectionEComments: (state, action: PayloadAction<any>) => {
       state.sectionEComments = action.payload
     },
+    setVerifierName: (state, action: PayloadAction<any>) => {
+      state.verifierName = action.payload
+    },
+    setIssuerName: (state, action: PayloadAction<any>) => {
+      state.issuerName = action.payload
+    },
   },
 })
 
@@ -103,6 +113,8 @@ export const {
   setSenderInitial,
   setReceiverInitial,
   setSectionIDs,
+  setVerifierName,
+  setIssuerName,
 } = comments.actions
 
 export default comments.reducer
