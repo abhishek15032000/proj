@@ -20,13 +20,14 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import { pathNames } from '../../routes/pathNames'
 import { projectDetailsCalls } from '../../api/projectDetailsCalls.api'
 
-import { Images } from '../../theme'
+import { Colors, Images } from '../../theme'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import Overview from './Skeleton/Overview'
 import ProjectIntro from './Skeleton/ProjectIntro'
 import SDGSComponent from './Skeleton/SDGSComponent'
 import AdditionalDetailsSkeleton from './Skeleton/AdditionalDetailsSkeleton'
+import { SDGSLIST } from '../../config/constants.config'
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lightPrimary?: string
@@ -130,44 +131,7 @@ const lightModeTheme = {
   typography: initialState.typography,
 }
 
-const data = [
-  {
-    image: Images.one,
-    name: 'No Poverty',
-  },
-  {
-    image: Images.three,
-    name: 'Good Health & Well Being',
-  },
-  {
-    image: Images.six,
-    name: 'Clean Water & Sanitisation',
-  },
-  {
-    image: Images.seven,
-    name: 'Reduced Inequalities',
-  },
-  {
-    image: Images.eight,
-    name: 'Responsible Consumption & Production',
-  },
-  {
-    image: Images.ten,
-    name: 'Climate Action',
-  },
-  {
-    image: Images.twelve,
-    name: 'Life on Land',
-  },
-  {
-    image: Images.thirteen,
-    name: 'Decent Work & Economic Growth',
-  },
-  {
-    image: Images.fifteen,
-    name: 'Affordable & Clean Energy',
-  },
-]
+const data = [1, 3, 1, 3, 1, 3, 1, 3]
 
 const ProjectDetails = () => {
   const [searchParams] = useSearchParams()
@@ -192,7 +156,7 @@ const ProjectDetails = () => {
   }
 
   const projectDetailsData: any = useLocation()
-  console.log('projectDetailsData1', projectDetailsData)
+
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const darkTheme = {
     backgroundImage:
@@ -380,7 +344,7 @@ const ProjectDetails = () => {
                                       <img
                                         data-testid="logo-img"
                                         className="logoImage"
-                                        src={item?.image}
+                                        src={SDGSLIST[item - 1].image}
                                         style={{ width: '70px' }}
                                       />
                                       <Typography
@@ -397,7 +361,7 @@ const ProjectDetails = () => {
                                           fontStyle: 'normal',
                                         }}
                                       >
-                                        {item?.name}
+                                        {SDGSLIST[item - 1].name}
                                       </Typography>
                                     </Grid>
                                   ))}

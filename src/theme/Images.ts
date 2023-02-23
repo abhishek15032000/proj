@@ -72,6 +72,14 @@ import ten from '../assets/Images/project-details/10.png'
 import twelve from '../assets/Images/project-details/12.png'
 import thirteen from '../assets/Images/project-details/13.png'
 import fifteen from '../assets/Images/project-details/15.png'
+import two from '../assets/Images/project-details/15.png'
+import four from '../assets/Images/project-details/15.png'
+import five from '../assets/Images/project-details/15.png'
+import nine from '../assets/Images/project-details/15.png'
+import eleven from '../assets/Images/project-details/15.png'
+import forteen from '../assets/Images/project-details/15.png'
+import sixteen from '../assets/Images/project-details/15.png'
+import seventeen from '../assets/Images/project-details/15.png'
 // import user from '../assets/Images/Icons/user.png'
 import UserDark from '../assets/Images/Icons/user-icon-dark.png'
 import List from '../assets/Images/help/List.png'
@@ -193,4 +201,12 @@ export const Images = {
   Shaogong2,
   BioFuel,
   BioFuel2,
+  two,
+  four,
+  five,
+  nine,
+  eleven,
+  forteen,
+  sixteen,
+  seventeen,
 }

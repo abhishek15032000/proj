@@ -25,7 +25,8 @@ import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectIntroduction'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
+import About from '../About'
 
 const projectDetails = {
   company_name:
@@ -39,7 +40,12 @@ const projectDetails = {
   duration: 2,
   area: '1000',
 }
-const tabs = ['Registration Details', 'Verifier & Reports', 'Traceability']
+const tabs = [
+  'About',
+  'Registration Details',
+  'Verifier & Reports',
+  'Traceability',
+]
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
@@ -125,44 +131,41 @@ const ProfileDetailsIssuanceInfo: FC = () => {
 
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
-     <Grid
-    container
-    justifyContent={'space-between'}
-    alignItems={'center'}
-    mt={'12px'}
-    mb={5}
-  >
-    <Grid item>
-      <BackHeader
-        title="Project Details"
-        onClick={() => navigate(-1)}
-      />
-    </Grid>
-    <Grid item>
-      <CCButton
-      onClick={()=> navigate(pathNames.RISK_DASHBOARD)}
-        variant="contained"
-        sx={{
-          ml: 3,
-          padding: '10px 25px',
-          borderRadius: 10,
-          fontSize:14,
-          '&:hover': {
-            backgroundColor: 'accent.main',
-            boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
-            color: "#006B5E"
-          }
-        }}
-        buttonBackgroundColor={'#006B5E'}
-        buttonColor={'white'}
-        // onClick={btn1OnClick}
-        // disabled={disableBtn1}
+      <Grid
+        container
+        justifyContent={'space-between'}
+        alignItems={'center'}
+        mt={'12px'}
+        mb={5}
       >
-         <ArrowOutwardIcon sx={{fontSize:16, fontWeight:'600', mr:1}} />
-        Climate Risk Dashboard
-      </CCButton>
-    </Grid>
-  </Grid>
+        <Grid item>
+          <BackHeader title="Project Details" onClick={() => navigate(-1)} />
+        </Grid>
+        <Grid item>
+          <CCButton
+            onClick={() => navigate(pathNames.RISK_DASHBOARD)}
+            variant="contained"
+            sx={{
+              ml: 3,
+              padding: '10px 25px',
+              borderRadius: 10,
+              fontSize: 14,
+              '&:hover': {
+                backgroundColor: 'accent.main',
+                boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
+                color: '#006B5E',
+              },
+            }}
+            buttonBackgroundColor={'#006B5E'}
+            buttonColor={'white'}
+            // onClick={btn1OnClick}
+            // disabled={disableBtn1}
+          >
+            <ArrowOutwardIcon sx={{ fontSize: 16, fontWeight: '600', mr: 1 }} />
+            Climate Risk Dashboard
+          </CCButton>
+        </Grid>
+      </Grid>
       {/*<Paper sx={{ mt: 3 }}>*/}
       <ProjectIntroduction
         projectDetailsData={currentProjectDetails}
@@ -291,19 +294,20 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Box>
 
         <Box>
-          {tabIndex === 0 && (
+          {tabIndex === 0 && <About projectId={currentProjectDetails?.uuid} />}
+          {tabIndex === 1 && (
             <IssuanceInfoList
               data={issuanceInfo && issuanceInfo}
               projectStatus={projectStatus}
             />
           )}
-          {tabIndex === 1 && (
+          {tabIndex === 2 && (
             <VerifierReport
               currentProjectId={currentProjectDetails?._id}
               currentProjectUUID={currentProjectDetails?.uuid}
             />
           )}
-          {tabIndex === 2 && (
+          {tabIndex === 3 && (
             <Box sx={{ mt: 5 }}>
               <Typography sx={{ fontSize: 18, color: '#1D4B44', mb: 2 }}>
                 Trace History

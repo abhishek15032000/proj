@@ -20,44 +20,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
   const navigate = useNavigate()
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   //  const onWebApp = 1
-  const data = [
-    {
-      image: Images.one,
-      name: 'No Poverty',
-    },
-    {
-      image: Images.three,
-      name: 'Good Health & Well Being',
-    },
-    {
-      image: Images.six,
-      name: 'Clean Water & Sanitisation',
-    },
-    {
-      image: Images.seven,
-      name: 'Reduced Inequalities',
-    },
-    {
-      image: Images.eight,
-      name: 'Responsible Consumption & Production',
-    },
-    {
-      image: Images.ten,
-      name: 'Climate Action',
-    },
-    {
-      image: Images.twelve,
-      name: 'Life on Land',
-    },
-    {
-      image: Images.thirteen,
-      name: 'Decent Work & Economic Growth',
-    },
-    {
-      image: Images.fifteen,
-      name: 'Affordable & Clean Energy',
-    },
-  ]
+
   const { projectDetailsData, showBuyToken, projectData } = props
   const prevScrollY = useRef(0)
 
@@ -92,6 +55,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
       .then((res) => setBannerImage(URL.createObjectURL(res)))
   }, [projectData, projectDetailsData])
 
+ 
   return (
     <Grid
       container
@@ -153,7 +117,7 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
               fontStyle: 'normal',
             }}
           >
-            {'Project ID:' + '5435678'}
+            {'Project ID:' + projectDetailsData?.uuid}
           </Typography>
           <Typography
             sx={{
