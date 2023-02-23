@@ -384,6 +384,7 @@ const RegistryReviewReport = () => {
                       <Box
                         sx={{
                           display: 'flex',
+
                           alignItems: 'center',
                           gap: '10px',
                         }}
@@ -468,7 +469,7 @@ const RegistryReviewReport = () => {
                   </Typography>
 
                   <Grid container sx={{ mt: 2 }}>
-                    <Grid item xs={4}>
+                    <Grid item xs={5}>
                       <Typography
                         sx={{
                           color: '#006B5E',
@@ -478,13 +479,17 @@ const RegistryReviewReport = () => {
                       >
                         Date of report submission
                       </Typography>
-                      <Box sx={{ fontSize: '14px', mt: 1 }}>
+                    </Grid>
+                    <Grid item xs={7}>
+                      <Box sx={{ fontSize: '14px' }}>
                         {moment(reportData?.report?.createdAt).format(
                           'DD/MM/YYYY'
                         )}
                       </Box>
                     </Grid>
-                    <Grid item xs={4}>
+                  </Grid>
+                  <Grid container sx={{ mt: 1 }}>
+                    <Grid item xs={5}>
                       <Typography
                         sx={{
                           fontSize: '14px',
@@ -494,13 +499,17 @@ const RegistryReviewReport = () => {
                       >
                         Next Submission Date
                       </Typography>
-                      <Box sx={{ fontSize: '14px', mt: 1 }}>
+                    </Grid>
+                    <Grid item xs={7}>
+                      <Box sx={{ fontSize: '14px' }}>
                         {moment(reportData?.report?.next_date).format(
                           'DD/MM/YYYY'
                         )}
                       </Box>
                     </Grid>
-                    <Grid item xs={4}>
+                  </Grid>
+                  <Grid container sx={{ mt: 1 }}>
+                    <Grid item xs={5}>
                       <Typography
                         sx={{
                           color: '#006B5E',
@@ -508,9 +517,11 @@ const RegistryReviewReport = () => {
                           fontSize: '14px',
                         }}
                       >
-                        Report <br /> Name
+                        Report Name
                       </Typography>
-                      <Box sx={{ fontSize: '14px', mt: 1 }}>
+                    </Grid>
+                    <Grid item xs={7}>
+                      <Box sx={{ fontSize: '14px' }}>
                         Project Issuance Report
                       </Box>
                     </Grid>

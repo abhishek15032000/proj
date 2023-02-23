@@ -164,6 +164,7 @@ const ReviewAndComment = () => {
       >
         <Box
           sx={{
+            px: 2,
             py: 2,
             fontSize: 12,
             color: '#4A635E',
@@ -334,7 +335,7 @@ const ReviewAndComment = () => {
       )} */}
             </Grid>
             {showCommentSection && (
-              <Grid item xs={12} md={5} sx={{ height: '100%' }}>
+              <Grid item xs={12} md={5} sx={{ height: '100%', pt: 4 }}>
                 <CommentBox
                   closeChatbox={() => {
                     setShowCommentSection(!showCommentSection)
