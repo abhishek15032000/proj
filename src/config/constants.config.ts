@@ -523,3 +523,57 @@ export const TX_TYPE = {
   REGISTRY_GETS_UPDATED: 3,
   REGISTRY_VERIFIES_REPORT: 6,
 }
+
+export const availableFilters: any = {
+  'Project Type': [
+    'Registered or Active Project',
+    'Provisional Project or Future Project',
+  ],
+
+  'Credit Type': ['Carbon Credit', 'Biodiversity Credit', 'Plastics Credit'],
+
+  'Project Categories': [
+    'Agriculture',
+    'Afforestation and reforestation',
+    'Bio mass energy',
+    'Cement',
+    'CO2 Usage',
+    'Chemical industries',
+    'Construction',
+    'Mining/mineral production/ bed CH4',
+    'Energy distribution',
+    'Energy efficiency: households',
+    'Energy efficiency: industry',
+    'Energy efficiency: own generation',
+    'Energy efficiency: service',
+    'Energy efficiency: supply side',
+    'Energy demand',
+    'Forestry and Other Land Use',
+    'Forest conservation (REDD+)',
+    'Fossil fuel switch',
+    'Fugitive emissions from fuels (solid, oil and gas)',
+    'Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
+    'Geothermal',
+    'HFCs',
+    'Hydro',
+    'Livestock, enteric fermentation, and manure management',
+    'Manufacturing industries',
+    'Metal production',
+    'Waste handling and disposal',
+    'Methane avoidance',
+    'N2O',
+    'Solar',
+    'Solvent use',
+    'Blue carbon',
+    'Transport',
+    'Wind',
+    'Other Energy industries (renewable - / non-renewable sources)',
+    'Other, please specify',
+  ],
+
+  'Verification Standard': [
+    'Verra Registry',
+    'Gold Registry',
+    'BioCarbon Registry',
+  ],
+}

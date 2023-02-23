@@ -116,8 +116,7 @@ const Profile: FC<ProfileProps> = (props) => {
     shallowEqual
   )
 
-  const {getTokensBalance} = useTokenRetire()
-
+  const { getTokensBalance } = useTokenRetire()
 
   useEffect(() => {
     setCaptchaTokenFromUUID()
@@ -338,6 +337,10 @@ const Profile: FC<ProfileProps> = (props) => {
     const { firstname, mobile, email } = profileDetails
     if (!firstname || !mobile || !email) {
       alert('Fill all the Fields!')
+      return
+    }
+    if (mobile.length !== 10) {
+      alert('Please enter valid mobile number')
       return
     }
 

@@ -7,7 +7,7 @@ import { pathNames } from '../../../routes/pathNames'
 import { useLocation, useNavigate, createSearchParams } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { Grid, Tooltip } from '@mui/material'
+import { Grid, Tooltip, Typography } from '@mui/material'
 import { limitTitle } from '../../../utils/commonFunctions'
 import { FileDownloadSharp } from '@mui/icons-material'
 import { fileUploadCalls } from '../../../api/fileUpload.api'
@@ -34,21 +34,23 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   useEffect(() => {
     const fieldList = [
       {
-        label: 'Total Tokens :',
-        value: totalToken,
+        label: 'Price Per Token',
+        value: minimum_rate
       },
       {
-        label: 'Tokens Name :',
-        value: token_details?.token_symbol,
+        label: 'Tokens Available',
+        value:totalToken
       },
-      {
-        label: 'Token Type :',
-        value: token_details?.token_type,
-      },
-      {
-        label: 'Unit Price :',
-        value: minimum_rate,
-      },
+      // {
+      //   label: 'Tokens Name :',
+      //   value: tokens?.token_name
+      // },
+      // {
+      //   label: 'Token Type :',
+      //   value:tokens?.token_type
+      // },
+     
+      
     ]
     setFields(fieldList)
     //get bannerImage
@@ -72,154 +74,124 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   }
 
   return (
-    <Grid
-      item
-      sm={12}
-      md={6}
-      lg={4}
-      xl={3}
-      display="flex"
-      justifyContent={justifyContent}
-      alignItems="flex-start"
-      {...props}
+    <Grid item sm={12}  md={4} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start"  sx={{width: '360px', height:'465px',   borderRadius: '8px',}} {...props}>
+    <Box
+      sx={{
+        cursor:'pointer',
+        width: '360px',
+        // mb: 2,
+        borderRadius: '8px',
+        transition:'transform .1s',
+        // mr: 4,
+        // height: '100%',
+        boxShadow: onWebApp ? '0px 5px 25px rgba(0, 0, 0, 0.12)' : '',
+        "&:hover": {
+          transform:'scale(1.01)'
+        },
+      }}
+      onClick={() =>onClickHandler()}
     >
+      
+        
+          <Box sx={{ borderRadius: '8px 8px 0 0',  height:"180px" }}>
+            <img
+              src={onWebApp ? bannerImage ?bannerImage :Images.ProjectLight : bannerImage ? bannerImage: Images.Project}
+              alt=""
+              width="100%"
+              height="180px"
+              style={{objectFit:"cover"}}
+            />
+          </Box>
+          
+        
+  
       <Box
         sx={{
-          cursor: 'pointer',
-          width: '264px',
-          // mb: 2,
-          borderRadius: '8px',
-          transition: 'transform .1s',
-          // mr: 4,
-          height: '100%',
-          boxShadow: onWebApp ? '0px 5px 25px rgba(0, 0, 0, 0.12)' : '',
-          '&:hover': {
-            transform: 'scale(1.01)',
-          },
+          px: 2,
+          pt: 2,
+          pb: 2,
+          color: onWebApp ? '#00201B' : '#E1E3E1',
+          background: onWebApp ? '#fff' : '#191C1B',
+          borderBottom: '1px solid #96B1AB',
         }}
-        onClick={() => onClickHandler()}
       >
-        <Box sx={{ borderRadius: '8px 8px 0 0' }}>
-          <Box
-            sx={{
-              position: 'relative',
-              borderRadius: '8px 8px 0 0',
-            }}
-          >
-            <Box sx={{ borderRadius: '8px 8px 0 0' }}>
-              <img
-                src={
-                  onWebApp
-                    ? bannerImage
-                      ? bannerImage
-                      : Images.ProjectLight
-                    : bannerImage
-                    ? bannerImage
-                    : Images.Project
-                }
-                alt=""
-                width="100%"
-                height="147px"
-                style={{ objectFit: 'cover' }}
-              />
-            </Box>
-            <Box
+
+        <Grid container sx={{mb:1}}>
+          <Grid item>
+          <Typography
               sx={{
-                position: 'absolute',
+                
                 background: onWebApp ? '#CCE8E1' : '#1C3531',
                 color: onWebApp ? '#006B5E' : '#BFC9C6',
                 padding: '4px 8px',
                 fontSize: '11px',
                 fontWeight: 500,
-                top: '5px',
-                left: '8px',
+                borderRadius: '4px'
               }}
             >
               {project?.register ? 'Registered Project' : 'Provisional Project'}
-            </Box>
-          </Box>
+            </Typography>
+          </Grid>
+        </Grid>
+        <Box sx={{height:48, fontSize: 16, fontWeight: 500, wordBreak: "break-all" }}>
+          {limitTitle(project?.company_name, 47) || '--'}
         </Box>
         <Box
           sx={{
-            px: 2,
-            pt: 2,
-            pb: 1,
-            color: onWebApp ? '#00201B' : '#E1E3E1',
-            background: onWebApp ? '#fff' : '#191C1B',
-            borderBottom: '1px solid #899390',
+            mt: 1,
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
           }}
         >
-          <Box
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              wordBreak: 'break-word',
-              minHeight: '48px',
-            }}
-          >
-            {limitTitle(project?.company_name, 45) || '--'}
-          </Box>
-          <Box
-            sx={{
-              mt: 1,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <FmdGoodOutlinedIcon sx={{ color: '#667080', ml: '-3px' }} />
-            <Box sx={{ fontSize: 10, fontWeight: 500, minHeight: '30px' }}>
-              {`Project Location ${
-                project?.location || 'Lexington, Ohio, United States'
-              } | Project Area ${project?.area || '53.4'} Sq.Km`}
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            px: 2,
-            pb: 2,
-            pt: 1,
-            color: onWebApp ? '#00201B' : '#E1E3E1',
-            background: onWebApp ? '#fff' : '#191C1B',
-            borderRadius: '0 0 8px 8px',
-          }}
-        >
-          <Box sx={{ fontSize: 12, fontWeight: 500 }}>
-            {fields.map((field: any, index: number) => {
-              return (
-                <Box
-                  key={index.toString()}
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Box sx={{ width: '50%' }}>{field?.label}</Box>
-                  <Tooltip title={field?.value}>
-                    <Box sx={{ width: '50%' }}>
-                      {limitTitle(field.value, 10) || '--'}
-                    </Box>
-                  </Tooltip>
-                </Box>
-              )
-            })}
-          </Box>
-          <Box>
-            <CCButton
-              sx={{
-                mt: 3,
-                background: onWebApp ? '' : '#55DBC8',
-                width: '100%',
-                height: '30px',
-                borderRadius: '16px',
-                color: '#003730',
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              Buy Credits
-            </CCButton>
+          <FmdGoodOutlinedIcon sx={{ color: '#006B5E', ml: '-3px' }} />
+          <Box sx={{ minHeight:'30px',display:'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Typography sx={{  fontSize: 10, fontWeight: 500 ,}}>  {`Project Location ${
+              project?.location || 'Lexington, Ohio, United States'
+            } | Project Area ${project?.area || '53.4'} Sq.Km`}</Typography>
           </Box>
         </Box>
       </Box>
+      <Box
+        sx={{
+          px:2,
+          pb: 3,
+          pt: 3,
+          color: onWebApp ? '#00201B' : '#E1E3E1',
+          background: onWebApp ? '#fff' : '#191C1B',
+          borderRadius: '0 0 8px 8px',
+        }}
+      >
+        <Grid container   columns={12}  sx={{ fontSize: 12, fontWeight: 500, display: 'flex', justifyContent:'space-between'  }}>
+          {fields.map((field:any, index:number) =>{
+            return <Grid item xs={6} key={index.toString()} sx={{ display: 'flex', flexDirection:"column",justifyContent:'space-between',  }}>
+            <Typography sx={{  textTransform:'uppercase',color:"#747876", fontWeight:600, fontSize:14,letterSpacing: '0.02em' }}>{field?.label}</Typography>
+            <Tooltip title={field?.value} >
+              <Typography sx={{ color:"#141D1B", fontSize:16 , letterSpacing: '0.02em'}}>{limitTitle(field.value, 10 )|| '--'}</Typography>
+            </Tooltip>
+          </Grid>
+          })}
+          
+        </Grid>
+        {/* <Box>
+          <CCButton
+            sx={{
+              mt: 3,
+              background: onWebApp ? '' : '#55DBC8',
+              width: '100%',
+              height: '30px',
+              borderRadius: '16px',
+              color: '#003730',
+              fontSize: 14,
+              fontWeight: 500,
+            }}
+           
+          >
+            Buy Credits
+          </CCButton>
+        </Box> */}
+      </Box>
+    </Box>
     </Grid>
   )
 }
