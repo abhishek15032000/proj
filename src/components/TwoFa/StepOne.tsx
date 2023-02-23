@@ -74,7 +74,7 @@ const StepOneTwoFa = (props: TwoFaProps) => {
         justifyContent: 'space-between',
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Box
         sx={{
           width: {
@@ -154,7 +154,10 @@ const StepOneTwoFa = (props: TwoFaProps) => {
             </Typography>
           </Box>
         </Box>
-        <Typography align="right" sx={{ py: 3, fontWeight: 500, fontSize: 14 }}>
+        <Typography
+          align="right"
+          sx={{ py: 3, fontWeight: 500, fontSize: 14, color: '#1C4A43' }}
+        >
           Didn’t receive code yet?{' '}
           <Typography
             sx={{

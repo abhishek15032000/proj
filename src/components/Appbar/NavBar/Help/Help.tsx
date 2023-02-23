@@ -10,6 +10,7 @@ import { shallowEqual } from 'react-redux'
 import { setShowPopUp } from '../../../../redux/Slices/issuanceDataCollection'
 import HelpPopUp from './HelpPopUp'
 import { DashboardHelpSectionFAQ } from './SectionA/helpContentData'
+import { Images } from '../../../../theme'
 
 const Help = () => {
   const location = useLocation()
@@ -52,8 +53,8 @@ const Help = () => {
         aria-expanded={open ? 'true' : undefined}
         onClick={() => handleClick(true)}
       >
-        <HelpOutlineOutlinedIcon />
-        <Typography sx={{ mx: 1, fontWeight: 500 }}>Help</Typography>
+        <img alt="help_icon_chainflux" src={Images.help} width="24px" height="24px"/>
+        <Typography sx={{ mx: 1, fontWeight: 700, fontSize:14 }}>Help</Typography>
       </Button>
       {showPopUp && (
         <HelpPopUp

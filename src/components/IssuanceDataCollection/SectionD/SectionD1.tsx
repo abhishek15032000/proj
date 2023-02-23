@@ -11,6 +11,7 @@ import Spinner from '../../../atoms/Spinner'
 import HelpPopUp from '../../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../../Appbar/NavBar/Help/SectionA/helpContentData'
 import { setShowPopUp } from '../../../redux/Slices/issuanceDataCollection'
+import { Box } from '@mui/system'
 
 const SectionD1: FC = () => {
   const dispatch = useAppDispatch()
@@ -59,70 +60,74 @@ const SectionD1: FC = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Grid
-      container
-      sx={{ width: '100%', mt: 3 }}
-      columnSpacing={{ xs: 0, md: 1 }}
-      rowSpacing={1}
-      xs={12}
-      md={12}
-      lg={12}
-      xl={12}
-    >
-      <Grid item sx={{ mt: 1 }} xs={12}>
-        <CCMultilineTextArea
-          // aria-label="minimum height"
-          label=" Data and parameters fixed ex ante or at renewal of crediting period"
-          placeholder="If data for this project is monitored and calculated based on an ex-ante method, please explain."
-          value={D1.data_and_parameter_fixed_ExAnte}
-          name={'data_and_parameter_fixed_ExAnte'}
-          onChange={({ target: { value, name } }) =>
-            dispatch(setD1({ name, value }))
-          }
-        />
-      </Grid>
-
+    <Box className="issuance_data_section_scroll">
       <Grid
-        item
+        container
+        sx={{ width: '100%', mt: 2 }}
+        columnSpacing={{ xs: 0, md: 1 }}
+        rowSpacing={1}
         xs={12}
         md={12}
         lg={12}
         xl={12}
-        sx={{ mt: 1 }}
-        justifyContent="center"
-        alignItems={'center'}
-        direction="column"
       >
-        <CCDropAndUpload
-          mediaTitle={['Check Sample Data']}
-          mediaItem={[sampleAnteTable]}
-          title="Attach datas & parameters fixed ex-ante table"
-          imageArray={D1.attach_ex_ante_table}
-          onImageUpload={(item: any) => {
-            dispatch(
-              setD1({
-                name: 'attach_ex_ante_table',
-                value: [...attach_ex_ante_table, item],
-              })
-            )
-          }}
-          onDeleteImage={(index: number) => {
-            dispatch(
-              setD1({
-                name: 'attach_ex_ante_table',
-                value: deleteIndexInArray(attach_ex_ante_table, index),
-              })
-            )
-          }}
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCMultilineTextArea
+            // aria-label="minimum height"
+            label=" Data and parameters fixed ex ante or at renewal of crediting period"
+            placeholder="If data for this project is monitored and calculated based on an ex-ante method, please explain."
+            value={D1.data_and_parameter_fixed_ExAnte}
+            name={'data_and_parameter_fixed_ExAnte'}
+            onChange={({ target: { value, name } }) =>
+              dispatch(setD1({ name, value }))
+            }
+            required={false}
+          />
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          md={12}
+          lg={12}
+          xl={12}
+          //sx={{ mt: 1 }}
+          justifyContent="center"
+          alignItems={'center'}
+          direction="column"
+        >
+          <CCDropAndUpload
+            mediaTitle={['Check Sample Data']}
+            mediaItem={[sampleAnteTable]}
+            title="Attach datas & parameters fixed ex-ante table"
+            imageArray={D1.attach_ex_ante_table}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setD1({
+                  name: 'attach_ex_ante_table',
+                  value: [...attach_ex_ante_table, item],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setD1({
+                  name: 'attach_ex_ante_table',
+                  value: deleteIndexInArray(attach_ex_ante_table, index),
+                })
+              )
+            }}
+            //required={false}
+          />
+        </Grid>
+        <HelpPopUp
+          modal={modal}
+          setModal={(item: any) => setModal(item)}
+          data={IssuanceHelpContentData?.D1}
+          issuanceVisible={true}
         />
       </Grid>
-      <HelpPopUp
-        modal={modal}
-        setModal={(item: any) => setModal(item)}
-        data={IssuanceHelpContentData?.D1}
-        issuanceVisible={true}
-      />
-    </Grid>
+    </Box>
   )
 }
 

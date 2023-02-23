@@ -9,11 +9,9 @@ export const dataCollectionCalls = {
       }
     )
   },
-  getAllProjects: (email: string) => {
-    return AxiosHelper(
-      URL_PATH.project.getAllProjects + `?email=${email}`,
-      'GET'
-    )
+  getAllProjects: (email?: string) => {
+    const param = email ? `?email=${email}` : ''
+    return AxiosHelper(URL_PATH.project.getAllProjects + param, 'GET')
   },
   getProjectById: (projectID: string) => {
     return AxiosHelper(
@@ -94,6 +92,13 @@ export const dataCollectionCalls = {
   //stats in token and contract
   getStats: () => {
     return AxiosHelper(URL_PATH.project.getTokenAndContractStats, 'GET').then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
+  getVerifiedProjects: (email?: string) => {
+    return AxiosHelper(URL_PATH.project.getVerifiedProjects, 'GET').then(
       (res: any) => {
         return res.data
       }

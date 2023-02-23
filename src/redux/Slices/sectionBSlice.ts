@@ -5,6 +5,8 @@ interface SectionBInterface {
   B1: any
   // B2
   B2: any
+  // B3
+  B3: any
 }
 
 const initialState: SectionBInterface = {
@@ -28,6 +30,16 @@ const initialState: SectionBInterface = {
     change_project_design: '',
     change_startDate_creditPeriod: '',
   },
+  B3: {
+    project_boundary: '',
+    eligibility: '',
+    funding: '',
+    ownership: '',
+    ownership_file_attach: [],
+    other_certifications: '',
+    participation_under_GHG_programs: '',
+    other_benefits: '',
+  },
 }
 
 const sectionB = createSlice({
@@ -44,10 +56,15 @@ const sectionB = createSlice({
       const { name, value } = action.payload
       state.B2[name] = value
     },
+    // B3 Handlers
+    setB3: (state, action: PayloadAction<any>) => {
+      const { name, value } = action.payload
+      state.B3[name] = value
+    },
     resetSectionB: () => initialState,
   },
 })
 
-export const { setB1, setB2, resetSectionB } = sectionB.actions
+export const { setB1, setB2, setB3, resetSectionB } = sectionB.actions
 
 export default sectionB.reducer

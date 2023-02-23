@@ -11,15 +11,16 @@ import {
 } from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle } from '../../../utils/commonFunctions'
-import { getTransaction } from '../../../utils/Marketplace/marketplace.util'
+// import { getTransaction } from '../../../utils/Marketplace/marketplace.util'
 import { getApprovedTokensBalanceBuyFlow } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 import { getLocalItem, removeItem } from '../../../utils/Storage'
+import {useMarketPlace} from '../../../hooks/useMarketPlace'
 
 const headings = ['Transaction ID', 'Quantity', 'Status']
 
 const OngoingApprove = () => {
   const dispatch = useAppDispatch()
-
+  const { getTransaction } = useMarketPlace()
   const onGoingApproveBuyFlowLocalStorage = getLocalItem(
     LOCAL_STORAGE_VARS.ON_GOING_APPROVE_DATA_BUY_FLOW
   )

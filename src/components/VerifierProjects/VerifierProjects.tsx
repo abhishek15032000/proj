@@ -64,7 +64,9 @@ const VerifierProjects = () => {
     const { wallet_added = false, uuid = '' } = getLocalItem('userDetails2')
 
     // Wallet added and Profile completed considered as 2 step
-    const totalSteps = 2
+    // const totalSteps = 2
+    //Not considering wallet
+    const totalSteps = 1
     let stepsCompleted = 0
 
     let allFieldsUpdatedInUserProfile = true
@@ -99,7 +101,8 @@ const VerifierProjects = () => {
         alert('Error in USER.getUserInfo api')
       }
     }
-    if (stepsCompleted < 2) {
+    // if (stepsCompleted < 2) {
+    if (stepsCompleted < 1) {
       navigate(pathNames.VERIFIER_DASHBOARD, { replace: true })
     }
   }
@@ -133,7 +136,7 @@ const VerifierProjects = () => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader title="Dashboard" iconDisable />
+          <BackHeader title="Dashboard" iconDisable sx={{mb:3}}/>
         </Grid>
 
         <Grid item sm={12} sx={{ pr: 2 }}>

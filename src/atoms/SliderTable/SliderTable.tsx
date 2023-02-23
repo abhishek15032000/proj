@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { TablePagination, Typography } from '@mui/material'
+import { TablePagination, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { SliderTableProps } from './SliderTable.interface'
 
@@ -18,6 +18,16 @@ const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
+}))
+const TrimmedStyledTableCell = styled(TableCell)(() => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: '#BCE2D2',
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    textAlign: 'left',
+  },
+  [`&.${tableCellClasses.root}`]: {},
 }))
 
 const StyledTableRow = styled(TableRow)(() => ({
@@ -94,19 +104,27 @@ const SliderTable = (props: SliderTableProps) => {
                     sx={
                       index === 0
                         ? {
-                            minWidth: 150,
-                            position: 'sticky',
-                            top: 0,
-                            left: 0,
-                            zindex: 1999,
-                            background: '#CCE8E1',
-                            height: props.tileHeight,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            boxShadow: showBorder ? 5 : 0,
+                            // minWidth: 150,
+                            // position: 'sticky',
+                            // top: 0,
+                            // left: 0,
+                            // zindex: 1999,
+                            // background: '#CCE8E1',
+                            // height: props.tileHeight,
+                            // display: 'flex',
+                            // justifyContent: 'center',
+                            // alignItems: 'center',
+                            // boxShadow: showBorder ? 5 : 0,
+                            // overflow: 'hidden',
+                            // textOverflow: 'ellipsis',
+                            // whiteSpace: 'nowrap',
                           }
-                        : { maxHeight: props.tileHeight }
+                        : {
+                            maxHeight: props.tileHeight,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }
                     }
                     key={index}
                     align="center"
@@ -121,7 +139,7 @@ const SliderTable = (props: SliderTableProps) => {
               tableRowData?.length > 0 &&
               tableRowData.map((row: any, index: number) => (
                 <StyledTableRow key={index} data-testid={'cc-table-row'}>
-                  {row?.length > 0 &&
+                  {/* {row?.length > 0 &&
                     row.map((tdValue: any, tdIndex: number) => (
                       <StyledTableCell
                         sx={
@@ -147,7 +165,74 @@ const SliderTable = (props: SliderTableProps) => {
                       >
                         {tdValue}
                       </StyledTableCell>
-                    ))}
+                    ))} */}
+
+                  {row?.length > 0 &&
+                    row.map((tdValue: any, tdIndex: number) => {
+                      return typeof tdValue === 'string' &&
+                        !tdValue.includes('/') ? (
+                        <TrimmedStyledTableCell
+                          // sx={
+                          //   tdIndex === 0
+                          //     ? {
+                          //         minWidth: 150,
+                          //         position: 'sticky',
+                          //         top: 0,
+                          //         left: 0,
+                          //         zindex: 1999,
+                          //         background:
+                          //           index % 2 === 0 ? '#E1EEE8' : '#FFF',
+                          //         height: props.tileHeight,
+                          //         display: 'flex',
+                          //         justifyContent: 'center',
+                          //         alignItems: 'center',
+                          //         boxShadow: showBorder ? 5 : 0,
+                          //       }
+                          //     : { maxHeight: props.tileHeight }
+                          // }
+                          key={tdIndex}
+                          align="center"
+                        >
+                          <Tooltip title={tdValue}>
+                            <Box
+                              sx={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                maxWidth: '70px',
+                              }}
+                            >
+                              {tdValue}
+                            </Box>
+                          </Tooltip>
+                        </TrimmedStyledTableCell>
+                      ) : (
+                        <StyledTableCell
+                          // sx={
+                          //   tdIndex === 0
+                          //     ? {
+                          //         minWidth: 150,
+                          //         position: 'sticky',
+                          //         top: 0,
+                          //         left: 0,
+                          //         zindex: 1999,
+                          //         background:
+                          //           index % 2 === 0 ? '#E1EEE8' : '#FFF',
+                          //         height: props.tileHeight,
+                          //         display: 'flex',
+                          //         justifyContent: 'center',
+                          //         alignItems: 'center',
+                          //         boxShadow: showBorder ? 5 : 0,
+                          //       }
+                          //     : { maxHeight: props.tileHeight }
+                          // }
+                          key={tdIndex}
+                          align="center"
+                        >
+                          {tdValue}
+                        </StyledTableCell>
+                      )
+                    })}
                 </StyledTableRow>
               ))}
           </TableBody>

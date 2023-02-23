@@ -33,7 +33,7 @@ const TabSelector: FC<TabSelectorProps> = (props) => {
             sx={{
               textTransform: 'unset',
               height: '50px',
-              width: '80px',
+              minWidth: '80px',
               ...props.tabStyle,
             }}
             key={index}

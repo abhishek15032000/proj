@@ -15,6 +15,8 @@ import { Box } from '@mui/system'
 
 // Asset Imports
 import SectionCOrganisationalStructure from '../../../assets/Images/SampleData/SectionCOrganisationalStructure.png'
+import SectionC1ProjectProponents from '../../../assets/Images/SampleData/SectionC1ProjectProponents.png'
+import SectionC1OthersInvolvedInProject from '../../../assets/Images/SampleData/SectionC1OthersInvolvedInProject.png'
 
 // Local Components
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
@@ -49,7 +51,11 @@ const SectionC1 = () => {
   )
 
   const C1 = useAppSelector(({ sectionC }) => sectionC.C1, shallowEqual)
-  const { attach_org_structure_and_responsibilities_chart } = C1
+  const {
+    attach_org_structure_and_responsibilities_chart,
+    project_proponents_upload,
+    others_involved_upload,
+  } = C1
 
   useEffect(() => {
     if (
@@ -61,6 +67,10 @@ const SectionC1 = () => {
         monitoring_plan,
         attach_org_structure_and_responsibilities_chart,
         specific_data_monitored,
+        training_and_maintenance,
+        management_of_data_quality,
+        project_proponents_upload,
+        others_involved_upload,
       } = currentProjectDetails.section_c.step1
 
       dispatch(setC1({ name: 'description', value: description }))
@@ -73,8 +83,32 @@ const SectionC1 = () => {
       dispatch(setC1({ name: 'monitoring_plan', value: monitoring_plan }))
       dispatch(
         setC1({
+          name: 'training_and_maintenance',
+          value: training_and_maintenance,
+        })
+      )
+      dispatch(
+        setC1({
+          name: 'management_of_data_quality',
+          value: management_of_data_quality,
+        })
+      )
+      dispatch(
+        setC1({
           name: 'attach_org_structure_and_responsibilities_chart',
           value: attach_org_structure_and_responsibilities_chart,
+        })
+      )
+      dispatch(
+        setC1({
+          name: 'project_proponents_upload',
+          value: project_proponents_upload,
+        })
+      )
+      dispatch(
+        setC1({
+          name: 'others_involved_upload',
+          value: others_involved_upload,
         })
       )
     }
@@ -85,8 +119,8 @@ const SectionC1 = () => {
       <Spinner />
     </Stack>
   ) : (
-    <Box>
-      <Grid container sx={{ mt: 4 }} spacing={1}>
+    <Box className="issuance_data_section_scroll">
+      <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Description of monitoring system "
@@ -115,7 +149,7 @@ const SectionC1 = () => {
               'Sample Report - Organizational Structure & Responsibilities Chart',
             ]}
             mediaItem={[SectionCOrganisationalStructure]}
-            title="Attach organizational structure & responsibilities chart*"
+            title="Attach organizational structure & responsibilities chart"
             imageArray={attach_org_structure_and_responsibilities_chart}
             onImageUpload={(item: any) => {
               dispatch(
@@ -139,9 +173,57 @@ const SectionC1 = () => {
                 })
               )
             }}
+            required={true}
           />
         </Grid>
-
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCDropAndUpload
+            mediaTitle={[]}
+            mediaItem={[SectionC1ProjectProponents]}
+            title="Project Proponent(s)"
+            imageArray={project_proponents_upload}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setC1({
+                  name: 'project_proponents_upload',
+                  value: [item, ...project_proponents_upload],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setC1({
+                  name: 'project_proponents_upload',
+                  value: deleteIndexInArray(project_proponents_upload, index),
+                })
+              )
+            }}
+          />
+        </Grid>
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCDropAndUpload
+            mediaTitle={[]}
+            mediaItem={[SectionC1OthersInvolvedInProject]}
+            title="Others Involved in the Project"
+            imageArray={others_involved_upload}
+            onImageUpload={(item: any) => {
+              dispatch(
+                setC1({
+                  name: 'others_involved_upload',
+                  value: [item, ...others_involved_upload],
+                })
+              )
+            }}
+            onDeleteImage={(index: number) => {
+              dispatch(
+                setC1({
+                  name: 'others_involved_upload',
+                  value: deleteIndexInArray(others_involved_upload, index),
+                })
+              )
+            }}
+          />
+        </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
             label="Specific Datas Monitored "
@@ -151,6 +233,30 @@ const SectionC1 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setC1({ value, name }))
             }
+          />
+        </Grid>
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCMultilineTextArea
+            label="Training and Maintenance "
+            //placeholder="According to registered and the applied methodology, specific datas monitored"
+            value={C1.training_and_maintenance}
+            name={'training_and_maintenance'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setC1({ value, name }))
+            }
+            required={false}
+          />
+        </Grid>
+        <Grid item sx={{ mt: 1 }} xs={12}>
+          <CCMultilineTextArea
+            label="Management of data quality"
+            placeholder="Describe quality management procedures to manage data and information relevant to the project and baseline scenario, accompanied by the uncertainty assessment. Ensure that the management procedures include a description of how data is maintained and recorded. Describe the information management system used in the project. Location and retention of stored data and data management that includes a procedure for data transfers between different systems or documentation forms shall be included."
+            value={C1.management_of_data_quality}
+            name={'management_of_data_quality'}
+            onChange={({ target: { name, value } }) =>
+              dispatch(setC1({ value, name }))
+            }
+            required={false}
           />
         </Grid>
       </Grid>

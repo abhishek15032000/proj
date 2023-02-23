@@ -6,16 +6,17 @@ import { LOCAL_STORAGE_VARS } from '../../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setSellQuantityForApprove } from '../../../redux/Slices/Marketplace/marketplaceSellFlowSlice'
 import { Colors } from '../../../theme'
-import {
-  getApprovedTokensBalance,
-  getBalanceOnExchange,
-  getWalletBalance,
-} from '../../../utils/Marketplace/marketplaceSellFlow.util'
+// import {
+//   getApprovedTokensBalance,
+//   getBalanceOnExchange,
+//   getWalletBalance,
+// } from '../../../utils/Marketplace/marketplaceSellFlow.util'
 import { getLocalItem } from '../../../utils/Storage'
-import CardRow from '../CardRow'
+import CardRow from '../../../atoms/CardRow/CardRow'
 import TabSellApprove from './TabSellApprove'
 import TabSellCreateSellOrder from './TabSellCreateSellOrder'
 import TabSellDeposit from './TabSellDeposit'
+import { useMarketPlaceSell } from '../../../hooks/useMarketPlaceSell'
 
 interface SellTokenProps {}
 
@@ -23,7 +24,11 @@ const SellToken: FC<SellTokenProps> = () => {
   const dispatch = useAppDispatch()
 
   const [tabIndex, setTabIndex] = useState(1)
-
+  const {
+    getApprovedTokensBalance,
+    getBalanceOnExchange,
+    getWalletBalance,
+  } = useMarketPlaceSell()
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual

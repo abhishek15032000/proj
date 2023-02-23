@@ -30,6 +30,8 @@ import {
   setStartDate,
   setEndDate,
   resetSectionNewProjectDetails,
+  setBannerImage,
+  setProjectImage,
 } from '../../redux/Slices/newProjectSlice'
 import Spinner from '../../atoms/Spinner'
 import _without from 'lodash/without'
@@ -37,6 +39,9 @@ import moment from 'moment'
 import HelpPopUp from '../Appbar/NavBar/Help/HelpPopUp'
 import { IssuanceHelpContentData } from '../Appbar/NavBar/Help/SectionA/helpContentData'
 import { setShowPopUp } from '../../redux/Slices/issuanceDataCollection'
+import { PROJECT_TYPES } from '../../config/constants.config'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
 
@@ -48,28 +53,6 @@ const MenuProps = {
     },
   },
 }
-
-const projectTypes = [
-  'Agriculture',
-  'Chemical industries',
-  'Construction',
-  'Energy distribution',
-  'Energy demand',
-  ' Energy industries (renewable - / non-renewable sources)',
-  'Fugitive emissions from fuels (solid, oil and gas)',
-  ' Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
-  ' Livestock, enteric fermentation, and manure management',
-  ' Manufacturing industries',
-  ' Metal production',
-  'Mining/mineral production',
-  'Solvent use',
-  ' Transport',
-  'Waste handling and disposal',
-  'Afforestation and reforestation',
-  'Forestry and Other Land Use',
-  'Forest conservation (REDD+)',
-  ' Blue carbon',
-]
 
 const ListNewProject = () => {
   const dispatch = useAppDispatch()
@@ -118,6 +101,14 @@ const ListNewProject = () => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+  const bannerImage = useAppSelector(
+    ({ newProject }) => newProject.bannerImage,
+    shallowEqual
+  )
+  const projectImage = useAppSelector(
+    ({ newProject }) => newProject.projectImage,
+    shallowEqual
+  )
 
   useEffect(() => {
     dispatch(resetSectionNewProjectDetails())
@@ -133,6 +124,8 @@ const ListNewProject = () => {
         end_date,
         duration,
         area,
+        banner_image = null,
+        project_image = null,
       } = currentProjectDetails
       dispatch(setProjectName(company_name))
       dispatch(setProjectType(type))
@@ -141,6 +134,8 @@ const ListNewProject = () => {
       end_date && dispatch(setEndDate(end_date))
       dispatch(setProjectDuration(duration))
       dispatch(setProjectArea(area))
+      dispatch(setBannerImage(banner_image))
+      dispatch(setProjectImage(project_image))
     }
   }, [currentProjectDetails])
 
@@ -184,6 +179,9 @@ const ListNewProject = () => {
       }
     }
   }
+
+  console.log('bannerImage', bannerImage)
+  console.log('projectImage', projectImage)
 
   return loading === true ? (
     <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 450 }}>
@@ -254,7 +252,7 @@ const ListNewProject = () => {
             )}
             MenuProps={MenuProps}
           >
-            {projectTypes.map((item) => (
+            {PROJECT_TYPES.map((item) => (
               <MenuItem key={item} value={item}>
                 <Checkbox checked={projectType.includes(item)} />
                 <ListItemText primary={item} />
@@ -310,8 +308,9 @@ const ListNewProject = () => {
           label="Project Duration(Years)"
           placeholder="Enter Project Duration(Years)"
           value={projectDuration}
-          onChange={(e) => handleTextChange(e, 'projectDuration')}
-          type="number"
+          onChange={(e) => {
+            handleTextChange(e, 'projectDuration')
+          }}
         />
       </Grid>
       <Grid item xs={12}>
@@ -322,6 +321,7 @@ const ListNewProject = () => {
               placeholder="Enter Project Area"
               value={projectArea}
               onChange={(e) => handleTextChange(e, 'projectArea')}
+              required={false}
             />
           </Box>
           <Box
@@ -330,6 +330,40 @@ const ListNewProject = () => {
             SqKm
           </Box>
         </Box>
+      </Grid>
+      <Grid item sx={{ mt: 1 }} xs={12}>
+        <CCDropAndUpload
+          title={'Upload Project Banner Image'}
+          imageArray={bannerImage}
+          multiple={false}
+          onImageUpload={(item: any) => {
+            // console.log('[...bannerImage, item]', [...bannerImage, item])
+            console.log('item', item)
+            // const temp = bannerImage ? [...bannerImage] : []
+            // temp.push(item)
+            // console.log('temp', temp)
+            dispatch(setBannerImage([item[item.length-1]]))
+          }}
+          onDeleteImage={(index: number) => {
+            dispatch(setBannerImage(deleteIndexInArray(bannerImage, index)))
+          }}
+          required={true}
+        />
+      </Grid>
+      <Grid item sx={{ mt: 1 }} xs={12}>
+        <CCDropAndUpload
+          title={'Upload Project Images'}
+          imageArray={projectImage}
+          onImageUpload={(item: any) => {
+            // const temp = projectImage ? [...projectImage] : []
+            // temp.push(item)
+            dispatch(setProjectImage(item))
+          }}
+          onDeleteImage={(index: number) => {
+            dispatch(setProjectImage(deleteIndexInArray(projectImage, index)))
+          }}
+          required={true}
+        />
       </Grid>
       <HelpPopUp
         modal={modal}

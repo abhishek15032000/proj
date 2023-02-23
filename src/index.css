@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 body {
   margin: 0;
@@ -17,22 +17,31 @@ code {
 ::-webkit-scrollbar {
   /* display: none; */
   width: 10px;
-  box-shadow: 10px 0 15px #B6E3DC;
+  /* box-shadow: 10px 0 15px #B6E3DC; */
 }
 
 ::-webkit-scrollbar-track {
   margin-top: 10px;
   margin-bottom: 10px;
-  background: #fff;
+  background: transparent;
   /* display: none; */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #B6E3DC;
+  background: #b6e3dc;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #83b99c;
 }
+.hide-scrollbar::-webkit-scrollbar {
+	display: none;
+}
 
+.td-as-link{
+  color: #0068C6;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}

@@ -181,7 +181,7 @@ const RegisterPage = (props: RegisterPageProps) => {
         justifyContent: 'space-between',
       }}
     >
-      {loading ? <LoaderOverlay /> : null}
+      {loading ? <LoaderOverlay show /> : null}
       <Box
         sx={{
           width: {
@@ -352,7 +352,7 @@ const RegisterPage = (props: RegisterPageProps) => {
           onClick={onBoardingNewUser}
           sx={{
             height: '40px',
-            width: '320px',
+            width: '55%',
             borderRadius: '6px',
             marginTop: 2,
           }}
@@ -380,10 +380,11 @@ const RegisterPage = (props: RegisterPageProps) => {
           <Typography
             onClick={() => navigate(pathNames.LOGIN)}
             sx={{
-              fontWeight: '500',
+              fontWeight: '600',
               fontSize: 18,
               px: 1,
               cursor: 'pointer',
+              color: Colors.textColorDarkGreen,
             }}
           >
             {' '}

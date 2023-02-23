@@ -9,21 +9,25 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCTitleValue from '../../atoms/CCTitleValue/CCTitleValue'
 import VitalProjectDetails from './VitalProjectDetails'
 import DocumentationList from './DocumentationList'
+import { getLocalItem } from '../../utils/Storage'
 
 interface MarketplaceProjectDetailsProps {}
 
 const MarketplaceProjectDetails: FC<MarketplaceProjectDetailsProps> = (
   props
 ) => {
+  const localloggedIn = getLocalItem('loggedIn')
   return (
-    <Box sx={{ p: 0 }}>
+    <Box sx={{ p: localloggedIn ? 0 : 3 }}>
       <Grid
         container
         xs={12}
         sx={{ p: 0, border: '0px solid' }}
         justifyContent={'space-between'}
       >
-        <BackHeader title="Project Details" iconDisable />
+        <Grid item mb={5}>
+          <BackHeader title="Project Details" iconDisable />
+        </Grid>
 
         <VitalProjectDetails />
 

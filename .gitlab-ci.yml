@@ -41,7 +41,7 @@ container: &build_default
              -t $CI_REGISTRY_IMAGE:${CI_COMMIT_SHA:0:8} .
 
   script:
-    - ""
+    - export REACT_APP_BASE_URL=$REACT_APP_BASE_URL
 
   after_script:
     - docker --config ./ push $CI_REGISTRY_IMAGE
@@ -267,5 +267,5 @@ destroy_production:
   when: manual
 
   ## testing pipeline
-  
+  #testing again
 

@@ -1,73 +1,127 @@
-import { Grid, Paper, Typography } from '@mui/material'
+import { Grid, Paper, Tooltip, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import { buyerCalls } from '../../api/buyerCalls.api'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
+import { getLocalItem } from '../../utils/Storage'
 
 const headings = [
-  'Date of retirement',
+  'Retirement ID',
+  'Project Name',
   'Time',
-  'Quantity',
-  'Footprint offset',
-  'Country',
-  'Account holder',
+  'Total Tokens',
+  'Retired',
+  'After Retirement',
+  'Footprint Offset',
   'Beneficial owner',
-  'Retirement reason',
+  'Retirement Reason',
 ]
 
 const RetirementCertificate = () => {
-  const accountAddress = useAppSelector(
-    ({ wallet }: { wallet: any }) => wallet?.accountAddress,
-    shallowEqual
-  )
+  const userID = getLocalItem('userDetails')?.user_id
+
+  // const accountAddress = useAppSelector(
+  //   ({ wallet }: { wallet: any }) => wallet?.accountAddress,
+  //   shallowEqual
+  // )
   const [retireTokenList, setRetireTokenList] = useState<any>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (accountAddress) getAllRetireTokens()
-  }, [accountAddress])
+  // useEffect(() => {
+  //   if (accountAddress) getAllRetireTokens()
+  // }, [accountAddress])
 
-  const getAllRetireTokens = () => {
+  // const getAllRetireTokens = () => {
+  //   setLoading(true)
+  //   const payload = {
+  //     user: accountAddress,
+  //   }
+  //   buyerCalls
+  //     .getAllRetireToken(payload)
+  //     .then((res: any) => {
+  //       if (res?.success && res?.data.length) {
+  //         const modifiedRows = res?.data
+  //         const rows =
+  //           modifiedRows &&
+  //           modifiedRows.map((i: any) => {
+  //             return [
+  //               moment(i?.createdAt).format(`DD/MM/YY`),
+  //               moment(i?.createdAt).format(`HH:mm:SS`),
+  //               i?.token_quantity,
+  //               i?.token_quantity,
+  //               '-',
+  //               '-',
+  //               '-',
+  //               i?.beneficialOwner,
+  //               i?.reason,
+  //             ]
+  //           })
+  //         setRetireTokenList(rows)
+  //       }
+  //     })
+  //     .catch((err) => console.log(err))
+  //     .finally(() => {
+  //       setLoading(false)
+  //     })
+  // }
+
+  useEffect(() => {
+    getTokenRetireTxs()
+  }, [])
+
+  const getTokenRetireTxs = async () => {
     setLoading(true)
-    const payload = {
-      user: accountAddress,
+    try {
+      const res = await buyerCalls.getRetirements({ user: userID })
+      if (res?.success && res?.data.length) {
+        const modifiedRows = res?.data
+        const rows =
+          modifiedRows &&
+          modifiedRows.map((i: any) => {
+            return [
+              <LimitedText key={i?._id} text={i?._id} ellispsisAtStart />,
+              <LimitedText key={i?._id} text={i?.projectId?.company_name} />,
+              moment(i?.createdAt).format(`HH:mm:SS`),
+              <LimitedText
+                key={i?._id}
+                text={i?.token_quantity}
+                alignText="right"
+              />,
+              <LimitedText key={i?._id} text={i?.retiring} alignText="right" />,
+              <LimitedText key={i?._id} text={'-'} alignText="right" />,
+              <LimitedText key={i?._id} text={i?.retiring} alignText="right" />,
+              <LimitedText key={i?._id} text={i?.beneficialOwner} />,
+              <LimitedText key={i?._id} text={i?.reason} />,
+            ]
+          })
+        setRetireTokenList(rows)
+      }
+    } catch (e) {
+      console.log('Error in buyerCalls.getRetirements api ~ ', e)
+    } finally {
+      setLoading(false)
     }
-    buyerCalls
-      .getAllRetireToken(payload)
-      .then((res: any) => {
-        if (res?.success && res?.data.length) {
-          const modifiedRows = res?.data
-          const rows =
-            modifiedRows &&
-            modifiedRows.map((i: any) => {
-              return [
-                moment(i?.createdAt).format(`DD/MM/YY`),
-                moment(i?.createdAt).format(`HH:mm:SS`),
-                i?.token_quantity,
-                i?.token_quantity,
-                '-',
-                '-',
-                i?.beneficialOwner,
-                i?.reason,
-              ]
-            })
-          setRetireTokenList(rows)
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        setLoading(false)
-      })
   }
+
   return (
     <Grid item xs={12} sx={{ mt: 4 }}>
-      <Paper elevation={2} sx={{ py: 2, px: 2 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          py: 2,
+          px: 2,
+          borderRadius: '8px',
+          boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+        }}
+      >
         <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
-          Retirement Certificate
+          Token Retirement History
         </Typography>
         {loading ? (
           <CCTableSkeleton />
@@ -78,17 +132,27 @@ const RetirementCertificate = () => {
             maxWidth={'100%'}
           />
         ) : (
-          <Typography
+          <Box
             sx={{
-              mt: 2,
-              bgcolor: Colors?.darkPrimary2,
-              p: 1,
-              borderRadius: 2,
-              textAlign: 'center',
+              display: 'flex',
+              height: '200px',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            No Records to Show
-          </Typography>
+            <Typography
+              sx={{
+                mt: 2,
+                bgcolor: Colors?.darkPrimary2,
+                p: 1,
+                borderRadius: 2,
+                textAlign: 'center',
+                width: '100%',
+              }}
+            >
+              No Records to Show
+            </Typography>
+          </Box>
         )}
       </Paper>
     </Grid>

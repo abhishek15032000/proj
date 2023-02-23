@@ -16,6 +16,7 @@ import MarketplaceMessageModal from './MarketplaceMessageModal'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import LoaderOverlay from '../LoderOverlay'
+import { getLocalItem } from '../../utils/Storage'
 
 interface MarketplaceHomeProps {}
 
@@ -26,14 +27,14 @@ const MarketplaceHome: FC<MarketplaceHomeProps> = (props) => {
     ({ marketplace }) => marketplace.marketplaceLoading,
     shallowEqual
   )
-
+  const localloggedIn = getLocalItem('loggedIn')
   return (
     <Box sx={{ p: 0 }}>
-      {marketplaceLoading ? <LoaderOverlay /> : null}
+      {marketplaceLoading ? <LoaderOverlay show /> : null}
       <Grid
         container
         xs={12}
-        sx={{ p: 0, border: '0px solid' }}
+        sx={{ p:localloggedIn ?  0: 3, border: '0px solid' }}
         justifyContent={'space-between'}
       >
         <BackHeader title="Marketplace" iconDisable />

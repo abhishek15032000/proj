@@ -11,7 +11,7 @@ import { getLocalItem } from '../../../utils/Storage'
 
 // Local Imports
 import NotificationList from '../../../atoms/NotificationList'
-import { Colors } from '../../../theme'
+import { Colors, Images } from '../../../theme'
 
 interface NotificationIconProps {}
 
@@ -53,7 +53,8 @@ const NotificationIcon = (props: NotificationIconProps) => {
           badgeContent={notificationCount > 0 ? notificationCount : null}
           color="error"
         >
-          <NotificationsOutlinedIcon />
+          {/* <NotificationsOutlinedIcon /> */}
+          <img alt="bell_icon_chainflux" src={Images.bell} width="24px" height="24px"/>
         </Badge>
       </IconButton>
 

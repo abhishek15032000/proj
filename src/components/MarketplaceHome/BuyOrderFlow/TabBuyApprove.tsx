@@ -8,13 +8,14 @@ import LabelInput from '../../../atoms/LabelInput/LabelInput'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setBuyQuantityForApprove } from '../../../redux/Slices/Marketplace/marketplaceBuyFlowSlice'
 import { Colors } from '../../../theme'
-import { requestApprovalForTokenBuy } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+// import { requestApprovalForTokenBuy } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+import { useMarketplaceBuy } from '../../../hooks/useMarketPlaceBuy'
 
 const TabBuyApprove = () => {
   const dispatch = useAppDispatch()
   const [showModal, setShowModal] = useState(false)
   const [showSecondModal, setShowSecondModal] = useState(false)
-
+  const { requestApprovalForTokenBuy } = useMarketplaceBuy()
   const walletBalBuyFlow = useAppSelector(
     ({ marketplaceBuyFlow }) => marketplaceBuyFlow.walletBalBuyFlow,
     shallowEqual

@@ -8,9 +8,10 @@ import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 import EmptyComponent from '../../../atoms/EmptyComponent/EmptyComponent'
 import ShortenedIDComp from '../../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useMarketplaceBuy } from '../../../hooks/useMarketPlaceBuy'
 import { Colors } from '../../../theme'
 import { limitTitleFromMiddle, roundUp } from '../../../utils/commonFunctions'
-import { getBuyOrdersListData } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
+// import { getBuyOrdersListData } from '../../../utils/Marketplace/marketplaceBuyFlow.util'
 import { getLocalItem } from '../../../utils/Storage'
 
 const headings = [
@@ -26,7 +27,7 @@ const headings = [
 
 const BuyOrdersList = () => {
   const [rows, setRows] = useState<any>(null)
-
+  const { getBuyOrdersListData } = useMarketplaceBuy()
   const accountAddress = useAppSelector(
     ({ wallet }) => wallet.accountAddress,
     shallowEqual

@@ -33,18 +33,23 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
             position: 'relative',
           }}
         >
-          <Typography
-            sx={{ fontSize: 22, fontWeight: 400, color: Colors.darkPrimary1 }}
-          >
-            Welcome!
-          </Typography>
-
-          <Typography sx={{ fontSize: 16, fontWeight: 400, mt: 1 }}>
-            Ready to go? Start filling the following forms to complete the
-            onboarding process
-          </Typography>
-
           <Grid container columnSpacing={2} sx={{ mt: 2 }}>
+            <Grid item xs={6}>
+              <Typography
+                sx={{
+                  fontSize: 22,
+                  fontWeight: 400,
+                  color: Colors.darkPrimary1,
+                }}
+              >
+                Welcome!
+              </Typography>
+
+              <Typography sx={{ fontSize: 16, fontWeight: 400, mt: 1 }}>
+                Ready to go? Start filling the following forms to complete the
+                onboarding process
+              </Typography>
+            </Grid>
             <Grid item xs={6}>
               <ProfileCard
                 title="Profile Setup"
@@ -53,7 +58,7 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
                 onClickFn={() => navigate(pathNames.VERIFIER_PROFILE_SETUP)}
               />
             </Grid>
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <ProfileCard
                 title="Create/Link Wallet"
                 content="Create a new wallet or link your already existing wallet to our platform for a smooth transaction process"
@@ -61,7 +66,7 @@ const WelcomeIllustration: FC<WelcomeIllustrationProps> = (props) => {
                   dispatch(setLoadWallet(true))
                 }}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Box sx={{ background: Colors.white, pt: 2 }}>
             <img src={OnBoardingIllustration} width="100%" height="100%" />

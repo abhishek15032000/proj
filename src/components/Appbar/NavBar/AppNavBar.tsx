@@ -28,7 +28,7 @@ import { pathNames } from '../../../routes/pathNames'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { setLoadWallet } from '../../../redux/Slices/walletSlice'
-import { Colors } from '../../../theme'
+import { Colors, Images } from '../../../theme'
 import NotificationList from '../../../atoms/NotificationList'
 import NotificationIcon from './NotificationIcon'
 import Help from './Help/Help'
@@ -77,21 +77,24 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-export default function AppNavBar({ handleDrawerToggle }: any) {
+export default function AppNavBar({ handleDrawerToggle, user }: any) {
   const dispatch = useAppDispatch()
-  const openWallet = () => {
-    console.log('load wallet')
-    dispatch(setLoadWallet(true))
-    console.log('done')
-  }
-  const { type: userType } = getLocalItem('userDetails')
+  // const openWallet = () => {
+  //   console.log('load wallet')
+  //   dispatch(setLoadWallet(true))
+  //   console.log('done')
+  // }
+  const userType = getLocalItem('userDetails')?.type
+  // if(userDetails){
+  //   const { type: userType } = userDetails
+  // }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-  const walletConnected = useAppSelector((state) => state.wallet.isConnected)
+  // const walletConnected = useAppSelector((state) => state.wallet.isConnected)
   const navigate = useNavigate()
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -105,7 +108,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
   const handleMenuClose = () => {
     setAnchorEl(null)
     handleMobileMenuClose()
-    navigate(pathNames.PROFILE)
+    // navigate(pathNames.PROFILE)
   }
 
   const logout = () => {
@@ -133,10 +136,22 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
         horizontal: 'right',
       }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      onClose={() => setAnchorEl(null)}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={logout}>Logout</MenuItem>
+      {userType && (
+        <MenuItem
+          onClick={() => {
+            navigate(pathNames.PROFILE)
+            handleMenuClose()
+          }}
+        >
+          Profile
+        </MenuItem>
+      )}
+      {userType && <MenuItem onClick={logout}>Logout</MenuItem>}
+      {!userType && (
+        <MenuItem onClick={() => navigate(pathNames.LOGIN)}>Login</MenuItem>
+      )}
     </Menu>
   )
 
@@ -165,21 +180,23 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge
-            // badgeContent={17}
-            color="error"
+      {userType && (
+        <MenuItem>
+          <IconButton
+            size="large"
+            aria-label="show 17 new notifications"
+            color="inherit"
           >
-            <NotificationsOutlinedIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
+            <Badge
+              // badgeContent={17}
+              color="error"
+            >
+              <NotificationsOutlinedIcon />
+            </Badge>
+          </IconButton>
+          <p>Notifications</p>
+        </MenuItem>
+      )}
       {/* <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -222,40 +239,42 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
         <Box sx={{ display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
           {/* <SelectDropdown /> */}
 
-          <Box
+          {/* <Box
             sx={{
               flexGrow: 1,
               // mx: ,
               display: { xs: 'none', md: 'flex' },
             }}
           >
-            <Button
-              onClick={() => openWallet()}
-              color="primary"
-              sx={{
-                flexDirection: 'row',
-                alignItems: 'center',
+            {userType && (
+              <Button
+                onClick={() => openWallet()}
+                color="primary"
+                sx={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
 
-                display: 'flex',
+                  display: 'flex',
 
-                textTransform: 'none',
-              }}
-            >
-              <CreditCardRoundedIcon />
-              {walletConnected && (
-                <CheckCircleIcon
-                  sx={{
-                    position: 'absolute',
-                    top: 24,
-                    left: 17,
-                    fontSize: 6,
-                    color: Colors.success,
-                  }}
-                />
-              )}
-              <Typography sx={{ mx: 1, fontWeight: 500 }}>Wallet</Typography>
-            </Button>
-          </Box>
+                  textTransform: 'none',
+                }}
+              >
+               <img alt="wallet_icon_chainflux" src={Images.wallet} width="24px" height="24px"/>
+                {walletConnected && (
+                  <CheckCircleIcon
+                    sx={{
+                      position: 'absolute',
+                      top: 24,
+                      left: 17,
+                      fontSize: 6,
+                      color: Colors.success,
+                    }}
+                  />
+                )}
+                <Typography sx={{ mx: 1, fontWeight: 700, fontSize:14 }}>Wallet</Typography>
+              </Button>
+            )}
+          </Box> */}
           {userType === ROLES.ISSUER && <Help />}
 
           {/* <IconButton
@@ -268,7 +287,7 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             </Badge>
           </IconButton> */}
 
-          <NotificationIcon />
+          {userType && <NotificationIcon />}
 
           <IconButton
             size="large"
@@ -279,7 +298,13 @@ export default function AppNavBar({ handleDrawerToggle }: any) {
             onClick={handleProfileMenuOpen}
             color="primary"
           >
-            <PersonOutlineOutlinedIcon />
+            {/* <PersonOutlineOutlinedIcon /> */}
+            <img
+              alt="user_icon_chainflux"
+              src={Images.user}
+              width="24px"
+              height="24px"
+            />
           </IconButton>
         </Box>
         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

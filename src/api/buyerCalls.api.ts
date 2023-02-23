@@ -25,4 +25,20 @@ export const buyerCalls = {
       return res.data
     })
   },
+  getRetirements: (payload: any) => {
+    return AxiosHelper(URL_PATH.buyers.getRetirements, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
+  getPurchasedProjectToRetire: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.buyers.getPurchasedProjectToRetire,
+      'POST',
+      payload
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }

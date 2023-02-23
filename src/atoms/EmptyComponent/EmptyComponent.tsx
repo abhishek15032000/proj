@@ -41,18 +41,11 @@ const EmptyComponent: FC<EmptyComponentProps> = ({
         ...props.sx,
       }}
     >
-      {props.photoType === 1 && (
-        <Box sx={{ height: '50%' }} component={'img'} src={NoProjectsListed} />
-      )}
+      
+        <Box sx={{ height: '50%' }} component={'img'} src={props.photoType === 1 ?NoProjectsListed: props.photoType === 2 ?NoSellOrders :props.photoType === 3 ?Coins :NoProjectsListed} />
+     
 
-      {props.photoType === 2 && (
-        <Box sx={{ height: '50%' }} component={'img'} src={NoSellOrders} />
-      )}
-
-      {props.photoType === 3 && (
-        <Box sx={{ height: '50%' }} component={'img'} src={Coins} />
-      )}
-
+      
       <Typography
         sx={{
           fontSize: 16,

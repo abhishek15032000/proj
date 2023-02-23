@@ -19,6 +19,9 @@ import Spinner from '../../atoms/Spinner'
 import { getLocalItem } from '../../utils/Storage'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import PDFModal from '../../atoms/PDFModal/PDFModal'
+import { pathNames } from '../../routes/pathNames'
+import CCButton from '../../atoms/CCButton'
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
   const navigate = useNavigate()
@@ -90,9 +93,44 @@ const VerifierProjectDetails = (props: VerifierProjectDetailsProps) => {
           sx={{ p: 0, border: '0px solid' }}
           justifyContent={'space-between'}
         >
-          <Grid item xs={12}>
-            <BackHeader title="Project Details" onClick={() => navigate(-1)} />
-          </Grid>
+         <Grid
+    container
+    justifyContent={'space-between'}
+    alignItems={'center'}
+    mt={'12px'}
+    mb={5}
+  >
+    <Grid item>
+      <BackHeader
+        title="Project Details"
+        onClick={() => navigate(-1)}
+      />
+    </Grid>
+    <Grid item>
+      <CCButton
+      onClick={()=> navigate(pathNames.RISK_DASHBOARD)}
+        variant="contained"
+        sx={{
+          ml: 3,
+          padding: '10px 25px',
+          borderRadius: 10,
+          fontSize:14,
+          '&:hover': {
+            backgroundColor: 'accent.main',
+            boxShadow: `0px 4px 6px rgba(29, 74, 67, 0.5)`,
+            color: "#006B5E"
+          }
+        }}
+        buttonBackgroundColor={'#006B5E'}
+        buttonColor={'white'}
+        // onClick={btn1OnClick}
+        // disabled={disableBtn1}
+      >
+         <ArrowOutwardIcon sx={{fontSize:16, fontWeight:'600', mr:1}} />
+        Climate Risk Dashboard
+      </CCButton>
+    </Grid>
+  </Grid>
 
           <VitalProjectDetails data={projectDetails} />
           <ReportsTable

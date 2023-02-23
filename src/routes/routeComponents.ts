@@ -1,40 +1,125 @@
+import loadable from '@loadable/component'
 import { ROLES } from '../config/constants.config'
-import DashboardPage from '../pages/DashboardPage/DashboardPage'
-import IssuanceDataCollection from '../pages/IssuanceDataCollection'
-import MaintenancePage from '../pages/MaintenancePage'
-import MarketplaceHome from '../pages/MarketplaceHome'
-import ProfileDetailsIssuanceInfo from '../pages/ProfileDetailsIssuanceInfo'
-import SelectVerifier from '../pages/Issuer/SelectVerifierPage/SelectVerifier'
-import ProjectsPage from '../pages/Issuer/ProjectsPage/ProjectsPage'
-import ProjectList from '../pages/ProjectList'
-import ListNewProject from '../pages/ListNewProject'
-
-import LogoutPage from '../pages/LogoutPage'
-
-import Onboarding from '../pages/OnboardingOld'
-
+// import BankDetails from '../pages/BankDetails'
+// import BuyerOnboarding from '../pages/BuyerOnboarding'
+// import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
+// import HelpCentre from '../pages/HelpCentre/HelpCentre'
+// import IssuanceDataCollection from '../pages/IssuanceDataCollection'
+// import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
+// import ProjectsPage from '../pages/Issuer/ProjectsPage/ProjectsPage'
+// import SelectVerifier from '../pages/Issuer/SelectVerifierPage/SelectVerifier'
+// import IssuerWallet from '../pages/IssuerWallet'
+// import ListNewProject from '../pages/ListNewProject'
+// import LogoutPage from '../pages/LogoutPage'
+// import Marketplace from '../pages/Marketplace/Marketplace'
+// import MarketplaceHome from '../pages/MarketplaceHome'
+// import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
+// import MonthlyReportUpdate from '../pages/MonthlyReportUpdate'
+// import Onboarding from '../pages/OnboardingOld'
+// import OrganisationalDetails from '../pages/OrganisationalDetails'
+// import Profile from '../pages/Profile'
+// import ProfileDetailsIssuanceInfo from '../pages/ProfileDetailsIssuanceInfo'
+// import ProjectDetails from '../pages/ProjectDetails'
+// import ProjectDetailsRegistryAcc from '../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc'
+// import ProjectList from '../pages/ProjectList'
+// import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
+// import ProjectPage from '../pages/ProjectPage'
+// import RegistryReviewReport from '../pages/RegistryReviewReport/RegistryReviewReport'
+// import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
+// import RetireTokens from '../pages/RetireTokens'
+// import ReviewAndComment from '../pages/ReviewAndComment/ReviewAndComment'
+// import RiskDashboard from '../pages/RiskDashboard'
+// import TokenAndContractPage from '../pages/TokenAndContractPage/TokenAndContractPage'
+// import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPage'
+// import TransactionHistory from '../pages/TransactionHistory'
+// import VerifierDashboard from '../pages/VerifierDashboard'
+// import VerifierProfileSetup from '../pages/VerifierProfileSetup'
+// import VerifierProjectDetails from '../pages/VerifierProjectDetails'
+// import VerifierProjects from '../pages/VerifierProjects'
+// import VerifierProjectsList from '../pages/VerifierProjectsList'
+// import VerifierVerifyReport from '../pages/VerifierVerifyReport'
+// import Wallet from '../pages/Wallet'
 import { linkLabels, pathNames } from './pathNames'
-import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
-import SeeAllProject from '../pages/SeeAllProjects/SeeAllProjects'
-import TokenAndContractPage from '../pages/TokenAndContractPage/TokenAndContractPage'
-import VerifierDashboard from '../pages/VerifierDashboard'
-import VerifierProfileSetup from '../pages/VerifierProfileSetup'
-import VerifierProjects from '../pages/VerifierProjects'
-import MonthlyReportUpdate from '../pages/MonthlyReportUpdate'
-import VerifierProjectsList from '../pages/VerifierProjectsList'
-import VerifierProjectDetails from '../pages/VerifierProjectDetails'
-import VerifierVerifyReport from '../pages/VerifierVerifyReport'
-import IssuerWallet from '../pages/IssuerWallet'
-import TransactionHistory from '../pages/TransactionHistory'
-import ReportsViewCommentsPage from '../pages/ReportsViewCommentsPage/ReportsViewCommentsPage'
-import BuyerOnboarding from '../pages/BuyerOnboarding'
-import OrganisationalDetails from '../pages/OrganisationalDetails'
-import RetireTokens from '../pages/RetireTokens'
-import TokenRetirementPage from '../pages/TokenRetirementPage/TokenRetirementPage'
-import BankDetails from '../pages/BankDetails'
-import IssuanceDataCollectionHelp from '../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp'
-import Profile from '../pages/Profile'
-import HelpCentre from '../pages/HelpCentre/HelpCentre'
+
+const BankDetails = loadable(() => import('../pages/BankDetails'))
+const BuyerOnboarding = loadable(() => import('../pages/BuyerOnboarding'))
+const CompleteProfile = loadable(
+  () => import('../pages/CompleteProfile/CompleteProfile')
+)
+const HelpCentre = loadable(() => import('../pages/HelpCentre/HelpCentre'))
+const IssuanceDataCollection = loadable(
+  () => import('../pages/IssuanceDataCollection')
+)
+const IssuanceDataCollectionHelp = loadable(
+  () => import('../pages/IssuanceDataCollectionHelp/IssuanceDataCollectionHelp')
+)
+const ProjectsPage = loadable(
+  () => import('../pages/Issuer/ProjectsPage/ProjectsPage')
+)
+const SelectVerifier = loadable(
+  () => import('../pages/Issuer/SelectVerifierPage/SelectVerifier')
+)
+const IssuerWallet = loadable(() => import('../pages/IssuerWallet'))
+const ListNewProject = loadable(() => import('../pages/ListNewProject'))
+const LogoutPage = loadable(() => import('../pages/LogoutPage'))
+const Marketplace = loadable(() => import('../pages/Marketplace/Marketplace'))
+const MarketplaceHome = loadable(() => import('../pages/MarketplaceHome'))
+const MarketplaceProjectDetails = loadable(
+  () => import('../pages/MarketplaceProjectDetails')
+)
+const MonthlyReportUpdate = loadable(
+  () => import('../pages/MonthlyReportUpdate')
+)
+const Onboarding = loadable(() => import('../pages/OnboardingOld'))
+const OrganisationalDetails = loadable(
+  () => import('../pages/OrganisationalDetails')
+)
+const Profile = loadable(() => import('../pages/Profile'))
+const ProfileDetailsIssuanceInfo = loadable(
+  () => import('../pages/ProfileDetailsIssuanceInfo')
+)
+const ProjectDetails = loadable(() => import('../pages/ProjectDetails'))
+const ProjectDetailsRegistryAcc = loadable(
+  () => import('../pages/ProjectDetailsRegistryAcc/ProjectDetailsRegistryAcc')
+)
+const ProjectList = loadable(() => import('../pages/ProjectList'))
+const ProjectListsWithFilter = loadable(
+  () => import('../pages/ProjectListsWithFilter/ProjectListsWithFilter')
+)
+const ProjectPage = loadable(() => import('../pages/ProjectPage'))
+const RegistryReviewReport = loadable(
+  () => import('../pages/RegistryReviewReport/RegistryReviewReport')
+)
+const ReportsViewCommentsPage = loadable(
+  () => import('../pages/ReportsViewCommentsPage/ReportsViewCommentsPage')
+)
+const RetireTokens = loadable(() => import('../pages/RetireTokens'))
+const ReviewAndComment = loadable(
+  () => import('../pages/ReviewAndComment/ReviewAndComment')
+)
+const RiskDashboard = loadable(() => import('../pages/RiskDashboard'))
+const TokenAndContractPage = loadable(
+  () => import('../pages/TokenAndContractPage/TokenAndContractPage')
+)
+const TokenRetirementPage = loadable(
+  () => import('../pages/TokenRetirementPage/TokenRetirementPage')
+)
+const TransactionHistory = loadable(() => import('../pages/TransactionHistory'))
+const VerifierDashboard = loadable(() => import('../pages/VerifierDashboard'))
+const VerifierProfileSetup = loadable(
+  () => import('../pages/VerifierProfileSetup')
+)
+const VerifierProjectDetails = loadable(
+  () => import('../pages/VerifierProjectDetails')
+)
+const VerifierProjects = loadable(() => import('../pages/VerifierProjects'))
+const VerifierProjectsList = loadable(
+  () => import('../pages/VerifierProjectsList')
+)
+const VerifierVerifyReport = loadable(
+  () => import('../pages/VerifierVerifyReport')
+)
+const Wallet = loadable(() => import('../pages/Wallet'))
 
 export const privateRouteComponents = [
   {
@@ -43,7 +128,7 @@ export const privateRouteComponents = [
     component: ProjectsPage,
 
     sidebarName: linkLabels.Dashboard,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.TOKEN_CONTRACT,
@@ -64,7 +149,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUANCE_DATA_COLLECTION_HELP,
     component: IssuanceDataCollectionHelp,
-    roles: [ROLES.ISSUER],
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
   },
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
@@ -72,8 +157,20 @@ export const privateRouteComponents = [
     roles: [ROLES.ISSUER],
   },
   {
-    path: pathNames.MARKETPLACE,
+    path: pathNames.MARKETPLACE_OLD,
     component: MarketplaceHome,
+    // sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.MARKETPLACE,
+    component: Marketplace,
+    // sidebarName: linkLabels.Marketplace,
+    roles: [ROLES.ISSUER, ROLES.BUYER],
+  },
+  {
+    path: pathNames.PROJECT_LISTS_WITH_FILTER,
+    component: ProjectListsWithFilter,
     sidebarName: linkLabels.Marketplace,
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
@@ -82,31 +179,33 @@ export const privateRouteComponents = [
     component: MarketplaceProjectDetails,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.PROJECTS,
-    component: ProjectsPage,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.PROJECTS,
+  //   component: ProjectsPage,
+  //   roles: [ROLES.ISSUER],
+  // },
   {
     path: pathNames.PROJECTS_LIST,
     component: ProjectList,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.SEE_ALL_PROJECTS,
-    component: SeeAllProject,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.SEE_ALL_PROJECTS,
+  //   component: SeeAllProject,
+  //   roles: [ROLES.ISSUER],
+  //   sidebarName: linkLabels.Projects,
+  // },
   {
     path: pathNames.LIST_NEW_PROJECT,
     component: ListNewProject,
     roles: [ROLES.ISSUER],
   },
-  {
-    path: pathNames.SEE_ALL_PROJECTS,
-    component: SeeAllProject,
-    roles: [ROLES.ISSUER],
-  },
+  // {
+  //   path: pathNames.REGISTRY_ALL_PROJECTS,
+  //   component: RegistryAllProjects,
+  //   roles: [ROLES.REGISTRY],
+  //   sidebarName: linkLabels.Projects,
+  // },
   {
     path: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
     component: ProfileDetailsIssuanceInfo,
@@ -116,7 +215,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.LOGOUT,
     component: LogoutPage,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.SELECT_VERIFIER,
@@ -156,7 +255,7 @@ export const privateRouteComponents = [
   {
     path: pathNames.ISSUER_WALLET,
     component: IssuerWallet,
-    sidebarName: linkLabels.Wallet,
+
     roles: [ROLES.ISSUER, ROLES.BUYER],
   },
   {
@@ -205,11 +304,60 @@ export const privateRouteComponents = [
   {
     path: pathNames.PROFILE,
     component: Profile,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
   {
     path: pathNames.HELP_CENTER,
     component: HelpCentre,
     roles: [ROLES.ISSUER],
+  },
+  {
+    path: pathNames.PROJECT_DETAILS,
+    component: ProjectDetails,
+    roles: [ROLES.ISSUER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+    component: ProjectDetailsRegistryAcc,
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.REGISTRY_REVIEW_REPORT,
+    component: RegistryReviewReport,
+    roles: [ROLES.REGISTRY, ROLES.VERIFIER],
+  },
+  {
+    path: pathNames.PROJECTS,
+    component: ProjectPage,
+    roles: [ROLES.REGISTRY, ROLES.ISSUER, ROLES.VERIFIER],
+    sidebarName: linkLabels.Projects,
+  },
+  {
+    path: pathNames.COMPLETE_PROFILE,
+    component: CompleteProfile,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.MARKETPLACE_V2,
+    component: ProjectListsWithFilter,
+    // component: MarketplaceV2,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.REVIEW_AND_COMMENT,
+    component: ReviewAndComment,
+    roles: [ROLES.VERIFIER, ROLES.ISSUER],
+  },
+  {
+    path: pathNames.WALLET,
+    component: Wallet,
+    sidebarName: linkLabels.Wallet,
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.RISK_DASHBOARD,
+    component: RiskDashboard,
+
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER],
   },
 ]

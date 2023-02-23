@@ -28,6 +28,7 @@ export const initialState: ThemeOptions = {
 		},
 		secondary: { main: "#f50057", },
 		background: { default: "#F6F9F7", },
+		appBarBg: { main: "#F6F9F7", },
 		success: { main: "#0EAE71", },
 		error: { main: "#DD3730", },
 		neutral: { main: "#ffeb3b", },
@@ -72,6 +73,8 @@ declare module '@mui/material/styles' {
 		checkbox?: Palette['primary'];
 		tick?: Palette['primary'];
 		link?: Palette['primary'];
+		appBarBg?: Palette['primary'];
+		
 	}
 
 	// allow configuration using `createTheme`
@@ -93,6 +96,7 @@ declare module '@mui/material/styles' {
 		checkbox?: PaletteOptions['primary'];
 		tick?: PaletteOptions['primary'];
 		link?: PaletteOptions['primary'];
+		appBarBg?: PaletteOptions['primary'];
 	}
 }
 
