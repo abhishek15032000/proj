@@ -16,14 +16,19 @@ import {
 } from '../../redux/Slices/marketPlaceFiltersDrawerSlice'
 import MarketPlaceFilterChip from '../../atoms/MarketPlaceFilterChip/MarketPlaceFilterChip'
 
-
-const initFilters: any= {
+const initFilters: any = {
   'Project Type': [],
   'Credit Type': [],
   'Project Categories': [],
   'Verification Standard': [],
 }
-const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, onClose:any}) => {
+const MarketPlaceFiltersDrawer = ({
+  showDrawer,
+  onClose,
+}: {
+  showDrawer: boolean
+  onClose: any
+}) => {
   const dispatch = useAppDispatch()
 
   const marketPlaceProjects = useAppSelector(
@@ -40,29 +45,28 @@ const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, on
   )
 
   const [_localFilters, _setLocalFilters] = useState(initFilters)
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     // alert("yes")
     _setLocalFilters(selectedFilters)
-    return ()=> _setLocalFilters(initFilters)
-  },[showDrawer,selectedFilters])
+    return () => _setLocalFilters(initFilters)
+  }, [showDrawer, selectedFilters])
 
   const applyFilters = () => {
-    let filteredProjects = marketPlaceProjects.filter((i:any) => {
-      i.type.some((type:any) => {
+    let filteredProjects = marketPlaceProjects.filter((i: any) => {
+      i.type.some((type: any) => {
         return type.includes(_localFilters['Project Categories'])
       })
     })
-    if(Object.values(_localFilters).flat().length === 0){
-      filteredProjects= marketPlaceProjects
+    if (Object.values(_localFilters).flat().length === 0) {
+      filteredProjects = marketPlaceProjects
     }
     dispatch(setFilterApplicableProjects(filteredProjects))
     dispatch(setFiltersApplied(true))
     dispatch(setSelectedFilters(_localFilters))
   }
 
-
-  const onClearAll = () =>  {
+  const onClearAll = () => {
     dispatch(setFilterApplicableProjects(marketPlaceProjects))
     dispatch(setFiltersApplied(false))
     dispatch(setSelectedFilters(initFilters))
@@ -86,7 +90,10 @@ const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, on
           }}
         >
           <Typography sx={{ fontSize: '24px' }}>Filters</Typography>
-          <CloseIcon onClick={onClose} sx={{ fontSize: 30, color: '#616161' }} />
+          <CloseIcon
+            onClick={onClose}
+            sx={{ fontSize: 30, color: '#616161' }}
+          />
         </Box>
         <Box>
           <Box
@@ -107,8 +114,13 @@ const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, on
               columnGap={2}
             >
               <Typography
-                sx={{ fontSize: 14, fontWeight: 500, color: '#006B5E', cursor:'pointer' }}
-                onClick={() =>onClearAll()}
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: '#006B5E',
+                  cursor: 'pointer',
+                }}
+                onClick={() => onClearAll()}
               >
                 Clear
               </Typography>
@@ -122,7 +134,7 @@ const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, on
                   fontSize: 14,
                   fontWeight: 500,
                 }}
-                onClick={()=>applyFilters()}
+                onClick={() => applyFilters()}
               >
                 Apply
               </CCButton>
@@ -139,12 +151,21 @@ const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, on
             columnGap: 1,
           }}
         >
-          <MarketPlaceFilterChip onDelete={(type:any, value:any)=>{
-             const foundKey:any = Object.keys(_localFilters).find(i=> i === type)
-             const toApplyFilter = {..._localFilters,[foundKey]: _localFilters[foundKey].filter((i:any)=> i !==value)}
-             _setLocalFilters(toApplyFilter)
-
-          }} selectedFilters={_localFilters} />
+          <MarketPlaceFilterChip
+            onDelete={(type: any, value: any) => {
+              const foundKey: any = Object.keys(_localFilters).find(
+                (i) => i === type
+              )
+              const toApplyFilter = {
+                ..._localFilters,
+                [foundKey]: _localFilters[foundKey].filter(
+                  (i: any) => i !== value
+                ),
+              }
+              _setLocalFilters(toApplyFilter)
+            }}
+            selectedFilters={_localFilters}
+          />
         </Box>
         <Box sx={{ mt: 2 }}>
           {Object.keys(availableFilters).map((item: any, index: any) => (
@@ -153,14 +174,26 @@ const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, on
                 title={item}
                 selectedFilters={_localFilters}
                 dropList={availableFilters[item]}
-                addFilters={(type: string, value: string) =>{
-                  const foundKey:any = Object.keys(_localFilters).find(i=> i === type)
-                  const toApplyFilter = {..._localFilters,[foundKey]: [..._localFilters[foundKey] ,value]}
+                addFilters={(type: string, value: string) => {
+                  const foundKey: any = Object.keys(_localFilters).find(
+                    (i) => i === type
+                  )
+                  const toApplyFilter = {
+                    ..._localFilters,
+                    [foundKey]: [..._localFilters[foundKey], value],
+                  }
                   _setLocalFilters(toApplyFilter)
                 }}
-                removeFilters={(type: string, value: string) =>{
-                  const foundKey:any = Object.keys(_localFilters).find(i=> i === type)
-                  const toApplyFilter = {..._localFilters,[foundKey]: _localFilters[foundKey].filter((i:any)=> i !==value)}
+                removeFilters={(type: string, value: string) => {
+                  const foundKey: any = Object.keys(_localFilters).find(
+                    (i) => i === type
+                  )
+                  const toApplyFilter = {
+                    ..._localFilters,
+                    [foundKey]: _localFilters[foundKey].filter(
+                      (i: any) => i !== value
+                    ),
+                  }
                   _setLocalFilters(toApplyFilter)
                 }}
               />
@@ -173,4 +206,3 @@ const MarketPlaceFiltersDrawer = ({showDrawer, onClose}: {showDrawer:boolean, on
 }
 
 export default MarketPlaceFiltersDrawer
-

@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Box, Grid, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, Skeleton, Stack, Typography } from '@mui/material'
 import './style.css'
 import Arrow from '../../../assets/Images/Icons/arrow-circle.svg'
-import { Images } from '../../../theme'
+
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import { fileUploadCalls } from '../../../api/fileUpload.api'
@@ -14,8 +14,6 @@ const SliderComponent = (props: any) => {
 
   useEffect(() => {
     getImages()
-
-    //  fileUploadCalls.getFile(projectData?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res)))
   }, [projectData])
 
   const getImages = async () => {
@@ -84,76 +82,129 @@ const SliderComponent = (props: any) => {
   return (
     <Box
       sx={{
-        // background: '#111E17',
-        //  padding: '2vw 6vw',
         pt: 8,
+        width: '100%',
       }}
     >
-      <Typography
-        sx={{ fontSize: 18, fontWeight: '400', color: 'headingColor.main' }}
-      >
-        Project Images
-      </Typography>
+      {!loading ? (
+        <Typography
+          sx={{
+            fontSize: 32,
+            fontWeight: '600',
+            color: 'headingColor.main',
+            lineHeight: '48px',
+            fontStyle: 'normal',
+          }}
+        >
+          Project Images
+        </Typography>
+      ) : (
+        <Skeleton
+          variant="rectangular"
+          sx={{
+            width: '244px',
+            height: '28px',
+            background: 'linear-gradient(270deg, #EBF0F0 0%, #E5F2ED 100%)',
+            borderRadius: '40px',
+            mt: 2,
+            ml: 2,
+          }}
+        />
+      )}
       {!loading && slideList?.length ? (
         <div className="container">
           <div className="card-stack">
             <ul className="card-list">
-              {slideList.length
-                ? slideList.map((item: any, index: number) => {
-                    return (
-                      <li
-                        key={index.toString()}
-                        id={
-                          slideList?.length === index + 1
-                            ? 'last-list'
-                            : slideList?.length - 1 === index + 1
-                            ? 'prev-list'
-                            : ''
-                        }
-                        className="card"
-                        style={{
-                          backgroundImage: `url(${item})`,
-                          right: `calc(100px * (${index}))`,
-                          height: `calc(100% - 15% * (${
-                            slideList.length - (index + 1)
-                          }))`,
-                        }}
-                      ></li>
-                    )
-                  })
-                : null}
+              {slideList.length === 1 ? (
+                <Box
+                  style={{
+                    backgroundImage: `url(${slideList[0]})`,
+                    height: `calc(100% - 15% * (${1 - (0 + 1)}))`,
+                    width: '80%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'tart',
+                    alignItems: 'start',
+                    borderRadius: '24px',
+                    boxShadow: '0px 2px 8px rgba(45, 95, 87, 0.2)',
+
+                    marginLeft: '-30px',
+                  }}
+                ></Box>
+              ) : slideList.length ? (
+                slideList.map((item: any, index: number) => {
+                  return (
+                    <li
+                      key={index.toString()}
+                      id={
+                        slideList?.length === index + 1
+                          ? 'last-list'
+                          : slideList?.length - 1 === index + 1
+                          ? 'prev-list'
+                          : ''
+                      }
+                      className="card"
+                      style={{
+                        backgroundImage: `url(${item})`,
+                        right: `calc(100px * (${index}))`,
+                        height: `calc(100% - 15% * (${
+                          slideList.length - (index + 1)
+                        }))`,
+                      }}
+                    ></li>
+                  )
+                })
+              ) : null}
             </ul>
           </div>
-          <div className="button-flex">
-            <a className="buttons prev" onClick={() => moveSlider('previous')}>
-              <img
-                src={Arrow}
-                alt="previous"
-                style={{ filter: !onWebApp ? 'none' : 'contrast(0.5)' }}
-              />
-            </a>
-            <a className="buttons next" onClick={() => moveSlider('next')}>
-              <img
-                src={Arrow}
-                alt="next"
-                style={{
-                  transform: 'rotate(180deg)',
-                  filter: !onWebApp ? 'none' : 'contrast(0.5)',
-                }}
-              />
-            </a>
-          </div>
+          {slideList.length === 1 ? null : (
+            <div className="button-flex">
+              <a
+                className="buttons prev"
+                onClick={() => moveSlider('previous')}
+              >
+                <img
+                  src={Arrow}
+                  alt="previous"
+                  style={{ filter: !onWebApp ? 'none' : 'contrast(0.5)' }}
+                />
+              </a>
+              <a className="buttons next" onClick={() => moveSlider('next')}>
+                <img
+                  src={Arrow}
+                  alt="next"
+                  style={{
+                    transform: 'rotate(180deg)',
+                    filter: !onWebApp ? 'none' : 'contrast(0.5)',
+                  }}
+                />
+              </a>
+            </div>
+          )}
         </div>
       ) : loading ? (
-        <Box className="" sx={{justifyContent:'stretch', alignItems: 'center', display:'flex'}}>
-          <Stack   alignItems="center" justifyContent={"center"} sx={{ width:'100%', m:3 }}>
+        <Box
+          className=""
+          sx={{
+            justifyContent: 'stretch',
+            alignItems: 'center',
+            display: 'flex',
+          }}
+        >
+          <Stack
+            alignItems="center"
+            justifyContent={'center'}
+            sx={{ width: '100%', m: 3 }}
+          >
             <Skeleton
               variant="rectangular"
               width={'100%'}
-              height={'500px'}
-              sx={{  borderRadius: 1, bgcolor: '#CCE8E1', }}
+              height={'480px'}
+              sx={{
+                borderRadius: '40px',
+                bgcolor: 'linear-gradient(270deg, #EBF0F0 0%, #E5F2ED 100%',
+              }}
             />
-             
           </Stack>
         </Box>
       ) : (

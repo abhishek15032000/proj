@@ -26,6 +26,7 @@ import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectInt
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
+import About from '../About'
 
 const projectDetails = {
   company_name:
@@ -39,7 +40,12 @@ const projectDetails = {
   duration: 2,
   area: '1000',
 }
-const tabs = ['Registration Details', 'Verifier & Reports', 'Traceability']
+const tabs = [
+  'About',
+  'Registration Details',
+  'Verifier & Reports',
+  'Traceability',
+]
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
@@ -288,19 +294,20 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Box>
 
         <Box>
-          {tabIndex === 0 && (
+          {tabIndex === 0 && <About projectId={currentProjectDetails?.uuid} />}
+          {tabIndex === 1 && (
             <IssuanceInfoList
               data={issuanceInfo && issuanceInfo}
               projectStatus={projectStatus}
             />
           )}
-          {tabIndex === 1 && (
+          {tabIndex === 2 && (
             <VerifierReport
               currentProjectId={currentProjectDetails?._id}
               currentProjectUUID={currentProjectDetails?.uuid}
             />
           )}
-          {tabIndex === 2 && (
+          {tabIndex === 3 && (
             <Box sx={{ mt: 5 }}>
               <Typography sx={{ fontSize: 18, color: '#1D4B44', mb: 2 }}>
                 Trace History
