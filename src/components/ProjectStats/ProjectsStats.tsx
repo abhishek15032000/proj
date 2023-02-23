@@ -9,7 +9,7 @@ import { Colors } from '../../theme'
 import { capitaliseFirstLetter } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
 import './Projects.css'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useLocation } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { buyerCalls } from '../../api/buyerCalls.api'
@@ -19,14 +19,18 @@ import { useTokenRetire } from '../../hooks/useTokenRetire'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { setIssuerStats } from '../../redux/Slices/cachingSlice'
+import { shallowEqual } from 'react-redux'
 
 const ProjectsStats = () => {
+  const dispatch = useAppDispatch()
+
   let the_slider: any
 
   const settings = {
     // className: 'slider variable-width',
-    className: "",
+    className: '',
     dots: false,
     infinite: false,
     speed: 500,
@@ -92,6 +96,10 @@ const ProjectsStats = () => {
   const verifierStatsReload = useAppSelector(
     ({ verifier }) => verifier.verifierStatsReload
   )
+  const issuerStats = useAppSelector(
+    ({ caching }) => caching.issuerStats,
+    shallowEqual
+  )
 
   const { type: userType, email, user_id } = getLocalItem('userDetails')
   const [stats, setStats] = useState<any[] | null>(null)
@@ -152,6 +160,7 @@ const ProjectsStats = () => {
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
         if (res?.success) {
+          dispatch(setIssuerStats(res))
           setRawStatsData(res)
           setLoading(false)
         }
@@ -276,45 +285,47 @@ const ProjectsStats = () => {
   }
 
   return (
-    <Grid    sx={{margin:0}}>
+    <Grid sx={{ margin: 0 }}>
       <Grid
         container
         // direction="column"
         // xs={12}
-      
       >
-        <div   style={{ width: '100%', maxWidth: 'calc(100vw - 260px)' }}>
-        {loading ? (
-          renderSkeleton()
-        ) : (
-          <Slider
-            {...settings}
-            className="slider"
-            ref={(slider) => (the_slider = slider)}
-          >
-            {stats?.map((stat, index) => (
-              <div key={index.toString()}>
-                <Box
-                  className="stats-container"
-                  style={{ height: '120px', width: '282px', marginRight: 24 }}
-                >
-                  <Box className="content-container">
-                    <Box className="stats-title">{stat?.title}</Box>
-                    <Box className="stats-value">
-                      {stat?.value ? stat?.value : stat?.value === 0 ? 0 : '-'}
-                    </Box>
-                  </Box>
+        <div style={{ width: '100%', maxWidth: 'calc(100vw - 260px)' }}>
+          {loading ? (
+            renderSkeleton()
+          ) : (
+            <Slider
+              {...settings}
+              className="slider"
+              ref={(slider) => (the_slider = slider)}
+            >
+              {stats?.map((stat, index) => (
+                <div key={index.toString()}>
                   <Box
-                    className="colored-div"
-                    sx={{ bgcolor: getColoredDivColor(index) }}
-                  ></Box>
-                </Box>
-              </div>
-            ))}
-          </Slider>
-        )}
+                    className="stats-container"
+                    style={{ height: '120px', width: '282px', marginRight: 24 }}
+                  >
+                    <Box className="content-container">
+                      <Box className="stats-title">{stat?.title}</Box>
+                      <Box className="stats-value">
+                        {stat?.value
+                          ? stat?.value
+                          : stat?.value === 0
+                          ? 0
+                          : '-'}
+                      </Box>
+                    </Box>
+                    <Box
+                      className="colored-div"
+                      sx={{ bgcolor: getColoredDivColor(index) }}
+                    ></Box>
+                  </Box>
+                </div>
+              ))}
+            </Slider>
+          )}
         </div>
-       
       </Grid>
     </Grid>
 
@@ -372,21 +383,20 @@ const SampleNextArrow = (props: any) => {
       className={className}
       style={{
         ...style,
-        display: onClick ?'flex':'none',
+        display: onClick ? 'flex' : 'none',
         right: '-5px',
         background: '#DAE5E1',
         borderRadius: '50%',
         boxShadow: '0 4px 10px 0 #eddfd5',
         height: 32,
         width: 32,
-        justifyContent:'center',
-        alignItems:"center",
-        filter: 'drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.161))'
+        justifyContent: 'center',
+        alignItems: 'center',
+        filter: 'drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.161))',
       }}
       onClick={onClick}
     >
-       <PlayArrowIcon sx={{color:"#006B5E"}} />
-      
+      <PlayArrowIcon sx={{ color: '#006B5E' }} />
     </div>
   )
 }
@@ -402,20 +412,20 @@ const SamplePrevArrow = (props: any) => {
       className={className}
       style={{
         ...style,
-        display: onClick ?'flex':'none',
+        display: onClick ? 'flex' : 'none',
         // left: "-5px",
         background: '#DAE5E1',
         borderRadius: '50%',
         boxShadow: '0 4px 10px 0 #eddfd5',
         height: 32,
         width: 32,
-        justifyContent:'center',
-        alignItems:"center",
-        filter: 'drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.161))'
+        justifyContent: 'center',
+        alignItems: 'center',
+        filter: 'drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.161))',
       }}
       onClick={onClick}
     >
-      <PlayArrowIcon sx={{color:"#006B5E", transform:'rotate(180deg)'}} />
+      <PlayArrowIcon sx={{ color: '#006B5E', transform: 'rotate(180deg)' }} />
     </div>
   )
 }

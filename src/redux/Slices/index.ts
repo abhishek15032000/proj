@@ -34,6 +34,7 @@ import registry from './registrySlice'
 import comments from './commentsSlice'
 import traceability from './traceabilitySlice'
 import newMarketplaceReducer from './newMarketplaceSlice'
+import caching from './cachingSlice'
 
 // TODO: rename names
 export default {
@@ -70,4 +71,5 @@ export default {
   comments,
   traceability,
   newMarketplaceReducer,
+  caching,
 }

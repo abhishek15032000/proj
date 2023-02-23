@@ -10,7 +10,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 // Functional Imports
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
 
 // Local Imports
 import TabSelector from '../../atoms/TabSelector/TabSelector'
@@ -35,6 +35,7 @@ import {
 } from '../../redux/Slices/MonthlyReportUpdate'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import { useAppSelector } from '../../hooks/reduxHooks'
 
 const headingsNew = [
   'Reference ID',
