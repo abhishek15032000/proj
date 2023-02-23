@@ -14,8 +14,14 @@ import CCButton from '../../atoms/CCButton'
 interface ProjectDetailsProps {
   privateKey?: any
 }
-const projects = [{}, {}, {}]
-const reports = [{}, {}, {}]
+const imageData = [
+  { name: 'Project Image', size: '1.2 MB' },
+  { name: 'Aerial view', size: '1.6 MB' },
+]
+const reports = [
+  { name: 'Screening Report', size: '1 MB' },
+  { name: 'GHG emissons', size: '4.6 MB' },
+]
 const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
   return (
     <Grid
@@ -66,8 +72,8 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
           mx: 1,
         }}
       >
-        {projects &&
-          projects.map((item: any, index: any) => (
+        {imageData &&
+          imageData.map((item: any, index: any) => (
             <Grid
               item
               key={index}
@@ -101,7 +107,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                   fontWeight: 500,
                 }}
               >
-                {'Image 1'}
+                {item.name}
               </Typography>
               <Typography
                 sx={{
@@ -109,7 +115,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                   fontWeight: 500,
                 }}
               >
-                {'1.0 MB'}
+                {item?.size}
               </Typography>
             </Grid>
           ))}
@@ -168,7 +174,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                   fontWeight: 500,
                 }}
               >
-                {' Screening Report'}
+                {item?.name}
               </Typography>
               <Typography
                 sx={{
@@ -176,7 +182,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                   fontWeight: 500,
                 }}
               >
-                {'1.0 MB'}
+                {item?.size}
               </Typography>
             </Grid>
           ))}
