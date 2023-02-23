@@ -30,19 +30,29 @@ import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { limitTitle } from '../../utils/commonFunctions'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import { updateWalletBalance } from '../../utils/commonAPI.utils'
+
 interface TransactionListProps {
   tableData?: any
+  lastUpdatedAt?: string
 }
-const headings = ['Company Name', 'Symbol', 'Token Balance', 'Address']
+const headings = [
+  'Company Name',
+  'Symbol',
+  'Retirebale',
+  'In exchange',
+  'In order',
+  'Address',
+]
 const TransactionList: FC<TransactionListProps> = (props) => {
-  const { tableData } = props
+  const { tableData, lastUpdatedAt } = props
 
   return (
     <Grid container xs={12} md={12} lg={12} xl={12}>
       <Paper
         sx={{
           width: '100%',
-
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -59,17 +69,50 @@ const TransactionList: FC<TransactionListProps> = (props) => {
             p: 1,
           }}
         >
-          <Typography
+          <Box
             sx={{
-              fontSize: 22,
-              fontWeight: 400,
-              color: Colors.textColorDarkGreen,
-              mt: 1,
-              ml: 3,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
           >
-            Project Token Details
-          </Typography>
+            <Typography
+              sx={{
+                fontSize: 22,
+                fontWeight: 400,
+                color: Colors.textColorDarkGreen,
+                mt: 1,
+                ml: 3,
+              }}
+            >
+              Project Token Details
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px',
+              }}
+            >
+              <Box sx={{ color: Colors.darkPrimary1 }}>
+                <Typography sx={{ fontSize: 12, fontWeight: 600 }}>
+                  Last updated at :
+                </Typography>
+                <Typography sx={{ fontSize: 12, fontWeight: 600 }}>
+                  {moment(lastUpdatedAt).format('LTS, D MMM')}
+                </Typography>
+              </Box>
+              <RefreshIcon
+                sx={{
+                  fontSize: 20,
+                  color: Colors.darkPrimary1,
+                  cursor: 'pointer',
+                }}
+                onClick={updateWalletBalance}
+              />
+            </Box>
+          </Box>
           <Grid
             container
             sx={{
@@ -79,7 +122,7 @@ const TransactionList: FC<TransactionListProps> = (props) => {
               mt: 1,
             }}
           >
-            <TableContainer sx={{ pl: 2, pb: 2, pt: 2, mr: 3, ml: 1 }}>
+            {/* <TableContainer sx={{ pl: 2, pb: 2, pt: 2, mr: 3, ml: 1 }}>
               <Table>
                 <TableHead>
                   <TableRow sx={{ background: '#CCE8E1' }}>
@@ -130,7 +173,8 @@ const TransactionList: FC<TransactionListProps> = (props) => {
                     ))}
                 </TableBody>
               </Table>
-            </TableContainer>
+            </TableContainer> */}
+            <CCTable headings={headings} rows={tableData} />
           </Grid>
         </Box>
       </Paper>

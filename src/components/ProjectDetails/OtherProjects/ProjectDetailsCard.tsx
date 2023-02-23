@@ -16,31 +16,26 @@ interface ProjectDetailsCardProps {
   project: any
   navigationAction: any
   justifyContent?: string
-  [x:string]: any;
+  [x: string]: any
 }
 const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const {
-    project,
-    navigationAction,
-    justifyContent="center"
-  } = props
+  const { project, navigationAction, justifyContent = 'center' } = props
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [fields, setFields] = useState<any>([])
 
   const [bannerImage, setBannerImage] = useState<any>(false)
- 
-  const {tokens, totalToken} = props.project
 
-  useEffect(()=>{
-   
+  const { token_details, totalToken, minimum_rate } = props.project
+
+  useEffect(() => {
     const fieldList = [
       {
         label: 'Price Per Token',
-        value:tokens?.unit_rate
+        value: minimum_rate
       },
       {
         label: 'Tokens Available',
@@ -59,15 +54,15 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
     ]
     setFields(fieldList)
     //get bannerImage
-    if(!bannerImage && project?.banner_image[0]){
-
+    if (!bannerImage && project?.banner_image[0]) {
       const data = project
-      fileUploadCalls.getFile(data?.banner_image[0]).then(res => setBannerImage( URL.createObjectURL(res))) 
+      fileUploadCalls
+        .getFile(data?.banner_image[0])
+        .then((res) => setBannerImage(URL.createObjectURL(res)))
     }
+  }, [project])
 
-  },[project])
-
-  const onClickHandler = () =>{
+  const onClickHandler = () => {
     window.scrollTo(0, 0)
     navigate(
       {
@@ -75,7 +70,8 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
         search: `?${createSearchParams({ projectId: project.uuid })}`,
       },
       { state: project }
-    )}
+    )
+  }
 
   return (
     <Grid item sm={12}  md={4} lg={4} xl={3} display="flex" justifyContent={justifyContent} alignItems="flex-start"  sx={{width: '360px', height:'465px',   borderRadius: '8px',}} {...props}>
