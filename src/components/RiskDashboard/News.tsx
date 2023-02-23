@@ -14,7 +14,13 @@ import CCButton from '../../atoms/CCButton'
 interface NewsProps {
   privateKey?: any
 }
-const news = [{}, {}]
+const news = [
+  {
+    image: Images.BioFuel,
+    name: 'Shaoguan City Shaoneng Biomass Power Generation Project',
+    hashTag: '#BioFuelConservation',
+  },
+]
 const News: FC<NewsProps> = (props) => {
   return (
     <Grid
@@ -60,7 +66,7 @@ const News: FC<NewsProps> = (props) => {
             }}
           >
             <img
-              src={Images.ProjectDetails}
+              src={item?.image}
               alt="bg iamges"
               style={{
                 height: '100px',
@@ -89,7 +95,7 @@ const News: FC<NewsProps> = (props) => {
                   textDecoration: 'underline',
                 }}
               >
-                {'#windfarms'}
+                {item?.hashTag}
               </Typography>
               <Typography
                 sx={{
@@ -98,7 +104,7 @@ const News: FC<NewsProps> = (props) => {
                   color: '#003730',
                 }}
               >
-                {'AXIS WIND FARMS (RAYALASEEMA) PRIVATE LIMITED'}
+                {item?.name}
               </Typography>
             </Box>
           </Box>

@@ -142,3 +142,13 @@ export const formatNumberMinify = (value: number, precision = 3) => {
   // )
   return val
 }
+
+export function downloadText(text: string, downloadFileName = 'file.txt') {
+  // const fileData = JSON.stringify(p);
+  const blob = new Blob([text], { type: 'text/plain' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.download = downloadFileName
+  link.href = url
+  link.click()
+}
