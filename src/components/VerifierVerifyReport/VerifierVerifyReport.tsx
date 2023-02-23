@@ -266,7 +266,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         width: '100vw',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: Colors.background,
+        backgroundColor: '#FAFDFA',
       }}
     >
       {loading ? <LoaderOverlay show /> : null}
@@ -335,9 +335,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
         sx={{
           flexGrow: '1',
           overflow: 'hidden',
-          background: Colors.lightGreenBackground,
-          px: 4,
-          py: 2,
+          background: '#FAFDFA',
         }}
       >
         <Grid
@@ -346,7 +344,10 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           sx={{
             height: '100%',
             overflow: 'hidden',
-            paddingBottom: '20px',
+            py: 2,
+            px: 4,
+            pt: 1,
+
             //
           }}
         >
@@ -365,6 +366,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 ref={ref2}
                 sx={{
                   height: '100%',
+                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+
                   // flex: 1,
                 }}
               >
@@ -377,8 +380,9 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 >
                   <BackHeader
                     title="Project Issuance Report V1.1 (PDF)"
-                    sx={{ ml: 3, mt: 3, mb: 2, cursor: 'pointer' }}
+                    sx={{ pl: 2, pr: 1, py: 2, cursor: 'pointer' }}
                     titleSx={{
+                      pl: 1,
                       fontSize: 28,
                       fontWeight: 500,
                       color: Colors.tertiary,
@@ -431,7 +435,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                   </Box>
                 ) : (
                   pdfURL && (
-                    <Box sx={{ height: '90%' }}>
+                    <Box sx={{ height: '86%' }}>
                       <PDFViewer pdfUrl={pdfURL} />
                     </Box>
                   )
@@ -453,6 +457,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
               <Paper
                 ref={ref}
                 sx={{
+                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
                   border: '0px solid',
                   height: '100%',
                   display: 'flex',

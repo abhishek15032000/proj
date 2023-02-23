@@ -26,8 +26,8 @@ const initialState: NewProjectReducerInterface = {
 
   //Will get from create new project call
   newProjectUUID: '',
-  bannerImage: null,
-  projectImage: null,
+  bannerImage: [],
+  projectImage: [],
 }
 const newProject = createSlice({
   name: 'newProject',

@@ -14,7 +14,18 @@ import CCButton from '../../atoms/CCButton'
 interface SimilarProjectsProps {
   privateKey?: any
 }
-const SimilarProject = [{}, {}, {}]
+const similarProjectData = [
+  {
+    name: 'Substitution of fossil fuels for the use of sustainable biofuels manufactured by Iniciativas Bioener',
+    // link: 'https://drive.google.com/file/d/11DJWFZ6gMPMmanU-sAsEQaHbJQb7QX5w/view',
+    link: 'https://drive.google.com/file/d/11DJWFZ6gMPMmanU-sAsEQaHbJQb7QX5w/view',
+  },
+  {
+    name: 'Substitution of fossil fuels for the use of sustainable biofuels manufactured by Biotrading 2007 S.L',
+    link: 'https://drive.google.com/file/d/11O3uFTGGdG5z0TfMRkR6CWRkKFA7VT1Y/view',
+  },
+]
+
 const SimilarProjects: FC<SimilarProjectsProps> = (props) => {
   return (
     <Grid
@@ -44,17 +55,17 @@ const SimilarProjects: FC<SimilarProjectsProps> = (props) => {
           color: '#1D4B44',
         }}
       >
-        In SimilarProjects
+        In Similar Projects
       </Typography>
-      {SimilarProject &&
-        SimilarProject.map((item: any, index: any) => (
+      {similarProjectData &&
+        similarProjectData.map((project: any, index: any) => (
           <Box
             key={index}
             sx={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'start',
-              alignItems: 'start',
+              alignItems: 'center',
 
               my: 1,
             }}
@@ -74,7 +85,7 @@ const SimilarProjects: FC<SimilarProjectsProps> = (props) => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'start',
-                alignItems: 'start',
+                alignItems: 'center',
 
                 my: 2,
                 ml: 2,
@@ -83,22 +94,23 @@ const SimilarProjects: FC<SimilarProjectsProps> = (props) => {
               <Typography
                 sx={{
                   fontSize: 16,
-                  fontWeight: 600,
-                  color: '#1A8EF5',
-
-                  textDecoration: 'underline',
-                }}
-              >
-                {'https://axisenergy.in/'}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: 14,
                   fontWeight: 500,
                   color: '#003730',
                 }}
               >
-                {'AXIS WIND FARMS (RAYALASEEMA) PRIVATE LIMITED'}
+                {/* {'AXIS WIND FARMS (RAYALASEEMA) PRIVATE LIMITED'} */}
+                {project?.name}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: '#1A8EF5',
+                  textDecoration: 'underline',
+                  wordBreak: 'break-all',
+                }}
+              >
+                {project?.link}
               </Typography>
             </Box>
           </Box>

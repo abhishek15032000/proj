@@ -219,8 +219,9 @@ const RegistryReviewReport = () => {
             height: '100%',
             // alignItems: 'stretch',
             overflow: 'hidden',
+            py: 2,
             px: 4,
-            // py: 2,
+            pt: 1,
           }}
           columnSpacing={2}
         >
@@ -298,7 +299,7 @@ const RegistryReviewReport = () => {
               {/* <Divider /> */}
 
               {pdfURL ? (
-                <Box sx={{ height: '90%', px: 4 }}>
+                <Box sx={{ height: '86%', px: 4 }}>
                   <PDFViewer pdfUrl={pdfURL} />
                 </Box>
               ) : null}

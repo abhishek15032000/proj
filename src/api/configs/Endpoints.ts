@@ -39,7 +39,7 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/issuer/token/stats',
     getProjectDetailsById:
       ENDPOINTS.carbonServiceURL + '/project/getProjectDetails',
-      getVerifiedProjects:
+    getVerifiedProjects:
       ENDPOINTS.carbonServiceURL + '/project/getVerifiedProjects',
   },
   projectSections: {
@@ -146,5 +146,8 @@ export const URL_PATH = {
   events: {
     getTokenByProjectUUID:
       ENDPOINTS.carbonServiceURL + '/event/getTokenByProjectId',
+    updateWalletBalance:
+      ENDPOINTS.carbonServiceURL + '/event/updateWalletBalance',
+    getWalletBalance: ENDPOINTS.carbonServiceURL + '/event/getWalletBalance',
   },
 }
