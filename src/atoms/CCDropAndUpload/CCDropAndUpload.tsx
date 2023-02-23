@@ -24,6 +24,7 @@ interface CCDropAndUploadProps {
   onImageUpload?: any
   onDeleteImage?: any
   required?: boolean
+  fontSize?: any
   multiple?: boolean
 }
 
@@ -43,7 +44,10 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
       Promise.all(
         Array.from(event?.target?.files).map(async (selectedFile: any) => {
           console.log(selectedFile)
-           const image = selectedFile?.type !== "application/pdf"? await resizeFile(selectedFile) : selectedFile
+          const image =
+            selectedFile?.type !== 'application/pdf'
+              ? await resizeFile(selectedFile)
+              : selectedFile
           setUploading(true)
 
           // const objectUrl = URL.createObjectURL(image)
@@ -79,7 +83,7 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
 
   return (
     <Box sx={{ ...props.sx }}>
-      <div style={{position:'relative'}}>
+      <div style={{ position: 'relative' }}>
         <input
           ref={hiddenFileInput}
           style={{
@@ -106,7 +110,13 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
             mt: 2,
           }}
         >
-          <Typography sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}>
+          <Typography
+            sx={{
+              fontSize: props?.fontSize ? props?.fontSize : 16,
+              fontWeight: 500,
+              color: '#1D4B44',
+            }}
+          >
             {props.title}
             {props?.required && (
               <span style={{ color: 'red', fontSize: '12px' }}>*</span>
@@ -168,31 +178,31 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
         <FileTab key={-1} title={'Uploading...'} index={-1} fileSize={0} />
       )} */}
 
-      {props.imageArray &&
-        props.imageArray.length ?
-        props.imageArray.map((item: any, index: number) => {
-          if (typeof item === 'string') {
-            return (
-              <CCFileViewer
-                key={index.toString()}
-                title={item}
-                index={index}
-                deleteImage={deleteImage}
-                fileSize={0}
-              />
-            )
-          } else {
-            return (
-              <CCFileViewer
-                key={index.toString()}
-                title={item.fileName}
-                index={index}
-                deleteImage={deleteImage}
-                fileSize={item.fileSize}
-              />
-            )
-          }
-        }): null}
+      {props.imageArray && props.imageArray.length
+        ? props.imageArray.map((item: any, index: number) => {
+            if (typeof item === 'string') {
+              return (
+                <CCFileViewer
+                  key={index.toString()}
+                  title={item}
+                  index={index}
+                  deleteImage={deleteImage}
+                  fileSize={0}
+                />
+              )
+            } else {
+              return (
+                <CCFileViewer
+                  key={index.toString()}
+                  title={item.fileName}
+                  index={index}
+                  deleteImage={deleteImage}
+                  fileSize={item.fileSize}
+                />
+              )
+            }
+          })
+        : null}
 
       <SampleModal
         mediaArray={props.mediaItem ? [...props.mediaItem] : []}
