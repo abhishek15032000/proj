@@ -35,3 +35,13 @@ code {
 ::-webkit-scrollbar-thumb:hover {
   background: #83b99c;
 }
+.hide-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.td-as-link{
+  color: #0068C6;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}
