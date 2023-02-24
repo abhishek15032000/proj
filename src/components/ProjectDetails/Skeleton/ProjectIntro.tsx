@@ -10,10 +10,10 @@ const ProjectIntro = () => {
         height: '372px',
 
         width: '1184px',
-        backgroundColor: '#FAFAFA',
+        // backgroundColor: '#FAFAFA',
         borderRadius: '8px',
         p: 2,
-        boxShadow: '0px -2px 20px rgba(0, 0, 0, 0.02)',
+        // boxShadow: '0px -2px 20px rgba(0, 0, 0, 0.02)',
       }}
       xs={12}
     >
