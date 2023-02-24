@@ -63,13 +63,15 @@ const ProfileDetailsIssuanceInfo: FC = () => {
 
   useEffect(() => {
     if (!currentProjectDetails) navigate(pathNames.DASHBOARD)
+
+    if (location?.state?.status === 0) {
+      setTabIndex(1)
+    } else {
+      setTabIndex(2)
+    }
   }, [])
 
   useEffect(() => {
-    if (location?.state?.status !== 0) {
-      setTabIndex(1)
-    }
-
     if (currentProjectDetails) {
       setProjectStatus(currentProjectDetails?.project_status)
       const issuanceInfoTabData = [
