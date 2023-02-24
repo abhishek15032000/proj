@@ -272,6 +272,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                   display={'flex'}
                   width={'10%'}
                   height={'100%'}
+                  sx={{ paddingRight: '21px' }}
                 >
                   <div
                     style={{
@@ -290,23 +291,28 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                             ? '1px solid #CCE8E1'
                             : '1px solid #006B5E',
                         backgroundColor: '#006B5E',
-                        marginLeft: '-10px',
+                        // marginLeft: '-10px',
                       }}
                       className="traceability-trace-circle"
                     ></Box>
                     <div
                       style={{
-                        borderLeft:
+                        // borderLeft:
+                        //   traceTabList.length !== index + 1
+                        //     ? theme === 'dark'
+                        //       ? // ? '4px solid linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)'
+                        //         '1px solid #2ECBB2'
+                        //       : '1px solid #CCE8E1'
+                        //     : '',
+                        background:
                           traceTabList.length !== index + 1
-                            ? theme === 'dark'
-                              ? // ? '4px solid linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)'
-                                '4px solid #2ECBB2'
-                              : '4px solid #CCE8E1'
+                            ? 'linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)'
                             : '',
+                        width: '1px',
                         position: 'absolute',
                         height: '170%',
                         top: 0,
-                        left: '21%',
+                        left: '50%',
                         transform: 'translateX(-50%)',
                       }}
                     ></div>

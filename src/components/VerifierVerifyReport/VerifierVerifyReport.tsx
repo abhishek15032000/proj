@@ -668,7 +668,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                     mediaItem={[]}
                     imageArray={relevantDocs}
                     onImageUpload={(item: any) => {
-                      setRelevantDocs([item, ...relevantDocs])
+                      setRelevantDocs(item, ...relevantDocs)
                     }}
                     onDeleteImage={(index: number) => {
                       setRelevantDocs(deleteIndexInArray(relevantDocs, index))
