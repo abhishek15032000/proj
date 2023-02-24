@@ -60,11 +60,9 @@ const BuyToken = (props: BuyTokenProps) => {
         // pb: 3,
         p: 2,
         height: 'auto',
-        width: '83%',
-
+        width: 'calc(100vw - 220px)',
         // mx: goingUp ? 0 : 45,
         position: 'fixed',
-
         bottom: 0,
         zIndex: 1000,
         transition: 'width 0.3s ease',

@@ -261,7 +261,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                 justifyContent={'start'}
                 alignItems={'center'}
                 flexDirection="row"
-                sx={{ mt: index !== 0 ? 3 : 0 }}
+                sx={{ mt: index !== 0 ? 3 : 0 , pb:1, pt:"2px"}}
                 key={index}
               >
                 <Grid

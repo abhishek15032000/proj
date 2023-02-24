@@ -345,7 +345,7 @@ const TokensTxHistory = () => {
   // }
 
   if (loading) {
-    return <LoderOverlay />
+    return null
   } else {
     return (
       <Box

@@ -413,7 +413,7 @@ const ProjectDetails = () => {
                       ) : null}
                     </Grid>
                   )}
-                  {tabIndex === 2 && <Reports />}
+                  {tabIndex === 2 && <Reports {...projectData} />}
                   {tabIndex === 3 && (
                     <>
                       <TokensTxHistory />
