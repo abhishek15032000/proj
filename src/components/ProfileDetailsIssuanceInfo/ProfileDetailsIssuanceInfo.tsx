@@ -296,7 +296,12 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Box>
 
         <Box>
-          {tabIndex === 0 && <About projectId={currentProjectDetails?.uuid} />}
+          {tabIndex === 0 && (
+            <About
+              projectId={currentProjectDetails?.uuid}
+              projectStatus={currentProjectDetails?.project_status}
+            />
+          )}
           {tabIndex === 1 && (
             <IssuanceInfoList
               data={issuanceInfo && issuanceInfo}
