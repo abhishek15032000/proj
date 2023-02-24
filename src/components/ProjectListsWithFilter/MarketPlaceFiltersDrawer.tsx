@@ -45,6 +45,7 @@ const MarketPlaceFiltersDrawer = ({
   )
 
   const [_localFilters, _setLocalFilters] = useState(initFilters)
+  console.log("🚀 ~ file: MarketPlaceFiltersDrawer.tsx ~ line 48 ~ _localFilters", _localFilters)
 
   useEffect(() => {
     // alert("yes")
@@ -54,9 +55,8 @@ const MarketPlaceFiltersDrawer = ({
 
   const applyFilters = () => {
     let filteredProjects = marketPlaceProjects.filter((i: any) => {
-      i.type.some((type: any) => {
-        return type.includes(_localFilters['Project Categories'])
-      })
+    console.log("🚀 ~ file: MarketPlaceFiltersDrawer.tsx ~ line 64 ~ filteredProjects ~ i", i)
+    return Object.values(_localFilters).flat().every((j:any)=> i.type.includes(j))
     })
     if (Object.values(_localFilters).flat().length === 0) {
       filteredProjects = marketPlaceProjects
@@ -64,6 +64,7 @@ const MarketPlaceFiltersDrawer = ({
     dispatch(setFilterApplicableProjects(filteredProjects))
     dispatch(setFiltersApplied(true))
     dispatch(setSelectedFilters(_localFilters))
+    onClose()
   }
 
   const onClearAll = () => {
