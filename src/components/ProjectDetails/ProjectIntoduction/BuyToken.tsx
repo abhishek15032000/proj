@@ -1,6 +1,6 @@
 import { Grid, Typography, Box, Paper } from '@mui/material'
 
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import CCButton from '../../../atoms/CCButton'
 import { Colors } from '../../../theme'
 
@@ -19,24 +19,31 @@ const BuyToken = (props: BuyTokenProps) => {
 
   const { goingUp, projectDetailsData, projectData } = props
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-  const tokenDetails = [
-    {
-      heading: 'Lifetime credit value ',
-      value: '25000',
-    },
-    {
-      heading: 'Total VCOTsAuthorised ',
-      value: 1000,
-    },
-    {
-      heading: 'Available VCOTs for sale ',
-      value: 0,
-    },
-    {
-      heading: ' Unit Price ',
-      value: 0,
-    },
-  ]
+
+  const [tokenDetails, setTokenDetails] = useState<any>(null)
+
+  useEffect(() => {
+    const tempData = [
+      {
+        heading: 'Lifetime credit value ',
+        value: projectDetailsData?.lifetime_tokens,
+      },
+      {
+        heading: 'Total VCOTs Authorised ',
+        value: projectDetailsData?.totalToken,
+      },
+      {
+        heading: 'Available VCOTs for sale ',
+        value: projectDetailsData?.tokens_on_sale,
+      },
+      {
+        heading: ' Unit Price ',
+        value: projectDetailsData?.minimum_rate,
+      },
+    ]
+    setTokenDetails(tempData)
+  }, [projectDetailsData])
+
   return (
     <Paper
       sx={{
