@@ -11,6 +11,7 @@ import LoderOverlay from '../../LoderOverlay'
 import { getLocalItem } from '../../../utils/Storage'
 import CCTable from '../../../atoms/CCTable'
 import { downloadFile } from '../../../utils/commonFunctions'
+import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
 
 const headings = ['DATE', 'REPORT NAME', 'REPORT ISSUER', '']
 
@@ -118,7 +119,7 @@ const Reports = (props: any) => {
     setLoading(true)
 
     verifierCalls
-      .getAllReportVerifiers(props?.projectUUID)
+      .getAllReportVerifiers(props?.uuid)
       .then((res: any) => {
         if (res?.data?.success) {
           const reports = res?.data?.data
@@ -212,9 +213,7 @@ const Reports = (props: any) => {
         setLoading(false)
       })
   }
-  if (loading) {
-    return <LoderOverlay />
-  } else {
+ 
     return (
       <Box
         sx={{
@@ -230,17 +229,19 @@ const Reports = (props: any) => {
         </Typography> */}
         <Box sx={{}}>
           {/* <CWTable */}
-          <CCTable
+       {loading ? (
+        <CCTableSkeleton items={3}/>
+      ) :   <CCTable
             headings={headings}
             rows={allReport}
             pagination={allReport.length > 3}
             loading={loading}
             rowsPerPageProp={3}
-          />
+          />}
         </Box>
       </Box>
     )
-  }
+  
 }
 
 export default Reports
