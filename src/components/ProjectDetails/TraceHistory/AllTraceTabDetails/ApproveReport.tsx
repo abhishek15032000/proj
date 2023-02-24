@@ -4,6 +4,7 @@ import { PROJECT_STATUS } from '../../../../config/constants.config'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import TitleValue from './TitleValue'
+import { convertToInternationalCurrencySystem } from '../../../../utils/commonFunctions'
 
 interface ApproveReportProps {
   traceOption?: any
@@ -25,25 +26,29 @@ const ApproveReport: FC<ApproveReportProps> = (props) => {
   return (
     <>
       <TitleValue
-        title="Date of Project verification report submit :"
+        title="Date of Project verification report submit"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
       <TitleValue
-        title="Project reference ID :"
+        title="Project reference ID"
         value={projectDetails?.uuid}
         theme={theme}
       />
-      <TitleValue title="Verifier :" value={verifier || '-'} theme={theme} />
+      <TitleValue title="Verifier" value={verifier || '-'} theme={theme} />
       <TitleValue
-        title="Status :"
+        title="Status"
         value={PROJECT_STATUS[traceOption]?.value}
         theme={theme}
       />
       <TitleValue
         bolder
-        title="Number of VCOT authorised :"
-        value={projectDetails?.report?.quantity || '-'}
+        title="Number of VCOT authorised"
+        value={
+          convertToInternationalCurrencySystem(
+            projectDetails?.report?.quantity
+          ) || '-'
+        }
         theme={theme}
       />
     </>

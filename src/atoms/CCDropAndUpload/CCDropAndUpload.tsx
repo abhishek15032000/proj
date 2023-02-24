@@ -24,7 +24,7 @@ interface CCDropAndUploadProps {
   onImageUpload?: any
   onDeleteImage?: any
   required?: boolean
-  fontSize?: any
+  fontSize?: string | number
   multiple?: boolean
 }
 

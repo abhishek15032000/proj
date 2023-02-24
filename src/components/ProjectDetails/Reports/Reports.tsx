@@ -12,8 +12,16 @@ import { getLocalItem } from '../../../utils/Storage'
 import CCTable from '../../../atoms/CCTable'
 import { downloadFile } from '../../../utils/commonFunctions'
 import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
+import LimitedText from '../../../atoms/LimitedText/LimitedText'
 
-const headings = ['DATE', 'REPORT NAME', 'REPORT ISSUER', '']
+let headerIndex = 0
+
+const headings = [
+  <LimitedText key={headerIndex++} text="DATE" />,
+  <LimitedText key={headerIndex++} text="REPORT NAME" />,
+  <LimitedText key={headerIndex++} text="REPORT ISSUER" />,
+  '',
+]
 
 interface ReportTdProps {
   name: string

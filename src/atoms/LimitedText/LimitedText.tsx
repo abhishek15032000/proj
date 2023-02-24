@@ -8,6 +8,7 @@ interface LimitedTextProps {
   alignText?: string
   ellispsisAtStart?: boolean
   tooltipText?: string
+  customStyle?:any
 }
 const LimitedText: FC<LimitedTextProps> = ({
   text,
@@ -15,6 +16,7 @@ const LimitedText: FC<LimitedTextProps> = ({
   ellispsisAtStart = false,
   alignText = 'left',
   tooltipText,
+  customStyle = {}
 }) => {
   return (
     <Tooltip
@@ -29,6 +31,7 @@ const LimitedText: FC<LimitedTextProps> = ({
           maxWidth: widthLimit,
           direction: ellispsisAtStart ? 'rtl' : '',
           textAlign: alignText ? alignText : 'left',
+          ...customStyle
         }}
       >
         {text}
