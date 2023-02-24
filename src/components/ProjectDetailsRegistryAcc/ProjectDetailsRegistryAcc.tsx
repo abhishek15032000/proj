@@ -199,7 +199,12 @@ const ProjectDetailsRegistryAcc = () => {
             sx={{ mt: 3 }}
             // tabWidth="fit-content"
           />
-          {tabIndex === 1 && <About projectId={projectDetails?.uuid} />}
+          {tabIndex === 1 && (
+            <About
+              projectId={projectDetails?.uuid}
+              projectStatus={projectDetails?.project_status}
+            />
+          )}
           {tabIndex === 2 && <ReportsTab projectDetails={projectDetails} />}
           {tabIndex === 3 && (
             <TraceabilityTab projectID={projectDetails?.uuid} />
