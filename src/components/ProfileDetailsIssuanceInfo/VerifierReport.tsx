@@ -42,6 +42,7 @@ import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice
 import DownloadIcon from '@mui/icons-material/Download'
 import { downloadFile } from '../../utils/commonFunctions'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 
 interface VerifierReportListProps {
   //data?: any
