@@ -25,19 +25,19 @@ const VerificationRequest: FC<VerificationRequestProps> = (props) => {
   return (
     <>
       <TitleValue
-        title="Date of Project creation :"
+        title="Date of Project creation"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
       <TitleValue
-        title="Project reference ID :"
+        title="Project reference ID"
         value={projectDetails?.uuid}
         theme={theme}
       />
 
-      <TitleValue title="Verifier :" value={verifier} theme={theme} />
+      <TitleValue title="Verifier" value={verifier} theme={theme} />
       <TitleValue
-        title="Status :"
+        title="Status"
         value={PROJECT_STATUS[traceOption]?.value}
         theme={theme}
       />

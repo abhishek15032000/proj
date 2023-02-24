@@ -5,6 +5,7 @@ import { shallowEqual } from 'react-redux'
 import { PROJECT_STATUS } from '../../../../config/constants.config'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
 import TitleValue from './TitleValue'
+import { convertToInternationalCurrencySystem } from '../../../../utils/commonFunctions'
 
 interface VerificationReportProps {
   traceOption?: any
@@ -26,30 +27,34 @@ const VerificationReport: FC<VerificationReportProps> = (props) => {
   return (
     <>
       <TitleValue
-        title="Date of Project verification start :"
+        title="Date of Project verification start"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
       <TitleValue
-        title="Date of Project verification End :"
+        title="Date of Project verification End"
         value={moment(projectDetails?.end_date).format(`DD/MM/YY`)}
         theme={theme}
       />
 
-      <TitleValue title="Verifier :" value={verifier || '-'} theme={theme} />
+      <TitleValue title="Verifier" value={verifier || '-'} theme={theme} />
       <TitleValue
-        title="Status :"
+        title="Status"
         value={PROJECT_STATUS[traceOption]?.value}
         theme={theme}
       />
       <TitleValue
         bolder
-        title="Number of VCOT authorised :"
-        value={projectDetails?.report?.quantity || '-'}
+        title="Number of VCOT authorised"
+        value={
+          convertToInternationalCurrencySystem(
+            projectDetails?.report?.quantity
+          ) || '-'
+        }
         theme={theme}
       />
       <TitleValue
-        title=" Next date of monthly report submission :"
+        title=" Next date of monthly report submission"
         value={
           projectDetails?.report?.quantity
             ? moment(projectDetails?.report?.next_date).format(`DD/MM/YY`)
