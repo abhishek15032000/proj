@@ -136,7 +136,7 @@ const DashboardRegisteredProjectsTable = (
   return (
     <>
       {props?.loading ? (
-        <CCTableSkeleton height={40} />
+        <CCTableSkeleton height={16} />
       ) : (
         <TableContainer
           onScroll={handleScroll}
