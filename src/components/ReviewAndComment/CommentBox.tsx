@@ -20,6 +20,10 @@ const CommentBox: FC<CommentBoxProps> = ({ closeChatbox }) => {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        // boxShadow: 6,
+        boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+
+        borderRadius: '16px ',
         ml: 2,
       }}
     >
