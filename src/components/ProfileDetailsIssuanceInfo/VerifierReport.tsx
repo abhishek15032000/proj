@@ -452,9 +452,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         setShowModal={setShowModal}
       /> */}
       <MessageModal
-        message={
-          'Successfully finalized Verifier and Project added in Blockchain!!!'
-        }
+        message={'Successfully finalized Verifier!!!'}
         btn1Text="Ok"
         btn1OnClick={() => {
           getVerifierByProject()
