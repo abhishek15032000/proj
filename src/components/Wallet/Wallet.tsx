@@ -39,6 +39,8 @@ import moment from 'moment'
 import { USER } from '../../api/user.api'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import { eventsCalls } from '../../api/eventsCalls.api'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
+import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
 
 interface WalletProps {}
 
@@ -82,41 +84,53 @@ const Wallet: FC<WalletProps> = (props) => {
           modifiedRows &&
           modifiedRows.map((i: any, index: number) => {
             return [
-              <Typography
+              <LimitedText
                 key={index}
-                textAlign="center"
-                sx={{ fontSize: 15, fontWeight: 500 }}
-              >
-                {i?.company_name}
-              </Typography>,
-              <Typography
+                customStyle={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textAlign: 'center',
+                }}
+                text={i?.company_name}
+              />,
+              <LimitedText
                 key={index}
-                textAlign="center"
-                sx={{ fontSize: 15, fontWeight: 500 }}
-              >
-                {i?.symbol}
-              </Typography>,
-              <Typography
+                customStyle={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textAlign: 'center',
+                }}
+                text={i?.symbol}
+              />,
+              <LimitedText
                 key={index}
-                textAlign="center"
-                sx={{ fontSize: 15, fontWeight: 500 }}
-              >
-                {Math.round(Number(i?.balance))}
-              </Typography>,
-              <Typography
+                customStyle={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textAlign: 'center',
+                }}
+                text={convertToInternationalCurrencySystem(i?.balance).toString()}
+
+              />,
+              <LimitedText
                 key={index}
-                textAlign="center"
-                sx={{ fontSize: 15, fontWeight: 500 }}
-              >
-                {Math.round(Number(i?.deposited_balance))}
-              </Typography>,
-              <Typography
+                customStyle={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textAlign: 'center',
+                }}
+                text={convertToInternationalCurrencySystem(i?.deposited_balance).toString()}
+              />,
+              <LimitedText
                 key={index}
-                textAlign="center"
-                sx={{ fontSize: 15, fontWeight: 500 }}
-              >
-                {Math.round(Number(i?.on_sell_balance))}
-              </Typography>,
+                customStyle={{
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textAlign: 'center',
+                }}
+                text={convertToInternationalCurrencySystem(i?.on_sell_balance).toString()}
+
+              />,
               <Typography
                 key={index}
                 textAlign="center"
@@ -132,7 +146,7 @@ const Wallet: FC<WalletProps> = (props) => {
                   )
                 }
               >
-                {limitTitle(i?.token_address, 20)}
+                <LimitedText key={index} text={i?.token_address} />
               </Typography>,
             ]
           })
@@ -191,6 +205,7 @@ const Wallet: FC<WalletProps> = (props) => {
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
+                justifyContent:"space-between",
                 backgroundColor: 'white',
                 borderRadius: '8px',
                 py: 3,
@@ -215,6 +230,7 @@ const Wallet: FC<WalletProps> = (props) => {
                   color: '#C12902',
                   mt: 1,
                   ml: 2,
+                  mr: 1,
                 }}
               >
                 {`USD ${balanceINR}` +
@@ -224,7 +240,7 @@ const Wallet: FC<WalletProps> = (props) => {
             </Grid>
             <Grid item xs={12} md={12} lg={12} xl={12}>
               {loading ? (
-                <CCTableSkeleton sx={{ mt: 2 }} />
+                <CCTableSkeleton sx={{ mt: 2 }} items={3}/>
               ) : tableData && tableData.length > 0 ? (
                 <TransactionList
                   tableData={tableData}

@@ -55,7 +55,6 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
       .then((res) => setBannerImage(URL.createObjectURL(res)))
   }, [projectData, projectDetailsData])
 
- 
   return (
     <Grid
       container
@@ -69,10 +68,9 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
         borderRadius: '16px',
         minHeight: '372px',
         position: 'relative',
-
         justifyContent: 'center',
-
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
       xs={12}
     >

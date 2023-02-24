@@ -83,30 +83,34 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
                   fileName: props.title,
                 },
               ]}
-              background={"#E5F2FF"}
+              background={'#E5F2FF'}
               width={100}
               height={100}
             />
-          ) :  <Box
-          sx={{
-            py: 1,
-            background: 'white',
-            width: 100,
-            height: 100,
-            borderRadius:"2px"
-          }}
-        />}
-         {props?.deleteImage && <CloseIcon
-            onClick={() => props.deleteImage(props?.index)}
-            style={{
-              color: '#001E31',
-              cursor: 'pointer',
-              position: 'absolute',
-              top: 6,
-              right: 0,
-              fontSize: 20,
-            }}
-          />}
+          ) : (
+            <Box
+              sx={{
+                py: 1,
+                background: 'white',
+                width: 100,
+                height: 100,
+                borderRadius: '2px',
+              }}
+            />
+          )}
+          {props?.deleteImage && (
+            <CloseIcon
+              onClick={() => props.deleteImage(props?.index)}
+              style={{
+                color: '#001E31',
+                cursor: 'pointer',
+                position: 'absolute',
+                top: 6,
+                right: 0,
+                fontSize: 20,
+              }}
+            />
+          )}
         </Box>
         <Box
           sx={{

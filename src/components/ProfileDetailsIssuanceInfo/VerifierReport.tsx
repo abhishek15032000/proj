@@ -1,7 +1,15 @@
 // React Imports
 import React, { FC, useEffect, useState } from 'react'
 // MUI Imports
-import { Box, Button, Chip, Grid, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Chip,
+  Grid,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material'
 // Local Imports
 import VerifierReportListItem from './VerifierReportListItem'
 import CCTable from '../../atoms/CCTable'
@@ -42,6 +50,7 @@ import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice
 import DownloadIcon from '@mui/icons-material/Download'
 import { downloadFile } from '../../utils/commonFunctions'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 
 interface VerifierReportListProps {
   //data?: any
@@ -352,24 +361,162 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
 
   return (
     <>
-      <Grid container>
-        <Grid item xs={12} sx={{ mt: 3, mb: 2 }}>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            Verifiers Selected
-          </Typography>
-        </Grid>
-        {/* {loading ? <LoaderOverlay /> : null} */}
-        <Grid item xs={12}>
-          {/* {loading || contractCallLoading ? ( */}
-          {verifierLoading ? (
-            <Stack
-              alignItems="center"
-              justifyContent="center"
-              sx={{ minHeight: 150 }}
-            >
-              <Spinner />
-            </Stack>
-          ) : (
+      {/* {loading || contractCallLoading ? ( */}
+      {verifierLoading ? (
+        <Stack
+          // alignItems="center"
+          // justifyContent="center"
+          sx={{ minHeight: 150, mt: 4 }}
+        >
+          <Skeleton
+            variant="rounded"
+            width={152}
+            height={24}
+            sx={{
+              borderRadius: 40,
+              background: 'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+            }}
+          />
+          <Box
+            sx={{
+              border: '1px solid #E1E3E1',
+              p: 4,
+              pt: 1,
+              borderRadius: '8px',
+              mt: 3,
+            }}
+          >
+            {[...Array(3)].map((item, index) => {
+              return (
+                <Grid
+                  container
+                  rowSpacing={3}
+                  columnSpacing={2}
+                  key={index}
+                  sx={{
+                    // pt: index !== 0 ? 2 : 0,
+                    mt: index !== 0 ? 2 : 0,
+                    borderTop: index !== 0 ? '1px solid #E1E3E1' : 'none',
+                  }}
+                >
+                  <Grid item xs={4}>
+                    <Skeleton
+                      variant="rounded"
+                      height={14}
+                      sx={{
+                        borderRadius: 20,
+                        width: '20%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      height={14}
+                      sx={{
+                        borderRadius: 20,
+                        mt: 2,
+                        width: '70%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      height={14}
+                      sx={{
+                        borderRadius: 20,
+                        mt: 2,
+                        width: '25%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      height={14}
+                      sx={{
+                        borderRadius: 20,
+                        mt: 2,
+                        width: '40%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Skeleton
+                      variant="rounded"
+                      height={14}
+                      sx={{
+                        borderRadius: 20,
+                        width: '25%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      height={14}
+                      sx={{
+                        borderRadius: 20,
+                        mt: 2,
+                        width: '30%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      height={14}
+                      sx={{
+                        borderRadius: 20,
+                        mt: 2,
+                        width: '15%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      height={28}
+                      sx={{
+                        borderRadius: 20,
+                        mt: 2,
+                        width: '80%',
+                        background:
+                          'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                      <Skeleton
+                        variant="rounded"
+                        height={40}
+                        sx={{
+                          borderRadius: 20,
+                          width: '50%',
+                          background:
+                            'linear-gradient(180deg, #EBF0F0 0%, #E5F2ED 100%)',
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              )
+            })}
+          </Box>
+          {/* <Spinner /> */}
+        </Stack>
+      ) : (
+        <Grid container>
+          <Grid item xs={12} sx={{ mt: 3, mb: 2 }}>
+            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+              Verifiers Selected
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <Grid container rowSpacing={3}>
               {verifierReports &&
                 verifierReports?.length > 0 &&
@@ -382,66 +529,66 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                   </Grid>
                 ))}
             </Grid>
-          )}
-        </Grid>
-        <Grid item xs={12} sx={{ mt: 2 }}>
-          {mainProjectData?.project_status >=
-            PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY &&
-          monthlyReportsList &&
-          monthlyReportsList.length > 0 ? (
-            <>
-              <Grid
-                item
-                xs={12}
+          </Grid>
+          <Grid item xs={12} sx={{ mt: 2 }}>
+            {mainProjectData?.project_status >=
+              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY &&
+            monthlyReportsList &&
+            monthlyReportsList.length > 0 ? (
+              <>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+                    Reports Submitted
+                  </Typography>
+
+                  <CCButton
+                    variant="contained"
+                    sx={{
+                      backgroundColor: '#F3BA4D',
+                      textTransform: 'none',
+                      width: '150px',
+                      borderRadius: '100px',
+
+                      padding: '10px ',
+                      fontSize: '12px',
+                    }}
+                    startIcon={<AddIcon style={{ color: '#005046' }} />}
+                    onClick={() => addMonthlyData(null, mainProjectData)}
+                  >
+                    Add Monthly Data
+                  </CCButton>
+                </Grid>
+                <CCTable headings={headings} rows={monthlyReportsList} />
+              </>
+            ) : (
+              <Box
                 sx={{
+                  height: '330px',
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                   alignItems: 'center',
+                  backgroundColor: '#E8F3EF',
                 }}
               >
-                <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-                  Reports Submitted
+                <Typography sx={{ mb: 3, fontSize: 16, fontWeight: 500 }}>
+                  Your project’s review report will show up here
                 </Typography>
-
-                <CCButton
-                  variant="contained"
-                  sx={{
-                    backgroundColor: '#F3BA4D',
-                    textTransform: 'none',
-                    width: '150px',
-                    borderRadius: '100px',
-
-                    padding: '10px ',
-                    fontSize: '12px',
-                  }}
-                  startIcon={<AddIcon style={{ color: '#005046' }} />}
-                  onClick={() => addMonthlyData(null, mainProjectData)}
-                >
-                  Add Monthly Data
-                </CCButton>
-              </Grid>
-              <CCTable headings={headings} rows={monthlyReportsList} />
-            </>
-          ) : (
-            <Box
-              sx={{
-                height: '330px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#E8F3EF',
-              }}
-            >
-              <Typography sx={{ mb: 3, fontSize: 16, fontWeight: 500 }}>
-                Your project’s review report will show up here
-              </Typography>
-              <img src={illustration4} />
-            </Box>
-          )}
+                <img src={illustration4} />
+              </Box>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
+      )}
       {/* <MessageModal
         message={
           'Please use the same Wallet address submitted at the start while completing the Profile!!!'
@@ -452,9 +599,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         setShowModal={setShowModal}
       /> */}
       <MessageModal
-        message={
-          'Successfully finalized Verifier and Project added in Blockchain!!!'
-        }
+        message={'Successfully finalized Verifier!!!'}
         btn1Text="Ok"
         btn1OnClick={() => {
           getVerifierByProject()
