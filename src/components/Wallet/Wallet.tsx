@@ -239,7 +239,7 @@ const Wallet: FC<WalletProps> = (props) => {
               </Typography>
             </Grid>
             <Grid item xs={12} md={12} lg={12} xl={12}>
-              {!loading ? (
+              {loading ? (
                 <CCTableSkeleton sx={{ mt: 2 }} items={3}/>
               ) : tableData && tableData.length > 0 ? (
                 <TransactionList

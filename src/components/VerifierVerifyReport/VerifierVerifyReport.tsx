@@ -235,7 +235,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       lifetime_carbon_tokens: Number(lifeTimeQuantity),
       // signature_hash: signatureHash,
       // signer: accountAddress,
-      file_attach: stringExtractor(relevantDocs, 'fileName'),
+      // file_attach: stringExtractor(relevantDocs, 'fileName'),
+      file_attach: relevantDocs,
       // nonce: pseudoNonce,
     }
     try {
@@ -256,8 +257,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       setLoading(false)
     }
   }
-
-  console.log(pdfURL)
 
   return (
     <Box
@@ -668,7 +667,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                     mediaItem={[]}
                     imageArray={relevantDocs}
                     onImageUpload={(item: any) => {
-                      setRelevantDocs([item, ...relevantDocs])
+                      // setRelevantDocs([item, ...relevantDocs])
+                      setRelevantDocs(item)
                     }}
                     onDeleteImage={(index: number) => {
                       setRelevantDocs(deleteIndexInArray(relevantDocs, index))
