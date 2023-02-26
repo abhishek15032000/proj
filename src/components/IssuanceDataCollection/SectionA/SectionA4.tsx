@@ -117,10 +117,13 @@ const SectionA4 = () => {
     dispatch(setMethodologies(methodologiesCopy))
   }
 
-  const uploadChange = (e: any, index: number, type: string) => {
+  const uploadChange = (item: any, index: number, type: string) => {
     const methodologiesCopy = [...methodologies]
     let objectToChange = methodologiesCopy[index]
-    objectToChange = { ...objectToChange, [type]: [e, ...objectToChange[type]] }
+    objectToChange = {
+      ...objectToChange,
+      [type]: [...item],
+    }
     methodologiesCopy[index] = objectToChange
     dispatch(setMethodologies(methodologiesCopy))
   }
