@@ -164,7 +164,7 @@ const SectionC2 = () => {
               dispatch(
                 setC2({
                   name: 'baseline_emissions_upload',
-                  value: [...baseline_emissions_upload, item],
+                  value: item,
                 })
               )
             }}
@@ -200,7 +200,7 @@ const SectionC2 = () => {
               dispatch(
                 setC2({
                   name: 'project_emissions_upload',
-                  value: [...project_emissions_upload, item],
+                  value: item,
                 })
               )
             }}
@@ -236,7 +236,7 @@ const SectionC2 = () => {
               dispatch(
                 setC2({
                   name: 'leakage_upload',
-                  value: [...leakage_upload, item],
+                  value: item,
                 })
               )
             }}
@@ -272,7 +272,7 @@ const SectionC2 = () => {
               dispatch(
                 setC2({
                   name: 'quantification_of_net_GHG_emission_upload',
-                  value: [...quantification_of_net_GHG_emission_upload, item],
+                  value: item,
                 })
               )
             }}

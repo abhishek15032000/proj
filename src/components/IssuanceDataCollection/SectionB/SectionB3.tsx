@@ -173,7 +173,7 @@ const SectionB3 = () => {
               dispatch(
                 setB3({
                   name: 'ownership_file_attach',
-                  value: [...ownership_file_attach, item],
+                  value: item,
                 })
               )
             }}

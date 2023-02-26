@@ -26,15 +26,7 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
       // setLoading(true)
       if (item) {
         fileUploadCalls.getFile(item).then((res: any) => {
-          console.log(
-            '🚀 ~ file: SliderComponent.tsx ~ line 20 ~ fileUploadCalls.getFile ~ res',
-            res
-          )
           const image = URL.createObjectURL(res)
-          console.log(
-            '🚀 ~ file: SliderComponent.tsx ~ line 22 ~ fileUploadCalls.getFile ~ image',
-            image
-          )
           setFile(image)
           return image
         })
