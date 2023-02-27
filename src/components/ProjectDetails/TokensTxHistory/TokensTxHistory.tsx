@@ -4,7 +4,7 @@ import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { projectDetailsCalls } from '../../../api/projectDetailsCalls.api'
 import { USER } from '../../../api/user.api'
-import CWTable from '../../../atoms/CWTable/CWTable'
+import CCTable from '../../../atoms/CCTable/CCTable'
 import BlockchainCalls from '../../../blockchain/Blockchain'
 import {
   limitTitle,
@@ -12,9 +12,11 @@ import {
 } from '../../../utils/commonFunctions'
 import { getLocalItem } from '../../../utils/Storage'
 import LoderOverlay from '../../LoderOverlay'
+import LimitedText from '../../../atoms/LimitedText/LimitedText'
 
+let index  = 0
 const headings = [
-  'TX HASH',
+  <LimitedText key={index++} text="TX HASH"/>,
   'ORDER ID',
   'PROJECT',
   'DATE',
@@ -361,7 +363,7 @@ const TokensTxHistory = () => {
           Tokens Transaction History
         </Typography>
         <Box sx={{ mt: 3 }}>
-          <CWTable
+          <CCTable
             headings={headings}
             rows={transactionHistoryData}
             pagination={true}
