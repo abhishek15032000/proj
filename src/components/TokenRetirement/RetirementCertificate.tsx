@@ -11,16 +11,17 @@ import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
 
+let index = 0
 const headings = [
-  'Retirement ID',
-  'Project Name',
-  'Time',
-  'Total Tokens',
-  'Retired',
-  'After Retirement',
-  'Footprint Offset',
-  'Beneficial owner',
-  'Retirement Reason',
+  <LimitedText key={index++} text={"Retirement ID"} />,
+  <LimitedText key={index++} text={"Project Name"} />,
+  <LimitedText key={index++} text={"Time"} />,
+  <LimitedText key={index++} text={"Total Tokens"} />,
+  <LimitedText key={index++} text={"Retired"} />,
+  <LimitedText key={index++} text={"After Retirement"} />,
+  <LimitedText key={index++} text={"Footprint Offset"} />,
+  <LimitedText key={index++} text={"Beneficial owner"} />,
+  <LimitedText key={index++} text={"Retirement Reason"} />,
 ]
 
 const RetirementCertificate = () => {
