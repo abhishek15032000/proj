@@ -99,6 +99,8 @@ import help from '../assets/Images/Icons/help-circle.svg'
 import user from '../assets/Images/Icons/user.svg'
 import settings from '../assets/Images/Icons/settings.svg'
 import wallet from '../assets/Images/Icons/credit-card.svg'
+import pdfViewer1 from '../assets/Images/Icons/pdf-viewer-1.png'
+import pdfViewer2 from '../assets/Images/Icons/pdf-viewer-2.png'
 import RetireTokens from '../assets/Images/illustrations/retire-tokens.svg'
 import Shaogong from '../assets/Images/risk-dashboard/shaogong.jpeg'
 import Shaogong2 from '../assets/Images/risk-dashboard/shaogong-2.jpeg'
@@ -209,4 +211,6 @@ export const Images = {
   forteen,
   sixteen,
   seventeen,
+  pdfViewer1,
+  pdfViewer2
 }
