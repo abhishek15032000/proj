@@ -1,3 +1,5 @@
+import { Images } from '../theme'
+
 export const ROLES = {
   ISSUER: 'ISSUER',
   VERIFIER: 'VERIFIER',
@@ -522,4 +524,145 @@ export const TX_TYPE = {
   //Registry is assigned to the project(Currently happening automatically from BE)
   REGISTRY_GETS_UPDATED: 3,
   REGISTRY_VERIFIES_REPORT: 6,
+}
+
+export const SDGSLIST = [
+  {
+    key: 1,
+    name: ' No Poverty',
+    image: Images.one,
+  },
+  {
+    key: 2,
+    name: 'Zero Hunger',
+    image: Images.two,
+  },
+  {
+    key: 3,
+    name: 'Good Health and Well-being',
+    image: Images.three,
+  },
+  {
+    key: 4,
+    name: 'Quality Education',
+    image: Images.four,
+  },
+  {
+    key: 5,
+    name: 'Gender Equality',
+    image: Images.five,
+  },
+  {
+    key: 6,
+    name: 'Clean Water and Sanitation',
+    image: Images.six,
+  },
+  {
+    key: 7,
+    name: 'Affordable and Clean Energy',
+    image: Images.seven,
+  },
+  {
+    key: 8,
+    name: 'Decent Work and Economic Growth',
+    image: Images.eight,
+  },
+  {
+    key: 9,
+    name: 'Industry, Innovation and Infrastructure',
+    image: Images.nine,
+  },
+  {
+    key: 10,
+    name: 'Reduced Inequality',
+    image: Images.ten,
+  },
+  {
+    key: 11,
+    name: 'Sustainable Cities and Communities',
+    image: Images.eleven,
+  },
+  {
+    key: 12,
+    name: 'Responsible Consumption and Production',
+    image: Images.twelve,
+  },
+  {
+    key: 13,
+    name: 'Climate Action',
+    image: Images.thirteen,
+  },
+  {
+    key: 14,
+    name: 'Life Below Water',
+    image: Images.forteen,
+  },
+  {
+    key: 15,
+    name: 'Life on Land',
+    image: Images.fifteen,
+  },
+  {
+    key: 16,
+    name: 'Peace and Justice Strong Institutions',
+    image: Images.sixteen,
+  },
+  {
+    key: 17,
+    name: 'Partnerships to achieve the Goal',
+    image: Images.seventeen,
+  },
+]
+export const availableFilters: any = {
+  'Project Type': [
+    'Registered or Active Project',
+    'Provisional Project or Future Project',
+  ],
+
+  'Credit Type': ['Carbon Credit', 'Biodiversity Credit', 'Plastics Credit'],
+
+  'Project Categories': [
+    'Agriculture',
+    'Afforestation and reforestation',
+    'Bio mass energy',
+    'Cement',
+    'CO2 Usage',
+    'Chemical industries',
+    'Construction',
+    'Mining/mineral production/ bed CH4',
+    'Energy distribution',
+    'Energy efficiency: households',
+    'Energy efficiency: industry',
+    'Energy efficiency: own generation',
+    'Energy efficiency: service',
+    'Energy efficiency: supply side',
+    'Energy demand',
+    'Forestry and Other Land Use',
+    'Forest conservation (REDD+)',
+    'Fossil fuel switch',
+    'Fugitive emissions from fuels (solid, oil and gas)',
+    'Fugitive emissions from production and consumption of halocarbons and sulphur hexafluoride',
+    'Geothermal',
+    'HFCs',
+    'Hydro',
+    'Livestock, enteric fermentation, and manure management',
+    'Manufacturing industries',
+    'Metal production',
+    'Waste handling and disposal',
+    'Methane avoidance',
+    'N2O',
+    'Solar',
+    'Solvent use',
+    'Blue carbon',
+    'Transport',
+    'Wind',
+    'Other Energy industries (renewable - / non-renewable sources)',
+    'Other, please specify',
+  ],
+
+  'Verification Standard': [
+    'Verra Registry',
+    'Gold Registry',
+    'BioCarbon Registry',
+  ],
 }

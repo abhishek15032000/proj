@@ -7,16 +7,20 @@ interface LimitedTextProps {
   widthLimit?: string
   alignText?: string
   ellispsisAtStart?: boolean
+  tooltipText?: string
+  customStyle?:any
 }
 const LimitedText: FC<LimitedTextProps> = ({
   text,
   widthLimit = '150px',
   ellispsisAtStart = false,
   alignText = 'left',
+  tooltipText,
+  customStyle = {}
 }) => {
   return (
     <Tooltip
-      title={text}
+      title={tooltipText ? tooltipText : text}
       placement={alignText === 'right' ? 'bottom-end' : 'bottom-start'}
     >
       <Box
@@ -27,6 +31,7 @@ const LimitedText: FC<LimitedTextProps> = ({
           maxWidth: widthLimit,
           direction: ellispsisAtStart ? 'rtl' : '',
           textAlign: alignText ? alignText : 'left',
+          ...customStyle
         }}
       >
         {text}

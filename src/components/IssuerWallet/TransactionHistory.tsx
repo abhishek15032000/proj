@@ -326,7 +326,7 @@ const TransactionHistory = (props: TransactionHistoryProps) => {
         </Box>
       )}
 
-      {transactionLoading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
+      {transactionLoading && <CCTableSkeleton sx={{ mt: 2 }} height={16} />}
 
       {!transactionLoading &&
         transactions?.length > 0 &&

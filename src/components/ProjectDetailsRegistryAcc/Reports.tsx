@@ -17,20 +17,21 @@ import TextButton from '../../atoms/TextButton/TextButton'
 import ArticleIcon from '@mui/icons-material/Article'
 import { getLocalItem } from '../../utils/Storage'
 import { PROJECT_ALL_STATUS, ROLES } from '../../config/constants.config'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 
 interface reportsProps {
   projectDetails: any
 }
-
+let index = 0
 const headings: any = [
-  'Submitted On',
-  'Next Submission Dt',
-  'Report Name',
-  'Report Version',
-  'Status',
-  'Verifier Report',
-  'VCOTs Authorised',
-  'Action',
+  <LimitedText key={index++} text="Submitted On" />,
+  <LimitedText key={index++} text="Next Submission Dt" />,
+  <LimitedText key={index++} text="Report Name" />,
+  <LimitedText key={index++} text="Report Version" />,
+  <LimitedText key={index++} text="Status" />,
+  <LimitedText key={index++} text="Verifier Report" />,
+  <LimitedText key={index++} text="VCOTs Authorised" />,
+  <LimitedText key={index++} text="Action" />,
 ]
 
 const Reports = ({ projectDetails }: reportsProps) => {
@@ -217,8 +218,19 @@ const Reports = ({ projectDetails }: reportsProps) => {
     } else if (projectDetails && Object.keys(projectDetails).length > 0) {
       const objRow: any = [
         [
-          moment(projectDetails?.report?.createdAt).format('DD/MM/YYYY'),
-          moment(projectDetails?.report?.next_date).format('DD/MM/YYYY'),
+          <LimitedText
+            key={index++}
+            text={moment(projectDetails?.report?.createdAt).format(
+              'DD/MM/YYYY'
+            )}
+          />,
+          <LimitedText
+            key={index++}
+            text={moment(projectDetails?.report?.next_date).format(
+              'DD/MM/YYYY'
+            )}
+          />,
+
           <Box key={1} sx={{ display: 'flex' }}>
             <img src={Images.FileIcon} width="20px" height={'20px'} />
             Registration Report
@@ -248,7 +260,10 @@ const Reports = ({ projectDetails }: reportsProps) => {
             />
           </Box>,
           //'--',
-          projectDetails?.report?.quantity || '-',
+          <LimitedText
+            key={index++}
+            text={projectDetails?.report?.quantity || '-'}
+          />,
           (userType === ROLES.VERIFIER && projectDetails?.project_status > 5) ||
           (userType === ROLES.REGISTRY &&
             projectDetails?.project_status > 7) ? (
@@ -411,7 +426,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
         <Box sx={{ fontSize: 22, color: Colors.darkPrimary1 }}>
           Report received
         </Box>
-        <CCTable headings={headings} rows={tableRows} />
+        <CCTable headings={headings} rows={tableRows} stickyLastCol  hideScrollbar/>
       </Paper>
     </>
   )

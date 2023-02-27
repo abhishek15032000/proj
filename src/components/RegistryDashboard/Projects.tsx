@@ -8,8 +8,6 @@ import ProjectTable from './ProjectTable'
 const Projects = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  console.log("🚀 ~ file: Projects.tsx ~ line 11 ~ Projects ~ location", location)
-  console.log("🚀 ~ file: Projects.tsx ~ line 11 ~ Projects ~ location", location.pathname.includes(pathNames.PROJECTS))
 
   const [tabIndex, setTabIndex] = useState(1)
   return (
@@ -20,21 +18,18 @@ const Projects = () => {
         borderRadius: '8px',
         boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
         marginTop: 3,
-        height:location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
       }}
     >
-   
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
-            Projects
-          </Typography>
-          {location.pathname.includes(pathNames.PROJECTS)? null :<Typography
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
+        {/* {location.pathname.includes(pathNames.PROJECTS) ? null : (
+          <Typography
             sx={{
               color: 'darkPrimary1.main',
               fontSize: 14,
@@ -44,9 +39,10 @@ const Projects = () => {
             onClick={() => navigate(pathNames.PROJECTS)}
           >
             See All
-          </Typography>}
-        </Box>
-       
+          </Typography>
+        )} */}
+      </Box>
+
       <TabSelectorWithCount
         tabArray={[
           { name: 'New', count: 0 },

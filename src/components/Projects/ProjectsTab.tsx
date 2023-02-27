@@ -67,7 +67,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
       <Paper
         elevation={2}
         sx={{
-          p: 2,
+          p: 3,
           borderRadius: '8px',
           boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
           marginTop: 3,
@@ -86,19 +86,17 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
           <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
             Projects
           </Typography>
-          {location.pathname.includes(pathNames.PROJECTS) ? null : (
-            <Typography
-              sx={{
-                color: 'darkPrimary1',
-                fontSize: 14,
-                fontWeight: 400,
-                cursor: 'pointer',
-              }}
-              onClick={() => navigate(pathNames.PROJECTS)}
-            >
-              See All
-            </Typography>
-          )}
+          {/* { location.pathname.includes(pathNames.PROJECTS) ? null : <Typography
+            sx={{
+              color: 'darkPrimary1',
+              fontSize: 14,
+              fontWeight: 400,
+              cursor: 'pointer',
+            }}
+            onClick={() => navigate(pathNames.PROJECTS)}
+          >
+            See All
+          </Typography>} */}
         </Box>
 
         <ListOfProjectsDashboard data={tableData} loading={loading} />

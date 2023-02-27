@@ -105,7 +105,7 @@ const SectionD1: FC = () => {
               dispatch(
                 setD1({
                   name: 'attach_ex_ante_table',
-                  value: [...attach_ex_ante_table, item],
+                  value: item,
                 })
               )
             }}

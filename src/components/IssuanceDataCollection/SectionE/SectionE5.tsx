@@ -86,7 +86,7 @@ const SectionE5 = () => {
               dispatch(
                 setE5({
                   name: 'attach_relevant_docs',
-                  value: [...attach_relevant_docs, item],
+                  value: item,
                 })
               )
             }}

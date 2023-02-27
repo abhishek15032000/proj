@@ -36,6 +36,7 @@ import traceability from './traceabilitySlice'
 import newMarketplaceReducer from './newMarketplaceSlice'
 import caching from './cachingSlice'
 
+import marketPlaceFiltersDrawer from './marketPlaceFiltersDrawerSlice'
 // TODO: rename names
 export default {
   app,
@@ -72,4 +73,5 @@ export default {
   traceability,
   newMarketplaceReducer,
   caching,
+  marketPlaceFiltersDrawer,
 }
