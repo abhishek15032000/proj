@@ -141,19 +141,34 @@ const Reports = (props: any) => {
                   sx={{
                     fontSize: 15,
                     fontWeight: 500,
-                    textAlign: 'center',
                   }}
                 >
                   {moment(i?.createdAt).format(`DD/MM/YY`)}
                 </Typography>,
-                <ReportTd
-                  key="Verification Report 1"
-                  name={i?.file_attach[0]?.replace('.png', '')}
-                />,
-                <ReportIssuerTd
-                  key="Issuer Name 1"
-                  name={i?.issuer_details?.name}
-                />,
+                <Typography
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                  }}
+                >
+                  <ReportTd
+                    key="Verification Report 1"
+                    name={i?.file_attach[0]?.replace('.png', '')}
+                  />
+                </Typography>,
+                <Typography
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                  }}
+                >
+                  <ReportIssuerTd
+                    key="Issuer Name 1"
+                    name={i?.issuer_details?.name}
+                  />
+                </Typography>,
                 <Box
                   key={1}
                   sx={{
@@ -178,19 +193,34 @@ const Reports = (props: any) => {
                 sx={{
                   fontSize: 15,
                   fontWeight: 500,
-                  textAlign: 'center',
                 }}
               >
                 {moment(reports[0]?.createdAt).format(`DD/MM/YY`)}
               </Typography>,
-              <ReportTd
+              <Typography
                 key="Verification Report 1"
-                name={'Registration Report'}
-              />,
-              <ReportIssuerTd
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                <ReportTd
+                  key="Verification Report 1"
+                  name={'Registration Report'}
+                />
+              </Typography>,
+              <Typography
                 key="Issuer Name 1"
-                name={reports[0].issuer_details?.name}
-              />,
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                <ReportIssuerTd
+                  key="Issuer Name 1"
+                  name={reports[0].issuer_details?.name}
+                />
+              </Typography>,
               <Box
                 key={1}
                 sx={{
@@ -221,35 +251,36 @@ const Reports = (props: any) => {
         setLoading(false)
       })
   }
- 
-    return (
-      <Box
-        sx={{
-          // background: '#111E17',
-          // padding: '2vw 6vw',
-          // color: '#fff',
-          width: '100%',
-          pt: 5,
-        }}
-      >
-        {/* <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
+
+  return (
+    <Box
+      sx={{
+        // background: '#111E17',
+        // padding: '2vw 6vw',
+        // color: '#fff',
+        width: '100%',
+        pt: 5,
+      }}
+    >
+      {/* <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
           Reports
         </Typography> */}
-        <Box sx={{}}>
-          {/* <CWTable */}
-       {loading ? (
-        <CCTableSkeleton items={3}/>
-      ) :   <CCTable
+      <Box sx={{}}>
+        {/* <CWTable */}
+        {loading ? (
+          <CCTableSkeleton items={3} />
+        ) : (
+          <CCTable
             headings={headings}
             rows={allReport}
             pagination={allReport.length > 3}
             loading={loading}
             rowsPerPageProp={3}
-          />}
-        </Box>
+          />
+        )}
       </Box>
-    )
-  
+    </Box>
+  )
 }
 
 export default Reports

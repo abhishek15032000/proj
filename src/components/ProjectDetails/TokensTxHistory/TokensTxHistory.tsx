@@ -19,11 +19,10 @@ const headings = [
   <LimitedText key={index++} text="TX HASH" />,
   <LimitedText key={index++} text="PROJECT NAME" />,
   <LimitedText key={index++} text="PROJECT DEVELOPER" />,
-  <LimitedText key={index++} text="AMOUNT" />,
   <LimitedText key={index++} text="DATE" />,
   <LimitedText key={index++} text="TIME" />,
   <LimitedText key={index++} text="MINTED" />,
-  <LimitedText key={index++} text="BURNER" />,
+  <LimitedText key={index++} text="RETIRED" />,
 ]
 
 const TokensTxHistory = (props: any) => {
@@ -40,16 +39,23 @@ const TokensTxHistory = (props: any) => {
     const rows = props?.projectData?.tx_history?.map(
       (i: any, index: number) => {
         return [
+          <a
+          key={index}
+            href={'https://mumbai.polygonscan.com/tx/' + i?.txHash}
+            target={'_blank'}
+            rel="noopener noreferrer"
+            style={{ color: '#1A8EF5' }}
+          >
           <LimitedText
-            key={index++}
+            key={index}
             customStyle={{
               fontSize: 15,
               fontWeight: 500,
             }}
             text={i?.txHash}
-          />,
+          /></a>,
           <LimitedText
-            key={index++}
+            key={index}
             customStyle={{
               fontSize: 15,
               fontWeight: 500,
@@ -58,22 +64,14 @@ const TokensTxHistory = (props: any) => {
           />,
 
           <LimitedText
-            key={index++}
+            key={index}
             customStyle={{
               fontSize: 15,
               fontWeight: 500,
             }}
             text={i?.project_developer}
           />,
-          <Typography
-            key={index}
-            sx={{
-              fontSize: 15,
-              fontWeight: 500,
-            }}
-          >
-            {i?.amount || '-'}
-          </Typography>,
+        
           <Typography
             key={index}
             textAlign="start"
@@ -105,7 +103,7 @@ const TokensTxHistory = (props: any) => {
             {i?.minted || '-'}
           </Typography>,
           <LimitedText
-            key={index++}
+            key={index}
             customStyle={{
               fontSize: 15,
               fontWeight: 500,
