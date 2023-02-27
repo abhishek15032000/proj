@@ -135,16 +135,14 @@ const Reports = (props: any) => {
             reports &&
             reports.map((i: any, index: number) => {
               return [
-                <Typography
+                <LimitedText
                   key={index}
-                  textAlign="start"
-                  sx={{
+                  customStyle={{
                     fontSize: 15,
                     fontWeight: 500,
                   }}
-                >
-                  {moment(i?.createdAt).format(`DD/MM/YY`)}
-                </Typography>,
+                  text={moment(i?.createdAt).format(`DD/MM/YY`)}
+                />,
                 <Typography
                   key={index}
                   sx={{
@@ -187,16 +185,14 @@ const Reports = (props: any) => {
 
           const regsitrationReportRow = [
             [
-              <Typography
+              <LimitedText
                 key={1}
-                textAlign="start"
-                sx={{
+                customStyle={{
                   fontSize: 15,
                   fontWeight: 500,
                 }}
-              >
-                {moment(reports[0]?.createdAt).format(`DD/MM/YY`)}
-              </Typography>,
+                text={moment(reports[0]?.createdAt).format(`DD/MM/YY`)}
+              />,
               <Typography
                 key="Verification Report 1"
                 sx={{

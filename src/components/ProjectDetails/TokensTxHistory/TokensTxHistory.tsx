@@ -9,6 +9,7 @@ import BlockchainCalls from '../../../blockchain/Blockchain'
 import {
   limitTitle,
   limitTitleFromMiddle,
+  convertToInternationalCurrencySystem
 } from '../../../utils/commonFunctions'
 import { getLocalItem } from '../../../utils/Storage'
 import LoderOverlay from '../../LoderOverlay'
@@ -100,7 +101,7 @@ const TokensTxHistory = (props: any) => {
               fontWeight: 500,
             }}
           >
-            {i?.minted || '-'}
+            {convertToInternationalCurrencySystem(i?.minted) || '-'}
           </Typography>,
           <LimitedText
             key={index}
