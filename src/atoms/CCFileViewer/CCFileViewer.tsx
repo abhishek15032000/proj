@@ -26,15 +26,7 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
       // setLoading(true)
       if (item) {
         fileUploadCalls.getFile(item).then((res: any) => {
-          console.log(
-            '🚀 ~ file: SliderComponent.tsx ~ line 20 ~ fileUploadCalls.getFile ~ res',
-            res
-          )
           const image = URL.createObjectURL(res)
-          console.log(
-            '🚀 ~ file: SliderComponent.tsx ~ line 22 ~ fileUploadCalls.getFile ~ image',
-            image
-          )
           setFile(image)
           return image
         })
@@ -83,30 +75,34 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
                   fileName: props.title,
                 },
               ]}
-              background={"#E5F2FF"}
+              background={'#E5F2FF'}
               width={100}
               height={100}
             />
-          ) :  <Box
-          sx={{
-            py: 1,
-            background: 'white',
-            width: 100,
-            height: 100,
-            borderRadius:"2px"
-          }}
-        />}
-         {props?.deleteImage && <CloseIcon
-            onClick={() => props.deleteImage(props?.index)}
-            style={{
-              color: '#001E31',
-              cursor: 'pointer',
-              position: 'absolute',
-              top: 6,
-              right: 0,
-              fontSize: 20,
-            }}
-          />}
+          ) : (
+            <Box
+              sx={{
+                py: 1,
+                background: 'white',
+                width: 100,
+                height: 100,
+                borderRadius: '2px',
+              }}
+            />
+          )}
+          {props?.deleteImage && (
+            <CloseIcon
+              onClick={() => props.deleteImage(props?.index)}
+              style={{
+                color: '#001E31',
+                cursor: 'pointer',
+                position: 'absolute',
+                top: 6,
+                right: 0,
+                fontSize: 20,
+              }}
+            />
+          )}
         </Box>
         <Box
           sx={{

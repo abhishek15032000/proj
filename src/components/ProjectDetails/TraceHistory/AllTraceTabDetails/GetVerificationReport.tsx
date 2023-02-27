@@ -25,53 +25,53 @@ const GetVerificationReport: FC<GetVerificationReportProps> = (props) => {
   return (
     <>
       <TitleValue
-        title="Date of Project Created :"
+        title="Date of Project Created"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
       <TitleValue
-        title="Project reference ID :"
+        title="Project reference ID"
         value={projectDetails?.uuid}
         theme={theme}
       />
       <TitleValue
-        title="Date of Project submitted for verification :"
+        title="Date of Project submitted for verification"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
       <TitleValue
-        title="Date of Project received for verification :"
-        value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
-        theme={theme}
-      />
-
-      <TitleValue
-        title="Date of Project verification report started :"
+        title="Date of Project received for verification"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
 
       <TitleValue
-        title="Date of Project verification report submit :"
+        title="Date of Project verification report started"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
 
       <TitleValue
-        title="Date of Project approves by registry :"
+        title="Date of Project verification report submit"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
 
-      <TitleValue title="Verifier :" value={verifier || '-'} theme={theme} />
       <TitleValue
-        title="Status :"
+        title="Date of Project approves by registry"
+        value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
+        theme={theme}
+      />
+
+      <TitleValue title="Verifier" value={verifier || '-'} theme={theme} />
+      <TitleValue
+        title="Status"
         value={PROJECT_STATUS[traceOption]?.value}
         theme={theme}
       />
       <TitleValue
         bolder
-        title="Number of VCOT authorised :"
+        title="Number of VCOT authorised"
         value={projectDetails?.report?.updated_quantity || '-'}
         theme={theme}
       />

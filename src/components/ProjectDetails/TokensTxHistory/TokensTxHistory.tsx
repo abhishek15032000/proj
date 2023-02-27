@@ -14,22 +14,19 @@ import { getLocalItem } from '../../../utils/Storage'
 import LoderOverlay from '../../LoderOverlay'
 import LimitedText from '../../../atoms/LimitedText/LimitedText'
 
-let index  = 0
+let index = 0
 const headings = [
-  <LimitedText key={index++} text="TX HASH"/>,
-  'ORDER ID',
-  'PROJECT',
-  'DATE',
-  'TIME',
-  'QUANTITY AVAILABLE',
-  'QUANTITY RETIRED',
-  'QUANTITY CANCELLED',
-  'UNIT PRICE',
-  'TOTAL AMOUNT',
-  'QUANTITY LEFT',
+  <LimitedText key={index++} text="TX HASH" />,
+  <LimitedText key={index++} text="PROJECT NAME" />,
+  <LimitedText key={index++} text="PROJECT DEVELOPER" />,
+  <LimitedText key={index++} text="AMOUNT" />,
+  <LimitedText key={index++} text="DATE" />,
+  <LimitedText key={index++} text="TIME" />,
+  <LimitedText key={index++} text="MINTED" />,
+  <LimitedText key={index++} text="BURNER" />,
 ]
 
-const TokensTxHistory = () => {
+const TokensTxHistory = (props: any) => {
   const [loading, setLoading] = useState(false)
   const [transactionHistoryData, setTransactionHistoryData] = useState<any>([])
 
@@ -39,155 +36,89 @@ const TokensTxHistory = () => {
 
   const getAllTransactionHistory = async () => {
     setLoading(true)
-    setLoading(true)
 
-    setLoading(true)
-    projectDetailsCalls
-      .getAllTransactionHistory(getLocalItem('userDetails')?.user_id)
-      .then((res: any) => {
-        if (res?.data?.success) {
-          const rows =
-            res?.data?.data &&
-            res?.data?.data.map((i: any, index: number) => {
-              return [
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                    width: '50px',
-                  }}
-                >
-                  {limitTitle(i?.transaction_data?.transactionHash, 7)}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {limitTitle(i?.transaction_id, 7)}
-                </Typography>,
+    const rows = props?.projectData?.tx_history?.map(
+      (i: any, index: number) => {
+        return [
+          <LimitedText
+            key={index++}
+            customStyle={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+            text={i?.txHash}
+          />,
+          <LimitedText
+            key={index++}
+            customStyle={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+            text={i?.project_name}
+          />,
 
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {'-'}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {moment(i?.createdAt).format(`DD/MM/YY`)}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {moment(i?.next_date).format(`HH:MM:SS`)}
-                </Typography>,
+          <LimitedText
+            key={index++}
+            customStyle={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+            text={i?.project_developer}
+          />,
+          <Typography
+            key={index}
+            sx={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+          >
+            {i?.amount || '-'}
+          </Typography>,
+          <Typography
+            key={index}
+            textAlign="start"
+            sx={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+          >
+            {moment(i?.createdAt).format(`DD/MM/YY`)}
+          </Typography>,
+          <Typography
+            key={index}
+            textAlign="start"
+            sx={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+          >
+            {moment(i?.next_date).format(`HH:MM:SS`)}
+          </Typography>,
 
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {'-'}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {'-'}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {'-'}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {'-'}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {'-'}
-                </Typography>,
-                <Typography
-                  key={index}
-                  textAlign="start"
-                  sx={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    textAlign: 'center',
-                  }}
-                >
-                  {'-'}
-                </Typography>,
-              ]
-            })
+          <Typography
+            key={index}
+            sx={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+          >
+            {i?.minted || '-'}
+          </Typography>,
+          <LimitedText
+            key={index++}
+            customStyle={{
+              fontSize: 15,
+              fontWeight: 500,
+            }}
+            text={i?.burner}
+          />,
+        ]
+      }
+    )
 
-          setTransactionHistoryData(rows)
-          setLoading(false)
-          // if (res?.data?.main_project) {
-          //   setMonthlyReportsList(rows)
-          // }
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        setLoading(false)
-      })
+    setTransactionHistoryData(rows)
+
+    setLoading(false)
   }
 
   // const getAllTransactionHistory = async () => {
@@ -347,7 +278,7 @@ const TokensTxHistory = () => {
   // }
 
   if (loading) {
-    return <LoderOverlay />
+    return null
   } else {
     return (
       <Box
@@ -368,6 +299,7 @@ const TokensTxHistory = () => {
             rows={transactionHistoryData}
             pagination={true}
             loading={loading}
+            hideScrollbar
           />
         </Box>
       </Box>
