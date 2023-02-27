@@ -35,7 +35,7 @@ import comments from './commentsSlice'
 import traceability from './traceabilitySlice'
 import newMarketplaceReducer from './newMarketplaceSlice'
 import caching from './cachingSlice'
-
+import dashboard from './Dashboard/dashboardSlice'
 import marketPlaceFiltersDrawer from './marketPlaceFiltersDrawerSlice'
 // TODO: rename names
 export default {
@@ -73,5 +73,6 @@ export default {
   traceability,
   newMarketplaceReducer,
   caching,
+  dashboard,
   marketPlaceFiltersDrawer,
 }

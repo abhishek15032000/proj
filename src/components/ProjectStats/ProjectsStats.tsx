@@ -20,7 +20,7 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import { setIssuerStats } from '../../redux/Slices/cachingSlice'
+import { setCachedIssuerStats } from '../../redux/Slices/cachingSlice'
 import { shallowEqual } from 'react-redux'
 
 const ProjectsStats = () => {
@@ -96,8 +96,8 @@ const ProjectsStats = () => {
   const verifierStatsReload = useAppSelector(
     ({ verifier }) => verifier.verifierStatsReload
   )
-  const issuerStats = useAppSelector(
-    ({ caching }) => caching.issuerStats,
+  const cachedIssuerStats = useAppSelector(
+    ({ caching }) => caching.cachedIssuerStats,
     shallowEqual
   )
 
@@ -160,7 +160,7 @@ const ProjectsStats = () => {
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
         if (res?.success) {
-          dispatch(setIssuerStats(res))
+          dispatch(setCachedIssuerStats(res))
           setRawStatsData(res)
           setLoading(false)
         }

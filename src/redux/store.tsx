@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 const persistConfig = {
   key: 'root',
-  blacklist: ['reducers.auth'],
+  whitelist: ['reducers.caching'],
   storage,
 }
 
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
-console.log('reducers', reducers)
+
 export const store = configureStore({
   reducer: persistedReducer,
   //   reducer: reducers,

@@ -1,27 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface cachingReducerInterface {
-  issuerDashboardProjects: any
-  issuerStats: any
+  cachedIssuerDashboardProjects: any
+  cachedIssuerStats: any
 }
 const initialState: cachingReducerInterface = {
-  issuerStats: null,
-  issuerDashboardProjects: null,
+  cachedIssuerStats: null,
+  cachedIssuerDashboardProjects: null,
 }
 const cachingSlice = createSlice({
   name: 'cachingSlice',
   initialState,
   reducers: {
-    setIssuerDashboardProject: (state, action: PayloadAction<any>) => {
-      state.issuerDashboardProjects = action.payload
+    setCachedIssuerDashboardProject: (state, action: PayloadAction<any>) => {
+      state.cachedIssuerDashboardProjects = action.payload
     },
-    setIssuerStats: (state, action: PayloadAction<any>) => {
-      state.issuerStats = action.payload
+    setCachedIssuerStats: (state, action: PayloadAction<any>) => {
+      state.cachedIssuerStats = action.payload
     },
   },
 })
 
-export const { setIssuerDashboardProject, setIssuerStats } =
+export const { setCachedIssuerDashboardProject, setCachedIssuerStats } =
   cachingSlice.actions
 
 export default cachingSlice.reducer
