@@ -195,7 +195,8 @@ const SectionA2 = () => {
           imageArray={A2.file_attach}
           onImageUpload={(item: any) => {
             dispatch(
-              setA2({ name: 'file_attach', value: [...file_attach, item] })
+              // setA2({ name: 'file_attach', value: [...file_attach, ...item] })
+              setA2({ name: 'file_attach', value: item })
             )
           }}
           onDeleteImage={(index: number) => {

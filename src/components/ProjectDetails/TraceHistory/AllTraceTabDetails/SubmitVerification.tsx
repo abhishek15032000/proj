@@ -25,18 +25,18 @@ const SubmitVerification: FC<SubmitVerificationProps> = (props) => {
   return (
     <>
       <TitleValue
-        title="Date of Project creation :"
+        title="Date of Project creation"
         value={moment(projectDetails?.createdAt).format(`DD/MM/YY`)}
         theme={theme}
       />
 
       <TitleValue
-        title="Project Reference ID :"
+        title="Project Reference ID"
         value={projectDetails?.uuid}
         theme={theme}
       />
       <TitleValue
-        title="Choosen verifiers :"
+        title="Choosen verifiers"
         value={
           choosenVerifiers && choosenVerifiers.length
             ? choosenVerifiers.toString()
@@ -45,7 +45,7 @@ const SubmitVerification: FC<SubmitVerificationProps> = (props) => {
         theme={theme}
       />
       <TitleValue
-        title="Status :"
+        title="Status"
         value={PROJECT_STATUS[traceOption]?.value}
         theme={theme}
       />

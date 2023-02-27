@@ -13,26 +13,27 @@ interface CreateProjectProps {
 
 const CreateProject: FC<CreateProjectProps> = (props) => {
   const { traceOption, theme, projectDetails } = props
+  console.log(projectDetails)
 
   return (
     <>
       <TitleValue
-        title="Project reference ID :"
+        title="Project reference ID"
         value={projectDetails?.uuid}
         theme={theme}
       />
       <TitleValue
-        title="Project Name :"
+        title="Project Name"
         value={projectDetails?.company_name}
         theme={theme}
       />
       <TitleValue
-        title="Project location :"
+        title="Project location"
         value={projectDetails?.location}
         theme={theme}
       />
       <TitleValue
-        title="Status :"
+        title="Status"
         value={PROJECT_STATUS[traceOption]?.value}
         theme={theme}
       />
