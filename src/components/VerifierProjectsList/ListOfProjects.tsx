@@ -18,7 +18,7 @@ import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import { verifierCalls } from '../../api/verifierCalls.api'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import NoData from '../../atoms/NoData/NoData'
@@ -179,12 +179,20 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 // navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
                 //   state: { project_uuid: item.project_id.uuid },
                 // })
-                navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                  state: {
-                    project_uuid: item?.project_id.uuid,
-                    projectDetails: item?.project_id,
+                navigate(
+                  {
+                    pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                    search: `?${createSearchParams({
+                      projectId: item?.project_id.uuid,
+                    })}`,
                   },
-                })
+                  {
+                    state: {
+                      project_uuid: item?.project_id.uuid,
+                      projectDetails: item?.project_id,
+                    },
+                  }
+                )
               }}
             />
           ),
@@ -250,14 +258,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             sx={{ cursor: 'pointer' }}
             key={index}
             onClick={() =>
-              // navigate(pathNames.VERIFIER_PROJECTS_DETAILS, {
-              //   state: { project_uuid: item.project_id.uuid },
-              // })
-              navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                state: {
-                  project_uuid: item?.project_id.uuid,
-                  projectDetails: item?.project_id,
-                },
+              navigate({
+                pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                search: `?${createSearchParams({
+                  projectId: item?.project_id.uuid,
+                })}`,
               })
             }
           />,

@@ -1,6 +1,6 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { shallowEqual } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { registryCalls } from '../../api/registry.api'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
@@ -8,9 +8,9 @@ import { ROLES } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { getLocalItem } from '../../utils/Storage'
 import TraceHistory from '../ProjectDetails/TraceHistory/TraceHistory'
-import ProjectIntro from './ProjectIntro'
+import ProjectIntro from '../ProjectDetails/Skeleton/ProjectIntro'
 import Reports from './Reports'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import Spinner from '../../atoms/Spinner'
 import { fileUploadCalls } from '../../api/fileUpload.api'
@@ -25,26 +25,43 @@ import { pathNames } from '../../routes/pathNames'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import CCButton from '../../atoms/CCButton'
 import About from '../About'
+import { projectDetailsCalls } from '../../api/projectDetailsCalls.api'
+import { setRegistryProjectDetails } from '../../redux/Slices/registrySlice'
 
 const ProjectDetailsRegistryAcc = () => {
   const location: any = useLocation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('projectId')
 
-  const projectDetails = location?.state?.projectDetails
+  // const projectData = useAppSelector(
+  //   ({ registry }) => registry.projectData,
+  //   shallowEqual
+  // )
 
-  const registryProjectDetails = useAppSelector(
-    ({ registry }) => registry.registryProjectDetails,
-    shallowEqual
-  )
-
-  // const [title, setTitle] = useState<string>()
-  // const [area, setArea] = useState<string>()
   const [loading, setLoading] = useState(false)
   // const [loadingReport, setLoadingReport] = useState(false)
   const [tabIndex, setTabIndex] = useState(1)
+  const [projectData, setProjectData] = useState<any>(null)
+  useEffect(() => {
+    getProjectAllData(projectId)
+  }, [searchParams])
+
+  const getProjectAllData = (projectId: any) => {
+    setLoading(true)
+    dataCollectionCalls
+      .getProjectById(projectId)
+      .then((result) => {
+        setProjectData(result.data)
+        dispatch(setRegistryProjectDetails(result.data))
+      })
+      .catch((e) => e)
+      .finally(() => setLoading(false))
+  }
 
   useEffect(() => {
-    if (registryProjectDetails?.project_status === 6) {
+    if (projectData?.project_status === 6) {
       updateRegistryProjectStatus()
     }
     //registryReport
@@ -54,12 +71,12 @@ const ProjectDetailsRegistryAcc = () => {
     const role = getLocalItem('loggedIn')?.roles[0]
 
     if (role === ROLES.REGISTRY) {
-      if (registryProjectDetails) {
+      if (projectData) {
         //setTitle(
-        //  role === ROLES.REGISTRY && registryProjectDetails?.company_name
+        //  role === ROLES.REGISTRY && projectData?.company_name
         //)
-        //setArea(role === ROLES.REGISTRY && registryProjectDetails?.location)
-        //setProjectDetails(role === ROLES.REGISTRY && registryProjectDetails)
+        //setArea(role === ROLES.REGISTRY && projectData?.location)
+        //setProjectDetails(role === ROLES.REGISTRY && projectData)
       }
     }
     //else if (role === ROLES.VERIFIER) {
@@ -92,7 +109,7 @@ const ProjectDetailsRegistryAcc = () => {
     //    })
     //    .catch((e) => setLoadingReport(false))
     //}
-  }, [registryProjectDetails])
+  }, [projectData])
 
   //TODO: will add it once original data is available
   //const pdfReady = async (pdfURL: any) => {
@@ -114,8 +131,8 @@ const ProjectDetailsRegistryAcc = () => {
       }
       const payload = {
         //take from local storage
-        _id: registryProjectDetails?._id,
-        project_id: registryProjectDetails?.verifier_details_id?.project_id,
+        _id: projectData?._id,
+        project_id: projectData?.verifier_details_id?.project_id,
         project_status: 7,
         registry_id: registryDetails?._id,
         registry_name: registryDetails?.fullName,
@@ -182,12 +199,11 @@ const ProjectDetailsRegistryAcc = () => {
               </CCButton>
             </Grid>
           </Grid>
-          <ProjectIntroduction
-            projectDetailsData={projectDetails}
-            // title={projectDetails?.company_name}
-            // location={projectDetails?.location}
-          />
-
+          {loading ? (
+            <ProjectIntro />
+          ) : (
+            <ProjectIntroduction projectDetailsData={projectData} />
+          )}
           <TabSelectorWithCount
             tabArray={[
               { name: 'About', count: 0 },
@@ -199,11 +215,9 @@ const ProjectDetailsRegistryAcc = () => {
             sx={{ mt: 3 }}
             // tabWidth="fit-content"
           />
-          {tabIndex === 1 && <About projectId={projectDetails?.uuid} />}
-          {tabIndex === 2 && <ReportsTab projectDetails={projectDetails} />}
-          {tabIndex === 3 && (
-            <TraceabilityTab projectID={projectDetails?.uuid} />
-          )}
+          {tabIndex === 1 && <About projectId={projectId} />}
+          {tabIndex === 2 && <ReportsTab projectDetails={projectData} />}
+          {tabIndex === 3 && <TraceabilityTab projectID={projectData?.uuid} />}
         </>
       )}
     </>
