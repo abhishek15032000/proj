@@ -18,6 +18,7 @@ import { Colors, Images } from '../../theme'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Typography } from '@mui/material'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 let index = 0
 const headings: any = [
@@ -233,26 +234,29 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
   return (
     <>
       {loading ? (
-        <CCTableSkeleton height={40} />
+        <CCTableSkeleton height={16} isPagination={true} items={5} />
       ) : rows && rows?.length <= 0 ? (
         <Box
           sx={{
-            bgcolor: Colors.darkPrimary2,
             color: Colors.darkPrimary1,
             fontWeight: 500,
             fontSize: 16,
-            p: 2,
-            textAlign: 'center',
-            borderRadius: '4px',
+            justifyContent: 'center',
+            display: 'flex',
           }}
         >
-          No projects under this tab
+          <EmptyComponent
+            photoType={1}
+            sx={{ width: '100%', height: '280px', mt: 0 }}
+            elevation={0}
+            title="No projects under this tab"
+          />
         </Box>
       ) : (
         <CCTable
           headings={headings}
           rows={rows}
-          pagination={location?.pathname === pathNames.REGISTRY_ALL_PROJECTS}
+          pagination
         />
       )}
     </>

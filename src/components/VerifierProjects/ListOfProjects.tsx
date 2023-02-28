@@ -350,13 +350,13 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
     })
 
     if (newData.length !== 0) {
-      setRowsNew(newData.slice(0, 6))
+      setRowsNew(newData)
     } else {
       setRowsNew([{}])
     }
 
     if (registeredData.length !== 0) {
-      setRowsRegistered(registeredData.slice(0, 6))
+      setRowsRegistered(registeredData)
     } else {
       setRowsRegistered([{}])
     }
@@ -401,7 +401,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         }}
       >
         <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
-        {location.pathname.includes(pathNames.PROJECTS) ? null : (
+        {/* {location.pathname.includes(pathNames.PROJECTS) ? null : (
           <Typography
             sx={{
               fontSize: 14,
@@ -413,7 +413,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           >
             See All
           </Typography>
-        )}
+        )} */}
       </Box>
 
       {newRequests === 0 && (
@@ -433,7 +433,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         />
       )}
 
-      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
+      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={16} />}
 
       {!props.loading &&
         ((tabIndex === 2 && Object.keys(rowsRegistered[0]).length > 0) ||

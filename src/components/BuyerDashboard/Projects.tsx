@@ -8,17 +8,17 @@ import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import { Colors, Images } from '../../theme'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
-
+let headerIndex = 0
 const heading = [
-  'Reference ID',
-  'Received On',
-  'Issuer',
-  'Project Name',
-  'Project Type',
-  'C02e Sequestered',
-  'Unit Price',
-  'Final Price',
-  'Status',
+  <LimitedText key={headerIndex++} text={'Reference ID'} />,
+  <LimitedText key={headerIndex++} text={'Received On'} />,
+  <LimitedText key={headerIndex++} text={'Issuer'} />,
+  <LimitedText key={headerIndex++} text={'Project Name'} />,
+  <LimitedText key={headerIndex++} text={'Project Type'} />,
+  <LimitedText key={headerIndex++} text={'C02e Sequestered'} />,
+  <LimitedText key={headerIndex++} text={'Unit Price'} />,
+  <LimitedText key={headerIndex++} text={'Final Price'} />,
+  <LimitedText key={headerIndex++} text={'Status'} />,
 ]
 const Projects = () => {
   const [tableRows, setTableRows] = useState([])
@@ -60,7 +60,7 @@ const Projects = () => {
               >
                 <img height={24} width={24} src={Images.BriefcaseIcon} />
               </Box>
-              <LimitedText text={item?.name} />
+              <LimitedText text={item?.name} key={index}/>
             </Box>,
             <Box
               key={index}

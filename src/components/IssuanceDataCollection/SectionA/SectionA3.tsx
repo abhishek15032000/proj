@@ -298,7 +298,7 @@ const SectionA3 = () => {
               dispatch(
                 setA3({
                   name: 'host_country_attestation_upload',
-                  value: [...host_country_attestation_upload, item],
+                  value: item,
                 })
               )
             }}

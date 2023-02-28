@@ -184,7 +184,7 @@ const ProjectsUnderRegistration = () => {
   return (
     <Box>
       {loading ? (
-        <CCTableSkeleton height={40} />
+        <CCTableSkeleton height={16} />
       ) : (
         <CCTable headings={headings} rows={allProjects} pagination={true} />
       )}

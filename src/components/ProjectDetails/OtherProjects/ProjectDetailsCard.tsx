@@ -140,7 +140,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
                   borderRadius: '4px',
                 }}
               >
-                {project?.register
+                {project?.token_details
                   ? 'Registered Project'
                   : 'Provisional Project'}
               </Typography>

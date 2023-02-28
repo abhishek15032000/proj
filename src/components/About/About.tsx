@@ -131,17 +131,17 @@ const lightModeTheme = {
   typography: initialState.typography,
 }
 
-const data = [1, 3, 1, 3, 1, 3, 1, 3]
+const data = [1, 3, 6, 7, 8, 10, 12, 13]
 
 interface AboutProps {
   projectId: any
+  projectStatus: number
 }
 
-const About: FC<AboutProps> = (props) => {
+const About: FC<AboutProps> = ({ projectId, projectStatus }) => {
   const [searchParams] = useSearchParams()
   const [projectData, setProjectData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
-  const { projectId } = props
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -257,8 +257,7 @@ const About: FC<AboutProps> = (props) => {
                   <Grid item xs={12} lg={5}>
                     {loading ? (
                       <SDGSComponent />
-                    ) : currentProjectDetails &&
-                      currentProjectDetails?.project_status >= 6 ? (
+                    ) : projectStatus >= 0 ? (
                       <Grid
                         container
                         sx={{
@@ -307,10 +306,7 @@ const About: FC<AboutProps> = (props) => {
                               justifyContent: 'flex-start',
                               pr: 2,
                               pl: 3,
-                              pb:
-                                currentProjectDetails?.project_status >= 6
-                                  ? 5
-                                  : 0,
+                              pb: projectStatus >= 6 ? 5 : 0,
                             }}
                           >
                             {data &&
@@ -362,7 +358,7 @@ const About: FC<AboutProps> = (props) => {
                               ))}
                           </Grid>
                         </Grid>
-                        {currentProjectDetails?.project_status >= 8 ? (
+                        {projectStatus >= 8 ? (
                           <Grid
                             item
                             justifyContent={'start'}
@@ -416,6 +412,7 @@ const About: FC<AboutProps> = (props) => {
       </>
     )
   }
+  console.log('currentProjectDetails', currentProjectDetails)
 
   return onWebApp ? (
     <Container maxWidth="xl">{viewRenderer()}</Container>

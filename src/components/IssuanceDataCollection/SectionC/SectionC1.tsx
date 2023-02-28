@@ -155,10 +155,7 @@ const SectionC1 = () => {
               dispatch(
                 setC1({
                   name: 'attach_org_structure_and_responsibilities_chart',
-                  value: [
-                    item,
-                    ...attach_org_structure_and_responsibilities_chart,
-                  ],
+                  value: item,
                 })
               )
             }}
@@ -186,7 +183,7 @@ const SectionC1 = () => {
               dispatch(
                 setC1({
                   name: 'project_proponents_upload',
-                  value: [item, ...project_proponents_upload],
+                  value: item,
                 })
               )
             }}
@@ -210,7 +207,7 @@ const SectionC1 = () => {
               dispatch(
                 setC1({
                   name: 'others_involved_upload',
-                  value: [item, ...others_involved_upload],
+                  value: item,
                 })
               )
             }}
