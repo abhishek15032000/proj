@@ -1,21 +1,25 @@
-import { Box, Grid, Paper, Typography } from '@mui/material'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
+import CCFileViewer from '../../../atoms/CCFileViewer/CCFileViewer'
+import StatusChips from '../../../atoms/StatusChips/StatusChips'
+import { TRACEABILITY_TAB_NAMES } from '../../../config/constants.config'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import ApproveReport from './AllTraceTabDetails/ApproveReport'
+import { downloadFile } from '../../../utils/commonFunctions'
 import Buyer from './AllTraceTabDetails/Buyer'
 import CreateProject from './AllTraceTabDetails/CreateProject'
-import GetVerificationReport from './AllTraceTabDetails/GetVerificationReport'
-import RegsitryVerificationReport from './AllTraceTabDetails/RegsitryVerificationReport'
-import SubmitVerification from './AllTraceTabDetails/SubmitVerification'
-import VerificationProcess from './AllTraceTabDetails/VerificationProcess'
+import ProjectMinted from './AllTraceTabDetails/ProjectMinted'
+import PDFGenerated from './AllTraceTabDetails/PDFGenerated'
+import TokenDeployed from './AllTraceTabDetails/TokenDeployed'
 import VerificationReport from './AllTraceTabDetails/VerificationReport'
-import VerificationRequest from './AllTraceTabDetails/VerificationRequest'
-import { downloadFile } from '../../../utils/commonFunctions'
-import CCFileViewer from '../../../atoms/CCFileViewer/CCFileViewer'
+import VerifierAccept from './AllTraceTabDetails/VerifierAccept'
+import VerifierAssign from './AllTraceTabDetails/VerifierAssign'
+import VerifierRequest from './AllTraceTabDetails/VerifierRequest'
+import VerifierVerified from './AllTraceTabDetails/VerifierVerified'
+import RegistryReport from './AllTraceTabDetails/RegistryReport'
 
 export interface TraceDetailsProps {
   traceOption?: any
@@ -25,27 +29,109 @@ export interface TraceDetailsProps {
   projectDetails?: any
   traceTab?: any
   txID?: ''
+  projectName?: any
+  projectLocation?: any
+  projectRefID?: any
+  tabData?: any
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
-  const { traceOption, theme, projectDetails, txID } = props
+  const {
+    traceOption,
+    theme,
+    projectName,
+    projectLocation,
+    projectRefID,
+    tabData,
+  } = props
 
   const renderTab = [
-    <CreateProject key={0} {...props} />, //g Project created
-    <SubmitVerification key={1} {...props} />, //g Verifier selected
-    <VerificationRequest key={2} {...props} />, //o Verification requested
-    <VerificationProcess key={3} {...props} />, //o Verification in progress
-    <VerificationReport key={4} {...props} />, //g Project Verified
-    <ApproveReport key={5} {...props} />, //o Registration in progress
-    <RegsitryVerificationReport key={6} {...props} />, //g Project registered
-    <GetVerificationReport key={7} {...props} />, //g Project registered
-    // <Buyer key={8} {...props} />,
+    <CreateProject key={0} {...props} />,
+    <VerifierRequest key={1} {...props} />,
+    <VerifierAccept key={2} {...props} />,
+    <VerifierAssign key={3} {...props} />,
+    <PDFGenerated key={5} {...props} />,
+    <VerifierVerified key={6} {...props} />,
+    <TokenDeployed key={7} {...props} />,
+    <ProjectMinted key={8} {...props} />,
+    <RegistryReport key={9} {...props} />,
   ]
 
-  const reportPDF = useAppSelector(
-    ({ traceability }) => traceability?.reportPDF,
-    shallowEqual
-  )
+  const renderStatusChips = (status: string) => {
+    let text = ''
+
+    switch (status) {
+      case TRACEABILITY_TAB_NAMES.CREATE_PROJECT.type: {
+        text = 'Project Created'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.VERIFIER_REQUEST.type: {
+        text = 'Verifier selection in progress'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.VERIFIER_ACCEPTED.type: {
+        text = 'Verifier accepted Project request'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.VERIFIER_ASSIGN.type: {
+        text = 'Final Verifier selected'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.UPDATE_PROJECT_FINAL_PDF.type: {
+        text = 'Registration Report Created'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.PROJECT_VERIFIED.type: {
+        text = 'Verifier verified Project'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.DEPLOY_TOKEN.type: {
+        text = 'Tokens Deployed'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.PROJECT_MINTED.type: {
+        text = 'Tokens Minted'
+        break
+      }
+      case TRACEABILITY_TAB_NAMES.REGISTRY_UPLOADS_REPORT.type: {
+        text = 'Registry verifies Report'
+        break
+      }
+    }
+    const greenStatuses = [
+      TRACEABILITY_TAB_NAMES.CREATE_PROJECT.type,
+      TRACEABILITY_TAB_NAMES.VERIFIER_ASSIGN.type,
+      TRACEABILITY_TAB_NAMES.UPDATE_PROJECT_FINAL_PDF.type,
+      TRACEABILITY_TAB_NAMES.PROJECT_VERIFIED.type,
+      TRACEABILITY_TAB_NAMES.DEPLOY_TOKEN.type,
+      TRACEABILITY_TAB_NAMES.PROJECT_MINTED.type,
+      TRACEABILITY_TAB_NAMES.REGISTRY_UPLOADS_REPORT.type,
+    ]
+    const yellowStatuses = [
+      TRACEABILITY_TAB_NAMES.VERIFIER_REQUEST.type,
+      TRACEABILITY_TAB_NAMES.VERIFIER_ACCEPTED.type,
+    ]
+
+    if (greenStatuses.includes(status)) {
+      return (
+        <StatusChips
+          text={text}
+          textColor=""
+          backgroundColor="#75F8E4"
+          cirlceColor="#00A392"
+        />
+      )
+    } else {
+      return (
+        <StatusChips
+          text={text}
+          textColor=""
+          backgroundColor="rgba(243, 186, 77, 0.24)"
+          cirlceColor="#E6A603"
+        />
+      )
+    }
+  }
 
   return (
     <Paper
@@ -56,11 +142,9 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
         flexDirection: 'column',
         justifyContent: 'start',
         alignItems: 'start',
-        p: 4,
-
+        p: 3,
         width: '100%',
         height: '520px',
-        py: 5,
         // pr: 12,
         overflowX: 'hidden',
         boxShadow: '0px 5px 20px rgba(45, 95, 87, 0.1)',
@@ -86,7 +170,7 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
               color: '#006B5E',
             }}
           >
-            {projectDetails?.company_name}
+            {projectName}
           </Box>
           <Box>
             <Typography
@@ -100,9 +184,7 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
                 whiteSpace: 'nowrap',
               }}
             >
-              {moment(projectDetails?.createdAt).format(`DD-MM-YYYY`) +
-                ' | ' +
-                moment(projectDetails?.createdAt).format(`HH:MM:SS`)}
+              {moment(tabData?.createdAt).format(`DD-MM-YYYY | HH:mm:ss`)}
             </Typography>
           </Box>
         </Box>
@@ -120,9 +202,7 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
               sx={{ color: '#3F4946', fontSize: 14, fontWeight: 400 }}
             >
               Location:{' '}
-              <span style={{ fontWeight: 500 }}>
-                {projectDetails?.location}
-              </span>
+              <span style={{ fontWeight: 500 }}>{projectLocation}</span>
             </Typography>
           </Box>
           <Box>
@@ -130,91 +210,16 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
               sx={{ color: '#3F4946', fontSize: 14, fontWeight: 400 }}
             >
               Reference ID:{' '}
-              <span style={{ fontWeight: 500 }}>
-                {/* {projectDetails?.location} */}
-              </span>
+              <span style={{ fontWeight: 500 }}>{projectRefID}</span>
             </Typography>
           </Box>
         </Box>
+        <Box sx={{ mt: 1 }}>{renderStatusChips(tabData?.type)}</Box>
       </Box>
-
-      {/* {txIDForTab ? (
-        <Typography
-          sx={{
-            color: '#1A8EF5',
-            fontSize: 12,
-            fontWeight: 500,
-            mt: 1,
-            wordBreak: 'break-all',
-          }}
-        >
-          <a
-            href={`https://mumbai.polygonscan.com/tx/${txIDForTab}`}
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: '#1A8EF5' }}
-          >
-            {txIDForTab}
-          </a>
-        </Typography>
-      ) : null} */}
-      {txID ? (
-        <>
-          <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#00201B' }}>
-            Transaction hash
-          </Typography>
-          <Typography
-            sx={{
-              color: '#1A8EF5',
-              fontSize: 12,
-              fontWeight: 500,
-              wordBreak: 'break-all',
-            }}
-          >
-            <a
-              href={`https://mumbai.polygonscan.com/tx/${txID}`}
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: '#1A8EF5' }}
-            >
-              {txID}
-            </a>
-          </Typography>
-        </>
-      ) : null}
 
       <Grid container columnSpacing={3}>
         {renderTab[traceOption]}
       </Grid>
-      <Typography
-        sx={{
-          color: theme === 'dark' ? '#75F8E4' : '#006B5E',
-          fontSize: 16,
-          fontWeight: 500,
-          mt: '20px',
-        }}
-      >
-        {'Relevant docs'}
-      </Typography>
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-        {reportPDF ? (
-          // <FileComp theme={theme} filename={'Project Report'} file={reportPDF} />
-          <CCFileViewer title={reportPDF} fileSize={0} />
-        ) : null}
-        {projectDetails?.report?.file_attach &&
-          projectDetails?.report?.file_attach.length > 0 &&
-          projectDetails?.report?.file_attach.map(
-            (file: any, index: number) => (
-              <CCFileViewer
-                key={index}
-                title={file}
-                index={index}
-                fileSize={0}
-              />
-              // <FileComp key={index} theme={theme} filename={file} file={file} />
-            )
-          )}
-      </Box>
     </Paper>
   )
 }

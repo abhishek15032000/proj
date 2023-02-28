@@ -10,7 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { ethers } from 'ethers'
 import moment from 'moment'
 import { shallowEqual } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { USER } from '../../api/user.api'
 import { verifierCalls } from '../../api/verifierCalls.api'
@@ -102,9 +102,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     setHeight2(ref.current.clientHeight)
     // }
   })
-
-  console.log('height', height)
-  console.log('height2', height2)
 
   useEffect(() => {
     !selectMonth ||
@@ -297,12 +294,20 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           <Box
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                state: {
-                  project_uuid: project?.uuid,
-                  projectDetails: project,
+              navigate(
+                {
+                  pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                  search: `?${createSearchParams({
+                    projectId: project?.uuid,
+                  })}`,
                 },
-              })
+                {
+                  state: {
+                    project_uuid: project?.uuid,
+                    projectDetails: project,
+                  },
+                }
+              )
             }}
           >
             Project Details
@@ -387,12 +392,20 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                       color: Colors.tertiary,
                     }}
                     onClick={() => {
-                      navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                        state: {
-                          project_uuid: project?.uuid,
-                          projectDetails: project,
+                      navigate(
+                        {
+                          pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                          search: `?${createSearchParams({
+                            projectId: project?.uuid,
+                          })}`,
                         },
-                      })
+                        {
+                          state: {
+                            project_uuid: project?.uuid,
+                            projectDetails: project,
+                          },
+                        }
+                      )
                     }}
                   />
                   <Box

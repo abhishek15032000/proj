@@ -150,4 +150,8 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/event/updateWalletBalance',
     getWalletBalance: ENDPOINTS.carbonServiceURL + '/event/getWalletBalance',
   },
+  traceability: {
+    getTraceabilityByProjectId:
+      ENDPOINTS.carbonServiceURL + '/traceability/getTraceabilityByProjectId',
+  },
 }
