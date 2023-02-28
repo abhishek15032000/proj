@@ -1,40 +1,41 @@
 import React, { FC } from 'react'
-import { PROJECT_STATUS } from '../../../../config/constants.config'
 import TitleValue from './TitleValue'
+import TransactionHash from './TransactionHash'
+import moment from 'moment'
 
 interface CreateProjectProps {
-  traceOption?: any
-  setTraceOption?: any
   theme?: any
-  projectId?: any
-  projectDetails?: any
-  traceTab?: any
+  tabData?: any
 }
 
 const CreateProject: FC<CreateProjectProps> = (props) => {
-  const { traceOption, theme, projectDetails } = props
-  console.log(projectDetails)
+  const { theme, tabData } = props
 
   return (
     <>
+      {tabData?.transactionId ? (
+        <TransactionHash txID={tabData?.transactionId} />
+      ) : (
+        ''
+      )}
       <TitleValue
-        title="Project reference ID"
-        value={projectDetails?.uuid}
+        title="Project Developer"
+        value={tabData?.data?.name}
         theme={theme}
       />
       <TitleValue
         title="Project Name"
-        value={projectDetails?.company_name}
+        value={tabData?.data?.area + ' Sq.Km.'}
         theme={theme}
       />
       <TitleValue
-        title="Project location"
-        value={projectDetails?.location}
+        title="Project Start Date"
+        value={moment(tabData?.data?.start_date).format('ll')}
         theme={theme}
       />
       <TitleValue
-        title="Status"
-        value={PROJECT_STATUS[traceOption]?.value}
+        title="Project Duration"
+        value={tabData?.data?.duration + ' Year(s)'}
         theme={theme}
       />
     </>
