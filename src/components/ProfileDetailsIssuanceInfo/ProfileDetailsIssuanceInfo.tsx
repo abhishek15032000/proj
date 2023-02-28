@@ -25,8 +25,8 @@ import CCButton from '../../atoms/CCButton'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import About from '../About'
 import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollection'
-import { projectDetailsCalls } from '../../api/projectDetailsCalls.api'
 import ProjectIntro from '../ProjectDetails/Skeleton/ProjectIntro'
+import { addSectionPercentages } from '../../utils/newProject.utils'
 
 const tabs = [
   'About',
@@ -41,22 +41,18 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   const location: any = useLocation()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('projectId')
-  // const projectData = useAppSelector(
-  //   ({ issuanceDataCollection }) =>
-  //     issuanceDataCollection.projectData,
-  //   shallowEqual
-  // )
+  const projectData = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
   const [tabIndex, setTabIndex] = useState(0)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
   const [projectStatus, setProjectStatus] = useState<number>()
-  const [projectData, setProjectData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     getProjectAllData(projectId)
-    // return () => {
-    //   setProjectData(null)
-    // }
   }, [searchParams])
 
   const getProjectAllData = (projectId: any) => {
@@ -64,23 +60,21 @@ const ProfileDetailsIssuanceInfo: FC = () => {
     dataCollectionCalls
       .getProjectById(projectId)
       .then((result) => {
-        setProjectData(result.data)
-        dispatch(setCurrentProjectDetails(result.data))
+        calculatePercentage(result.data)
       })
       .catch((e) => e)
       .finally(() => setLoading(false))
   }
-  // useEffect(() => {
-  //   if (!projectData) navigate(pathNames.DASHBOARD)
-  // }, [])
 
-  useEffect(() => {
+  const calculatePercentage = (projectData: any) => {
     if (location?.state?.status !== 0) {
       setTabIndex(1)
     }
 
-    if (projectData) {
-      setProjectStatus(projectData?.project_status)
+    const modifiedRows = addSectionPercentages(projectData)
+    console.log('modifiedRows', modifiedRows)
+    if (modifiedRows) {
+      setProjectStatus(modifiedRows?.project_status)
       const issuanceInfoTabData = [
         {
           title: 'Project Introduction',
@@ -90,49 +84,52 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         {
           title: 'Sec A: Description of Project Activity',
           status:
-            projectData?.section_a?.completionPercentage === 100
+            modifiedRows?.section_a?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent: projectData?.section_a?.completionPercentage,
+          completionPercent: modifiedRows?.section_a?.completionPercentage,
         },
         {
           title: 'Sec B: Implementation of the project activity',
           status:
-            projectData?.section_b?.completionPercentage === 100
+            modifiedRows?.section_b?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent: projectData?.section_b?.completionPercentage,
+          completionPercent: modifiedRows?.section_b?.completionPercentage,
         },
         {
           title: 'Sec C: Description of Monitoring Activity',
           status:
-            projectData?.section_c?.completionPercentage === 100
+            modifiedRows?.section_c?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent: projectData?.section_c?.completionPercentage,
+          completionPercent: modifiedRows?.section_c?.completionPercentage,
         },
         {
           title: 'Sec D: Data and parameters',
           status:
-            projectData?.section_d?.completionPercentage === 100
+            modifiedRows?.section_d?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent: projectData?.section_d?.completionPercentage,
+          completionPercent: modifiedRows?.section_d?.completionPercentage,
         },
         {
           title:
             'Sec E: Calculation of emission reductions or GHG removals by sinks',
           status:
-            projectData?.section_e?.completionPercentage === 100
+            modifiedRows?.section_e?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent: projectData?.section_e?.completionPercentage,
+          completionPercent: modifiedRows?.section_e?.completionPercentage,
         },
       ]
       setIssuanceInfo(issuanceInfoTabData)
-    }
-  }, [projectData])
 
+      dispatch(setCurrentProjectDetails(modifiedRows))
+    }
+  }
+
+  console.log('projectData', projectData)
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
       <Grid
@@ -176,57 +173,6 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       ) : (
         <ProjectIntroduction projectDetailsData={projectData} />
       )}
-
-      {/*<Grid container>
-          <Grid item xs={10} sx={{ p: 2 }}>
-            <Typography sx={{ fontSize: 24 }}>
-              {projectData?.company_name}
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
-              {projectData?.type?.map((type: any, index: number) => (
-                <Box
-                  sx={{
-                    fontSize: 14,
-                    color: '#191C1B',
-                    backgroundColor: '#E8F3EF',
-                    padding: '2px 4px',
-                    mt: 1,
-                    mr: 1,
-                  }}
-                  key={index}
-                >
-                  {type}
-                </Box>
-              ))}
-            </Box>
-            <Box sx={{ display: 'flex', mt: 2 }}>
-              <TodayIcon sx={{ color: '#006B5E', mr: 1, fontSize: 18 }} />
-              <Box>
-                Started on{' '}
-                {projectData?.createdAt &&
-                  moment(projectData?.createdAt).format('L')}
-              </Box>
-            </Box>
-            <Box sx={{ display: 'flex', mt: 1 }}>
-              <PlaceOutlinedIcon
-                sx={{ color: '#006B5E', mr: 1, fontSize: 18 }}
-              />
-              <Typography sx={{ fontSize: 14 }}>
-                {projectData?.location}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={2}>
-            <Box
-              sx={{
-                backgroundColor: 'lightgrey',
-                width: '100%',
-                height: '100%',
-              }}
-            ></Box>
-          </Grid>
-        </Grid>*/}
-      {/*</Paper>*/}
 
       <Paper sx={{ mt: 2, px: 2, py: 2 }}>
         <Box
