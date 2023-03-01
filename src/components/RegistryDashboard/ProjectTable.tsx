@@ -1,7 +1,7 @@
 import { Box } from '@mui/system'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { department } from '../../api/department.api'
 import { registryCalls } from '../../api/registry.api'
@@ -223,8 +223,11 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
 
   const onClickStartHandler = async (projectDetails: any) => {
     dispatch(setRegistryProjectDetails(projectDetails))
-    navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-      state: { projectDetails: projectDetails },
+    navigate({
+      pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+      search: `?${createSearchParams({
+        projectId: projectDetails?.uuid,
+      })}`,
     })
   }
 

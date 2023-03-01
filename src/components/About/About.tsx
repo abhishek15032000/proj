@@ -131,17 +131,17 @@ const lightModeTheme = {
   typography: initialState.typography,
 }
 
-const data = [1, 3, 6, 7, 8, 10, 12, 13]
+const SGGSData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 
 interface AboutProps {
   projectId: any
-  projectStatus: number
 }
 
-const About: FC<AboutProps> = ({ projectId, projectStatus }) => {
+const About: FC<AboutProps> = (props) => {
   const [searchParams] = useSearchParams()
   const [projectData, setProjectData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const { projectId } = props
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -162,8 +162,8 @@ const About: FC<AboutProps> = ({ projectId, projectStatus }) => {
     setLoading(true)
     projectDetailsCalls
       .getProjectDetailsById(projectId)
-      .then((result) => setProjectData(result.data))
-      .catch((e) => e)
+      .then((result: any) => setProjectData(result.data))
+      .catch((e: any) => e)
       .finally(() => setLoading(false))
   }
 
@@ -257,7 +257,8 @@ const About: FC<AboutProps> = ({ projectId, projectStatus }) => {
                   <Grid item xs={12} lg={5}>
                     {loading ? (
                       <SDGSComponent />
-                    ) : projectStatus >= 0 ? (
+                    ) : currentProjectDetails &&
+                      currentProjectDetails?.project_status >= 6 ? (
                       <Grid
                         container
                         sx={{
@@ -306,12 +307,15 @@ const About: FC<AboutProps> = ({ projectId, projectStatus }) => {
                               justifyContent: 'flex-start',
                               pr: 2,
                               pl: 3,
-                              pb: projectStatus >= 6 ? 5 : 0,
+                              pb:
+                                currentProjectDetails?.project_status >= 6
+                                  ? 5
+                                  : 0,
                             }}
                           >
-                            {data &&
-                              data.length > 0 &&
-                              data.map((item: any, index: any) => (
+                            {SGGSData &&
+                              SGGSData.length > 0 &&
+                              SGGSData.map((item: any, index: any) => (
                                 <Grid
                                   // columns={1}
                                   // columnSpacing={5}
@@ -358,7 +362,7 @@ const About: FC<AboutProps> = ({ projectId, projectStatus }) => {
                               ))}
                           </Grid>
                         </Grid>
-                        {projectStatus >= 8 ? (
+                        {currentProjectDetails?.project_status >= 8 ? (
                           <Grid
                             item
                             justifyContent={'start'}
@@ -412,7 +416,6 @@ const About: FC<AboutProps> = ({ projectId, projectStatus }) => {
       </>
     )
   }
-  console.log('currentProjectDetails', currentProjectDetails)
 
   return onWebApp ? (
     <Container maxWidth="xl">{viewRenderer()}</Container>
