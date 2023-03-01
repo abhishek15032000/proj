@@ -3,12 +3,11 @@ import TitleValue from './TitleValue'
 import TransactionHash from './TransactionHash'
 
 interface TokenDeployedProps {
-  theme?: any
   tabData?: any
 }
 
 const TokenDeployed: FC<TokenDeployedProps> = (props) => {
-  const { theme, tabData } = props
+  const { tabData } = props
 
   return (
     <>
@@ -17,21 +16,9 @@ const TokenDeployed: FC<TokenDeployedProps> = (props) => {
       ) : (
         ''
       )}
-      <TitleValue
-        title="Carbon Token"
-        value={tabData?.data?._tokenName}
-        theme={theme}
-      />
-      <TitleValue
-        title="Carbon Token"
-        value={tabData?.data?._tokenSymbol}
-        theme={theme}
-      />
-      <TitleValue
-        title="Carbon Token"
-        value={tabData?.data?._tokenType}
-        theme={theme}
-      />
+      <TitleValue title="Carbon Token" value={tabData?.data?._tokenName} />
+      <TitleValue title="Carbon Token" value={tabData?.data?._tokenSymbol} />
+      <TitleValue title="Carbon Token" value={tabData?.data?._tokenType} />
     </>
   )
 }
