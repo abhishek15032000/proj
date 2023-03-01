@@ -60,7 +60,7 @@ const ReviewAndComment = () => {
 
   useEffect(() => {
     if (userType === ROLES.VERIFIER) {
-      setDataForViewer()
+      setDataForVerifier()
     } else {
       setDataForIssuer()
     }
@@ -74,17 +74,17 @@ const ReviewAndComment = () => {
     }
   }, [sectionIDs])
 
-  const setDataForViewer = () => {
+  const setDataForVerifier = () => {
     dispatch(setProject(project))
     dispatch(setProjectID(project?._id))
 
     dispatch(
       setSectionIDs([
-        project?.section_a,
-        project?.section_b,
-        project?.section_c,
-        project?.section_d,
-        project?.section_e,
+        project?.section_a?._id,
+        project?.section_b?._id,
+        project?.section_c?._id,
+        project?.section_d?._id,
+        project?.section_e?._id,
       ])
     )
     dispatch(setCommentFrom(user_id))

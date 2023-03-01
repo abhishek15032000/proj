@@ -258,7 +258,7 @@ const About: FC<AboutProps> = (props) => {
                     {loading ? (
                       <SDGSComponent />
                     ) : currentProjectDetails &&
-                      currentProjectDetails?.project_status >= 6 ? (
+                      currentProjectDetails?.project_status > 0 ? (
                       <Grid
                         container
                         sx={{
