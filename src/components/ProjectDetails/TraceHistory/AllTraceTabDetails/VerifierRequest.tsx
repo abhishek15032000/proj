@@ -5,7 +5,6 @@ import React, { FC } from 'react'
 import { Colors } from '../../../../theme'
 
 interface VerifierRequestProps {
-  theme?: any
   tabData?: any
 }
 

@@ -7,12 +7,11 @@ import TitleValue from './TitleValue'
 import TransactionHash from './TransactionHash'
 
 interface ProjectMintedProps {
-  theme?: any
   tabData?: any
 }
 
 const ProjectMinted: FC<ProjectMintedProps> = (props) => {
-  const { theme, tabData } = props
+  const { tabData } = props
 
   return (
     <>
@@ -24,17 +23,14 @@ const ProjectMinted: FC<ProjectMintedProps> = (props) => {
       <TitleValue
         title="Date of Project verification report submit"
         value={moment(tabData?.createdAt).format(`DD/MM/YY`)}
-        theme={theme}
       />
       <TitleValue
         title="Next Submission Date"
         value={moment(tabData?.data?.next_date).format(`DD/MM/YY`)}
-        theme={theme}
       />
       <TitleValue
         title="Tokens for Month"
         value={moment(tabData?.data?.current_month).format('MMMM')}
-        theme={theme}
       />
       <TitleValue
         bolder
@@ -42,7 +38,6 @@ const ProjectMinted: FC<ProjectMintedProps> = (props) => {
         value={
           convertToInternationalCurrencySystem(tabData?.data?.quantity) || '-'
         }
-        theme={theme}
       />
       <TitleValue
         bolder
@@ -52,7 +47,6 @@ const ProjectMinted: FC<ProjectMintedProps> = (props) => {
             tabData?.data?.monthly_carbon_tokens
           ) || '-'
         }
-        theme={theme}
       />
       <TitleValue
         bolder
@@ -62,12 +56,10 @@ const ProjectMinted: FC<ProjectMintedProps> = (props) => {
             tabData?.data?.lifetime_carbon_tokens
           ) || '-'
         }
-        theme={theme}
       />
       <TitleValue
         title="GHG Reduction Explanation"
         value={tabData?.data?.ghg_reduction_explanation}
-        theme={theme}
         fullWidth
       />
       <Box sx={{ fontSize: 14, fontWeight: 500, px: 3 }}>
