@@ -4,7 +4,6 @@ import React, { FC } from 'react'
 interface TitleValueProps {
   title: string
   value: string | number
-  theme?: string
   bolder?: boolean
   fullWidth?: boolean
 }
@@ -12,7 +11,6 @@ interface TitleValueProps {
 const TitleValue: FC<TitleValueProps> = ({
   title,
   value,
-  theme = 'light',
   bolder = false,
   fullWidth = false,
 }) => {
