@@ -392,20 +392,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                       color: Colors.tertiary,
                     }}
                     onClick={() => {
-                      navigate(
-                        {
-                          pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
-                          search: `?${createSearchParams({
-                            projectId: project?.uuid,
-                          })}`,
-                        },
-                        {
-                          state: {
-                            project_uuid: project?.uuid,
-                            projectDetails: project,
-                          },
-                        }
-                      )
+                      navigate(-1)
                     }}
                   />
                   <Box
