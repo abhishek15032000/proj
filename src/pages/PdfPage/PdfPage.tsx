@@ -1,41 +1,59 @@
 import { Box } from '@mui/system'
-import React from 'react'
-import IcrLogo from '../../assets/Images/logo/ICR_LOGO_1.svg'
+import React, { FC, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import { fileUploadCalls } from '../../api/fileUpload.api'
+import { useAppDispatch } from '../../hooks/reduxHooks'
+import { setPageCount, setPdfData } from '../../redux/Slices/pdfSlice'
+import FrontPage from './FrontPage'
+import IndexPage from './IndexPage'
+import ProjectIntro from './ProjectIntro'
+import SectionA from './SectionA'
+import SectionB from './SectionB'
+import SectionC from './SectionC'
+import SectionD from './SectionD'
+import SectionE from './SectionE'
+import './style.css'
 
-const PdfPage = () => {
+interface PdfPageProps {
+  id: string
+}
+const PdfPage: FC<PdfPageProps> = ({ id }) => {
+  const dispatch = useAppDispatch()
+  const [data, setData] = useState({})
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    const projectId: any = searchParams.get('id')
+    getAllDetails(id || projectId)
+  }, [searchParams])
+
+  const getAllDetails = (id: string) => {
+    // setLoading(true)
+    dataCollectionCalls
+      .getProjectById(id)
+      // .getProjectById('b909b3f1-8e59-4e50-8cce-1b83ae2fbfe2')
+      // .getProjectById('c89ceeb2-d8a7-4829-aed6-d36da7f494e8')
+      .then((res) => {
+        console.log('project', res?.data)
+        dispatch(setPdfData(res?.data))
+      })
+      .catch((error) => {
+        console.log('error', error)
+        // setLoading(false)
+      })
+  }
+
   return (
     <>
-      <Box sx={{ p: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box>
-            <img src={IcrLogo} alt="icr" />
-          </Box>
-          <Box></Box>
-        </Box>
-        <Box sx={{ px: 1, mt: 2 }}>
-          <Box sx={{ color: '#3F4946', fontSize: 32, fontWeight: 600 }}>
-            Heading
-          </Box>
-          <Box sx={{ color: '#3F4946', fontSize: 14, fontWeight: 500, my: 2 }}>
-            Project Design Description V 2.0
-          </Box>
-          <Box
-            sx={{
-              mt: 1,
-              color: '#191C1B',
-              fontSize: 14,
-              fontWeight: 400,
-              background: '#DAF7F0',
-              borderRadius: '4px',
-              padding: '2px 5px',
-              display: 'inline-block',
-            }}
-          >
-            AMS-I.B Grid-connected electricity generation from renewable sources
-          </Box>
-        </Box>
-      </Box>
-      <Box sx={{ border: '1px solid blue', height: '500px' }}>img</Box>
+      <FrontPage />
+      <IndexPage />
+      <ProjectIntro />
+      <SectionA />
+      <SectionB />
+      <SectionC />
+      <SectionD />
+      <SectionE />
     </>
   )
 }
