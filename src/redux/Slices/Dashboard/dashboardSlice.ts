@@ -3,10 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface cachingReducerInterface {
   issuerNewProjects: any
   issuerRegisteredProjects: any
+  issuerVerificationProjects: any
 }
 const initialState: cachingReducerInterface = {
   issuerNewProjects: null,
   issuerRegisteredProjects: null,
+  issuerVerificationProjects: null,
 }
 const dashboardSlice = createSlice({
   name: 'dashboardSlice',
@@ -18,10 +20,16 @@ const dashboardSlice = createSlice({
     setIssuerRegisteredProjects: (state, action: PayloadAction<any>) => {
       state.issuerRegisteredProjects = action.payload
     },
+    setIssueVerificationProjects: (state, action: PayloadAction<any>) => {
+      state.issuerVerificationProjects = action.payload
+    },
   },
 })
 
-export const { setIssuerNewProjects, setIssuerRegisteredProjects } =
-  dashboardSlice.actions
+export const {
+  setIssuerNewProjects,
+  setIssuerRegisteredProjects,
+  setIssueVerificationProjects,
+} = dashboardSlice.actions
 
 export default dashboardSlice.reducer

@@ -41,6 +41,7 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/project/getProjectDetails',
     getVerifiedProjects:
       ENDPOINTS.carbonServiceURL + '/project/getVerifiedProjects',
+    getAllProjectsTab: ENDPOINTS.carbonServiceURL + '/project/getProjects',
   },
   projectSections: {
     updateProjectSectionA:
@@ -149,5 +150,9 @@ export const URL_PATH = {
     updateWalletBalance:
       ENDPOINTS.carbonServiceURL + '/event/updateWalletBalance',
     getWalletBalance: ENDPOINTS.carbonServiceURL + '/event/getWalletBalance',
+  },
+  traceability: {
+    getTraceabilityByProjectId:
+      ENDPOINTS.carbonServiceURL + '/traceability/getTraceabilityByProjectId',
   },
 }

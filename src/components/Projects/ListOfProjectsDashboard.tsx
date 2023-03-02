@@ -9,7 +9,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 // Functional Imports
 import moment from 'moment'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { shallowEqual, useDispatch } from 'react-redux'
 
 // Local Imports
@@ -43,6 +43,7 @@ import { setSectionIndex } from '../../redux/Slices/issuanceDataCollection'
 import {
   setIssuerNewProjects,
   setIssuerRegisteredProjects,
+  setIssueVerificationProjects,
 } from '../../redux/Slices/Dashboard/dashboardSlice'
 
 let index = 0
@@ -95,21 +96,49 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
     shallowEqual
   )
 
+  const issuerVerificationProjects = useAppSelector(
+    ({ dashboard }) => dashboard.issuerVerificationProjects,
+    shallowEqual
+  )
+  const cachedNewTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedNewTabAllProjects,
+    shallowEqual
+  )
+
+  const cachedVerificationTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedVerificationTabAllProjects,
+    shallowEqual
+  )
+
+  const cachedRegisterTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedRegisterTabAllProjects,
+    shallowEqual
+  )
+
   const [tabIndex, setTabIndex] = useState(1)
 
   const openProjectDetails = (projectDetails: any, redirect: any) => {
+    console.log('openProjectDetails', projectDetails)
     if (projectDetails) {
-      const percentageAddedData = addSectionPercentages(projectDetails)
+      // const percentageAddedData = addSectionPercentages(projectDetails)
 
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
-      dispatch(setCurrentProjectDetails(percentageAddedData))
+      dispatch(setCurrentProjectDetails(projectDetails))
 
       if (redirect === 'Details') {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO, {
-          state: {
-            status: projectDetails?.project_status,
+        navigate(
+          {
+            pathname: pathNames.PROJECT_DETAILS,
+            search: `?${createSearchParams({
+              projectId: projectDetails?.uuid,
+            })}`,
           },
-        })
+          {
+            state: {
+              status: projectDetails?.project_status,
+            },
+          }
+        )
       } else if (redirect === 'Monthly') {
         dispatch(setMonthlyReportSectionIndex(0))
         dispatch(setSubSectionIndex(0))
@@ -122,150 +151,244 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   }
 
   useEffect(() => {
-    const newData: any = [],
-      registeredData: any = []
+    const newData: any = []
 
-    cachedIssuerDashboardProjects &&
-      cachedIssuerDashboardProjects.length &&
-      cachedIssuerDashboardProjects.map((item: any, index: any) => {
-        if (
-          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ||
-          item.project_status ===
-            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
-          item.project_status ===
-            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT
-        ) {
-          newData.push([
-            // <ShortenedIDComp key={index} referenceId={item.uuid} />,
-            <Box
-              key={index}
-              className="td-as-link"
-              onClick={() => openProjectDetails(item, 'Details')}
-            >
-              <LimitedText
-                key={index}
-                text={item?.uuid}
-                widthLimit={'100px'}
-                ellispsisAtStart
-              />
-            </Box>,
+    cachedNewTabAllProjects &&
+      cachedNewTabAllProjects.length &&
+      cachedNewTabAllProjects.map((item: any, index: any) => {
+        newData.push([
+          // <ShortenedIDComp key={index} referenceId={item.uuid} />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
             <LimitedText
               key={index}
-              text={moment(item?.createdAt).format('DD/MM/YYYY')}
-            />,
+              text={item?.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
+          <LimitedText
+            key={index}
+            text={moment(item?.createdAt).format('DD/MM/YYYY')}
+          />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText text={item?.company_name} widthLimit="200px" />
+          </Box>,
+          <LimitedText key={index} text={item?.location} />,
+          item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
+            <ApprovalChip variant="Yet to Select" key={index} />
+          ) : item?.project_status ===
+            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
+            <ApprovalChip variant="Selected" key={index} />
+          ) : item?.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
+            <ApprovalChip variant="Selected" key={index} />
+          ) : (
+            item?.project_status ===
+              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
+              <ApprovalChip variant="Finalised" key={index} />
+            )
+          ),
+          item?.verifier_details_id ? (
             <Box
-              key={index}
-              className="td-as-link"
-              onClick={() => openProjectDetails(item, 'Details')}
+              key={'1'}
+              sx={{
+                display: 'flex',
+                justifyContent: 'start',
+                alignItems: 'center',
+              }}
             >
-              <LimitedText text={item?.company_name} widthLimit="200px" />
-            </Box>,
-            <LimitedText key={index} text={item?.location} />,
-            item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
-              <ApprovalChip variant="Yet to Select" key={index} />
-            ) : item?.project_status ===
-              PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
-              <ApprovalChip variant="Selected" key={index} />
-            ) : item?.project_status ===
-              PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
-              <ApprovalChip variant="Selected" key={index} />
-            ) : (
-              item?.project_status ===
-                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
-                <ApprovalChip variant="Finalised" key={index} />
-              )
-            ),
-            item?.verifier_details_id ? (
-              <Box
-                key={'1'}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'start',
-                  alignItems: 'center',
-                }}
-              >
-                <WorkOutlineIcon />
-                <Typography sx={{ fontSize: 14, fontWeight: 400, ml: 1 }}>
-                  {item.verifier_details_id?.verifier_name}
-                </Typography>
-              </Box>
-            ) : (
-              '-'
-            ),
-            item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
-              isProjectCompleted(item) ? (
-                <TextButton
-                  title="Select Verifier"
-                  onClick={() => openProjectDetails(item, 'Verify')}
-                />
-              ) : (
-                <CreateIcon
-                  sx={{ cursor: 'pointer' }}
-                  key="1"
-                  onClick={() => moveToSection(item)}
-                />
-              )
-            ) : (
-              '-'
-            ),
-            <Box key="1">
-              <ChevronRightIcon
-                sx={{ cursor: 'pointer' }}
-                onClick={() => openProjectDetails(item, 'Details')}
-              />
-            </Box>,
-          ])
-        }
+              <WorkOutlineIcon />
+              <Typography sx={{ fontSize: 14, fontWeight: 400, ml: 1 }}>
+                {item.verifier_details_id?.verifier_name}
+              </Typography>
+            </Box>
+          ) : (
+            '-'
+          ),
+          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
+            // isProjectCompleted(item) ? (
+            //   <TextButton
+            //     title="Select Verifier"
+            //     onClick={() => openProjectDetails(item, 'Verify')}
+            //   />
+            // ) : (
+            <CreateIcon
+              sx={{ cursor: 'pointer' }}
+              key="1"
+              onClick={() => moveToSection(item)}
+            />
+          ) : (
+            //  )
 
-        if (
-          [
-            PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
-            PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
-            PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
-            PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
-          ].includes(item.project_status)
-        ) {
-          registeredData.push([
-            <Box
-              key={index}
-              className="td-as-link"
+            '-'
+          ),
+          <Box key="1">
+            <ChevronRightIcon
+              sx={{ cursor: 'pointer' }}
               onClick={() => openProjectDetails(item, 'Details')}
-            >
-              {' '}
-              <LimitedText
-                key={index}
-                text={item.uuid}
-                widthLimit={'100px'}
-                ellispsisAtStart
-              />
-            </Box>,
+            />
+          </Box>,
+        ])
+      })
+
+    if (newData.length !== 0) {
+      dispatch(setIssuerNewProjects(newData))
+    } else {
+      dispatch(setIssuerNewProjects(null))
+    }
+  }, [cachedNewTabAllProjects])
+
+  useEffect(() => {
+    const verificationData: any = []
+
+    cachedVerificationTabAllProjects &&
+      cachedVerificationTabAllProjects.length &&
+      cachedVerificationTabAllProjects.map((item: any, index: any) => {
+        verificationData.push([
+          // <ShortenedIDComp key={index} referenceId={item.uuid} />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
             <LimitedText
               key={index}
-              text={moment(item.createdAt).format('DD/MM/YYYY')}
-            />,
+              text={item?.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
+          <LimitedText
+            key={index}
+            text={moment(item?.createdAt).format('DD/MM/YYYY')}
+          />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText text={item?.company_name} widthLimit="200px" />
+          </Box>,
+          <LimitedText key={index} text={item?.location} />,
+          item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
+            <ApprovalChip variant="Yet to Select" key={index} />
+          ) : item?.project_status ===
+            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
+            <ApprovalChip variant="Selected" key={index} />
+          ) : item?.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
+            <ApprovalChip variant="Selected" key={index} />
+          ) : (
+            item?.project_status ===
+              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
+              <ApprovalChip variant="Finalised" key={index} />
+            )
+          ),
+          item?.verifier_details_id ? (
+            <Box
+              key={'1'}
+              sx={{
+                display: 'flex',
+                justifyContent: 'start',
+                alignItems: 'center',
+              }}
+            >
+              <WorkOutlineIcon />
+              <Typography sx={{ fontSize: 14, fontWeight: 400, ml: 1 }}>
+                {item.verifier_details_id?.verifier_name}
+              </Typography>
+            </Box>
+          ) : (
+            '-'
+          ),
+          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
+            // isProjectCompleted(item) ? (
+            //   <TextButton
+            //     title="Select Verifier"
+            //     onClick={() => openProjectDetails(item, 'Verify')}
+            //   />
+            // ) : (
+            <CreateIcon
+              sx={{ cursor: 'pointer' }}
+              key="1"
+              onClick={() => moveToSection(item)}
+            />
+          ) : (
+            // )
+
+            '-'
+          ),
+          <Box key="1">
+            <ChevronRightIcon
+              sx={{ cursor: 'pointer' }}
+              onClick={() => openProjectDetails(item, 'Details')}
+            />
+          </Box>,
+        ])
+      })
+
+    if (verificationData.length !== 0) {
+      dispatch(setIssueVerificationProjects(verificationData))
+    } else {
+      dispatch(setIssueVerificationProjects(null))
+    }
+  }, [cachedVerificationTabAllProjects])
+
+  useEffect(() => {
+    const registeredData: any = []
+
+    cachedRegisterTabAllProjects &&
+      cachedRegisterTabAllProjects.length &&
+      cachedRegisterTabAllProjects.map((item: any, index: any) => {
+        registeredData.push([
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            {' '}
+            <LimitedText
+              key={index}
+              text={item.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
+          <LimitedText
+            key={index}
+            text={moment(item.createdAt).format('DD/MM/YYYY')}
+          />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText
+              key={index}
+              text={item.company_name}
+              widthLimit="200px"
+            />
+          </Box>,
+          <LimitedText key={index} text={item.location} />,
+          item.verifier_details_id ? (
             <Box
               key={index}
-              className="td-as-link"
-              onClick={() => openProjectDetails(item, 'Details')}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                columnGap: '5px',
+              }}
             >
-              <LimitedText
-                key={index}
-                text={item.company_name}
-                widthLimit="200px"
-              />
-            </Box>,
-            <LimitedText key={index} text={item.location} />,
-            item.verifier_details_id ? (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  columnGap: '5px',
-                }}
-              >
-                {/* <Box
+              {/* <Box
                 sx={{
                   bgcolor: '#F0FFFB',
                   width: 40,
@@ -278,70 +401,64 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               >
                 <img height={24} width={24} src={Images.BriefcaseIcon} />
               </Box> */}
-                <LimitedText text={item?.verifier_details_id?.verifier_name} />
-              </Box>
-            ) : (
-              '-'
-            ),
-            <ApprovalChip
-              variant={
-                item.project_status ===
-                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
-                  ? 'In progress'
-                  : 'Verified'
-              }
-              key={'1'}
-            />,
-            <LimitedText
-              key={index}
-              text={moment(item.report?.next_date).format('DD/MM/YYYY')}
-            />,
-            // item.project_status ===
-            // PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
-            //   <TextButton
-            //     key="1"
-            //     title="Add Monthly Data"
-            //     onClick={() => openProjectDetails(item, 'Monthly')}
-            //   />
-            // ) : (
-            //   '-'
-            // ),
-            '-',
-            <Box
-              key="1"
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <ChevronRightIcon
-                sx={{ cursor: 'pointer' }}
-                onClick={() => openProjectDetails(item, 'Details')}
-              />
-            </Box>,
-          ])
-        }
+              <LimitedText text={item?.verifier_details_id?.verifier_name} />
+            </Box>
+          ) : (
+            '-'
+          ),
+          <ApprovalChip
+            variant={
+              item.project_status ===
+              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                ? 'In progress'
+                : 'Verified'
+            }
+            key={'1'}
+          />,
+          <LimitedText
+            key={index}
+            text={moment(item.report?.next_date).format('DD/MM/YYYY')}
+          />,
+          // item.project_status ===
+          // PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ? (
+          //   <TextButton
+          //     key="1"
+          //     title="Add Monthly Data"
+          //     onClick={() => openProjectDetails(item, 'Monthly')}
+          //   />
+          // ) : (
+          //   '-'
+          // ),
+          '-',
+          <Box
+            key="1"
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <ChevronRightIcon
+              sx={{ cursor: 'pointer' }}
+              onClick={() => openProjectDetails(item, 'Details')}
+            />
+          </Box>,
+        ])
       })
-
-    if (newData.length !== 0) {
-      dispatch(setIssuerNewProjects(newData))
-    } else {
-      dispatch(setIssuerNewProjects(null))
-    }
 
     if (registeredData.length !== 0) {
       dispatch(setIssuerRegisteredProjects(registeredData))
     } else {
       dispatch(setIssuerRegisteredProjects(null))
     }
-  }, [cachedIssuerDashboardProjects])
+  }, [cachedRegisterTabAllProjects])
 
   const moveToSection = (projectDetails: any) => {
+    console.log('moveToSection', projectDetails)
     if (projectDetails) {
       const percentageAddedData = addSectionPercentages(projectDetails)
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
-      dispatch(setCurrentProjectDetails(percentageAddedData))
+      dispatch(setCurrentProjectDetails(projectDetails))
 
       //Redirect to Section A (To continue editing/filling data )
       dispatch(setSectionIndex(1))
@@ -352,7 +469,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   return (
     <>
       <TabSelector
-        tabArray={['New', 'Registered']}
+        tabArray={['New', 'Verification', 'Registered']}
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
         sx={{ marginBottom: 2 }}
@@ -376,6 +493,23 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           />
         ) : (
           <NoData title="No new projects available" />
+        )
+      ) : tabIndex === 2 ? (
+        issuerVerificationProjects && issuerVerificationProjects.length ? (
+          <CCTable
+            headings={headingsNew}
+            rows={issuerVerificationProjects}
+            sx={{ minWidth: 100 }}
+            maxWidth={'100%'}
+            tableSx={{ minWidth: 100 }}
+            hideScrollbar
+            pagination
+            rowsPerPageProp={5}
+            stickyLastCol
+            stickySecondLastCol
+          />
+        ) : (
+          <NoData title="No verification projects available" />
         )
       ) : issuerRegisteredProjects && issuerRegisteredProjects.length ? (
         <CCTable

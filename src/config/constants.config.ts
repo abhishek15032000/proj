@@ -666,3 +666,18 @@ export const availableFilters: any = {
     'BioCarbon Registry',
   ],
 }
+
+export const DASHBOARDTABLIST = [
+  {
+    status: 1,
+    TabName: 'New',
+  },
+  {
+    status: 2,
+    TabName: 'Verification',
+  },
+  {
+    status: 3,
+    TabName: 'Registered',
+  },
+]
