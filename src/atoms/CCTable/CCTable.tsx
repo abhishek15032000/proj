@@ -63,7 +63,7 @@ const StyledTableRow = styled(TableRow)((props) => ({
 const CCTable = (props: CCTableProps) => {
   const {
     rows,
-    rowsPerPageProp = 10,
+    rowsPerPageProp = 5,
     hideScrollbar = false,
     stickyLastCol = false,
     stickySecondLastCol = false,
