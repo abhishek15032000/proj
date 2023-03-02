@@ -12,6 +12,7 @@ import { limitTitle } from '../../utils/commonFunctions'
 import { FileDownloadSharp } from '@mui/icons-material'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
+import { IMAGE_SIZE_PREFIXES } from '../../config/constants.config'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -27,10 +28,11 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
   const [fields, setFields] = useState<any>([])
 
   const [bannerImage, setBannerImage] = useState<any>(false)
+
   useEffect(() => {
     const data = project
     fileUploadCalls
-      .getFile(data?.banner_image[0])
+      .getFile(IMAGE_SIZE_PREFIXES.THUMBNAIL + data?.banner_image[0])
       .then((res) => setBannerImage(URL.createObjectURL(res)))
   }, [project])
 
@@ -112,7 +114,9 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
                 left: '8px',
               }}
             >
-              {project?.register ? 'Registered Project' : 'Provisional Project'}
+              {project?.token_details
+                ? 'Registered Project'
+                : 'Provisional Project'}
             </Box>
           </Box>
         </Box>
@@ -222,7 +226,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
               onClick={() =>
                 navigate(pathNames.RETIRE_TOKENS, {
                   state: {
-                    tokenDetails: props?.project?.tokens,
+                    tokenDetails: props?.project?.token_details,
                     projectID: props?.project?._id,
                     projectUUID: props?.project?.uuid,
                   },
