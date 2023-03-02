@@ -9,7 +9,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 // Functional Imports
 import moment from 'moment'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 // Local Imports
@@ -61,7 +61,7 @@ const headingsRegistered = [
   <LimitedText key={index++} text="Report Status" />,
   <LimitedText
     key={index++}
-    text="Next Date"
+    text="Next Datee"
     tooltipText="Next Report Submission Dt"
   />,
   <LimitedText key={index++} text="Action" />,
@@ -89,10 +89,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       dispatch(setCurrentProjectDetails(percentageAddedData))
 
       if (redirect === 'Details') {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO, {
-          state: {
-            status: projectDetails?.project_status,
-          },
+        navigate({
+          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+          search: `?${createSearchParams({
+            projectId: projectDetails?.uuid,
+          })}`,
         })
       } else if (redirect === 'Monthly') {
         dispatch(setMonthlyReportSectionIndex(0))

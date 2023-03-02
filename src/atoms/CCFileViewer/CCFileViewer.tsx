@@ -7,6 +7,10 @@ import CloseIcon from '@mui/icons-material/Close'
 import CCDocViewer from '../CCDocViewer'
 // API Imports
 import { fileUploadCalls } from '../../api/fileUpload.api'
+import { Colors, Images } from '../../theme'
+import { IMAGE_SIZE_PREFIXES } from '../../config/constants.config'
+
+declare let window: any
 
 interface CCFileViewerProps {
   title?: string | number
@@ -25,7 +29,10 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
     try {
       // setLoading(true)
       if (item) {
-        fileUploadCalls.getFile(item).then((res: any) => {
+        const fileURL =
+          item.search('.pdf') > 0 ? item : IMAGE_SIZE_PREFIXES.THUMBNAIL + item
+
+        fileUploadCalls.getFile(fileURL).then((res: any) => {
           const image = URL.createObjectURL(res)
           setFile(image)
           return image
@@ -63,26 +70,28 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
       >
         <Box
           sx={{
-            py: 1,
             position: 'relative',
           }}
         >
           {file ? (
-            <CCDocViewer
-              documents={[
-                {
-                  uri: file,
-                  fileName: props.title,
-                },
-              ]}
-              background={'#E5F2FF'}
-              width={100}
-              height={100}
+            <Box
+              sx={{
+                mt: 1,
+                background: 'white',
+                width: 100,
+                height: 100,
+                borderRadius: '2px',
+              }}
+              onClick={() => {
+                window.open().location.href = file
+              }}
+              component="img"
+              src={item?.includes('.pdf') ? Images?.pdfViewer2 : file}
             />
           ) : (
             <Box
               sx={{
-                py: 1,
+                mt: 1,
                 background: 'white',
                 width: 100,
                 height: 100,

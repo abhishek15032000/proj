@@ -11,6 +11,7 @@ import { Grid, Tooltip, Typography } from '@mui/material'
 import { limitTitle } from '../../../utils/commonFunctions'
 import { FileDownloadSharp } from '@mui/icons-material'
 import { fileUploadCalls } from '../../../api/fileUpload.api'
+import { IMAGE_SIZE_PREFIXES } from '../../../config/constants.config'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -55,7 +56,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
     if (!bannerImage && project?.banner_image[0]) {
       const data = project
       fileUploadCalls
-        .getFile(data?.banner_image[0])
+        .getFile(IMAGE_SIZE_PREFIXES.THUMBNAIL + data?.banner_image[0])
         .then((res) => setBannerImage(URL.createObjectURL(res)))
     }
   }, [project])

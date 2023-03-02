@@ -5,7 +5,7 @@ interface RegistryReducerInterface {
   registryProjectDetails: any
 }
 const initialState: RegistryReducerInterface = {
-  registryProjectDetails: {},
+  registryProjectDetails: null,
 }
 
 const registry = createSlice({
