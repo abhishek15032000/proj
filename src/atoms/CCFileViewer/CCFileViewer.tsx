@@ -8,6 +8,7 @@ import CCDocViewer from '../CCDocViewer'
 // API Imports
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { Colors, Images } from '../../theme'
+import { IMAGE_SIZE_PREFIXES } from '../../config/constants.config'
 
 declare let window: any
 
@@ -28,7 +29,10 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
     try {
       // setLoading(true)
       if (item) {
-        fileUploadCalls.getFile(item).then((res: any) => {
+        const fileURL =
+          item.search('.pdf') > 0 ? item : IMAGE_SIZE_PREFIXES.THUMBNAIL + item
+
+        fileUploadCalls.getFile(fileURL).then((res: any) => {
           const image = URL.createObjectURL(res)
           setFile(image)
           return image
