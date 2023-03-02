@@ -15,6 +15,7 @@ export const drawerExemptList = [
   pathNames.REVIEW_AND_COMMENT,
   // pathNames.PROJECT_LISTS_WITH_FILTER,
   // pathNames.MARKETPLACE,
+  pathNames.PDF,
 ]
 
 export const hybridPaths = [
