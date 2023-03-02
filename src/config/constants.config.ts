@@ -699,3 +699,10 @@ export const TRACEABILITY_TAB_NAMES = {
     tabName: 'Registry Uploads Report',
   },
 }
+
+export const IMAGE_SIZE_PREFIXES = {
+  THUMBNAIL: 'thumbnail-',
+  SMALL: 'small-',
+  LARGE: 'large-',
+  HD: 'hd-',
+}
