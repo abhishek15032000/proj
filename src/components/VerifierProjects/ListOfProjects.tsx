@@ -56,7 +56,7 @@ const headingsRegistered = [
   <LimitedText key={index++} text="Location" />,
   <LimitedText
     key={index++}
-    text="Next Date"
+    text="Next Datea"
     tooltipText="Next Report Submission Dt"
   />,
   <LimitedText key={index++} text="Status" />,
@@ -279,7 +279,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             key={index}
             sx={{
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'start',
               alignItems: 'center',
             }}
           >
@@ -416,22 +416,22 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         )} */}
       </Box>
 
-      {newRequests === 0 && (
-        <TabSelector
-          sx={{ marginTop: 0 }}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
-          tabArray={['New', 'Registered']}
-        />
-      )}
+      {/* {newRequests === 0 && ( */}
+      <TabSelector
+        sx={{ marginTop: 0 }}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        tabArray={['New', 'Registered']}
+      />
+      {/* )} */}
 
-      {newRequests > 0 && (
+      {/* {newRequests > 0 && (
         <TabSelectorVerifier
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
           newProjects={newRequests}
         />
-      )}
+      )} */}
 
       {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={16} />}
 

@@ -6,6 +6,7 @@ import { shallowEqual } from 'react-redux'
 import { buyerCalls } from '../../api/buyerCalls.api'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
@@ -13,15 +14,15 @@ import { getLocalItem } from '../../utils/Storage'
 
 let index = 0
 const headings = [
-  <LimitedText key={index++} text={"Retirement ID"} />,
-  <LimitedText key={index++} text={"Project Name"} />,
-  <LimitedText key={index++} text={"Time"} />,
-  <LimitedText key={index++} text={"Total Tokens"} />,
-  <LimitedText key={index++} text={"Retired"} />,
-  <LimitedText key={index++} text={"After Retirement"} />,
-  <LimitedText key={index++} text={"Footprint Offset"} />,
-  <LimitedText key={index++} text={"Beneficial owner"} />,
-  <LimitedText key={index++} text={"Retirement Reason"} />,
+  <LimitedText key={index++} text={'Retirement ID'} />,
+  <LimitedText key={index++} text={'Project Name'} />,
+  <LimitedText key={index++} text={'Time'} />,
+  <LimitedText key={index++} text={'Total Tokens'} />,
+  <LimitedText key={index++} text={'Retired'} />,
+  <LimitedText key={index++} text={'After Retirement'} />,
+  <LimitedText key={index++} text={'Footprint Offset'} />,
+  <LimitedText key={index++} text={'Beneficial owner'} />,
+  <LimitedText key={index++} text={'Retirement Reason'} />,
 ]
 
 const RetirementCertificate = () => {
@@ -88,15 +89,14 @@ const RetirementCertificate = () => {
             return [
               <LimitedText key={i?._id} text={i?._id} ellispsisAtStart />,
               <LimitedText key={i?._id} text={i?.projectId?.company_name} />,
-              moment(i?.createdAt).format(`HH:mm:SS`),
               <LimitedText
                 key={i?._id}
-                text={i?.token_quantity}
-                alignText="right"
+                text={moment(i?.createdAt).format(`HH:mm:SS`)}
               />,
-              <LimitedText key={i?._id} text={i?.retiring} alignText="right" />,
-              <LimitedText key={i?._id} text={'-'} alignText="right" />,
-              <LimitedText key={i?._id} text={i?.retiring} alignText="right" />,
+              <LimitedText key={i?._id} text={i?.token_quantity} />,
+              <LimitedText key={i?._id} text={i?.retiring} />,
+              <LimitedText key={i?._id} text={'-'} />,
+              <LimitedText key={i?._id} text={i?.retiring} />,
               <LimitedText key={i?._id} text={i?.beneficialOwner} />,
               <LimitedText key={i?._id} text={i?.reason} />,
             ]
@@ -131,29 +131,14 @@ const RetirementCertificate = () => {
             headings={headings}
             rows={retireTokenList}
             maxWidth={'100%'}
+            pagination={retireTokenList.length > 4}
           />
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              height: '200px',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Typography
-              sx={{
-                mt: 2,
-                bgcolor: Colors?.darkPrimary2,
-                p: 1,
-                borderRadius: 2,
-                textAlign: 'center',
-                width: '100%',
-              }}
-            >
-              No Records to Show
-            </Typography>
-          </Box>
+          <EmptyComponent
+            title={'No Records to show'}
+            elevation={0}
+            photoType={1}
+          />
         )}
       </Paper>
     </Grid>
