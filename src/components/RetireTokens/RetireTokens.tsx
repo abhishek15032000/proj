@@ -72,8 +72,8 @@ const RetireTokens = (props: RetireTokensProps) => {
   const [retiring, setRetiring] = useState('')
   const [explain, setExplain] = useState('')
   const [loading, setLoading] = useState(false)
-  // const [showModal, setShowModal] = useState(false)
-  // const [showSecondModal, setShowSecondModal] = useState(false)
+  const [tokenAddress, setTokenAddress] = useState(false)
+  const [tokenSymbol, setTokenSymbol] = useState(false)
 
   const { getApprovedTokensBalance } = useTokenRetire()
   const { getTokenBalances } = useMarket()
@@ -97,6 +97,9 @@ const RetireTokens = (props: RetireTokensProps) => {
         `?project_id=${projectUUID}`
       )
       if (res?.success) {
+        setTokenAddress(res?.data?.token_address)
+        setTokenSymbol(res?.data?.token_symbol)
+
         setTokenBalanceLoading(true)
         const tokenBalances = await getTokenBalances(
           userID,
@@ -182,7 +185,7 @@ const RetireTokens = (props: RetireTokensProps) => {
   const retireTokens = async () => {
     const payload = {
       reason: explain,
-      asset: tokenDetails?.token_address,
+      asset: tokenAddress,
       beneficialOwner: userName,
       token_quantity: Number(retiring),
       retiring: Number(retiring),
@@ -353,7 +356,7 @@ const RetireTokens = (props: RetireTokensProps) => {
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            {tokenDetails?.token_symbol}
+                            {tokenSymbol}
                           </InputAdornment>
                         ),
                       }}
