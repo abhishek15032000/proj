@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
+import { eventsCalls } from '../../../api/eventsCalls.api'
 import { TraceabilityCalls } from '../../../api/traceabilityCalls.api'
 import Spinner from '../../../atoms/Spinner'
 import { TRACEABILITY_TAB_NAMES } from '../../../config/constants.config'
@@ -42,9 +43,11 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
   const [projectName, setProjectName] = useState('')
   const [projectLocation, setProjectLocation] = useState('')
   const [projectRefID, setProjectRefID] = useState('')
+  const [tokenAddress, setTokenAddress] = useState('')
 
   useEffect(() => {
     getTraceabilityData()
+    getTokenAddress(projectId)
   }, [])
 
   const getTraceabilityData = async () => {
@@ -81,6 +84,19 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
       )
     } finally {
       setLoading(false)
+    }
+  }
+
+  const getTokenAddress = async (projectUUID: string) => {
+    try {
+      const res = await eventsCalls.getTokenByProjectUUID(
+        `?project_id=${projectUUID}`
+      )
+      if (res?.success) {
+        setTokenAddress(res?.data?.token_address)
+      }
+    } catch (err) {
+      console.log('Error in eventsCalls.getTokenByProjectUUID api ~ ', err)
     }
   }
 
@@ -310,6 +326,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                 projectLocation={projectLocation}
                 projectRefID={projectRefID}
                 tabDataComponentList={tabDataComponentList}
+                tokenAddress={tokenAddress}
               />
             ) : null}
           </Box>
