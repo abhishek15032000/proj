@@ -118,17 +118,16 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   const [tabIndex, setTabIndex] = useState(1)
 
   const openProjectDetails = (projectDetails: any, redirect: any) => {
-    console.log('openProjectDetails', projectDetails)
     if (projectDetails) {
       // const percentageAddedData = addSectionPercentages(projectDetails)
 
-      dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
-      dispatch(setCurrentProjectDetails(projectDetails))
+      // dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
+      // dispatch(setCurrentProjectDetails(projectDetails))
 
       if (redirect === 'Details') {
         navigate(
           {
-            pathname: pathNames.PROJECT_DETAILS,
+            pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
             search: `?${createSearchParams({
               projectId: projectDetails?.uuid,
             })}`,
@@ -454,15 +453,20 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   }, [cachedRegisterTabAllProjects])
 
   const moveToSection = (projectDetails: any) => {
-    console.log('moveToSection', projectDetails)
     if (projectDetails) {
-      const percentageAddedData = addSectionPercentages(projectDetails)
-      dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
-      dispatch(setCurrentProjectDetails(projectDetails))
-
-      //Redirect to Section A (To continue editing/filling data )
-      dispatch(setSectionIndex(1))
-      navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+      navigate(
+        {
+          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+          search: `?${createSearchParams({
+            projectId: projectDetails?.uuid,
+          })}`,
+        },
+        {
+          state: {
+            isEdited: true,
+          },
+        }
+      )
     }
   }
 

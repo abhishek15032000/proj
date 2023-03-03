@@ -2,24 +2,21 @@
 import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Button, Grid, Paper, Typography } from '@mui/material'
-import TodayIcon from '@mui/icons-material/Today'
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 
 // Local Imports
 import IssuanceInfoList from './IssuanceInfoList'
 import VerifierReport from './VerifierReport'
 import { Colors } from '../../theme'
-import { KeyboardArrowLeft } from '@mui/icons-material'
+
 import { useAppSelector } from '../../hooks/reduxHooks'
-import { shallowEqual } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { shallowEqual, useDispatch } from 'react-redux'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
-import moment from 'moment'
-import TextButton from '../../atoms/TextButton/TextButton'
+
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import ProjectIntro from '../ProjectDetailsRegistryAcc/ProjectIntro'
+
 import WebAppTraceHistory from '../ProjectDetails/TraceHistory/WebappTraceHistory'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import ProjectIntroduction from '../ProjectDetails/ProjectIntoduction/ProjectIntroduction'
@@ -27,19 +24,14 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import About from '../About'
+import {
+  setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
+  setSectionIndex,
+} from '../../redux/Slices/issuanceDataCollection'
+import ProjectIntro from '../ProjectDetails/Skeleton/ProjectIntro'
+import { addSectionPercentages } from '../../utils/newProject.utils'
 
-const projectDetails = {
-  company_name:
-    '3.66 MW poultry litter based power generation project by Raus Power in India',
-  start_date: '2022-08-08T08:04:33.441Z',
-  type: [
-    'Forestry- Avoided conversion/ deforestation',
-    'Agricultural Land Management (ALM)',
-  ],
-  location: 'Test location 2',
-  duration: 2,
-  area: '1000',
-}
 const tabs = [
   'About',
   'Registration Details',
@@ -49,9 +41,11 @@ const tabs = [
 
 const ProfileDetailsIssuanceInfo: FC = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const location: any = useLocation()
-
-  const currentProjectDetails = useAppSelector(
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('projectId')
+  const projectData = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
@@ -60,20 +54,31 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   const [tabIndex, setTabIndex] = useState(0)
   const [issuanceInfo, setIssuanceInfo] = useState<any | null>(null)
   const [projectStatus, setProjectStatus] = useState<number>()
-
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
-    if (!currentProjectDetails) navigate(pathNames.DASHBOARD)
-
-    if (location?.state?.status === 0) {
-      setTabIndex(1)
-    } else {
-      setTabIndex(2)
-    }
+    getProjectAllData(projectId)
   }, [])
 
-  useEffect(() => {
-    if (currentProjectDetails) {
-      setProjectStatus(currentProjectDetails?.project_status)
+  const getProjectAllData = (projectId: any) => {
+    setLoading(true)
+    dataCollectionCalls
+      .getProjectById(projectId)
+      .then((result) => {
+        calculatePercentage(result.data)
+      })
+      .catch((e) => e)
+      .finally(() => setLoading(false))
+  }
+
+  const calculatePercentage = (projectData: any) => {
+    if (location?.state?.status !== 0) {
+      setTabIndex(1)
+    }
+
+    const modifiedRows = addSectionPercentages(projectData)
+    console.log('modifiedRows', modifiedRows)
+    if (modifiedRows) {
+      setProjectStatus(modifiedRows?.project_status)
       const issuanceInfoTabData = [
         {
           title: 'Project Introduction',
@@ -83,53 +88,59 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         {
           title: 'Sec A: Description of Project Activity',
           status:
-            currentProjectDetails?.section_a?.completionPercentage === 100
+            modifiedRows?.section_a?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent:
-            currentProjectDetails?.section_a?.completionPercentage,
+          completionPercent: modifiedRows?.section_a?.completionPercentage,
         },
         {
           title: 'Sec B: Implementation of the project activity',
           status:
-            currentProjectDetails?.section_b?.completionPercentage === 100
+            modifiedRows?.section_b?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent:
-            currentProjectDetails?.section_b?.completionPercentage,
+          completionPercent: modifiedRows?.section_b?.completionPercentage,
         },
         {
           title: 'Sec C: Description of Monitoring Activity',
           status:
-            currentProjectDetails?.section_c?.completionPercentage === 100
+            modifiedRows?.section_c?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent:
-            currentProjectDetails?.section_c?.completionPercentage,
+          completionPercent: modifiedRows?.section_c?.completionPercentage,
         },
         {
           title: 'Sec D: Data and parameters',
           status:
-            currentProjectDetails?.section_d?.completionPercentage === 100
+            modifiedRows?.section_d?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent:
-            currentProjectDetails?.section_d?.completionPercentage,
+          completionPercent: modifiedRows?.section_d?.completionPercentage,
         },
         {
           title:
             'Sec E: Calculation of emission reductions or GHG removals by sinks',
           status:
-            currentProjectDetails?.section_e?.completionPercentage === 100
+            modifiedRows?.section_e?.completionPercentage === 100
               ? 'Complete'
               : 'In Progress',
-          completionPercent:
-            currentProjectDetails?.section_e?.completionPercentage,
+          completionPercent: modifiedRows?.section_e?.completionPercentage,
         },
       ]
       setIssuanceInfo(issuanceInfoTabData)
+
+      dispatch(setCurrentProjectDetails(modifiedRows))
+      dispatch(setCurrentProjectDetailsUUID(projectId))
+      if (location?.state?.isEdited) {
+        redirectOnSection()
+      }
     }
-  }, [currentProjectDetails])
+  }
+
+  const redirectOnSection = () => {
+    dispatch(setSectionIndex(1))
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+  }
 
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
@@ -169,61 +180,11 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Grid>
       </Grid>
       {/*<Paper sx={{ mt: 3 }}>*/}
-      <ProjectIntroduction
-        projectDetailsData={currentProjectDetails}
-        // title={currentProjectDetails?.company_name}
-        // location={currentProjectDetails?.location}
-      />
-      {/*<Grid container>
-          <Grid item xs={10} sx={{ p: 2 }}>
-            <Typography sx={{ fontSize: 24 }}>
-              {currentProjectDetails?.company_name}
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
-              {currentProjectDetails?.type?.map((type: any, index: number) => (
-                <Box
-                  sx={{
-                    fontSize: 14,
-                    color: '#191C1B',
-                    backgroundColor: '#E8F3EF',
-                    padding: '2px 4px',
-                    mt: 1,
-                    mr: 1,
-                  }}
-                  key={index}
-                >
-                  {type}
-                </Box>
-              ))}
-            </Box>
-            <Box sx={{ display: 'flex', mt: 2 }}>
-              <TodayIcon sx={{ color: '#006B5E', mr: 1, fontSize: 18 }} />
-              <Box>
-                Started on{' '}
-                {currentProjectDetails?.createdAt &&
-                  moment(currentProjectDetails?.createdAt).format('L')}
-              </Box>
-            </Box>
-            <Box sx={{ display: 'flex', mt: 1 }}>
-              <PlaceOutlinedIcon
-                sx={{ color: '#006B5E', mr: 1, fontSize: 18 }}
-              />
-              <Typography sx={{ fontSize: 14 }}>
-                {currentProjectDetails?.location}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={2}>
-            <Box
-              sx={{
-                backgroundColor: 'lightgrey',
-                width: '100%',
-                height: '100%',
-              }}
-            ></Box>
-          </Grid>
-        </Grid>*/}
-      {/*</Paper>*/}
+      {loading ? (
+        <ProjectIntro />
+      ) : (
+        <ProjectIntroduction projectDetailsData={projectData} />
+      )}
 
       <Paper sx={{ mt: 2, px: 2, py: 2 }}>
         <Box
@@ -255,7 +216,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               </Box>
             ))}
           </Box>
-          {currentProjectDetails?.project_status >=
+          {projectData?.project_status >=
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <Box
               sx={{
@@ -267,12 +228,11 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               onClick={() =>
                 navigate(pathNames.REVIEW_AND_COMMENT, {
                   state: {
-                    project: currentProjectDetails,
-                    pdf: currentProjectDetails?.project_pdf,
+                    project: projectData,
+                    pdf: projectData?.project_pdf,
                     verifierName:
-                      currentProjectDetails?.verifier_details_id?.verifier_name,
-                    verifierID:
-                      currentProjectDetails?.verifier_details_id?.verifier_id,
+                      projectData?.verifier_details_id?.verifier_name,
+                    verifierID: projectData?.verifier_details_id?.verifier_id,
                   },
                 })
               }
@@ -296,12 +256,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
         </Box>
 
         <Box>
-          {tabIndex === 0 && (
-            <About
-              projectId={currentProjectDetails?.uuid}
-              projectStatus={currentProjectDetails?.project_status}
-            />
-          )}
+          {tabIndex === 0 && <About projectId={projectId} />}
           {tabIndex === 1 && (
             <IssuanceInfoList
               data={issuanceInfo && issuanceInfo}
@@ -310,8 +265,8 @@ const ProfileDetailsIssuanceInfo: FC = () => {
           )}
           {tabIndex === 2 && (
             <VerifierReport
-              currentProjectId={currentProjectDetails?._id}
-              currentProjectUUID={currentProjectDetails?.uuid}
+              currentProjectId={projectData?._id}
+              currentProjectUUID={projectData?.uuid}
             />
           )}
           {tabIndex === 3 && (
@@ -319,7 +274,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
               <Typography sx={{ fontSize: 18, color: '#1D4B44', mb: 2 }}>
                 Trace History
               </Typography>
-              <WebAppTraceHistory projectId={currentProjectDetails?.uuid} />
+              <WebAppTraceHistory projectId={projectId} />
             </Box>
           )}
         </Box>

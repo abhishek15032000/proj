@@ -4,18 +4,18 @@ import React, { FC } from 'react'
 interface TitleValueProps {
   title: string
   value: string | number
-  theme?: string
   bolder?: boolean
+  fullWidth?: boolean
 }
 
 const TitleValue: FC<TitleValueProps> = ({
   title,
   value,
-  theme = 'light',
   bolder = false,
+  fullWidth = false,
 }) => {
   return (
-    <Grid item xs={6} sx={{ mt: 2 }}>
+    <Grid item xs={fullWidth ? 12 : 6} sx={{ mt: 2 }}>
       <Typography
         sx={{
           fontWeight: 500,
@@ -27,10 +27,9 @@ const TitleValue: FC<TitleValueProps> = ({
       </Typography>
       <Typography
         sx={{
-          fontWeight: 500,
+          fontWeight: bolder ? 600 : 500,
           fontSize: 14,
           color: '#3F4946',
-          mt: 1,
         }}
       >
         {value === undefined || value === '' ? '-' : value}

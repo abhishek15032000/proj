@@ -41,6 +41,7 @@ import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import { eventsCalls } from '../../api/eventsCalls.api'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 interface WalletProps {}
 
@@ -247,23 +248,12 @@ const Wallet: FC<WalletProps> = (props) => {
                   lastUpdatedAt={lastUpdatedAt}
                 />
               ) : (
-                <Box
-                  sx={{
-                    height: '100%',
-                    width: '100%',
-                    fontSize: 18,
-                    color: Colors.darkPrimary1,
-                    fontWeight: 500,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: '#fff',
-                    // boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-                    // borderRadius: '8px',
-                  }}
-                >
-                  No Project Token Details is available !!!
-                </Box>
+                <EmptyComponent
+                photoType={1}
+                title=" No Project Token Details is available !!!"
+                elevation={0}
+              />
+               
               )}
             </Grid>
 

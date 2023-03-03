@@ -7,6 +7,9 @@ import CloseIcon from '@mui/icons-material/Close'
 import CCDocViewer from '../CCDocViewer'
 // API Imports
 import { fileUploadCalls } from '../../api/fileUpload.api'
+import { Colors, Images } from '../../theme'
+
+declare let window: any
 
 interface CCFileViewerProps {
   title?: string | number
@@ -63,26 +66,28 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
       >
         <Box
           sx={{
-            py: 1,
             position: 'relative',
           }}
         >
           {file ? (
-            <CCDocViewer
-              documents={[
-                {
-                  uri: file,
-                  fileName: props.title,
-                },
-              ]}
-              background={'#E5F2FF'}
-              width={100}
-              height={100}
+            <Box
+              sx={{
+                mt: 1,
+                background: 'white',
+                width: 100,
+                height: 100,
+                borderRadius: '2px',
+              }}
+              onClick={() => {
+                window.open().location.href = file
+              }}
+              component="img"
+              src={item?.includes('.pdf') ? Images?.pdfViewer2 : file}
             />
           ) : (
             <Box
               sx={{
-                py: 1,
+                mt: 1,
                 background: 'white',
                 width: 100,
                 height: 100,
