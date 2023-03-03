@@ -21,7 +21,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import { KeyboardArrowLeft } from '@mui/icons-material'
 
 // Functional Imports
-import { useLocation, useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 
 // Local Imports
@@ -37,10 +37,10 @@ import { useAppSelector } from '../../hooks/reduxHooks'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 // import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
 import SelectVerifierSkeleton from './SelectVerifierSkeleton'
-import {useProject} from "../../hooks/useProject"
+import { useProject } from '../../hooks/useProject'
 
 const SelectVerifier = () => {
-  const {getProjectDetails} = useProject()
+  const { getProjectDetails } = useProject()
   const navigate = useNavigate()
   const location: any = useLocation()
 
@@ -114,7 +114,12 @@ const SelectVerifier = () => {
         setModalData(true)
         setOpen(true)
         getProjectDetails(currentProjectDetailsUUID)
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        navigate({
+          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+          search: `?${createSearchParams({
+            projectId: currentProjectDetails?.uuid,
+          })}`,
+        })
       }
     } catch (err) {
       console.log(err)
@@ -366,7 +371,12 @@ const SelectVerifier = () => {
                 onClick={() => {
                   setModalData(false)
                   setOpen(false)
-                  navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+                  navigate({
+                    pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+                    search: `?${createSearchParams({
+                      projectId: currentProjectDetails?.uuid,
+                    })}`,
+                  })
                 }}
               >
                 Ok
