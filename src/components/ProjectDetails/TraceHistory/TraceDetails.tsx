@@ -20,6 +20,7 @@ export interface TraceDetailsProps {
   projectRefID?: any
   tabData?: any
   tabDataComponentList?: any
+  tokenAddress?: string
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {

@@ -8,9 +8,6 @@ interface CreateProjectProps {
 }
 
 const CreateProject: FC<CreateProjectProps> = (props: any) => {
-  console.log('props: ', props)
-  // const { tabData = {} } = props
-
   return (
     <>
       {props?.tabData?.transactionId ? (
