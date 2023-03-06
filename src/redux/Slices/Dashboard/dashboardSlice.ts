@@ -4,11 +4,23 @@ interface cachingReducerInterface {
   issuerNewProjects: any
   issuerRegisteredProjects: any
   issuerVerificationProjects: any
+  verifierNewProjects: any
+  verifierRegisteredProjects: any
+  verifierAcceptedProjects: any
+  verifierRejectedProjects: any
+  registryNewProjects: any
+  registryReviewedProjects: any
 }
 const initialState: cachingReducerInterface = {
   issuerNewProjects: null,
   issuerRegisteredProjects: null,
   issuerVerificationProjects: null,
+  verifierNewProjects: null,
+  verifierRegisteredProjects: null,
+  verifierAcceptedProjects: null,
+  verifierRejectedProjects: null,
+  registryNewProjects: null,
+  registryReviewedProjects: null,
 }
 const dashboardSlice = createSlice({
   name: 'dashboardSlice',
@@ -23,6 +35,24 @@ const dashboardSlice = createSlice({
     setIssueVerificationProjects: (state, action: PayloadAction<any>) => {
       state.issuerVerificationProjects = action.payload
     },
+    setVerifierNewProjects: (state, action: PayloadAction<any>) => {
+      state.issuerVerificationProjects = action.payload
+    },
+    setVerifierRegisteredProjects: (state, action: PayloadAction<any>) => {
+      state.verifierRegisteredProjects = action.payload
+    },
+    setVerifierAcceptedProjects: (state, action: PayloadAction<any>) => {
+      state.verifierAcceptedProjects = action.payload
+    },
+    setVerifierRejectedProjects: (state, action: PayloadAction<any>) => {
+      state.verifierRejectedProjects = action.payload
+    },
+    setRegistryNewProjects: (state, action: PayloadAction<any>) => {
+      state.registryNewProjects = action.payload
+    },
+    setRegistryReviewedProjects: (state, action: PayloadAction<any>) => {
+      state.registryReviewedProjects = action.payload
+    },
   },
 })
 
@@ -30,6 +60,12 @@ export const {
   setIssuerNewProjects,
   setIssuerRegisteredProjects,
   setIssueVerificationProjects,
+  setVerifierNewProjects,
+  setVerifierRegisteredProjects,
+  setVerifierAcceptedProjects,
+  setVerifierRejectedProjects,
+  setRegistryNewProjects,
+  setRegistryReviewedProjects,
 } = dashboardSlice.actions
 
 export default dashboardSlice.reducer

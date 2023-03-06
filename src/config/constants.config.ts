@@ -721,3 +721,14 @@ export const IMAGE_SIZE_PREFIXES = {
   LARGE: 'large-',
   HD: 'hd-',
 }
+
+export const REGISTRYDASHBOARDTABLIST = [
+  {
+    status: 1,
+    TabName: 'New',
+  },
+  {
+    status: 2,
+    TabName: 'Reviewed',
+  },
+]

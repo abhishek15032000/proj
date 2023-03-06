@@ -6,6 +6,9 @@ interface cachingReducerInterface {
   cachedNewTabAllProjects: any
   cachedVerificationTabAllProjects: any
   cachedRegisterTabAllProjects: any
+  cachedVerifierDashboardProjects: any
+  cachedRegistryNewTabAllProjects: any
+  cachedRegistryReviewedTabAllProjects: any
 }
 const initialState: cachingReducerInterface = {
   cachedIssuerStats: null,
@@ -13,6 +16,9 @@ const initialState: cachingReducerInterface = {
   cachedNewTabAllProjects: [],
   cachedVerificationTabAllProjects: [],
   cachedRegisterTabAllProjects: [],
+  cachedVerifierDashboardProjects: [],
+  cachedRegistryNewTabAllProjects: [],
+  cachedRegistryReviewedTabAllProjects: [],
 }
 const cachingSlice = createSlice({
   name: 'cachingSlice',
@@ -36,6 +42,18 @@ const cachingSlice = createSlice({
     setCachedIssuerStats: (state, action: PayloadAction<any>) => {
       state.cachedIssuerStats = action.payload
     },
+    setCachedVerifierDashboardProject: (state, action: PayloadAction<any>) => {
+      state.cachedVerifierDashboardProjects = action.payload
+    },
+    setCachedRegistryNewTabAllProjects: (state, action: PayloadAction<any>) => {
+      state.cachedRegistryNewTabAllProjects = action.payload
+    },
+    setCachedRegistryReviewedTabAllProjects: (
+      state,
+      action: PayloadAction<any>
+    ) => {
+      state.cachedRegistryReviewedTabAllProjects = action.payload
+    },
   },
 })
 
@@ -45,6 +63,9 @@ export const {
   setCachedNewTabAllProjects,
   setCachedRegisterTabAllProjects,
   setCachedVerificationTabAllProjects,
+  setCachedVerifierDashboardProject,
+  setCachedRegistryNewTabAllProjects,
+  setCachedRegistryReviewedTabAllProjects,
 } = cachingSlice.actions
 
 export default cachingSlice.reducer
