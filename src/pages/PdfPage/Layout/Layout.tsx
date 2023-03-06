@@ -28,6 +28,7 @@ const Layout: FC<LayoutProps> = (props) => {
     shallowEqual
   )
   const [width, setWidth] = useState<any>(0)
+  const [marginTop, setMarginTop] = useState<any>(0)
 
   const ref = useRef<any>(null)
 
@@ -70,6 +71,7 @@ const Layout: FC<LayoutProps> = (props) => {
 
   const handleWindowSizeChange = () => {
     setWidth(ref?.current?.clientWidth)
+    // setMarginTop(childre)
     console.log(ref?.current?.clientWidth)
   }
   return (

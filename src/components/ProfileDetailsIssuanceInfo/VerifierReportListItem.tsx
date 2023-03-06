@@ -92,8 +92,8 @@ const VerifierReportListItemListItem: FC<
                 fontStyle: 'normal',
                 mt: 1,
               }}
-              onMouseEnter={() => setShowVerifierDetails(true)}
-              onMouseLeave={() => setShowVerifierDetails(false)}
+              // onMouseEnter={() => setShowVerifierDetails(true)}
+              // onMouseLeave={() => setShowVerifierDetails(false)}
             >
               {props?.data?.verifier_name}
             </Typography>
