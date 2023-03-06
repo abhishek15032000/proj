@@ -516,7 +516,11 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
               Verifiers Selected
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            sx={{ border: '1px solid #E1E3E1', borderRadius: '8px' }}
+          >
             <Grid container rowSpacing={3}>
               {verifierReports &&
                 verifierReports?.length > 0 &&
@@ -525,6 +529,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                     <VerifierReportListItem
                       data={verifier}
                       updateVerifierAPI={updateVerifier}
+                      index={index}
                     />
                   </Grid>
                 ))}
