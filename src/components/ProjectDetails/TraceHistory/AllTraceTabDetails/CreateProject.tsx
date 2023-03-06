@@ -4,39 +4,32 @@ import TransactionHash from './TransactionHash'
 import moment from 'moment'
 
 interface CreateProjectProps {
-  theme?: any
   tabData?: any
 }
 
-const CreateProject: FC<CreateProjectProps> = (props) => {
-  const { theme, tabData } = props
-
+const CreateProject: FC<CreateProjectProps> = (props: any) => {
   return (
     <>
-      {tabData?.transactionId ? (
-        <TransactionHash txID={tabData?.transactionId} />
+      {props?.tabData?.transactionId ? (
+        <TransactionHash txID={props?.tabData?.transactionId} />
       ) : (
         ''
       )}
       <TitleValue
         title="Project Developer"
-        value={tabData?.data?.name}
-        theme={theme}
+        value={props?.tabData?.data?.name}
       />
       <TitleValue
         title="Project Name"
-        value={tabData?.data?.area + ' Sq.Km.'}
-        theme={theme}
+        value={props?.tabData?.data?.area + ' Sq.Km.'}
       />
       <TitleValue
         title="Project Start Date"
-        value={moment(tabData?.data?.start_date).format('ll')}
-        theme={theme}
+        value={moment(props?.tabData?.data?.start_date).format('ll')}
       />
       <TitleValue
         title="Project Duration"
-        value={tabData?.data?.duration + ' Year(s)'}
-        theme={theme}
+        value={props?.tabData?.data?.duration + ' Year(s)'}
       />
     </>
   )

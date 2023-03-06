@@ -1,67 +1,74 @@
-import { Grid, Typography, Box } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
-import { shallowEqual } from 'react-redux'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
+import { eventsCalls } from '../../../api/eventsCalls.api'
 import { TraceabilityCalls } from '../../../api/traceabilityCalls.api'
-import { verifierCalls } from '../../../api/verifierCalls.api'
 import Spinner from '../../../atoms/Spinner'
-import {
-  PROJECT_ALL_STATUS,
-  TRACEABILITY_TAB_NAMES,
-  TX_TYPE,
-} from '../../../config/constants.config'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import {
-  setChoosenVerifiers,
-  setProjectDeveloper,
-  setReportPDF,
-  setTxIDForTab,
-  setVerifier,
-} from '../../../redux/Slices/traceabilitySlice'
+import { TRACEABILITY_TAB_NAMES } from '../../../config/constants.config'
 import { Images } from '../../../theme'
-import { getLocalItem } from '../../../utils/Storage'
+import CreateProject from './AllTraceTabDetails/CreateProject'
+import PDFGenerated from './AllTraceTabDetails/PDFGenerated'
+import ProjectMinted from './AllTraceTabDetails/ProjectMinted'
+import RegistryReport from './AllTraceTabDetails/RegistryReport'
+import TokenDeployed from './AllTraceTabDetails/TokenDeployed'
+import VerifierAccept from './AllTraceTabDetails/VerifierAccept'
+import VerifierAssign from './AllTraceTabDetails/VerifierAssign'
+import VerifierRequest from './AllTraceTabDetails/VerifierRequest'
+import VerifierVerified from './AllTraceTabDetails/VerifierVerified'
 import TraceDetails from './TraceDetails'
 import './TraceHistory.css'
 
+const typeAndTabCompMatching: any = {
+  createProject: CreateProject,
+  verifierRequest: VerifierRequest,
+  verifierAccepted: VerifierAccept,
+  verifierAssign: VerifierAssign,
+  updateProjectGenerateFinalPdf: PDFGenerated,
+  projectVerified: VerifierVerified,
+  deployToken: TokenDeployed,
+  projectMinted: ProjectMinted,
+  registry_uploads_report: RegistryReport,
+}
 interface WebAppTraceHistoryProps {
   projectId?: any
   theme?: string
 }
 const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
-  const dispatch: any = useAppDispatch()
-
-  const projectDeveloper = useAppSelector(
-    ({ traceability }) => traceability?.projectDeveloper,
-    shallowEqual
-  )
-  const verifier = useAppSelector(
-    ({ traceability }) => traceability?.verifier,
-    shallowEqual
-  )
-
-  // const [traceTab, setTraceTab] = useState<any>(null)
-
   const { projectId, theme = 'light' } = props
+
   const [loading, setLoading] = useState(false)
   const [traceOption, setTraceOption] = useState(0)
   const [traceAllData, setTraceAllData] = useState<any>([])
-  const [traceTabList, setTraceTabList] = useState<any>([])
+  // const [traceTabList, setTraceTabList] = useState<any>([])
+  const [tabDataComponentList, setTabDataComponentList] = useState<any>([])
   const [projectName, setProjectName] = useState('')
   const [projectLocation, setProjectLocation] = useState('')
   const [projectRefID, setProjectRefID] = useState('')
+  const [tokenAddress, setTokenAddress] = useState('')
 
   useEffect(() => {
     getTraceabilityData()
+    getTokenAddress(projectId)
   }, [])
 
   const getTraceabilityData = async () => {
     try {
       setLoading(true)
       const traceRes = await TraceabilityCalls.getProjectDetailsById(projectId)
-      console.log('traceRes', traceRes)
+      // console.log('traceRes', traceRes)
       if (traceRes?.success) {
-        const temp = traceRes.data.map((traceData: any) => traceData?.type)
-        setTraceTabList(temp)
+        // const temp = traceRes.data.map((traceData: any) => traceData?.type)
+        // setTraceTabList(temp)
+
+        const temp2 = traceRes.data.map((traceData: any) => {
+          return {
+            type: traceData?.type,
+            tabComponent: typeAndTabCompMatching[traceData?.type],
+          }
+        })
+        // const temp2: any = traceRes.data.map(
+        //   (traceData: any) => typeAndTabCompMatching[traceData?.type]
+        // )
+        setTabDataComponentList(temp2)
 
         const projectData = traceRes.data[0]?.data
         setProjectName(projectData?.company_name)
@@ -80,6 +87,19 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
     }
   }
 
+  const getTokenAddress = async (projectUUID: string) => {
+    try {
+      const res = await eventsCalls.getTokenByProjectUUID(
+        `?project_id=${projectUUID}`
+      )
+      if (res?.success) {
+        setTokenAddress(res?.data?.token_address)
+      }
+    } catch (err) {
+      console.log('Error in eventsCalls.getTokenByProjectUUID api ~ ', err)
+    }
+  }
+
   const getTabName = (tabType: string) => {
     const tab: any = Object.values(TRACEABILITY_TAB_NAMES).find(
       (tab: any) => tab?.type === tabType
@@ -90,6 +110,8 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
       return '--'
     }
   }
+
+  // console.log('traceAllData', traceAllData)
 
   return loading ? (
     <Box
@@ -131,9 +153,9 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
           overflow="auto"
           className="scroll-container"
         >
-          {traceTabList &&
-            traceTabList.length > 0 &&
-            traceTabList.map((item: any, index: any) => (
+          {tabDataComponentList &&
+            tabDataComponentList.length > 0 &&
+            tabDataComponentList.map((item: any, index: any) => (
               <Grid
                 container
                 display={'flex'}
@@ -184,7 +206,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         //       : '1px solid #CCE8E1'
                         //     : '',
                         background:
-                          traceTabList.length !== index + 1
+                          tabDataComponentList.length !== index + 1
                             ? 'linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)'
                             : '',
                         width: '1px',
@@ -205,14 +227,17 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                             ? theme === 'dark'
                               ? '#1b2621'
                               : '#F6F9F7'
-                            : index === traceTabList.length
+                            : index === tabDataComponentList.length
                             ? theme === 'dark'
                               ? '#3e4d49'
                               : '#F6F9F7'
                             : '',
                         left: 0,
                         top: index === 0 ? 0 : 'auto',
-                        bottom: traceTabList.length === index + 1 ? 0 : 'auto',
+                        bottom:
+                          tabDataComponentList.length === index + 1
+                            ? 0
+                            : 'auto',
                         zIndex: 1,
                       }}
                     ></div>
@@ -282,9 +307,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         ml: 1,
                       }}
                     >
-                      {/* {item?.value} */}
-                      {/* {TRACEABILITY_TAB_NAMES[item]} */}
-                      {getTabName(item)}
+                      {getTabName(item?.type)}
                     </Typography>
                   </Box>
                 </Grid>
@@ -293,16 +316,19 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
         </Grid>
         <Grid item xs={8}>
           <Box sx={{ mr: 4 }}>
-            <TraceDetails
-              traceOption={traceOption}
-              setTraceOption={(item: any) => setTraceOption(item)}
-              theme={theme}
-              projectDetails={traceAllData}
-              tabData={traceAllData[traceOption]}
-              projectName={projectName}
-              projectLocation={projectLocation}
-              projectRefID={projectRefID}
-            />
+            {traceAllData && traceAllData.length ? (
+              <TraceDetails
+                traceOption={traceOption}
+                setTraceOption={(item: any) => setTraceOption(item)}
+                theme={theme}
+                tabData={traceAllData[traceOption]}
+                projectName={projectName}
+                projectLocation={projectLocation}
+                projectRefID={projectRefID}
+                tabDataComponentList={tabDataComponentList}
+                tokenAddress={tokenAddress}
+              />
+            ) : null}
           </Box>
         </Grid>
       </Grid>

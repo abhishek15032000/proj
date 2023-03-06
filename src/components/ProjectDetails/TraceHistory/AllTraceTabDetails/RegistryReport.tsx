@@ -6,29 +6,25 @@ import { convertToInternationalCurrencySystem } from '../../../../utils/commonFu
 import TitleValue from './TitleValue'
 
 interface RegistryReportProps {
-  theme?: any
   tabData?: any
 }
 
 const RegistryReport: FC<RegistryReportProps> = (props) => {
-  const { theme, tabData } = props
+  const { tabData } = props
 
   return (
     <>
       <TitleValue
         title="Date of Project verification report submit"
         value={moment(tabData?.createdAt).format(`DD/MM/YY`)}
-        theme={theme}
       />
       <TitleValue
         title="Next Submission Date"
         value={moment(tabData?.data?.next_date).format(`DD/MM/YY`)}
-        theme={theme}
       />
       <TitleValue
         title="Tokens for Month"
         value={moment(tabData?.data?.current_month).format('MMMM')}
-        theme={theme}
       />
       <TitleValue
         bolder
@@ -36,7 +32,6 @@ const RegistryReport: FC<RegistryReportProps> = (props) => {
         value={
           convertToInternationalCurrencySystem(tabData?.data?.quantity) || '-'
         }
-        theme={theme}
       />
       <TitleValue
         bolder
@@ -46,7 +41,6 @@ const RegistryReport: FC<RegistryReportProps> = (props) => {
             tabData?.data?.monthly_carbon_tokens
           ) || '-'
         }
-        theme={theme}
       />
       <TitleValue
         bolder
@@ -56,12 +50,10 @@ const RegistryReport: FC<RegistryReportProps> = (props) => {
             tabData?.data?.lifetime_carbon_tokens
           ) || '-'
         }
-        theme={theme}
       />
       <TitleValue
         title="GHG Reduction Explanation"
         value={tabData?.data?.ghg_reduction_explanation}
-        theme={theme}
         fullWidth
       />
 

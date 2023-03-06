@@ -2,24 +2,10 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
 import { Box, Grid, Paper, Typography } from '@mui/material'
 import moment from 'moment'
-import React, { FC, useEffect, useState } from 'react'
-import { shallowEqual } from 'react-redux'
-import CCFileViewer from '../../../atoms/CCFileViewer/CCFileViewer'
+import React, { FC } from 'react'
 import StatusChips from '../../../atoms/StatusChips/StatusChips'
 import { TRACEABILITY_TAB_NAMES } from '../../../config/constants.config'
-import { useAppSelector } from '../../../hooks/reduxHooks'
 import { downloadFile } from '../../../utils/commonFunctions'
-import Buyer from './AllTraceTabDetails/Buyer'
-import CreateProject from './AllTraceTabDetails/CreateProject'
-import ProjectMinted from './AllTraceTabDetails/ProjectMinted'
-import PDFGenerated from './AllTraceTabDetails/PDFGenerated'
-import TokenDeployed from './AllTraceTabDetails/TokenDeployed'
-import VerificationReport from './AllTraceTabDetails/VerificationReport'
-import VerifierAccept from './AllTraceTabDetails/VerifierAccept'
-import VerifierAssign from './AllTraceTabDetails/VerifierAssign'
-import VerifierRequest from './AllTraceTabDetails/VerifierRequest'
-import VerifierVerified from './AllTraceTabDetails/VerifierVerified'
-import RegistryReport from './AllTraceTabDetails/RegistryReport'
 
 export interface TraceDetailsProps {
   traceOption?: any
@@ -33,29 +19,20 @@ export interface TraceDetailsProps {
   projectLocation?: any
   projectRefID?: any
   tabData?: any
+  tabDataComponentList?: any
+  tokenAddress?: string
 }
 
 const TraceDetails: FC<TraceDetailsProps> = (props) => {
   const {
     traceOption,
-    theme,
+    theme = 'light',
     projectName,
     projectLocation,
     projectRefID,
-    tabData,
+    tabData = {},
+    tabDataComponentList,
   } = props
-
-  const renderTab = [
-    <CreateProject key={0} {...props} />,
-    <VerifierRequest key={1} {...props} />,
-    <VerifierAccept key={2} {...props} />,
-    <VerifierAssign key={3} {...props} />,
-    <PDFGenerated key={5} {...props} />,
-    <VerifierVerified key={6} {...props} />,
-    <TokenDeployed key={7} {...props} />,
-    <ProjectMinted key={8} {...props} />,
-    <RegistryReport key={9} {...props} />,
-  ]
 
   const renderStatusChips = (status: string) => {
     let text = ''
@@ -131,6 +108,11 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
         />
       )
     }
+  }
+
+  const getTabComp = (dataToPass: any) => {
+    const Tabcomp: any = tabDataComponentList[traceOption]?.tabComponent
+    return <Tabcomp {...dataToPass} />
   }
 
   return (
@@ -218,7 +200,7 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
       </Box>
 
       <Grid container columnSpacing={3}>
-        {renderTab[traceOption]}
+        {getTabComp(props)}
       </Grid>
     </Paper>
   )

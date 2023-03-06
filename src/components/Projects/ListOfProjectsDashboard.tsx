@@ -61,7 +61,7 @@ const headingsRegistered = [
   <LimitedText key={index++} text="Report Status" />,
   <LimitedText
     key={index++}
-    text="Next Date"
+    text="Next Datee"
     tooltipText="Next Report Submission Dt"
   />,
   <LimitedText key={index++} text="Action" />,
