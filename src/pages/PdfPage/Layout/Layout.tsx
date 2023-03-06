@@ -14,8 +14,9 @@ interface LayoutProps {
   children: any
   child_ref?: any
   parent_ref?: any
-  marginTop?: string | number
+  marginTop?: number
   page_dynamic?: boolean
+  index?: number
 }
 let instancesCount = 0
 
@@ -26,6 +27,9 @@ const Layout: FC<LayoutProps> = (props) => {
     ({ pdfPage }) => pdfPage.pageIndexes,
     shallowEqual
   )
+  const [width, setWidth] = useState<any>(0)
+
+  const ref = useRef<any>(null)
 
   useEffect(() => {
     instancesCount += 1
@@ -55,123 +59,143 @@ const Layout: FC<LayoutProps> = (props) => {
   //   console.log('final', indexes)
   // }, [currentPage])
 
-  return (
-    <Box
-      // ref={renderCount}
-      sx={{
-        size: 'A4',
-        // border: '1px solid red',
-        // width: '21cm',
-        height: '29.7cm',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        overflow: 'hidden',
-        background: 'white',
-      }}
-    >
-      <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}>
-        <img src={FooterImage} alt="footer image" style={{ width: '100%' }} />
-      </Box>
-      {true && (
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: 15,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            height: 24,
-            width: 24,
-            background: '#BBF7ED',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: '50%',
-          }}
-        >
-          <Box sx={{ fontSize: 14, fontWeight: 500, color: '#00201B' }}>
-            {/* {props?.page} */}
+  useEffect(() => {
+    handleWindowSizeChange()
 
-            {currentPage}
-          </Box>
-        </Box>
-      )}
+    window.addEventListener('resize', handleWindowSizeChange)
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange)
+    }
+  }, [])
+
+  const handleWindowSizeChange = () => {
+    setWidth(ref?.current?.clientWidth)
+    console.log(ref?.current?.clientWidth)
+  }
+  return (
+    <Box ref={ref} sx={{ width: '100%' }}>
       <Box
+        // ref={renderCount}
         sx={{
+          size: 'A4',
+          // border: '1px solid red',
+          width: width || '21cm',
+          height: width * 1.2 || '29.7cm',
+          display: 'flex',
+          flexDirection: 'column',
           position: 'relative',
-          pt: 2,
-          pb: 1,
-          px: 4,
+          overflow: 'hidden',
+          background: 'white',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Box>
-            <img src={IcrLogo} alt="icr" />
-          </Box>
-          <Box>
-            <Typography
-              sx={{ color: '#006B5E', fontSize: 12, fontWeight: 500 }}
-            >
-              {props?.title}
-            </Typography>
-          </Box>
+        <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}>
+          <img src={FooterImage} alt="footer image" style={{ width: '100%' }} />
         </Box>
-        <Box
-          sx={{
-            position: 'absolute',
-            height: '5px',
-            width: '92%',
-            right: 0,
-            bottom: 0,
-            background: '#BBF7ED',
-            borderRadius: '40px 0px 0px 40px',
-          }}
-        ></Box>
-      </Box>
-      <Box sx={{ flexGrow: '1', py: 4, pb: 9 }}>
-        <Box sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
+        {true && (
           <Box
             sx={{
-              // border: '1px solid green',
-              height: '100%',
+              position: 'absolute',
+              bottom: 15,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              height: 24,
+              width: 24,
+              background: '#BBF7ED',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '50%',
             }}
-            ref={props?.parent_ref}
+          >
+            <Box sx={{ fontSize: 14, fontWeight: 500, color: '#00201B' }}>
+              {/* {props?.page} */}
+
+              {currentPage}
+            </Box>
+          </Box>
+        )}
+        <Box
+          sx={{
+            position: 'relative',
+            pt: 2,
+            pb: 1,
+            px: 4,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Box>
+              <img src={IcrLogo} alt="icr" />
+            </Box>
+            <Box>
+              <Typography
+                sx={{ color: '#006B5E', fontSize: 12, fontWeight: 500 }}
+              >
+                {props?.title}
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              position: 'absolute',
+              height: '5px',
+              width: '92%',
+              right: 0,
+              bottom: 0,
+              background: '#BBF7ED',
+              borderRadius: '40px 0px 0px 40px',
+            }}
+          ></Box>
+        </Box>
+        <Box sx={{ flexGrow: '1', py: 4, pb: 9 }}>
+          <Box
+            sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}
           >
             <Box
               sx={{
                 // border: '1px solid green',
-                width: '100%',
-                position: 'absolute',
-                marginTop: props?.marginTop || 0,
-                height: props?.page_dynamic ? 'auto' : '100%',
+                height: '100%',
               }}
-              ref={props?.child_ref}
+              ref={props?.parent_ref}
             >
-              {props?.heading && (
-                <Typography
+              <Box
+                sx={{
+                  // border: '1px solid green',
+                  width: '100%',
+                  position: 'absolute',
+                  marginTop: props?.index ? `-${93 * props?.index}%` : 0,
+                  height: props?.page_dynamic ? 'auto' : '100%',
+                }}
+                ref={props?.child_ref}
+              >
+                {props?.heading && (
+                  <Typography
+                    sx={{
+                      pb: 4,
+                      fontSize: 24,
+                      fontWeight: 600,
+                      color: '#006B5E',
+                      px: 4,
+                    }}
+                  >
+                    {props?.heading}
+                  </Typography>
+                )}
+                <Box
                   sx={{
-                    pb: 4,
-                    fontSize: 24,
-                    fontWeight: 600,
-                    color: '#006B5E',
                     px: 4,
+                    height: props?.page_dynamic ? 'auto' : '100%',
                   }}
                 >
-                  {props?.heading}
-                </Typography>
-              )}
-              <Box
-                sx={{ px: 4, height: props?.page_dynamic ? 'auto' : '100%' }}
-              >
-                {props?.children}
+                  {props?.children}
+                </Box>
               </Box>
             </Box>
           </Box>

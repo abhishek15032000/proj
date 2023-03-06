@@ -2,6 +2,7 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Layout from './Layout/Layout'
+import PageDynamic from './Layout/PageDynamic'
 
 const IndexPage = () => {
   const content_list = [
@@ -65,7 +66,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <Layout title="Project Design Description" heading="Contents">
+      <PageDynamic title="Project Design Description" heading="Contents">
         <Box
           sx={{ display: 'flex', flexDirection: 'column', gap: '20px', pl: 3 }}
         >
@@ -128,7 +129,7 @@ const IndexPage = () => {
             )
           })}
         </Box>
-      </Layout>
+      </PageDynamic>
     </>
   )
 }
