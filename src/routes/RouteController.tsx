@@ -16,6 +16,7 @@ import MaintenancePage from '../pages/MaintenancePage'
 import MarketplaceHome from '../pages/MarketplaceHome'
 import MarketplaceProjectDetails from '../pages/MarketplaceProjectDetails'
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
+import PdfPage from '../pages/PdfPage/PdfPage'
 import ProjectDetails from '../pages/ProjectDetails'
 import ProjectListsWithFilter from '../pages/ProjectListsWithFilter/ProjectListsWithFilter'
 import RegisterPage from '../pages/RegisterPage/RegisterPage'
@@ -156,6 +157,17 @@ const RouteController = ({ localLoggedIn }: any) => {
           <PublicRoute
             roles={[]}
             component={ResetPassword}
+            authenticated={userData}
+            userData={userData}
+          />
+        }
+      />
+      <Route
+        path={pathNames.PDF}
+        element={
+          <PublicRoute
+            roles={[]}
+            component={PdfPage}
             authenticated={userData}
             userData={userData}
           />

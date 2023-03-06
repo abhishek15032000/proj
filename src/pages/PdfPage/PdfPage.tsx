@@ -16,11 +16,11 @@ import SectionE from './SectionE'
 import './style.css'
 
 interface PdfPageProps {
-  id: string
+  id?: string
+  data?: any
 }
-const PdfPage: FC<PdfPageProps> = ({ id }) => {
+const PdfPage: FC<PdfPageProps> = ({ id, data }) => {
   const dispatch = useAppDispatch()
-  const [data, setData] = useState({})
   const [searchParams] = useSearchParams()
 
   useEffect(() => {
@@ -29,23 +29,21 @@ const PdfPage: FC<PdfPageProps> = ({ id }) => {
   }, [searchParams])
 
   const getAllDetails = (id: string) => {
-    // setLoading(true)
-    dataCollectionCalls
-      .getProjectById(id)
-      // .getProjectById('b909b3f1-8e59-4e50-8cce-1b83ae2fbfe2')
-      // .getProjectById('c89ceeb2-d8a7-4829-aed6-d36da7f494e8')
-      .then((res) => {
-        console.log('project', res?.data)
-        dispatch(setPdfData(res?.data))
-      })
-      .catch((error) => {
-        console.log('error', error)
-        // setLoading(false)
-      })
+    if (!data) {
+      dataCollectionCalls
+        .getProjectById(id)
+        .then((res) => {
+          console.log('project', res?.data)
+          dispatch(setPdfData(res?.data))
+        })
+        .catch((error) => {
+          console.log('error', error)
+        })
+    } else dispatch(setPdfData(data))
   }
 
   return (
-    <>
+    <Box>
       <FrontPage />
       <IndexPage />
       <ProjectIntro />
@@ -54,7 +52,7 @@ const PdfPage: FC<PdfPageProps> = ({ id }) => {
       <SectionC />
       <SectionD />
       <SectionE />
-    </>
+    </Box>
   )
 }
 
