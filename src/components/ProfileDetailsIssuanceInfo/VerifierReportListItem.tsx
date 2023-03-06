@@ -43,7 +43,7 @@ const VerifierReportListItemListItem: FC<
 
           display: 'flex',
           flexDirection: 'row',
-          py: 3,
+          py: 2,
 
           borderTop: props.index !== 0 ? '1px solid #E1E3E1' : 'none',
 
@@ -52,7 +52,10 @@ const VerifierReportListItemListItem: FC<
       >
         <Grid
           item
-          xs={5}
+          xs={12}
+          md={12}
+          lg={5}
+          xl={5}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -146,7 +149,10 @@ const VerifierReportListItemListItem: FC<
 
         <Grid
           item
-          xs={5}
+          xs={12}
+          md={12}
+          lg={5}
+          xl={5}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -289,14 +295,13 @@ const VerifierReportListItemListItem: FC<
             </Box>
           </Box>
         </Grid>
-        <Grid container xs={1}>
+        <Grid container xs={12} md={12} lg={1} xl={1}>
           {(props?.data?.project_status !==
             PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
             props?.data?.project_status !==
               PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY) && (
             <Grid
               item
-              xs={3}
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -346,7 +351,7 @@ const VerifierReportListItemListItem: FC<
                 )
               )}
             </Grid>
-          )}
+          )}{' '}
         </Grid>
       </Grid>
     </>
