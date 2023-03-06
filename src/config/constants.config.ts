@@ -671,7 +671,7 @@ export const TRACEABILITY_TAB_NAMES = {
   CREATE_PROJECT: { type: 'createProject', tabName: 'Project Created' },
   VERIFIER_REQUEST: {
     type: 'verifierRequest',
-    tabName: 'Project Request sent to Potential Verifiers',
+    tabName: 'Request sent to Potential Verifiers',
   },
   VERIFIER_ACCEPTED: {
     type: 'verifierAccepted',
