@@ -16,6 +16,7 @@ import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory'
 import SquareIcon from '@mui/icons-material/Square'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PentagonIcon from '@mui/icons-material/Pentagon'
+import HexagonIcon from '@mui/icons-material/Hexagon'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Toolbar from '@mui/material/Toolbar'
@@ -73,7 +74,7 @@ export default function ResponsiveDrawer(props: any) {
         IconComponent = FiberManualRecordIcon
         break
       case linkLabels.Token_Contract:
-      case linkLabels.Projects:
+        //case linkLabels.Projects:
         // PlayArrowIcon
         // eslint-disable-next-line react/display-name
         IconComponent = (props: any) => (
@@ -81,6 +82,9 @@ export default function ResponsiveDrawer(props: any) {
             <TriangleIcon />
           </SvgIcon>
         )
+        break
+      case linkLabels.All_Projects:
+        IconComponent = HexagonIcon
         break
       // case linkLabels.My_Portfolio:
       //   IconComponent = SquareIcon
@@ -205,7 +209,7 @@ export default function ResponsiveDrawer(props: any) {
       </Grid>
 
       <Grid container xs={12} sx={{ height: '100%', width: '100%' }}>
-        <List sx={{ mt: 1, width: '100%' , overflowY:'auto'}}>
+        <List sx={{ mt: 1, width: '100%', overflowY: 'auto' }}>
           {midMenu().map((text, index) => (
             <NavLink
               key={index.toString()}

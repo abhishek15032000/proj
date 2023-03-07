@@ -122,6 +122,7 @@ const VerifierVerifyReport = loadable(
 const Wallet = loadable(() => import('../pages/Wallet'))
 
 const PdfPage = loadable(() => import('../pages/PdfPage/PdfPage'))
+const AllProjects = loadable(() => import('../pages/AllProjects/AllProjects'))
 
 export const privateRouteComponents = [
   {
@@ -328,12 +329,13 @@ export const privateRouteComponents = [
     component: RegistryReviewReport,
     roles: [ROLES.REGISTRY, ROLES.VERIFIER],
   },
-  {
-    path: pathNames.PROJECTS,
-    component: ProjectPage,
-    roles: [ROLES.REGISTRY, ROLES.ISSUER, ROLES.VERIFIER],
-    sidebarName: linkLabels.Projects,
-  },
+  // commented as see all projects in dashboard is removed
+  //{
+  //  path: pathNames.PROJECTS,
+  //  component: ProjectPage,
+  //  roles: [ROLES.REGISTRY, ROLES.ISSUER, ROLES.VERIFIER],
+  //  sidebarName: linkLabels.Projects,
+  //},
   {
     path: pathNames.COMPLETE_PROFILE,
     component: CompleteProfile,
@@ -368,6 +370,12 @@ export const privateRouteComponents = [
     component: PdfPage,
 
     sidebarName: linkLabels.Dashboard,
+    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.ALL_PROJECTS,
+    component: AllProjects,
+    sidebarName: linkLabels.All_Projects,
     roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
   },
 ]

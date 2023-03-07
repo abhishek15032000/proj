@@ -18,12 +18,13 @@ interface ProjectDetailsCardProps {
   navigationAction: any
   justifyContent?: string
   [x: string]: any
+  onClickDisable?: boolean
 }
 const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const { project, navigationAction, justifyContent = 'center' } = props
+  const { project, navigationAction, justifyContent = 'center', onClickDisable = false } = props
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [fields, setFields] = useState<any>([])
@@ -62,6 +63,9 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   }, [project])
 
   const onClickHandler = () => {
+    if(onClickDisable){
+      return
+    }
     window.scrollTo(0, 0)
     navigate(
       {
