@@ -19,6 +19,7 @@ import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 interface VerifierReportListItemListItemProps {
   data: any
   updateVerifierAPI: any
+  index: any
 }
 
 const VerifierReportListItemListItem: FC<
@@ -30,33 +31,69 @@ const VerifierReportListItemListItem: FC<
   const [showModal, setShowModal] = useState(false)
   const [showVerifierDetails, setShowVerifierDetails] = useState<boolean>(false)
 
-  const daysLeft = (date?: any) => {
-    //function for couting days for verifier to accept
-    const result: any = moment(date).format('DD')
-    const currentDay: any = moment().format('DD')
-    //const currentDay: any = moment().subtract(result, 'days')
-    return 7 - (currentDay - result)
-  }
-
   return (
     <>
-      <Box sx={{ background: '#E8F3EF', py: 3, px: 3, borderRadius: 2 }}>
+      <Grid
+        // rowSpacing={3}
+        // columnSpacing={2}
+        columns={3}
+        sx={{
+          // pt: index !== 0 ? 2 : 0,
+          // mt: 1,
+
+          display: 'flex',
+          flexDirection: 'row',
+          py: 2,
+
+          borderTop: props.index !== 0 ? '1px solid #E1E3E1' : 'none',
+
+          mx: 3,
+        }}
+      >
         <Grid
-          container
-          alignItems={'center'}
-          columns={15}
-          sx={{ flex: 'wrap' }}
+          item
+          xs={12}
+          md={12}
+          lg={5}
+          xl={5}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+          }}
         >
-          <Grid item xs={6}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 400,
+                letterSpacing: 0.5,
+                fontStyle: 'normal',
+                color: '#006B5E',
+              }}
+            >
+              {'Verifier'}
+            </Typography>
             <Typography
               sx={{
                 cursor: 'pointer',
                 width: 'fit-content',
                 fontSize: 16,
-                fontWeight: 500,
+                fontWeight: 400,
+                letterSpacing: 0.5,
+                color: '#141D1B',
+                fontStyle: 'normal',
+                mt: 1,
               }}
-              onMouseEnter={() => setShowVerifierDetails(true)}
-              onMouseLeave={() => setShowVerifierDetails(false)}
+              // onMouseEnter={() => setShowVerifierDetails(true)}
+              // onMouseLeave={() => setShowVerifierDetails(false)}
             >
               {props?.data?.verifier_name}
             </Typography>
@@ -64,98 +101,232 @@ const VerifierReportListItemListItem: FC<
             {showVerifierDetails && (
               <VerifierDetails verifierId={props?.data?.verifier_id} />
             )}
-          </Grid>
-          {/* verifier contact number shown when issuer confirmed final verifier */}
-          {(props?.data?.project_status ===
-            PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
-            props?.data?.project_status ===
-              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY) && (
-            <Grid item xs={3}>
-              <Stack direction={'row'} alignItems="center">
-                <PhoneInTalkOutlinedIcon
-                  fontSize="small"
-                  sx={{ color: '#006B5E', mr: 1 }}
-                />
-                <Typography sx={{ fontWeight: 500, fontSize: 14 }}>
-                  {props?.data?.verifier_number}
-                </Typography>
-              </Stack>
-            </Grid>
-          )}
-          {/* verifier_address */}
-          <Grid item xs={3}>
-            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-              {limitTitle(props?.data?.verifier_address, 15)}
-            </Typography>
-          </Grid>
-          {/* verifier status before issuer confirmed */}
-          <Grid item xs={3} sx={{ display: 'flex', alignItems: 'center' }}>
-            <CircleIcon
+          </Box>
+
+          {/* {(props?.data?.project_status ===
+          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
+          props?.data?.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY) && ( */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              mt: 3,
+            }}
+          >
+            <Typography
               sx={{
-                color:
+                fontSize: 16,
+                fontWeight: 400,
+                letterSpacing: 0.5,
+                fontStyle: 'normal',
+                color: '#006B5E',
+              }}
+            >
+              {'Contact '}
+            </Typography>
+            <Stack direction={'row'} alignItems="center" mt={1}>
+              <PhoneInTalkOutlinedIcon
+                fontSize="small"
+                sx={{ color: '#006B5E', mr: 1 }}
+              />
+              <Typography
+                sx={{
+                  fontSize: 16,
+                  fontWeight: 400,
+                  letterSpacing: 0.5,
+                  color: '#141D1B',
+                  fontStyle: 'normal',
+                }}
+              >
+                {props?.data?.verifier_number}
+              </Typography>
+            </Stack>
+          </Box>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          md={12}
+          lg={5}
+          xl={5}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            width: '100%',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 400,
+                letterSpacing: 0.5,
+                fontStyle: 'normal',
+                color: '#006B5E',
+              }}
+            >
+              {'Location  '}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 400,
+                letterSpacing: 0.5,
+                color: '#141D1B',
+                fontStyle: 'normal',
+                mt: 1,
+              }}
+            >
+              {limitTitle(props?.data?.verifier_address, 25)}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              mt: 3,
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 400,
+                letterSpacing: 0.5,
+                fontStyle: 'normal',
+                color: '#006B5E',
+              }}
+            >
+              {'Status   '}
+            </Typography>
+
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor:
                   props?.data?.project_status ===
                     PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ||
                   props?.data?.project_status ===
                     PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
                   props?.data?.project_status ===
                     PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
-                    ? '#7ACB9F'
+                    ? '#B2F3E9'
                     : props?.data?.project_status ===
                       PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED
-                    ? '#F7CA56'
+                    ? '#FFF5E3 '
                     : props?.data?.project_status ===
                         PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
                       props?.data?.project_status ===
                         PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
                     ? 'rgba(250,0,0,0.2)'
                     : 'transparent',
-                mr: 1,
+                borderRadius: '16px',
+                py: 0.5,
+                px: 2,
+                mt: 1,
               }}
-            />
-            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-              {props?.data?.project_status ===
-                PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT ||
-              props?.data?.project_status ===
-                PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
-              props?.data?.project_status ===
-                PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
-                ? 'Verifier Confirmed'
-                : props?.data?.project_status ===
-                  PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED
-                ? 'Waiting for Verifier’s Confirmation'
-                : props?.data?.project_status ===
-                  PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER
-                ? 'Rejected'
-                : props?.data?.project_status ===
-                    PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER &&
-                  'Verifier Rejected'}
-            </Typography>
-          </Grid>
+            >
+              <CircleIcon
+                sx={{
+                  color:
+                    props?.data?.project_status ===
+                      PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ||
+                    props?.data?.project_status ===
+                      PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+                    props?.data?.project_status ===
+                      PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                      ? '#17917E '
+                      : props?.data?.project_status ===
+                        PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED
+                      ? '#E6A603'
+                      : props?.data?.project_status ===
+                          PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
+                        props?.data?.project_status ===
+                          PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
+                      ? 'red'
+                      : 'transparent',
+                  mr: 1,
+                  height: '10px',
+                }}
+                fontSize="small"
+              />
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 400,
+                  letterSpacing: 0.5,
+                  color: '#141D1B',
+                  fontStyle: 'normal',
+                }}
+              >
+                {props?.data?.project_status ===
+                  PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT ||
+                props?.data?.project_status ===
+                  PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
+                props?.data?.project_status ===
+                  PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                  ? 'Verifier Confirmed'
+                  : props?.data?.project_status ===
+                    PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED
+                  ? 'Waiting for Verifier’s Confirmation'
+                  : props?.data?.project_status ===
+                    PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER
+                  ? 'Rejected'
+                  : props?.data?.project_status ===
+                      PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER &&
+                    'Verifier Rejected'}
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid container xs={12} md={12} lg={1} xl={1}>
           {(props?.data?.project_status !==
             PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ||
             props?.data?.project_status !==
               PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY) && (
             <Grid
               item
-              xs={3}
               sx={{
                 display: 'flex',
-                justifyContent: 'center',
+                flexDirection: 'row',
+                justifyContent: 'start',
+                alignItems: 'start',
               }}
             >
               {props?.data?.project_status ===
               PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED ? (
-                <Typography
-                  textAlign="center"
+                <CCButton
+                  disabled
                   sx={{
-                    pr: 5,
-                    color: '#667080',
+                    backgroundColor: 'rgba(31, 31, 31, 0.2)',
+                    color: '#191C1B',
+                    padding: '5px 10px',
+                    opacity: 0.7,
+                    borderRadius: 10,
                     fontSize: 14,
-                    fontWeight: 500,
+
+                    width: '35%',
+                    height: '50px',
                   }}
                 >
-                  {`${daysLeft(props?.data?.createdAt)} Day(s) Left`}
-                </Typography>
+                  Finalise Verifier
+                </CCButton>
               ) : (
                 props?.data?.project_status ===
                   PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT && (
@@ -171,6 +342,8 @@ const VerifierReportListItemListItem: FC<
                       borderRadius: 10,
                       fontSize: 14,
                       '&:hover': { background: '#006B5E' },
+                      width: '35%',
+                      height: '50px',
                     }}
                   >
                     Finalise Verifier
@@ -178,54 +351,9 @@ const VerifierReportListItemListItem: FC<
                 )
               )}
             </Grid>
-          )}
+          )}{' '}
         </Grid>
-      </Box>
-      {/* modal when user clicks on finalise verifier */}
-      {/* <MessageModal
-        message={
-          <>
-            <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
-              Next step involves making calls with Blockchain. Do you want to
-              continue with{' '}
-              <span style={{ color: Colors.lightPrimary1, fontSize: 18 }}>
-                {accountAddress}
-              </span>{' '}
-              wallet address?
-            </Typography>
-            <Typography sx={{ mt: 2, fontSize: 18, fontWeight: 500 }}>
-              Wallet Balance :{' '}
-              <span
-                style={{
-                  color: Number(accountBalance)
-                    ? Colors.lightPrimary1
-                    : Colors.tertiary,
-                  fontSize: 18,
-                }}
-              >
-                {accountBalance}
-              </span>{' '}
-            </Typography>
-            {!Number(accountBalance) && (
-              <Typography
-                sx={{ fontSize: 14, fontWeight: 500, color: Colors.tertiary }}
-              >
-                ! Insufficient balance to perform blockchain call
-              </Typography>
-            )}
-          </>
-        }
-        btn1Text="Continue"
-        disableBtn1={!accountBalance ? true : false}
-        btn1OnClick={() => {
-          setShowModal(false)
-          props?.updateVerifierAPI(props?.data)
-        }}
-        btn2OnClick={() => setShowModal(false)}
-        btn2Text="Cancel"
-        showModal={showModal}
-        setShowModal={setShowModal}
-      /> */}
+      </Grid>
     </>
   )
 }

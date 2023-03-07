@@ -19,12 +19,23 @@ const PageDynamic: FC<PageDynamicProps> = ({ children, title, heading }) => {
   useEffect(() => {
     setChildHeight(child_ref?.current?.clientHeight)
     setParentHeight(parent_ref?.current?.clientHeight)
+
+    window.addEventListener('resize', handleWindowSizeChange)
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange)
+    }
   }, [{ ...child_ref?.current }, { ...parent_ref?.current }])
 
+  const handleWindowSizeChange = () => {
+    setChildHeight(child_ref?.current?.clientHeight)
+    setParentHeight(parent_ref?.current?.clientHeight)
+  }
+
   useEffect(() => {
-    if (childHeight > parentHeight)
-      setExtraPage(Math.ceil(childHeight / parentHeight))
-    else setExtraPage(0)
+    if (childHeight !== 0 || parentHeight !== 0)
+      if (childHeight > parentHeight)
+        setExtraPage(Math.ceil(childHeight / parentHeight))
+      else setExtraPage(0)
   }, [
     parentHeight,
     childHeight,
@@ -44,6 +55,7 @@ const PageDynamic: FC<PageDynamicProps> = ({ children, title, heading }) => {
         {children}
       </Layout>
       {extraPage !== 0 &&
+        extraPage !== Infinity &&
         [...Array(extraPage)]?.map((item, index) => {
           if (index !== 0) {
             return (
@@ -51,7 +63,7 @@ const PageDynamic: FC<PageDynamicProps> = ({ children, title, heading }) => {
                 page_dynamic={true}
                 title={title}
                 heading={heading}
-                marginTop={`-${120.9 * index}%`}
+                index={index}
               >
                 <Box>{children}</Box>
               </Layout>

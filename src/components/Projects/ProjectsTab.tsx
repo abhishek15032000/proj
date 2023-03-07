@@ -74,7 +74,6 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
 
       if (commentsRes) {
         if (!lodash.isEqual(cachedNewTabAllProjects, commentsRes[0]?.data)) {
-          setLoading(true)
           dispatch(setCachedNewTabAllProjects(commentsRes[0]?.data))
         }
 
@@ -84,13 +83,12 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
             commentsRes[1]?.data
           )
         ) {
-          setLoading(true)
+         
           dispatch(setCachedVerificationTabAllProjects(commentsRes[1]?.data))
         }
         if (
           !lodash.isEqual(cachedRegisterTabAllProjects, commentsRes[2]?.data)
         ) {
-          setLoading(true)
           dispatch(setCachedRegisterTabAllProjects(commentsRes[2]?.data))
         }
       }

@@ -340,7 +340,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       dispatch(setIssueVerificationProjects(null))
     }
   }, [cachedVerificationTabAllProjects])
-
+  
   useEffect(() => {
     const registeredData: any = []
 
