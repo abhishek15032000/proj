@@ -133,8 +133,8 @@ const ProjectsStats = () => {
             const obj = {
               data: {
                 carbon_credits_bought: res?.data.totalPurchase,
-                carbon_credits_sold: res?.data.totalRetire,
-                carbon_credits_retired: res?.data.total_sale,
+                carbon_credits_sold: res?.data.total_sale,
+                carbon_credits_retired: res?.data.totalRetire,
               },
             }
             setRawStatsData(obj)

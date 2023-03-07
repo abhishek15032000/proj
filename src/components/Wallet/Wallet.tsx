@@ -18,7 +18,7 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import TransactionHistoryImg from '../../assets/Images/illustrations/TransactionHistory.png'
 import { Colors } from '../../theme'
 import CCTitleValue from '../../atoms/CCTitleValue/CCTitleValue'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
@@ -42,12 +42,23 @@ import { eventsCalls } from '../../api/eventsCalls.api'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import WithdrawModal from '../Marketplace/WithdrawModal'
+import { pathNames } from '../../routes/pathNames'
+import {
+  setCurrentProjectUUID,
+  setOpenWithdrawModal,
+} from '../../redux/Slices/newMarketplaceSlice'
 
 interface WalletProps {}
 
 const Wallet: FC<WalletProps> = (props) => {
   const navigate = useNavigate()
   const dispatch: any = useAppDispatch()
+
+  const updateWalletLoading = useAppSelector(
+    ({ wallet }) => wallet.updateWalletLoading,
+    shallowEqual
+  )
 
   const [loading, setLoading] = useState(false)
   const [balance, setBalance] = useState(0.0)
@@ -61,6 +72,10 @@ const Wallet: FC<WalletProps> = (props) => {
     // getPrivateKey()
   }, [])
 
+  useEffect(() => {
+    getAllProjects()
+  }, [updateWalletLoading])
+
   const openInNewTab = (url: any) => {
     window.open(url, '_blank', 'noreferrer')
   }
@@ -72,9 +87,11 @@ const Wallet: FC<WalletProps> = (props) => {
     eventsCalls.getWalletBalance(publicKey).then((res: any) => {
       if (res?.success) {
         let modifiedRows = res?.data?.token_balance
-        console.log('pre', modifiedRows)
         modifiedRows = modifiedRows.filter(
-          (item: any, index: number) => item.balance > 0 && item
+          (item: any, index: number) =>
+            item?.balance ||
+            item?.deposited_balance ||
+            (item?.on_sell_balance && item)
         )
         const lasupdated = modifiedRows[0]?.updatedAt
         setLastUpdatedAt(lasupdated)
@@ -85,15 +102,21 @@ const Wallet: FC<WalletProps> = (props) => {
           modifiedRows &&
           modifiedRows.map((i: any, index: number) => {
             return [
-              <LimitedText
+              <Box
                 key={index}
-                customStyle={{
-                  fontSize: 15,
-                  fontWeight: 500,
-                  textAlign: 'center',
-                }}
-                text={i?.company_name}
-              />,
+                className="td-as-link"
+                onClick={() => onClickHandler(i?.project_details?.uuid)}
+              >
+                <LimitedText
+                  key={index}
+                  customStyle={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                    textAlign: 'center',
+                  }}
+                  text={i?.company_name}
+                />
+              </Box>,
               <LimitedText
                 key={index}
                 customStyle={{
@@ -108,29 +131,39 @@ const Wallet: FC<WalletProps> = (props) => {
                 customStyle={{
                   fontSize: 15,
                   fontWeight: 500,
-                  textAlign: 'center',
                 }}
-                text={convertToInternationalCurrencySystem(i?.balance).toString()}
-
+                text={convertToInternationalCurrencySystem(
+                  i?.balance
+                ).toString()}
               />,
+              <Box
+                key={index}
+                className="td-as-link"
+                onClick={() => {
+                  dispatch(setOpenWithdrawModal(true))
+                  dispatch(setCurrentProjectUUID(i?.project_details?.uuid))
+                }}
+              >
+                <LimitedText
+                  key={index}
+                  customStyle={{
+                    fontSize: 15,
+                    fontWeight: 500,
+                  }}
+                  text={convertToInternationalCurrencySystem(
+                    i?.deposited_balance
+                  ).toString()}
+                />
+              </Box>,
               <LimitedText
                 key={index}
                 customStyle={{
                   fontSize: 15,
                   fontWeight: 500,
-                  textAlign: 'center',
                 }}
-                text={convertToInternationalCurrencySystem(i?.deposited_balance).toString()}
-              />,
-              <LimitedText
-                key={index}
-                customStyle={{
-                  fontSize: 15,
-                  fontWeight: 500,
-                  textAlign: 'center',
-                }}
-                text={convertToInternationalCurrencySystem(i?.on_sell_balance).toString()}
-
+                text={convertToInternationalCurrencySystem(
+                  i?.on_sell_balance
+                ).toString()}
               />,
               <Typography
                 key={index}
@@ -156,6 +189,16 @@ const Wallet: FC<WalletProps> = (props) => {
       }
       setLoading(false)
     })
+  }
+
+  const onClickHandler = (projectUUID: string) => {
+    if (projectUUID) {
+      window.scrollTo(0, 0)
+      navigate({
+        pathname: pathNames.PROJECT_DETAILS,
+        search: `?${createSearchParams({ projectId: projectUUID })}`,
+      })
+    }
   }
 
   return (
@@ -206,7 +249,7 @@ const Wallet: FC<WalletProps> = (props) => {
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent:"space-between",
+                justifyContent: 'space-between',
                 backgroundColor: 'white',
                 borderRadius: '8px',
                 py: 3,
@@ -241,19 +284,18 @@ const Wallet: FC<WalletProps> = (props) => {
             </Grid>
             <Grid item xs={12} md={12} lg={12} xl={12}>
               {loading ? (
-                <CCTableSkeleton sx={{ mt: 2 }} items={3}/>
-              ) : tableData && tableData.length > 0 ? (
+                <CCTableSkeleton sx={{ mt: 2 }} items={3} />
+              ) : tableData && tableData?.length > 0 ? (
                 <TransactionList
                   tableData={tableData}
                   lastUpdatedAt={lastUpdatedAt}
                 />
               ) : (
                 <EmptyComponent
-                photoType={1}
-                title=" No Project Token Details is available !!!"
-                elevation={0}
-              />
-               
+                  photoType={1}
+                  title=" No Project Token Details is available !!!"
+                  elevation={0}
+                />
               )}
             </Grid>
 
@@ -267,6 +309,7 @@ const Wallet: FC<WalletProps> = (props) => {
           <WalletTab />
         </Grid>
       </Grid>
+      <WithdrawModal fromWalletPage />
     </Container>
   )
 }

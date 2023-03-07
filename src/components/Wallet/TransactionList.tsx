@@ -31,8 +31,8 @@ import { limitTitle } from '../../utils/commonFunctions'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { updateWalletBalance } from '../../utils/commonAPI.utils'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
+import { useWallet } from '../../hooks/useWallet'
 
 interface TransactionListProps {
   tableData?: any
@@ -42,13 +42,15 @@ let index = 0
 const headings = [
   <LimitedText key={index++} text="Project Name" />,
   <LimitedText key={index++} text="Symbol" />,
-  <LimitedText key={index++} text="Retirebale" />,
+  <LimitedText key={index++} text="Retirable" />,
   <LimitedText key={index++} text="In exchange" />,
   <LimitedText key={index++} text="In order" />,
   <LimitedText key={index++} text="Address" />,
 ]
 const TransactionList: FC<TransactionListProps> = (props) => {
   const { tableData, lastUpdatedAt } = props
+
+  const { updateWalletBalance } = useWallet()
 
   return (
     <Grid container xs={12} md={12} lg={12} xl={12}>
@@ -76,7 +78,6 @@ const TransactionList: FC<TransactionListProps> = (props) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-
             }}
           >
             <Typography
@@ -95,11 +96,11 @@ const TransactionList: FC<TransactionListProps> = (props) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                flexWrap:"no-wrap",
+                flexWrap: 'no-wrap',
                 gap: '4px',
               }}
             >
-              <Box sx={{ color: Colors.darkPrimary1,display:"flex" }}>
+              <Box sx={{ color: Colors.darkPrimary1, display: 'flex' }}>
                 <Typography sx={{ fontSize: 12, fontWeight: 600 }}>
                   Last updated at :
                 </Typography>
@@ -113,7 +114,7 @@ const TransactionList: FC<TransactionListProps> = (props) => {
                   color: Colors.darkPrimary1,
                   cursor: 'pointer',
                 }}
-                onClick={updateWalletBalance}
+                onClick={() => updateWalletBalance()}
               />
             </Box>
           </Box>
@@ -178,7 +179,13 @@ const TransactionList: FC<TransactionListProps> = (props) => {
                 </TableBody>
               </Table>
             </TableContainer> */}
-            <CCTable headings={headings} rows={tableData} hideScrollbar/>
+            <CCTable
+              headings={headings}
+              rows={tableData}
+              pagination={tableData?.length > 3}
+              rowsPerPageProp={3}
+              hideScrollbar
+            />
           </Grid>
         </Box>
       </Paper>

@@ -12,15 +12,13 @@ interface AdditionalDetailsProps {
 }
 const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-  const [tags, setTags] = useState([])
   const { projectDetailsData } = props
-  console.log(
-    '🚀 ~ file: AdditionalDetails.tsx ~ line 23 ~ AdditionalDetails ~ projectDetailsData',
-    projectDetailsData
-  )
+
+  const [tags, setTags] = useState([])
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
   const [seeMore, setSeeMore] = useState(false)
+
   useEffect(() => {
     getAllDetails()
   }, [])
@@ -29,20 +27,19 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
     let methodologies = []
     methodologies =
       projectDetailsData?.section_a?.step4 &&
-      projectDetailsData?.section_a?.step4?.methodologies.length &&
+      projectDetailsData?.section_a?.step4?.methodologies?.length > 0 &&
       projectDetailsData?.section_a?.step4?.methodologies.map(
         (item: any, index: number) => item?.methodology
       )
-    console.log('methodologies', methodologies)
     const modifiedArrayTemp = [
       { heading: 'PROJECT TYPE', value: projectDetailsData?.type },
       {
         heading: 'REFERENCE & APPLIED METHODOLOGY',
-        value: methodologies?.length <= 0 ? '-' : methodologies,
+        value: methodologies && methodologies?.length ? methodologies : '--',
       },
       {
         heading: 'PROJECT START DATE',
-        value: moment(projectDetailsData?.createdAt).format(`DD/MM/YY`),
+        value: moment(projectDetailsData?.start_date).format(`DD/MM/YY`),
       },
       {
         heading: 'PROJECT END DATE',

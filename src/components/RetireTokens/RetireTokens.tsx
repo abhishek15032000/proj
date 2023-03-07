@@ -107,7 +107,7 @@ const RetireTokens = (props: RetireTokensProps) => {
         )
         if (tokenBalances?.success) {
           const bal = convertToInternationalCurrencySystem(
-            Number(tokenBalances?.data?.assetsBalance)
+            Number(tokenBalances?.data?.totalBalances)
           )
           setBalanceToRetire(bal)
         }
