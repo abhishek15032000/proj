@@ -90,8 +90,8 @@ const HelpCentre = (props: HelpCentreProps) => {
                 <Divider sx={{ color: '#E8E8E8' }} orientation={'vertical'} />
               </Box>
               <Box sx={{ width: '65%', ml: 3 }}>
-                {selectQuestion === 0 ? <WalletAdd /> : null}
-                {selectQuestion === 1 ? (
+                {/* {selectQuestion === 0 ? <WalletAdd /> : null} */}
+                {selectQuestion === 0 ? (
                   <IssuanceAllSectionContent
                     data={HelpContentIssuanceAllData}
                   />
