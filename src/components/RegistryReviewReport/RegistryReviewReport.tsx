@@ -19,6 +19,7 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
 import { ArrowOutward } from '@mui/icons-material'
 import CCFileViewer from '../../atoms/CCFileViewer/CCFileViewer'
+import PdfPage from '../../pages/PdfPage/PdfPage'
 declare let window: any
 
 const pdfLoading = false
@@ -300,11 +301,22 @@ const RegistryReviewReport = () => {
 
               {/* <Divider /> */}
 
-              {pdfURL ? (
+              <Box
+                sx={{
+                  height: '86%',
+                  px: 4,
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                }}
+              >
+                <PdfPage data={location.state?.projectReportDetails} />
+              </Box>
+
+              {/* {pdfURL ? (
                 <Box sx={{ height: '86%', px: 4 }}>
                   <PDFViewer pdfUrl={pdfURL} />
                 </Box>
-              ) : null}
+              ) : null} */}
             </Paper>
           </Grid>
           <Grid

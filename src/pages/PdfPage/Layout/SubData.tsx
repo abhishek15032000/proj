@@ -49,7 +49,7 @@ const SubData: FC<SubDataProps> = ({ title, children }) => {
         </Box>
       </Box>
       <Box sx={{ fontSize: 12, fontWeight: 400, lineHeight: '24px', mt: 1 }}>
-        {children}
+        {children || '-'}
       </Box>
     </Box>
   )

@@ -121,7 +121,7 @@ const VerifierVerifyReport = loadable(
 )
 const Wallet = loadable(() => import('../pages/Wallet'))
 
-const PdfPage = loadable(() => import('../pages/PdfPage/PdfPage'))
+//const PdfPage = loadable(() => import('../pages/PdfPage/PdfPage'))
 const AllProjects = loadable(() => import('../pages/AllProjects/AllProjects'))
 
 export const privateRouteComponents = [
@@ -364,14 +364,14 @@ export const privateRouteComponents = [
 
     roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER],
   },
-  {
-    path: pathNames.PDF,
-    //component: DashboardPage,
-    component: PdfPage,
+  //{
+  //  path: pathNames.PDF,
+  //  //component: DashboardPage,
+  //  component: PdfPage,
 
-    sidebarName: linkLabels.Dashboard,
-    roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
-  },
+  //  sidebarName: linkLabels.Dashboard,
+  //  roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
+  //},
   {
     path: pathNames.ALL_PROJECTS,
     component: AllProjects,

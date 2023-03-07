@@ -35,6 +35,7 @@ import { getLocalItem } from '../../utils/Storage'
 import { VerifierVerifyReportProps } from './VerifierVerifyReport.interface'
 import CCButton from '../../atoms/CCButton'
 import { ArrowOutward } from '@mui/icons-material'
+import PdfPage from '../../pages/PdfPage/PdfPage'
 
 declare let window: any
 
@@ -421,7 +422,12 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 </Box>
 
                 <Divider />
-                {pdfLoading ? (
+                <Box
+                  sx={{ height: '86%', overflowY: 'auto', overflowX: 'hidden' }}
+                >
+                  <PdfPage data={location?.state?.project} />
+                </Box>
+                {/* {pdfLoading ? (
                   <Box
                     sx={{
                       height: '100%',
@@ -438,7 +444,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                       <PDFViewer pdfUrl={pdfURL} />
                     </Box>
                   )
-                )}
+                )} */}
               </Paper>
             </Box>
           </Grid>

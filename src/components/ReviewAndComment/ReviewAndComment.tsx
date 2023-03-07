@@ -29,6 +29,7 @@ import { fileUploadCalls } from '../../api/fileUpload.api'
 import './index.css'
 import { KeyboardArrowLeft } from '@mui/icons-material'
 import { useComment } from '../../hooks/useComment'
+import PdfPage from '../../pages/PdfPage/PdfPage'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
@@ -309,7 +310,7 @@ const ReviewAndComment = () => {
                   /> */}
                 </Box>
               </Box>
-              {pdfLoading ? (
+              {/* {pdfLoading ? (
                 <Box
                   sx={{
                     fontSize: '32',
@@ -323,11 +324,23 @@ const ReviewAndComment = () => {
                 >
                   Loading PDF...
                 </Box>
-              ) : null}
+              ) : null} */}
               {/* {!showCommentSection ? ( */}
 
-              <Box sx={{ height: '90%', width: '100%', px: 9 }}>
-                {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
+              <Box
+                sx={{
+                  height: '90%',
+                  width: '100%',
+                  px: 9,
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                {project && <PdfPage data={project} />}
+                {/* {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null} */}
               </Box>
               {/* ) : (
         <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
