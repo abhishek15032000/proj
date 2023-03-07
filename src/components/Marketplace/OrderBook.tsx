@@ -19,11 +19,9 @@ const OrderBook = () => {
 
   return (
     <CCPaper
-      customSX={
-        {
-          // height: '100%'
-        }
-      }
+      customSX={{
+        height: '100%',
+      }}
     >
       {sellOrdersList && sellOrdersList.length > 0 && (
         <Typography sx={{ fontSize: 18, color: Colors.darkPrimary1 }}>
@@ -48,9 +46,13 @@ const OrderBook = () => {
       ) : sellOrdersList && sellOrdersList.length ? (
         <Box>
           <Row isHeading rows={headings} />
-          {sellOrdersList.map((sellOrder: any, index: number) => (
-            <Row key={index} rows={sellOrder} />
-          ))}
+          <Box
+            sx={{ overflowY: 'scroll', overflowX: 'hidden', maxHeight: 250 }}
+          >
+            {sellOrdersList.map((sellOrder: any, index: number) => (
+              <Row key={index} rows={sellOrder} />
+            ))}
+          </Box>
         </Box>
       ) : (
         // <Typography sx={{ color: Colors.darkPrimary1, fontSize: 14 }}>
