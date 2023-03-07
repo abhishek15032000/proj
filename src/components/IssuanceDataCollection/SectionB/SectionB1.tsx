@@ -164,7 +164,7 @@ const SectionB1 = () => {
               dispatch(
                 setB1({
                   name: 'data_tables_technical_description_attach',
-                  value: [item, ...data_tables_technical_description_attach],
+                  value: item,
                 })
               )
             }}
@@ -207,7 +207,7 @@ const SectionB1 = () => {
               dispatch(
                 setB1({
                   name: 'shut_down_details_attach',
-                  value: [item, ...shut_down_details_attach],
+                  value: item,
                 })
               )
             }}
@@ -230,7 +230,7 @@ const SectionB1 = () => {
               dispatch(
                 setB1({
                   name: 'implementation_milestones_attach',
-                  value: [item, ...implementation_milestones_attach],
+                  value: item,
                 })
               )
             }}
@@ -256,7 +256,7 @@ const SectionB1 = () => {
               dispatch(
                 setB1({
                   name: 'project_timeline_attach',
-                  value: [item, ...project_timeline_attach],
+                  value: item,
                 })
               )
             }}

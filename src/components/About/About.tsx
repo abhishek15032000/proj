@@ -131,7 +131,7 @@ const lightModeTheme = {
   typography: initialState.typography,
 }
 
-const data = [1, 3, 1, 3, 1, 3, 1, 3]
+const SGGSData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 
 interface AboutProps {
   projectId: any
@@ -162,8 +162,8 @@ const About: FC<AboutProps> = (props) => {
     setLoading(true)
     projectDetailsCalls
       .getProjectDetailsById(projectId)
-      .then((result) => setProjectData(result.data))
-      .catch((e) => e)
+      .then((result: any) => setProjectData(result.data))
+      .catch((e: any) => e)
       .finally(() => setLoading(false))
   }
 
@@ -258,7 +258,7 @@ const About: FC<AboutProps> = (props) => {
                     {loading ? (
                       <SDGSComponent />
                     ) : currentProjectDetails &&
-                      currentProjectDetails?.project_status >= 6 ? (
+                      currentProjectDetails?.project_status > 0 ? (
                       <Grid
                         container
                         sx={{
@@ -313,9 +313,9 @@ const About: FC<AboutProps> = (props) => {
                                   : 0,
                             }}
                           >
-                            {data &&
-                              data.length > 0 &&
-                              data.map((item: any, index: any) => (
+                            {SGGSData &&
+                              SGGSData.length > 0 &&
+                              SGGSData.map((item: any, index: any) => (
                                 <Grid
                                   // columns={1}
                                   // columnSpacing={5}

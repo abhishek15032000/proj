@@ -666,3 +666,43 @@ export const availableFilters: any = {
     'BioCarbon Registry',
   ],
 }
+
+export const TRACEABILITY_TAB_NAMES = {
+  CREATE_PROJECT: { type: 'createProject', tabName: 'Project Created' },
+  VERIFIER_REQUEST: {
+    type: 'verifierRequest',
+    tabName: 'Request sent to Potential Verifiers',
+  },
+  VERIFIER_ACCEPTED: {
+    type: 'verifierAccepted',
+    tabName: 'Verifier Accepted Project Request',
+  },
+  VERIFIER_ASSIGN: {
+    type: 'verifierAssign',
+    tabName: 'Verifier Finalised for the Project',
+  },
+  UPDATE_PROJECT_FINAL_PDF: {
+    type: 'updateProjectGenerateFinalPdf',
+    tabName: 'PDF generated for the Project',
+  },
+  PROJECT_VERIFIED: {
+    type: 'projectVerified',
+    tabName: 'Verifier verified the Project',
+  },
+  DEPLOY_TOKEN: { type: 'deployToken', tabName: 'Carbon Token Deployed' },
+  PROJECT_MINTED: {
+    type: 'projectMinted',
+    tabName: 'Carbon Tokens Minted for the Project',
+  },
+  REGISTRY_UPLOADS_REPORT: {
+    type: 'registry_uploads_report',
+    tabName: 'Registry Uploads Report',
+  },
+}
+
+export const IMAGE_SIZE_PREFIXES = {
+  THUMBNAIL: 'thumbnail-',
+  SMALL: 'small-',
+  LARGE: 'large-',
+  HD: 'hd-',
+}

@@ -35,6 +35,7 @@ import comments from './commentsSlice'
 import traceability from './traceabilitySlice'
 import newMarketplaceReducer from './newMarketplaceSlice'
 import marketPlaceFiltersDrawer from './marketPlaceFiltersDrawerSlice'
+import pdfPage from './pdfSlice'
 // TODO: rename names
 export default {
   app,
@@ -71,4 +72,5 @@ export default {
   traceability,
   newMarketplaceReducer,
   marketPlaceFiltersDrawer,
+  pdfPage,
 }

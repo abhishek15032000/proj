@@ -8,7 +8,7 @@ import CreateIcon from '@mui/icons-material/Create'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 // Functional Imports
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 
@@ -82,10 +82,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       dispatch(setCurrentProjectDetails(percentageAddedData))
 
       if (redirect === 'Details') {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO, {
-          state: {
-            status: projectDetails?.project_status,
-          },
+        navigate({
+          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+          search: `?${createSearchParams({
+            projectId: projectDetails?.uuid,
+          })}`,
         })
       } else if (redirect === 'Monthly') {
         dispatch(setSectionIndex(0))
@@ -244,9 +245,17 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   }, [props])
 
   return (
-    <Paper sx={{ p: 2, pt: 0.5, mt: 3, borderRadius: '8px' , 
-    minHeight:location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
-    }}>
+    <Paper
+      sx={{
+        p: 2,
+        pt: 0.5,
+        mt: 3,
+        borderRadius: '8px',
+        minHeight: location.pathname.includes(pathNames.PROJECTS)
+          ? '80vh'
+          : '55vh',
+      }}
+    >
       <TabSelector
         sx={{ mt: 2, mb: 2 }}
         tabArray={['New', 'Registered']}
@@ -254,7 +263,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         setTabIndex={setTabIndex}
       />
 
-      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={40} />}
+      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={16} />}
 
       {!props.loading &&
         ((tabIndex === 2 && Object.keys(rowsRegistered[0]).length > 0) ||

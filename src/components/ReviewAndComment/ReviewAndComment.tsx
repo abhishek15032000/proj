@@ -29,6 +29,7 @@ import { fileUploadCalls } from '../../api/fileUpload.api'
 import './index.css'
 import { KeyboardArrowLeft } from '@mui/icons-material'
 import { useComment } from '../../hooks/useComment'
+import PdfPage from '../../pages/PdfPage/PdfPage'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
@@ -60,7 +61,7 @@ const ReviewAndComment = () => {
 
   useEffect(() => {
     if (userType === ROLES.VERIFIER) {
-      setDataForViewer()
+      setDataForVerifier()
     } else {
       setDataForIssuer()
     }
@@ -74,17 +75,17 @@ const ReviewAndComment = () => {
     }
   }, [sectionIDs])
 
-  const setDataForViewer = () => {
+  const setDataForVerifier = () => {
     dispatch(setProject(project))
     dispatch(setProjectID(project?._id))
 
     dispatch(
       setSectionIDs([
-        project?.section_a,
-        project?.section_b,
-        project?.section_c,
-        project?.section_d,
-        project?.section_e,
+        project?.section_a?._id,
+        project?.section_b?._id,
+        project?.section_c?._id,
+        project?.section_d?._id,
+        project?.section_e?._id,
       ])
     )
     dispatch(setCommentFrom(user_id))
@@ -159,12 +160,12 @@ const ReviewAndComment = () => {
           flexDirection: 'column',
           height: '100%',
           background: '#F6F9F7',
-          px: 4,
+          pt: 1,
         }}
       >
         <Box
           sx={{
-            px: 2,
+            px: 6,
             py: 2,
             fontSize: 12,
             color: '#4A635E',
@@ -185,7 +186,16 @@ const ReviewAndComment = () => {
           <Box>{'>'}</Box>
           <Box sx={{ fontSize: 12, color: '#000000' }}> Review </Box>
         </Box>
-        <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            pl: 4,
+            pr: 2,
+            overflow: 'hidden',
+            boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+            // boxShadow: 8,
+          }}
+        >
           <Grid
             container
             sx={{
@@ -194,12 +204,17 @@ const ReviewAndComment = () => {
               px: showCommentSection ? 2 : 0,
               pb: 1,
             }}
+            columnSpacing={2}
           >
             <Grid
               item
               xs={12}
-              md={showCommentSection ? 7 : 12}
-              sx={{ height: '100%', backgroundColor: 'white' }}
+              md={showCommentSection ? 8 : 12}
+              sx={{
+                height: '100%',
+                backgroundColor: 'white',
+                py: 1,
+              }}
             >
               <Box
                 sx={{
@@ -218,7 +233,7 @@ const ReviewAndComment = () => {
                   }}
                 >
                   <KeyboardArrowLeft
-                    sx={{ ml: 1, cursor: 'pointer' }}
+                    sx={{ ml: 2, mr: 1, cursor: 'pointer' }}
                     onClick={() => navigate(-1)}
                   />
                   <Typography
@@ -262,7 +277,8 @@ const ReviewAndComment = () => {
                   ) : null}
                   <Box
                     sx={{
-                      ml: 2,
+                      ml: 4,
+                      pr: 3,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
@@ -281,7 +297,7 @@ const ReviewAndComment = () => {
                       Comments
                     </Typography>
                   </Box>
-                  <OpenInFullOutlinedIcon
+                  {/* <OpenInFullOutlinedIcon
                     sx={{
                       ml: 2,
                       color: '#006B5E',
@@ -291,10 +307,10 @@ const ReviewAndComment = () => {
                     onClick={() => {
                       setShowCommentSection(!showCommentSection)
                     }}
-                  />
+                  /> */}
                 </Box>
               </Box>
-              {pdfLoading ? (
+              {/* {pdfLoading ? (
                 <Box
                   sx={{
                     fontSize: '32',
@@ -308,11 +324,23 @@ const ReviewAndComment = () => {
                 >
                   Loading PDF...
                 </Box>
-              ) : null}
+              ) : null} */}
               {/* {!showCommentSection ? ( */}
 
-              <Box sx={{ height: '90%', width: '100%' }}>
-                {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null}
+              <Box
+                sx={{
+                  height: '90%',
+                  width: '100%',
+                  px: 9,
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                {project && <PdfPage data={project} />}
+                {/* {pdfURL ? <PDFViewer pdfUrl={pdfURL} /> : null} */}
               </Box>
               {/* ) : (
         <Grid container sx={{ background: '#DAE5E1', px: 2 }}>
@@ -335,7 +363,15 @@ const ReviewAndComment = () => {
       )} */}
             </Grid>
             {showCommentSection && (
-              <Grid item xs={12} md={5} sx={{ height: '100%', pt: 4 }}>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                sx={{
+                  height: '100%',
+                  pt: 4,
+                }}
+              >
                 <CommentBox
                   closeChatbox={() => {
                     setShowCommentSection(!showCommentSection)

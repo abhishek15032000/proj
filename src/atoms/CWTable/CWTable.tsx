@@ -92,7 +92,7 @@ const CWTable = (props: CWTableProps) => {
         component={Paper}
         sx={{ mt: 1, minWidth: 700, maxWidth: props.maxWidth, ...props.sx }}
       >
-        {props.loading && <CCTableSkeleton height={65} items={3} sx={onWebApp ? null : {filter: 'grayscale(1) brightness(0.1)'}}/>}
+        {props.loading && <CCTableSkeleton height={16} items={3} sx={onWebApp ? null : {filter: 'grayscale(1) brightness(0.1)'}}/>}
      { !props.loading && <>
        <Table
           sx={{ minWidth: 700, maxWidth: props.maxWidth, ...props.tableSx }}

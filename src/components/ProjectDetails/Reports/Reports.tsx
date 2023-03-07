@@ -11,8 +11,17 @@ import LoderOverlay from '../../LoderOverlay'
 import { getLocalItem } from '../../../utils/Storage'
 import CCTable from '../../../atoms/CCTable'
 import { downloadFile } from '../../../utils/commonFunctions'
+import CCTableSkeleton from '../../../atoms/CCTableSkeleton'
+import LimitedText from '../../../atoms/LimitedText/LimitedText'
 
-const headings = ['DATE', 'REPORT NAME', 'REPORT ISSUER', '']
+let headerIndex = 0
+
+const headings = [
+  <LimitedText key={headerIndex++} text="DATE" />,
+  <LimitedText key={headerIndex++} text="REPORT NAME" />,
+  <LimitedText key={headerIndex++} text="REPORT ISSUER" />,
+  '',
+]
 
 interface ReportTdProps {
   name: string
@@ -118,7 +127,7 @@ const Reports = (props: any) => {
     setLoading(true)
 
     verifierCalls
-      .getAllReportVerifiers(props?.projectUUID)
+      .getAllReportVerifiers(props?.uuid)
       .then((res: any) => {
         if (res?.data?.success) {
           const reports = res?.data?.data
@@ -126,25 +135,38 @@ const Reports = (props: any) => {
             reports &&
             reports.map((i: any, index: number) => {
               return [
-                <Typography
+                <LimitedText
                   key={index}
-                  textAlign="start"
-                  sx={{
+                  customStyle={{
                     fontSize: 15,
                     fontWeight: 500,
-                    textAlign: 'center',
+                  }}
+                  text={moment(i?.createdAt).format(`DD/MM/YY`)}
+                />,
+                <Typography
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
                   }}
                 >
-                  {moment(i?.createdAt).format(`DD/MM/YY`)}
+                  <ReportTd
+                    key="Verification Report 1"
+                    name={i?.file_attach[0]?.replace('.png', '')}
+                  />
                 </Typography>,
-                <ReportTd
-                  key="Verification Report 1"
-                  name={i?.file_attach[0]?.replace('.png', '')}
-                />,
-                <ReportIssuerTd
-                  key="Issuer Name 1"
-                  name={i?.issuer_details?.name}
-                />,
+                <Typography
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                  }}
+                >
+                  <ReportIssuerTd
+                    key="Issuer Name 1"
+                    name={i?.issuer_details?.name}
+                  />
+                </Typography>,
                 <Box
                   key={1}
                   sx={{
@@ -163,25 +185,38 @@ const Reports = (props: any) => {
 
           const regsitrationReportRow = [
             [
-              <Typography
+              <LimitedText
                 key={1}
-                textAlign="start"
-                sx={{
+                customStyle={{
                   fontSize: 15,
                   fontWeight: 500,
-                  textAlign: 'center',
+                }}
+                text={moment(reports[0]?.createdAt).format(`DD/MM/YY`)}
+              />,
+              <Typography
+                key="Verification Report 1"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
                 }}
               >
-                {moment(reports[0]?.createdAt).format(`DD/MM/YY`)}
+                <ReportTd
+                  key="Verification Report 1"
+                  name={'Registration Report'}
+                />
               </Typography>,
-              <ReportTd
-                key="Verification Report 1"
-                name={'Registration Report'}
-              />,
-              <ReportIssuerTd
+              <Typography
                 key="Issuer Name 1"
-                name={reports[0].issuer_details?.name}
-              />,
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                <ReportIssuerTd
+                  key="Issuer Name 1"
+                  name={reports[0].issuer_details?.name}
+                />
+              </Typography>,
               <Box
                 key={1}
                 sx={{
@@ -212,24 +247,25 @@ const Reports = (props: any) => {
         setLoading(false)
       })
   }
-  if (loading) {
-    return <LoderOverlay />
-  } else {
-    return (
-      <Box
-        sx={{
-          // background: '#111E17',
-          // padding: '2vw 6vw',
-          // color: '#fff',
-          width: '100%',
-          pt: 5,
-        }}
-      >
-        {/* <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
+
+  return (
+    <Box
+      sx={{
+        // background: '#111E17',
+        // padding: '2vw 6vw',
+        // color: '#fff',
+        width: '100%',
+        pt: 5,
+      }}
+    >
+      {/* <Typography sx={{ fontSize: '32px', color: 'headingColor.main' }}>
           Reports
         </Typography> */}
-        <Box sx={{}}>
-          {/* <CWTable */}
+      <Box sx={{}}>
+        {/* <CWTable */}
+        {loading ? (
+          <CCTableSkeleton items={3} />
+        ) : (
           <CCTable
             headings={headings}
             rows={allReport}
@@ -237,10 +273,10 @@ const Reports = (props: any) => {
             loading={loading}
             rowsPerPageProp={3}
           />
-        </Box>
+        )}
       </Box>
-    )
-  }
+    </Box>
+  )
 }
 
 export default Reports

@@ -18,6 +18,8 @@ import LoderOverlay from '../LoderOverlay'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
 import { ArrowOutward } from '@mui/icons-material'
+import CCFileViewer from '../../atoms/CCFileViewer/CCFileViewer'
+import PdfPage from '../../pages/PdfPage/PdfPage'
 declare let window: any
 
 const pdfLoading = false
@@ -147,6 +149,7 @@ const RegistryReviewReport = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           px: 4,
+          pt: 1,
         }}
       >
         <Box
@@ -178,7 +181,7 @@ const RegistryReviewReport = () => {
             Project Details
           </Box>
           <Box>{'>'}</Box>
-          <Box sx={{ fontSize: 12, color: '#000000' }}>Review Report </Box>
+          <Box sx={{ fontSize: 12, color: '#000000' }}>Review </Box>
         </Box>
         {/* <Box sx={{ ml: 4, py: 2, display: 'flex' }}>
           <Box sx={{ fontSize: 12, color: '#4A635E' }}>
@@ -191,7 +194,7 @@ const RegistryReviewReport = () => {
         <Box>
           <CCButton
             onClick={sumbitReport}
-            buttonBackgroundColor={Colors.darkPrimary1}
+            buttonBackgroundColor={'#006B5E'}
             buttonColor="white"
             sx={{
               px: 3,
@@ -219,11 +222,11 @@ const RegistryReviewReport = () => {
             height: '100%',
             // alignItems: 'stretch',
             overflow: 'hidden',
-            py: 2,
+            pb: 2,
             px: 4,
-            pt: 1,
+            // pt: 1,
           }}
-          columnSpacing={2}
+          columnSpacing={3}
         >
           {loading ? <LoderOverlay /> : null}
 
@@ -298,11 +301,22 @@ const RegistryReviewReport = () => {
 
               {/* <Divider /> */}
 
-              {pdfURL ? (
+              <Box
+                sx={{
+                  height: '86%',
+                  px: 4,
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                }}
+              >
+                <PdfPage data={location.state?.projectReportDetails} />
+              </Box>
+
+              {/* {pdfURL ? (
                 <Box sx={{ height: '86%', px: 4 }}>
                   <PDFViewer pdfUrl={pdfURL} />
                 </Box>
-              ) : null}
+              ) : null} */}
             </Paper>
           </Grid>
           <Grid
@@ -464,7 +478,7 @@ const RegistryReviewReport = () => {
 
                 <Box sx={{ mt: 1, py: 2, pl: 3, pr: 1 }}>
                   <Typography
-                    sx={{ color: '#1D4B44', fontSize: 14, fontWeight: 500 }}
+                    sx={{ color: '#1D4B44', fontSize: 16, fontWeight: 500 }}
                   >
                     Other project details
                   </Typography>
@@ -482,14 +496,14 @@ const RegistryReviewReport = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Box sx={{ fontSize: '14px' }}>
+                      <Box sx={{ fontSize: '14px', color: 'black', pl: 1 }}>
                         {moment(reportData?.report?.createdAt).format(
                           'DD/MM/YYYY'
                         )}
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid container sx={{ mt: 1 }}>
+                  <Grid container sx={{ marginTop: '11px' }}>
                     <Grid item xs={5}>
                       <Typography
                         sx={{
@@ -502,14 +516,14 @@ const RegistryReviewReport = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Box sx={{ fontSize: '14px' }}>
+                      <Box sx={{ fontSize: '14px', color: 'black', pl: 1 }}>
                         {moment(reportData?.report?.next_date).format(
                           'DD/MM/YYYY'
                         )}
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid container sx={{ mt: 1 }}>
+                  <Grid container sx={{ marginTop: '11px' }}>
                     <Grid item xs={5}>
                       <Typography
                         sx={{
@@ -522,7 +536,7 @@ const RegistryReviewReport = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={7}>
-                      <Box sx={{ fontSize: '14px' }}>
+                      <Box sx={{ fontSize: '14px', color: 'black', pl: 1 }}>
                         Project Issuance Report
                       </Box>
                     </Grid>
@@ -531,22 +545,32 @@ const RegistryReviewReport = () => {
 
                 <Box sx={{ pb: 2, pl: 3, pr: 1 }}>
                   <Typography
-                    sx={{ fontSize: 14, fontWeight: 500, color: '#1D4B44' }}
+                    sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}
                   >
                     Relevant Docs{' '}
                   </Typography>
-                  <Box>
+                  <Box
+                    sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}
+                  >
                     {reportData?.report?.file_attach &&
                     reportData?.report?.file_attach.length
                       ? reportData?.report?.file_attach?.map(
                           (doc: any, index: number) => (
-                            <FileDetails key={index} doc={doc} />
+                            <CCFileViewer
+                              key={index}
+                              title={doc}
+                              index={index}
+                              // deleteImage={deleteImage}
+                              fileSize={0}
+                            />
+
+                            // <FileDetails key={index} doc={doc} />
                           )
                         )
                       : '-'}
                   </Box>
                 </Box>
-
+                {/* 
                 <Box sx={{ py: 2, pl: 3, pr: 1 }}>
                   <Typography
                     sx={{ fontSize: 14, fontWeight: 500, color: '#1D4B44' }}
@@ -554,17 +578,17 @@ const RegistryReviewReport = () => {
                     Photos/Videos Added{' '}
                   </Typography>
                   <Box>
-                    {/* {docs?.map((doc: any, index: number) => (
+                    {docs?.map((doc: any, index: number) => (
                   <FileDetails key={index} doc={doc} />
-                ))} */}
+                ))}
                     -
                   </Box>
-                </Box>
+                </Box> */}
 
                 <Box sx={{ py: 2, pl: 3, pr: 1 }}>
                   <Typography
                     sx={{
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: 500,
                       color: '#1D4B44',
                       // mt: 4,

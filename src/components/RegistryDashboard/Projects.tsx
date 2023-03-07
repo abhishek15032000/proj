@@ -28,7 +28,7 @@ const Projects = () => {
         }}
       >
         <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
-        {location.pathname.includes(pathNames.PROJECTS) ? null : (
+        {/* {location.pathname.includes(pathNames.PROJECTS) ? null : (
           <Typography
             sx={{
               color: 'darkPrimary1.main',
@@ -40,7 +40,7 @@ const Projects = () => {
           >
             See All
           </Typography>
-        )}
+        )} */}
       </Box>
 
       <TabSelectorWithCount

@@ -10,7 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { ethers } from 'ethers'
 import moment from 'moment'
 import { shallowEqual } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { USER } from '../../api/user.api'
 import { verifierCalls } from '../../api/verifierCalls.api'
@@ -35,6 +35,7 @@ import { getLocalItem } from '../../utils/Storage'
 import { VerifierVerifyReportProps } from './VerifierVerifyReport.interface'
 import CCButton from '../../atoms/CCButton'
 import { ArrowOutward } from '@mui/icons-material'
+import PdfPage from '../../pages/PdfPage/PdfPage'
 
 declare let window: any
 
@@ -102,9 +103,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
     setHeight2(ref.current.clientHeight)
     // }
   })
-
-  console.log('height', height)
-  console.log('height2', height2)
 
   useEffect(() => {
     !selectMonth ||
@@ -235,7 +233,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       lifetime_carbon_tokens: Number(lifeTimeQuantity),
       // signature_hash: signatureHash,
       // signer: accountAddress,
-      file_attach: stringExtractor(relevantDocs, 'fileName'),
+      // file_attach: stringExtractor(relevantDocs, 'fileName'),
+      file_attach: relevantDocs,
       // nonce: pseudoNonce,
     }
     try {
@@ -256,8 +255,6 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       setLoading(false)
     }
   }
-
-  console.log(pdfURL)
 
   return (
     <Box
@@ -298,12 +295,20 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
           <Box
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                state: {
-                  project_uuid: project?.uuid,
-                  projectDetails: project,
+              navigate(
+                {
+                  pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                  search: `?${createSearchParams({
+                    projectId: project?.uuid,
+                  })}`,
                 },
-              })
+                {
+                  state: {
+                    project_uuid: project?.uuid,
+                    projectDetails: project,
+                  },
+                }
+              )
             }}
           >
             Project Details
@@ -388,12 +393,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                       color: Colors.tertiary,
                     }}
                     onClick={() => {
-                      navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                        state: {
-                          project_uuid: project?.uuid,
-                          projectDetails: project,
-                        },
-                      })
+                      navigate(-1)
                     }}
                   />
                   <Box
@@ -422,7 +422,12 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                 </Box>
 
                 <Divider />
-                {pdfLoading ? (
+                <Box
+                  sx={{ height: '86%', overflowY: 'auto', overflowX: 'hidden' }}
+                >
+                  <PdfPage data={location?.state?.project} />
+                </Box>
+                {/* {pdfLoading ? (
                   <Box
                     sx={{
                       height: '100%',
@@ -439,7 +444,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                       <PDFViewer pdfUrl={pdfURL} />
                     </Box>
                   )
-                )}
+                )} */}
               </Paper>
             </Box>
           </Grid>
@@ -668,7 +673,8 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
                     mediaItem={[]}
                     imageArray={relevantDocs}
                     onImageUpload={(item: any) => {
-                      setRelevantDocs([item, ...relevantDocs])
+                      // setRelevantDocs([item, ...relevantDocs])
+                      setRelevantDocs(item)
                     }}
                     onDeleteImage={(index: number) => {
                       setRelevantDocs(deleteIndexInArray(relevantDocs, index))

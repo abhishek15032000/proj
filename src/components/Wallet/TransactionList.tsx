@@ -32,18 +32,20 @@ import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { updateWalletBalance } from '../../utils/commonAPI.utils'
+import LimitedText from '../../atoms/LimitedText/LimitedText'
 
 interface TransactionListProps {
   tableData?: any
   lastUpdatedAt?: string
 }
+let index = 0
 const headings = [
-  'Company Name',
-  'Symbol',
-  'Retirebale',
-  'In exchange',
-  'In order',
-  'Address',
+  <LimitedText key={index++} text="Project Name" />,
+  <LimitedText key={index++} text="Symbol" />,
+  <LimitedText key={index++} text="Retirebale" />,
+  <LimitedText key={index++} text="In exchange" />,
+  <LimitedText key={index++} text="In order" />,
+  <LimitedText key={index++} text="Address" />,
 ]
 const TransactionList: FC<TransactionListProps> = (props) => {
   const { tableData, lastUpdatedAt } = props
@@ -74,6 +76,7 @@ const TransactionList: FC<TransactionListProps> = (props) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+
             }}
           >
             <Typography
@@ -92,10 +95,11 @@ const TransactionList: FC<TransactionListProps> = (props) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexWrap:"no-wrap",
                 gap: '4px',
               }}
             >
-              <Box sx={{ color: Colors.darkPrimary1 }}>
+              <Box sx={{ color: Colors.darkPrimary1,display:"flex" }}>
                 <Typography sx={{ fontSize: 12, fontWeight: 600 }}>
                   Last updated at :
                 </Typography>
@@ -114,12 +118,12 @@ const TransactionList: FC<TransactionListProps> = (props) => {
             </Box>
           </Box>
           <Grid
-            container
+            // container
             sx={{
-              display: 'flex',
-              flexDirection: 'row',
+              // display: 'flex',
+              // flexDirection: 'row',
 
-              mt: 1,
+              mt: 2,
             }}
           >
             {/* <TableContainer sx={{ pl: 2, pb: 2, pt: 2, mr: 3, ml: 1 }}>
@@ -174,7 +178,7 @@ const TransactionList: FC<TransactionListProps> = (props) => {
                 </TableBody>
               </Table>
             </TableContainer> */}
-            <CCTable headings={headings} rows={tableData} />
+            <CCTable headings={headings} rows={tableData} hideScrollbar/>
           </Grid>
         </Box>
       </Paper>

@@ -127,7 +127,7 @@ const SliderComponent = (props: any) => {
                     alignItems: 'start',
                     borderRadius: '24px',
                     boxShadow: '0px 2px 8px rgba(45, 95, 87, 0.2)',
-
+                    backgroundSize:"cover",
                     marginLeft: '-30px',
                   }}
                 ></Box>

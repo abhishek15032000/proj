@@ -96,7 +96,7 @@ const SectionE8 = () => {
               dispatch(
                 setE8({
                   name: 'appendices_supporting_documents_upload',
-                  value: [...appendices_supporting_documents_upload, item],
+                  value: item,
                 })
               )
             }}
