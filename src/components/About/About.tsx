@@ -28,6 +28,8 @@ import ProjectIntro from '../ProjectDetails/Skeleton/ProjectIntro'
 import SDGSComponent from '../ProjectDetails/Skeleton/SDGSComponent'
 import AdditionalDetailsSkeleton from '../ProjectDetails/Skeleton/AdditionalDetailsSkeleton'
 import { SDGSLIST } from '../../config/constants.config'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lightPrimary?: string
@@ -160,14 +162,14 @@ const About: FC<AboutProps> = (props) => {
 
   const getProjectDetails = (projectId: any) => {
     setLoading(true)
-    projectDetailsCalls
-      .getProjectDetailsById(projectId)
-      .then((result: any) => setProjectData(result.data))
+    dataCollectionCalls
+      .getProjectById(projectId)
+      .then((result: any) => {
+        setProjectData(result.data)
+      })
       .catch((e: any) => e)
       .finally(() => setLoading(false))
   }
-
-  const projectDetailsData: any = useLocation()
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const darkTheme = {
@@ -220,6 +222,7 @@ const About: FC<AboutProps> = (props) => {
       </Grid>
     )
   }
+
   const viewRenderer = () => {
     return (
       <>
@@ -250,15 +253,14 @@ const About: FC<AboutProps> = (props) => {
                     ) : (
                       <AdditionalDetails
                         projectData={projectData}
-                        projectDetailsData={projectDetailsData?.state}
+                        projectDetailsData={projectData}
                       />
                     )}
                   </Grid>
                   <Grid item xs={12} lg={5}>
                     {loading ? (
                       <SDGSComponent />
-                    ) : currentProjectDetails &&
-                      currentProjectDetails?.project_status > 0 ? (
+                    ) : projectData && projectData?.project_status > 0 ? (
                       <Grid
                         container
                         sx={{
@@ -307,10 +309,7 @@ const About: FC<AboutProps> = (props) => {
                               justifyContent: 'flex-start',
                               pr: 2,
                               pl: 3,
-                              pb:
-                                currentProjectDetails?.project_status >= 6
-                                  ? 5
-                                  : 0,
+                              pb: projectData?.project_status >= 6 ? 5 : 0,
                             }}
                           >
                             {SGGSData &&
@@ -362,14 +361,14 @@ const About: FC<AboutProps> = (props) => {
                               ))}
                           </Grid>
                         </Grid>
-                        {currentProjectDetails?.project_status >= 8 ? (
+                        {projectData?.project_status >= 8 ? (
                           <Grid
                             item
                             justifyContent={'start'}
                             alignItems={'start'}
                             display="flex"
                             flexDirection="column"
-                            sx={{ mt: 6, width: '50%', ml: 2 }}
+                            sx={{ mt: 2, width: '50%', ml: 2 }}
                           >
                             <Typography
                               sx={{
@@ -429,9 +428,10 @@ const ProjectIntroDescription = ({ projectData }: { projectData: any }) => {
   const [seeMore, setSeeMore] = useState(false)
 
   const dataForDisplay = seeMore
-    ? projectData?.description?.general_description
-    : projectData?.description?.general_description &&
-      projectData?.description?.general_description.slice(0, 480)
+    ? projectData?.section_a?.step1?.purpose_and_description
+    : projectData?.section_a?.step1?.purpose_and_description &&
+      projectData?.section_a?.step1?.purpose_and_description.slice(0, 480)
+
   return (
     <>
       <Typography
