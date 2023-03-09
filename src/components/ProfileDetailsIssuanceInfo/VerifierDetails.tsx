@@ -1,6 +1,6 @@
 import { Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import LanguageIcon from '@mui/icons-material/Language'
 import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
@@ -10,28 +10,12 @@ import { USER } from '../../api/user.api'
 import Spinner from '../../atoms/Spinner'
 
 interface VerifierDetailsProps {
-  verifierId: string
+  verifierDetails: any
+  //verifierId: string
 }
 
-const VerifierDetails = ({ verifierId }: VerifierDetailsProps) => {
-  const [verifierDetails, setVerifierDetails] = useState<any | null>(null)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    getVerifierDetails(verifierId)
-  }, [])
-
-  const getVerifierDetails = async (verifierId: string) => {
-    setLoading(true)
-    try {
-      const userResponse = await USER.getUsersById(verifierId)
-      setVerifierDetails(userResponse?.data)
-    } catch (err) {
-      console.log('Error in USER.getUsersById api :', err)
-    } finally {
-      setLoading(false)
-    }
-  }
+const VerifierDetails = ({ verifierDetails }: VerifierDetailsProps) => {
+  //const [verifierDetails, setVerifierDetails] = useState<any | null>(null)
 
   return (
     <>
@@ -45,7 +29,7 @@ const VerifierDetails = ({ verifierId }: VerifierDetailsProps) => {
           borderRadius: 2,
         }}
       >
-        {loading ? (
+        {/*{loading ? (
           <Box
             sx={{
               minHeight: 100,
@@ -56,59 +40,59 @@ const VerifierDetails = ({ verifierId }: VerifierDetailsProps) => {
           >
             <Spinner />
           </Box>
-        ) : (
-          <>
-            <Box sx={{ display: 'flex' }}>
-              <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-              <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                {verifierDetails?.address}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', mt: 1 }}>
-              <LanguageIcon
-                sx={{
-                  color: '#006B5E',
-                  mr: 1,
-                }}
-              />
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: '#25BBD2',
-                  textDecoration: 'underline',
-                }}
-              >
-                {verifierDetails?.website}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', mt: 1 }}>
-              <PermIdentityOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-              <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                {verifierDetails?.fullName}, {verifierDetails?.designation}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', mt: 1 }}>
-              <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
-              <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                {verifierDetails?.phone}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', mt: 1 }}>
-              <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: '#25BBD2',
-                  textDecoration: 'underline',
-                }}
-              >
-                {verifierDetails?.email}
-              </Typography>
-            </Box>
-          </>
-        )}
+        ) : (*/}
+        <>
+          <Box sx={{ display: 'flex' }}>
+            <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
+            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+              {verifierDetails?.address}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', mt: 1 }}>
+            <LanguageIcon
+              sx={{
+                color: '#006B5E',
+                mr: 1,
+              }}
+            />
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                color: '#25BBD2',
+                textDecoration: 'underline',
+              }}
+            >
+              {verifierDetails?.website}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', mt: 1 }}>
+            <PermIdentityOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
+            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+              {verifierDetails?.fullName}, {verifierDetails?.designation}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', mt: 1 }}>
+            <PhoneInTalkOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
+            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+              {verifierDetails?.phone}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', mt: 1 }}>
+            <MailOutlineIcon sx={{ color: '#006B5E', mr: 1 }} />
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                color: '#25BBD2',
+                textDecoration: 'underline',
+              }}
+            >
+              {verifierDetails?.email}
+            </Typography>
+          </Box>
+        </>
+        {/*)}*/}
       </Paper>
     </>
   )
