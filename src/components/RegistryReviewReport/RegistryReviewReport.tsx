@@ -645,7 +645,7 @@ const RegistryReviewReport = () => {
         }}
       >
         <>
-          <Box
+          {/*<Box
             sx={{ position: 'absolute', top: 50, right: 50 }}
             onClick={() => console.log('click')}
           >
@@ -655,7 +655,7 @@ const RegistryReviewReport = () => {
               }}
               sx={{ color: '#FFFFFF', fontSize: 30, cursor: 'pointer' }}
             />
-          </Box>
+          </Box>*/}
           <Paper
             sx={{
               px: 9,
