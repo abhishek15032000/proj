@@ -57,10 +57,10 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
       const data = project
       fileUploadCalls
         .getFile(IMAGE_SIZE_PREFIXES.THUMBNAIL + data?.banner_image[0])
-        .then((res) => setBannerImage(URL.createObjectURL(res)))
+        .then((res) => {
+          setBannerImage(URL.createObjectURL(res))})
     }
   }, [project])
-
   const onClickHandler = () => {
     window.scrollTo(0, 0)
     navigate(

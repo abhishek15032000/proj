@@ -2,23 +2,28 @@ import { Box } from '@mui/system'
 import moment from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
-import { dataCollectionCalls } from '../../api/dataCollectionCalls'
-import { department } from '../../api/department.api'
-import { registryCalls } from '../../api/registry.api'
+
 import CCButton from '../../atoms/CCButton'
 import CCTable from '../../atoms/CCTable'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import StatusChips from '../../atoms/StatusChips/StatusChips'
-import { ROLES } from '../../config/constants.config'
-import { useAppDispatch } from '../../hooks/reduxHooks'
+
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { setRegistryProjectDetails } from '../../redux/Slices/registrySlice'
-import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+
 import { pathNames } from '../../routes/pathNames'
-import { Colors, Images } from '../../theme'
+
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { Typography } from '@mui/material'
+
 import LimitedText from '../../atoms/LimitedText/LimitedText'
-import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+
+import { shallowEqual } from 'react-redux'
+import {
+  setRegistryNewProjects,
+  setRegistryReviewedProjects,
+} from '../../redux/Slices/Dashboard/dashboardSlice'
+import NoData from '../../atoms/NoData/NoData'
+import TabSelector from '../../atoms/TabSelector/TabSelector'
 
 let index = 0
 const headings: any = [
@@ -32,160 +37,178 @@ const headings: any = [
 ]
 
 interface ProjectTableProps {
-  tabIndex: number
+  loading: boolean
 }
 
-const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
+const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const [newProjects, setNewProjects] = useState<any>([])
-  const [underReviewProjects, setUnderReviewProjects] = useState<any>([])
-  const [reviewedProjects, setReviewedProjects] = useState<any>([])
-  const [loading, setLoading] = useState<boolean>(false)
-  const [rows, setRows] = useState<any>(null)
+
+  const cachedRegistryNewTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedRegistryNewTabAllProjects,
+    shallowEqual
+  )
+
+  const cachedRegistryReviewedTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedRegistryReviewedTabAllProjects,
+    shallowEqual
+  )
+
+  const registryNewProjects = useAppSelector(
+    ({ dashboard }) => dashboard.registryNewProjects,
+    shallowEqual
+  )
+
+  const registryReviewedProjects = useAppSelector(
+    ({ dashboard }) => dashboard.registryReviewedProjects,
+    shallowEqual
+  )
+
+  const [tabIndex, setTabIndex] = useState(1)
 
   useEffect(() => {
-    getAllProjects()
-  }, [])
+    const newData: any = []
 
-  useEffect(() => {
-    let temp: any = []
-    if (
-      newProjects.length ||
-      underReviewProjects.length ||
-      reviewedProjects.length
-    )
-      if (tabIndex === 1) {
-        temp = [...newProjects]
-      } else if (tabIndex === 2) {
-        temp = [...underReviewProjects]
-      } else if (tabIndex === 3) {
-        temp = [...reviewedProjects]
-      }
-    if (location?.pathname === pathNames.DASHBOARD) {
-      setRows(temp.slice(0, 7))
+    cachedRegistryNewTabAllProjects &&
+      cachedRegistryNewTabAllProjects.length &&
+      cachedRegistryNewTabAllProjects.map((project: any, index: any) => {
+        newData.push([
+          <LimitedText
+            key={index}
+            text={moment(project.createdAt).format('l')}
+          />,
+          project?.report?.createdAt ? (
+            <LimitedText
+              key={index}
+              text={moment(project.createdAt).format('l')}
+            />
+          ) : (
+            '-'
+          ),
+
+          <LimitedText key={index} text={project?.name} />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => onClickStartHandler(project)}
+          >
+            <LimitedText
+              key={index}
+              text={project?.company_name}
+              widthLimit="200px"
+            />
+          </Box>,
+          project?.report?.next_date ? (
+            <LimitedText
+              key={index}
+              text={moment(project?.report?.next_date).format('l')}
+            />
+          ) : (
+            '-'
+          ),
+          renderStatusChips(project?.project_status),
+          project?.project_status === 8 ? (
+            <ChevronRightIcon onClick={() => onClickStartHandler(project)} />
+          ) : (
+            <CCButton
+              key={index}
+              sx={{
+                background: '#006B5E',
+                color: '#FFFFFF',
+                borderRadius: '32px',
+                fontSize: 14,
+                px: 3,
+                py: 1,
+                minWidth: 0,
+                whiteSpace: 'nowrap',
+              }}
+              onClick={() => onClickStartHandler(project)}
+            >
+              Start review
+            </CCButton>
+          ),
+        ])
+      })
+
+    if (newData.length !== 0) {
+      dispatch(setRegistryNewProjects(newData))
     } else {
-      setRows(temp)
+      dispatch(setRegistryNewProjects(null))
     }
-  }, [tabIndex, newProjects, underReviewProjects, reviewedProjects])
+  }, [cachedRegistryNewTabAllProjects])
 
-  const getAllProjects = async () => {
-    try {
-      setLoading(true)
-      const projectRes = await dataCollectionCalls.getAllProjects()
-      if (projectRes.data.success) {
-        const projects = projectRes.data.data
+  useEffect(() => {
+    const reviewedData: any = []
 
-        const tempNewProjects: any = []
-        const tempUnderReviewProjects: any = []
-        const tempReviewedProjects: any = []
+    cachedRegistryReviewedTabAllProjects &&
+      cachedRegistryReviewedTabAllProjects.length &&
+      cachedRegistryReviewedTabAllProjects.map((project: any, index: any) => {
+        reviewedData.push([
+          <LimitedText
+            key={index}
+            text={moment(project.createdAt).format('l')}
+          />,
+          project?.report?.createdAt ? (
+            <LimitedText
+              key={index}
+              text={moment(project.createdAt).format('l')}
+            />
+          ) : (
+            '-'
+          ),
 
-        if (projects && projects.length) {
-          projectRes.data.data.forEach((project: any, index: number) => {
-            const row = [
-              <LimitedText
-                key={index}
-                text={moment(project.createdAt).format('l')}
-              />,
-              project?.report?.createdAt ? (
-                <LimitedText
-                  key={index}
-                  text={moment(project.createdAt).format('l')}
-                />
-              ) : (
-                '-'
-              ),
-              // <Box
-              //   key={index}
-              //   sx={{
-              //     display: 'flex',
-              //     alignItems: 'center',
-              //     justifyContent: 'center',
-              //   }}
-              // >
-              //   <Box
-              //     sx={{
-              //       background: '#F0FFFB',
-              //       height: '40px',
-              //       width: '40px',
-              //       borderRadius: '50%',
-              //       display: 'flex',
-              //       alignItems: 'center',
-              //       justifyContent: 'center',
-              //       mr: 1,
-              //     }}
-              //   >
-              //     <img src={Images.BriefcaseIcon} height="24px" width="24px" />{' '}
-              //   </Box>
-              //   <Box>Project Developer</Box>
-              // </Box>,
-              <LimitedText key={index} text={project?.name} />,
-              <Box
-                key={index}
-                className="td-as-link"
-                onClick={() => onClickStartHandler(project)}
-              >
-                <LimitedText
-                  key={index}
-                  text={project?.company_name}
-                  widthLimit="200px"
-                />
-              </Box>,
-              project?.report?.next_date ? (
-                <LimitedText
-                  key={index}
-                  text={moment(project?.report?.next_date).format('l')}
-                />
-              ) : (
-                '-'
-              ),
-              renderStatusChips(project?.project_status),
-              project?.project_status === 8 ? (
-                <ChevronRightIcon
-                  onClick={() => onClickStartHandler(project)}
-                />
-              ) : (
-                <CCButton
-                  key={index}
-                  sx={{
-                    background: '#006B5E',
-                    color: '#FFFFFF',
-                    borderRadius: '32px',
-                    fontSize: 14,
-                    px: 3,
-                    py: 1,
-                    minWidth: 0,
-                    whiteSpace: 'nowrap',
-                  }}
-                  onClick={() => onClickStartHandler(project)}
-                >
-                  Start review
-                </CCButton>
-              ),
-            ]
-            if (
-              project?.project_status ===
-              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
-            ) {
-              tempNewProjects.push(row)
-            } else if (project?.project_status === 7) {
-              tempUnderReviewProjects.push(row)
-            } else if (project?.project_status === 8) {
-              tempReviewedProjects.push(row)
-            }
-            setNewProjects(tempNewProjects)
-            setUnderReviewProjects(tempUnderReviewProjects)
-            setReviewedProjects(tempReviewedProjects)
-          })
-        }
-      }
-    } catch (e) {
-      console.log('Error in dataCollectionCalls.getAllProjects api ~ ', e)
-    } finally {
-      setLoading(false)
+          <LimitedText key={index} text={project?.name} />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => onClickStartHandler(project)}
+          >
+            <LimitedText
+              key={index}
+              text={project?.company_name}
+              widthLimit="200px"
+            />
+          </Box>,
+          project?.report?.next_date ? (
+            <LimitedText
+              key={index}
+              text={moment(project?.report?.next_date).format('l')}
+            />
+          ) : (
+            '-'
+          ),
+          renderStatusChips(project?.project_status),
+          project?.project_status === 8 ? (
+            <ChevronRightIcon onClick={() => onClickStartHandler(project)} />
+          ) : (
+            <CCButton
+              key={index}
+              sx={{
+                background: '#006B5E',
+                color: '#FFFFFF',
+                borderRadius: '32px',
+                fontSize: 14,
+                px: 3,
+                py: 1,
+                minWidth: 0,
+                whiteSpace: 'nowrap',
+              }}
+              onClick={() => onClickStartHandler(project)}
+            >
+              Start review
+            </CCButton>
+          ),
+        ])
+      })
+
+    if (reviewedData.length !== 0) {
+      dispatch(setRegistryReviewedProjects(reviewedData))
+    } else {
+      dispatch(setRegistryReviewedProjects(null))
     }
-  }
+  }, [cachedRegistryReviewedTabAllProjects])
+
   const renderStatusChips = (status: number) => {
     switch (status) {
       case 6: {
@@ -233,31 +256,47 @@ const ProjectTable: FC<ProjectTableProps> = ({ tabIndex }) => {
 
   return (
     <>
+      <TabSelector
+        tabArray={['New', 'Verification', 'Registered']}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        sx={{ marginBottom: 2 }}
+      />
+
       {loading ? (
-        <CCTableSkeleton height={16} isPagination={true} items={5} />
-      ) : rows && rows?.length <= 0 ? (
-        <Box
-          sx={{
-            color: Colors.darkPrimary1,
-            fontWeight: 500,
-            fontSize: 16,
-            justifyContent: 'center',
-            display: 'flex',
-          }}
-        >
-          <EmptyComponent
-            photoType={1}
-            sx={{ width: '100%', height: '280px', mt: 0 }}
-            elevation={0}
-            title="No projects under this tab"
+        <CCTableSkeleton sx={{ mt: 2 }} items={5} />
+      ) : tabIndex === 1 ? (
+        registryNewProjects && registryNewProjects.length ? (
+          <CCTable
+            headings={headings}
+            rows={registryNewProjects}
+            sx={{ minWidth: 100 }}
+            maxWidth={'100%'}
+            tableSx={{ minWidth: 100 }}
+            hideScrollbar
+            pagination
+            rowsPerPageProp={5}
+            stickyLastCol
+            stickySecondLastCol
           />
-        </Box>
-      ) : (
+        ) : (
+          <NoData title="No new projects available" />
+        )
+      ) : registryReviewedProjects && registryReviewedProjects.length ? (
         <CCTable
           headings={headings}
-          rows={rows}
+          rows={registryReviewedProjects}
+          sx={{ minWidth: 100 }}
+          maxWidth={'100%'}
+          tableSx={{ minWidth: 100 }}
+          hideScrollbar
           pagination
+          rowsPerPageProp={5}
+          stickyLastCol
+          stickySecondLastCol
         />
+      ) : (
+        <NoData title="No reviewed projects available" />
       )}
     </>
   )

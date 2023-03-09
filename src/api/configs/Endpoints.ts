@@ -41,6 +41,7 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/project/getProjectDetails',
     getVerifiedProjects:
       ENDPOINTS.carbonServiceURL + '/project/getVerifiedProjects',
+    getAllProjectsTab: ENDPOINTS.carbonServiceURL + '/project/getProjects',
   },
   projectSections: {
     updateProjectSectionA:
