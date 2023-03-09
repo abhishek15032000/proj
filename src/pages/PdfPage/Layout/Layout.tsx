@@ -5,7 +5,13 @@ import FooterImage from '../../../assets/Images/illustrations/Footer.svg'
 import { Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
-import { setPageIndexes } from '../../../redux/Slices/pdfSlice'
+import {
+  setSectionA,
+  setSectionB,
+  setSectionC,
+  setSectionD,
+  setSectionE,
+} from '../../../redux/Slices/pdfSlice'
 
 interface LayoutProps {
   title?: string | number
@@ -13,52 +19,76 @@ interface LayoutProps {
   page?: number
   children: any
   child_ref?: any
+  parent_ref_value?: number
   parent_ref?: any
   marginTop?: number
   page_dynamic?: boolean
-  index?: number
+  page_index?: number
 }
 let instancesCount = 0
+// let count = 0
 
-const Layout: FC<LayoutProps> = (props) => {
+const Layout: FC<LayoutProps> = ({
+  title,
+  heading,
+  page,
+  children,
+  child_ref,
+  parent_ref,
+  parent_ref_value,
+  marginTop,
+  page_dynamic,
+  page_index,
+}) => {
   const dispatch = useAppDispatch()
+  const [index, setIndex] = useState<any>(0)
   const [currentPage, setCurrentPage] = useState(0)
-  const pageIndexes = useAppSelector(
-    ({ pdfPage }) => pdfPage.pageIndexes,
-    shallowEqual
-  )
+
   const [width, setWidth] = useState<any>(0)
-  const [marginTop, setMarginTop] = useState<any>(0)
 
   const ref = useRef<any>(null)
 
+  const indexes = [
+    {
+      name: 'Section A: Description of Project Activity',
+      func: (val: number) => {
+        dispatch(setSectionA(val))
+      },
+    },
+    {
+      name: 'Section B: Implementation of the project activity',
+      func: (val: number) => {
+        dispatch(setSectionB(val))
+      },
+    },
+    {
+      name: 'Section C: Description of Monitoring Activity',
+      func: (val: number) => {
+        dispatch(setSectionC(val))
+      },
+    },
+    {
+      name: 'Section D: Data and parameters',
+      func: (val: number) => {
+        dispatch(setSectionD(val))
+      },
+    },
+    {
+      name: 'Section E: Calculation of emission reductions or GHG removals by sinks',
+      func: (val: number) => {
+        dispatch(setSectionE(val))
+      },
+    },
+  ]
+
   useEffect(() => {
     instancesCount += 1
-    // console.log('before', { instancesCount })
-    setCurrentPage(instancesCount)
+    setIndex(instancesCount)
     return () => {
       instancesCount -= 1
-      // console.log('afr', { instancesCount })
-      setCurrentPage(instancesCount)
+      setIndex(instancesCount)
     }
-
-    // setCurrentPage(instancesCount)
   }, [])
-
-  // useEffect(() => {
-  //   let indexes = pageIndexes
-  //   const keys = Object.keys(indexes)
-  //   console.log(
-  //     typeof props?.title === 'string' ? props?.title?.replaceAll(' ', '_') : ''
-  //   )
-  //   const title =
-  //     typeof props?.title === 'string' ? props?.title?.replaceAll(' ', '_') : ''
-  //   // let val=Object.assign({indexes[title]:currentPage}, indexes)
-  //   indexes = { [title.toString()]: currentPage }
-  //   // }
-  //   dispatch(setPageIndexes({ ...indexes }))
-  //   console.log('final', indexes)
-  // }, [currentPage])
 
   useEffect(() => {
     handleWindowSizeChange()
@@ -71,18 +101,46 @@ const Layout: FC<LayoutProps> = (props) => {
 
   const handleWindowSizeChange = () => {
     setWidth(ref?.current?.clientWidth)
-    // setMarginTop(childre)
-    console.log(ref?.current?.clientWidth)
   }
+
+  const getPageIndex = () => {
+    if (index) {
+      const child: any = document.getElementById(
+        `my_element${index - 1}`
+      )?.nextElementSibling
+      console.log(`my_element${index - 1}`, child?.parentElement?.children)
+      const indexValue: any = child
+        ? [...child.parentElement.children].indexOf(child)
+        : 0
+      setCurrentPage(indexValue)
+
+      if (heading) {
+        indexes?.forEach((item) => {
+          if (item?.name === heading) item?.func(indexValue)
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    getPageIndex()
+  }, [index, children])
+
   return (
-    <Box ref={ref} sx={{ width: '100%' }}>
+    <div
+      ref={ref}
+      style={{ width: '100%' }}
+      id={`my_element${index}`}
+      className="pdf-page"
+    >
       <Box
         // ref={renderCount}
         sx={{
           size: 'A4',
-          // border: '1px solid red',
-          width: width || '21cm',
-          height: width * 1.2 || '29.7cm',
+          // width: width || '21cm',
+          // height: width * 1.5 || '29.7cm',
+          width: '793.7px',
+          height: '1122.52px',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
@@ -111,8 +169,6 @@ const Layout: FC<LayoutProps> = (props) => {
             }}
           >
             <Box sx={{ fontSize: 14, fontWeight: 500, color: '#00201B' }}>
-              {/* {props?.page} */}
-
               {currentPage}
             </Box>
           </Box>
@@ -140,7 +196,7 @@ const Layout: FC<LayoutProps> = (props) => {
               <Typography
                 sx={{ color: '#006B5E', fontSize: 12, fontWeight: 500 }}
               >
-                {props?.title}
+                {title}
               </Typography>
             </Box>
           </Box>
@@ -156,7 +212,7 @@ const Layout: FC<LayoutProps> = (props) => {
             }}
           ></Box>
         </Box>
-        <Box sx={{ flexGrow: '1', py: 4, pb: 9 }}>
+        <Box sx={{ flexGrow: '1', py: 4, pb: 11 }}>
           <Box
             sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}
           >
@@ -165,45 +221,47 @@ const Layout: FC<LayoutProps> = (props) => {
                 // border: '1px solid green',
                 height: '100%',
               }}
-              ref={props?.parent_ref}
+              ref={parent_ref}
             >
               <Box
                 sx={{
                   // border: '1px solid green',
                   width: '100%',
                   position: 'absolute',
-                  marginTop: props?.index ? `-${93 * props?.index}%` : 0,
-                  height: props?.page_dynamic ? 'auto' : '100%',
+                  marginTop: page_index
+                    ? `-${(parent_ref_value || 0) * page_index}px`
+                    : 0,
+                  height: page_dynamic ? 'auto' : '100%',
                 }}
-                ref={props?.child_ref}
+                ref={child_ref}
               >
-                {props?.heading && (
+                {heading && (
                   <Typography
                     sx={{
-                      pb: 4,
+                      pb: 3,
                       fontSize: 24,
                       fontWeight: 600,
                       color: '#006B5E',
                       px: 4,
                     }}
                   >
-                    {props?.heading}
+                    {heading}
                   </Typography>
                 )}
                 <Box
                   sx={{
                     px: 4,
-                    height: props?.page_dynamic ? 'auto' : '100%',
+                    height: page_dynamic ? 'auto' : '100%',
                   }}
                 >
-                  {props?.children}
+                  {children}
                 </Box>
               </Box>
             </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </div>
   )
 }
 
