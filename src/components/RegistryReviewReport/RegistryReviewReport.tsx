@@ -203,6 +203,7 @@ const RegistryReviewReport = () => {
         </Box> */}
         <Box>
           <CCButton
+            variant="contained"
             onClick={sumbitReport}
             disabled={explain.length > 0 ? false : true}
             buttonBackgroundColor={'#006B5E'}
