@@ -133,7 +133,7 @@ const lightModeTheme = {
   typography: initialState.typography,
 }
 
-const SGGSData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+const SGGSData = [1, 3, 5, 6, 7, 8, 10, 11, 12, 14, 15, 17]
 
 interface AboutProps {
   projectId: any
@@ -162,8 +162,8 @@ const About: FC<AboutProps> = (props) => {
 
   const getProjectDetails = (projectId: any) => {
     setLoading(true)
-    dataCollectionCalls
-      .getProjectById(projectId)
+    projectDetailsCalls
+      .getProjectDetailsById(projectId)
       .then((result: any) => {
         setProjectData(result.data)
       })
@@ -428,9 +428,9 @@ const ProjectIntroDescription = ({ projectData }: { projectData: any }) => {
   const [seeMore, setSeeMore] = useState(false)
 
   const dataForDisplay = seeMore
-    ? projectData?.section_a?.step1?.purpose_and_description
-    : projectData?.section_a?.step1?.purpose_and_description &&
-      projectData?.section_a?.step1?.purpose_and_description.slice(0, 480)
+    ? projectData?.description?.general_description
+    : projectData?.description?.general_description &&
+      projectData?.description?.general_description.slice(0, 480)
 
   return (
     <>
