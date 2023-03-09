@@ -25,9 +25,9 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const getAllDetails = () => {
     let methodologies = []
     methodologies =
-      projectDetailsData?.section_a?.step4 &&
-      projectDetailsData?.section_a?.step4?.methodologies.length &&
-      projectDetailsData?.section_a?.step4?.methodologies.map(
+      projectDetailsData?.methodologies &&
+      projectDetailsData?.methodologies.length &&
+      projectDetailsData?.methodologies.map(
         (item: any, index: number) => item?.methodology
       )
     console.log('methodologies', methodologies)
@@ -39,7 +39,12 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       { heading: 'PROJECT TYPE', value: projectType },
       {
         heading: 'REFERENCE & APPLIED METHODOLOGY',
-        value: methodologies?.length <= 0 ? '-' : methodologies,
+        value:
+          methodologies?.length <= 0
+            ? '-'
+            : methodologies
+            ? methodologies
+            : '-',
       },
       {
         heading: 'PROJECT START DATE',
