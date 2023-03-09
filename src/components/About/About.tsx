@@ -133,8 +133,6 @@ const lightModeTheme = {
   typography: initialState.typography,
 }
 
-const SGGSData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-
 interface AboutProps {
   projectId: any
 }
@@ -142,14 +140,9 @@ interface AboutProps {
 const About: FC<AboutProps> = (props) => {
   const [searchParams] = useSearchParams()
   const [projectData, setProjectData] = useState<any>(null)
+  const [SDGsData, setSDGsData] = useState<any>([1])
   const [loading, setLoading] = useState(false)
   const { projectId } = props
-
-  const currentProjectDetails = useAppSelector(
-    ({ issuanceDataCollection }) =>
-      issuanceDataCollection.currentProjectDetails,
-    shallowEqual
-  )
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -162,10 +155,11 @@ const About: FC<AboutProps> = (props) => {
 
   const getProjectDetails = (projectId: any) => {
     setLoading(true)
-    dataCollectionCalls
-      .getProjectById(projectId)
+    projectDetailsCalls
+      .getProjectDetailsById(projectId)
       .then((result: any) => {
         setProjectData(result.data)
+        setSDGsData(result.data?.SDG)
       })
       .catch((e: any) => e)
       .finally(() => setLoading(false))
@@ -260,7 +254,10 @@ const About: FC<AboutProps> = (props) => {
                   <Grid item xs={12} lg={5}>
                     {loading ? (
                       <SDGSComponent />
-                    ) : projectData && projectData?.project_status > 0 ? (
+                    ) : projectData &&
+                      projectData?.project_status > 0 &&
+                      SDGsData &&
+                      SDGsData.length > 0 ? (
                       <Grid
                         container
                         sx={{
@@ -312,53 +309,51 @@ const About: FC<AboutProps> = (props) => {
                               pb: projectData?.project_status >= 6 ? 5 : 0,
                             }}
                           >
-                            {SGGSData &&
-                              SGGSData.length > 0 &&
-                              SGGSData.map((item: any, index: any) => (
-                                <Grid
-                                  // columns={1}
-                                  // columnSpacing={5}
-                                  item
-                                  key={index}
-                                  sx={{
-                                    mt: '13px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    // border: '1px solid #B1CCC6',
-                                    // borderRadius: '12px',
+                            {SDGsData.map((item: any, index: any) => (
+                              <Grid
+                                // columns={1}
+                                // columnSpacing={5}
+                                item
+                                key={index}
+                                sx={{
+                                  mt: '13px',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  // border: '1px solid #B1CCC6',
+                                  // borderRadius: '12px',
 
+                                  width: '85px',
+                                  height: '120px',
+                                  // m: 2,
+                                  mx: 0.5,
+                                }}
+                              >
+                                <img
+                                  data-testid="logo-img"
+                                  className="logoImage"
+                                  src={SDGSLIST[item - 1].image}
+                                  style={{ width: '70px' }}
+                                />
+                                <Typography
+                                  sx={{
+                                    color: 'white',
+                                    fontSize: 12,
+                                    fontWeight: 400,
+                                    textAlign: 'center',
                                     width: '85px',
-                                    height: '120px',
-                                    // m: 2,
-                                    mx: 0.5,
+                                    mt: '5px',
+                                    lineHeight: '16px',
+
+                                    letterSpacing: '0.5px',
+                                    fontStyle: 'normal',
                                   }}
                                 >
-                                  <img
-                                    data-testid="logo-img"
-                                    className="logoImage"
-                                    src={SDGSLIST[item - 1].image}
-                                    style={{ width: '70px' }}
-                                  />
-                                  <Typography
-                                    sx={{
-                                      color: 'white',
-                                      fontSize: 12,
-                                      fontWeight: 400,
-                                      textAlign: 'center',
-                                      width: '85px',
-                                      mt: '5px',
-                                      lineHeight: '16px',
-
-                                      letterSpacing: '0.5px',
-                                      fontStyle: 'normal',
-                                    }}
-                                  >
-                                    {SDGSLIST[item - 1].name}
-                                  </Typography>
-                                </Grid>
-                              ))}
+                                  {SDGSLIST[item - 1].name}
+                                </Typography>
+                              </Grid>
+                            ))}
                           </Grid>
                         </Grid>
                         {projectData?.project_status >= 8 ? (
@@ -428,9 +423,9 @@ const ProjectIntroDescription = ({ projectData }: { projectData: any }) => {
   const [seeMore, setSeeMore] = useState(false)
 
   const dataForDisplay = seeMore
-    ? projectData?.section_a?.step1?.purpose_and_description
-    : projectData?.section_a?.step1?.purpose_and_description &&
-      projectData?.section_a?.step1?.purpose_and_description.slice(0, 480)
+    ? projectData?.description?.general_description
+    : projectData?.description?.general_description &&
+      projectData?.description?.general_description.slice(0, 480)
 
   return (
     <>
