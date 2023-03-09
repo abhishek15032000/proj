@@ -254,7 +254,7 @@ const IssuanceDataCollection = () => {
     }, 3000)
   }
 
-  const {moveToNextSection} = useProject()
+  const { moveToNextSection } = useProject()
 
   const handleSave = () => {
     moveToNextSection(sectionIndex, subSectionIndex)

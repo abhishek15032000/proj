@@ -14,10 +14,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [tags, setTags] = useState([])
   const { projectDetailsData } = props
-  console.log(
-    '🚀 ~ file: AdditionalDetails.tsx ~ line 23 ~ AdditionalDetails ~ projectDetailsData',
-    projectDetailsData
-  )
+
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
   const [seeMore, setSeeMore] = useState(false)
@@ -28,33 +25,56 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const getAllDetails = () => {
     let methodologies = []
     methodologies =
-      projectDetailsData?.section_a?.step4 &&
-      projectDetailsData?.section_a?.step4?.methodologies.length &&
-      projectDetailsData?.section_a?.step4?.methodologies.map(
+      projectDetailsData?.methodologies &&
+      projectDetailsData?.methodologies.length &&
+      projectDetailsData?.methodologies.map(
         (item: any, index: number) => item?.methodology
       )
     console.log('methodologies', methodologies)
+
+    const projectType = projectDetailsData?.tags?.length
+      ? projectDetailsData?.tags.slice(0, projectDetailsData?.tags.length - 1)
+      : '-'
     const modifiedArrayTemp = [
-      { heading: 'PROJECT TYPE', value: projectDetailsData?.type },
+      { heading: 'PROJECT TYPE', value: projectType },
       {
         heading: 'REFERENCE & APPLIED METHODOLOGY',
-        value: methodologies?.length <= 0 ? '-' : methodologies,
+        value:
+          methodologies?.length <= 0
+            ? '-'
+            : methodologies
+            ? methodologies
+            : '-',
       },
       {
         heading: 'PROJECT START DATE',
-        value: moment(projectDetailsData?.createdAt).format(`DD/MM/YY`),
+        value: projectDetailsData?.start_date
+          ? moment(projectDetailsData?.start_date).format(`DD/MM/YY`)
+          : '-',
       },
       {
         heading: 'PROJECT END DATE',
-        value: moment(projectDetailsData?.end_date).format(`DD/MM/YY`),
+        value: projectDetailsData?.end_date
+          ? moment(projectDetailsData?.end_date).format(`DD/MM/YY`)
+          : '-',
       },
       {
         heading: 'CREDITING PERIOD',
         value: [
-          `Start: ${moment(projectDetailsData?.start_date).format(
-            `DD/MM/YY`
-          )} `,
-          `End: ${moment(projectDetailsData?.end_date).format(`DD/MM/YY`)}`,
+          `Start: ${
+            projectDetailsData?.credit_period?.start_date
+              ? moment(projectDetailsData?.credit_period?.start_date).format(
+                  `DD/MM/YY`
+                )
+              : '-'
+          } `,
+          `End: ${
+            projectDetailsData?.credit_period?.end_date
+              ? moment(projectDetailsData?.credit_period?.end_date).format(
+                  `DD/MM/YY`
+                )
+              : '-'
+          } `,
         ],
       },
     ]
@@ -78,6 +98,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
     setCardDetails(cardDetails)
     setTags(props.projectData?.tags)
   }, [props.projectData])
+
   return (
     <Box
       sx={{
@@ -115,7 +136,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
               Tags
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              {tags && tags.length
+              {tags && tags?.length
                 ? tags.map((tag: string, index: number) => (
                     <Tag key={index} tag={tag} />
                   ))
