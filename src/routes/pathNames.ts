@@ -47,6 +47,7 @@ export const pathNames = {
   REVIEW_AND_COMMENT: '/review-and-comment',
   WALLET: '/wallet',
   RISK_DASHBOARD: '/RiskDashboard',
+  PDF: '/pdf',
 }
 
 export const linkLabels = {

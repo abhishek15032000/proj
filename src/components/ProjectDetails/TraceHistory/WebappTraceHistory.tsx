@@ -1,216 +1,117 @@
-import { Grid, Typography, Box } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
 import React, { FC, useEffect, useState } from 'react'
-import { shallowEqual } from 'react-redux'
-import { dataCollectionCalls } from '../../../api/dataCollectionCalls'
-import { verifierCalls } from '../../../api/verifierCalls.api'
+import { eventsCalls } from '../../../api/eventsCalls.api'
+import { TraceabilityCalls } from '../../../api/traceabilityCalls.api'
 import Spinner from '../../../atoms/Spinner'
-import { PROJECT_ALL_STATUS, TX_TYPE } from '../../../config/constants.config'
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
-import {
-  setChoosenVerifiers,
-  setProjectDeveloper,
-  setReportPDF,
-  setTxIDForTab,
-  setVerifier,
-} from '../../../redux/Slices/traceabilitySlice'
+import { TRACEABILITY_TAB_NAMES } from '../../../config/constants.config'
 import { Images } from '../../../theme'
-import { getLocalItem } from '../../../utils/Storage'
+import CreateProject from './AllTraceTabDetails/CreateProject'
+import PDFGenerated from './AllTraceTabDetails/PDFGenerated'
+import ProjectMinted from './AllTraceTabDetails/ProjectMinted'
+import RegistryReport from './AllTraceTabDetails/RegistryReport'
+import TokenDeployed from './AllTraceTabDetails/TokenDeployed'
+import VerifierAccept from './AllTraceTabDetails/VerifierAccept'
+import VerifierAssign from './AllTraceTabDetails/VerifierAssign'
+import VerifierRequest from './AllTraceTabDetails/VerifierRequest'
+import VerifierVerified from './AllTraceTabDetails/VerifierVerified'
 import TraceDetails from './TraceDetails'
 import './TraceHistory.css'
 
+const typeAndTabCompMatching: any = {
+  createProject: CreateProject,
+  verifierRequest: VerifierRequest,
+  verifierAccepted: VerifierAccept,
+  verifierAssign: VerifierAssign,
+  updateProjectGenerateFinalPdf: PDFGenerated,
+  projectVerified: VerifierVerified,
+  deployToken: TokenDeployed,
+  projectMinted: ProjectMinted,
+  registry_uploads_report: RegistryReport,
+}
 interface WebAppTraceHistoryProps {
   projectId?: any
   theme?: string
 }
 const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
-  const dispatch: any = useAppDispatch()
-
-  const projectDeveloper = useAppSelector(
-    ({ traceability }) => traceability?.projectDeveloper,
-    shallowEqual
-  )
-  const verifier = useAppSelector(
-    ({ traceability }) => traceability?.verifier,
-    shallowEqual
-  )
-
-  const [traceTab, setTraceTab] = useState<any>(null)
-
-  const traceTabData = [
-    {
-      key: 0,
-      showFromStatus: PROJECT_ALL_STATUS.CREATED_PROJECT,
-      value: `Project Developer ${projectDeveloper} created this project`,
-      // txType used to get txID for a particular step from tx array
-      txType: TX_TYPE.CREATE_PROJECT,
-    },
-    {
-      key: 1,
-      showFromStatus: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
-      value: `Project Developer ${projectDeveloper} Submitted For verification`,
-      txType: TX_TYPE.CREATE_PROJECT,
-    },
-    {
-      key: 2,
-      showFromStatus: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
-      value: `Verifier ${verifier} received verification request`,
-      txType: TX_TYPE.CREATE_PROJECT,
-    },
-    {
-      key: 3,
-      showFromStatus:
-        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
-      value: `Verifier ${verifier} started verification process`,
-      txType: TX_TYPE.CONFIRM_VERIFIER,
-    },
-    {
-      key: 4,
-      showFromStatus:
-        PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
-      value: `Verifier ${verifier} submitted its verification report on this project`,
-      txType: TX_TYPE.VERIFIER_VERIFIES_REPORT,
-    },
-    {
-      key: 5,
-      showFromStatus:
-        PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
-      value: `Registry received the verification report for approve`,
-    },
-    {
-      key: 6,
-      showFromStatus:
-        PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
-      value: `Registry Approves the verification report`,
-      txType: TX_TYPE.REGISTRY_VERIFIES_REPORT,
-    },
-    {
-      key: 7,
-      showFromStatus:
-        PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
-      value: `Project Developer ${projectDeveloper} get verification report`,
-    },
-    // {
-    //   key: 8,
-    //   showFromStatus:
-    //     PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
-    //   value: `Buyer buy VCOT By Project Developer`,
-    // },
-  ]
   const { projectId, theme = 'light' } = props
+
   const [loading, setLoading] = useState(false)
   const [traceOption, setTraceOption] = useState(0)
   const [traceAllData, setTraceAllData] = useState<any>([])
-  const [traceTabList, setTraceTabList] = useState<any>([])
-  const [tx, setTx] = useState<any>('')
+  // const [traceTabList, setTraceTabList] = useState<any>([])
+  const [tabDataComponentList, setTabDataComponentList] = useState<any>([])
+  const [projectName, setProjectName] = useState('')
+  const [projectLocation, setProjectLocation] = useState('')
+  const [projectRefID, setProjectRefID] = useState('')
+  const [tokenAddress, setTokenAddress] = useState('')
 
   useEffect(() => {
-    //setting dark or light theme based on roles
-    const userType: any = getLocalItem('userDetails')?.type
-    // if ([ROLES.REGISTRY, ROLES.VERIFIER].includes(userType)) {
-    //   setTheme('')
-    // } else setTheme('dark')
-    // if (props?.theme) setTheme(props?.theme)
-    // setTheme('dark')
-
-    // setTraceTab(traceTabData)
-    setTraceTabList(traceTabData)
+    getTraceabilityData()
+    getTokenAddress(projectId)
   }, [])
 
-  useEffect(() => {
-    if (traceAllData.length || projectDeveloper || verifier) {
-      const filterArray =
-        traceTabData &&
-        traceTabData.filter((item: any) => {
-          return item?.showFromStatus <= traceAllData.project_status
-        })
-      setTraceTabList(filterArray)
-    }
-  }, [projectDeveloper, verifier, traceAllData])
+  const getTraceabilityData = async () => {
+    try {
+      setLoading(true)
+      const traceRes = await TraceabilityCalls.getProjectDetailsById(projectId)
+      // console.log('traceRes', traceRes)
+      if (traceRes?.success) {
+        // const temp = traceRes.data.map((traceData: any) => traceData?.type)
+        // setTraceTabList(temp)
 
-  useEffect(() => {
-    if (traceAllData && traceTabList && traceTabList.length) {
-      const tabData = traceTabList[traceOption]
-      if (traceOption === 6 || traceOption === 7) {
-        if (
-          traceAllData &&
-          traceAllData?.report &&
-          traceAllData?.report?.tx &&
-          traceAllData?.report?.tx?.length
-        ) {
-          setTx(traceAllData?.report?.tx[0]?.tx_id)
-        } else {
-          setTx('')
-        }
-      } else {
-        const txTypeToSearch = tabData?.txType
-        if (txTypeToSearch || txTypeToSearch === 0) {
-          if (traceAllData?.tx && traceAllData?.tx.length) {
-            const txIDObj = traceAllData?.tx?.find(
-              (tx: any) => tx.type === txTypeToSearch
-            )
-            // dispatch(setTxIDForTab(txIDObj?.tx_id))
-            setTx(txIDObj?.tx_id)
+        const temp2 = traceRes.data.map((traceData: any) => {
+          return {
+            type: traceData?.type,
+            tabComponent: typeAndTabCompMatching[traceData?.type],
           }
-        } else {
-          // dispatch(setTxIDForTab(''))
-          setTx('')
-        }
-      }
-    }
-  }, [traceOption, traceAllData, traceTabList])
+        })
+        // const temp2: any = traceRes.data.map(
+        //   (traceData: any) => typeAndTabCompMatching[traceData?.type]
+        // )
+        setTabDataComponentList(temp2)
 
-  useEffect(() => {
-    if (projectId) getAllDetails()
-  }, [projectId])
+        const projectData = traceRes.data[0]?.data
+        setProjectName(projectData?.company_name)
+        setProjectLocation(projectData?.location)
+        setProjectRefID(projectData?.uuid)
 
-  const getAllDetails = () => {
-    setLoading(true)
-    dataCollectionCalls
-      .getProjectById(projectId)
-      .then((res) => {
-        dispatch(setProjectDeveloper(res?.data?.name))
-        dispatch(setReportPDF(res?.data?.project_pdf))
-        getAllVerifiersForProject(res?.data?._id)
-        getSelectedVerifierDetails(res?.data?.verifier_details_id)
-        setTraceAllData(res?.data)
-        setLoading(false)
-      })
-      .catch((error) => {
-        console.log('error', error)
-        setLoading(false)
-      })
-  }
-
-  const getSelectedVerifierDetails = async (id: string) => {
-    if (!id) return
-    try {
-      const verifierRes: any = await verifierCalls.getVerifierById(id)
-      if (verifierRes?.success) {
-        dispatch(setVerifier(verifierRes?.data?.verifier_name))
+        setTraceAllData(traceRes.data)
       }
     } catch (err) {
-      console.log('Error in  verifierCalls.getVerifierById api ~ ', err)
+      console.log(
+        'Error in TraceabilityCalls.getProjectDetailsById api ~ ',
+        err
+      )
+    } finally {
+      setLoading(false)
     }
   }
-  const getAllVerifiersForProject = async (id: string) => {
-    if (!id) return
+
+  const getTokenAddress = async (projectUUID: string) => {
     try {
-      const verifierRes: any = await verifierCalls.getVerifierByProjectId(id)
-      if (
-        verifierRes?.success &&
-        verifierRes?.data &&
-        verifierRes?.data.length
-      ) {
-        const data = verifierRes?.data.map(
-          (item: any, index: number) =>
-            `${index ? ' ' : ''}${item?.verifier_name}`
-        )
-        dispatch(setChoosenVerifiers(data))
+      const res = await eventsCalls.getTokenByProjectUUID(
+        `?project_id=${projectUUID}`
+      )
+      if (res?.success) {
+        setTokenAddress(res?.data?.token_address)
       }
     } catch (err) {
-      console.log('Error in  verifierCalls.getVerifierById api ~ ', err)
+      console.log('Error in eventsCalls.getTokenByProjectUUID api ~ ', err)
     }
   }
+
+  const getTabName = (tabType: string) => {
+    const tab: any = Object.values(TRACEABILITY_TAB_NAMES).find(
+      (tab: any) => tab?.type === tabType
+    )
+    if (tab) {
+      return tab.tabName
+    } else {
+      return '--'
+    }
+  }
+
+  // console.log('traceAllData', traceAllData)
 
   return loading ? (
     <Box
@@ -252,16 +153,16 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
           overflow="auto"
           className="scroll-container"
         >
-          {traceTabList &&
-            traceTabList.length > 0 &&
-            traceTabList.map((item: any, index: any) => (
+          {tabDataComponentList &&
+            tabDataComponentList.length > 0 &&
+            tabDataComponentList.map((item: any, index: any) => (
               <Grid
                 container
                 display={'flex'}
                 justifyContent={'start'}
                 alignItems={'center'}
                 flexDirection="row"
-                sx={{ mt: index !== 0 ? 3 : 0 , pb:1, pt:"2px"}}
+                sx={{ mt: index !== 0 ? 3 : 0, pb: 1, pt: '2px' }}
                 key={index}
               >
                 <Grid
@@ -305,7 +206,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         //       : '1px solid #CCE8E1'
                         //     : '',
                         background:
-                          traceTabList.length !== index + 1
+                          tabDataComponentList.length !== index + 1
                             ? 'linear-gradient(179.98deg, #B1CCC6 -46.26%, #2ECBB2 154.81%)'
                             : '',
                         width: '1px',
@@ -326,14 +227,17 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                             ? theme === 'dark'
                               ? '#1b2621'
                               : '#F6F9F7'
-                            : index === traceTabList.length
+                            : index === tabDataComponentList.length
                             ? theme === 'dark'
                               ? '#3e4d49'
                               : '#F6F9F7'
                             : '',
                         left: 0,
                         top: index === 0 ? 0 : 'auto',
-                        bottom: traceTabList.length === index + 1 ? 0 : 'auto',
+                        bottom:
+                          tabDataComponentList.length === index + 1
+                            ? 0
+                            : 'auto',
                         zIndex: 1,
                       }}
                     ></div>
@@ -403,7 +307,7 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
                         ml: 1,
                       }}
                     >
-                      {item?.value}
+                      {getTabName(item?.type)}
                     </Typography>
                   </Box>
                 </Grid>
@@ -412,15 +316,19 @@ const WebAppTraceHistory: FC<WebAppTraceHistoryProps> = (props) => {
         </Grid>
         <Grid item xs={8}>
           <Box sx={{ mr: 4 }}>
-            <TraceDetails
-              traceOption={traceOption}
-              setTraceOption={(item: any) => setTraceOption(item)}
-              theme={theme}
-              projectId={projectId}
-              projectDetails={traceAllData}
-              traceTab={traceTab}
-              txID={tx}
-            />
+            {traceAllData && traceAllData.length ? (
+              <TraceDetails
+                traceOption={traceOption}
+                setTraceOption={(item: any) => setTraceOption(item)}
+                theme={theme}
+                tabData={traceAllData[traceOption]}
+                projectName={projectName}
+                projectLocation={projectLocation}
+                projectRefID={projectRefID}
+                tabDataComponentList={tabDataComponentList}
+                tokenAddress={tokenAddress}
+              />
+            ) : null}
           </Box>
         </Grid>
       </Grid>

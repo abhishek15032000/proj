@@ -14,10 +14,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const [tags, setTags] = useState([])
   const { projectDetailsData } = props
-  console.log(
-    '🚀 ~ file: AdditionalDetails.tsx ~ line 23 ~ AdditionalDetails ~ projectDetailsData',
-    projectDetailsData
-  )
+
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
   const [seeMore, setSeeMore] = useState(false)
@@ -42,19 +39,34 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
       },
       {
         heading: 'PROJECT START DATE',
-        value: moment(projectDetailsData?.createdAt).format(`DD/MM/YY`),
+        value: projectDetailsData?.start_date
+          ? moment(projectDetailsData?.start_date).format(`DD/MM/YY`)
+          : '-',
       },
       {
         heading: 'PROJECT END DATE',
-        value: moment(projectDetailsData?.end_date).format(`DD/MM/YY`),
+        value: projectDetailsData?.end_date
+          ? moment(projectDetailsData?.end_date).format(`DD/MM/YY`)
+          : '-',
       },
       {
         heading: 'CREDITING PERIOD',
         value: [
-          `Start: ${moment(projectDetailsData?.start_date).format(
-            `DD/MM/YY`
-          )} `,
-          `End: ${moment(projectDetailsData?.end_date).format(`DD/MM/YY`)}`,
+          `Start: ${
+            projectDetailsData?.section_a?.step5?.credit_period?.start_date
+              ? moment(
+                  projectDetailsData?.section_a?.step5?.credit_period
+                    ?.start_date
+                ).format(`DD/MM/YY`)
+              : '-'
+          } `,
+          `End: ${
+            projectDetailsData?.section_a?.step5?.credit_period?.end_date
+              ? moment(
+                  projectDetailsData?.section_a?.step5?.credit_period?.end_date
+                ).format(`DD/MM/YY`)
+              : '-'
+          } `,
         ],
       },
     ]
@@ -78,6 +90,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
     setCardDetails(cardDetails)
     setTags(props.projectData?.tags)
   }, [props.projectData])
+
   return (
     <Box
       sx={{
@@ -115,7 +128,7 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
               Tags
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              {tags && tags.length
+              {tags && tags?.length
                 ? tags.map((tag: string, index: number) => (
                     <Tag key={index} tag={tag} />
                   ))

@@ -23,7 +23,7 @@ const paginationSkeletonArray = [
 ]
 const CCTableSkeleton = ({
   height = 16,
-  items = 10,
+  items = 5,
   sx,
   column = 6,
   isPagination = false,
@@ -40,26 +40,34 @@ const CCTableSkeleton = ({
         sx={{ background: '#DAF7F0', borderRadius: '4px' }}
       >
         {new Array(column).fill(column).map((headItem, colIndex) => {
-          console.log(colIndex)
           return (
-          <Grid item xs={2} md={2} lg={2} key={colIndex.toString()} xl={2}>
-            <Skeleton
-              variant="rectangular"
-              height={30}
-              sx={{
-                background: '#DAF7F0',
-                marginBottom: 1,
-                borderRadius: '6px',
-                ...sx,
-              }}
-              animation="wave"
-            />
-          </Grid>
-        )})}
+            <Grid item xs={2} md={2} lg={2} key={colIndex.toString()} xl={2}>
+              <Skeleton
+                variant="rectangular"
+                height={30}
+                sx={{
+                  background: '#DAF7F0',
+                  marginBottom: 1,
+                  borderRadius: '6px',
+                  ...sx,
+                }}
+                animation="wave"
+              />
+            </Grid>
+          )
+        })}
       </Grid>
 
       {new Array(items).fill(0, 0, items).map((i, index) => (
-        <Grid container xs={12} md={12} lg={12} xl={12} key={index} data-testid={'cc-table-skeleton-row'}>
+        <Grid
+          container
+          xs={12}
+          md={12}
+          lg={12}
+          xl={12}
+          key={index}
+          data-testid={'cc-table-skeleton-row'}
+        >
           {new Array(column).fill(0, 0, column).map((col, colIndex) => (
             <Grid
               item
@@ -68,11 +76,10 @@ const CCTableSkeleton = ({
               md={2}
               lg={2}
               xl={2}
-              px={colIndex === 0 || colIndex === column-1 ? 0:2}
+              px={colIndex === 0 || colIndex === column - 1 ? 0 : 2}
               key={index + colIndex.toString()}
             >
               <Skeleton
-                
                 variant="rectangular"
                 height={height}
                 sx={{

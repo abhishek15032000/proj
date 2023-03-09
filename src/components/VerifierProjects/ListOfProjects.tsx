@@ -18,7 +18,7 @@ import CCTable from '../../atoms/CCTable'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import { verifierCalls } from '../../api/verifierCalls.api'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import NoData from '../../atoms/NoData/NoData'
@@ -56,7 +56,7 @@ const headingsRegistered = [
   <LimitedText key={index++} text="Location" />,
   <LimitedText
     key={index++}
-    text="Next Date"
+    text="Next Datea"
     tooltipText="Next Report Submission Dt"
   />,
   <LimitedText key={index++} text="Status" />,
@@ -279,7 +279,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
             key={index}
             sx={{
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'start',
               alignItems: 'center',
             }}
           >
@@ -328,11 +328,11 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
               key={index}
               sx={{ width: '90px' }}
               onClick={() =>
-                navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                  state: {
-                    project_uuid: item?.project_id.uuid,
-                    projectDetails: item?.project_id,
-                  },
+                navigate({
+                  pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                  search: `?${createSearchParams({
+                    projectId: item?.project_id?.uuid,
+                  })}`,
                 })
               }
               title="Verify"
@@ -363,12 +363,20 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   }, [props])
 
   const redirectToProjectDetails = (project: any) => {
-    navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-      state: {
-        project_uuid: project?.project_id.uuid,
-        projectDetails: project?.project_id,
+    navigate(
+      {
+        pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+        search: `?${createSearchParams({
+          projectId: project?.project_id?.uuid,
+        })}`,
       },
-    })
+      {
+        state: {
+          project_uuid: project?.project_id.uuid,
+          projectDetails: project?.project_id,
+        },
+      }
+    )
   }
 
   return (
@@ -408,22 +416,22 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         )} */}
       </Box>
 
-      {newRequests === 0 && (
-        <TabSelector
-          sx={{ marginTop: 0 }}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
-          tabArray={['New', 'Registered']}
-        />
-      )}
+      {/* {newRequests === 0 && ( */}
+      <TabSelector
+        sx={{ marginTop: 0 }}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        tabArray={['New', 'Registered']}
+      />
+      {/* )} */}
 
-      {newRequests > 0 && (
+      {/* {newRequests > 0 && (
         <TabSelectorVerifier
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
           newProjects={newRequests}
         />
-      )}
+      )} */}
 
       {props.loading && <CCTableSkeleton sx={{ mt: 2 }} height={16} />}
 

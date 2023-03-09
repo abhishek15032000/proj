@@ -8,17 +8,18 @@ import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import { Colors, Images } from '../../theme'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
-
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+let headerIndex = 0
 const heading = [
-  'Reference ID',
-  'Received On',
-  'Issuer',
-  'Project Name',
-  'Project Type',
-  'C02e Sequestered',
-  'Unit Price',
-  'Final Price',
-  'Status',
+  <LimitedText key={headerIndex++} text={'Reference ID'} />,
+  <LimitedText key={headerIndex++} text={'Received On'} />,
+  <LimitedText key={headerIndex++} text={'Issuer'} />,
+  <LimitedText key={headerIndex++} text={'Project Name'} />,
+  <LimitedText key={headerIndex++} text={'Project Type'} />,
+  <LimitedText key={headerIndex++} text={'C02e Sequestered'} />,
+  <LimitedText key={headerIndex++} text={'Unit Price'} />,
+  <LimitedText key={headerIndex++} text={'Final Price'} />,
+  <LimitedText key={headerIndex++} text={'Status'} />,
 ]
 const Projects = () => {
   const [tableRows, setTableRows] = useState([])
@@ -35,52 +36,58 @@ const Projects = () => {
       if (res?.success) {
         const tableBodyData = res?.data.map((item: any, index: number) => {
           return [
-            <LimitedText key={index} text={item?.uuid} />,
-            moment(item?.receive_on).format('DD/MM/YYYY'),
-            item?.issuer,
-            <Box
+            <LimitedText key={index} text={item?.uuid} ellispsisAtStart />,
+            <LimitedText
               key={index}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                columnGap: '5px',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#F0FFFB',
-                  width: 40,
-                  height: 40,
-                  borderRadius: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <img height={24} width={24} src={Images.BriefcaseIcon} />
-              </Box>
-              <LimitedText text={item?.name} />
-            </Box>,
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <LimitedText key={'1'} text={item?.type.toString()} />
-            </Box>,
-            <Typography key={index} textAlign={'end'}>
-              {item?.Co2_Sequestered}
-            </Typography>,
-            <Typography key={index} textAlign={'end'}>
-              {item?.unitPrice}
-            </Typography>,
-            <Typography key={index} textAlign={'end'}>
-              {item?.finalPrice}
-            </Typography>,
+              text={moment(item?.receive_on).format('DD/MM/YYYY')}
+            />,
+            <LimitedText key={index} text={item?.issuer} />,
+            // <Box
+            //   key={index}
+            //   sx={{
+            //     display: 'flex',
+            //     justifyContent: 'center',
+            //     alignItems: 'center',
+            //     columnGap: '5px',
+            //   }}
+            // >
+            //   <Box
+            //     sx={{
+            //       bgcolor: '#F0FFFB',
+            //       width: 40,
+            //       height: 40,
+            //       borderRadius: '100%',
+            //       display: 'flex',
+            //       justifyContent: 'center',
+            //       alignItems: 'center',
+            //     }}
+            //   >
+            //     <img height={24} width={24} src={Images.BriefcaseIcon} />
+            //   </Box>
+            <LimitedText text={item?.name} key={index} />,
+            // </Box>
+            // <Box
+            //   key={index}
+            //   sx={{
+            //     display: 'flex',
+            //     flexDirection: 'row',
+            //     alignItems: 'center',
+            //   }}
+            // >
+            <LimitedText key={index} text={item?.type.toString()} />,
+            // </Box>
+            <LimitedText key={index} text={item?.Co2_Sequestered} />,
+            <LimitedText key={index} text={item?.unitPrice} />,
+            <LimitedText key={index} text={item?.finalPrice} />,
+            // <Typography key={index} textAlign={'end'}>
+            //   {}
+            // </Typography>,
+            // <Typography key={index} textAlign={'end'}>
+            //   {item?.unitPrice}
+            // </Typography>,
+            // <Typography key={index} textAlign={'end'}>
+            //   {item?.finalPrice}
+            // </Typography>,
             <Box
               key={index}
               sx={{
@@ -117,21 +124,17 @@ const Projects = () => {
       {loading ? (
         <CCTableSkeleton />
       ) : tableRows && tableRows.length > 0 ? (
-        <CCTable headings={heading} rows={tableRows} />
+        <CCTable
+          headings={heading}
+          rows={tableRows}
+          pagination={tableRows.length > 4}
+        />
       ) : (
-        <Box
-          sx={{
-            bgcolor: Colors.darkPrimary2,
-            color: Colors.darkPrimary1,
-            fontWeight: 500,
-            fontSize: 16,
-            p: 2,
-            textAlign: 'center',
-            borderRadius: '4px',
-          }}
-        >
-          No Carbon Token(s) purchased from any project yet!!!
-        </Box>
+        <EmptyComponent
+          title={'No Carbon Token(s) purchased from any project yet!!!'}
+          elevation={0}
+          photoType={1}
+        />
       )}
     </Paper>
   )

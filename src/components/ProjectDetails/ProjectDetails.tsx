@@ -416,7 +416,7 @@ const ProjectDetails = () => {
                   {tabIndex === 2 && <Reports {...projectData} />}
                   {tabIndex === 3 && (
                     <>
-                      <TokensTxHistory />
+                      <TokensTxHistory projectData={projectData}/>
                       <Box
                         sx={{
                           pt: 5,
