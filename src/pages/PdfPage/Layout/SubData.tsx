@@ -16,7 +16,7 @@ const SubData: FC<SubDataProps> = ({ title, children }) => {
   })
 
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box sx={{ mb: 2 }}>
       <Box
         sx={{
           display: 'flex',

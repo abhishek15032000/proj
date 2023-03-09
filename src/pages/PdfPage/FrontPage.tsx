@@ -17,7 +17,7 @@ const FrontPage: FC<FrontPageProps> = ({ getImage }) => {
 
   useEffect(() => {
     data?.banner_image?.length > 0 &&
-      fileUploadCalls.getFile(data?.banner_image[0]).then((res) => {
+      fileUploadCalls.getFile('large-' + data?.banner_image[0]).then((res) => {
         setBannerImage(URL.createObjectURL(res))
       })
   }, [data])
@@ -42,8 +42,11 @@ const FrontPage: FC<FrontPageProps> = ({ getImage }) => {
         sx={{
           size: 'A4',
           // border: '1px solid red',
-          width: width || '21cm',
-          height: width * 1.2 || '29.7cm',
+          // width: width || '21cm',
+          width: '793.7px',
+          height: '1122.52px',
+          // height: '1800px',
+          // height: width * 1.5 || '29.7cm',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
