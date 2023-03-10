@@ -60,7 +60,7 @@ const cachingSlice = createSlice({
       state,
       action: PayloadAction<any>
     ) => {
-      state.tabIndex == action.payload
+      state.tabIndex = action.payload
     },
   },
 })

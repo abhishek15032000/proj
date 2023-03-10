@@ -117,21 +117,32 @@ const ProjectsStats = () => {
     }
   }, [rawStatsData])
 
+  useEffect(()=>{
+    if(!cachedIssuerStats || !cachedIssuerStats?.length){
+      setRawStatsData(cachedIssuerStats)
+    }
+  },[cachedIssuerStats])
+
   const getStats = async () => {
     try {
-      setLoading(true)
+      if(!cachedIssuerStats || cachedIssuerStats?.length){
+
+        setLoading(true)
+      }
       let res
       if (userType === ROLES.VERIFIER) {
         res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
         if (res?.success) {
-          setRawStatsData(res)
+          // setRawStatsData(res)
+          dispatch(setCachedIssuerStats(res))
           setLoading(false)
         }
       } else if (userType === ROLES.REGISTRY) {
         // get registry stats code
         res = await registryCalls.getRegistryDashboardStats(user_id)
         if (res?.success) {
-          setRawStatsData(res)
+          // setRawStatsData(res)
+          dispatch(setCachedIssuerStats(res))
           setLoading(false)
         }
         console.log('stats', res)
@@ -149,7 +160,8 @@ const ProjectsStats = () => {
               total_VCOT_Quantity_Sold: res?.data.total_Quantity_Sold,
             },
           }
-          setRawStatsData(obj)
+          // setRawStatsData(obj)
+          dispatch(setCachedIssuerStats(obj))
           setLoading(false)
         }
       } else if (location.pathname === pathNames.TOKENS_RETIREMENT) {
@@ -161,7 +173,7 @@ const ProjectsStats = () => {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
         if (res?.success) {
           dispatch(setCachedIssuerStats(res))
-          setRawStatsData(res)
+          // setRawStatsData(res)
           setLoading(false)
         }
       }
@@ -220,7 +232,8 @@ const ProjectsStats = () => {
       success: true,
     }
 
-    setRawStatsData(data)
+    // setRawStatsData(data)
+    dispatch(setCachedIssuerStats(data))
   }
 
   const getColoredDivColor = (index: number) => {

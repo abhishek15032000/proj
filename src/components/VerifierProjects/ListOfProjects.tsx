@@ -27,6 +27,11 @@ import { getLocalItem } from '../../utils/Storage'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
+import {
+  setTabIndex,
+} from '../../redux/Slices/cachingSlice'
+import { shallowEqual } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 
 interface ListOfProjectsProps {
   data?: any
@@ -66,19 +71,25 @@ const headingsRegistered = [
 
 const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
   const navigate = useNavigate()
-
-  const [tabIndex, setTabIndex] = useState(1)
+  const dispatch = useAppDispatch()
+  // const [tabIndex, setTabIndex] = useState(1)
   const [rowsRegistered, setRowsRegistered]: any = useState([{}])
   const [rowsNew, setRowsNew]: any = useState([{}])
-  const [newRequests, setNewRequests] = useState(0)
+  // const [newRequests, setNewRequests] = useState(0)
 
-  useEffect(() => {
-    verifierCalls
-      .getVerifierProjectDashboardStats(getLocalItem('userDetails')?.user_id)
-      .then((response) => {
-        setNewRequests(response.data?.new_requests)
-      })
-  }, [])
+  const tabIndex = useAppSelector(
+    ({ caching }) => caching.tabIndex,
+    shallowEqual
+  )
+  
+
+  // useEffect(() => {
+  //   verifierCalls
+  //     .getVerifierProjectDashboardStats(getLocalItem('userDetails')?.user_id)
+  //     .then((response) => {
+  //       setNewRequests(response.data?.new_requests)
+  //     })
+  // }, [])
 
   useEffect(() => {
     const newData: any = [],
@@ -420,7 +431,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       <TabSelector
         sx={{ marginTop: 0 }}
         tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
+        setTabIndex={(bool:number)=>dispatch(setTabIndex(bool))}
         tabArray={['New', 'Registered']}
       />
       {/* )} */}
