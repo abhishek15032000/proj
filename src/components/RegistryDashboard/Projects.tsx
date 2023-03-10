@@ -30,14 +30,14 @@ const Projects = () => {
   )
 
   useEffect(() => {
+    dispatch(setCachedRegistryNewTabAllProjects(cachedRegistryNewTabAllProjects))
     loadTableData()
   }, [])
 
   const loadTableData = async () => {
     try {
       if (
-        cachedRegistryNewTabAllProjects.length === 0 &&
-        cachedRegistryReviewedTabAllProjects.length === 0
+        cachedRegistryNewTabAllProjects.length === 0
       ) {
         setLoading(true)
       }
@@ -57,7 +57,7 @@ const Projects = () => {
             projectListRes[0]?.data
           )
         ) {
-          setLoading(true)
+          // setLoading(true)
           dispatch(setCachedRegistryNewTabAllProjects(projectListRes[0]?.data))
         }
 
@@ -67,7 +67,7 @@ const Projects = () => {
             projectListRes[1]?.data
           )
         ) {
-          setLoading(true)
+          // setLoading(true)
           dispatch(
             setCachedRegistryReviewedTabAllProjects(projectListRes[1]?.data)
           )
