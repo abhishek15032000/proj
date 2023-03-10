@@ -48,6 +48,7 @@ const PageDynamic: FC<PageDynamicProps> = ({ children, title, heading }) => {
       <Layout
         parent_ref={parent_ref}
         child_ref={child_ref}
+        parent_ref_value={parentHeight}
         title={title}
         heading={heading}
         page_dynamic={true}
@@ -60,10 +61,12 @@ const PageDynamic: FC<PageDynamicProps> = ({ children, title, heading }) => {
           if (index !== 0) {
             return (
               <Layout
+                parent_ref_value={parentHeight}
                 page_dynamic={true}
                 title={title}
                 heading={heading}
-                index={index}
+                page_index={index}
+                dynamic_heading={true}
               >
                 <Box>{children}</Box>
               </Layout>

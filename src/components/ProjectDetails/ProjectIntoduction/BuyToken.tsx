@@ -26,7 +26,7 @@ const BuyToken = (props: BuyTokenProps) => {
     const tempData = [
       {
         heading: 'Lifetime credit value ',
-        value: projectDetailsData?.lifetime_tokens,
+        value: projectDetailsData?.totalToken,
       },
       {
         heading: 'Total VCOTs Authorised ',
@@ -132,7 +132,7 @@ const BuyToken = (props: BuyTokenProps) => {
               fontStyle: 'normal',
             }}
           >
-            {'Buy Tokens'}
+            {'Buy/Sell Tokens'}
           </Typography>
         </CCButton>
       </Grid>

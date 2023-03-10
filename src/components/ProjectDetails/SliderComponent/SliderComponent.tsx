@@ -23,20 +23,11 @@ const SliderComponent = (props: any) => {
         const arr = await Promise.all(
           projectData?.project_image?.map((item: any, index: any) => {
             return fileUploadCalls.getFile(item).then((res: any) => {
-              console.log(
-                '🚀 ~ file: SliderComponent.tsx ~ line 20 ~ fileUploadCalls.getFile ~ res',
-                res
-              )
               const image = URL.createObjectURL(res)
-              console.log(
-                '🚀 ~ file: SliderComponent.tsx ~ line 22 ~ fileUploadCalls.getFile ~ image',
-                image
-              )
               return image
             })
           })
         )
-        console.log('🚀 ~ file: SliderComponent.tsx ~ line 20 ~ arr ~ arr', arr)
 
         setSlideList(arr)
       }
@@ -127,7 +118,7 @@ const SliderComponent = (props: any) => {
                     alignItems: 'start',
                     borderRadius: '24px',
                     boxShadow: '0px 2px 8px rgba(45, 95, 87, 0.2)',
-                    backgroundSize:"cover",
+                    backgroundSize: 'cover',
                     marginLeft: '-30px',
                   }}
                 ></Box>

@@ -423,7 +423,15 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
                 <Divider />
                 <Box
-                  sx={{ height: '86%', overflowY: 'auto', overflowX: 'hidden' }}
+                  sx={{
+                    height: '86%',
+                    width: '100%',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}
                 >
                   <PdfPage data={location?.state?.project} />
                 </Box>

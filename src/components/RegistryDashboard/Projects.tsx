@@ -1,61 +1,131 @@
 import { Box, Paper, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { shallowEqual, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import TabSelectorWithCount from '../../atoms/TabSelectorWithCount/TabSelectorWithCount'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+import lodash from 'lodash'
+import { REGISTRYDASHBOARDTABLIST } from '../../config/constants.config'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import ProjectTable from './ProjectTable'
+import {
+  setCachedRegistryNewTabAllProjects,
+  setCachedRegistryReviewedTabAllProjects,
+} from '../../redux/Slices/cachingSlice'
 
 const Projects = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
 
-  const [tabIndex, setTabIndex] = useState(1)
-  return (
-    <Paper
-      elevation={2}
-      sx={{
-        p: 2,
-        borderRadius: '8px',
-        boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-        marginTop: 3,
-      }}
-    >
-      <Box
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const cachedRegistryNewTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedRegistryNewTabAllProjects,
+    shallowEqual
+  )
+  const cachedRegistryReviewedTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedRegistryReviewedTabAllProjects,
+    shallowEqual
+  )
+
+  useEffect(() => {
+    dispatch(setCachedRegistryNewTabAllProjects(cachedRegistryNewTabAllProjects))
+    loadTableData()
+  }, [])
+
+  const loadTableData = async () => {
+    try {
+      if (
+        cachedRegistryNewTabAllProjects.length === 0
+      ) {
+        setLoading(true)
+      }
+      const projectListRes = await Promise.all(
+        REGISTRYDASHBOARDTABLIST.map(async (item: any) => {
+          if (item?.status)
+            return await dataCollectionCalls.getAllProjectsOfTab({
+              status: item?.status,
+            })
+        })
+      )
+
+      if (projectListRes) {
+        if (
+          !lodash.isEqual(
+            cachedRegistryNewTabAllProjects,
+            projectListRes[0]?.data
+          )
+        ) {
+          // setLoading(true)
+          dispatch(setCachedRegistryNewTabAllProjects(projectListRes[0]?.data))
+        }
+
+        if (
+          !lodash.isEqual(
+            cachedRegistryReviewedTabAllProjects,
+            projectListRes[1]?.data
+          )
+        ) {
+          // setLoading(true)
+          dispatch(
+            setCachedRegistryReviewedTabAllProjects(projectListRes[1]?.data)
+          )
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (
+    loading ||
+    (!loading &&
+      cachedRegistryNewTabAllProjects.length >= 0 &&
+      cachedRegistryReviewedTabAllProjects.length >= 0)
+  ) {
+    return (
+      <Paper
+        elevation={2}
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          p: 3,
+          borderRadius: '8px',
+          boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+          marginTop: 3,
+          minHeight: location.pathname.includes(pathNames.PROJECTS)
+            ? '80vh'
+            : '55vh',
         }}
       >
-        <Typography sx={{ fontSize: 22, fontWeight: 400 }}>Projects</Typography>
-        {/* {location.pathname.includes(pathNames.PROJECTS) ? null : (
-          <Typography
-            sx={{
-              color: 'darkPrimary1.main',
-              fontSize: 14,
-              fontWeight: 400,
-              cursor: 'pointer',
-            }}
-            onClick={() => navigate(pathNames.PROJECTS)}
-          >
-            See All
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
+            Projects
           </Typography>
-        )} */}
-      </Box>
+          {/* { location.pathname.includes(pathNames.PROJECTS) ? null : <Typography
+              sx={{
+                color: 'darkPrimary1',
+                fontSize: 14,
+                fontWeight: 400,
+                cursor: 'pointer',
+              }}
+              onClick={() => navigate(pathNames.PROJECTS)}
+            >
+              See All
+            </Typography>} */}
+        </Box>
 
-      <TabSelectorWithCount
-        tabArray={[
-          { name: 'New', count: 0 },
-          { name: 'Under review', count: 0 },
-          { name: 'Reviewed', count: 0 },
-        ]}
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-        sx={{ marginBottom: 2 }}
-      />
-      <ProjectTable tabIndex={tabIndex} />
-    </Paper>
-  )
+        <ProjectTable loading={loading} />
+      </Paper>
+    )
+  } else return null
 }
 
 export default Projects

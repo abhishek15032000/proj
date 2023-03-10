@@ -9,7 +9,7 @@ import { Colors } from '../../theme'
 import { capitaliseFirstLetter } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
 import './Projects.css'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useLocation } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import { buyerCalls } from '../../api/buyerCalls.api'
@@ -20,8 +20,12 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { setCachedIssuerStats } from '../../redux/Slices/cachingSlice'
+import { shallowEqual } from 'react-redux'
 
 const ProjectsStats = () => {
+  const dispatch = useAppDispatch()
+
   let the_slider: any
 
   const settings = {
@@ -92,6 +96,10 @@ const ProjectsStats = () => {
   const verifierStatsReload = useAppSelector(
     ({ verifier }) => verifier.verifierStatsReload
   )
+  const cachedIssuerStats = useAppSelector(
+    ({ caching }) => caching.cachedIssuerStats,
+    shallowEqual
+  )
 
   const { type: userType, email, user_id } = getLocalItem('userDetails')
   const [stats, setStats] = useState<any[] | null>(null)
@@ -109,21 +117,31 @@ const ProjectsStats = () => {
     }
   }, [rawStatsData])
 
+  useEffect(() => {
+    if (!cachedIssuerStats || !cachedIssuerStats?.length) {
+      setRawStatsData(cachedIssuerStats)
+    }
+  }, [cachedIssuerStats])
+
   const getStats = async () => {
     try {
-      setLoading(true)
+      if (!cachedIssuerStats || cachedIssuerStats?.length) {
+        setLoading(true)
+      }
       let res
       if (userType === ROLES.VERIFIER) {
         res = await verifierCalls.getVerifierProjectDashboardStats(user_id)
         if (res?.success) {
-          setRawStatsData(res)
+          // setRawStatsData(res)
+          dispatch(setCachedIssuerStats(res))
           setLoading(false)
         }
       } else if (userType === ROLES.REGISTRY) {
         // get registry stats code
         res = await registryCalls.getRegistryDashboardStats(user_id)
         if (res?.success) {
-          setRawStatsData(res)
+          // setRawStatsData(res)
+          dispatch(setCachedIssuerStats(res))
           setLoading(false)
         }
       } else if (userType === ROLES.BUYER) {
@@ -155,7 +173,8 @@ const ProjectsStats = () => {
               total_VCOT_Quantity_Sold: res?.data.total_Quantity_Sold,
             },
           }
-          setRawStatsData(obj)
+          // setRawStatsData(obj)
+          dispatch(setCachedIssuerStats(obj))
           setLoading(false)
         }
       } else if (location.pathname === pathNames.TOKENS_RETIREMENT) {
@@ -166,7 +185,8 @@ const ProjectsStats = () => {
       } else {
         res = await dataCollectionCalls.getIssuerProjectDashboardStats(email)
         if (res?.success) {
-          setRawStatsData(res)
+          dispatch(setCachedIssuerStats(res))
+          // setRawStatsData(res)
           setLoading(false)
         }
       }
@@ -225,7 +245,8 @@ const ProjectsStats = () => {
       success: true,
     }
 
-    setRawStatsData(data)
+    // setRawStatsData(data)
+    dispatch(setCachedIssuerStats(data))
   }
 
   const getColoredDivColor = (index: number) => {

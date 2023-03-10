@@ -189,7 +189,8 @@ export const filters = [
   },
   {
     filterType: 'Verification Standard',
-    filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
+    // filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
+    filters: ['ICR'],
   },
 ]
 
@@ -614,10 +615,10 @@ export const SDGSLIST = [
   },
 ]
 export const availableFilters: any = {
-  'Project Type': [
-    'Registered or Active Project',
-    'Provisional Project or Future Project',
-  ],
+  // 'Project Type': [
+  //   'Registered or Active Project',
+  //   'Provisional Project or Future Project',
+  // ],
 
   'Credit Type': ['Carbon Credit', 'Biodiversity Credit', 'Plastics Credit'],
 
@@ -661,11 +662,27 @@ export const availableFilters: any = {
   ],
 
   'Verification Standard': [
-    'Verra Registry',
-    'Gold Registry',
-    'BioCarbon Registry',
+    // 'Verra Registry',
+    // 'Gold Registry',
+    // 'BioCarbon Registry',
+    'ICR',
   ],
 }
+
+export const DASHBOARDTABLIST = [
+  {
+    status: 1,
+    TabName: 'New',
+  },
+  {
+    status: 2,
+    TabName: 'Verification',
+  },
+  {
+    status: 3,
+    TabName: 'Registered',
+  },
+]
 
 export const TRACEABILITY_TAB_NAMES = {
   CREATE_PROJECT: { type: 'createProject', tabName: 'Project Created' },
@@ -706,3 +723,14 @@ export const IMAGE_SIZE_PREFIXES = {
   LARGE: 'large-',
   HD: 'hd-',
 }
+
+export const REGISTRYDASHBOARDTABLIST = [
+  {
+    status: 1,
+    TabName: 'New',
+  },
+  {
+    status: 2,
+    TabName: 'Reviewed',
+  },
+]

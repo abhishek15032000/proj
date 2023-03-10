@@ -24,7 +24,11 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 import CCButton from '../../atoms/CCButton'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import About from '../About'
-import { setCurrentProjectDetails } from '../../redux/Slices/issuanceDataCollection'
+import {
+  setCurrentProjectDetails,
+  setCurrentProjectDetailsUUID,
+  setSectionIndex,
+} from '../../redux/Slices/issuanceDataCollection'
 import ProjectIntro from '../ProjectDetails/Skeleton/ProjectIntro'
 import { addSectionPercentages } from '../../utils/newProject.utils'
 
@@ -53,7 +57,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     getProjectAllData(projectId)
-  }, [searchParams])
+  }, [])
 
   const getProjectAllData = (projectId: any) => {
     setLoading(true)
@@ -126,10 +130,18 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       setIssuanceInfo(issuanceInfoTabData)
 
       dispatch(setCurrentProjectDetails(modifiedRows))
+      dispatch(setCurrentProjectDetailsUUID(projectId))
+      if (location?.state?.isEdited) {
+        redirectOnSection()
+      }
     }
   }
 
-  console.log('projectData', projectData)
+  const redirectOnSection = () => {
+    dispatch(setSectionIndex(1))
+    navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+  }
+
   return (
     <Box sx={{ p: 1, fontSize: 14 }}>
       <Grid

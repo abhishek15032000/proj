@@ -217,7 +217,7 @@ export const DashboardHelpSectionFAQ = {
   sectionDescription:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum aenean amet, hac ultricies enim donec suscipit sed duis. In vulputate pellentesque sed quam tincidunt nec et lectus.',
   questions: [
-    { title: 'How to create/link wallet', value: '' },
+    // { title: 'How to create/link wallet', value: '' },
     { title: 'How to list a new  project', value: pathNames.HELP_CENTER },
   ],
 }
