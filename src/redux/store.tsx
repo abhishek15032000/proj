@@ -1,9 +1,34 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import reducers from './Slices'
 
-export const store = configureStore({
-    reducer: reducers,
+import storage from 'redux-persist/lib/storage'
+import { persistReducer, persistStore } from 'redux-persist'
+import thunk from 'redux-thunk'
+
+const persistConfig = {
+  key: 'root',
+  // whitelist: [],
+  storage,
+}
+
+// export const store = configureStore({
+//     reducer: reducers,
+// })
+
+const rootReducer = combineReducers({
+  ...reducers,
 })
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  //   reducer: reducers,
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: [thunk],
+})
+
+export const persistor = persistStore(store)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

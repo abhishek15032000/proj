@@ -42,7 +42,7 @@ import {
 } from '../../redux/Slices/issuanceDataCollection'
 // import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import Spinner from '../../atoms/Spinner'
@@ -305,7 +305,12 @@ const IssuanceDataCollection = () => {
       ) {
         navigate(pathNames.SELECT_VERIFIER)
       } else {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        navigate({
+          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+          search: `?${createSearchParams({
+            projectId: currentProjectDetails?.uuid,
+          })}`,
+        })
       }
     }
   }

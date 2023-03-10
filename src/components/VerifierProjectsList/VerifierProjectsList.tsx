@@ -13,9 +13,20 @@ import { VerifierProjectsListProps } from './VerifierProjectsList.interface'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { getLocalItem } from '../../utils/Storage'
+import { shallowEqual, useDispatch } from 'react-redux'
+
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { setCachedVerifierDashboardProject } from '../../redux/Slices/cachingSlice'
+import lodash from 'lodash'
 
 const VerifierProjectsList = (props: VerifierProjectsListProps) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const cachedVerifierDashboardProjects = useAppSelector(
+    ({ caching }) => caching.cachedVerifierDashboardProjects,
+    shallowEqual
+  )
 
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -27,15 +38,21 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
   }, [])
 
   const loadTableData = () => {
-    setLoading(true)
+    if (cachedVerifierDashboardProjects.length === 0) {
+      setLoading(true)
+    }
 
     verifierCalls
       .getAllVerifiers(getLocalItem('userDetails')?.user_id)
       .then((response) => {
-        setTableData(response.data.data)
-        setLoading(false)
+        if (!lodash.isEqual(cachedVerifierDashboardProjects, response?.data)) {
+          dispatch(setCachedVerifierDashboardProject(response?.data))
+        }
       })
       .catch((e) => {
+        console.log(e)
+      })
+      .finally(() => {
         setLoading(false)
       })
   }
@@ -71,7 +88,6 @@ const VerifierProjectsList = (props: VerifierProjectsListProps) => {
             title="Projects"
             onClick={() => {
               navigate(-1)
-              console.log('Code Reachable')
             }}
           />
         </Grid>

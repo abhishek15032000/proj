@@ -104,4 +104,13 @@ export const dataCollectionCalls = {
       }
     )
   },
+  getAllProjectsOfTab: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.project.getAllProjectsTab,
+      'POST',
+      payload
+    ).then((res: any) => {
+      return res.data
+    })
+  },
 }
