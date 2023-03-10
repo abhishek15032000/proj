@@ -38,6 +38,8 @@ import caching from './cachingSlice'
 import dashboard from './Dashboard/dashboardSlice'
 import marketPlaceFiltersDrawer from './marketPlaceFiltersDrawerSlice'
 import pdfPage from './pdfSlice'
+import marketplaceCaching from './marketPlaceCachingSlice'
+
 // TODO: rename names
 export default {
   app,
@@ -77,4 +79,5 @@ export default {
   dashboard,
   marketPlaceFiltersDrawer,
   pdfPage,
+  marketplaceCaching
 }
