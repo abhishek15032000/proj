@@ -125,10 +125,12 @@ const TokenList = () => {
               />,
               <Box
                 key={index}
-                className="td-as-link"
+                className={`${i?.deposited_balance > 0 ? 'td-as-link' : ''}`}
                 onClick={() => {
-                  dispatch(setOpenWithdrawModal(true))
-                  dispatch(setCurrentProjectUUID(i?.project_details?.uuid))
+                  if (i?.deposited_balance > 0) {
+                    dispatch(setOpenWithdrawModal(true))
+                    dispatch(setCurrentProjectUUID(i?.project_details?.uuid))
+                  }
                 }}
               >
                 <LimitedText
