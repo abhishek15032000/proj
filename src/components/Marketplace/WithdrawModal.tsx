@@ -72,6 +72,10 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
     ({ newMarketplaceReducer }) => newMarketplaceReducer.inrTokenAddress,
     shallowEqual
   )
+  const withdrawLoading = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.withdrawLoading,
+    shallowEqual
+  )
 
   const [inrLoading, setINRLoading] = useState(false)
   const [carbonLoading, setCarbonLoading] = useState(false)
@@ -86,7 +90,7 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
     dispatch(setWithdrawTokenType(TOKEN_TYPES.CARBON))
     dispatch(setWithdrawTokenAddress(carbonTokenAddress))
     dispatch(setWithdrawAmount(0))
-  }, [openWithdrawModal])
+  }, [openWithdrawModal, inrTokenBalances, carbonTokenBalances])
 
   useEffect(() => {
     if (carbonTokenAddress) {
@@ -165,7 +169,7 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
             <Typography sx={{ fontSize: 22, color: Colors.tertiary }}>
               Withdraw Balance
             </Typography>
-            {carbonLoading || inrLoading ? (
+            {withdrawLoading || carbonLoading || inrLoading ? (
               <Box sx={{ mt: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Skeleton

@@ -13,8 +13,10 @@ interface WalletReducerInterface {
   accountAddressToConnectWith: string
   showAddMetaMaskAccountModal: boolean
   walletAdded: boolean
-  updateWalletTable: boolean
   updateWalletLoading: boolean
+  balance: number
+  balanceINR: number
+  walletUpdated: boolean
 }
 const initialState: WalletReducerInterface = {
   loadWallet: false,
@@ -29,8 +31,10 @@ const initialState: WalletReducerInterface = {
   accountAddressToConnectWith: '',
   showAddMetaMaskAccountModal: false,
   walletAdded: false,
-  updateWalletTable: false,
   updateWalletLoading: false,
+  balance: 0,
+  balanceINR: 0,
+  walletUpdated: false,
 }
 const wallet = createSlice({
   name: 'wallet',
@@ -73,11 +77,17 @@ const wallet = createSlice({
     setWalletAdded: (state, action: PayloadAction<any>) => {
       state.walletAdded = action.payload
     },
-    setUpdateWalletTable: (state, action: PayloadAction<any>) => {
-      state.updateWalletTable = action.payload
-    },
     setUpdateWalletLoading: (state, action: PayloadAction<any>) => {
       state.updateWalletLoading = action.payload
+    },
+    setbalance: (state, action: PayloadAction<any>) => {
+      state.balance = action.payload
+    },
+    setbalanceINR: (state, action: PayloadAction<any>) => {
+      state.balanceINR = action.payload
+    },
+    setWalletUpdated: (state, action: PayloadAction<any>) => {
+      state.walletUpdated = action.payload
     },
     resetWallet: (state) => {
       state = initialState
@@ -100,6 +110,9 @@ export const {
   setShowAddMetaMaskAccountModal,
   setWalletAdded,
   setUpdateWalletLoading,
+  setbalance,
+  setbalanceINR,
+  setWalletUpdated,
 } = wallet.actions
 
 export default wallet.reducer
