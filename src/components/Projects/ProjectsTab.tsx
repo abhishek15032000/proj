@@ -15,37 +15,88 @@ import {
   setSectionIndex,
   setSubSectionIndex,
 } from '../../redux/Slices/issuanceDataCollection'
-import { useDispatch } from 'react-redux'
-
+import { shallowEqual, useDispatch } from 'react-redux'
+import {
+  setCachedNewTabAllProjects,
+  setCachedRegisterTabAllProjects,
+  setCachedVerificationTabAllProjects,
+} from '../../redux/Slices/cachingSlice'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import lodash from 'lodash'
+import { DASHBOARDTABLIST } from '../../config/constants.config'
 interface ProjectsTabProps {}
 
 const ProjectsTab: FC<ProjectsTabProps> = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location:any = useLocation()
-  console.log("🚀 ~ file: ProjectsTab.tsx ~ line 26 ~ location", location)
+  const location: any = useLocation()
+  console.log('🚀 ~ file: ProjectsTab.tsx ~ line 26 ~ location', location)
 
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    setLoading(true)
+  const cachedNewTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedNewTabAllProjects,
+    shallowEqual
+  )
 
+  const cachedVerificationTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedVerificationTabAllProjects,
+    shallowEqual
+  )
+
+  const cachedRegisterTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedRegisterTabAllProjects,
+    shallowEqual
+  )
+
+  useEffect(() => {
     loadTableData()
   }, [])
 
-  const loadTableData = () => {
-    setLoading(true)
+  const loadTableData = async () => {
+    try {
+      if (
+        cachedNewTabAllProjects.length === 0 &&
+        cachedRegisterTabAllProjects.length === 0 &&
+        cachedVerificationTabAllProjects.length === 0
+      ) {
+        setLoading(true)
+      }
+      const commentsRes = await Promise.all(
+        DASHBOARDTABLIST.map(async (item: any) => {
+          if (item?.status)
+            return await dataCollectionCalls.getAllProjectsOfTab({
+              status: item?.status,
+            })
+        })
+      )
 
-    dataCollectionCalls
-      .getAllProjects(getLocalItem('userDetails')?.email)
-      .then((response) => {
-        setTableData(response.data.data)
-        setLoading(false)
-      })
-      .catch((e) => {
-        setLoading(false)
-      })
+      if (commentsRes) {
+        if (!lodash.isEqual(cachedNewTabAllProjects, commentsRes[0]?.data)) {
+          dispatch(setCachedNewTabAllProjects(commentsRes[0]?.data))
+        }
+
+        if (
+          !lodash.isEqual(
+            cachedVerificationTabAllProjects,
+            commentsRes[1]?.data
+          )
+        ) {
+         
+          dispatch(setCachedVerificationTabAllProjects(commentsRes[1]?.data))
+        }
+        if (
+          !lodash.isEqual(cachedRegisterTabAllProjects, commentsRes[2]?.data)
+        ) {
+          dispatch(setCachedRegisterTabAllProjects(commentsRes[2]?.data))
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const listNewProject = () => {
@@ -54,7 +105,13 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
     dispatch(setSubSectionIndex(0))
   }
 
-  if (loading || (!loading && tableData.length > 0)) {
+  if (
+    loading ||
+    (!loading &&
+      cachedNewTabAllProjects.length >= 0 &&
+      cachedRegisterTabAllProjects.length >= 0 &&
+      cachedVerificationTabAllProjects.length >= 0)
+  ) {
     return (
       <Paper
         elevation={2}
@@ -63,7 +120,9 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
           borderRadius: '8px',
           boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
           marginTop: 3,
-          minHeight: location.pathname.includes(pathNames.PROJECTS)? '80vh':'55vh'
+          minHeight: location.pathname.includes(pathNames.PROJECTS)
+            ? '80vh'
+            : '55vh',
         }}
       >
         <Box
@@ -76,7 +135,7 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
           <Typography sx={{ fontSize: 22, fontWeight: 400 }}>
             Projects
           </Typography>
-        {/* { location.pathname.includes(pathNames.PROJECTS) ? null : <Typography
+          {/* { location.pathname.includes(pathNames.PROJECTS) ? null : <Typography
             sx={{
               color: 'darkPrimary1',
               fontSize: 14,
@@ -92,7 +151,12 @@ const ProjectsTab: FC<ProjectsTabProps> = (props) => {
         <ListOfProjectsDashboard data={tableData} loading={loading} />
       </Paper>
     )
-  } else if (!loading && tableData.length === 0) {
+  } else if (
+    !loading &&
+    cachedNewTabAllProjects.length === 0 &&
+    cachedRegisterTabAllProjects.length === 0 &&
+    cachedVerificationTabAllProjects.length === 0
+  ) {
     return (
       <EmptyComponent
         photoType={1}

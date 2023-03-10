@@ -38,7 +38,7 @@ export const verifierCalls = {
       'GET',
       payload
     ).then((res) => {
-      return res
+      return res?.data
     })
   },
   submitVerifier: (payload: any) => {

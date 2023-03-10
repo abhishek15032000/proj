@@ -24,6 +24,10 @@ import {
 } from '../../redux/Slices/verifierSlice'
 import ProjectsStats from '../ProjectStats/ProjectsStats'
 import BlockchainCalls from '../../blockchain/Blockchain'
+import {
+  setCachedVerificationTabAllProjects,
+} from '../../redux/Slices/cachingSlice'
+import { isEqual } from 'lodash'
 
 const VerifierProjects = () => {
   const navigate = useNavigate()
@@ -37,19 +41,47 @@ const VerifierProjects = () => {
     shallowEqual
   )
 
+  const cachedVerificationTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedVerificationTabAllProjects,
+    shallowEqual
+  )
+ 
+
+
+
   useEffect(() => {
+    dispatch(setCachedVerificationTabAllProjects(cachedVerificationTabAllProjects))
     loadTableData()
     // checkForUserDetails()
     checkForUserDetailsAndWalletAdded()
   }, [])
 
   const loadTableData = () => {
-    setLoadingTable(true)
+    if (
+      cachedVerificationTabAllProjects.length === 0
+    ) {
+      setLoadingTable(true)
+    }
+    // setLoadingTable(true)
 
     verifierCalls
       .getAllVerifiers(getLocalItem('userDetails')?.user_id)
       .then((response) => {
-        setTableData(response.data.data)
+        const projectListRes = response.data
+        // setTableData(response.data)
+        // dispatch(setCachedVerificationTabAllProjects(response.data))
+
+      if (response) {
+        if (
+          !isEqual(
+            cachedVerificationTabAllProjects,
+            projectListRes
+          )
+        ) {
+          dispatch(setCachedVerificationTabAllProjects(projectListRes))
+        }
+      }
+
         setLoadingTable(false)
       })
       .catch((e) => {
@@ -144,16 +176,16 @@ const VerifierProjects = () => {
         </Grid>
 
         <Grid item xs={12}>
-          {tableData.length === 0 && loadingTable === false && (
+          {cachedVerificationTabAllProjects.length === 0 && loadingTable === false && (
             <EmptyComponent
               title="No project verification request yet!"
               photoType={1}
             />
           )}
 
-          {((tableData.length > 0 && !loadingTable) || loadingTable) && (
+          {((cachedVerificationTabAllProjects.length > 0 && !loadingTable) || loadingTable) && (
             <ListOfProjects
-              data={tableData}
+              data={cachedVerificationTabAllProjects}
               loading={loadingTable}
               updateStatus={updateVerifierStatus}
             />

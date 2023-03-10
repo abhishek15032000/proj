@@ -23,7 +23,7 @@ import {
   setCurrentProjectDetails,
   setCurrentProjectDetailsUUID,
 } from '../../redux/Slices/issuanceDataCollection'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import CCTableSkeleton from '../../atoms/CCTableSkeleton'
 import CircleIcon from '@mui/icons-material/Circle'
@@ -115,7 +115,12 @@ const DashboardNewProjectsTable = (props: DashboardNewProjectsTableProps) => {
     if (projectDetails) {
       dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
       dispatch(setCurrentProjectDetails(projectDetails))
-      navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+      navigate({
+        pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+        search: `?${createSearchParams({
+          projectId: projectDetails?.uuid,
+        })}`,
+      })
     }
   }
 

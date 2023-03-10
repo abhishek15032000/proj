@@ -19,6 +19,10 @@ const Main = (props: Props) => {
 
   const theme = createTheme(themeOptions)
 
+  window.Object.freeze = function (obj: any) {
+    return obj
+  }
+
   const loader = () => {
     console.log('window.self == window.top', window.self == window.top)
     dispatch(setThroughIFrame(window.self !== window.top))

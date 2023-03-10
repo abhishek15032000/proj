@@ -6,7 +6,7 @@ import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { getLocalItem } from '../../utils/Storage'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import moment from 'moment'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { pathNames } from '../../routes/pathNames'
 import DataTablesBriefCase from '../../assets/Images/Icons/DataTablesBriefCase.png'
 import { limitTitle } from '../../utils/commonFunctions'
@@ -50,7 +50,12 @@ const ProjectsUnderRegistration = () => {
         !projectDetails?.projectCompleted ||
         projectDetails?.project_status === 1
       ) {
-        navigate(pathNames.PROFILE_DETAILS_ISSUANCE_INFO)
+        navigate({
+          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+          search: `?${createSearchParams({
+            projectId: projectDetails?.uuid,
+          })}`,
+        })
       } else if (projectDetails?.projectCompleted) {
         navigate(pathNames.SELECT_VERIFIER)
       }
