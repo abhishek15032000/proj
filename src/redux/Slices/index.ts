@@ -34,8 +34,12 @@ import registry from './registrySlice'
 import comments from './commentsSlice'
 import traceability from './traceabilitySlice'
 import newMarketplaceReducer from './newMarketplaceSlice'
+import caching from './cachingSlice'
+import dashboard from './Dashboard/dashboardSlice'
 import marketPlaceFiltersDrawer from './marketPlaceFiltersDrawerSlice'
 import pdfPage from './pdfSlice'
+import marketplaceCaching from './marketPlaceCachingSlice'
+
 // TODO: rename names
 export default {
   app,
@@ -71,6 +75,9 @@ export default {
   comments,
   traceability,
   newMarketplaceReducer,
+  caching,
+  dashboard,
   marketPlaceFiltersDrawer,
   pdfPage,
+  marketplaceCaching
 }

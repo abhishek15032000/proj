@@ -9,6 +9,7 @@ import { Colors, Images } from '../../theme'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import { buyerCalls } from '../../api/buyerCalls.api'
 let headerIndex = 0
 const heading = [
   <LimitedText key={headerIndex++} text={'Reference ID'} />,
@@ -32,7 +33,7 @@ const Projects = () => {
   const getPurchasedProject = async () => {
     try {
       setLoading(true)
-      const res = await marketplaceCalls.getPurchasedProject()
+      const res = await buyerCalls.getPurchasedProject()
       if (res?.success) {
         const tableBodyData = res?.data.map((item: any, index: number) => {
           return [

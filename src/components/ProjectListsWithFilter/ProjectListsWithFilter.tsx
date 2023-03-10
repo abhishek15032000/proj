@@ -27,10 +27,12 @@ import {
   resetFilter,
   setSelectedFilters as redux_setSelectedFilters,
   setAppliedFiltersCount,
-  setRemoveFilters
+  setRemoveFilters,
 } from '../../redux/Slices/marketPlaceFiltersDrawerSlice'
+import { setCachedMarketplaceProject } from '../../redux/Slices/marketPlaceCachingSlice'
 import MarketPlaceFilterChip from '../../atoms/MarketPlaceFilterChip/MarketPlaceFilterChip'
 import CCButton from '../../atoms/CCButton'
+import lodash from 'lodash'
 
 const staticProjects = [
   {
@@ -231,43 +233,64 @@ const ProjectListsWithFilter = () => {
       marketPlaceFiltersDrawer.filterApplicableProjects
   )
   const filtersApplied = useAppSelector(
-    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.filtersApplied, shallowEqual
+    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.filtersApplied,
+    shallowEqual
   )
 
   const redux_selectedFilters = useAppSelector(
-    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.selectedFilters, shallowEqual
-    )
+    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.selectedFilters,
+    shallowEqual
+  )
   const appliedFiltersCount = useAppSelector(
-    ({ marketPlaceFiltersDrawer }) => marketPlaceFiltersDrawer.appliedFiltersCount, shallowEqual
-    )
- 
+    ({ marketPlaceFiltersDrawer }) =>
+      marketPlaceFiltersDrawer.appliedFiltersCount,
+    shallowEqual
+  )
+  const cachedMarketplaceProject = useAppSelector(
+    ({ marketplaceCaching }) => marketplaceCaching.cachedMarketplaceProject,
+    shallowEqual
+  )
+
   useEffect(() => {
     getAllProjects()
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     setSelectedFilters(redux_selectedFilters)
-    dispatch(setAppliedFiltersCount(Object.values(redux_selectedFilters).flat().length))
-    dispatch(setFiltersApplied(Object.values(redux_selectedFilters).flat().length))
-  },[redux_selectedFilters])
+    dispatch(
+      setAppliedFiltersCount(Object.values(redux_selectedFilters).flat().length)
+    )
+    dispatch(
+      setFiltersApplied(Object.values(redux_selectedFilters).flat().length)
+    )
+  }, [redux_selectedFilters])
 
-  useEffect(()=>{
-    if(!filtersApplied ){
+  useEffect(() => {
+    if (!filtersApplied) {
       setProjects(marketPlaceProjects)
-    }else{
+    } else {
       setProjects(filterApplicableProjects)
     }
-  },[filtersApplied, filterApplicableProjects])
+  }, [filtersApplied, filterApplicableProjects])
 
+  useEffect(() => {
+    dispatch(setMarketPlaceProjects(cachedMarketplaceProject))
+    dispatch(setFilterApplicableProjects(cachedMarketplaceProject))
+  }, [cachedMarketplaceProject])
+
+  
   const getAllProjects = async () => {
     try {
-      setLoading(true)
+      if (cachedMarketplaceProject.length === 0) {
+        setLoading(true)
+      }
       const projectRes = await dataCollectionCalls.getVerifiedProjects()
       if (projectRes.success) {
         //setProjects(projectRes.data)
         //setFilteredProjects(projectRes.data)
-        dispatch(setMarketPlaceProjects(projectRes.data))
-        dispatch(setFilterApplicableProjects(projectRes.data))
+        if (!lodash.isEqual(cachedMarketplaceProject, projectRes.data)) {
+          dispatch(setCachedMarketplaceProject(projectRes.data))
+        }
       }
     } catch (e) {
       console.log('Error in dataCollectionCalls.getVerifiedProjects api ~ ', e)
@@ -276,7 +299,6 @@ const ProjectListsWithFilter = () => {
     }
   }
 
- 
   // const filterProjects = () => {
   //   if (!selectedFilters.length) {
   //     setFilteredProjects(projects)
@@ -305,7 +327,7 @@ const ProjectListsWithFilter = () => {
           flexDirection={'row'}
           alignItems="flex-end"
           justifyContent={'space-between'}
-          sx={{ mb: filtersApplied ? 3: 5, mt: 2 }}
+          sx={{ mb: filtersApplied ? 3 : 5, mt: 2 }}
         >
           <Typography
             sx={{
@@ -322,65 +344,86 @@ const ProjectListsWithFilter = () => {
               border: '1px solid #6E7976',
               borderRadius: '40px',
               cursor: 'pointer',
-              fontSize:14,
-              fontWeight: 500
-            }}
-            onClick={() => setShowDrawer(true)}
-          >
-           Filter { appliedFiltersCount? `(${appliedFiltersCount.toString()})`: null}
-          </Typography>
-        </Stack>
-      {filtersApplied ? <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 2,
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              direction: 'row',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            <Typography sx={{ color: '#006B5E' , fontSize:14, fontWeight: 500, marginRight:5}}>
-              Showing results for:{' '}
-            </Typography>
-            {filtersApplied && <MarketPlaceFilterChip selectedFilters={selectedFilters} onDelete={(type:any, value:any)=>{
-                //  dispatch(setRemoveFilters({ type: type, filterValue: value }))
-             const foundKey:any = Object.keys(selectedFilters).find(i=> i === type)
-             const toApplyFilter = {...selectedFilters,[foundKey]: selectedFilters[foundKey].filter((i:any)=> i !==value)}
-             dispatch(redux_setSelectedFilters(toApplyFilter))
-
-          }}/>}
-          </Box>
-          <CCButton
-            sx={{
-              textAlign: 'end',
-              padding: '4px 24px',
-              minWidth: 0,
-              borderRadius: 30,
-              background: '#006B5E',
-              color: '#fff',
               fontSize: 14,
               fontWeight: 500,
             }}
-            onClick={() => {
-              dispatch(setFilterApplicableProjects(marketPlaceProjects))
-              dispatch(setFiltersApplied(false))
-              dispatch(resetFilter())
+            onClick={() => setShowDrawer(true)}
+          >
+            Filter{' '}
+            {appliedFiltersCount ? `(${appliedFiltersCount.toString()})` : null}
+          </Typography>
+        </Stack>
+        {filtersApplied ? (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 2,
             }}
           >
-            Clear All
-          </CCButton>
-        </Box> : null}
+            <Box
+              sx={{
+                display: 'flex',
+                direction: 'row',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              <Typography
+                sx={{
+                  color: '#006B5E',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  marginRight: 5,
+                }}
+              >
+                Showing results for:{' '}
+              </Typography>
+              {filtersApplied && (
+                <MarketPlaceFilterChip
+                  selectedFilters={selectedFilters}
+                  onDelete={(type: any, value: any) => {
+                    //  dispatch(setRemoveFilters({ type: type, filterValue: value }))
+                    const foundKey: any = Object.keys(selectedFilters).find(
+                      (i) => i === type
+                    )
+                    const toApplyFilter = {
+                      ...selectedFilters,
+                      [foundKey]: selectedFilters[foundKey].filter(
+                        (i: any) => i !== value
+                      ),
+                    }
+                    dispatch(redux_setSelectedFilters(toApplyFilter))
+                  }}
+                />
+              )}
+            </Box>
+            <CCButton
+              sx={{
+                textAlign: 'end',
+                padding: '4px 24px',
+                minWidth: 0,
+                borderRadius: 30,
+                background: '#006B5E',
+                color: '#fff',
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+              onClick={() => {
+                dispatch(setFilterApplicableProjects(marketPlaceProjects))
+                dispatch(setFiltersApplied(false))
+                dispatch(resetFilter())
+              }}
+            >
+              Clear All
+            </CCButton>
+          </Box>
+        ) : null}
         <Grid
           container
-          spacing={{ sm: 2, md: 3, lg:3, xl: 3 }}
+          spacing={{ sm: 2, md: 3, lg: 3, xl: 3 }}
           rowSpacing={3}
           columns={{ sm: 10, md: 9, lg: 12, xl: 12 }}
           sx={{
@@ -393,10 +436,9 @@ const ProjectListsWithFilter = () => {
             pb: 1,
           }}
         >
-          {loading ? (
+          {loading && cachedMarketplaceProject?.length > 0 ? (
             <ProjectDetailsCardSkeleton />
-          ) :  
-            projects?.length !== 0 ? (
+          ) : projects?.length !== 0 ? (
             projects?.map((project: any, index: number) => (
               <ProjectDetailsCard
                 key={index}
@@ -416,14 +458,20 @@ const ProjectListsWithFilter = () => {
                 title=" No Projects matching the selected filter for now."
                 // listNewProject
                 // action={() => listNewProject()}
-                sx={{ width: '100%', height: '100%', mt:0 }}
+                sx={{ width: '100%', height: '100%', mt: 0 }}
               />
             </Grid>
           )}
         </Grid>
       </>
     )
-  }, [filterApplicableProjects, loading, selectedFilters, filtersApplied, appliedFiltersCount])
+  }, [
+    filterApplicableProjects,
+    loading,
+    selectedFilters,
+    filtersApplied,
+    appliedFiltersCount,
+  ])
 
   return onWebApp ? (
     <Container
@@ -442,7 +490,12 @@ const ProjectListsWithFilter = () => {
         open={showDrawer}
         onClose={() => setShowDrawer(false)}
       >
-      {showDrawer &&  <MarketPlaceFiltersDrawer  onClose={() => setShowDrawer(false)} showDrawer={showDrawer}/>}
+        {showDrawer && (
+          <MarketPlaceFiltersDrawer
+            onClose={() => setShowDrawer(false)}
+            showDrawer={showDrawer}
+          />
+        )}
       </Drawer>
       {viewRenderer()}
     </Container>

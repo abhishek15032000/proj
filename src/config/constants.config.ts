@@ -669,6 +669,21 @@ export const availableFilters: any = {
   ],
 }
 
+export const DASHBOARDTABLIST = [
+  {
+    status: 1,
+    TabName: 'New',
+  },
+  {
+    status: 2,
+    TabName: 'Verification',
+  },
+  {
+    status: 3,
+    TabName: 'Registered',
+  },
+]
+
 export const TRACEABILITY_TAB_NAMES = {
   CREATE_PROJECT: { type: 'createProject', tabName: 'Project Created' },
   VERIFIER_REQUEST: {
@@ -708,3 +723,14 @@ export const IMAGE_SIZE_PREFIXES = {
   LARGE: 'large-',
   HD: 'hd-',
 }
+
+export const REGISTRYDASHBOARDTABLIST = [
+  {
+    status: 1,
+    TabName: 'New',
+  },
+  {
+    status: 2,
+    TabName: 'Reviewed',
+  },
+]

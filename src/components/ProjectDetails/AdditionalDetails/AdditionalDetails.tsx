@@ -12,12 +12,13 @@ interface AdditionalDetailsProps {
 }
 const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
-  const [tags, setTags] = useState([])
   const { projectDetailsData } = props
 
+  const [tags, setTags] = useState([])
   const [details, setDetails] = useState<any>([])
   const [cardDetails, setCardDetails] = useState<any>([])
   const [seeMore, setSeeMore] = useState(false)
+
   useEffect(() => {
     getAllDetails()
   }, [])
