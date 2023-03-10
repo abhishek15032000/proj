@@ -78,7 +78,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
       setBannerImage(cacheBannerImages[project?.uuid])
     }
   }, [project])
-
+  
   const onClickHandler = () => {
     window.scrollTo(0, 0)
     navigate(
