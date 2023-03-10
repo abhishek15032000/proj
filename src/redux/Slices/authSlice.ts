@@ -21,7 +21,7 @@ const auth = createSlice({
     },
     logoutAction: () => {
       // removeAllItem()
-      localStorage.removeItem('persist:root')
+      // localStorage.removeItem('persist:root')
       localStorage.removeItem('userDetails')
       localStorage.removeItem('profileCompleted')
       localStorage.removeItem('userDetails2')
