@@ -189,7 +189,8 @@ export const filters = [
   },
   {
     filterType: 'Verification Standard',
-    filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
+    // filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
+    filters: ['ICR'],
   },
 ]
 
@@ -661,9 +662,10 @@ export const availableFilters: any = {
   ],
 
   'Verification Standard': [
-    'Verra Registry',
-    'Gold Registry',
-    'BioCarbon Registry',
+    // 'Verra Registry',
+    // 'Gold Registry',
+    // 'BioCarbon Registry',
+    'ICR',
   ],
 }
 
