@@ -43,15 +43,8 @@ const PdfPage: FC<PdfPageProps> = ({ id, data }) => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-      }}
-      id="pdfwrapper"
-    >
-      <Box>
+    <div id="pdfwrapper">
+      <div>
         <FrontPage />
         <IndexPage />
         <ProjectIntro />
@@ -60,7 +53,7 @@ const PdfPage: FC<PdfPageProps> = ({ id, data }) => {
         <SectionC />
         <SectionD />
         <SectionE />
-      </Box>
+      </div>
     </div>
   )
 }
