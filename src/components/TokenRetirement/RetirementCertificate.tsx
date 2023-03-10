@@ -14,12 +14,12 @@ import { getLocalItem } from '../../utils/Storage'
 
 let index = 0
 const headings = [
-  <LimitedText key={index++} text={'Retirement ID'} />,
+  <LimitedText key={index++} text={'Transaction ID'} />,
   <LimitedText key={index++} text={'Project Name'} />,
   <LimitedText key={index++} text={'Time'} />,
-  <LimitedText key={index++} text={'Total Tokens'} />,
+  // <LimitedText key={index++} text={'Total Tokens'} />,
   <LimitedText key={index++} text={'Retired'} />,
-  <LimitedText key={index++} text={'After Retirement'} />,
+  // <LimitedText key={index++} text={'After Retirement'} />,
   <LimitedText key={index++} text={'Footprint Offset'} />,
   <LimitedText key={index++} text={'Beneficial owner'} />,
   <LimitedText key={index++} text={'Retirement Reason'} />,
@@ -87,15 +87,30 @@ const RetirementCertificate = () => {
           modifiedRows &&
           modifiedRows.map((i: any) => {
             return [
-              <LimitedText key={i?._id} text={i?._id} ellispsisAtStart />,
+              // <LimitedText key={i?._id} text={i?._id} ellispsisAtStart />,
+              <Box
+                key={i?._id}
+                sx={{
+                  wordBreak: 'break-all',
+                }}
+              >
+                <a
+                  href={`https://mumbai.polygonscan.com/tx/${i?.transaction}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: '#1A8EF5' }}
+                >
+                  <LimitedText text={i?.transaction} />
+                </a>
+              </Box>,
               <LimitedText key={i?._id} text={i?.projectId?.company_name} />,
               <LimitedText
                 key={i?._id}
                 text={moment(i?.createdAt).format(`HH:mm:SS`)}
               />,
-              <LimitedText key={i?._id} text={i?.token_quantity} />,
+              // <LimitedText key={i?._id} text={i?.token_quantity} />,
               <LimitedText key={i?._id} text={i?.retiring} />,
-              <LimitedText key={i?._id} text={'-'} />,
+              // <LimitedText key={i?._id} text={'-'} />,
               <LimitedText key={i?._id} text={i?.retiring} />,
               <LimitedText key={i?._id} text={i?.beneficialOwner} />,
               <LimitedText key={i?._id} text={i?.reason} />,

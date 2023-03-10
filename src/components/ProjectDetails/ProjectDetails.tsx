@@ -28,6 +28,8 @@ import ProjectIntro from './Skeleton/ProjectIntro'
 import SDGSComponent from './Skeleton/SDGSComponent'
 import AdditionalDetailsSkeleton from './Skeleton/AdditionalDetailsSkeleton'
 import { SDGSLIST } from '../../config/constants.config'
+import { dataCollectionCalls } from '../../api/dataCollectionCalls'
+
 declare module '@mui/material/styles' {
   interface SimplePaletteColorOptions {
     lightPrimary?: string
@@ -146,16 +148,15 @@ const ProjectDetails = () => {
       setProjectData(null)
     }
   }, [searchParams])
+
   const getProjectDetails = (projectId: any) => {
     setLoading(true)
-    projectDetailsCalls
-      .getProjectDetailsById(projectId)
+    dataCollectionCalls
+      .getProjectById(projectId)
       .then((result) => setProjectData(result.data))
       .catch((e) => e)
       .finally(() => setLoading(false))
   }
-
-  const projectDetailsData: any = useLocation()
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const darkTheme = {
@@ -232,7 +233,7 @@ const ProjectDetails = () => {
                 ) : (
                   <ProjectIntroduction
                     projectData={projectData}
-                    projectDetailsData={projectDetailsData?.state}
+                    projectDetailsData={projectData}
                     showBuyToken
                   />
                 )}
@@ -442,7 +443,7 @@ const ProjectDetails = () => {
                           }}
                         >
                           <WebAppTraceHistory
-                            projectId={projectDetailsData?.state?.uuid}
+                            projectId={projectData?.uuid}
                             theme={onWebApp ? 'light' : 'dark'}
                           />
                         </Box>

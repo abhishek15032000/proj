@@ -117,16 +117,15 @@ const ProjectsStats = () => {
     }
   }, [rawStatsData])
 
-  useEffect(()=>{
-    if(!cachedIssuerStats || !cachedIssuerStats?.length){
+  useEffect(() => {
+    if (!cachedIssuerStats || !cachedIssuerStats?.length) {
       setRawStatsData(cachedIssuerStats)
     }
-  },[cachedIssuerStats])
+  }, [cachedIssuerStats])
 
   const getStats = async () => {
     try {
-      if(!cachedIssuerStats || cachedIssuerStats?.length){
-
+      if (!cachedIssuerStats || cachedIssuerStats?.length) {
         setLoading(true)
       }
       let res
@@ -145,7 +144,21 @@ const ProjectsStats = () => {
           dispatch(setCachedIssuerStats(res))
           setLoading(false)
         }
-        console.log('stats', res)
+      } else if (userType === ROLES.BUYER) {
+        if (location.pathname === pathNames.DASHBOARD) {
+          res = await buyerCalls.getBuyerStats()
+          if (res?.success) {
+            const obj = {
+              data: {
+                carbon_credits_bought: res?.data.totalPurchase,
+                carbon_credits_sold: res?.data.total_sale,
+                carbon_credits_retired: res?.data.totalRetire,
+              },
+            }
+            setRawStatsData(obj)
+            setLoading(false)
+          }
+        }
       }
       //using this for token and contract stats
       else if (location.pathname === pathNames.TOKEN_CONTRACT) {

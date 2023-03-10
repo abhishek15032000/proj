@@ -36,9 +36,13 @@ import {
   setWithdrawAmount,
   setWithdrawLoading,
 } from '../redux/Slices/newMarketplaceSlice'
+import { useWallet } from './useWallet'
 
 export function useMarket() {
   const dispatch = useAppDispatch()
+
+  const { updateWalletBalance } = useWallet()
+
   const sellQuantity = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer?.sellQuantity
   )
@@ -399,7 +403,6 @@ export function useMarket() {
     }
 
     try {
-      dispatch(setOpenWithdrawModal(false))
       dispatch(setWithdrawLoading(true))
       const withdrawRes = await marketplaceCalls.withdraw(payload)
       if (withdrawRes.success) {
@@ -416,10 +419,14 @@ export function useMarket() {
         dispatch(setCarbonTokenSymbol(''))
         dispatch(setCarbonTokenAddress(''))
         dispatch(setINRTokenAddress(''))
+
+        //Update Project Token table - Wallet Page
+        updateWalletBalance()
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.withdraw api ~ ', err)
     } finally {
+      dispatch(setOpenWithdrawModal(false))
       dispatch(setWithdrawLoading(false))
     }
   }

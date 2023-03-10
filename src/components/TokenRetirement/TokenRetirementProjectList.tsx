@@ -21,9 +21,7 @@ const TokenRetirementProjectList = () => {
   const getAllProjects = async () => {
     try {
       setLoading(true)
-      const projectRes = await buyerCalls.getPurchasedProjectToRetire({
-        user: userID,
-      })
+      const projectRes = await buyerCalls.getPurchasedProjectToRetireV2()
       if (projectRes.success) {
         setProjects(projectRes.data)
         // setFilteredProjects(projectRes.data.data)

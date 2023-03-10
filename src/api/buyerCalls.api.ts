@@ -41,4 +41,26 @@ export const buyerCalls = {
       return res.data
     })
   },
+  getPurchasedProjectToRetireV2: () => {
+    return AxiosHelper(
+      URL_PATH.buyers.getPurchasedProjectToRetireV2,
+      'POST'
+    ).then((res: any) => {
+      return res.data
+    })
+  },
+  getBuyerStats: () => {
+    return AxiosHelper(URL_PATH.buyers.getBuyerStats, 'POST').then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
+  getPurchasedProject: () => {
+    return AxiosHelper(URL_PATH.buyers.getPurchasedProject, 'GET').then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }
