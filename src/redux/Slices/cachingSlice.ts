@@ -9,6 +9,7 @@ interface cachingReducerInterface {
   cachedVerifierDashboardProjects: any
   cachedRegistryNewTabAllProjects: any
   cachedRegistryReviewedTabAllProjects: any
+  tabIndex: number
 }
 const initialState: cachingReducerInterface = {
   cachedIssuerStats: null,
@@ -19,6 +20,7 @@ const initialState: cachingReducerInterface = {
   cachedVerifierDashboardProjects: [],
   cachedRegistryNewTabAllProjects: [],
   cachedRegistryReviewedTabAllProjects: [],
+  tabIndex: 1
 }
 const cachingSlice = createSlice({
   name: 'cachingSlice',
@@ -54,6 +56,12 @@ const cachingSlice = createSlice({
     ) => {
       state.cachedRegistryReviewedTabAllProjects = action.payload
     },
+    setTabIndex: (
+      state,
+      action: PayloadAction<any>
+    ) => {
+      state.tabIndex == action.payload
+    },
   },
 })
 
@@ -66,6 +74,7 @@ export const {
   setCachedVerifierDashboardProject,
   setCachedRegistryNewTabAllProjects,
   setCachedRegistryReviewedTabAllProjects,
+  setTabIndex
 } = cachingSlice.actions
 
 export default cachingSlice.reducer

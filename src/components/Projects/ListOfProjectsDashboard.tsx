@@ -44,6 +44,7 @@ import {
   setIssuerNewProjects,
   setIssuerRegisteredProjects,
   setIssueVerificationProjects,
+  setTabIndex
 } from '../../redux/Slices/Dashboard/dashboardSlice'
 
 let index = 0
@@ -114,8 +115,12 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
     ({ caching }) => caching.cachedRegisterTabAllProjects,
     shallowEqual
   )
+  const tabIndex = useAppSelector(
+    ({ dashboard }) => dashboard.tabIndex,
+    shallowEqual
+  )
 
-  const [tabIndex, setTabIndex] = useState(1)
+  // const [tabIndex, setTabIndex] = useState(1)
 
   const openProjectDetails = (projectDetails: any, redirect: any) => {
     if (projectDetails) {
@@ -475,7 +480,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       <TabSelector
         tabArray={['New', 'Verification', 'Registered']}
         tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
+        setTabIndex={(bool:number)=>dispatch(setTabIndex(bool))}
         sx={{ marginBottom: 2 }}
       />
 
