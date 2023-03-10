@@ -41,14 +41,14 @@ const SubData: FC<SubDataProps> = ({ title, children }) => {
               color: '#2B2B2B',
               fontSize: 12,
               fontWeight: 600,
-              lineHeight: '20px',
+              lineHeight: '20.5px',
             }}
           >
             {title}
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ fontSize: 12, fontWeight: 400, lineHeight: '24px', mt: 1 }}>
+      <Box sx={{ fontSize: 12, fontWeight: 400, lineHeight: '23px', mt: 1 }}>
         {children || '-'}
       </Box>
     </Box>

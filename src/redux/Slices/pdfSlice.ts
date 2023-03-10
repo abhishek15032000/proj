@@ -8,6 +8,7 @@ interface PdfReducerInterface {
   sectionD: number
   sectionE: number
   childrenElement: any
+  pageHeight: number
 }
 const initialState: PdfReducerInterface = {
   pdfData: {},
@@ -17,6 +18,7 @@ const initialState: PdfReducerInterface = {
   sectionD: 0,
   sectionE: 0,
   childrenElement: [],
+  pageHeight: 0,
 }
 const pdfPage = createSlice({
   name: 'pdf',
@@ -44,6 +46,9 @@ const pdfPage = createSlice({
     setChildrenElement: (state, action: PayloadAction<any>) => {
       state.childrenElement = action.payload
     },
+    setPageHeight: (state, action: PayloadAction<any>) => {
+      state.pageHeight = action.payload
+    },
     resetSectionNewProjectDetails: () => initialState,
   },
 })
@@ -56,6 +61,7 @@ export const {
   setSectionD,
   setSectionE,
   setChildrenElement,
+  setPageHeight,
 } = pdfPage.actions
 
 export default pdfPage.reducer

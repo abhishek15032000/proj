@@ -245,7 +245,7 @@ const Layout: FC<LayoutProps> = ({
                 {heading && (
                   <Typography
                     sx={{
-                      pb: 3,
+                      pb: 2.5,
                       fontSize: 24,
                       fontWeight: 600,
                       color: '#006B5E',
