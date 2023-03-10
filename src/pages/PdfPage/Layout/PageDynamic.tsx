@@ -66,6 +66,7 @@ const PageDynamic: FC<PageDynamicProps> = ({ children, title, heading }) => {
                 title={title}
                 heading={heading}
                 page_index={index}
+                dynamic_heading={true}
               >
                 <Box>{children}</Box>
               </Layout>

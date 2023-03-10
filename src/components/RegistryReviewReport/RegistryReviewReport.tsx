@@ -316,9 +316,13 @@ const RegistryReviewReport = () => {
               <Box
                 sx={{
                   height: '86%',
+                  width: '100%',
                   px: 4,
                   overflowY: 'auto',
                   overflowX: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
                 }}
               >
                 <PdfPage data={location.state?.projectReportDetails} />

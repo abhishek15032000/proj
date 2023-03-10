@@ -69,15 +69,16 @@ const SectionB = () => {
           <SubData title="Changes to start date of crediting period">
             {data?.step2?.change_startDate_creditPeriod}
           </SubData>
-
-          <MainHeading value="B3: Additional details" />
-          <SubData title="Project Boundary">
-            {data?.step3?.project_boundary}
-          </SubData>
-          <SubData title="Eligibility">{data?.step3?.eligibility}</SubData>
-          <SubData title="Funding">{data?.step3?.funding}</SubData>
-          <SubData title="Ownership">{data?.step3?.ownership}</SubData>
         </>
+      </PageDynamic>
+      <PageDynamic title={page_title}>
+        <MainHeading value="B3: Additional details" />
+        <SubData title="Project Boundary">
+          {data?.step3?.project_boundary}
+        </SubData>
+        <SubData title="Eligibility">{data?.step3?.eligibility}</SubData>
+        <SubData title="Funding">{data?.step3?.funding}</SubData>
+        <SubData title="Ownership">{data?.step3?.ownership}</SubData>
       </PageDynamic>
       <ImagePageDistribution
         title={page_title}
