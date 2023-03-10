@@ -6,6 +6,7 @@ import { Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import {
+  setChildrenElement,
   setSectionA,
   setSectionB,
   setSectionC,
@@ -16,35 +17,35 @@ import {
 interface LayoutProps {
   title?: string | number
   heading?: string
-  page?: number
   children: any
   child_ref?: any
   parent_ref_value?: number
   parent_ref?: any
-  marginTop?: number
   page_dynamic?: boolean
   page_index?: number
+  dynamic_heading?: boolean
 }
-let instancesCount = 0
-// let count = 0
 
 const Layout: FC<LayoutProps> = ({
   title,
   heading,
-  page,
   children,
   child_ref,
   parent_ref,
   parent_ref_value,
-  marginTop,
   page_dynamic,
   page_index,
+  dynamic_heading = false,
 }) => {
   const dispatch = useAppDispatch()
   const [index, setIndex] = useState<any>(0)
   const [currentPage, setCurrentPage] = useState(0)
 
-  const [width, setWidth] = useState<any>(0)
+  // const [width, setWidth] = useState<any>(0)
+
+  const children_elements = useAppSelector(
+    ({ pdfPage }) => pdfPage.childrenElement
+  )
 
   const ref = useRef<any>(null)
 
@@ -82,45 +83,51 @@ const Layout: FC<LayoutProps> = ({
   ]
 
   useEffect(() => {
-    instancesCount += 1
-    setIndex(instancesCount)
-    return () => {
-      instancesCount -= 1
-      setIndex(instancesCount)
-    }
+    setIndex(Math.random)
+    // handleWindowSizeChange()
+
+    // window.addEventListener('resize', handleWindowSizeChange)
+    // return () => {
+    //   window.removeEventListener('resize', handleWindowSizeChange)
+    // }
   }, [])
 
-  useEffect(() => {
-    handleWindowSizeChange()
-
-    window.addEventListener('resize', handleWindowSizeChange)
-    return () => {
-      window.removeEventListener('resize', handleWindowSizeChange)
-    }
-  }, [])
-
-  const handleWindowSizeChange = () => {
-    setWidth(ref?.current?.clientWidth)
-  }
+  // const handleWindowSizeChange = () => {
+  //   setWidth(ref?.current?.clientWidth)
+  // }
 
   const getPageIndex = () => {
     if (index) {
       const child: any = document.getElementById(
-        `my_element${index - 1}`
+        `my_element${index}`
       )?.nextElementSibling
-      console.log(`my_element${index - 1}`, child?.parentElement?.children)
-      const indexValue: any = child
-        ? [...child.parentElement.children].indexOf(child)
-        : 0
-      setCurrentPage(indexValue)
-
-      if (heading) {
-        indexes?.forEach((item) => {
-          if (item?.name === heading) item?.func(indexValue)
+      if (child?.parentElement?.children) {
+        const element_ids: any = [
+          ...Array(child?.parentElement?.children?.length),
+        ]?.map((item: any, index: number) => {
+          return child?.parentElement?.children[index]?.id
         })
+
+        dispatch(setChildrenElement([...element_ids]))
       }
     }
   }
+
+  const getPageNumber = () => {
+    const pages_no = children_elements?.indexOf(`my_element${index}`)
+
+    setCurrentPage(pages_no)
+
+    if (heading && !dynamic_heading) {
+      indexes?.forEach((item) => {
+        if (item?.name === heading) item?.func(pages_no - 1 || 0)
+      })
+    }
+  }
+
+  useEffect(() => {
+    getPageNumber()
+  }, [children_elements, index, children])
 
   useEffect(() => {
     getPageIndex()
@@ -151,7 +158,7 @@ const Layout: FC<LayoutProps> = ({
         <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}>
           <img src={FooterImage} alt="footer image" style={{ width: '100%' }} />
         </Box>
-        {true && (
+        {currentPage && currentPage !== 1 && (
           <Box
             sx={{
               position: 'absolute',
@@ -169,7 +176,7 @@ const Layout: FC<LayoutProps> = ({
             }}
           >
             <Box sx={{ fontSize: 14, fontWeight: 500, color: '#00201B' }}>
-              {currentPage}
+              {currentPage ? currentPage - 1 : 0}
             </Box>
           </Box>
         )}
