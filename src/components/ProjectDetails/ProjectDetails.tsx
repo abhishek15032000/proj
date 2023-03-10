@@ -261,7 +261,7 @@ const ProjectDetails = () => {
                         ) : (
                           <AdditionalDetails
                             projectData={projectData}
-                            projectDetailsData={projectDetailsData?.state}
+                            projectDetailsData={projectData}
                           />
                         )}
                       </Grid>
@@ -416,7 +416,7 @@ const ProjectDetails = () => {
                   {tabIndex === 2 && <Reports {...projectData} />}
                   {tabIndex === 3 && (
                     <>
-                      <TokensTxHistory projectData={projectData}/>
+                      <TokensTxHistory projectData={projectData} />
                       <Box
                         sx={{
                           pt: 5,

@@ -22,6 +22,9 @@ const initFilters: any = {
   'Project Categories': [],
   'Verification Standard': [],
 }
+
+const exemptedFilters = ['ICR', 'Carbon Credit']
+
 const MarketPlaceFiltersDrawer = ({
   showDrawer,
   onClose,
@@ -45,7 +48,6 @@ const MarketPlaceFiltersDrawer = ({
   )
 
   const [_localFilters, _setLocalFilters] = useState(initFilters)
-  console.log("🚀 ~ file: MarketPlaceFiltersDrawer.tsx ~ line 48 ~ _localFilters", _localFilters)
 
   useEffect(() => {
     // alert("yes")
@@ -55,10 +57,20 @@ const MarketPlaceFiltersDrawer = ({
 
   const applyFilters = () => {
     let filteredProjects = marketPlaceProjects.filter((i: any) => {
-    console.log("🚀 ~ file: MarketPlaceFiltersDrawer.tsx ~ line 64 ~ filteredProjects ~ i", i)
-    return Object.values(_localFilters).flat().every((j:any)=> i.type.includes(j))
+      return Object.values(_localFilters)
+        .flat()
+        .some((j: any) => {
+          return i.type.includes(j)
+        })
     })
-    if (Object.values(_localFilters).flat().length === 0) {
+
+    const isLocalFilterInExemptedList = Object.values(_localFilters)
+      .flat()
+      .some((item: any) => exemptedFilters.includes(item))
+    if (
+      Object.values(_localFilters).flat().length === 0 ||
+      isLocalFilterInExemptedList
+    ) {
       filteredProjects = marketPlaceProjects
     }
     dispatch(setFilterApplicableProjects(filteredProjects))
