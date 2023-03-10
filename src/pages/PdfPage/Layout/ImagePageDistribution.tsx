@@ -23,7 +23,7 @@ const ShowImage: FC<ShowImageProps> = ({ val, index }) => {
   const getImage = (val: string) => {
     if (val)
       fileUploadCalls
-        .getFile(val)
+        .getFile('large-' + val)
         .then((res) => {
           setImage(URL.createObjectURL(res))
         })

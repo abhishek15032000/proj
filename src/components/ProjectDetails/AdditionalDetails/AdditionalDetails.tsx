@@ -25,17 +25,26 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
   const getAllDetails = () => {
     let methodologies = []
     methodologies =
-      projectDetailsData?.section_a?.step4 &&
-      projectDetailsData?.section_a?.step4?.methodologies.length &&
-      projectDetailsData?.section_a?.step4?.methodologies.map(
+      projectDetailsData?.methodologies &&
+      projectDetailsData?.methodologies.length &&
+      projectDetailsData?.methodologies.map(
         (item: any, index: number) => item?.methodology
       )
     console.log('methodologies', methodologies)
+
+    const projectType = projectDetailsData?.tags?.length
+      ? projectDetailsData?.tags.slice(0, projectDetailsData?.tags.length - 1)
+      : '-'
     const modifiedArrayTemp = [
-      { heading: 'PROJECT TYPE', value: projectDetailsData?.type },
+      { heading: 'PROJECT TYPE', value: projectType },
       {
         heading: 'REFERENCE & APPLIED METHODOLOGY',
-        value: methodologies?.length <= 0 ? '-' : methodologies,
+        value:
+          methodologies?.length <= 0
+            ? '-'
+            : methodologies
+            ? methodologies
+            : '-',
       },
       {
         heading: 'PROJECT START DATE',
@@ -53,18 +62,17 @@ const AdditionalDetails = (props: AdditionalDetailsProps) => {
         heading: 'CREDITING PERIOD',
         value: [
           `Start: ${
-            projectDetailsData?.section_a?.step5?.credit_period?.start_date
-              ? moment(
-                  projectDetailsData?.section_a?.step5?.credit_period
-                    ?.start_date
-                ).format(`DD/MM/YY`)
+            projectDetailsData?.credit_period?.start_date
+              ? moment(projectDetailsData?.credit_period?.start_date).format(
+                  `DD/MM/YY`
+                )
               : '-'
           } `,
           `End: ${
-            projectDetailsData?.section_a?.step5?.credit_period?.end_date
-              ? moment(
-                  projectDetailsData?.section_a?.step5?.credit_period?.end_date
-                ).format(`DD/MM/YY`)
+            projectDetailsData?.credit_period?.end_date
+              ? moment(projectDetailsData?.credit_period?.end_date).format(
+                  `DD/MM/YY`
+                )
               : '-'
           } `,
         ],
