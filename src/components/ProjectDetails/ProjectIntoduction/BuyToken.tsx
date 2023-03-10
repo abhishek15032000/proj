@@ -26,15 +26,15 @@ const BuyToken = (props: BuyTokenProps) => {
     const tempData = [
       {
         heading: 'Lifetime credit value ',
-        value: projectDetailsData?.totalToken,
+        value: projectDetailsData?.token_detail?.lifetime,
       },
       {
         heading: 'Total VCOTs Authorised ',
-        value: projectDetailsData?.totalToken,
+        value: projectDetailsData?.token_detail?.balance,
       },
       {
         heading: 'Available VCOTs for sale ',
-        value: projectDetailsData?.tokens_on_sale,
+        value: projectDetailsData?.token_detail?.onSale,
       },
       {
         heading: ' Unit Price ',
