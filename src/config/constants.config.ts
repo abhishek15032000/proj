@@ -189,7 +189,8 @@ export const filters = [
   },
   {
     filterType: 'Verification Standard',
-    filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
+    // filters: ['Verra Registry', 'Gold Registry', 'BioCarbon Registry'],
+    filters: ['ICR'],
   },
 ]
 
@@ -614,10 +615,10 @@ export const SDGSLIST = [
   },
 ]
 export const availableFilters: any = {
-  'Project Type': [
-    'Registered or Active Project',
-    'Provisional Project or Future Project',
-  ],
+  // 'Project Type': [
+  //   'Registered or Active Project',
+  //   'Provisional Project or Future Project',
+  // ],
 
   'Credit Type': ['Carbon Credit', 'Biodiversity Credit', 'Plastics Credit'],
 
@@ -661,9 +662,10 @@ export const availableFilters: any = {
   ],
 
   'Verification Standard': [
-    'Verra Registry',
-    'Gold Registry',
-    'BioCarbon Registry',
+    // 'Verra Registry',
+    // 'Gold Registry',
+    // 'BioCarbon Registry',
+    'ICR',
   ],
 }
 
