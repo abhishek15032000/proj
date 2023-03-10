@@ -151,8 +151,8 @@ const ProjectDetails = () => {
 
   const getProjectDetails = (projectId: any) => {
     setLoading(true)
-    dataCollectionCalls
-      .getProjectById(projectId)
+    projectDetailsCalls
+      .getProjectDetailsById(projectId)
       .then((result) => setProjectData(result.data))
       .catch((e) => e)
       .finally(() => setLoading(false))
