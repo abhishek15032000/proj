@@ -22,7 +22,7 @@ const initialState: cachingReducerInterface = {
   verifierRejectedProjects: null,
   registryNewProjects: null,
   registryReviewedProjects: null,
-  tabIndex: 1
+  tabIndex: 1,
 }
 const dashboardSlice = createSlice({
   name: 'dashboardSlice',
@@ -38,7 +38,7 @@ const dashboardSlice = createSlice({
       state.issuerVerificationProjects = action.payload
     },
     setVerifierNewProjects: (state, action: PayloadAction<any>) => {
-      state.issuerVerificationProjects = action.payload
+      state.verifierNewProjects = action.payload
     },
     setVerifierRegisteredProjects: (state, action: PayloadAction<any>) => {
       state.verifierRegisteredProjects = action.payload
@@ -71,7 +71,7 @@ export const {
   setVerifierRejectedProjects,
   setRegistryNewProjects,
   setRegistryReviewedProjects,
-  setTabIndex
+  setTabIndex,
 } = dashboardSlice.actions
 
 export default dashboardSlice.reducer

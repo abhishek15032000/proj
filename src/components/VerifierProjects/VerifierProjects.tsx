@@ -11,7 +11,6 @@ import { shallowEqual } from 'react-redux'
 // Local Imports
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 import ListOfProjects from './ListOfProjects'
-import { verifierCalls } from '../../api/verifierCalls.api'
 import { getLocalItem } from '../../utils/Storage'
 import { USER } from '../../api/user.api'
 import { pathNames } from '../../routes/pathNames'
@@ -20,18 +19,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
   setProfileCompletionPercent,
   setProfileUpdated,
-  setVerifierStatsReload,
 } from '../../redux/Slices/verifierSlice'
 import ProjectsStats from '../ProjectStats/ProjectsStats'
-import BlockchainCalls from '../../blockchain/Blockchain'
-import {
-  setCachedVerificationTabAllProjects,
-} from '../../redux/Slices/cachingSlice'
-import { isEqual } from 'lodash'
+import { useVerifierDashboardTable } from '../../hooks/useVerifierDashboardTable'
 
 const VerifierProjects = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  const { loadTableData } = useVerifierDashboardTable()
 
   const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
@@ -41,56 +37,20 @@ const VerifierProjects = () => {
     shallowEqual
   )
 
-  const cachedVerificationTabAllProjects = useAppSelector(
-    ({ caching }) => caching.cachedVerificationTabAllProjects,
+  const verifierDashboardTableLoading = useAppSelector(
+    ({ verifier }) => verifier.verifierDashboardTableLoading,
     shallowEqual
   )
- 
-
-
+  const cachedVerifierDashboardProjects = useAppSelector(
+    ({ caching }) => caching.cachedVerifierDashboardProjects,
+    shallowEqual
+  )
 
   useEffect(() => {
-    dispatch(setCachedVerificationTabAllProjects(cachedVerificationTabAllProjects))
     loadTableData()
     // checkForUserDetails()
     checkForUserDetailsAndWalletAdded()
   }, [])
-
-  const loadTableData = () => {
-    if (
-      cachedVerificationTabAllProjects.length === 0
-    ) {
-      setLoadingTable(true)
-    }
-    // setLoadingTable(true)
-
-    verifierCalls
-      .getAllVerifiers(getLocalItem('userDetails')?.user_id)
-      .then((response) => {
-        const projectListRes = response.data
-        // setTableData(response.data)
-        // dispatch(setCachedVerificationTabAllProjects(response.data))
-
-      if (response) {
-        if (
-          !isEqual(
-            cachedVerificationTabAllProjects,
-            projectListRes
-          )
-        ) {
-          dispatch(setCachedVerificationTabAllProjects(projectListRes))
-        }
-      }
-
-        setLoadingTable(false)
-      })
-      .catch((e) => {
-        setLoadingTable(false)
-      })
-      .finally(() => {
-        dispatch(setVerifierStatsReload(true))
-      })
-  }
 
   const checkForUserDetailsAndWalletAdded = async () => {
     const { wallet_added = false, uuid = '' } = getLocalItem('userDetails2')
@@ -139,26 +99,6 @@ const VerifierProjects = () => {
     }
   }
 
-  const updateVerifierStatus = (status: any, data: any) => {
-    setLoadingTable(true)
-
-    const payload = {
-      _id: data._id,
-      project_id: data.project_id?._id,
-      project_status: status,
-      verifier_id: data.verifier_id,
-      verifier_name: data.verifier_name,
-      verifier_number: data.verifier_number,
-      verifier_address: data.verifier_address,
-    }
-
-    verifierCalls.updateVerifier(payload).then((response) => {
-      //setVerifierStatsReload action making false to make the project stats to run again when it is becoming true in loadTableData() so that when verifier make the action in verifier dahsboard the stats will be updated
-      dispatch(setVerifierStatsReload(false))
-      loadTableData()
-    })
-  }
-
   return (
     <Box sx={{ p: 0 }}>
       <Grid
@@ -168,7 +108,7 @@ const VerifierProjects = () => {
         justifyContent={'space-between'}
       >
         <Grid item xs={12}>
-          <BackHeader title="Dashboard" iconDisable sx={{mb:3}}/>
+          <BackHeader title="Dashboard" iconDisable sx={{ mb: 3 }} />
         </Grid>
 
         <Grid item sm={12} sx={{ pr: 2 }}>
@@ -176,19 +116,18 @@ const VerifierProjects = () => {
         </Grid>
 
         <Grid item xs={12}>
-          {cachedVerificationTabAllProjects.length === 0 && loadingTable === false && (
-            <EmptyComponent
-              title="No project verification request yet!"
-              photoType={1}
-            />
-          )}
+          {cachedVerifierDashboardProjects.length === 0 &&
+            verifierDashboardTableLoading === false && (
+              <EmptyComponent
+                title="No project verification request yet!"
+                photoType={1}
+              />
+            )}
 
-          {((cachedVerificationTabAllProjects.length > 0 && !loadingTable) || loadingTable) && (
-            <ListOfProjects
-              data={cachedVerificationTabAllProjects}
-              loading={loadingTable}
-              updateStatus={updateVerifierStatus}
-            />
+          {((cachedVerifierDashboardProjects.length > 0 &&
+            !verifierDashboardTableLoading) ||
+            verifierDashboardTableLoading) && (
+            <ListOfProjects data={cachedVerifierDashboardProjects} />
           )}
         </Grid>
       </Grid>
