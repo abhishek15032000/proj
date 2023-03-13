@@ -1,5 +1,13 @@
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
-import { Box, Divider, Grid, Paper, Typography } from '@mui/material'
+import {
+  Box,
+  Divider,
+  Grid,
+  Modal,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material'
 import moment from 'moment'
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { shallowEqual } from 'react-redux'
@@ -20,6 +28,7 @@ import CCButton from '../../atoms/CCButton'
 import { ArrowOutward } from '@mui/icons-material'
 import CCFileViewer from '../../atoms/CCFileViewer/CCFileViewer'
 import PdfPage from '../../pages/PdfPage/PdfPage'
+import CloseIcon from '@mui/icons-material/Close'
 declare let window: any
 
 const pdfLoading = false
@@ -49,6 +58,8 @@ const RegistryReviewReport = () => {
   const [loading, setLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
 
+  const [reportSubmittedSuccessModal, setReportSubmittedSuccessModal] =
+    useState(false)
   const [height, setHeight] = useState(0)
   const [height2, setHeight2] = useState(0)
 
@@ -129,8 +140,7 @@ const RegistryReviewReport = () => {
       }
       const res = await registryCalls.reportSumbit(payload)
       if (res?.success) {
-        alert('Report submitted')
-        navigate(pathNames.DASHBOARD)
+        setReportSubmittedSuccessModal(true)
       } else alert('Something wrong in submitting the file')
       console.log('res: ', res)
     } catch (err) {
@@ -193,7 +203,9 @@ const RegistryReviewReport = () => {
         </Box> */}
         <Box>
           <CCButton
+            variant="contained"
             onClick={sumbitReport}
+            disabled={explain.length > 0 ? false : true}
             buttonBackgroundColor={'#006B5E'}
             buttonColor="white"
             sx={{
@@ -304,9 +316,13 @@ const RegistryReviewReport = () => {
               <Box
                 sx={{
                   height: '86%',
+                  width: '100%',
                   px: 4,
                   overflowY: 'auto',
                   overflowX: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
                 }}
               >
                 <PdfPage data={location.state?.projectReportDetails} />
@@ -621,6 +637,69 @@ const RegistryReviewReport = () => {
         setLifetimeVCOT={setLifetimeVCOT}
         closeModal={closeModal}
       />
+      <Modal
+        open={reportSubmittedSuccessModal}
+        onClose={() => setReportSubmittedSuccessModal(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'rgba(56, 142, 129, 0.4)',
+        }}
+      >
+        <>
+          {/*<Box
+            sx={{ position: 'absolute', top: 50, right: 50 }}
+            onClick={() => console.log('click')}
+          >
+            <CloseIcon
+              onClick={() => {
+                navigate(pathNames.DASHBOARD)
+              }}
+              sx={{ color: '#FFFFFF', fontSize: 30, cursor: 'pointer' }}
+            />
+          </Box>*/}
+          <Paper
+            sx={{
+              px: 9,
+              py: 5,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              borderRadius: 3,
+              outline: 'none',
+              width: '40%',
+            }}
+          >
+            <Stack direction={'column'} alignItems="center">
+              <Typography
+                textAlign="center"
+                sx={{ fontWeight: 500, fontSize: 19 }}
+              >
+                {/*Report submitted.*/}
+                Report submitted by Registry and Tokens minting Successful.
+              </Typography>
+              <CCButton
+                onClick={() => {
+                  navigate(pathNames.DASHBOARD)
+                }}
+                sx={{
+                  mt: 3,
+                  minWidth: 0,
+                  padding: '10px 66px',
+                  fontSize: 19,
+                  fontWeight: 500,
+                  borderRadius: 20,
+                }}
+              >
+                Ok
+              </CCButton>
+            </Stack>
+          </Paper>
+        </>
+      </Modal>
     </Box>
   )
 }

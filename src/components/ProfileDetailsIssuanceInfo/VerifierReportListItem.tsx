@@ -1,5 +1,5 @@
 // React Imports
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
 import { Box, Grid, Modal, Paper, Stack, Typography } from '@mui/material'
@@ -15,6 +15,7 @@ import { useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import { USER } from '../../api/user.api'
 
 interface VerifierReportListItemListItemProps {
   data: any
@@ -30,6 +31,27 @@ const VerifierReportListItemListItem: FC<
 
   const [showModal, setShowModal] = useState(false)
   const [showVerifierDetails, setShowVerifierDetails] = useState<boolean>(false)
+
+  const [loading, setLoading] = useState(false)
+  const [verifierDetails, setVerifierDetails] = useState<any | null>(null)
+
+  useEffect(() => {
+    if (props?.data?.verifier_id) {
+      getVerifierDetails(props?.data?.verifier_id)
+    }
+  }, [props?.data?.verifier_id])
+
+  const getVerifierDetails = async (verifierId: string) => {
+    setLoading(true)
+    try {
+      const userResponse = await USER.getUsersById(verifierId)
+      setVerifierDetails(userResponse?.data)
+    } catch (err) {
+      console.log('Error in USER.getUsersById api :', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -92,14 +114,16 @@ const VerifierReportListItemListItem: FC<
                 fontStyle: 'normal',
                 mt: 1,
               }}
-              // onMouseEnter={() => setShowVerifierDetails(true)}
-              // onMouseLeave={() => setShowVerifierDetails(false)}
+              onMouseEnter={() => setShowVerifierDetails(true)}
+              onMouseLeave={() => setShowVerifierDetails(false)}
             >
               {props?.data?.verifier_name}
             </Typography>
             {/*show when hovered on verifier_name*/}
             {showVerifierDetails && (
-              <VerifierDetails verifierId={props?.data?.verifier_id} />
+              <VerifierDetails
+                verifierDetails={verifierDetails && verifierDetails}
+              />
             )}
           </Box>
 

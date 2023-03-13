@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { dataCollectionCalls } from '../../api/dataCollectionCalls'
 import { fileUploadCalls } from '../../api/fileUpload.api'
 import { useAppDispatch } from '../../hooks/reduxHooks'
-import { setPageCount, setPdfData } from '../../redux/Slices/pdfSlice'
+import { setPdfData } from '../../redux/Slices/pdfSlice'
 import FrontPage from './FrontPage'
 import IndexPage from './IndexPage'
 import ProjectIntro from './ProjectIntro'
@@ -43,16 +43,18 @@ const PdfPage: FC<PdfPageProps> = ({ id, data }) => {
   }
 
   return (
-    <Box>
-      <FrontPage />
-      <IndexPage />
-      <ProjectIntro />
-      <SectionA />
-      <SectionB />
-      <SectionC />
-      <SectionD />
-      <SectionE />
-    </Box>
+    <div id="pdfwrapper">
+      <div>
+        <FrontPage />
+        <IndexPage />
+        <ProjectIntro />
+        <SectionA />
+        <SectionB />
+        <SectionC />
+        <SectionD />
+        <SectionE />
+      </div>
+    </div>
   )
 }
 

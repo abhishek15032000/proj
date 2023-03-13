@@ -205,7 +205,7 @@ const Profile: FC<ProfileProps> = (props) => {
   }
 
   useEffect(() => {
-    tokenContractCalls()
+    // tokenContractCalls()
     getVCOAvailabelForSale()
   }, [])
 
@@ -234,25 +234,25 @@ const Profile: FC<ProfileProps> = (props) => {
     }
   }, [exchangeBal])
 
-  const tokenContractCalls = async () => {
-    try {
-      setLoading(true)
-      const tokenContractFunctions = await BlockchainCalls.token_caller()
-      await tokenContractFunctions.estimateGas.balanceOf(accountAddress)
-      const balanceCallRes = await tokenContractFunctions.balanceOf(
-        accountAddress
-      )
-      const createProjectRes = await tokenContractFunctions.balanceOf(
-        accountAddress
-      )
-      const bal = Number(createProjectRes.toString()) * 10 ** -18
-      setVCOOnSale(bal)
-    } catch (error) {
-      console.log('Error : ', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const tokenContractCalls = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const tokenContractFunctions = await BlockchainCalls.token_caller()
+  //     await tokenContractFunctions.estimateGas.balanceOf(accountAddress)
+  //     const balanceCallRes = await tokenContractFunctions.balanceOf(
+  //       accountAddress
+  //     )
+  //     const createProjectRes = await tokenContractFunctions.balanceOf(
+  //       accountAddress
+  //     )
+  //     const bal = Number(createProjectRes.toString()) * 10 ** -18
+  //     setVCOOnSale(bal)
+  //   } catch (error) {
+  //     console.log('Error : ', error)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const getVCOAvailabelForSale = async () => {
     try {

@@ -3,8 +3,32 @@ import { Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Layout from './Layout/Layout'
 import PageDynamic from './Layout/PageDynamic'
+import { useAppSelector } from '../../hooks/reduxHooks'
+import { shallowEqual } from 'react-redux'
 
 const IndexPage = () => {
+  const sectionA = useAppSelector(
+    ({ pdfPage }) => pdfPage.sectionA,
+    shallowEqual
+  )
+
+  const sectionB = useAppSelector(
+    ({ pdfPage }) => pdfPage.sectionB,
+    shallowEqual
+  )
+  const sectionC = useAppSelector(
+    ({ pdfPage }) => pdfPage.sectionC,
+    shallowEqual
+  )
+  const sectionD = useAppSelector(
+    ({ pdfPage }) => pdfPage.sectionD,
+    shallowEqual
+  )
+  const sectionE = useAppSelector(
+    ({ pdfPage }) => pdfPage.sectionE,
+    shallowEqual
+  )
+
   const content_list = [
     {
       name: 'PROJECT INTRODUCTION',
@@ -12,7 +36,7 @@ const IndexPage = () => {
     },
     {
       name: 'Description of Project Activity',
-      page: '2',
+      page: sectionA,
       section: 'A',
       list: [
         'Purpose & General description',
@@ -26,7 +50,7 @@ const IndexPage = () => {
     },
     {
       name: 'Implementation of the project activity',
-      page: '3',
+      page: sectionB,
       section: 'B',
       list: [
         'Description of implemented registered project activity',
@@ -35,12 +59,12 @@ const IndexPage = () => {
     },
     {
       name: 'Description of Monitoring Activity',
-      page: '4',
+      page: sectionC,
       section: 'C',
     },
     {
       name: 'Data and parameters',
-      page: '5',
+      page: sectionD,
       section: 'D',
       list: [
         'Data and parameters at ex-ante ',
@@ -50,7 +74,7 @@ const IndexPage = () => {
     },
     {
       name: 'Calculation of emission reductions or GHG removals by sinks',
-      page: '6',
+      page: sectionE,
       section: 'E',
       list: [
         'Calculation of baseline emissions',

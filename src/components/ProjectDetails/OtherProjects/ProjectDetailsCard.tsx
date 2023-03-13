@@ -6,12 +6,13 @@ import { Images } from '../../../theme'
 import { pathNames } from '../../../routes/pathNames'
 import { useLocation, useNavigate, createSearchParams } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import { useAppSelector, useAppDispatch } from '../../../hooks/reduxHooks'
 import { Grid, Tooltip, Typography } from '@mui/material'
 import { limitTitle } from '../../../utils/commonFunctions'
 import { FileDownloadSharp } from '@mui/icons-material'
 import { fileUploadCalls } from '../../../api/fileUpload.api'
 import { IMAGE_SIZE_PREFIXES } from '../../../config/constants.config'
+import { setCacheBannerImages } from '../../../redux/Slices/marketPlaceCachingSlice'
 
 interface ProjectDetailsCardProps {
   project: any
@@ -20,13 +21,19 @@ interface ProjectDetailsCardProps {
   [x: string]: any
   onClickDisable?: boolean
 }
+
 const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const location = useLocation()
 
   const { project, navigationAction, justifyContent = 'center', onClickDisable = false } = props
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
+  const cacheBannerImages = useAppSelector(
+    ({ marketplaceCaching }) => marketplaceCaching.cacheBannerImages,
+    shallowEqual
+  )
   const [fields, setFields] = useState<any>([])
 
   const [bannerImage, setBannerImage] = useState<any>(false)
@@ -54,14 +61,25 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
     ]
     setFields(fieldList)
     //get bannerImage
-    if (!bannerImage && project?.banner_image[0]) {
+    const isBanner = cacheBannerImages[project?.uuid] ? false : true
+    if (isBanner) {
       const data = project
       fileUploadCalls
         .getFile(IMAGE_SIZE_PREFIXES.THUMBNAIL + data?.banner_image[0])
-        .then((res) => setBannerImage(URL.createObjectURL(res)))
+        .then((res) => {
+          dispatch(
+            setCacheBannerImages({
+              [data?.uuid]: URL.createObjectURL(res),
+            })
+          )
+          setBannerImage(URL.createObjectURL(res))
+        })
+    }
+    if (!bannerImage && project?.banner_image[0] && !isBanner) {
+      setBannerImage(cacheBannerImages[project?.uuid])
     }
   }, [project])
-
+  
   const onClickHandler = () => {
     if(onClickDisable){
       return

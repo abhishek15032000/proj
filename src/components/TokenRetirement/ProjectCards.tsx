@@ -31,9 +31,14 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
 
   useEffect(() => {
     const data = project
-    fileUploadCalls
-      .getFile(IMAGE_SIZE_PREFIXES.THUMBNAIL + data?.banner_image[0])
-      .then((res) => setBannerImage(URL.createObjectURL(res)))
+
+    if (data?.project_details?.banner_image?.length) {
+      fileUploadCalls
+        .getFile(
+          IMAGE_SIZE_PREFIXES.THUMBNAIL + data?.project_details?.banner_image[0]
+        )
+        .then((res) => setBannerImage(URL.createObjectURL(res)))
+    }
   }, [project])
 
   useEffect(() => {
@@ -52,6 +57,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
         value: balance,
       },
     ]
+
     setFields(fieldList)
   }, [props.project])
 
@@ -114,7 +120,7 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
                 left: '8px',
               }}
             >
-              {project?.token_details
+              {project?.token_address
                 ? 'Registered Project'
                 : 'Provisional Project'}
             </Box>
@@ -227,8 +233,9 @@ const ProjectCards: FC<ProjectDetailsCardProps> = (props) => {
                 navigate(pathNames.RETIRE_TOKENS, {
                   state: {
                     tokenDetails: props?.project?.token_details,
-                    projectID: props?.project?._id,
-                    projectUUID: props?.project?.uuid,
+                    tokenAddress: props?.project?.token_address,
+                    projectID: props?.project?.project_details?._id,
+                    projectUUID: props?.project?.project_details?.uuid,
                   },
                 })
               }

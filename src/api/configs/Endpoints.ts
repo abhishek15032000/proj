@@ -41,6 +41,7 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/project/getProjectDetails',
     getVerifiedProjects:
       ENDPOINTS.carbonServiceURL + '/project/getVerifiedProjects',
+    getAllProjectsTab: ENDPOINTS.carbonServiceURL + '/project/getProjects',
   },
   projectSections: {
     updateProjectSectionA:
@@ -126,6 +127,11 @@ export const URL_PATH = {
     getRetirements: ENDPOINTS.carbonServiceURL + '/buyer/getRetirements',
     getPurchasedProjectToRetire:
       ENDPOINTS.carbonServiceURL + '/buyer/getPurchasedProjectToRetire',
+    getPurchasedProjectToRetireV2:
+      ENDPOINTS.carbonServiceURL + '/buyer/getPurchasedProjectToRetireV2',
+    getBuyerStats: ENDPOINTS.carbonServiceURL + '/buyer/getStats',
+    getPurchasedProject:
+      ENDPOINTS.carbonServiceURL + '/buyer/getPurchasedProject',
   },
   notification: {
     getNotification:

@@ -33,7 +33,7 @@ const MainHeading: FC<MainHeadingProps> = ({ value }) => {
       >
         {value}
       </Box>
-      <Box height={height} sx={{ mb: 4 }}></Box>
+      <Box height={height} sx={{ mb: 3.35 }}></Box>
     </>
   )
 }

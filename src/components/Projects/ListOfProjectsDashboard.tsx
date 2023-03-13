@@ -10,7 +10,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 // Functional Imports
 import moment from 'moment'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
 
 // Local Imports
 import TabSelector from '../../atoms/TabSelector/TabSelector'
@@ -35,10 +35,17 @@ import {
 } from '../../redux/Slices/MonthlyReportUpdate'
 import ShortenedIDComp from '../../atoms/ShortenedIDComp.tsx/ShortenedIDComp'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import CCTable from '../../atoms/CCTable'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 import { Images } from '../../theme'
 import { setSectionIndex } from '../../redux/Slices/issuanceDataCollection'
+import {
+  setIssuerNewProjects,
+  setIssuerRegisteredProjects,
+  setIssueVerificationProjects,
+  setTabIndex
+} from '../../redux/Slices/Dashboard/dashboardSlice'
 
 let index = 0
 const headingsNew = [
@@ -77,24 +84,65 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [tabIndex, setTabIndex] = useState(1)
-  const [rowsNew, setRowsNew]: any = useState([{}])
-  const [rowsRegistered, setRowsRegistered]: any = useState([{}])
+  const cachedIssuerDashboardProjects = useAppSelector(
+    ({ caching }) => caching.cachedIssuerDashboardProjects,
+    shallowEqual
+  )
+  const issuerNewProjects = useAppSelector(
+    ({ dashboard }) => dashboard.issuerNewProjects,
+    shallowEqual
+  )
+  const issuerRegisteredProjects = useAppSelector(
+    ({ dashboard }) => dashboard.issuerRegisteredProjects,
+    shallowEqual
+  )
+
+  const issuerVerificationProjects = useAppSelector(
+    ({ dashboard }) => dashboard.issuerVerificationProjects,
+    shallowEqual
+  )
+  const cachedNewTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedNewTabAllProjects,
+    shallowEqual
+  )
+
+  const cachedVerificationTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedVerificationTabAllProjects,
+    shallowEqual
+  )
+
+  const cachedRegisterTabAllProjects = useAppSelector(
+    ({ caching }) => caching.cachedRegisterTabAllProjects,
+    shallowEqual
+  )
+  const tabIndex = useAppSelector(
+    ({ dashboard }) => dashboard.tabIndex,
+    shallowEqual
+  )
+
+  // const [tabIndex, setTabIndex] = useState(1)
 
   const openProjectDetails = (projectDetails: any, redirect: any) => {
     if (projectDetails) {
-      const percentageAddedData = addSectionPercentages(projectDetails)
+      // const percentageAddedData = addSectionPercentages(projectDetails)
 
-      dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
-      dispatch(setCurrentProjectDetails(percentageAddedData))
+      // dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
+      // dispatch(setCurrentProjectDetails(projectDetails))
 
       if (redirect === 'Details') {
-        navigate({
-          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
-          search: `?${createSearchParams({
-            projectId: projectDetails?.uuid,
-          })}`,
-        })
+        navigate(
+          {
+            pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+            search: `?${createSearchParams({
+              projectId: projectDetails?.uuid,
+            })}`,
+          },
+          {
+            state: {
+              status: projectDetails?.project_status,
+            },
+          }
+        )
       } else if (redirect === 'Monthly') {
         dispatch(setMonthlyReportSectionIndex(0))
         dispatch(setSubSectionIndex(0))
@@ -107,16 +155,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
   }
 
   useEffect(() => {
-    const newData: any = [],
-      registeredData: any = []
+    const newData: any = []
 
-    props.data.map((item: any, index: any) => {
-      if (
-        item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ||
-        item.project_status ===
-          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
-        item.project_status === PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT
-      ) {
+    cachedNewTabAllProjects &&
+      cachedNewTabAllProjects.length &&
+      cachedNewTabAllProjects.map((item: any, index: any) => {
         newData.push([
           // <ShortenedIDComp key={index} referenceId={item.uuid} />,
           <Box
@@ -175,19 +218,20 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             '-'
           ),
           item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
-            isProjectCompleted(item) ? (
-              <TextButton
-                title="Select Verifier"
-                onClick={() => openProjectDetails(item, 'Verify')}
-              />
-            ) : (
-              <CreateIcon
-                sx={{ cursor: 'pointer' }}
-                key="1"
-                onClick={() => moveToSection(item)}
-              />
-            )
+            // isProjectCompleted(item) ? (
+            //   <TextButton
+            //     title="Select Verifier"
+            //     onClick={() => openProjectDetails(item, 'Verify')}
+            //   />
+            // ) : (
+            <CreateIcon
+              sx={{ cursor: 'pointer' }}
+              key="1"
+              onClick={() => moveToSection(item)}
+            />
           ) : (
+            //  )
+
             '-'
           ),
           <Box key="1">
@@ -197,16 +241,117 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             />
           </Box>,
         ])
-      }
+      })
 
-      if (
-        [
-          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
-          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
-          PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
-          PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
-        ].includes(item.project_status)
-      ) {
+    if (newData.length !== 0) {
+      dispatch(setIssuerNewProjects(newData))
+    } else {
+      dispatch(setIssuerNewProjects(null))
+    }
+  }, [cachedNewTabAllProjects])
+
+  useEffect(() => {
+    const verificationData: any = []
+
+    cachedVerificationTabAllProjects &&
+      cachedVerificationTabAllProjects.length &&
+      cachedVerificationTabAllProjects.map((item: any, index: any) => {
+        verificationData.push([
+          // <ShortenedIDComp key={index} referenceId={item.uuid} />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText
+              key={index}
+              text={item?.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
+          <LimitedText
+            key={index}
+            text={moment(item?.createdAt).format('DD/MM/YYYY')}
+          />,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => openProjectDetails(item, 'Details')}
+          >
+            <LimitedText text={item?.company_name} widthLimit="200px" />
+          </Box>,
+          <LimitedText key={index} text={item?.location} />,
+          item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
+            <ApprovalChip variant="Yet to Select" key={index} />
+          ) : item?.project_status ===
+            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
+            <ApprovalChip variant="Selected" key={index} />
+          ) : item?.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
+            <ApprovalChip variant="Selected" key={index} />
+          ) : (
+            item?.project_status ===
+              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
+              <ApprovalChip variant="Finalised" key={index} />
+            )
+          ),
+          item?.verifier_details_id ? (
+            <Box
+              key={'1'}
+              sx={{
+                display: 'flex',
+                justifyContent: 'start',
+                alignItems: 'center',
+              }}
+            >
+              <WorkOutlineIcon />
+              <Typography sx={{ fontSize: 14, fontWeight: 400, ml: 1 }}>
+                {item.verifier_details_id?.verifier_name}
+              </Typography>
+            </Box>
+          ) : (
+            '-'
+          ),
+          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
+            // isProjectCompleted(item) ? (
+            //   <TextButton
+            //     title="Select Verifier"
+            //     onClick={() => openProjectDetails(item, 'Verify')}
+            //   />
+            // ) : (
+            <CreateIcon
+              sx={{ cursor: 'pointer' }}
+              key="1"
+              onClick={() => moveToSection(item)}
+            />
+          ) : (
+            // )
+
+            '-'
+          ),
+          <Box key="1">
+            <ChevronRightIcon
+              sx={{ cursor: 'pointer' }}
+              onClick={() => openProjectDetails(item, 'Details')}
+            />
+          </Box>,
+        ])
+      })
+
+    if (verificationData.length !== 0) {
+      dispatch(setIssueVerificationProjects(verificationData))
+    } else {
+      dispatch(setIssueVerificationProjects(null))
+    }
+  }, [cachedVerificationTabAllProjects])
+  
+  useEffect(() => {
+    const registeredData: any = []
+
+    cachedRegisterTabAllProjects &&
+      cachedRegisterTabAllProjects.length &&
+      cachedRegisterTabAllProjects.map((item: any, index: any) => {
         registeredData.push([
           <Box
             key={index}
@@ -303,64 +448,51 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             />
           </Box>,
         ])
-      }
-    })
-
-    if (newData.length !== 0) {
-      // setRowsNew(newData.slice(0, 6))
-      setRowsNew(newData)
-    } else {
-      setRowsNew([{}])
-    }
+      })
 
     if (registeredData.length !== 0) {
-      // setRowsRegistered(registeredData.slice(0, 6))
-      setRowsRegistered(registeredData)
+      dispatch(setIssuerRegisteredProjects(registeredData))
     } else {
-      setRowsRegistered([{}])
+      dispatch(setIssuerRegisteredProjects(null))
     }
-  }, [props])
+  }, [cachedRegisterTabAllProjects])
 
   const moveToSection = (projectDetails: any) => {
     if (projectDetails) {
-      const percentageAddedData = addSectionPercentages(projectDetails)
-      dispatch(setCurrentProjectDetailsUUID(projectDetails?.uuid))
-      dispatch(setCurrentProjectDetails(percentageAddedData))
-
-      //Redirect to Section A (To continue editing/filling data )
-      dispatch(setSectionIndex(1))
-      navigate(pathNames.ISSUANCE_DATA_COLLECTION)
+      navigate(
+        {
+          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+          search: `?${createSearchParams({
+            projectId: projectDetails?.uuid,
+          })}`,
+        },
+        {
+          state: {
+            isEdited: true,
+          },
+        }
+      )
     }
   }
 
   return (
     <>
       <TabSelector
-        tabArray={['New', 'Registered']}
+        tabArray={['New', 'Verification', 'Registered']}
         tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
+        setTabIndex={(bool:number)=>dispatch(setTabIndex(bool))}
         sx={{ marginBottom: 2 }}
       />
 
-      {props.loading && <CCTableSkeleton sx={{ mt: 2 }} items={5} />}
-
-      {!props.loading &&
-        ((tabIndex === 2 && Object.keys(rowsRegistered[0]).length > 0) ||
-          (tabIndex === 1 && Object.keys(rowsNew[0]).length > 0)) && (
-          // <SliderTable
-          //   headings={tabIndex === 1 ? headingsNew : headingsRegistered}
-          //   rows={tabIndex === 1 ? rowsNew : rowsRegistered}
-          //   sx={{ minWidth: 100 }}
-          //   maxWidth={'100%'}
-          //   // tileHeight={'105px'}
-          //   tableSx={{ minWidth: 100 }}
-          // />
+      {props?.loading ? (
+        <CCTableSkeleton sx={{ mt: 2 }} items={5} />
+      ) : tabIndex === 1 ? (
+        issuerNewProjects && issuerNewProjects.length ? (
           <CCTable
-            headings={tabIndex === 1 ? headingsNew : headingsRegistered}
-            rows={tabIndex === 1 ? rowsNew : rowsRegistered}
+            headings={headingsNew}
+            rows={issuerNewProjects}
             sx={{ minWidth: 100 }}
             maxWidth={'100%'}
-            // tileHeight={'105px'}
             tableSx={{ minWidth: 100 }}
             hideScrollbar
             pagination
@@ -368,15 +500,42 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             stickyLastCol
             stickySecondLastCol
           />
-        )}
-
-      {!props.loading &&
-        Object.keys(rowsNew[0]).length === 0 &&
-        tabIndex === 1 && <NoData title="No new projects available" />}
-
-      {!props.loading &&
-        Object.keys(rowsRegistered[0]).length === 0 &&
-        tabIndex === 2 && <NoData title="No registered projects available" />}
+        ) : (
+          <NoData title="No new projects available" />
+        )
+      ) : tabIndex === 2 ? (
+        issuerVerificationProjects && issuerVerificationProjects.length ? (
+          <CCTable
+            headings={headingsNew}
+            rows={issuerVerificationProjects}
+            sx={{ minWidth: 100 }}
+            maxWidth={'100%'}
+            tableSx={{ minWidth: 100 }}
+            hideScrollbar
+            pagination
+            rowsPerPageProp={5}
+            stickyLastCol
+            stickySecondLastCol
+          />
+        ) : (
+          <NoData title="No verification projects available" />
+        )
+      ) : issuerRegisteredProjects && issuerRegisteredProjects.length ? (
+        <CCTable
+          headings={headingsRegistered}
+          rows={issuerRegisteredProjects}
+          sx={{ minWidth: 100 }}
+          maxWidth={'100%'}
+          tableSx={{ minWidth: 100 }}
+          hideScrollbar
+          pagination
+          rowsPerPageProp={5}
+          stickyLastCol
+          stickySecondLastCol
+        />
+      ) : (
+        <NoData title="No registered projects available" />
+      )}
     </>
   )
 }
