@@ -155,9 +155,13 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
                 fontStyle: 'normal',
               }}
             >
-              {projectDetailsData?.location ||
-                projectData?.location + ' | ' + projectDetailsData?.area ||
-                projectData?.area}
+              {projectDetailsData?.location
+                ? projectDetailsData?.location
+                : '-'}
+              {' | '}
+              {projectDetailsData?.area
+                ? projectDetailsData?.area + ' Sq.Km.'
+                : '-'}
             </Typography>
           </Box>
         </Grid>

@@ -27,9 +27,7 @@ import { getLocalItem } from '../../utils/Storage'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
-import {
-  setTabIndex,
-} from '../../redux/Slices/cachingSlice'
+import { setTabIndex } from '../../redux/Slices/cachingSlice'
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 
@@ -81,7 +79,6 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
     ({ caching }) => caching.tabIndex,
     shallowEqual
   )
-  
 
   // useEffect(() => {
   //   verifierCalls
@@ -238,10 +235,10 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
           ) : (
             '-'
           ),
-          (item?.project_status ===
+          item?.project_status ===
             PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
-            item?.project_status ===
-              PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT) && (
+          item?.project_status ===
+            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
             <ChevronRightIcon
               key={index}
               sx={{ cursor: 'pointer' }}
@@ -249,6 +246,8 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
                 redirectToProjectDetails(item)
               }}
             />
+          ) : (
+            <Box sx={{ p: 1 }}> {'-'}</Box>
           ),
         ])
       }
@@ -431,7 +430,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
       <TabSelector
         sx={{ marginTop: 0 }}
         tabIndex={tabIndex}
-        setTabIndex={(bool:number)=>dispatch(setTabIndex(bool))}
+        setTabIndex={(bool: number) => dispatch(setTabIndex(bool))}
         tabArray={['New', 'Registered']}
       />
       {/* )} */}
