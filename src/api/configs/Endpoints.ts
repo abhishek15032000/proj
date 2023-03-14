@@ -87,6 +87,7 @@ export const URL_PATH = {
   },
   fileupload: {
     getFile: ENDPOINTS.carbonServiceURL + '/fileupload/getFile',
+    getPdfFile: ENDPOINTS.carbonServiceURL + '/fileupload/getPdfFile',
   },
   transaction: {
     getTransactionByUser:
