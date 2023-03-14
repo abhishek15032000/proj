@@ -11,7 +11,7 @@ import { Colors, Images } from '../../theme'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { shallowEqual } from 'react-redux'
 import ApprovalChip from '../../atoms/ApprovalChip/ApprovalChip'
-import { downloadFile } from '../../utils/commonFunctions'
+import { downloadFile, downloadPdfFile } from '../../utils/commonFunctions'
 import DownloadIcon from '@mui/icons-material/Download'
 import TextButton from '../../atoms/TextButton/TextButton'
 import ArticleIcon from '@mui/icons-material/Article'
@@ -67,7 +67,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
               sx={{ color: '#388E81', cursor: 'pointer' }}
               onClick={() => {
                 if (!projectDetails.project_pdf) return
-                downloadFile(projectDetails?.project_pdf)
+                downloadPdfFile('pdfs/' + projectDetails?.project_pdf)
               }}
             />
           </Box>,
@@ -238,7 +238,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
               sx={{ color: '#388E81', cursor: 'pointer' }}
               onClick={() => {
                 if (!projectDetails.project_pdf) return
-                downloadFile(projectDetails?.project_pdf)
+                downloadPdfFile('pdfs/' + projectDetails?.project_pdf)
               }}
             />
           </Box>,
@@ -426,7 +426,12 @@ const Reports = ({ projectDetails }: reportsProps) => {
         <Box sx={{ fontSize: 22, color: Colors.darkPrimary1 }}>
           Report received
         </Box>
-        <CCTable headings={headings} rows={tableRows} stickyLastCol  hideScrollbar/>
+        <CCTable
+          headings={headings}
+          rows={tableRows}
+          stickyLastCol
+          hideScrollbar
+        />
       </Paper>
     </>
   )

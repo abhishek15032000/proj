@@ -48,7 +48,7 @@ import LoaderOverlay from '../../components/LoderOverlay'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
 import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice'
 import DownloadIcon from '@mui/icons-material/Download'
-import { downloadFile } from '../../utils/commonFunctions'
+import { downloadFile, downloadPdfFile } from '../../utils/commonFunctions'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
 
@@ -157,7 +157,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                     sx={{ color: '#388E81', cursor: 'pointer' }}
                     onClick={() => {
                       if (!i.project_pdf) return
-                      downloadFile(i?.project_pdf)
+                      downloadPdfFile('pdfs/' + i?.project_pdf)
                     }}
                   />
                 </Box>,

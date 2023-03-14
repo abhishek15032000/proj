@@ -32,7 +32,12 @@ const CCFileViewer: FC<CCFileViewerProps> = (props) => {
         const fileURL =
           item.search('.pdf') > 0 ? item : IMAGE_SIZE_PREFIXES.THUMBNAIL + item
 
-        fileUploadCalls.getFile(fileURL).then((res: any) => {
+        const file_api: any =
+          item.search('.pdf') > 0
+            ? fileUploadCalls.getPdfFile
+            : fileUploadCalls.getFile
+
+        file_api(fileURL).then((res: any) => {
           const image = URL.createObjectURL(res)
           setFile(image)
           return image
