@@ -436,7 +436,7 @@ const ProjectListsWithFilter = () => {
             pb: 1,
           }}
         >
-          {loading && cachedMarketplaceProject?.length > 0 ? (
+          {loading && cachedMarketplaceProject?.length === 0 ? (
             <ProjectDetailsCardSkeleton />
           ) : projects?.length !== 0 ? (
             projects?.map((project: any, index: number) => (
