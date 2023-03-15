@@ -139,7 +139,8 @@ const ProjectDetails = () => {
   const [searchParams] = useSearchParams()
   const [projectData, setProjectData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
-
+  const [SDGsData, setSDGsData] = useState<any>([1])
+  console.log('projectData: ', projectData)
   useEffect(() => {
     window.scrollTo(0, 0)
     const projectId = searchParams.get('projectId')
@@ -153,7 +154,10 @@ const ProjectDetails = () => {
     setLoading(true)
     projectDetailsCalls
       .getProjectDetailsById(projectId)
-      .then((result) => setProjectData(result.data))
+      .then((result) => {
+        setProjectData(result.data)
+        setSDGsData(result.data.SDG)
+      })
       .catch((e) => e)
       .finally(() => setLoading(false))
   }
@@ -171,7 +175,6 @@ const ProjectDetails = () => {
 
   const [tabIndex, setTabIndex] = useState(1)
   const navigate = useNavigate()
-
   const headerRenderer = () => {
     return (
       <Grid
@@ -210,6 +213,8 @@ const ProjectDetails = () => {
     )
   }
   const viewRenderer = () => {
+    console.log('SDG: ', data)
+
     return (
       <>
         {
@@ -269,7 +274,10 @@ const ProjectDetails = () => {
                       <Grid item xs={12} lg={5}>
                         {loading ? (
                           <SDGSComponent />
-                        ) : (
+                        ) : projectData &&
+                          projectData?.project_status > 2 &&
+                          SDGsData &&
+                          SDGsData.length > 0 ? (
                           <Grid
                             container
                             sx={{
@@ -319,53 +327,51 @@ const ProjectDetails = () => {
                                   pl: 3,
                                 }}
                               >
-                                {data &&
-                                  data.length > 0 &&
-                                  data.map((item: any, index: any) => (
-                                    <Grid
-                                      // columns={1}
-                                      // columnSpacing={5}
-                                      item
-                                      key={index}
-                                      sx={{
-                                        mt: '13px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        // border: '1px solid #B1CCC6',
-                                        // borderRadius: '12px',
+                                {SDGsData.map((item: any, index: any) => (
+                                  <Grid
+                                    // columns={1}
+                                    // columnSpacing={5}
+                                    item
+                                    key={index}
+                                    sx={{
+                                      mt: '13px',
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      // border: '1px solid #B1CCC6',
+                                      // borderRadius: '12px',
 
+                                      width: '85px',
+                                      height: '120px',
+                                      // m: 2,
+                                      mx: 1,
+                                    }}
+                                  >
+                                    <img
+                                      data-testid="logo-img"
+                                      className="logoImage"
+                                      src={SDGSLIST[item - 1].image}
+                                      style={{ width: '70px' }}
+                                    />
+                                    <Typography
+                                      sx={{
+                                        color: 'white',
+                                        fontSize: 12,
+                                        fontWeight: 400,
+                                        textAlign: 'center',
                                         width: '85px',
-                                        height: '120px',
-                                        // m: 2,
-                                        mx: 1,
+                                        mt: '5px',
+                                        lineHeight: '16px',
+
+                                        letterSpacing: '0.5px',
+                                        fontStyle: 'normal',
                                       }}
                                     >
-                                      <img
-                                        data-testid="logo-img"
-                                        className="logoImage"
-                                        src={SDGSLIST[item - 1].image}
-                                        style={{ width: '70px' }}
-                                      />
-                                      <Typography
-                                        sx={{
-                                          color: 'white',
-                                          fontSize: 12,
-                                          fontWeight: 400,
-                                          textAlign: 'center',
-                                          width: '85px',
-                                          mt: '5px',
-                                          lineHeight: '16px',
-
-                                          letterSpacing: '0.5px',
-                                          fontStyle: 'normal',
-                                        }}
-                                      >
-                                        {SDGSLIST[item - 1].name}
-                                      </Typography>
-                                    </Grid>
-                                  ))}
+                                      {SDGSLIST[item - 1].name}
+                                    </Typography>
+                                  </Grid>
+                                ))}
                               </Grid>
                             </Grid>
                             <Grid
@@ -406,7 +412,7 @@ const ProjectDetails = () => {
                               </Box>
                             </Grid>
                           </Grid>
-                        )}
+                        ) : null}
                       </Grid>
 
                       {projectData?.project_image?.length ? (
