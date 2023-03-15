@@ -158,6 +158,7 @@ const About: FC<AboutProps> = (props) => {
     projectDetailsCalls
       .getProjectDetailsById(projectId)
       .then((result: any) => {
+        console.log('result of API: ', result)
         setProjectData(result.data)
         setSDGsData(result.data?.SDG)
       })
@@ -255,7 +256,7 @@ const About: FC<AboutProps> = (props) => {
                     {loading ? (
                       <SDGSComponent />
                     ) : projectData &&
-                      projectData?.project_status > 0 &&
+                      projectData?.project_status > 2 &&
                       SDGsData &&
                       SDGsData.length > 0 ? (
                       <Grid
