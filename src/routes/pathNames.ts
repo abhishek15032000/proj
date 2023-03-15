@@ -48,6 +48,7 @@ export const pathNames = {
   WALLET: '/wallet',
   RISK_DASHBOARD: '/RiskDashboard',
   PDF: '/pdf',
+  ALL_PROJECTS: '/all-projects',
 }
 
 export const linkLabels = {
@@ -57,5 +58,6 @@ export const linkLabels = {
   Marketplace: 'Marketplace',
   Wallet: 'Wallet',
   TokenRetirement: 'Token Retirement',
-  Projects: 'Projects',
+  //Projects: 'Projects',
+  All_Projects: 'Projects',
 }

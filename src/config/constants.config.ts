@@ -134,6 +134,25 @@ export const PROJECT_ALL_STATUS = {
   REJECTED_BY_THE_ISSUER: 9,
   REJECTED_BY_THE_VERIFIER: 10,
 }
+
+export const PROJECT_STATUS_NAME = {
+  PROJECT_DESCRIPTION_UPLOADED: 'Project Description Uploaded',
+  VERIFYING_PROJECT: 'Verifying Project',
+  VALIDATING_PROJECT: 'Validating Project',
+}
+//'Project Created',
+//'Submitted for Screening',
+//'Screening Successful',
+//'Verifier Selected',
+//'Project accepted by Verifier',
+//'Verifier Finalised',
+//'Project verified by Verifier',
+//'Project under review by Registry',
+//'Project Registered',
+//'Project Rejected by Issuer',
+//'Project Rejected by Verifier',
+//}
+
 export const filters = [
   {
     filterType: 'Project Type',
@@ -614,6 +633,7 @@ export const SDGSLIST = [
     image: Images.seventeen,
   },
 ]
+
 export const availableFilters: any = {
   // 'Project Type': [
   //   'Registered or Active Project',
@@ -667,6 +687,20 @@ export const availableFilters: any = {
     // 'BioCarbon Registry',
     'ICR',
   ],
+}
+
+export const allProjectsFilters = {
+  'Project Type': [
+    'Registered or Active Project',
+    'Provisional Project or Future Project',
+  ],
+  ...availableFilters,
+}
+
+export const ALL_PROJECTS_FILTERS_CONSTANTS = {
+  REGISTERED_OR_ACTIVE_PROJECT: 'Registered or Active Project',
+  PROVISIONAL_PROJECT_OR_FUTURE_PROJECT:
+    'Provisional Project or Future Project',
 }
 
 export const DASHBOARDTABLIST = [
