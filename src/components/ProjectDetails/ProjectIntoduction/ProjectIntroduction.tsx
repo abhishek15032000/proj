@@ -162,13 +162,13 @@ const ProjectIntroduction = (props: ProjectIntroductionProps) => {
           </Box>
         </Grid>
       </Grid>
-      {showBuyToken && (
+      {showBuyToken && projectDetailsData?.token_detail?.balance ? (
         <BuyToken
           goingUp={goingUp}
           projectData={projectData}
           projectDetailsData={projectDetailsData}
         />
-      )}
+      ) : null}
     </Grid>
   )
 }

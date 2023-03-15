@@ -11,7 +11,11 @@ import { Grid, Tooltip, Typography } from '@mui/material'
 import { limitTitle } from '../../../utils/commonFunctions'
 import { FileDownloadSharp } from '@mui/icons-material'
 import { fileUploadCalls } from '../../../api/fileUpload.api'
-import { IMAGE_SIZE_PREFIXES } from '../../../config/constants.config'
+import {
+  IMAGE_SIZE_PREFIXES,
+  PROJECT_ALL_STATUS,
+  PROJECT_STATUS_NAME,
+} from '../../../config/constants.config'
 import { setCacheBannerImages } from '../../../redux/Slices/marketPlaceCachingSlice'
 
 interface ProjectDetailsCardProps {
@@ -19,7 +23,6 @@ interface ProjectDetailsCardProps {
   navigationAction: any
   justifyContent?: string
   [x: string]: any
-  onClickDisable?: boolean
 }
 
 const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
@@ -27,7 +30,7 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
   const dispatch = useAppDispatch()
   const location = useLocation()
 
-  const { project, navigationAction, justifyContent = 'center', onClickDisable = false } = props
+  const { project, navigationAction, justifyContent = 'center' } = props
 
   const onWebApp = useAppSelector(({ app }) => !app.throughIFrame, shallowEqual)
   const cacheBannerImages = useAppSelector(
@@ -79,11 +82,8 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
       setBannerImage(cacheBannerImages[project?.uuid])
     }
   }, [project])
-  
+
   const onClickHandler = () => {
-    if(onClickDisable){
-      return
-    }
     window.scrollTo(0, 0)
     navigate(
       {
@@ -163,7 +163,8 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
                   borderRadius: '4px',
                 }}
               >
-                {project?.token_details
+                {project?.project_status ===
+                PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
                   ? 'Registered Project'
                   : 'Provisional Project'}
               </Typography>
@@ -208,78 +209,68 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
         <Box
           sx={{
             px: 2,
-            pb: 3,
+            pb: 1,
             pt: 3,
             color: onWebApp ? '#00201B' : '#E1E3E1',
             background: onWebApp ? '#fff' : '#191C1B',
             borderRadius: '0 0 8px 8px',
           }}
         >
-          <Grid
-            container
-            columns={12}
-            sx={{
-              fontSize: 12,
-              fontWeight: 500,
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
-            {fields.map((field: any, index: number) => {
-              return (
-                <Grid
-                  item
-                  xs={6}
-                  key={index.toString()}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Typography
+          {fields.some((i: any) => i.value) ||
+          location.pathname === pathNames.PROJECT_LISTS_WITH_FILTER ? (
+            <Grid
+              container
+              columns={12}
+              sx={{
+                fontSize: 12,
+                fontWeight: 500,
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              {fields.map((field: any, index: number) => {
+                return (
+                  <Grid
+                    item
+                    xs={6}
+                    key={index.toString()}
                     sx={{
-                      textTransform: 'uppercase',
-                      color: '#747876',
-                      fontWeight: 600,
-                      fontSize: 14,
-                      letterSpacing: '0.02em',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
                     }}
                   >
-                    {field?.label}
-                  </Typography>
-                  <Tooltip title={field?.value}>
                     <Typography
                       sx={{
-                        color: '#141D1B',
-                        fontSize: 16,
+                        textTransform: 'uppercase',
+                        color: '#747876',
+                        fontWeight: 600,
+                        fontSize: 14,
                         letterSpacing: '0.02em',
                       }}
                     >
-                      {limitTitle(field.value, 10) || '--'}
+                      {field?.label}
                     </Typography>
-                  </Tooltip>
-                </Grid>
-              )
-            })}
-          </Grid>
-          {/* <Box>
-          <CCButton
-            sx={{
-              mt: 3,
-              background: onWebApp ? '' : '#55DBC8',
-              width: '100%',
-              height: '30px',
-              borderRadius: '16px',
-              color: '#003730',
-              fontSize: 14,
-              fontWeight: 500,
-            }}
-           
-          >
-            Buy Credits
-          </CCButton>
-        </Box> */}
+                    <Tooltip title={field?.value}>
+                      <Typography
+                        sx={{
+                          color: '#141D1B',
+                          fontSize: 16,
+                          letterSpacing: '0.02em',
+                        }}
+                      >
+                        {limitTitle(field.value, 10) || '--'}
+                      </Typography>
+                    </Tooltip>
+                  </Grid>
+                )
+              })}
+            </Grid>
+          ) : (
+            <Box sx={{ pt: 1, height: 46, fontSize: 15, fontWeight: 500 }}>
+              {`Status: ${PROJECT_STATUS_NAME[project?.project_status]}`}
+            </Box>
+          )}
         </Box>
       </Box>
     </Grid>
