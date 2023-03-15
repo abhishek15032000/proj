@@ -268,7 +268,13 @@ const ProjectDetailsCard: FC<ProjectDetailsCardProps> = (props) => {
             </Grid>
           ) : (
             <Box sx={{ pt: 1, height: 46, fontSize: 15, fontWeight: 500 }}>
-              {`Status: ${PROJECT_STATUS_NAME[project?.project_status]}`}
+              {project.project_status <= 3
+                ? PROJECT_STATUS_NAME.PROJECT_DESCRIPTION_UPLOADED
+                : project.project_status <= 6
+                ? PROJECT_STATUS_NAME.VERIFYING_PROJECT
+                : project.project_status <= 8
+                ? PROJECT_STATUS_NAME.VALIDATING_PROJECT
+                : null}
             </Box>
           )}
         </Box>
