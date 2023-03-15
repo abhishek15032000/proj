@@ -11,10 +11,15 @@ const SliderComponent = (props: any) => {
   const { projectData } = props
   const [loading, setLoading] = useState(true)
   const [slideList, setSlideList] = useState<any>([])
+  const [images, setImages] = useState<any>([])
 
   useEffect(() => {
     getImages()
   }, [projectData])
+
+  useEffect(() => {
+    setImages(slideList?.length > 3 ? slideList?.slice(0, 3) : slideList)
+  }, [slideList])
 
   const getImages = async () => {
     try {
@@ -102,14 +107,15 @@ const SliderComponent = (props: any) => {
           }}
         />
       )}
-      {!loading && slideList?.length ? (
+      {!loading && images?.length ? (
         <div className="container">
           <div className="card-stack">
             <ul className="card-list">
-              {slideList.length === 1 ? (
+              {images.length === 1 ? (
                 <Box
                   style={{
-                    backgroundImage: `url(${slideList[0]})`,
+                    flexGrow: '1',
+                    backgroundImage: `url(${images[0]})`,
                     height: `calc(100% - 15% * (${1 - (0 + 1)}))`,
                     width: '80%',
                     display: 'flex',
@@ -122,15 +128,15 @@ const SliderComponent = (props: any) => {
                     marginLeft: '-30px',
                   }}
                 ></Box>
-              ) : slideList.length ? (
-                slideList.map((item: any, index: number) => {
+              ) : images.length ? (
+                images.map((item: any, index: number) => {
                   return (
                     <li
                       key={index.toString()}
                       id={
-                        slideList?.length === index + 1
+                        images?.length === index + 1
                           ? 'last-list'
-                          : slideList?.length - 1 === index + 1
+                          : images?.length - 1 === index + 1
                           ? 'prev-list'
                           : ''
                       }
@@ -139,7 +145,7 @@ const SliderComponent = (props: any) => {
                         backgroundImage: `url(${item})`,
                         right: `calc(100px * (${index}))`,
                         height: `calc(100% - 15% * (${
-                          slideList.length - (index + 1)
+                          images.length - (index + 1)
                         }))`,
                       }}
                     ></li>

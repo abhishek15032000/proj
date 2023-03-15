@@ -132,7 +132,7 @@ const BuyToken = (props: BuyTokenProps) => {
               fontStyle: 'normal',
             }}
           >
-            {'Buy/Sell Tokens'}
+            {'Trade'}
           </Typography>
         </CCButton>
       </Grid>

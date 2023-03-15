@@ -21,7 +21,6 @@ import { shallowEqual } from 'react-redux'
 import {
   setRegistryNewProjects,
   setRegistryReviewedProjects,
-  setTabIndex
 } from '../../redux/Slices/Dashboard/dashboardSlice'
 import NoData from '../../atoms/NoData/NoData'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
@@ -65,12 +64,8 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
     ({ dashboard }) => dashboard.registryReviewedProjects,
     shallowEqual
   )
-  const tabIndex = useAppSelector(
-    ({ dashboard }) => dashboard.tabIndex,
-    shallowEqual
-  )
 
-  // const [tabIndex, setTabIndex] = useState(1)
+  const [tabIndex, setTabIndex] = useState(1)
 
   useEffect(() => {
     const newData: any = []
@@ -262,9 +257,9 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
   return (
     <>
       <TabSelector
-        tabArray={['New', 'Verification', 'Registered']}
+        tabArray={['New', 'Reviewed']}
         tabIndex={tabIndex}
-        setTabIndex={(bool:number)=>dispatch(setTabIndex(bool))}
+        setTabIndex={setTabIndex}
         sx={{ marginBottom: 2 }}
       />
 

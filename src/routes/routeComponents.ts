@@ -362,7 +362,7 @@ export const privateRouteComponents = [
     path: pathNames.RISK_DASHBOARD,
     component: RiskDashboard,
 
-    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER],
+    roles: [ROLES.ISSUER, ROLES.BUYER, ROLES.VERIFIER, ROLES.REGISTRY],
   },
   //{
   //  path: pathNames.PDF,
