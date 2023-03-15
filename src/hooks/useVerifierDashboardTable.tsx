@@ -306,7 +306,16 @@ export function useVerifierDashboardTable() {
             />
           </Box>,
           <LimitedText key={index} text={item?.project_id?.location} />,
-          moment(item?.createdAt).format('DD/MM/YYYY'),
+          <LimitedText
+            key={index}
+            text={
+              item?.project_id?.report?.next_date
+                ? moment(item?.project_id?.report?.next_date).format(
+                    'DD/MM/YYYY'
+                  )
+                : '-'
+            }
+          />,
           item?.project_status ===
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <ApprovalChip key={index} variant={'Pending'} />
