@@ -143,7 +143,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         break
       }
       case 3: {
-        heading = headingsNew
+        heading = headingsRegistered
         row = verifierRegisteredProjects
         projectType = 'Registered'
         break

@@ -97,11 +97,19 @@ export function useVerifierDashboardTable() {
           </Box>,
           <LimitedText
             key={index}
-            text={moment(item?.createdAt).format('DD/MM/YYYY')}
+            text={
+              item?.createdAt
+                ? moment(item?.createdAt).format('DD/MM/YYYY')
+                : '-'
+            }
           />,
           <LimitedText
             key={index}
-            text={moment(item?.updatedAt).format('DD/MM/YYYY')}
+            text={
+              item?.updatedAt
+                ? moment(item?.updatedAt).format('DD/MM/YYYY')
+                : '-'
+            }
           />,
           <Box
             key={index}
@@ -221,6 +229,7 @@ export function useVerifierDashboardTable() {
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
           PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
           PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
+          PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
         ].includes(item?.project_status)
       ) {
         const row = [
@@ -243,11 +252,19 @@ export function useVerifierDashboardTable() {
           </Box>,
           <LimitedText
             key={index}
-            text={moment(item?.createdAt).format('DD/MM/YYYY')}
+            text={
+              item?.createdAt
+                ? moment(item?.createdAt).format('DD/MM/YYYY')
+                : '-'
+            }
           />,
           <LimitedText
             key={index}
-            text={moment(item?.updatedAt).format('DD/MM/YYYY')}
+            text={
+              item?.updatedAt
+                ? moment(item?.updatedAt).format('DD/MM/YYYY')
+                : '-'
+            }
           />,
           <Box
             key={index}
@@ -342,11 +359,19 @@ export function useVerifierDashboardTable() {
           />,
           <LimitedText
             key={index}
-            text={moment(item?.createdAt).format('DD/MM/YYYY')}
+            text={
+              item?.createdAt
+                ? moment(item?.createdAt).format('DD/MM/YYYY')
+                : '-'
+            }
           />,
           <LimitedText
             key={index}
-            text={moment(item?.updatedAt).format('DD/MM/YYYY')}
+            text={
+              item?.updatedAt
+                ? moment(item?.updatedAt).format('DD/MM/YYYY')
+                : '-'
+            }
           />,
           <Box
             key={index}
