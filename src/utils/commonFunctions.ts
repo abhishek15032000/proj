@@ -152,3 +152,24 @@ export function downloadText(text: string, downloadFileName = 'file.txt') {
   link.href = url
   link.click()
 }
+
+export const downloadPdfFile = async (fileName: any) => {
+  const File = await fileUploadCalls.getPdfFile(
+    fileName,
+    getLocalItem('userDetails')?.jwtToken
+  )
+  const objectURL = URL.createObjectURL(File)
+
+  const link = document.createElement('a')
+  link.href = objectURL
+  link.setAttribute('download', fileName)
+
+  // Append to html link element page
+  document.body.appendChild(link)
+
+  // Start download
+  link.click()
+
+  // Clean up and remove the link
+  link?.parentNode?.removeChild(link)
+}

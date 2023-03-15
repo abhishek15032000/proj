@@ -30,7 +30,7 @@ const PDFGenerated: FC<PDFGeneratedProps> = (props) => {
           {'Relevant docs'}
         </Typography>
         <CCFileViewer
-          title={tabData?.data?.apiResponse?.aws?.Key}
+          title={tabData?.data?.generatePdf?.aws?.Key}
           fileSize={0}
         />
       </Box>
