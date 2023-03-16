@@ -24,7 +24,7 @@ const VerifierAssign: FC<VerifierAssignProps> = (props) => {
         <Box sx={{ color: '#006B5E' }}>Finalised Verifier</Box>
         <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
           <PersonIcon sx={{ color: Colors.darkPrimary1, fontSize: 20 }} />
-          <Box>{tabData?.data?.verifier_name}</Box>
+          <Box>{tabData?.data?.organization || '-'}</Box>
         </Box>
         <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
           <LocationOnIcon sx={{ color: Colors.darkPrimary1, fontSize: 20 }} />

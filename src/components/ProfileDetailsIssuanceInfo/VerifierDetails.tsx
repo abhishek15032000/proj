@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material'
+import { Menu, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
@@ -12,21 +12,37 @@ import Spinner from '../../atoms/Spinner'
 interface VerifierDetailsProps {
   verifierDetails: any
   //verifierId: string
+  anchorEl: any
+  handleClose: any
+  open: any
 }
 
-const VerifierDetails = ({ verifierDetails }: VerifierDetailsProps) => {
+const VerifierDetails = ({
+  verifierDetails,
+  anchorEl,
+  handleClose,
+  open,
+}: VerifierDetailsProps) => {
   //const [verifierDetails, setVerifierDetails] = useState<any | null>(null)
 
   return (
     <>
-      <Paper
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
         sx={{
-          width: '25vw',
-          ml: 3,
-          p: 1,
-          position: 'absolute',
-          zIndex: '1000',
-          borderRadius: 2,
+          boxShadow: 'none',
+          '.MuiMenu-paper': {
+            boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
+            borderRadius: '16px',
+            py: 1,
+            px: 1,
+          },
         }}
       >
         {/*{loading ? (
@@ -93,7 +109,7 @@ const VerifierDetails = ({ verifierDetails }: VerifierDetailsProps) => {
           </Box>
         </>
         {/*)}*/}
-      </Paper>
+      </Menu>
     </>
   )
 }

@@ -441,8 +441,8 @@ export function useVerifierDashboardTable() {
       verifier_name: data.verifier_name,
       verifier_number: data.verifier_number,
       verifier_address: data.verifier_address,
+      organization: data?.organization,
     }
-
     verifierCalls.updateVerifier(payload).then((response) => {
       //setVerifierStatsReload action making false to make the project stats to run again when it is becoming true in loadTableData() so that when verifier make the action in verifier dahsboard the stats will be updated
       dispatch(setVerifierStatsReload(false))

@@ -2,7 +2,16 @@
 import React, { FC, useEffect, useState } from 'react'
 
 // MUI Imports
-import { Box, Grid, Modal, Paper, Stack, Typography } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import {
+  Box,
+  Button,
+  Grid,
+  Modal,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
 import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
 import CCButton from '../../atoms/CCButton'
@@ -51,6 +60,17 @@ const VerifierReportListItemListItem: FC<
     } finally {
       setLoading(false)
     }
+  }
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
   }
 
   return (
@@ -103,28 +123,38 @@ const VerifierReportListItemListItem: FC<
             >
               {'Verifier'}
             </Typography>
-            <Typography
-              sx={{
-                cursor: 'pointer',
-                width: 'fit-content',
-                fontSize: 16,
-                fontWeight: 400,
-                letterSpacing: 0.5,
-                color: '#141D1B',
-                fontStyle: 'normal',
-                mt: 1,
-              }}
-              onMouseEnter={() => setShowVerifierDetails(true)}
-              onMouseLeave={() => setShowVerifierDetails(false)}
-            >
-              {props?.data?.verifier_name}
-            </Typography>
-            {/*show when hovered on verifier_name*/}
-            {showVerifierDetails && (
-              <VerifierDetails
-                verifierDetails={verifierDetails && verifierDetails}
-              />
-            )}
+            <Box sx={{ display: 'flex', alignItems: 'end' }}>
+              <Typography
+                sx={{
+                  cursor: 'pointer',
+                  width: 'fit-content',
+                  fontSize: 16,
+                  fontWeight: 400,
+                  letterSpacing: 0.5,
+                  color: '#141D1B',
+                  fontStyle: 'normal',
+                  mt: 1,
+                }}
+              >
+                {props?.data?.organization}
+              </Typography>
+              <Button
+                sx={{
+                  p: 0,
+                  minWidth: 0,
+                  margin: '0 4px 2px',
+                }}
+                onClick={handleClick}
+              >
+                <InfoOutlinedIcon sx={{ mt: 1, fontSize: 20 }} />
+              </Button>
+            </Box>
+            <VerifierDetails
+              verifierDetails={verifierDetails && verifierDetails}
+              anchorEl={anchorEl}
+              handleClose={handleClose}
+              open={open}
+            />
           </Box>
 
           {/* {(props?.data?.project_status ===

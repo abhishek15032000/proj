@@ -21,7 +21,9 @@ const VerifierRequest: FC<VerifierRequestProps> = (props) => {
             <ListItem key={index} sx={{ p: 0, mt: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <PersonIcon sx={{ color: Colors.darkPrimary1, fontSize: 20 }} />
-                <Box>{verifier?.verifier_name}</Box>
+                <Box>
+                  {verifier?.organization ? verifier?.organization : '-'}
+                </Box>
               </Box>
             </ListItem>
           ))}

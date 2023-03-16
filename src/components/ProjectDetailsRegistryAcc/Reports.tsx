@@ -62,7 +62,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
           '-',
           <Box key={1} sx={{ display: 'flex' }}>
             <img src={Images.FileIcon} width="20px" height={'20px'} />
-            Registration Report
+            2023_PDD_ICR
             <FileDownloadOutlinedIcon
               sx={{ color: '#388E81', cursor: 'pointer' }}
               onClick={() => {
@@ -213,8 +213,6 @@ const Reports = ({ projectDetails }: reportsProps) => {
         }
       )
       setTableRows(arrReportDetials)
-
-      console.log('reportDetails is an array: ', projectDetails)
     } else if (projectDetails && Object.keys(projectDetails).length > 0) {
       const objRow: any = [
         [
@@ -233,7 +231,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
 
           <Box key={1} sx={{ display: 'flex' }}>
             <img src={Images.FileIcon} width="20px" height={'20px'} />
-            Registration Report
+            2023_PDD_ICR
             <FileDownloadOutlinedIcon
               sx={{ color: '#388E81', cursor: 'pointer' }}
               onClick={() => {

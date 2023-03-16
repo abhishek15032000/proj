@@ -29,6 +29,8 @@ import { ArrowOutward } from '@mui/icons-material'
 import CCFileViewer from '../../atoms/CCFileViewer/CCFileViewer'
 import PdfPage from '../../pages/PdfPage/PdfPage'
 import CloseIcon from '@mui/icons-material/Close'
+import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
+import { deleteIndexInArray } from '../../utils/commonFunctions'
 declare let window: any
 
 const pdfLoading = false
@@ -57,6 +59,7 @@ const RegistryReviewReport = () => {
   const [pdfLoading, setPDFLoading] = useState(false)
   const [loading, setLoading] = useState(false)
   const [pdfURL, setpdfURL] = useState<null | string>(null)
+  const [validationReport, setValidationReport]: any = useState([])
 
   const [reportSubmittedSuccessModal, setReportSubmittedSuccessModal] =
     useState(false)
@@ -77,10 +80,6 @@ const RegistryReviewReport = () => {
 
   useEffect(() => {
     setReportData(location?.state?.projectReportDetails)
-    console.log(
-      'ran',
-      location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
-    )
     setLifetimeVCOT(
       location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
     )
@@ -129,7 +128,7 @@ const RegistryReviewReport = () => {
         next_date: reportData?.report?.next_date,
         // quantity: reportData?.report?.quantity,
         quantity: monthlyVCOT,
-        file_attach: reportData?.report?.file_attach,
+        file_attach: validationReport,
         issuer_details: reportData?.report?.issuer_details?.user_id,
         verifier_details: reportData?.report?.verifier_details?.user_id,
         ghg_reduction_explanation:
@@ -205,7 +204,9 @@ const RegistryReviewReport = () => {
           <CCButton
             variant="contained"
             onClick={sumbitReport}
-            disabled={explain.length > 0 ? false : true}
+            disabled={
+              explain?.length && validationReport?.length ? false : true
+            }
             buttonBackgroundColor={'#006B5E'}
             buttonColor="white"
             sx={{
@@ -563,7 +564,7 @@ const RegistryReviewReport = () => {
                   <Typography
                     sx={{ fontSize: 16, fontWeight: 500, color: '#1D4B44' }}
                   >
-                    Relevant Docs{' '}
+                    Verification Report{' '}
                   </Typography>
                   <Box
                     sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}
@@ -623,6 +624,23 @@ const RegistryReviewReport = () => {
                     onChange={(e) => setExplain(e.target.value)}
                   />
                 </Box>
+                <CCDropAndUpload
+                  fontSize={16}
+                  sx={{ m: 4, mt: 3, mr: 5 }}
+                  mediaTitle={[]}
+                  title="Upload Validation Report"
+                  mediaItem={[]}
+                  imageArray={validationReport}
+                  onImageUpload={(item: any) => {
+                    setValidationReport(item)
+                  }}
+                  onDeleteImage={(index: number) => {
+                    setValidationReport(
+                      deleteIndexInArray(validationReport, index)
+                    )
+                  }}
+                />
+                {/* </Box> */}
               </Box>
             </Paper>
           </Grid>

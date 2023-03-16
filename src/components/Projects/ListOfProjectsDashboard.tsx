@@ -291,20 +291,8 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               <ApprovalChip variant="Finalised" key={index} />
             )
           ),
-          item?.verifier_details_id ? (
-            <Box
-              key={'1'}
-              sx={{
-                display: 'flex',
-                justifyContent: 'start',
-                alignItems: 'center',
-              }}
-            >
-              <WorkOutlineIcon />
-              <Typography sx={{ fontSize: 14, fontWeight: 400, ml: 1 }}>
-                {item.verifier_details_id?.verifier_name}
-              </Typography>
-            </Box>
+          item?.verifier_details_id?.organization ? (
+            <LimitedText text={item?.verifier_details_id?.organization} />
           ) : (
             '-'
           ),
@@ -377,31 +365,8 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             />
           </Box>,
           <LimitedText key={index} text={item.location} />,
-          item.verifier_details_id ? (
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                columnGap: '5px',
-              }}
-            >
-              {/* <Box
-                sx={{
-                  bgcolor: '#F0FFFB',
-                  width: 40,
-                  height: 40,
-                  borderRadius: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <img height={24} width={24} src={Images.BriefcaseIcon} />
-              </Box> */}
-              <LimitedText text={item?.verifier_details_id?.verifier_name} />
-            </Box>
+          item?.verifier_details_id?.organization ? (
+            <LimitedText text={item?.verifier_details_id?.organization} />
           ) : (
             '-'
           ),
