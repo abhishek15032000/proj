@@ -105,6 +105,7 @@ const SelectVerifier = () => {
         verifier_name: verifierDetials?.fullName,
         verifier_address: verifierDetials?.address,
         verifier_number: verifierDetials?.phone.toString(),
+        organization: verifierDetials?.organisationName,
       }
     })
 
@@ -248,7 +249,7 @@ const SelectVerifier = () => {
                       <Typography
                         sx={{ fontSize: 18, textTransform: 'uppercase' }}
                       >
-                        {verifier?.fullName}
+                        {verifier?.organisationName || '-'}
                       </Typography>
                     </Box>
                   </Box>
@@ -294,7 +295,8 @@ const SelectVerifier = () => {
                     />
                     <Box>
                       <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.fullName + ',' + verifier?.designation}
+                        {verifier?.fullName || '-'},{' '}
+                        {verifier?.designation || '-'}
                       </Typography>
                     </Box>
                   </Box>

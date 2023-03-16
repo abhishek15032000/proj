@@ -151,7 +151,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                       color: '#2B2B2B',
                     }}
                   >
-                    {'Registration Report'}
+                    {'2023_PDD_ICR'}
                   </Typography>
                   <FileDownloadOutlinedIcon
                     sx={{ color: '#388E81', cursor: 'pointer' }}
@@ -189,7 +189,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 </Typography>,
                 i?.project_status ===
                 PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT ? (
-                  <DownloadIcon
+                  <FileDownloadOutlinedIcon
                     key={index}
                     sx={{ cursor: 'pointer' }}
                     onClick={() => {
@@ -205,20 +205,6 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 ) : (
                   '-'
                 ),
-
-                <Box onClick={() => handleComments(i)} key={index}>
-                  <Typography
-                    sx={{
-                      color: '#006B5E',
-                      fontSize: 16,
-                      fontWeight: 600,
-                      textDecoration: 'underline',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    View
-                  </Typography>
-                </Box>,
                 i.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
                   <CCButton
                     key={index}
@@ -310,6 +296,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       verifier_name: confirmedVerifier?.verifier_name,
       verifier_address: confirmedVerifier?.verifier_address,
       verifier_number: confirmedVerifier?.verifier_number,
+      organization: confirmedVerifier?.organization,
     }
     verifierCalls
       .updateVerifier(payload)
@@ -625,7 +612,6 @@ const headings = [
   'Version',
   'Status',
   'VCOT Authorised',
-  'Report Received',
-  'Comment Received',
+  'Verification Report',
   'Action',
 ]
