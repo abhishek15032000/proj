@@ -19,13 +19,6 @@ const IssuanceInfoListItem: FC<IssuanceInfoListItemProps> = (props) => {
   const navigate = useNavigate()
 
   const moveToSection = (index: number) => {
-    if (props?.projectStatus > 0) {
-      alert(
-        'Potential verifier is already selected, cannot go to issuance data'
-      )
-      return
-    }
-
     dispatch(setSectionIndex(index))
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)
   }

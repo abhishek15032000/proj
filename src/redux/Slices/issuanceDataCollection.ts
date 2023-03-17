@@ -9,6 +9,7 @@ interface IssuanceDataCollectionReducerInterface {
   isApiCallSuccess: boolean
   toMoveSectionIndex: boolean
   showPopUp: boolean
+  showResubmitPDFModal: boolean
 }
 
 const initialState: IssuanceDataCollectionReducerInterface = {
@@ -20,6 +21,7 @@ const initialState: IssuanceDataCollectionReducerInterface = {
   isApiCallSuccess: false,
   toMoveSectionIndex: false,
   showPopUp: false,
+  showResubmitPDFModal: false,
 }
 
 const issuanceDataCollection = createSlice({
@@ -50,6 +52,9 @@ const issuanceDataCollection = createSlice({
     setShowPopUp: (state, action: PayloadAction<any>) => {
       state.showPopUp = action.payload
     },
+    setShowResubmitPDFModal: (state, action: PayloadAction<any>) => {
+      state.showResubmitPDFModal = action.payload
+    },
   },
 })
 
@@ -62,6 +67,7 @@ export const {
   setIsApiCallSuccess,
   setToMoveSectionIndex,
   setShowPopUp,
+  setShowResubmitPDFModal,
 } = issuanceDataCollection.actions
 
 export default issuanceDataCollection.reducer
