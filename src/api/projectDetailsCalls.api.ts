@@ -30,4 +30,19 @@ export const projectDetailsCalls = {
       return res?.data
     })
   },
+  getProjectPDFs: (project_id: any) => {
+    return AxiosHelper(
+      URL_PATH.project.getProjectPDFs + `?project_id=${project_id}`,
+      'GET'
+    ).then((res) => {
+      return res?.data
+    })
+  },
+  resubmitPDF: (payload: any) => {
+    return AxiosHelper(URL_PATH.project.resubmitPDF, 'POST', payload).then(
+      (res: any) => {
+        return res.data
+      }
+    )
+  },
 }

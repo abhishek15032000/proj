@@ -44,6 +44,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
       issuanceDataCollection.currentProjectDetails,
     shallowEqual
   )
+
   useEffect(() => {
     if (
       userType === ROLES.VERIFIER &&
@@ -71,7 +72,10 @@ const Reports = ({ projectDetails }: reportsProps) => {
               }}
             />
           </Box>,
-          'v1',
+          projectDetails?.project_pdf_versions &&
+          projectDetails?.project_pdf_versions.length
+            ? `V${projectDetails?.project_pdf_versions.length}`
+            : 'V1',
           renderStatusChips(projectDetails?.project_status),
 
           '-',
@@ -124,96 +128,7 @@ const Reports = ({ projectDetails }: reportsProps) => {
         ],
       ]
       setTableRows(objRow)
-    } else if (Array.isArray(projectDetails)) {
-      const arrReportDetials: any = projectDetails.map(
-        (item: any, index: any) => {
-          return [
-            moment(item.report?.createdAt).format('DD/MM/YYYY'),
-            moment(item.report?.next_date).format('DD/MM/YYYY'),
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  mr: 1,
-                  textAlign: 'left',
-                }}
-              >
-                Conclusive Report
-              </Typography>
-              <DownloadIcon
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  if (!item.file_attach?.length) return
-                  item.report?.file_attach.forEach(
-                    (file: any, index: number) => {
-                      console.log('downloaded', file)
-
-                      downloadFile(file)
-                    }
-                  )
-                }}
-                style={{ color: Colors.lightPrimary1 }}
-              />
-            </Box>,
-            'V1.0',
-            <ApprovalChip
-              key={index}
-              variant={item.status === 0 ? 'Pending' : 'Verified'}
-            />,
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  mr: 1,
-                  textAlign: 'left',
-                }}
-              >
-                Report
-              </Typography>
-              <ArticleIcon
-                //onClick={() => props.pdfCall(item)}
-                style={{ color: Colors.lightPrimary1 }}
-              />
-            </Box>,
-            item.quantity,
-            item.status === 0 ? (
-              <TextButton
-                key={index}
-                sx={{ width: '90px' }}
-                title="Verify"
-                onClick={() =>
-                  navigate(pathNames.VERIFIER_VERIFY_REPORT, {
-                    state: {
-                      project: item?.project_id,
-                      pdf: item?.project_id?.project_pdf,
-                    },
-                  })
-                }
-              />
-            ) : (
-              '-'
-            ),
-          ]
-        }
-      )
-      setTableRows(arrReportDetials)
-    } else if (projectDetails && Object.keys(projectDetails).length > 0) {
+    } else {
       const objRow: any = [
         [
           <LimitedText
@@ -240,7 +155,10 @@ const Reports = ({ projectDetails }: reportsProps) => {
               }}
             />
           </Box>,
-          'v1',
+          projectDetails?.project_pdf_versions &&
+          projectDetails?.project_pdf_versions.length
+            ? `V${projectDetails?.project_pdf_versions.length}`
+            : 'V1',
           renderStatusChips(projectDetails?.project_status),
           <Box key={1} sx={{ display: 'flex' }}>
             <img src={Images.FileIcon} width="20px" height={'20px'} />
