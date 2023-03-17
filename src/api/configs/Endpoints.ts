@@ -42,6 +42,8 @@ export const URL_PATH = {
     getVerifiedProjects:
       ENDPOINTS.carbonServiceURL + '/project/getVerifiedProjects',
     getAllProjectsTab: ENDPOINTS.carbonServiceURL + '/project/getProjects',
+    resubmitPDF: ENDPOINTS.carbonServiceURL + '/project/resubmit',
+    getProjectPDFs: ENDPOINTS.carbonServiceURL + '/project/getReports',
   },
   projectSections: {
     updateProjectSectionA:
