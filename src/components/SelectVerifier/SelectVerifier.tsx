@@ -38,6 +38,7 @@ import BackHeader from '../../atoms/BackHeader/BackHeader'
 // import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
 import SelectVerifierSkeleton from './SelectVerifierSkeleton'
 import { useProject } from '../../hooks/useProject'
+import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 
 const SelectVerifier = () => {
   const { getProjectDetails } = useProject()
@@ -84,8 +85,12 @@ const SelectVerifier = () => {
     setLoading(true)
     try {
       const res = await department.getUsersByOrgType(ROLES?.VERIFIER)
-      if (res.data) {
-        setVerifiers(res.data)
+      if (res?.data && res?.data.length) {
+        const allVerifers = res?.data
+        const verifiersWithAllDetailsFilled = allVerifers.filter(
+          (verifier: any) => verifier.organisationName && verifier.address
+        )
+        setVerifiers(verifiersWithAllDetailsFilled)
       }
     } catch (err) {
       console.log('Error in department.getUsersByOrgType ~ ', err)
@@ -205,68 +210,69 @@ const SelectVerifier = () => {
         renderSkeleton()
       ) : (
         <Grid container sx={{ mt: 2 }} spacing={3} xs={12}>
-          {verifiers?.map((verifier: any, index: number) => (
-            <Grid key={index} item container xs={12} lg={6}>
-              <Paper
-                elevation={4}
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  borderRadius: 2,
-                  borderTop: isThisVerifierSelected(verifier?._id)
-                    ? '6px solid #006B5E'
-                    : '6px solid transparent',
-                  boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
-                }}
-              >
-                <Grid
-                  item
-                  xs={9}
+          {verifiers && verifiers.length ? (
+            verifiers?.map((verifier: any, index: number) => (
+              <Grid key={index} item container xs={12} lg={6}>
+                <Paper
+                  elevation={4}
                   sx={{
-                    p: 2,
+                    width: '100%',
+                    display: 'flex',
+                    borderRadius: 2,
+                    borderTop: isThisVerifierSelected(verifier?._id)
+                      ? '6px solid #006B5E'
+                      : '6px solid transparent',
+                    boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => selectVerifiers(verifier)}
-                    >
-                      <Checkbox
+                  <Grid
+                    item
+                    xs={9}
+                    sx={{
+                      p: 2,
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Box
                         sx={{
-                          p: 0,
-                          mr: 1,
-                          color: '#006B5E',
-                          '&.Mui-checked': {
-                            color: '#006B5E',
-                          },
+                          display: 'flex',
+                          alignItems: 'center',
+                          cursor: 'pointer',
                         }}
-                        checked={isThisVerifierSelected(verifier?._id)}
-                      />
-                      <Typography
-                        sx={{ fontSize: 18, textTransform: 'uppercase' }}
+                        onClick={() => selectVerifiers(verifier)}
                       >
-                        {verifier?.organisationName || '-'}
+                        <Checkbox
+                          sx={{
+                            p: 0,
+                            mr: 1,
+                            color: '#006B5E',
+                            '&.Mui-checked': {
+                              color: '#006B5E',
+                            },
+                          }}
+                          checked={isThisVerifierSelected(verifier?._id)}
+                        />
+                        <Typography
+                          sx={{ fontSize: 18, textTransform: 'uppercase' }}
+                        >
+                          {verifier?.organisationName || '-'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', mt: 1 }}>
+                      <PlaceOutlinedIcon
+                        sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                      />
+                      <Typography sx={{ fontSize: 14 }}>
+                        {verifier?.address || '-'}
                       </Typography>
                     </Box>
-                  </Box>
-                  <Box sx={{ display: 'flex', mt: 1 }}>
-                    <PlaceOutlinedIcon
-                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
-                    />
-                    <Typography sx={{ fontSize: 14 }}>
-                      {verifier?.address || '-'}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', mt: 1 }}>
-                    <LanguageIcon
-                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
-                    />
-                    <Typography sx={{ fontSize: 14 }}>
-                      {/* <a
+                    <Box sx={{ display: 'flex', mt: 1 }}>
+                      <LanguageIcon
+                        sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                      />
+                      <Typography sx={{ fontSize: 14 }}>
+                        {/* <a
                         style={{
                           color: '#25BBD2',
                           textDecoration: 'underline',
@@ -275,69 +281,76 @@ const SelectVerifier = () => {
                       >
                         {verifier?.website || '-'}
                       </a> */}
-                      <a
-                        style={{
-                          color: '#25BBD2',
-                          textDecoration: 'underline',
-                        }}
-                        href={verifier?.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {verifier?.website || '-'}
-                      </a>
-                    </Typography>
-                  </Box>
-                  <Divider sx={{ my: 2 }} />
-                  <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                    <PermIdentityOutlinedIcon
-                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
-                    />
-                    <Box>
-                      <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.fullName || '-'},{' '}
-                        {verifier?.designation || '-'}
+                        <a
+                          style={{
+                            color: '#25BBD2',
+                            textDecoration: 'underline',
+                          }}
+                          href={verifier?.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {verifier?.website || '-'}
+                        </a>
                       </Typography>
                     </Box>
-                  </Box>
-                  <Box sx={{ display: 'flex', mt: 1 }}>
-                    <PhoneInTalkOutlinedIcon
-                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
-                    />
-                    <Typography sx={{ fontSize: 14 }}>
-                      {verifier?.phone || '-'}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', mt: 1 }}>
-                    <MailOutlineIcon
-                      sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
-                    />
-                    <Typography sx={{ fontSize: 14 }}>
-                      {verifier?.email || '-'}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={3} sx={{ my: 'auto' }} justifyContent="end">
-                  <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                    <Box
-                      sx={{
-                        background: '#F0FFFB',
-                        width: '150px',
-                        height: '150px',
-                        position: 'relative',
-                        borderRadius: '24px 0px 0px 24px',
-                      }}
-                    >
-                      <img
-                        src={Images.BriefcaseIcon}
-                        className="briefcaseImg"
+                    <Divider sx={{ my: 2 }} />
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                      <PermIdentityOutlinedIcon
+                        sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                       />
+                      <Box>
+                        <Typography sx={{ fontSize: 14 }}>
+                          {verifier?.fullName || '-'},{' '}
+                          {verifier?.designation || '-'}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </Grid>
-              </Paper>
+                    <Box sx={{ display: 'flex', mt: 1 }}>
+                      <PhoneInTalkOutlinedIcon
+                        sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                      />
+                      <Typography sx={{ fontSize: 14 }}>
+                        {verifier?.phone || '-'}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', mt: 1 }}>
+                      <MailOutlineIcon
+                        sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
+                      />
+                      <Typography sx={{ fontSize: 14 }}>
+                        {verifier?.email || '-'}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={3} sx={{ my: 'auto' }} justifyContent="end">
+                    <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                      <Box
+                        sx={{
+                          background: '#F0FFFB',
+                          width: '150px',
+                          height: '150px',
+                          position: 'relative',
+                          borderRadius: '24px 0px 0px 24px',
+                        }}
+                      >
+                        <img
+                          src={Images.BriefcaseIcon}
+                          className="briefcaseImg"
+                        />
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Paper>
+              </Grid>
+            ))
+          ) : (
+            <Grid container ml={3}>
+              <Grid item xs={12}>
+                <EmptyComponent title={'No Verifiers Registered yet!'} />
+              </Grid>
             </Grid>
-          ))}
+          )}
         </Grid>
       )}
       <Modal
