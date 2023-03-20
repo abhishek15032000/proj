@@ -316,11 +316,11 @@ export function useVerifierDashboardTable() {
                 : '-'
             }
           />,
-          item?.project_status ===
+          item?.project_status >
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
-            <ApprovalChip key={index} variant={'Pending'} />
-          ) : (
             <ApprovalChip key={index} variant={'Verified'} />
+          ) : (
+            <ApprovalChip key={index} variant={'Pending'} />
           ),
           item?.project_status ===
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
