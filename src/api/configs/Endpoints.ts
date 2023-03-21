@@ -1,8 +1,11 @@
 export const BASE_URL = process.env.REACT_APP_BASE_URL
+export const LOCAL = 'http://localhost:4001'
+
 console.log('🚀 ~ file: Endpoints.ts ~ line 2 ~ BASE_URL', BASE_URL)
 export const ENDPOINTS = {
   authServiceURL: BASE_URL + 'auth/api/v1',
   carbonServiceURL: BASE_URL + 'carbon/api/v1',
+  // carbonServiceURL: LOCAL + '/api/v1',
   userServiceURL: BASE_URL + 'user/api/v1',
   orderServiceURL: BASE_URL + 'order/api/v1',
   notificationServiceURL: BASE_URL + 'notification/api/v1',

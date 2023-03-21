@@ -15,14 +15,16 @@ const VerifierRequest: FC<VerifierRequestProps> = (props) => {
     <Box sx={{ fontSize: 14, fontWeight: 500, px: 3 }}>
       <Box sx={{ color: '#006B5E' }}>Potential Verifier(s)</Box>
       <List sx={{ p: 0 }}>
-        {tabData?.data &&
-          tabData?.data.length > 0 &&
-          tabData?.data.map((verifier: any, index: number) => (
+        {tabData?.verifierRequestData &&
+          tabData?.verifierRequestData.length > 0 &&
+          tabData?.verifierRequestData.map((verifier: any, index: number) => (
             <ListItem key={index} sx={{ p: 0, mt: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <PersonIcon sx={{ color: Colors.darkPrimary1, fontSize: 20 }} />
                 <Box>
-                  {verifier?.organization ? verifier?.organization : '-'}
+                  {verifier?.verifier_id?.organisationName
+                    ? verifier?.verifier_id?.organisationName
+                    : '-'}
                 </Box>
               </Box>
             </ListItem>
