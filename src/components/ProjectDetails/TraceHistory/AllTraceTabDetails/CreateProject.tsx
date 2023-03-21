@@ -17,7 +17,7 @@ const CreateProject: FC<CreateProjectProps> = (props: any) => {
       )}
       <TitleValue
         title="Project Developer"
-        value={props?.tabData?.data?.name}
+        value={props?.tabData?.createProjectData?.user_id?.fullName}
       />
       <TitleValue
         title="Project Name"

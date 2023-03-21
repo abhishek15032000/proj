@@ -24,15 +24,17 @@ const VerifierAssign: FC<VerifierAssignProps> = (props) => {
         <Box sx={{ color: '#006B5E' }}>Finalised Verifier</Box>
         <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
           <PersonIcon sx={{ color: Colors.darkPrimary1, fontSize: 20 }} />
-          <Box>{tabData?.data?.organization || '-'}</Box>
+          <Box>
+            {tabData?.verifierAssignData?.verifier_id?.organisationName || '-'}
+          </Box>
         </Box>
         <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
           <LocationOnIcon sx={{ color: Colors.darkPrimary1, fontSize: 20 }} />
-          <Box>{tabData?.data?.verifier_address}</Box>
+          <Box>{tabData?.verifierAssignData?.verifier_id.address || '-'}</Box>
         </Box>
         <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
           <PhoneIcon sx={{ color: Colors.darkPrimary1, fontSize: 20 }} />
-          <Box>{tabData?.data?.verifier_number}</Box>
+          <Box>{tabData?.verifierAssignData?.verifier_id.phone || '-'}</Box>
         </Box>
       </Box>
     </>
