@@ -295,8 +295,10 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ) : (
             '-'
           ),
-          item?.verifier_details_id?.organization ? (
-            <LimitedText text={item?.verifier_details_id?.organization} />
+          item?.verifier_details_id?.verifier_id?.organisationName ? (
+            <LimitedText
+              text={item?.verifier_details_id?.verifier_id?.organisationName}
+            />
           ) : (
             '-'
           ),
@@ -369,8 +371,10 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             />
           </Box>,
           <LimitedText key={index} text={item.location} />,
-          item?.verifier_details_id?.organization ? (
-            <LimitedText text={item?.verifier_details_id?.organization} />
+          item?.verifier_details_id?.verifier_id?.organisationName ? (
+            <LimitedText
+              text={item?.verifier_details_id?.verifier_id?.organisationName}
+            />
           ) : (
             '-'
           ),

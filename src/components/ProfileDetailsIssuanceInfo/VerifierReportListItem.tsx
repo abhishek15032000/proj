@@ -45,10 +45,10 @@ const VerifierReportListItemListItem: FC<
   const [verifierDetails, setVerifierDetails] = useState<any | null>(null)
 
   useEffect(() => {
-    if (props?.data?.verifier_id) {
-      getVerifierDetails(props?.data?.verifier_id)
+    if (props?.data?.verifier_id?._id) {
+      getVerifierDetails(props?.data?.verifier_id?._id)
     }
-  }, [props?.data?.verifier_id])
+  }, [props?.data?.verifier_id?._id])
 
   const getVerifierDetails = async (verifierId: string) => {
     setLoading(true)
@@ -136,7 +136,7 @@ const VerifierReportListItemListItem: FC<
                   mt: 1,
                 }}
               >
-                {props?.data?.organization}
+                {props?.data?.verifier_id?.organisationName || '-'}
               </Typography>
               <Button
                 sx={{
@@ -195,7 +195,7 @@ const VerifierReportListItemListItem: FC<
                   fontStyle: 'normal',
                 }}
               >
-                {props?.data?.verifier_number}
+                {props?.data?.verifier_id?.phone.toString() || '-'}
               </Typography>
             </Stack>
           </Box>
@@ -244,7 +244,7 @@ const VerifierReportListItemListItem: FC<
                 mt: 1,
               }}
             >
-              {limitTitle(props?.data?.verifier_address, 25)}
+              {props?.data?.verifier_id?.address || '-'}
             </Typography>
           </Box>
 
