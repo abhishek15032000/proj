@@ -13,6 +13,7 @@ import {
   setBuyOrderPayloadUUID,
   setBuyOrders,
   setBuyOrdersLoading,
+  setBuyQuantity,
   setBuyUnitPrice,
   setCancelOrderLoading,
   setCarbonTokenAddress,
@@ -136,11 +137,15 @@ export function useMarket() {
     }
   }
 
-  async function getSellOrdersListData() {
+  async function getSellOrdersListData(asset_id?: string) {
     try {
       dispatch(setSellOrdersLoading(true))
-      const sellOrderRes = await marketplaceCalls.getSellOrder()
-      if (sellOrderRes.success && sellOrderRes.data.length) {
+      const sellOrderRes = await marketplaceCalls.getSellOrder(asset_id)
+      if (sellOrderRes.success) {
+        if (sellOrderRes.data.length === 0) {
+          dispatch(setSellOrdersList(null))
+          return
+        }
         const ordersList = sellOrderRes?.data?.reverse().map((order: any) => {
           return [
             Math.round((order?._wantAmount / order?._offerAmount) * 100) / 100,
@@ -176,7 +181,7 @@ export function useMarket() {
     const balToCheck = parseInt(carbonTokenBalances?.totalBalances)
     if (sellQuantity > balToCheck) {
       dispatch(setOpenSnackbar(true))
-      dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
+      dispatch(setSnackbarErrorMsg('Not enough balance to Sell'))
 
       dispatch(setWithdrawAmount(0))
       dispatch(setOpenWithdrawModal(false))
@@ -246,9 +251,15 @@ export function useMarket() {
     const pseudoNonce = new Date().getTime()
 
     const balToCheck = parseInt(inrTokenBalances?.totalBalances)
-    if (totalAmountForBuying > balToCheck) {
+    console.log('balToCheck: ', balToCheck)
+    console.log('totalAmountForBuying: ', totalAmountForBuying)
+    console.log(
+      'totalAmountForBuying > balToCheck: ',
+      totalAmountForBuying > balToCheck
+    )
+    if (Number(totalAmountForBuying) > balToCheck) {
       dispatch(setOpenSnackbar(true))
-      dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
+      dispatch(setSnackbarErrorMsg('Not enough balance to Buy'))
 
       dispatch(setWithdrawAmount(0))
       dispatch(setOpenWithdrawModal(false))
@@ -275,6 +286,7 @@ export function useMarket() {
         dispatch(setBuyOrderPayloadUUID(null))
         dispatch(setBuyOrderPayloadOfferHashes(null))
         dispatch(setBuyOrderPayloadAmountsToTake(null))
+        dispatch(setBuyQuantity(0))
 
         getSellOrdersListData()
         getBuyOrders()
@@ -302,7 +314,7 @@ export function useMarket() {
   const getOpenOrders = async () => {
     try {
       dispatch(setOpenOrdersLoading(true))
-      const res = await marketplaceCalls.getOpenOrder()
+      const res = await marketplaceCalls.getOpenOrder(carbonTokenAddress)
       if (res?.success) {
         if (res?.data?.openOrder && res?.data?.openOrder.length) {
           dispatch(setOpenOrders(res?.data?.openOrder))
@@ -384,12 +396,12 @@ export function useMarket() {
       withdrawTokenType === TOKEN_TYPES.CARBON
         ? parseInt(carbonTokenBalances?.assetsBalance)
         : parseInt(inrTokenBalances?.assetsBalance)
-    if (!balToCheck) {
+    if (!balToCheck || balToCheck < Number(withdrawAmount)) {
       dispatch(setOpenSnackbar(true))
       dispatch(setSnackbarErrorMsg('Not enough balance to Withdraw'))
 
       dispatch(setWithdrawAmount(0))
-      dispatch(setOpenWithdrawModal(false))
+      //dispatch(setOpenWithdrawModal(false))
 
       return
     }

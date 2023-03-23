@@ -7,6 +7,7 @@ const MENUS = {
     // linkLabels.My_Portfolio,
     linkLabels.All_Projects,
     linkLabels.Marketplace,
+    linkLabels.TokenRetirement,
     linkLabels.Wallet,
   ],
   verifier_menus: [linkLabels.Dashboard,  linkLabels.All_Projects, linkLabels.Wallet],

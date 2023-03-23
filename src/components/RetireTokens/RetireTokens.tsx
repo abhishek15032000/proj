@@ -1,9 +1,11 @@
 import {
+  Alert,
   Box,
   Grid,
   InputAdornment,
   Paper,
   Skeleton,
+  Snackbar,
   Stack,
   Typography,
 } from '@mui/material'
@@ -74,6 +76,8 @@ const RetireTokens = (props: RetireTokensProps) => {
   const [loading, setLoading] = useState(false)
   const [tokenAddress, setTokenAddress] = useState(false)
   const [tokenSymbol, setTokenSymbol] = useState(false)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackbarErrorMsg, setSnackbarErrorMsg] = useState('')
 
   const { getApprovedTokensBalance } = useTokenRetire()
   const { getTokenBalances } = useMarket()
@@ -183,6 +187,12 @@ const RetireTokens = (props: RetireTokensProps) => {
   // }
 
   const retireTokens = async () => {
+    if (balanceToRetire < Number(retiring)) {
+      setRetiring('')
+      setSnackbarErrorMsg('Not enough tokens to retire')
+      setOpenSnackbar(true)
+      return
+    }
     const payload = {
       reason: explain,
       asset: tokenAddress,
@@ -218,6 +228,11 @@ const RetireTokens = (props: RetireTokensProps) => {
       shouldDisable = false
     }
     return shouldDisable
+  }
+
+  const handleClose = () => {
+    setSnackbarErrorMsg('')
+    setOpenSnackbar(false)
   }
 
   return (
@@ -429,6 +444,22 @@ const RetireTokens = (props: RetireTokensProps) => {
           setShowModal={setShowModal}
         />
       </Box>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          sx={{
+            width: '100%',
+            // border: `1px solid ${Colors.darkPrimary1}`
+          }}
+        >
+          {snackbarErrorMsg}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
