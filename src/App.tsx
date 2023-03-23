@@ -23,7 +23,6 @@ import AddMetaMaskAccountModal from './components/AddMetaMaskAccountModal/AddMet
 import { drawerExemptList } from './routes/config'
 import { useBlockchain } from './hooks/useBlockchain'
 import { useError } from './context/ErrorController'
-import { updateWalletBalance } from './utils/commonAPI.utils'
 
 declare let window: any
 const { ethereum } = window
@@ -154,9 +153,6 @@ const App: FC<AppProps> = () => {
     } finally {
       setWatingAccessCheck(false)
     }
-
-    // update wallet balance
-    updateWalletBalance()
   }, [])
 
   return waitingAccessCheck ? (

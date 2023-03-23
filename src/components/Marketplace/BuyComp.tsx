@@ -29,6 +29,10 @@ const BuyComp = () => {
 
   const { createBuyOrder } = useMarket()
 
+  const carbonTokenAddress = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.carbonTokenAddress,
+    shallowEqual
+  )
   const inrTokenBalances = useAppSelector(
     ({ newMarketplaceReducer }) => newMarketplaceReducer.inrTokenBalances,
     shallowEqual
@@ -64,6 +68,10 @@ const BuyComp = () => {
     shallowEqual
   )
 
+  const checkFulfilLoading = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.checkFulfilLoading,
+    shallowEqual
+  )
   const [tokenAndUnitPriceList, setTokenAndUnitPriceList] = useState<any>(null)
 
   const isDisabled = () => {
@@ -73,7 +81,8 @@ const BuyComp = () => {
       !totalAmountForBuying ||
       !buyOrderPayloadAmountsToTake ||
       !buyOrderPayloadOfferHashes ||
-      !buyOrderPayloadUUID
+      !buyOrderPayloadUUID ||
+      checkFulfilLoading
     ) {
       return true
     }
@@ -83,7 +92,10 @@ const BuyComp = () => {
   const checkForFullFillOrder = async () => {
     try {
       dispatch(setCheckFulfilLoading(true))
-      const res = await marketplaceCalls.checkForFullFillOrder(buyQuantity)
+      const res = await marketplaceCalls.checkForFullFillOrder(
+        buyQuantity,
+        carbonTokenAddress
+      )
       if (res?.success && res?.data && res?.data?.length) {
         const offerHashes: any = []
         const amountsToTake: any = []
@@ -158,7 +170,7 @@ const BuyComp = () => {
               }
             }}
             onBlur={() => {
-              if (buyQuantity) checkForFullFillOrder()
+              if (buyQuantity && carbonTokenAddress) checkForFullFillOrder()
             }}
           />
         </Box>
