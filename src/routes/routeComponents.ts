@@ -295,13 +295,13 @@ export const privateRouteComponents = [
   {
     path: pathNames.RETIRE_TOKENS,
     component: RetireTokens,
-    roles: [ROLES.BUYER],
+    roles: [ROLES.BUYER, ROLES.ISSUER],
   },
   {
     path: pathNames.TOKENS_RETIREMENT,
     sidebarName: linkLabels.TokenRetirement,
     component: TokenRetirementPage,
-    roles: [ROLES.BUYER],
+    roles: [ROLES.ISSUER, ROLES.BUYER],
   },
 
   {

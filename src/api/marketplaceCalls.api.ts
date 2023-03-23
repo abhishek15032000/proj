@@ -30,12 +30,13 @@ export const marketplaceCalls = {
       }
     )
   },
-  getSellOrder: () => {
-    return AxiosHelper(URL_PATH.marketplace.getSellOrder, 'POST').then(
-      (res: any) => {
-        return res.data
-      }
-    )
+  getSellOrder: (asset_id?: string) => {
+    return AxiosHelper(
+      URL_PATH.marketplace.getSellOrder + `?token=${asset_id}`,
+      'POST'
+    ).then((res: any) => {
+      return res.data
+    })
   },
   getBuyOrder: (buyer: any) => {
     return AxiosHelper(
@@ -45,9 +46,10 @@ export const marketplaceCalls = {
       return res.data
     })
   },
-  checkForFullFillOrder: (asking: any) => {
+  checkForFullFillOrder: (asking: any, token_address?: string) => {
     return AxiosHelper(
-      URL_PATH.marketplace.checkForFullFillOrder + `?asking=${asking}`,
+      URL_PATH.marketplace.checkForFullFillOrder +
+        `?asking=${asking}&token_address=${token_address}`,
       'GET'
     ).then((res: any) => {
       return res.data
@@ -60,12 +62,13 @@ export const marketplaceCalls = {
       }
     )
   },
-  getOpenOrder: (payload?: any) => {
-    return AxiosHelper(URL_PATH.marketplace.getOpenOrder, 'POST', payload).then(
-      (res: any) => {
-        return res.data
-      }
-    )
+  getOpenOrder: (token_address?: any) => {
+    return AxiosHelper(
+      URL_PATH.marketplace.getOpenOrder + `?token_address=${token_address}`,
+      'POST'
+    ).then((res: any) => {
+      return res.data
+    })
   },
   getPurchasedProject: () => {
     return AxiosHelper(URL_PATH.marketplace.getPurchasedProject, 'GET').then(

@@ -32,12 +32,9 @@ import WithdrawModal from './WithdrawModal'
 const Marketplace = () => {
   const location: any = useLocation()
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const {
-    getProjectsTokenDetails,
-    getSellOrdersListData,
-    getTokenBalances,
-  } = useMarket()
+  const dispatch: any = useAppDispatch()
+  const { getProjectsTokenDetails, getSellOrdersListData, getTokenBalances } =
+    useMarket()
 
   const userID = getLocalItem('userDetails')?.user_id
 
@@ -74,7 +71,6 @@ const Marketplace = () => {
       dispatch(setCurrentProjectUUID(location?.state?.projectUUID))
       getProjectsTokenDetails(location?.state?.projectUUID)
     }
-    getSellOrdersListData()
 
     return () => {
       dispatch(resetNewMarketplaceReducer())
@@ -83,6 +79,8 @@ const Marketplace = () => {
 
   useEffect(() => {
     if (carbonTokenAddress) {
+      getSellOrdersListData(carbonTokenAddress)
+
       getCarbonTokenBalances()
     }
   }, [carbonTokenAddress])
