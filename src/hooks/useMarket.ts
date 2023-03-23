@@ -13,6 +13,7 @@ import {
   setBuyOrderPayloadUUID,
   setBuyOrders,
   setBuyOrdersLoading,
+  setBuyQuantity,
   setBuyUnitPrice,
   setCancelOrderLoading,
   setCarbonTokenAddress,
@@ -285,6 +286,7 @@ export function useMarket() {
         dispatch(setBuyOrderPayloadUUID(null))
         dispatch(setBuyOrderPayloadOfferHashes(null))
         dispatch(setBuyOrderPayloadAmountsToTake(null))
+        dispatch(setBuyQuantity(0))
 
         getSellOrdersListData()
         getBuyOrders()

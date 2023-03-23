@@ -90,9 +90,11 @@ const SellComp = () => {
         <CardRow
           title="Balance :"
           value={`${
-            carbonTokenBalances?.totalBalances
+            carbonTokenBalances?.totalBalances ||
+            carbonTokenBalances?.assetsBalance
               ? convertToInternationalCurrencySystem(
-                  carbonTokenBalances?.totalBalances + Number(carbonTokenBalances?.assetsBalance)
+                  carbonTokenBalances?.totalBalances +
+                    Number(carbonTokenBalances?.assetsBalance)
                 )
               : 0
           } ${carbonTokenSymbol}`}

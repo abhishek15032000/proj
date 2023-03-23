@@ -68,6 +68,10 @@ const BuyComp = () => {
     shallowEqual
   )
 
+  const checkFulfilLoading = useAppSelector(
+    ({ newMarketplaceReducer }) => newMarketplaceReducer.checkFulfilLoading,
+    shallowEqual
+  )
   const [tokenAndUnitPriceList, setTokenAndUnitPriceList] = useState<any>(null)
 
   const isDisabled = () => {
@@ -77,7 +81,8 @@ const BuyComp = () => {
       !totalAmountForBuying ||
       !buyOrderPayloadAmountsToTake ||
       !buyOrderPayloadOfferHashes ||
-      !buyOrderPayloadUUID
+      !buyOrderPayloadUUID ||
+      checkFulfilLoading
     ) {
       return true
     }
