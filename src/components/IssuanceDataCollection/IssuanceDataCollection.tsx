@@ -39,6 +39,7 @@ import {
   setShowMandatoryFieldModal,
   setIsApiCallSuccess,
   setToMoveSectionIndex,
+  setShowResubmitPDFModal,
 } from '../../redux/Slices/issuanceDataCollection'
 // import { moveToNextSection } from '../../utils/issuanceDataCollection.utils'
 import CCButton from '../../atoms/CCButton'
@@ -60,6 +61,7 @@ import { resetSectionNewProjectDetails } from '../../redux/Slices/newProjectSlic
 import { usePrompt } from '../../hooks/useCustomBlocker'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { useProject } from '../../hooks/useProject'
+import MessageModal from '../../atoms/MessageModal/MessageModal'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -142,7 +144,9 @@ const sectionATabs = [
 const IssuanceDataCollection = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
   const sectionA = store.getState()?.sectionA
+
   const loading = useAppSelector(
     ({ newProject }) => newProject.loading,
     shallowEqual
@@ -171,6 +175,10 @@ const IssuanceDataCollection = () => {
   )
   const toMoveSectionIndex = useAppSelector(
     ({ issuanceDataCollection }) => issuanceDataCollection.toMoveSectionIndex,
+    shallowEqual
+  )
+  const showResubmitPDFModal = useAppSelector(
+    ({ issuanceDataCollection }) => issuanceDataCollection.showResubmitPDFModal,
     shallowEqual
   )
 
@@ -254,10 +262,18 @@ const IssuanceDataCollection = () => {
     }, 3000)
   }
 
-  const { moveToNextSection } = useProject()
+  const { moveToNextSection, resubmitPDF } = useProject()
 
   const handleSave = () => {
-    moveToNextSection(sectionIndex, subSectionIndex)
+    if (
+      !currentProjectDetails ||
+      currentProjectDetails?.project_status <
+        PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+    ) {
+      moveToNextSection(sectionIndex, subSectionIndex)
+    } else {
+      alert("Project already Verified. Can't be updated now!")
+    }
   }
 
   const handlePrevious = () => {
@@ -296,21 +312,33 @@ const IssuanceDataCollection = () => {
   }
 
   const handleNextBtnFromSectionE = () => {
-    if (nextBtn) {
-      navigate(pathNames.DASHBOARD)
-    } else if (!nextBtn) {
-      if (
-        currentProjectDetails?.project_status ===
-        PROJECT_ALL_STATUS.CREATED_PROJECT
-      ) {
-        navigate(pathNames.SELECT_VERIFIER)
-      } else {
-        navigate({
-          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
-          search: `?${createSearchParams({
-            projectId: currentProjectDetails?.uuid,
-          })}`,
-        })
+    if (
+      currentProjectDetails?.project_status ===
+      PROJECT_ALL_STATUS.CREATED_PROJECT
+    ) {
+      if (nextBtn) {
+        navigate(pathNames.DASHBOARD)
+      } else if (!nextBtn) {
+        if (
+          currentProjectDetails?.project_status ===
+          PROJECT_ALL_STATUS.CREATED_PROJECT
+        ) {
+          navigate(pathNames.SELECT_VERIFIER)
+        } else {
+          navigate({
+            pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+            search: `?${createSearchParams({
+              projectId: currentProjectDetails?.uuid,
+            })}`,
+          })
+        }
+      }
+    } else if (
+      currentProjectDetails?.project_status <
+      PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+    ) {
+      if (currentProjectDetails?._id) {
+        resubmitPDF(currentProjectDetails?._id)
       }
     }
   }
@@ -515,8 +543,20 @@ const IssuanceDataCollection = () => {
                     alignItems: 'center',
                     p: 1,
                     cursor: 'pointer',
-                    opacity: currentProjectDetails ? 1 : 0.5,
-                    pointerEvents: currentProjectDetails ? 'all' : 'none',
+                    opacity: nextBtn
+                      ? 1
+                      : currentProjectDetails &&
+                        currentProjectDetails?.project_status <
+                          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+                      ? 1
+                      : 0.5,
+                    pointerEvents: nextBtn
+                      ? 'all'
+                      : currentProjectDetails &&
+                        currentProjectDetails?.project_status <
+                          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
+                      ? 'all'
+                      : 'none',
                   }}
                   onClick={handleNext}
                 >
@@ -524,10 +564,17 @@ const IssuanceDataCollection = () => {
                     sx={{
                       color: '#006B5E',
                       fontWeight: 500,
-                      //mr: 1,
                     }}
                   >
-                    {nextBtn ? 'Next' : 'Complete'}
+                    {nextBtn
+                      ? 'Next'
+                      : currentProjectDetails &&
+                        currentProjectDetails?.project_status <
+                          PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY &&
+                        currentProjectDetails?.project_status >
+                          PROJECT_ALL_STATUS.CREATED_PROJECT
+                      ? 'Resubmit'
+                      : 'Complete'}
                   </Typography>
                   <ArrowForwardIcon sx={{ color: '#006B5E', fontSize: 18 }} />
                 </Box>
@@ -713,6 +760,15 @@ const IssuanceDataCollection = () => {
           </Paper>
         </>
       </Modal>
+      <MessageModal
+        message={'Successfully updated the PDF!!!'}
+        btn1Text="Ok"
+        btn1OnClick={() => {
+          dispatch(setShowResubmitPDFModal(false))
+        }}
+        showModal={showResubmitPDFModal}
+        setShowModal={dispatch(setShowResubmitPDFModal)}
+      />
       <Box
         sx={{
           position: 'fixed',

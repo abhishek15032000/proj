@@ -132,7 +132,10 @@ export function useVerifierDashboardTable() {
             >
               <img height={24} width={24} src={Images.BriefcaseIcon} />
             </Box> */}
-            <LimitedText key={index} text={item?.project_id?.name} />
+            <LimitedText
+              key={index}
+              text={item?.project_id?.user_id?.fullName || '-'}
+            />
           </Box>,
           <Box
             key={index}
@@ -287,7 +290,10 @@ export function useVerifierDashboardTable() {
             >
               <img height={24} width={24} src={Images.BriefcaseIcon} />
             </Box> */}
-            <LimitedText key={index} text={item?.project_id?.name} />
+            <LimitedText
+              key={index}
+              text={item?.project_id?.user_id?.fullName || '-'}
+            />
           </Box>,
           <Box
             key={index}
@@ -316,11 +322,11 @@ export function useVerifierDashboardTable() {
                 : '-'
             }
           />,
-          item?.project_status ===
+          item?.project_status >
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
-            <ApprovalChip key={index} variant={'Pending'} />
-          ) : (
             <ApprovalChip key={index} variant={'Verified'} />
+          ) : (
+            <ApprovalChip key={index} variant={'Pending'} />
           ),
           item?.project_status ===
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
@@ -390,7 +396,10 @@ export function useVerifierDashboardTable() {
               alignItems: 'center',
             }}
           >
-            <LimitedText key={index} text={item?.project_id?.name} />
+            <LimitedText
+              key={index}
+              text={item?.project_id?.user_id?.fullName || '-'}
+            />
           </Box>,
 
           <LimitedText key={index} text={item?.project_id?.company_name} />,
@@ -434,15 +443,16 @@ export function useVerifierDashboardTable() {
     dispatch(setVerifierDashboardTableLoading(true))
 
     const payload = {
-      _id: data._id,
-      project_id: data.project_id?._id,
+      _id: data?._id,
+      project_id: data?.project_id?._id,
       project_status: status,
-      verifier_id: data.verifier_id,
-      verifier_name: data.verifier_name,
-      verifier_number: data.verifier_number,
-      verifier_address: data.verifier_address,
-      organization: data?.organization,
+      verifier_id: data?.verifier_id?._id,
+      verifier_name: data?.verifier_id?.fullName,
+      verifier_number: data?.verifier_id?.phone.toString(),
+      verifier_address: data?.verifier_id?.address,
+      organization: data?.verifier_id?.organisationName,
     }
+
     verifierCalls.updateVerifier(payload).then((response) => {
       //setVerifierStatsReload action making false to make the project stats to run again when it is becoming true in loadTableData() so that when verifier make the action in verifier dahsboard the stats will be updated
       dispatch(setVerifierStatsReload(false))

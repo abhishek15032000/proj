@@ -285,14 +285,20 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ) : item?.project_status ===
             PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
             <ApprovalChip variant="Selected" key={index} />
+          ) : [
+              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
+              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
+              PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
+              PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
+            ].includes(item?.project_status) ? (
+            <ApprovalChip variant="Finalised" key={index} />
           ) : (
-            item?.project_status ===
-              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
-              <ApprovalChip variant="Finalised" key={index} />
-            )
+            '-'
           ),
-          item?.verifier_details_id?.organization ? (
-            <LimitedText text={item?.verifier_details_id?.organization} />
+          item?.verifier_details_id?.verifier_id?.organisationName ? (
+            <LimitedText
+              text={item?.verifier_details_id?.verifier_id?.organisationName}
+            />
           ) : (
             '-'
           ),
@@ -365,17 +371,19 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             />
           </Box>,
           <LimitedText key={index} text={item.location} />,
-          item?.verifier_details_id?.organization ? (
-            <LimitedText text={item?.verifier_details_id?.organization} />
+          item?.verifier_details_id?.verifier_id?.organisationName ? (
+            <LimitedText
+              text={item?.verifier_details_id?.verifier_id?.organisationName}
+            />
           ) : (
             '-'
           ),
           <ApprovalChip
             variant={
               item.project_status ===
-              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
-                ? 'In progress'
-                : 'Verified'
+              PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
+                ? 'Verified'
+                : 'In progress'
             }
             key={'1'}
           />,

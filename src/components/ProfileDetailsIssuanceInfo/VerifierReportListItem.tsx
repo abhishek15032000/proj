@@ -45,10 +45,10 @@ const VerifierReportListItemListItem: FC<
   const [verifierDetails, setVerifierDetails] = useState<any | null>(null)
 
   useEffect(() => {
-    if (props?.data?.verifier_id) {
-      getVerifierDetails(props?.data?.verifier_id)
+    if (props?.data?.verifier_id?._id) {
+      getVerifierDetails(props?.data?.verifier_id?._id)
     }
-  }, [props?.data?.verifier_id])
+  }, [props?.data?.verifier_id?._id])
 
   const getVerifierDetails = async (verifierId: string) => {
     setLoading(true)
@@ -136,7 +136,7 @@ const VerifierReportListItemListItem: FC<
                   mt: 1,
                 }}
               >
-                {props?.data?.organization}
+                {props?.data?.verifier_id?.organisationName || '-'}
               </Typography>
               <Button
                 sx={{
@@ -195,7 +195,7 @@ const VerifierReportListItemListItem: FC<
                   fontStyle: 'normal',
                 }}
               >
-                {props?.data?.verifier_number}
+                {props?.data?.verifier_id?.phone.toString() || '-'}
               </Typography>
             </Stack>
           </Box>
@@ -244,7 +244,7 @@ const VerifierReportListItemListItem: FC<
                 mt: 1,
               }}
             >
-              {limitTitle(props?.data?.verifier_address, 25)}
+              {props?.data?.verifier_id?.address || '-'}
             </Typography>
           </Box>
 
@@ -273,23 +273,23 @@ const VerifierReportListItemListItem: FC<
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                backgroundColor:
-                  props?.data?.project_status ===
-                    PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ||
-                  props?.data?.project_status ===
-                    PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
-                  props?.data?.project_status ===
-                    PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
-                    ? '#B2F3E9'
-                    : props?.data?.project_status ===
-                      PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED
-                    ? '#FFF5E3 '
-                    : props?.data?.project_status ===
-                        PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
-                      props?.data?.project_status ===
-                        PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
-                    ? 'rgba(250,0,0,0.2)'
-                    : 'transparent',
+                backgroundColor: [
+                  PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT,
+                  PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
+                  PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
+                  PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
+                  PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
+                ].includes(props?.data?.project_status)
+                  ? '#B2F3E9'
+                  : props?.data?.project_status ===
+                    PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED
+                  ? '#FFF5E3 '
+                  : props?.data?.project_status ===
+                      PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
+                    props?.data?.project_status ===
+                      PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
+                  ? 'rgba(250,0,0,0.2)'
+                  : 'transparent',
                 borderRadius: '16px',
                 py: 0.5,
                 px: 2,
@@ -298,23 +298,23 @@ const VerifierReportListItemListItem: FC<
             >
               <CircleIcon
                 sx={{
-                  color:
-                    props?.data?.project_status ===
-                      PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ||
-                    props?.data?.project_status ===
-                      PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
-                    props?.data?.project_status ===
-                      PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
-                      ? '#17917E '
-                      : props?.data?.project_status ===
-                        PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED
-                      ? '#E6A603'
-                      : props?.data?.project_status ===
-                          PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
-                        props?.data?.project_status ===
-                          PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
-                      ? 'red'
-                      : 'transparent',
+                  color: [
+                    PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT,
+                    PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
+                    PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
+                    PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
+                    PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
+                  ].includes(props?.data?.project_status)
+                    ? '#17917E '
+                    : props?.data?.project_status ===
+                      PROJECT_ALL_STATUS?.POTENTIAL_VERIFIER_SELECTED
+                    ? '#E6A603'
+                    : props?.data?.project_status ===
+                        PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER ||
+                      props?.data?.project_status ===
+                        PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER
+                    ? 'red'
+                    : 'transparent',
                   mr: 1,
                   height: '10px',
                 }}
@@ -329,12 +329,13 @@ const VerifierReportListItemListItem: FC<
                   fontStyle: 'normal',
                 }}
               >
-                {props?.data?.project_status ===
-                  PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT ||
-                props?.data?.project_status ===
-                  PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY ||
-                props?.data?.project_status ===
-                  PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT
+                {[
+                  PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT,
+                  PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
+                  PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
+                  PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
+                  PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
+                ].includes(props?.data?.project_status)
                   ? 'Verifier Confirmed'
                   : props?.data?.project_status ===
                     PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED

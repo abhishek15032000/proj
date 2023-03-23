@@ -57,7 +57,7 @@ const VerifierDetails = ({
             <Spinner />
           </Box>
         ) : (*/}
-        <>
+        <Box>
           <Box sx={{ display: 'flex' }}>
             <PlaceOutlinedIcon sx={{ color: '#006B5E', mr: 1 }} />
             <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
@@ -107,7 +107,7 @@ const VerifierDetails = ({
               {verifierDetails?.email}
             </Typography>
           </Box>
-        </>
+        </Box>
         {/*)}*/}
       </Menu>
     </>

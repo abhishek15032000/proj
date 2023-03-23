@@ -137,7 +137,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                   sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'center',
+                    justifyContent: 'start',
                     alignItems: 'center',
                   }}
                 >
@@ -161,7 +161,9 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                     }}
                   />
                 </Box>,
-                'V1.0',
+                i?.project_pdf_versions && i?.project_pdf_versions.length
+                  ? `V${i?.project_pdf_versions.length}`
+                  : 'V1',
                 // <Chip
                 //   sx={{ backgroundColor: '#75F8E4' }}
                 //   key="1"
@@ -180,7 +182,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
                 <Typography
                   key={index}
                   textAlign="start"
-                  sx={{ fontSize: 15, fontWeight: 500, textAlign: 'center' }}
+                  sx={{ fontSize: 15, fontWeight: 500 }}
                 >
                   {i?.project_status ===
                   PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
@@ -287,16 +289,17 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     // }
 
     setVerifierLoading(true)
+
     const payload = {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
       project_status:
         PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
-      verifier_id: confirmedVerifier?.verifier_id,
-      verifier_name: confirmedVerifier?.verifier_name,
-      verifier_address: confirmedVerifier?.verifier_address,
-      verifier_number: confirmedVerifier?.verifier_number,
-      organization: confirmedVerifier?.organization,
+      verifier_id: confirmedVerifier?.verifier_id?._id,
+      verifier_name: confirmedVerifier?.verifier_id?.fullName,
+      verifier_number: confirmedVerifier?.verifier_id?.phone?.toString(),
+      verifier_address: confirmedVerifier?.verifier_id?.address,
+      organization: confirmedVerifier?.verifier_id?.organisationName,
     }
     verifierCalls
       .updateVerifier(payload)
@@ -308,7 +311,7 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log('Error in verifierCalls.updateVerifier api ~ ', err)
         setVerifierLoading(false)
       })
   }
