@@ -92,7 +92,7 @@ const SellComp = () => {
           value={`${
             carbonTokenBalances?.totalBalances
               ? convertToInternationalCurrencySystem(
-                  carbonTokenBalances?.totalBalances
+                  carbonTokenBalances?.totalBalances + Number(carbonTokenBalances?.assetsBalance)
                 )
               : 0
           } ${carbonTokenSymbol}`}

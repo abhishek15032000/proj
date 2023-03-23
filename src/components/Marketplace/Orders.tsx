@@ -82,9 +82,13 @@ const Orders = () => {
   const [rows, setRows] = useState<any>(null)
 
   useEffect(() => {
-    getOpenOrders()
     getBuyOrders()
   }, [])
+  useEffect(() => {
+    if (carbonTokenAddress) {
+      getOpenOrders()
+    }
+  }, [carbonTokenAddress])
 
   useEffect(() => {
     if (

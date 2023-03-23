@@ -341,7 +341,7 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
               fontSize: 14,
             }}
             onClick={withdraw}
-            disabled={!withdrawAmount}
+            disabled={!withdrawAmount || withdrawLoading}
           >
             Withdraw
           </CCButton>
