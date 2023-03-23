@@ -29,6 +29,7 @@ import { setWalletAdded } from '../../redux/Slices/walletSlice'
 
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import { updateWalletBalance } from '../../utils/commonAPI.utils'
 declare let window: any
 
 const Login = () => {
@@ -92,6 +93,8 @@ const Login = () => {
           return
         }
         if (res?.data?.captchaVerify) {
+          // update wallet balance
+          updateWalletBalance()
           const userResponse = await USER.getUsersById(res?.data?.user_id)
           setLocalItem('userDetails2', userResponse?.data)
           dispatch(setWalletAdded(userResponse?.data?.wallet_added))
