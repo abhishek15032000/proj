@@ -25,28 +25,42 @@ const headingsNew = [
   <LimitedText key={index++} text="Reference ID" />,
   <LimitedText key={index++} text="Recieved On" />,
   <LimitedText key={index++} text="Last Updated On" />,
-  <LimitedText key={index++} text="Issuer" />,
+  <LimitedText key={index++} text="Project Developer" />,
   <LimitedText key={index++} text="Project Name" />,
   <LimitedText key={index++} text="Location" />,
-  <LimitedText key={index++} text="Status" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
   <LimitedText key={index++} text="Action" />,
   <LimitedText key={index++} text="" />,
 ]
-
+const headingsAccepted = [
+  <LimitedText key={index++} text="Reference ID" />,
+  <LimitedText key={index++} text="Recieved On" />,
+  <LimitedText key={index++} text="Last Updated On" />,
+  <LimitedText key={index++} text="Project Developer" />,
+  <LimitedText key={index++} text="Project Name" />,
+  <LimitedText key={index++} text="Location" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
+  <LimitedText key={index++} text="Action" />,
+  <LimitedText key={index++} text="" />,
+]
 const headingsRegistered = [
   <LimitedText key={index++} text="Reference ID" />,
   <LimitedText key={index++} text="Recieved On" />,
   <LimitedText key={index++} text="Last Updated On" />,
-  <LimitedText key={index++} text="Issuer" />,
+  <LimitedText key={index++} text="Project Developer" />,
   <LimitedText key={index++} text="Project Name" />,
   <LimitedText key={index++} text="Location" />,
-  <LimitedText
-    key={index++}
-    text="Next Date"
-    tooltipText="Next Report Submission Dt"
-  />,
-  <LimitedText key={index++} text="Status" />,
-  <LimitedText key={index++} text="Action" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
+  <LimitedText key={index++} text="" />,
+]
+const headingsRejected = [
+  <LimitedText key={index++} text="Reference ID" />,
+  <LimitedText key={index++} text="Recieved On" />,
+  <LimitedText key={index++} text="Last Updated On" />,
+  <LimitedText key={index++} text="Project Developer" />,
+  <LimitedText key={index++} text="Project Name" />,
+  <LimitedText key={index++} text="Location" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
   <LimitedText key={index++} text="" />,
 ]
 
@@ -137,7 +151,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         break
       }
       case 2: {
-        heading = headingsRegistered
+        heading = headingsAccepted
         row = verifierAcceptedProjects
         projectType = 'Accepted'
         break
@@ -149,7 +163,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         break
       }
       case 4: {
-        heading = headingsNew
+        heading = headingsRejected
         row = verifierRejectedProjects
         projectType = 'Rejected'
         break
@@ -164,7 +178,7 @@ const ListOfProjects: FC<ListOfProjectsProps> = (props) => {
         pagination={row.length > 4}
         rowsPerPageProp={5}
         stickyLastCol
-        stickySecondLastCol
+        stickySecondLastCol={selectedTab === 3 ? false : true}
       />
     ) : (
       <NoData title={`No ${projectType} Projects Available`} />

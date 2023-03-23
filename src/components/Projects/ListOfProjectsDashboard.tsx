@@ -45,6 +45,7 @@ import {
   setIssuerRegisteredProjects,
   setIssueVerificationProjects,
 } from '../../redux/Slices/Dashboard/dashboardSlice'
+import { getTextAccordingToStatus } from '../../utils/commonFunctions'
 
 let index = 0
 const headingsNew = [
@@ -52,9 +53,17 @@ const headingsNew = [
   <LimitedText key={index++} text="Creation Dt" />,
   <LimitedText key={index++} text="Project Name" widthLimit="200px" />,
   <LimitedText key={index++} text="Location" />,
-  <LimitedText key={index++} text="Verifier Status" />,
-  <LimitedText key={index++} text="Verifier" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
   <LimitedText key={index++} text="Action" />,
+  <LimitedText key={index++} text="" />,
+]
+const headingsInVerification = [
+  <LimitedText key={index++} text="Reference ID" />,
+  <LimitedText key={index++} text="Creation Dt" />,
+  <LimitedText key={index++} text="Project Name" widthLimit="200px" />,
+  <LimitedText key={index++} text="Location" />,
+  <LimitedText key={index++} text="Verifier" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
   <LimitedText key={index++} text="" />,
 ]
 
@@ -64,13 +73,12 @@ const headingsRegistered = [
   <LimitedText key={index++} text="Project Name" widthLimit="200px" />,
   <LimitedText key={index++} text="Location" />,
   <LimitedText key={index++} text="Verifier" />,
-  <LimitedText key={index++} text="Report Status" />,
   <LimitedText
     key={index++}
     text="Next Date"
     tooltipText="Next Report Submission Dt"
   />,
-  <LimitedText key={index++} text="Action" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
   <LimitedText key={index++} text="" />,
 ]
 
@@ -180,38 +188,13 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           >
             <LimitedText text={item?.company_name} widthLimit="200px" />
           </Box>,
+
           <LimitedText key={index} text={item?.location} />,
-          item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
-            <ApprovalChip variant="Yet to Select" key={index} />
-          ) : item?.project_status ===
-            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
-            <ApprovalChip variant="Selected" key={index} />
-          ) : item?.project_status ===
-            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
-            <ApprovalChip variant="Selected" key={index} />
-          ) : (
-            item?.project_status ===
-              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT && (
-              <ApprovalChip variant="Finalised" key={index} />
-            )
-          ),
-          item?.verifier_details_id ? (
-            <Box
-              key={'1'}
-              sx={{
-                display: 'flex',
-                justifyContent: 'start',
-                alignItems: 'center',
-              }}
-            >
-              <WorkOutlineIcon />
-              <Typography sx={{ fontSize: 14, fontWeight: 400, ml: 1 }}>
-                {item.verifier_details_id?.verifier_name}
-              </Typography>
-            </Box>
-          ) : (
-            '-'
-          ),
+          <LimitedText
+            key={index}
+            text={getTextAccordingToStatus(item?.project_status)}
+            widthLimit="250px"
+          />,
           item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
             // isProjectCompleted(item) ? (
             //   <TextButton
@@ -277,24 +260,6 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             <LimitedText text={item?.company_name} widthLimit="200px" />
           </Box>,
           <LimitedText key={index} text={item?.location} />,
-          item?.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
-            <ApprovalChip variant="Yet to Select" key={index} />
-          ) : item?.project_status ===
-            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
-            <ApprovalChip variant="Selected" key={index} />
-          ) : item?.project_status ===
-            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
-            <ApprovalChip variant="Selected" key={index} />
-          ) : [
-              PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
-              PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
-              PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
-              PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
-            ].includes(item?.project_status) ? (
-            <ApprovalChip variant="Finalised" key={index} />
-          ) : (
-            '-'
-          ),
           item?.verifier_details_id?.verifier_id?.organisationName ? (
             <LimitedText
               text={item?.verifier_details_id?.verifier_id?.organisationName}
@@ -302,23 +267,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ) : (
             '-'
           ),
-          item.project_status === PROJECT_ALL_STATUS.CREATED_PROJECT ? (
-            // isProjectCompleted(item) ? (
-            //   <TextButton
-            //     title="Select Verifier"
-            //     onClick={() => openProjectDetails(item, 'Verify')}
-            //   />
-            // ) : (
-            <CreateIcon
-              sx={{ cursor: 'pointer' }}
-              key="1"
-              onClick={() => moveToSection(item)}
-            />
-          ) : (
-            // )
-
-            '-'
-          ),
+          <LimitedText
+            key={index}
+            text={getTextAccordingToStatus(item?.project_status)}
+            widthLimit="250px"
+          />,
           <Box key="1">
             <ChevronRightIcon
               sx={{ cursor: 'pointer' }}
@@ -378,15 +331,6 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           ) : (
             '-'
           ),
-          <ApprovalChip
-            variant={
-              item.project_status ===
-              PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
-                ? 'Verified'
-                : 'In progress'
-            }
-            key={'1'}
-          />,
           <LimitedText
             key={index}
             text={moment(item.report?.next_date).format('DD/MM/YYYY')}
@@ -401,7 +345,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           // ) : (
           //   '-'
           // ),
-          '-',
+          <LimitedText
+            key={index}
+            text={getTextAccordingToStatus(item?.project_status)}
+            widthLimit="250px"
+          />,
           <Box
             key="1"
             sx={{
@@ -474,7 +422,7 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
       ) : tabIndex === 2 ? (
         issuerVerificationProjects && issuerVerificationProjects.length ? (
           <CCTable
-            headings={headingsNew}
+            headings={headingsInVerification}
             rows={issuerVerificationProjects}
             sx={{ minWidth: 100 }}
             maxWidth={'100%'}
@@ -483,7 +431,6 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             pagination
             rowsPerPageProp={5}
             stickyLastCol
-            stickySecondLastCol
           />
         ) : (
           <NoData title="No verification projects available" />
@@ -499,7 +446,6 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
           pagination
           rowsPerPageProp={5}
           stickyLastCol
-          stickySecondLastCol
         />
       ) : (
         <NoData title="No registered projects available" />

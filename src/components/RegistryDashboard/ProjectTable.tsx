@@ -24,6 +24,7 @@ import {
 } from '../../redux/Slices/Dashboard/dashboardSlice'
 import NoData from '../../atoms/NoData/NoData'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
+import { getTextAccordingToStatus } from '../../utils/commonFunctions'
 
 let index = 0
 const headings: any = [
@@ -31,9 +32,15 @@ const headings: any = [
   <LimitedText key={index++} text="Received on" />,
   <LimitedText key={index++} text="Project Developer" />,
   <LimitedText key={index++} text="Project name" widthLimit="200px" />,
-  <LimitedText key={index++} text="Monthly Report Submission Dt" />,
-  <LimitedText key={index++} text="Review Status" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
   <LimitedText key={index++} text="Action" />,
+]
+const headingsReviewed: any = [
+  <LimitedText key={index++} text="Created on" />,
+  <LimitedText key={index++} text="Received on" />,
+  <LimitedText key={index++} text="Project Developer" />,
+  <LimitedText key={index++} text="Project name" widthLimit="200px" />,
+  <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
 ]
 
 interface ProjectTableProps {
@@ -74,20 +81,36 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
       cachedRegistryNewTabAllProjects.length &&
       cachedRegistryNewTabAllProjects.map((project: any, index: any) => {
         newData.push([
-          <LimitedText
+          <Box
             key={index}
-            text={moment(project.createdAt).format('l')}
-          />,
-          project?.report?.createdAt ? (
+            sx={{ cursor: 'pointer' }}
+            onClick={() => onClickStartHandler(project)}
+          >
             <LimitedText
               key={index}
               text={moment(project.createdAt).format('l')}
             />
-          ) : (
-            '-'
-          ),
-
-          <LimitedText key={index} text={project?.name} />,
+          </Box>,
+          <Box
+            key={index}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => onClickStartHandler(project)}
+          >
+            <LimitedText
+              text={
+                project?.report?.createdAt
+                  ? moment(project.createdAt).format('l')
+                  : '-'
+              }
+            />
+          </Box>,
+          <Box
+            key={index}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => onClickStartHandler(project)}
+          >
+            <LimitedText text={project?.user_id?.organisationName} />
+          </Box>,
           <Box
             key={index}
             className="td-as-link"
@@ -99,15 +122,12 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
               widthLimit="200px"
             />
           </Box>,
-          project?.report?.next_date ? (
+          <Box key={index} onClick={() => onClickStartHandler(project)}>
             <LimitedText
-              key={index}
-              text={moment(project?.report?.next_date).format('l')}
+              text={getTextAccordingToStatus(project?.project_status)}
+              widthLimit="250px"
             />
-          ) : (
-            '-'
-          ),
-          renderStatusChips(project?.project_status),
+          </Box>,
           project?.project_status === 8 ? (
             <ChevronRightIcon onClick={() => onClickStartHandler(project)} />
           ) : (
@@ -145,20 +165,33 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
       cachedRegistryReviewedTabAllProjects.length &&
       cachedRegistryReviewedTabAllProjects.map((project: any, index: any) => {
         reviewedData.push([
-          <LimitedText
+          <Box
             key={index}
-            text={moment(project.createdAt).format('l')}
-          />,
-          project?.report?.createdAt ? (
+            sx={{ cursor: 'pointer' }}
+            onClick={() => onClickStartHandler(project)}
+          >
+            <LimitedText text={moment(project.createdAt).format('l')} />
+          </Box>,
+          <Box
+            key={index}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => onClickStartHandler(project)}
+          >
             <LimitedText
-              key={index}
-              text={moment(project.createdAt).format('l')}
+              text={
+                project?.report?.createdAt
+                  ? moment(project.createdAt).format('l')
+                  : '-'
+              }
             />
-          ) : (
-            '-'
-          ),
-
-          <LimitedText key={index} text={project?.name} />,
+          </Box>,
+          <Box
+            key={index}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => onClickStartHandler(project)}
+          >
+            <LimitedText text={project?.user_id?.organisationName} />
+          </Box>,
           <Box
             key={index}
             className="td-as-link"
@@ -170,35 +203,13 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
               widthLimit="200px"
             />
           </Box>,
-          project?.report?.next_date ? (
-            <LimitedText
-              key={index}
-              text={moment(project?.report?.next_date).format('l')}
-            />
-          ) : (
-            '-'
-          ),
-          renderStatusChips(project?.project_status),
-          project?.project_status === 8 ? (
-            <ChevronRightIcon onClick={() => onClickStartHandler(project)} />
-          ) : (
-            <CCButton
-              key={index}
-              sx={{
-                background: '#006B5E',
-                color: '#FFFFFF',
-                borderRadius: '32px',
-                fontSize: 14,
-                px: 3,
-                py: 1,
-                minWidth: 0,
-                whiteSpace: 'nowrap',
-              }}
-              onClick={() => onClickStartHandler(project)}
-            >
-              Start review
-            </CCButton>
-          ),
+          <Box
+            key={index}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => onClickStartHandler(project)}
+          >
+            {getTextAccordingToStatus(project?.project_status)}
+          </Box>,
         ])
       })
 
@@ -276,15 +287,15 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
             hideScrollbar
             pagination
             rowsPerPageProp={5}
-            stickyLastCol
-            stickySecondLastCol
+            // stickyLastCol
+            // stickySecondLastCol
           />
         ) : (
           <NoData title="No new projects available" />
         )
       ) : registryReviewedProjects && registryReviewedProjects.length ? (
         <CCTable
-          headings={headings}
+          headings={headingsReviewed}
           rows={registryReviewedProjects}
           sx={{ minWidth: 100 }}
           maxWidth={'100%'}
@@ -292,8 +303,6 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
           hideScrollbar
           pagination
           rowsPerPageProp={5}
-          stickyLastCol
-          stickySecondLastCol
         />
       ) : (
         <NoData title="No reviewed projects available" />
