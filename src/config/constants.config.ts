@@ -135,6 +135,20 @@ export const PROJECT_ALL_STATUS = {
   REJECTED_BY_THE_VERIFIER: 10,
 }
 
+export const STATUSWISE_TEXT: { [key: number]: string } = {
+  0: 'Project Added in Blockchain',
+  1: 'Screening',
+  2: 'Screening',
+  3: 'Potential Verifier Selected',
+  4: 'Verifier Approved the Project',
+  5: 'Verifier Finalized. Project Verification in Progress',
+  6: 'Project Verified by the Verifier',
+  7: 'Project Validation in Progress by Registry',
+  8: 'Project Registered',
+  9: 'Project Rejected by the Issuer',
+  10: 'Project Rejected by the Verifier',
+}
+
 export const PROJECT_STATUS_NAME = {
   PROJECT_DESCRIPTION_UPLOADED: 'Project Description Uploaded',
   VERIFYING_PROJECT: 'Verifying Project',

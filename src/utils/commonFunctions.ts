@@ -1,5 +1,6 @@
 import millify from 'millify'
 import { fileUploadCalls } from '../api/fileUpload.api'
+import { STATUSWISE_TEXT } from '../config/constants.config'
 import { getLocalItem } from './Storage'
 
 export const deleteIndexInArray = (array: Array<any>, index: number) => {
@@ -172,4 +173,9 @@ export const downloadPdfFile = async (fileName: any) => {
 
   // Clean up and remove the link
   link?.parentNode?.removeChild(link)
+}
+
+export const getTextAccordingToStatus = (projectStatus: number) => {
+  const status = STATUSWISE_TEXT[projectStatus]
+  return status || '-'
 }
