@@ -25,6 +25,7 @@ const ProjectDetailsRegistryAcc = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('projectId')
+  const verifierStatus = location.state?.verifierStatus
 
   const projectData = useAppSelector(
     ({ registry }) => registry.registryProjectDetails,
@@ -73,11 +74,9 @@ const ProjectDetailsRegistryAcc = () => {
         registry_address: registryDetails?.address,
         registry_number: registryDetails?.phone.toString(),
       }
-      console.log('payload of update registry: ', payload)
       const res = await registryCalls.registryUpdate(payload)
-      console.log('res: ', res)
     } catch (err) {
-      console.log('err', err)
+      console.log('Error in registryCalls.registryUpdate api ~ ', err)
     }
   }
 
@@ -135,7 +134,12 @@ const ProjectDetailsRegistryAcc = () => {
         // tabWidth="fit-content"
       />
       {tabIndex === 1 && <About projectId={projectId} />}
-      {tabIndex === 2 && <ReportsTab projectDetails={projectData} />}
+      {tabIndex === 2 && (
+        <ReportsTab
+          projectDetails={projectData}
+          verifierStatus={verifierStatus}
+        />
+      )}
       {tabIndex === 3 && <TraceabilityTab projectID={projectData?.uuid} />}
     </>
   )

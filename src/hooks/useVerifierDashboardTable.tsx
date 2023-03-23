@@ -19,6 +19,7 @@ import {
 } from '../redux/Slices/verifierSlice'
 import { pathNames } from '../routes/pathNames'
 import { Colors } from '../theme'
+import { getTextAccordingToStatus } from '../utils/commonFunctions'
 import { getLocalItem } from '../utils/Storage'
 import { useAppDispatch, useAppSelector } from './reduxHooks'
 
@@ -71,25 +72,12 @@ export function useVerifierDashboardTable() {
         newData.push([
           <Box
             key={index}
-            sx={{
-              color: '#0068C6',
-              fontWeight: 500,
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}
+            className="td-as-link"
             onClick={() => {
-              if (
-                item?.project_status ===
-                  PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
-                item?.project_status ===
-                  PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT
-              ) {
-                redirectToProjectDetails(item)
-              }
+              redirectToProjectDetails(item)
             }}
           >
             <LimitedText
-              key={index}
               text={item?.project_id?.uuid}
               widthLimit={'100px'}
               ellispsisAtStart
@@ -134,40 +122,24 @@ export function useVerifierDashboardTable() {
             </Box> */}
             <LimitedText
               key={index}
-              text={item?.project_id?.user_id?.fullName || '-'}
+              text={item?.project_id?.user_id?.organisationName || '-'}
             />
           </Box>,
           <Box
             key={index}
-            sx={{
-              color: '#0068C6',
-              fontWeight: 500,
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}
+            className="td-as-link"
             onClick={() => {
-              if (
-                item?.project_status ===
-                  PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
-                item?.project_status ===
-                  PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT
-              ) {
-                redirectToProjectDetails(item)
-              }
+              redirectToProjectDetails(item)
             }}
           >
             <LimitedText text={item?.project_id?.company_name} />
           </Box>,
           <LimitedText key={index} text={item?.project_id?.location} />,
-          item?.project_status ===
-          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
-            <ApprovalChip key={index} variant={'Pending'} />
-          ) : item?.project_status ===
-            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
-            <ApprovalChip key={index} variant={'Approved'} />
-          ) : (
-            <ApprovalChip key={index} variant={'Rejected'} />
-          ),
+          <LimitedText
+            key={index}
+            text={getTextAccordingToStatus(item?.project_status)}
+            widthLimit="250px"
+          />,
           item?.project_status ===
           PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
             <Box
@@ -211,20 +183,13 @@ export function useVerifierDashboardTable() {
           ) : (
             '-'
           ),
-          item?.project_status ===
-            PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ||
-          item?.project_status ===
-            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
-            <ChevronRightIcon
-              key={index}
-              sx={{ cursor: 'pointer' }}
-              onClick={() => {
-                redirectToProjectDetails(item)
-              }}
-            />
-          ) : (
-            <Box sx={{ p: 1 }}> {'-'}</Box>
-          ),
+          <ChevronRightIcon
+            key={index}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              redirectToProjectDetails(item)
+            }}
+          />,
         ])
       } else if (
         [
@@ -232,10 +197,9 @@ export function useVerifierDashboardTable() {
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
           PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY,
           PROJECT_ALL_STATUS.PROJECT_UNDER_REVIEW_IN_REGISTRY,
-          PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT,
         ].includes(item?.project_status)
       ) {
-        const row = [
+        acceptedData.push([
           <Box
             key={index}
             sx={{
@@ -292,7 +256,7 @@ export function useVerifierDashboardTable() {
             </Box> */}
             <LimitedText
               key={index}
-              text={item?.project_id?.user_id?.fullName || '-'}
+              text={item?.project_id?.user_id?.organisationName || '-'}
             />
           </Box>,
           <Box
@@ -314,20 +278,9 @@ export function useVerifierDashboardTable() {
           <LimitedText key={index} text={item?.project_id?.location} />,
           <LimitedText
             key={index}
-            text={
-              item?.project_id?.report?.next_date
-                ? moment(item?.project_id?.report?.next_date).format(
-                    'DD/MM/YYYY'
-                  )
-                : '-'
-            }
+            text={getTextAccordingToStatus(item?.project_status)}
+            widthLimit="250px"
           />,
-          item?.project_status >
-          PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
-            <ApprovalChip key={index} variant={'Verified'} />
-          ) : (
-            <ApprovalChip key={index} variant={'Pending'} />
-          ),
           item?.project_status ===
           PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT ? (
             <TextButton
@@ -351,27 +304,30 @@ export function useVerifierDashboardTable() {
             key={index}
             onClick={() => redirectToProjectDetails(item)}
           />,
-        ]
-
-        if (
-          item?.project_status ===
-          PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT
-        ) {
-          registeredData.push(row)
-        } else {
-          acceptedData.push(row)
-        }
+        ])
       } else if (
-        item?.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER ||
-        item?.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER
+        [PROJECT_ALL_STATUS.REGISTRY_VERIFIES_AND_SUBMITS_THE_REPORT].includes(
+          item?.project_status
+        )
       ) {
-        rejectedData.push([
-          <LimitedText
+        registeredData.push([
+          <Box
             key={index}
-            text={item?.project_id?.uuid}
-            widthLimit={'100px'}
-            ellispsisAtStart
-          />,
+            sx={{
+              color: '#0068C6',
+              fontWeight: 500,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+            }}
+            onClick={() => redirectToProjectDetails(item)}
+          >
+            <LimitedText
+              key={index}
+              text={item?.project_id?.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
           <LimitedText
             key={index}
             text={
@@ -398,25 +354,106 @@ export function useVerifierDashboardTable() {
           >
             <LimitedText
               key={index}
-              text={item?.project_id?.user_id?.fullName || '-'}
+              text={item?.project_id?.user_id?.organisationName || '-'}
             />
           </Box>,
-
-          <LimitedText key={index} text={item?.project_id?.company_name} />,
-          <LimitedText key={index} text={item?.project_id?.location} />,
-          item?.project_status ===
-          PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED ? (
-            <ApprovalChip key={index} variant={'Pending'} />
-          ) : item?.project_status ===
-            PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
-            <ApprovalChip key={index} variant={'Approved'} />
-          ) : (
-            <ApprovalChip key={index} variant={'Rejected'} />
-          ),
-          '-',
-          <Box key={index} sx={{ p: 1 }}>
-            {'-'}
+          <Box
+            key={index}
+            sx={{
+              color: '#0068C6',
+              fontWeight: 500,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+            }}
+            onClick={() => redirectToProjectDetails(item)}
+          >
+            <LimitedText
+              key={index}
+              text={item?.project_id?.company_name}
+              widthLimit="200px"
+            />
           </Box>,
+          <LimitedText key={index} text={item?.project_id?.location} />,
+          <LimitedText
+            key={index}
+            text={getTextAccordingToStatus(item?.project_status)}
+            widthLimit="250px"
+          />,
+          <ChevronRightIcon
+            sx={{ cursor: 'pointer' }}
+            key={index}
+            onClick={() => redirectToProjectDetails(item)}
+          />,
+        ])
+      } else if (
+        item?.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_VERIFIER ||
+        item?.project_status === PROJECT_ALL_STATUS.REJECTED_BY_THE_ISSUER
+      ) {
+        rejectedData.push([
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => {
+              redirectToProjectDetails(item)
+            }}
+          >
+            <LimitedText
+              text={item?.project_id?.uuid}
+              widthLimit={'100px'}
+              ellispsisAtStart
+            />
+          </Box>,
+          <LimitedText
+            key={index}
+            text={
+              item?.createdAt
+                ? moment(item?.createdAt).format('DD/MM/YYYY')
+                : '-'
+            }
+          />,
+          <LimitedText
+            key={index}
+            text={
+              item?.updatedAt
+                ? moment(item?.updatedAt).format('DD/MM/YYYY')
+                : '-'
+            }
+          />,
+          <Box
+            key={index}
+            sx={{
+              display: 'flex',
+              justifyContent: 'start',
+              alignItems: 'center',
+            }}
+          >
+            <LimitedText
+              key={index}
+              text={item?.project_id?.user_id?.organisationName || '-'}
+            />
+          </Box>,
+          <Box
+            key={index}
+            className="td-as-link"
+            onClick={() => {
+              redirectToProjectDetails(item)
+            }}
+          >
+            <LimitedText text={item?.project_id?.company_name} />
+          </Box>,
+          <LimitedText key={index} text={item?.project_id?.location} />,
+          <LimitedText
+            key={index}
+            text={getTextAccordingToStatus(item?.project_status)}
+            widthLimit="250px"
+          />,
+          <ChevronRightIcon
+            key={index}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              redirectToProjectDetails(item)
+            }}
+          />,
         ])
       }
     })
@@ -435,6 +472,7 @@ export function useVerifierDashboardTable() {
         state: {
           project_uuid: project?.project_id.uuid,
           projectDetails: project?.project_id,
+          verifierStatus: project?.project_status,
         },
       }
     )
