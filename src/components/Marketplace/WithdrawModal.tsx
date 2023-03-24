@@ -133,6 +133,9 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
   }
 
   const onClose = () => {
+    if (withdrawLoading === true) {
+      return
+    }
     dispatch(setOpenWithdrawModal(false))
     dispatch(setCurrentProjectUUID(''))
   }
@@ -328,6 +331,7 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
             }}
             onHoverBgColor={Colors.lightPrimary2}
             onHoverTextColor={Colors.darkPrimary1}
+            disabled={withdrawLoading}
             onClick={onClose}
           >
             Cancel

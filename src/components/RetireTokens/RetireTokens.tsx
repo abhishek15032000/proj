@@ -210,7 +210,9 @@ const RetireTokens = (props: RetireTokensProps) => {
         setShowModal(true)
       } else {
         if (res?.data?.error) {
-          alert(res?.data?.error)
+          setSnackbarErrorMsg('Something went wrong in retiring the tokens.')
+          setOpenSnackbar(true)
+          //alert(res?.data?.error)
         }
       }
     } catch (e) {
@@ -224,7 +226,7 @@ const RetireTokens = (props: RetireTokensProps) => {
 
   const isDisabled = () => {
     let shouldDisable = true
-    if (retiring && explain) {
+    if (retiring && explain && !projectTokensLoading) {
       shouldDisable = false
     }
     return shouldDisable
