@@ -137,10 +137,16 @@ export function useMarket() {
     }
   }
 
-  async function getSellOrdersListData(asset_id?: string) {
+  async function getSellOrdersListData(token_address?: string) {
     try {
+      console.log(
+        'token_address',
+        token_address,
+        'carbonTokenAddress: ',
+        carbonTokenAddress
+      )
       dispatch(setSellOrdersLoading(true))
-      const sellOrderRes = await marketplaceCalls.getSellOrder(asset_id)
+      const sellOrderRes = await marketplaceCalls.getSellOrder(token_address)
       if (sellOrderRes.success) {
         if (sellOrderRes.data.length === 0) {
           dispatch(setSellOrdersList(null))
@@ -178,7 +184,10 @@ export function useMarket() {
 
     const pseudoNonce = new Date().getTime()
 
-    const balToCheck = parseInt(carbonTokenBalances?.totalBalances)
+    const balToCheck = parseInt(
+      carbonTokenBalances?.totalBalances +
+        Number(carbonTokenBalances?.assetsBalance)
+    )
     if (sellQuantity > balToCheck) {
       dispatch(setOpenSnackbar(true))
       dispatch(setSnackbarErrorMsg('Not enough balance to Sell'))
@@ -205,7 +214,7 @@ export function useMarket() {
 
       const createOrderRes = await marketplaceCalls.createOrder(payload)
       if (createOrderRes?.success) {
-        getSellOrdersListData()
+        getSellOrdersListData(carbonTokenAddress)
         getOpenOrders()
         getProjectsTokenDetails(currentProjectUUID)
         dispatch(setSellQuantity(0))
@@ -274,6 +283,7 @@ export function useMarket() {
       _feeAsset: inrTokenAddress,
       _feeAmount: 0,
       _nonce: pseudoNonce,
+      token_address: carbonTokenAddress,
     }
 
     try {
@@ -288,7 +298,7 @@ export function useMarket() {
         dispatch(setBuyOrderPayloadAmountsToTake(null))
         dispatch(setBuyQuantity(0))
 
-        getSellOrdersListData()
+        getSellOrdersListData(carbonTokenAddress)
         getBuyOrders()
         getProjectsTokenDetails(currentProjectUUID)
 
