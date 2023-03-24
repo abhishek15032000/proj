@@ -30,9 +30,9 @@ export const marketplaceCalls = {
       }
     )
   },
-  getSellOrder: (asset_id?: string) => {
+  getSellOrder: (token_address?: string) => {
     return AxiosHelper(
-      URL_PATH.marketplace.getSellOrder + `?token=${asset_id}`,
+      URL_PATH.marketplace.getSellOrder + `?token=${token_address}`,
       'POST'
     ).then((res: any) => {
       return res.data
