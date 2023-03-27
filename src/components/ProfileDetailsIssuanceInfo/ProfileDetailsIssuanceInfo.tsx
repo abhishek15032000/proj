@@ -231,8 +231,10 @@ const ProfileDetailsIssuanceInfo: FC = () => {
                     project: projectData,
                     pdf: projectData?.project_pdf,
                     verifierName:
-                      projectData?.verifier_details_id?.verifier_name,
-                    verifierID: projectData?.verifier_details_id?.verifier_id,
+                      projectData?.verifier_details_id?.verifier_id
+                        ?.organisationName,
+                    verifierID:
+                      projectData?.verifier_details_id?.verifier_id?._id,
                   },
                 })
               }

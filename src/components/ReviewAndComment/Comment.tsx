@@ -13,7 +13,7 @@ interface CommentProps {
 }
 const Comment: FC<CommentProps> = ({ comment, align, date }) => {
   const user_type = getLocalItem('userDetails')?.type
-  const user_name = getLocalItem('userDetails2')?.fullName
+  const user_name = getLocalItem('userDetails2')?.organisationName
 
   const senderInitial = useAppSelector(
     ({ comments }) => comments.senderInitial,
