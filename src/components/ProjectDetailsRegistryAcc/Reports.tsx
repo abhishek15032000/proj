@@ -101,7 +101,8 @@ const Reports = ({ projectDetails }: reportsProps) => {
                     project: projectDetails,
                     pdf: projectDetails?.project_pdf,
                     verifierName:
-                      projectDetails?.verifier_details_id?.verifier_name,
+                      projectDetails?.verifier_details_id?.verifier_id
+                        ?.organisationName,
                   },
                 })
               }
@@ -204,15 +205,11 @@ const Reports = ({ projectDetails }: reportsProps) => {
                 ) {
                   navigate(pathNames.REVIEW_AND_COMMENT, {
                     state: {
-                      // project: currentProjectDetails,
-                      // pdf: currentProjectDetails?.project_pdf,
-                      // verifierName:
-                      //   currentProjectDetails?.verifier_details_id
-                      //     ?.verifier_name,
                       project: projectDetails,
                       pdf: projectDetails?.project_pdf,
                       verifierName:
-                        projectDetails?.verifier_details_id?.verifier_name,
+                        projectDetails?.verifier_details_id?.verifier_id
+                          ?.organisationName,
                     },
                   })
                 }

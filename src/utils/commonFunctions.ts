@@ -179,3 +179,11 @@ export const getTextAccordingToStatus = (projectStatus: number) => {
   const status = STATUSWISE_TEXT[projectStatus]
   return status || '-'
 }
+
+export const getInitialLetter = (name: string) => {
+  let initialLetter = ''
+  if (name.length) {
+    initialLetter = name?.slice(0, 1).toUpperCase()
+  }
+  return initialLetter
+}

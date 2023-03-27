@@ -30,6 +30,7 @@ import './index.css'
 import { KeyboardArrowLeft } from '@mui/icons-material'
 import { useComment } from '../../hooks/useComment'
 import PdfPage from '../../pages/PdfPage/PdfPage'
+import { getInitialLetter } from '../../utils/commonFunctions'
 
 const ReviewAndComment = () => {
   const location: any = useLocation()
@@ -37,7 +38,7 @@ const ReviewAndComment = () => {
   const navigate = useNavigate()
 
   const userType = getLocalItem('userDetails')?.type
-  const userName = getLocalItem('userDetails2')?.fullName
+  const userName = getLocalItem('userDetails2')?.organisationName
   const user_id = getLocalItem('userDetails')?.user_id
 
   // const {
@@ -89,14 +90,14 @@ const ReviewAndComment = () => {
       ])
     )
     dispatch(setCommentFrom(user_id))
-    dispatch(setCommentTo(project?.user_id))
+    dispatch(setCommentTo(project?.user_id?._id))
 
-    const veriferInitial = verifierName?.slice(0, 1) || 'V'
-    const issuerInitial = project?.name?.slice(0, 1) || 'I'
+    const veriferInitial = getInitialLetter(verifierName) || 'V'
+    const issuerInitial = getInitialLetter(project?.name) || 'I'
     dispatch(setSenderInitial(veriferInitial))
     dispatch(setReceiverInitial(issuerInitial))
     dispatch(setVerifierName(verifierName))
-    dispatch(setIssuerName(project?.name))
+    dispatch(setIssuerName(project?.user_id?.organisationName))
   }
 
   const setDataForIssuer = () => {
@@ -116,12 +117,12 @@ const ReviewAndComment = () => {
     dispatch(setCommentFrom(user_id))
     dispatch(setCommentTo(verifierID))
 
-    const veriferInitial = verifierName?.slice(0, 1) || 'V'
-    const issuerInitial = userName.slice(0, 1) || 'I'
+    const veriferInitial = getInitialLetter(verifierName) || 'V'
+    const issuerInitial = getInitialLetter(userName) || 'I'
     dispatch(setSenderInitial(issuerInitial))
     dispatch(setReceiverInitial(veriferInitial))
     dispatch(setVerifierName(verifierName))
-    dispatch(setIssuerName(project?.name))
+    dispatch(setIssuerName(project?.user_id?.organisationName))
   }
 
   useEffect(() => {
