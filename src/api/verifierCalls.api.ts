@@ -90,4 +90,20 @@ export const verifierCalls = {
       return res?.data
     })
   },
+  verifierUpdate: (payload: any) => {
+    return AxiosHelper(URL_PATH.verifier.verifierUpdate, 'POST', payload).then(
+      (response: any) => {
+        return response
+      }
+    )
+  },
+  verifierUpdateByPD: (payload: any) => {
+    return AxiosHelper(
+      URL_PATH.verifier.verifierUpdateByPD,
+      'POST',
+      payload
+    ).then((response: any) => {
+      return response
+    })
+  },
 }

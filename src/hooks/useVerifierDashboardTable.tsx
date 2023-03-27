@@ -11,7 +11,7 @@ import { verifierCalls } from '../api/verifierCalls.api'
 import ApprovalChip from '../atoms/ApprovalChip/ApprovalChip'
 import LimitedText from '../atoms/LimitedText/LimitedText'
 import TextButton from '../atoms/TextButton/TextButton'
-import { PROJECT_ALL_STATUS } from '../config/constants.config'
+import { PROJECT_ALL_STATUS, VERIFIER_UPDATE } from '../config/constants.config'
 import { setCachedVerifierDashboardProject } from '../redux/Slices/cachingSlice'
 import {
   setVerifierDashboardTableLoading,
@@ -159,10 +159,7 @@ export function useVerifierDashboardTable() {
                   cursor: 'pointer',
                 }}
                 onClick={() =>
-                  updateVerifierStatus(
-                    PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT,
-                    item
-                  )
+                  updateVerifierStatus(VERIFIER_UPDATE.APPROVE_PROJECT, item)
                 }
               >
                 Approve
@@ -175,7 +172,9 @@ export function useVerifierDashboardTable() {
                   ml: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => updateVerifierStatus(10, item)}
+                onClick={() =>
+                  updateVerifierStatus(VERIFIER_UPDATE.REJECT_PROJECT, item)
+                }
               >
                 Reject
               </Typography>
@@ -483,15 +482,16 @@ export function useVerifierDashboardTable() {
     const payload = {
       _id: data?._id,
       project_id: data?.project_id?._id,
-      project_status: status,
+      status: status,
       verifier_id: data?.verifier_id?._id,
       verifier_name: data?.verifier_id?.fullName,
       verifier_number: data?.verifier_id?.phone.toString(),
       verifier_address: data?.verifier_id?.address,
-      organization: data?.verifier_id?.organisationName,
+      retry: false,
+      // organization: data?.verifier_id?.organisationName,
     }
 
-    verifierCalls.updateVerifier(payload).then((response) => {
+    verifierCalls.verifierUpdate(payload).then((response) => {
       //setVerifierStatsReload action making false to make the project stats to run again when it is becoming true in loadTableData() so that when verifier make the action in verifier dahsboard the stats will be updated
       dispatch(setVerifierStatsReload(false))
       loadTableData()

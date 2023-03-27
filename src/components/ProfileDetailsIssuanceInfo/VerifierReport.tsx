@@ -293,16 +293,17 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     const payload = {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
-      project_status:
-        PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
+      status: PROJECT_ALL_STATUS.ISSUER_APPROVED_THE_VERIFIER_FOR_THE_PROJECT,
       verifier_id: confirmedVerifier?.verifier_id?._id,
       verifier_name: confirmedVerifier?.verifier_id?.fullName,
       verifier_number: confirmedVerifier?.verifier_id?.phone?.toString(),
       verifier_address: confirmedVerifier?.verifier_id?.address,
-      organization: confirmedVerifier?.verifier_id?.organisationName,
+      retry: false,
+      // organization: confirmedVerifier?.verifier_id?.organisationName,
     }
+
     verifierCalls
-      .updateVerifier(payload)
+      .verifierUpdateByPD(payload)
       .then((res) => {
         if (res?.success) {
           setVerifierLoading(false)

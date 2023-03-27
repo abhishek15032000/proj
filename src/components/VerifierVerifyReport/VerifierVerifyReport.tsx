@@ -236,6 +236,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       // file_attach: stringExtractor(relevantDocs, 'fileName'),
       file_attach: relevantDocs,
       // nonce: pseudoNonce,
+      retry: false,
     }
     try {
       const verifyPDFAndMintTokenRes =

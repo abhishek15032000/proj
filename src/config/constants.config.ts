@@ -154,18 +154,11 @@ export const PROJECT_STATUS_NAME = {
   VERIFYING_PROJECT: 'Verifying Project',
   VALIDATING_PROJECT: 'Validating Project',
 }
-//'Project Created',
-//'Submitted for Screening',
-//'Screening Successful',
-//'Verifier Selected',
-//'Project accepted by Verifier',
-//'Verifier Finalised',
-//'Project verified by Verifier',
-//'Project under review by Registry',
-//'Project Registered',
-//'Project Rejected by Issuer',
-//'Project Rejected by Verifier',
-//}
+
+export const VERIFIER_UPDATE = {
+  APPROVE_PROJECT: 1,
+  REJECT_PROJECT: 2,
+}
 
 export const filters = [
   {

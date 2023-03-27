@@ -136,6 +136,7 @@ const RegistryReviewReport = () => {
         monthly_carbon_tokens: monthlyVCOT,
         lifetime_carbon_tokens: reportData?.report?.lifetime_carbon_tokens || 1,
         registry_id: registryId,
+        retry: false,
       }
       const res = await registryCalls.reportSumbit(payload)
       if (res?.success) {
