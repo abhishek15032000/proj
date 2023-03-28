@@ -2,9 +2,15 @@ import { Modal, Paper } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect } from 'react'
 import { shallowEqual } from 'react-redux'
+import CCButton from '../../atoms/CCButton'
 import { BLOCKCHAIN_STATUS } from '../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { setBlockchainCallStatus } from '../../redux/Slices/blockchainStatusModalSlice'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setsecondaryText,
+} from '../../redux/Slices/blockchainStatusModalSlice'
 import { Images } from '../../theme'
 import InProgressAnimation from './InProgressAnimation'
 import './style.css'
@@ -12,23 +18,52 @@ import './style.css'
 const BlockchainStatusModal = () => {
   const dispatch = useAppDispatch()
 
-  const openBlockchainModal = useAppSelector(
-    ({ blockchainStatusModal }) => blockchainStatusModal.openBlockchainModal,
+  const openBlockchainStatusModal = useAppSelector(
+    ({ blockchainStatusModal }) =>
+      blockchainStatusModal.openBlockchainStatusModal,
     shallowEqual
   )
   const blockchainCallStatus = useAppSelector(
     ({ blockchainStatusModal }) => blockchainStatusModal.blockchainCallStatus,
     shallowEqual
   )
+  const primaryText = useAppSelector(
+    ({ blockchainStatusModal }) => blockchainStatusModal.primaryText,
+    shallowEqual
+  )
+  const secondaryText = useAppSelector(
+    ({ blockchainStatusModal }) => blockchainStatusModal.secondaryText,
+    shallowEqual
+  )
 
   useEffect(() => {
-    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    blockchainInitiationReplica()
+    // blockchainSuccessReplica()
+    // blockchainFailReplica()
 
     setTimeout(() => {
-      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
-      // dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
-    }, 2000)
+      blockchainSuccessReplica()
+      // blockchainFailReplica()
+    }, 4000)
   }, [])
+
+  const blockchainInitiationReplica = () => {
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(
+      setsecondaryText('Blockchain call initiated. Waiting for confirmation')
+    )
+  }
+  const blockchainSuccessReplica = () => {
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+    dispatch(setPrimaryText('Completed'))
+    dispatch(setsecondaryText('Transaction added to Blockchain successfully!'))
+  }
+  const blockchainFailReplica = () => {
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+    dispatch(setPrimaryText('Failed'))
+    dispatch(setsecondaryText('Blockchain call failed. Please try again!'))
+  }
 
   const renderIcon = (status: number) => {
     switch (status) {
@@ -41,9 +76,17 @@ const BlockchainStatusModal = () => {
     }
   }
 
+  const handleClick = () => {
+    if (blockchainCallStatus === BLOCKCHAIN_STATUS.COMPLETED) {
+      dispatch(setOpenBlockchainStatusModal(false))
+    } else {
+      console.log('Blockchain call failed')
+    }
+  }
+
   return (
     <Modal
-      open={openBlockchainModal}
+      open={openBlockchainStatusModal}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       disableAutoFocus={true}
@@ -56,13 +99,46 @@ const BlockchainStatusModal = () => {
     >
       <Paper
         sx={{
-          p: 3,
+          py: 4,
+          px: 5,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          minWidth: '600px',
+          borderRadius: '16px',
         }}
       >
         {renderIcon(blockchainCallStatus)}
+        {primaryText ? (
+          <Box sx={{ color: '#2B2B2B', fontSize: 20, fontWeight: 500, mt: 3 }}>
+            {primaryText}
+          </Box>
+        ) : null}
+        {secondaryText ? (
+          <Box sx={{ color: '#325743', mt: 2 }}>{secondaryText}</Box>
+        ) : null}
+        {[BLOCKCHAIN_STATUS.COMPLETED, BLOCKCHAIN_STATUS.FAILED].includes(
+          blockchainCallStatus
+        ) ? (
+          <Box sx={{ mt: 3 }}>
+            <CCButton
+              variant="contained"
+              sx={{
+                ml: 3,
+                padding: '10px 30px',
+                borderRadius: 10,
+                minWidth: 0,
+                fontSize: 14,
+              }}
+              onClick={handleClick}
+              // disabled={disableBtn1}
+            >
+              {blockchainCallStatus === BLOCKCHAIN_STATUS.COMPLETED
+                ? 'Okay'
+                : 'Retry'}
+            </CCButton>
+          </Box>
+        ) : null}
       </Paper>
     </Modal>
   )
