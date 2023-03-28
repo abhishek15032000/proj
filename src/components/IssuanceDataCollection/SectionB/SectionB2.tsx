@@ -39,9 +39,8 @@ const SectionB2 = () => {
 
   useEffect(() => {
     if (
-      currentProjectDetails 
-      // &&
-      // currentProjectDetails.section_b.step2.completed
+      currentProjectDetails &&
+      currentProjectDetails.section_b.step2.completed
     ) {
       const {
         temporary_deviation,
@@ -96,7 +95,6 @@ const SectionB2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB2({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -109,7 +107,6 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -122,7 +119,6 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -135,7 +131,6 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -148,7 +143,6 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
-            required={false}
           />
         </Grid>
 
@@ -161,7 +155,6 @@ const SectionB2 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setB2({ value, name }))
             }
-            required={false}
           />
         </Grid>
       </Grid>

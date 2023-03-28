@@ -83,7 +83,7 @@ const sectionATabs = [
     { name: 'A4: Reference & Applied Methodology', component: SectionA4 },
     { name: 'A5: Crediting Period', component: SectionA5 },
     { name: 'A6: Safeguards', component: SectionA6 },
-    { name: 'A7: Additionaly', component: SectionA7 },
+    { name: 'A7: Additionally', component: SectionA7 },
   ],
   [
     {
@@ -142,7 +142,7 @@ const sectionATabs = [
 ]
 
 const IssuanceDataCollection = () => {
-  const dispatch = useAppDispatch()
+  const dispatch: any = useAppDispatch()
   const navigate = useNavigate()
 
   const sectionA = store.getState()?.sectionA
@@ -247,10 +247,10 @@ const IssuanceDataCollection = () => {
   }, [currentProjectDetails, sectionIndex])
 
   useEffect(() => {
-    if (isApiCallSuccess) {
+    if (isApiCallSuccess && !loading) {
       handleSectionIndexFromModal()
     }
-  }, [isApiCallSuccess])
+  }, [isApiCallSuccess, loading])
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
@@ -454,7 +454,7 @@ const IssuanceDataCollection = () => {
   }
 
   const disableSave = () => {
-    if (sectionIndex === 0 && currentProjectDetails) {
+    if ((sectionIndex === 0 && currentProjectDetails) || loading) {
       return true
     }
     return false
