@@ -160,6 +160,13 @@ export const VERIFIER_UPDATE = {
   REJECT_PROJECT: 2,
 }
 
+export const BLOCKCHAIN_STATUS = {
+  NOT_YET_INITAITED: 0,
+  PENDING: 1,
+  COMPLETED: 2,
+  FAILED: 3,
+}
+
 export const filters = [
   {
     filterType: 'Project Type',
