@@ -124,7 +124,6 @@ const SectionB3 = () => {
             onChange={({ target: { value, name } }) => {
               console.log(value, name), dispatch(setB3({ value, name }))
             }}
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -136,7 +135,6 @@ const SectionB3 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB3({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -148,7 +146,6 @@ const SectionB3 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB3({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -160,7 +157,6 @@ const SectionB3 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB3({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -197,7 +193,6 @@ const SectionB3 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB3({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -209,7 +204,6 @@ const SectionB3 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB3({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -221,7 +215,6 @@ const SectionB3 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setB3({ value, name }))
             }
-            required={false}
           />
         </Grid>
       </Grid>

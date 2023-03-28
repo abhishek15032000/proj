@@ -130,7 +130,7 @@ const SectionB1 = () => {
       <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Brief on purpose and general description of project activity "
+            label="Brief on purpose and general description of project activity"
             placeholder="Write a brief of the implemented registered project activity"
             value={general_description}
             name={'general_description'}
@@ -219,6 +219,7 @@ const SectionB1 = () => {
                 })
               )
             }}
+            required
           />
 
           <CCDropAndUpload
@@ -245,6 +246,7 @@ const SectionB1 = () => {
                 })
               )
             }}
+            required
           />
 
           <CCDropAndUpload
@@ -268,6 +270,7 @@ const SectionB1 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
       </Grid>
