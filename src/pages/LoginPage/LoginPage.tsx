@@ -93,10 +93,10 @@ const Login = () => {
           return
         }
         if (res?.data?.captchaVerify) {
-          // update wallet balance
-          updateWalletBalance()
           const userResponse = await USER.getUsersById(res?.data?.user_id)
           setLocalItem('userDetails2', userResponse?.data)
+          // update wallet balance and table
+          updateWalletBalance()
           dispatch(setWalletAdded(userResponse?.data?.wallet_added))
           const profileCompleted = userResponse?.data?.orgName ? true : false
           setLocalItem('profileCompleted', profileCompleted)
