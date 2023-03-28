@@ -195,6 +195,7 @@ const SectionC1 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -219,6 +220,7 @@ const SectionC1 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -241,7 +243,6 @@ const SectionC1 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setC1({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -253,7 +254,6 @@ const SectionC1 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setC1({ value, name }))
             }
-            required={false}
           />
         </Grid>
       </Grid>

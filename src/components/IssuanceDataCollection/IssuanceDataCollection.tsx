@@ -83,7 +83,7 @@ const sectionATabs = [
     { name: 'A4: Reference & Applied Methodology', component: SectionA4 },
     { name: 'A5: Crediting Period', component: SectionA5 },
     { name: 'A6: Safeguards', component: SectionA6 },
-    { name: 'A7: Additionaly', component: SectionA7 },
+    { name: 'A7: Additionally', component: SectionA7 },
   ],
   [
     {
@@ -142,7 +142,7 @@ const sectionATabs = [
 ]
 
 const IssuanceDataCollection = () => {
-  const dispatch = useAppDispatch()
+  const dispatch: any = useAppDispatch()
   const navigate = useNavigate()
 
   const sectionA = store.getState()?.sectionA
@@ -218,7 +218,7 @@ const IssuanceDataCollection = () => {
   const [onHoverText, setOnHoverText] = useState('Copy To Clipboard')
   const [show, setShow] = useState<boolean>(false)
   const [storeSectionIndex, setStoreSectionIndex] = useState<any>({
-    sectionIndex: sectionIndex,
+    sectionIndex: 1,
     subSectionIndex: 0,
   })
 
@@ -247,10 +247,17 @@ const IssuanceDataCollection = () => {
   }, [currentProjectDetails, sectionIndex])
 
   useEffect(() => {
-    if (isApiCallSuccess) {
+    if (isApiCallSuccess && !loading) {
       handleSectionIndexFromModal()
     }
-  }, [isApiCallSuccess])
+  }, [isApiCallSuccess, loading])
+
+  useEffect(() => {
+    setStoreSectionIndex({
+      subSectionIndex,
+      sectionIndex,
+    })
+  }, [sectionIndex, subSectionIndex])
 
   const getSectionName = () => {
     return sections[sectionIndex]?.name
@@ -277,6 +284,10 @@ const IssuanceDataCollection = () => {
   }
 
   const handlePrevious = () => {
+    // restrict user to navigate when APi call is happening
+    if (loading) {
+      return
+    }
     const isDataEdited = handleDataCheck()
     if (isDataEdited) {
       setStoreSectionIndex({
@@ -291,7 +302,9 @@ const IssuanceDataCollection = () => {
   }
 
   const handleNext = () => {
-    if (!currentProjectDetails) {
+    // loading - restrict user to navigate when APi call is happening
+
+    if (!currentProjectDetails || loading) {
       return
     }
     const isDataEdited = handleDataCheck()
@@ -406,6 +419,10 @@ const IssuanceDataCollection = () => {
   usePrompt('This page have unsaved data', blockRouting)
 
   const handleSubSectionClick = (selectedSubSectionIndex?: any) => {
+    // restrict user to navigate when APi call is happening
+    if (loading) {
+      return
+    }
     if (selectedSubSectionIndex !== subSectionIndex) {
       if (handleDataCheck()) {
         setStoreSectionIndex({
@@ -443,10 +460,17 @@ const IssuanceDataCollection = () => {
     }
     dispatch(setSubSectionIndex(storeSectionIndex?.subSectionIndex))
     dispatch(setSectionIndex(storeSectionIndex?.sectionIndex))
-
     dispatch(setIsApiCallSuccess(false))
   }
-
+  console.log(
+    'redux_index',
+    'sectionIndex',
+    sectionIndex,
+    'subSectionIndex',
+    subSectionIndex,
+    'storeSectionIndex: ',
+    storeSectionIndex
+  )
   const renderTab = () => {
     const SelectedSubSectionComp =
       sectionATabs[sectionIndex][subSectionIndex]?.component
@@ -454,7 +478,7 @@ const IssuanceDataCollection = () => {
   }
 
   const disableSave = () => {
-    if (sectionIndex === 0 && currentProjectDetails) {
+    if ((sectionIndex === 0 && currentProjectDetails) || loading) {
       return true
     }
     return false
@@ -637,7 +661,7 @@ const IssuanceDataCollection = () => {
       {/*//modal*/}
       <Modal
         open={modal}
-        onClose={() => setModal(false)}
+        //onClose={() => setModal(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         sx={{
@@ -704,7 +728,13 @@ const IssuanceDataCollection = () => {
       {/*Modal 2*/}
       <Modal
         open={showMandatoryFieldModal}
-        onClose={() => dispatch(setShowMandatoryFieldModal(false))}
+        onClose={() => {
+          setStoreSectionIndex({
+            subSectionIndex,
+            sectionIndex,
+          })
+          dispatch(setShowMandatoryFieldModal(false))
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         sx={{
@@ -715,14 +745,15 @@ const IssuanceDataCollection = () => {
         }}
       >
         <>
-          <Box
+          {/*<Box
             sx={{ position: 'absolute', top: 50, right: 50 }}
-            onClick={() => dispatch(setShowMandatoryFieldModal(false))}
+            //onClick={() => 
+            //onClick = {handleClose}
           >
             <CloseIcon
               sx={{ color: '#FFFFFF', fontSize: 30, cursor: 'pointer' }}
             />
-          </Box>
+          </Box>*/}
           <Paper
             sx={{
               px: 9,
@@ -742,9 +773,11 @@ const IssuanceDataCollection = () => {
               </Typography>
               <CCButton
                 onClick={() => {
+                  setStoreSectionIndex({
+                    subSectionIndex,
+                    sectionIndex,
+                  })
                   dispatch(setShowMandatoryFieldModal(false))
-                  //below line will make the triggered redux to false if the mandatory fields in sections so that the section or subsection wont' change when clicks on save from out of modal
-                  toMoveSectionIndex && dispatch(setToMoveSectionIndex(false))
                 }}
                 sx={{
                   mt: 3,
