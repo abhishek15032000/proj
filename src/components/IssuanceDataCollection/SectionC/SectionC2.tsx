@@ -130,7 +130,7 @@ const SectionC2 = () => {
       <Grid container sx={{ mt: 2 }} spacing={1}>
         <Grid item sx={{ mt: 1 }} xs={12}>
           <CCMultilineTextArea
-            label="Criteria and Procedures for Quantification "
+            label="Criteria and Procedures for Quantification"
             placeholder="Please describe the criteria and procedures, including relevant equations, for quantifying GHG emissions and/or removals for selected GHG SSRs. Based on applied criteria, procedures, or methodologies for baseline emissions, project emissions, and leakage. The project proponent shall quantify GHG emissions and/or removals separately for 
 						1: each relevant GHG for each GHG SSR relevant to the project and 
 						2: each GHG SSR relevant to the baseline scenario."
@@ -139,7 +139,6 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -151,7 +150,6 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{}} xs={12}>
@@ -176,6 +174,7 @@ const SectionC2 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -187,7 +186,6 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -212,6 +210,7 @@ const SectionC2 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -223,7 +222,6 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -248,6 +246,7 @@ const SectionC2 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -259,7 +258,6 @@ const SectionC2 = () => {
             onChange={({ target: { value, name } }) =>
               dispatch(setC2({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -287,6 +285,7 @@ const SectionC2 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
       </Grid>

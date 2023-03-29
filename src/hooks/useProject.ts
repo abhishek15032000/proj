@@ -184,6 +184,7 @@ export function useProject() {
             construction_date,
             operation_period,
             project_comissioning_date,
+            total_GHG_emission,
             conditions_prior_to_initiation,
             project_type_and_sectoral_scope,
             additional_info,
@@ -241,7 +242,14 @@ export function useProject() {
           },
         }
       } else if (subSectionIndex === 2) {
-        if (checkMandatoryFieldsArrayObjects(party_and_project_participants)) {
+        if (
+          checkMandatoryFieldsArrayObjects(party_and_project_participants) ||
+          checkingMandatoryFields([
+            host_country_attestation,
+            host_country_attestation_upload,
+            eligibility_criteria,
+          ])
+        ) {
           dispatch(setShowMandatoryFieldModal(true))
           return
         }
@@ -415,6 +423,9 @@ export function useProject() {
             technical_description,
             data_tables_technical_description_attach,
             operational_description,
+            shut_down_details_attach,
+            implementation_milestones_attach,
+            project_timeline_attach,
           ])
         ) {
           dispatch(setShowMandatoryFieldModal(true))
@@ -446,14 +457,16 @@ export function useProject() {
         }
       } else if (subSectionIndex === 1) {
         if (
-          temporary_deviation.length === 0 &&
-          corrections.length === 0 &&
-          permanent_changes_from_registered_monitoring_plan.length === 0 &&
-          change_project_design.length === 0 &&
-          change_startDate_creditPeriod.length === 0 &&
-          typeOf_changes_specific.length === 0
+          checkingMandatoryFields([
+            temporary_deviation,
+            corrections,
+            permanent_changes_from_registered_monitoring_plan,
+            change_project_design,
+            change_startDate_creditPeriod,
+            typeOf_changes_specific,
+          ])
         ) {
-          alert('Fill any one field')
+          dispatch(setShowMandatoryFieldModal(true))
           return
         }
         params = {
@@ -464,21 +477,23 @@ export function useProject() {
             change_project_design,
             change_startDate_creditPeriod,
             typeOf_changes_specific,
-            //completed: true,
+            completed: true,
           },
         }
       } else if (subSectionIndex === 2) {
         if (
-          project_boundary.length === 0 &&
-          eligibility.length === 0 &&
-          funding.length === 0 &&
-          ownership.length === 0 &&
-          ownership_file_attach.length === 0 &&
-          other_certifications.length === 0 &&
-          participation_under_GHG_programs.length === 0 &&
-          other_benefits.length === 0
+          checkingMandatoryFields([
+            project_boundary,
+            eligibility,
+            funding,
+            ownership,
+            ownership_file_attach,
+            other_certifications,
+            participation_under_GHG_programs,
+            other_benefits,
+          ])
         ) {
-          alert('Fill any one field')
+          dispatch(setShowMandatoryFieldModal(true))
           return
         }
         params = {
@@ -564,6 +579,10 @@ export function useProject() {
             monitoring_plan,
             attach_org_structure_and_responsibilities_chart,
             specific_data_monitored,
+            project_proponents_upload,
+            others_involved_upload,
+            training_and_maintenance,
+            management_of_data_quality,
           ])
         ) {
           dispatch(setShowMandatoryFieldModal(true))
@@ -584,17 +603,19 @@ export function useProject() {
         }
       } else if (subSectionIndex === 1) {
         if (
-          criteria_and_procedures.length === 0 &&
-          baseline_emissions.length === 0 &&
-          baseline_emissions_upload.length === 0 &&
-          project_emissions.length === 0 &&
-          project_emissions_upload.length === 0 &&
-          leakage.length === 0 &&
-          leakage_upload.length === 0 &&
-          quantification_of_net_GHG_emission.length === 0 &&
-          quantification_of_net_GHG_emission_upload.length === 0
+          checkingMandatoryFields([
+            criteria_and_procedures,
+            baseline_emissions,
+            baseline_emissions_upload,
+            project_emissions,
+            project_emissions_upload,
+            leakage,
+            leakage_upload,
+            quantification_of_net_GHG_emission,
+            quantification_of_net_GHG_emission_upload,
+          ])
         ) {
-          alert('Fill any one field')
+          dispatch(setShowMandatoryFieldModal(true))
           return
         }
         params = {
@@ -944,7 +965,9 @@ export function useProject() {
     try {
       const res = await dataCollectionCalls.getProjectById(projectID)
       if (res?.success && res?.data) {
-        toMoveSectionIndex && dispatch(setIsApiCallSuccess(true))
+        console.log('toMoveSectionIndex: ', toMoveSectionIndex)
+        dispatch(setIsApiCallSuccess(true))
+        //toMoveSectionIndex && dispatch(setIsApiCallSuccess(true))
         const modifiedRows = addSectionPercentages(res?.data)
         if (modifiedRows) dispatch(setCurrentProjectDetails(modifiedRows))
       } else {

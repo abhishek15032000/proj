@@ -161,15 +161,16 @@ const SectionA3 = () => {
         className="table-with-div-heading"
       >
         <Grid item xs={4}>
-          Party involved ((host) indicates a host Party) *
+          Party involved ((host) indicates a host Party){' '}
+          <span style={{ color: 'red' }}>*</span>
         </Grid>
         <Grid item xs={4}>
-          Private and/or public entity(ies) project participants (as
-          applicable)*
+          Private and/or public entity(ies) project participants (as applicable)
+          <span style={{ color: 'red' }}>*</span>
         </Grid>
         <Grid item xs={4}>
           Indicate if the Party involved wishes to be considered as project
-          participant *
+          participant <span style={{ color: 'red' }}>*</span>
         </Grid>
       </Grid>
       {party_and_project_participants?.map((item: any, index: number) => (
@@ -285,7 +286,6 @@ const SectionA3 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA3({ value, name }))
             }
-            required={false}
           />
         </Grid>
         <Grid item xs={12}>
@@ -313,6 +313,7 @@ const SectionA3 = () => {
                 })
               )
             }}
+            required
           />
         </Grid>
         <Grid item sx={{ mt: 1 }} xs={12}>
@@ -324,7 +325,6 @@ const SectionA3 = () => {
             onChange={({ target: { name, value } }) =>
               dispatch(setA3({ value, name }))
             }
-            required={false}
           />
         </Grid>
       </Grid>

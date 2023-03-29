@@ -2,6 +2,7 @@ import {
   Box,
   Checkbox,
   Chip,
+  createTheme,
   FormControl,
   Grid,
   InputLabel,
@@ -30,6 +31,8 @@ import { METHODOLOGIES, PROJECT_TYPES } from '../../../config/constants.config'
 import CCDropAndUpload from '../../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../../utils/commonFunctions'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import { initialState } from '../../../redux/Slices/themeSlice'
+import { ThemeProvider } from '@mui/system'
 interface methodologiesInterface {
   approvedMethodologies: string
   projectType: string
@@ -40,6 +43,20 @@ interface methodologiesInterface {
 
 const SectionA4 = () => {
   const dispatch = useAppDispatch()
+
+  const theme = createTheme({
+    components: {
+      MuiFormLabel: {
+        styleOverrides: {
+          asterisk: {
+            color: 'red',
+          },
+        },
+      },
+    },
+    ...initialState,
+  })
+
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
       issuanceDataCollection.currentProjectDetails,
@@ -244,40 +261,42 @@ const SectionA4 = () => {
                   xl={12}
                   rowSpacing={1}
                 >
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                      Select Methodology *
-                    </InputLabel>
-                    <Select
-                      placeholder="Select Approved Methodologies"
-                      sx={{
-                        background: 'white',
-                        color: '#006B5E',
-                        borderRadius: '4px 4px 0 0',
-                      }}
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      label="Select Methodology *"
-                      value={item?.methodology}
-                      onChange={(e) =>
-                        handleTextChange(e, index, 'methodology')
-                      }
-                      MenuProps={MenuProps}
-                    >
-                      {METHODOLOGIES?.map((item: any) => (
-                        <MenuItem
-                          key={item}
-                          value={`${item}`}
-                          sx={{
-                            background: '#FAFDFA',
-                            width: '100%',
-                          }}
-                        >
-                          {item}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <ThemeProvider theme={theme}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label" required>
+                        Select Methodology
+                      </InputLabel>
+                      <Select
+                        placeholder="Select Approved Methodologies"
+                        sx={{
+                          background: 'white',
+                          color: '#006B5E',
+                          borderRadius: '4px 4px 0 0',
+                        }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Select Methodology *"
+                        value={item?.methodology}
+                        onChange={(e) =>
+                          handleTextChange(e, index, 'methodology')
+                        }
+                        MenuProps={MenuProps}
+                      >
+                        {METHODOLOGIES?.map((item: any) => (
+                          <MenuItem
+                            key={item}
+                            value={`${item}`}
+                            sx={{
+                              background: '#FAFDFA',
+                              width: '100%',
+                            }}
+                          >
+                            {item}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </ThemeProvider>
                 </Grid>
                 <Grid
                   item
@@ -288,73 +307,75 @@ const SectionA4 = () => {
                   xl={12}
                   rowSpacing={1}
                 >
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                      Project Type *
-                    </InputLabel>
-                    <Select
-                      multiple
-                      value={item?.project_type}
-                      onChange={(e) =>
-                        handleTextChange(e, index, 'project_type')
-                      }
-                      input={
-                        <OutlinedInput
-                          sx={{
-                            color: '#006B5E',
-                          }}
-                          label="Project Type"
-                        />
-                      }
-                      sx={{
-                        color: '#006B5E',
-                        borderRadius: '4px 4px 0 0',
-                      }}
-                      renderValue={(selected: any) => (
-                        <Box
-                          sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
-                        >
-                          {selected.map((value: any) => (
-                            <Chip
-                              sx={{
-                                display: 'flex',
-                                backgroundColor: '#1D4B44',
-                                color: '#fff',
-                                borderRadius: '16px',
-                                fontSize: 14,
-                                py: 1,
-                                px: 2,
-                              }}
-                              key={value}
-                              label={value}
-                              clickable
-                              deleteIcon={
-                                <CancelPresentationIcon
-                                  style={{ color: 'white', marginLeft: 1 }}
-                                  onMouseDown={(event) =>
-                                    event.stopPropagation()
-                                  }
-                                />
-                              }
-                              onDelete={(e) =>
-                                handleDelete(e, value, index, 'project_type')
-                              }
-                            />
-                          ))}
-                        </Box>
-                      )}
-                      MenuProps={MenuProps}
-                    >
-                      {PROJECT_TYPES.map((item2) => (
-                        <MenuItem key={item2} value={item2}>
-                          <Checkbox
-                            checked={item?.project_type?.includes(item2)}
+                  <ThemeProvider theme={theme}>
+                    <FormControl fullWidth required>
+                      <InputLabel id="demo-simple-select-label">
+                        Project Type
+                      </InputLabel>
+                      <Select
+                        multiple
+                        value={item?.project_type}
+                        onChange={(e) =>
+                          handleTextChange(e, index, 'project_type')
+                        }
+                        input={
+                          <OutlinedInput
+                            sx={{
+                              color: '#006B5E',
+                            }}
+                            label="Project Type"
                           />
-                          <ListItemText primary={item2} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                        }
+                        sx={{
+                          color: '#006B5E',
+                          borderRadius: '4px 4px 0 0',
+                        }}
+                        renderValue={(selected: any) => (
+                          <Box
+                            sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
+                          >
+                            {selected.map((value: any) => (
+                              <Chip
+                                sx={{
+                                  display: 'flex',
+                                  backgroundColor: '#1D4B44',
+                                  color: '#fff',
+                                  borderRadius: '16px',
+                                  fontSize: 14,
+                                  py: 1,
+                                  px: 2,
+                                }}
+                                key={value}
+                                label={value}
+                                clickable
+                                deleteIcon={
+                                  <CancelPresentationIcon
+                                    style={{ color: 'white', marginLeft: 1 }}
+                                    onMouseDown={(event) =>
+                                      event.stopPropagation()
+                                    }
+                                  />
+                                }
+                                onDelete={(e) =>
+                                  handleDelete(e, value, index, 'project_type')
+                                }
+                              />
+                            ))}
+                          </Box>
+                        )}
+                        MenuProps={MenuProps}
+                      >
+                        {PROJECT_TYPES.map((item2) => (
+                          <MenuItem key={item2} value={item2}>
+                            <Checkbox
+                              checked={item?.project_type?.includes(item2)}
+                            />
+                            <ListItemText primary={item2} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </ThemeProvider>
                 </Grid>
                 <Grid
                   item
@@ -455,6 +476,7 @@ const SectionA4 = () => {
                         'applicability_of_methodology'
                       )
                     }}
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2 }}>
@@ -466,7 +488,6 @@ const SectionA4 = () => {
                     onChange={(e) =>
                       handleTextChange(e, index, 'deviation_of_methodology')
                     }
-                    required={false}
                   />
                 </Grid>
                 <Grid item xs={12} sx={{ mt: 2 }}>
@@ -478,7 +499,6 @@ const SectionA4 = () => {
                     name={'other_info'}
                     value={item.other_info}
                     onChange={(e) => handleTextChange(e, index, 'other_info')}
-                    required={false}
                   />
                 </Grid>
               </>

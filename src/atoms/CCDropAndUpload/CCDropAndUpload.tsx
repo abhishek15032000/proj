@@ -119,7 +119,9 @@ const CCDropAndUpload: FC<CCDropAndUploadProps> = (props) => {
           >
             {props.title}
             {props?.required && (
-              <span style={{ color: 'red', fontSize: '12px' }}>*</span>
+              <span style={{ color: 'red', fontSize: '14px', paddingLeft: 4 }}>
+                *
+              </span>
             )}
           </Typography>
           {props.mediaItem && props.mediaItem.length > 0 && (

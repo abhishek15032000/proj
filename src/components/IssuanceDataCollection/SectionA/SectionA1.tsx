@@ -133,7 +133,7 @@ const SectionA1 = () => {
     >
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCMultilineTextArea
-          label=" Brief on purpose and general description of project activity "
+          label="Brief on purpose and general description of project activity"
           placeholder="Write a brief on the purpose of development of project and general description of project activity"
           value={A1.purpose_and_description}
           name={'purpose_and_description'}
@@ -144,8 +144,8 @@ const SectionA1 = () => {
       </Grid>
       <Grid item sx={{ mt: 1 }} xs={12}>
         <CCMultilineTextArea
-          label=" Purpose of the project activity and the measures taken to reduce
-          greenhouse gas emission "
+          label="Purpose of the project activity and the measures taken to reduce
+          greenhouse gas emission"
           placeholder="Write the purpose of the project activity in details & the measures taken to reduce greenhouse gas emissions and their results, if any"
           value={A1.measure_taken_for_gas_emissions}
           name={'measure_taken_for_gas_emissions'}
@@ -230,7 +230,6 @@ const SectionA1 = () => {
           onChange={({ target: { name, value } }) =>
             dispatch(setA1({ value, name }))
           }
-          required={false}
         />
       </Grid>
       <Grid item xs={12} sx={{ mt: 2 }}>
