@@ -20,11 +20,16 @@ import { limitTitle } from '../../utils/commonFunctions'
 import moment from 'moment'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import VerifierDetails from './VerifierDetails'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { Colors } from '../../theme'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
-import { PROJECT_ALL_STATUS } from '../../config/constants.config'
+import {
+  BLOCKCHAIN_STATUS,
+  PROJECT_ALL_STATUS,
+} from '../../config/constants.config'
 import { USER } from '../../api/user.api'
+import { shallowEqual } from 'react-redux'
+import { setRetryFunction } from '../../redux/Slices/blockchainStatusModalSlice'
 
 interface VerifierReportListItemListItemProps {
   data: any
@@ -35,8 +40,16 @@ interface VerifierReportListItemListItemProps {
 const VerifierReportListItemListItem: FC<
   VerifierReportListItemListItemProps
 > = (props) => {
+  const dispatch = useAppDispatch()
+
   const accountAddress = useAppSelector((state) => state.wallet.accountAddress)
   const accountBalance = useAppSelector((state) => state.wallet.accountBalance)
+
+  const currentProjectDetails = useAppSelector(
+    ({ issuanceDataCollection }) =>
+      issuanceDataCollection.currentProjectDetails,
+    shallowEqual
+  )
 
   const [showModal, setShowModal] = useState(false)
   const [showVerifierDetails, setShowVerifierDetails] = useState<boolean>(false)
@@ -383,12 +396,25 @@ const VerifierReportListItemListItem: FC<
                   Finalise Verifier
                 </CCButton>
               ) : (
+                // (props?.data?.project_status ===
+                //   PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT ||
+                //   currentProjectDetails?.updateVerifierBlockchainStatus
+                //     ?.status !== BLOCKCHAIN_STATUS.COMPLETED ||
+                //   currentProjectDetails?.updateProjectHashBlockchainStatus
+                //     ?.status !== BLOCKCHAIN_STATUS.COMPLETED)
                 props?.data?.project_status ===
                   PROJECT_ALL_STATUS?.VERIFIER_APPROVED_THE_PROJECT && (
                   <CCButton
                     onClick={() => {
                       // setShowModal(true)
                       props?.updateVerifierAPI(props?.data)
+
+                      //Retry fn in case call fails
+                      dispatch(
+                        setRetryFunction(() =>
+                          props?.updateVerifierAPI(props?.data)
+                        )
+                      )
                     }}
                     sx={{
                       backgroundColor: '#006B5E',

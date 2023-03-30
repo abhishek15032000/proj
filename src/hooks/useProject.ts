@@ -20,6 +20,13 @@ import {
 import { dataCollectionCalls } from '../api/dataCollectionCalls'
 import { stringExtractor } from '../utils/commonFunctions'
 import { projectDetailsCalls } from '../api/projectDetailsCalls.api'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setSecondaryText,
+} from '../redux/Slices/blockchainStatusModalSlice'
+import { BLOCKCHAIN_STATUS } from '../config/constants.config'
 
 export function useProject() {
   const dispatch = useAppDispatch()
@@ -79,24 +86,58 @@ export function useProject() {
         }
 
         try {
-          dispatch(setLoading(true))
+          // dispatch(setLoading(true))
+
+          //Open BlockchainStatusModal
+          dispatch(setOpenBlockchainStatusModal(true))
+          dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+          dispatch(setPrimaryText('In Progress'))
+          dispatch(
+            setSecondaryText(
+              'Blockchain call initiated. Waiting for confirmation.'
+            )
+          )
+
           const res = await dataCollectionCalls.createNewProject(payload)
           if (res?.success && res?.data?.uuid) {
             getProjectDetails(res?.data?.uuid)
             dispatch(setCurrentProjectDetailsUUID(res?.data?.uuid))
+
+            dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+            dispatch(setPrimaryText('Completed'))
+            dispatch(
+              setSecondaryText('Transaction added to Blockchain successfully!')
+            )
           } else {
+            dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+            dispatch(setPrimaryText('Failed'))
+
             //In case call fails but no error comes fron backend
             if (res?.error && res?.error?.length) {
-              alert(res?.error)
-              dispatch(setLoading(false))
+              // alert(res?.error)
+              // dispatch(setLoading(false))
+
+              dispatch(setSecondaryText(res?.error))
             } else {
-              alert('Something went wrong. Please try again later.')
+              // alert('Something went wrong. Please try again later.')
+              dispatch(
+                setSecondaryText(
+                  'Something went wrong. Please try again later.'
+                )
+              )
             }
           }
         } catch (e) {
-          alert('Something went wrong. Please try again later.')
+          // alert('Something went wrong. Please try again later.')
+
+          dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+          dispatch(setPrimaryText('Failed'))
+          dispatch(
+            setSecondaryText('Something went wrong. Please try again later.')
+          )
+
           console.log('Error in dataCollectionCalls.createNewProject api ~ ', e)
-          dispatch(setLoading(false))
+          // dispatch(setLoading(false))
         }
       } else {
         alert('Please fill all fields!')

@@ -6,6 +6,8 @@ interface BlockchainStatusModalReducerInterface {
   blockchainCallStatus: number
   primaryText: string
   secondaryText: string
+  retryCount: number
+  retryFunction: any
 }
 
 const initialState: BlockchainStatusModalReducerInterface = {
@@ -13,6 +15,8 @@ const initialState: BlockchainStatusModalReducerInterface = {
   blockchainCallStatus: BLOCKCHAIN_STATUS.NOT_YET_INITAITED,
   primaryText: '',
   secondaryText: '',
+  retryCount: 0,
+  retryFunction: null,
 }
 
 const blockchainStatusModal = createSlice({
@@ -28,8 +32,18 @@ const blockchainStatusModal = createSlice({
     setPrimaryText: (state, action: PayloadAction<any>) => {
       state.primaryText = action.payload
     },
-    setsecondaryText: (state, action: PayloadAction<any>) => {
+    setSecondaryText: (state, action: PayloadAction<any>) => {
       state.secondaryText = action.payload
+    },
+    setRetryCount: (state, action: PayloadAction<any>) => {
+      state.retryCount = action.payload
+    },
+    setRetryFunction: (state, action: PayloadAction<any>) => {
+      state.retryFunction = action.payload
+    },
+    setResetRetry: (state) => {
+      state.retryFunction = null
+      state.retryCount = 0
     },
   },
 })
@@ -38,7 +52,10 @@ export const {
   setOpenBlockchainStatusModal,
   setBlockchainCallStatus,
   setPrimaryText,
-  setsecondaryText,
+  setSecondaryText,
+  setRetryCount,
+  setRetryFunction,
+  setResetRetry,
 } = blockchainStatusModal.actions
 
 export default blockchainStatusModal.reducer

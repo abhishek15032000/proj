@@ -42,7 +42,6 @@ import { setShowPopUp } from '../../redux/Slices/issuanceDataCollection'
 import { PROJECT_TYPES } from '../../config/constants.config'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
-import BlockchainStatusModal from '../BlockchainStatusModal/BlockchainStatusModal'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -373,7 +372,6 @@ const ListNewProject = () => {
         data={IssuanceHelpContentData?.projectIntro}
         issuanceVisible={true}
       />
-      <BlockchainStatusModal />
     </Grid>
   )
 }

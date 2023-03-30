@@ -50,10 +50,17 @@ import { setViewCommentsData } from '../../redux/Slices/reportsViewCommentsSlice
 import DownloadIcon from '@mui/icons-material/Download'
 import { downloadFile, downloadPdfFile } from '../../utils/commonFunctions'
 import {
+  BLOCKCHAIN_STATUS,
   PROJECT_ALL_STATUS,
   VERIFIER_UPDATE,
 } from '../../config/constants.config'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setSecondaryText,
+} from '../../redux/Slices/blockchainStatusModalSlice'
 
 interface VerifierReportListProps {
   //data?: any
@@ -291,17 +298,25 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
     //   return
     // }
 
-    setVerifierLoading(true)
+    // setVerifierLoading(true)
+
+    //Open BlockchainStatusModal
+    dispatch(setOpenBlockchainStatusModal(true))
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(
+      setSecondaryText('Blockchain call initiated. Waiting for confirmation.')
+    )
 
     const payload = {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
       status: VERIFIER_UPDATE.APPROVE_PROJECT,
-      verifier_id: confirmedVerifier?.verifier_id?._id,
-      verifier_name: confirmedVerifier?.verifier_id?.fullName,
-      verifier_number: confirmedVerifier?.verifier_id?.phone?.toString(),
-      verifier_address: confirmedVerifier?.verifier_id?.address,
-      retry: false,
+      // verifier_id: confirmedVerifier?.verifier_id?._id,
+      // verifier_name: confirmedVerifier?.verifier_id?.fullName,
+      // verifier_number: confirmedVerifier?.verifier_id?.phone?.toString(),
+      // verifier_address: confirmedVerifier?.verifier_id?.address,
+      // retry: false,
       // organization: confirmedVerifier?.verifier_id?.organisationName,
     }
 
@@ -309,13 +324,28 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       .verifierUpdateByPD(payload)
       .then((res) => {
         if (res?.success) {
-          setVerifierLoading(false)
-          setShowActionSuccessModal(true)
+          // setShowActionSuccessModal(true)
           // createProjectContractCall(res?.data?.fileHash)
+
+          dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+          dispatch(setPrimaryText('Completed'))
+          dispatch(
+            setSecondaryText('Transaction added to Blockchain successfully!')
+          )
+        } else {
+          dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+          dispatch(setPrimaryText('Failed'))
+          dispatch(setSecondaryText('Something went wrong. Please try again.'))
         }
       })
       .catch((err) => {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
+
         console.log('Error in verifierCalls.updateVerifier api ~ ', err)
+      })
+      .finally(() => {
         setVerifierLoading(false)
       })
   }

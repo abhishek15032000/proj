@@ -62,6 +62,7 @@ import { usePrompt } from '../../hooks/useCustomBlocker'
 import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { useProject } from '../../hooks/useProject'
 import MessageModal from '../../atoms/MessageModal/MessageModal'
+import { setRetryFunction } from '../../redux/Slices/blockchainStatusModalSlice'
 
 const sections = [
   { name: 'Project Introduction' },
@@ -277,6 +278,14 @@ const IssuanceDataCollection = () => {
       currentProjectDetails?.project_status <
         PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
     ) {
+      //Saving as Retry function to call again in case api fails
+      if (sectionIndex === 0) {
+        dispatch(
+          setRetryFunction(() =>
+            moveToNextSection(sectionIndex, subSectionIndex)
+          )
+        )
+      }
       moveToNextSection(sectionIndex, subSectionIndex)
     } else {
       alert("Project already Verified. Can't be updated now!")
