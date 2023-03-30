@@ -29,7 +29,12 @@ import {
 } from '../../config/constants.config'
 import { USER } from '../../api/user.api'
 import { shallowEqual } from 'react-redux'
-import { setRetryFunction } from '../../redux/Slices/blockchainStatusModalSlice'
+import {
+  setRetryFunction,
+  setSuccessFunction,
+} from '../../redux/Slices/blockchainStatusModalSlice'
+import { pathNames } from '../../routes/pathNames'
+import { useNavigate } from 'react-router-dom'
 
 interface VerifierReportListItemListItemProps {
   data: any
@@ -41,6 +46,7 @@ const VerifierReportListItemListItem: FC<
   VerifierReportListItemListItemProps
 > = (props) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const accountAddress = useAppSelector((state) => state.wallet.accountAddress)
   const accountBalance = useAppSelector((state) => state.wallet.accountBalance)
@@ -413,6 +419,11 @@ const VerifierReportListItemListItem: FC<
                       dispatch(
                         setRetryFunction(() =>
                           props?.updateVerifierAPI(props?.data)
+                        )
+                      )
+                      dispatch(
+                        setSuccessFunction(() =>
+                          navigate(pathNames.DASHBOARD, { replace: true })
                         )
                       )
                     }}

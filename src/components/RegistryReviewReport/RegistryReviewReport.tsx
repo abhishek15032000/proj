@@ -17,7 +17,7 @@ import { registryCalls } from '../../api/registry.api'
 import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import PDFViewer from '../../atoms/PDFViewer/PDFViewer'
 import TextButton from '../../atoms/TextButton/TextButton'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import { Colors, Images } from '../../theme'
 import { getLocalItem } from '../../utils/Storage'
@@ -31,6 +31,15 @@ import PdfPage from '../../pages/PdfPage/PdfPage'
 import CloseIcon from '@mui/icons-material/Close'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setRetryFunction,
+  setSecondaryText,
+  setSuccessFunction,
+} from '../../redux/Slices/blockchainStatusModalSlice'
+import { BLOCKCHAIN_STATUS } from '../../config/constants.config'
 declare let window: any
 
 const pdfLoading = false
@@ -42,6 +51,7 @@ const docs = [
 const images = [{ name: 'Photo.jpeg', size: '1.0 MB' }]
 
 const RegistryReviewReport = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const location: any = useLocation()
   const { jwtToken } = getLocalItem('userDetails')
@@ -115,9 +125,29 @@ const RegistryReviewReport = () => {
       }
     }
   }
+
+  const handleSubmitBtn = () => {
+    //Open BlockchainStatusModal
+    dispatch(setRetryFunction(sumbitReport))
+    dispatch(
+      setSuccessFunction(() => {
+        navigate(pathNames.DASHBOARD)
+      })
+    )
+
+    sumbitReport()
+  }
+
   const sumbitReport = async () => {
+    dispatch(setOpenBlockchainStatusModal(true))
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(
+      setSecondaryText('Blockchain call initiated. Waiting for confirmation.')
+    )
+
     try {
-      setLoading(true)
+      // setLoading(true)
       const registryId = getLocalItem('userDetails')?.user_id
       const payload = {
         _id: reportData?.report?._id,
@@ -140,14 +170,32 @@ const RegistryReviewReport = () => {
       }
       const res = await registryCalls.reportSumbit(payload)
       if (res?.success) {
-        setReportSubmittedSuccessModal(true)
-      } else alert('Something wrong in submitting the file')
-      console.log('res: ', res)
-    } catch (err) {
+        // setReportSubmittedSuccessModal(true)
+
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
+        dispatch(
+          setSecondaryText(
+            'Transaction added to Blockchain successfully. Report submitted by Registry and Tokens minting Successful.'
+          )
+        )
+      } else {
+        // alert('Something wrong in submitting the file')
+
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText(res?.error))
+      }
+    } catch (err: any) {
       console.log('Error in registryCalls.reportSumbit ~ ', err)
-    } finally {
-      setLoading(false)
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText(err?.message))
     }
+    // finally {
+    //   setLoading(false)
+    // }
   }
 
   return (
@@ -204,7 +252,7 @@ const RegistryReviewReport = () => {
         <Box>
           <CCButton
             variant="contained"
-            onClick={sumbitReport}
+            onClick={handleSubmitBtn}
             disabled={
               explain?.length && validationReport?.length ? false : true
             }

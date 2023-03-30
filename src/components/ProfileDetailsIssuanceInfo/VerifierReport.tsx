@@ -312,11 +312,11 @@ const VerifierReport: FC<VerifierReportListProps> = (props) => {
       _id: confirmedVerifier?._id,
       project_id: confirmedVerifier?.project_id,
       status: VERIFIER_UPDATE.APPROVE_PROJECT,
-      // verifier_id: confirmedVerifier?.verifier_id?._id,
-      // verifier_name: confirmedVerifier?.verifier_id?.fullName,
-      // verifier_number: confirmedVerifier?.verifier_id?.phone?.toString(),
-      // verifier_address: confirmedVerifier?.verifier_id?.address,
-      // retry: false,
+      verifier_id: confirmedVerifier?.verifier_id?._id,
+      verifier_name: confirmedVerifier?.verifier_id?.fullName,
+      verifier_number: confirmedVerifier?.verifier_id?.phone?.toString(),
+      verifier_address: confirmedVerifier?.verifier_id?.address,
+      retry: false,
       // organization: confirmedVerifier?.verifier_id?.organisationName,
     }
 

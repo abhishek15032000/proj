@@ -6,9 +6,8 @@ import CCButton from '../../atoms/CCButton'
 import { BLOCKCHAIN_STATUS } from '../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import {
-  setBlockchainCallStatus,
+  resetblockchainStatusModalReducer,
   setOpenBlockchainStatusModal,
-  setPrimaryText,
   setResetRetry,
   setRetryCount,
   setSecondaryText,
@@ -45,6 +44,16 @@ const BlockchainStatusModal = () => {
     ({ blockchainStatusModal }) => blockchainStatusModal.retryCount,
     shallowEqual
   )
+  const successFunction = useAppSelector(
+    ({ blockchainStatusModal }) => blockchainStatusModal.successFunction,
+    shallowEqual
+  )
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetblockchainStatusModalReducer())
+    }
+  }, [])
 
   const renderIcon = (status: number) => {
     switch (status) {
@@ -59,27 +68,35 @@ const BlockchainStatusModal = () => {
   const renderButton = (status: number) => {
     let onClickFn, btnText
     switch (status) {
-      case BLOCKCHAIN_STATUS.COMPLETED:
-        onClickFn = () => dispatch(setOpenBlockchainStatusModal(false))
+      case BLOCKCHAIN_STATUS.COMPLETED: {
+        onClickFn = () => {
+          if (successFunction) {
+            successFunction()
+          }
+          dispatch(setOpenBlockchainStatusModal(false))
+        }
         btnText = 'Okay'
         break
+      }
       case BLOCKCHAIN_STATUS.FAILED:
-        //Allow api call only 3 times -> 1 original call + 2 retry's
-        if (retryCount === 2) {
-          dispatch(
-            setSecondaryText('Please contact admin for further assistance!')
-          )
-          onClickFn = () => {
-            dispatch(setOpenBlockchainStatusModal(false))
-            dispatch(setResetRetry())
+        {
+          //Allow api call only 3 times -> 1 original call + 2 retry's
+          if (retryCount === 2) {
+            dispatch(
+              setSecondaryText('Please contact admin for further assistance!')
+            )
+            onClickFn = () => {
+              dispatch(setOpenBlockchainStatusModal(false))
+              dispatch(setResetRetry())
+            }
+            btnText = 'Okay'
+          } else {
+            onClickFn = () => {
+              dispatch(setRetryCount(retryCount + 1))
+              retryFunction()
+            }
+            btnText = 'Retry'
           }
-          btnText = 'Okay'
-        } else {
-          onClickFn = () => {
-            dispatch(setRetryCount(retryCount + 1))
-            retryFunction()
-          }
-          btnText = 'Retry'
         }
         break
       case BLOCKCHAIN_STATUS.PENDING:
@@ -87,33 +104,38 @@ const BlockchainStatusModal = () => {
     }
 
     return (
-      <CCButton
-        variant="contained"
-        sx={{
-          ml: 3,
-          padding: '10px 30px',
-          borderRadius: 10,
-          minWidth: 0,
-          fontSize: 14,
-        }}
-        onClick={onClickFn}
-      >
-        {btnText}
-      </CCButton>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+        {status === BLOCKCHAIN_STATUS.FAILED ? (
+          <CCButton
+            variant="contained"
+            sx={{
+              ml: 3,
+              padding: '10px 30px',
+              borderRadius: 10,
+              minWidth: 0,
+              fontSize: 14,
+            }}
+            onClick={() => dispatch(setOpenBlockchainStatusModal(false))}
+          >
+            {'Close'}
+          </CCButton>
+        ) : null}
+        <CCButton
+          variant="contained"
+          sx={{
+            ml: 3,
+            padding: '10px 30px',
+            borderRadius: 10,
+            minWidth: 0,
+            fontSize: 14,
+          }}
+          onClick={onClickFn}
+        >
+          {btnText}
+        </CCButton>
+      </Box>
     )
   }
-
-  // const handleClick = () => {
-  //   if (blockchainCallStatus === BLOCKCHAIN_STATUS.COMPLETED) {
-  //     dispatch(setOpenBlockchainStatusModal(false))
-  //   } else if (blockchainCallStatus === BLOCKCHAIN_STATUS.FAILED) {
-  //     console.log('Blockchain call failed')
-  //     if (retryFunction) {
-  //       dispatch(setRetryCount(retryCount + 1))
-  //       retryFunction()
-  //     }
-  //   }
-  // }
 
   return (
     <Modal
@@ -136,10 +158,11 @@ const BlockchainStatusModal = () => {
           flexDirection: 'column',
           alignItems: 'center',
           minWidth: '600px',
+          maxWidth: '750px',
           borderRadius: '16px',
+          textAlign: 'center',
         }}
       >
-        Retry : {retryCount}
         {renderIcon(blockchainCallStatus)}
         {primaryText ? (
           <Box sx={{ color: '#2B2B2B', fontSize: 20, fontWeight: 500, mt: 3 }}>
@@ -149,28 +172,6 @@ const BlockchainStatusModal = () => {
         {secondaryText ? (
           <Box sx={{ color: '#325743', mt: 2 }}>{secondaryText}</Box>
         ) : null}
-        {/* {[BLOCKCHAIN_STATUS.COMPLETED, BLOCKCHAIN_STATUS.FAILED].includes(
-          blockchainCallStatus
-        ) ? (
-          <Box sx={{ mt: 3 }}>
-            <CCButton
-              variant="contained"
-              sx={{
-                ml: 3,
-                padding: '10px 30px',
-                borderRadius: 10,
-                minWidth: 0,
-                fontSize: 14,
-              }}
-              onClick={handleClick}
-              // disabled={disableBtn1}
-            >
-              {blockchainCallStatus === BLOCKCHAIN_STATUS.COMPLETED
-                ? 'Okay'
-                : 'Retry'}
-            </CCButton>
-          </Box>
-        ) : null} */}
         <Box sx={{ mt: 3 }}>{renderButton(blockchainCallStatus)}</Box>
       </Paper>
     </Modal>

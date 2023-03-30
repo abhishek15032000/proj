@@ -103,7 +103,7 @@ export const verifierCalls = {
       'POST',
       payload
     ).then((response: any) => {
-      return response
+      return response?.data
     })
   },
 }
