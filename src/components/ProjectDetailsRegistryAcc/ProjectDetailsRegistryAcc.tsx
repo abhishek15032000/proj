@@ -18,6 +18,7 @@ import CCButton from '../../atoms/CCButton'
 import About from '../About'
 import { projectDetailsCalls } from '../../api/projectDetailsCalls.api'
 import { setRegistryProjectDetails } from '../../redux/Slices/registrySlice'
+import { useRegistry } from '../../hooks/useRegistry'
 
 const ProjectDetailsRegistryAcc = () => {
   const location: any = useLocation()
@@ -51,34 +52,16 @@ const ProjectDetailsRegistryAcc = () => {
       .finally(() => setLoading(false))
   }
 
+  const { updateRegistryProjectStatus } = useRegistry()
   useEffect(() => {
     if (projectData?.project_status === 6) {
-      updateRegistryProjectStatus()
+      updateRegistryProjectStatus(
+        projectData?._id,
+        projectData?.verifier_details_id?.project_id
+      )
     }
     //registryReport
   }, [])
-
-  const updateRegistryProjectStatus = async () => {
-    try {
-      const registryDetails = {
-        ...getLocalItem('userDetails'),
-        ...getLocalItem('userDetails2'),
-      }
-      const payload = {
-        //take from local storage
-        _id: projectData?._id,
-        project_id: projectData?.verifier_details_id?.project_id,
-        project_status: 7,
-        registry_id: registryDetails?._id,
-        registry_name: registryDetails?.fullName,
-        registry_address: registryDetails?.address,
-        registry_number: registryDetails?.phone.toString(),
-      }
-      const res = await registryCalls.registryUpdate(payload)
-    } catch (err) {
-      console.log('Error in registryCalls.registryUpdate api ~ ', err)
-    }
-  }
 
   return (
     <>

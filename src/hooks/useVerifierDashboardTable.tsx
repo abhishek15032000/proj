@@ -286,13 +286,20 @@ export function useVerifierDashboardTable() {
             <TextButton
               key={index}
               sx={{ width: '90px' }}
-              onClick={() =>
-                navigate({
-                  pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
-                  search: `?${createSearchParams({
-                    projectId: item?.project_id?.uuid,
-                  })}`,
-                })
+              onClick={
+                () =>
+                  navigate(pathNames.VERIFIER_VERIFY_REPORT, {
+                    state: {
+                      pdf: item?.project_pdf,
+                      project: item?.project_id,
+                    },
+                  })
+                //navigate({
+                //  pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                //  search: `?${createSearchParams({
+                //    projectId: item?.project_id?.uuid,
+                //  })}`,
+                //})
               }
               title="Verify"
             />
