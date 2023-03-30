@@ -104,7 +104,9 @@ const SelectVerifier = () => {
     setOpen(false)
     const payload: any = selectedVerifiers.map((verifierDetials: any) => {
       return {
-        project_id: currentProjectDetails?._id,
+        project_id: currentProjectDetails?._id
+          ? currentProjectDetails?._id
+          : location.state._id,
         project_status: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
         verifier_id: verifierDetials?._id,
         verifier_name: verifierDetials?.fullName,

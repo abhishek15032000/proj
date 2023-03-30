@@ -38,7 +38,7 @@ import { PROJECT_ALL_STATUS } from '../../config/constants.config'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import CCTable from '../../atoms/CCTable'
 import LimitedText from '../../atoms/LimitedText/LimitedText'
-import { Images } from '../../theme'
+import { Colors, Images } from '../../theme'
 import { setSectionIndex } from '../../redux/Slices/issuanceDataCollection'
 import {
   setIssuerNewProjects,
@@ -46,6 +46,7 @@ import {
   setIssueVerificationProjects,
 } from '../../redux/Slices/Dashboard/dashboardSlice'
 import { getTextAccordingToStatus } from '../../utils/commonFunctions'
+import CCButton from '../../atoms/CCButton'
 
 let index = 0
 const headingsNew = [
@@ -64,6 +65,7 @@ const headingsInVerification = [
   <LimitedText key={index++} text="Location" />,
   <LimitedText key={index++} text="Verifier" />,
   <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
+  <LimitedText key={index++} text="Action" />,
   <LimitedText key={index++} text="" />,
 ]
 
@@ -207,9 +209,30 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               key="1"
               onClick={() => moveToSection(item)}
             />
+          ) : item.completed ? (
+            <CCButton
+              onClick={() =>
+                navigate(pathNames.SELECT_VERIFIER, {
+                  state: { _id: item?._id },
+                })
+              }
+              sx={{
+                minWidth: 0,
+                height: 40,
+                width: 200,
+                color: 'white',
+                background: Colors.darkPrimary1,
+                borderRadius: 10,
+                '&:hover': {
+                  background: 'white',
+                  border: '1px solid black',
+                  color: 'black',
+                },
+              }}
+            >
+              Select Verifier
+            </CCButton>
           ) : (
-            //  )
-
             '-'
           ),
           <Box key="1">
@@ -272,6 +295,45 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             text={getTextAccordingToStatus(item?.project_status)}
             widthLimit="250px"
           />,
+          item.project_status ===
+          PROJECT_ALL_STATUS.VERIFIER_APPROVED_THE_PROJECT ? (
+            <CCButton
+              onClick={() => {
+                navigate(
+                  {
+                    pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+                    search: `?${createSearchParams({
+                      projectId: item?.uuid,
+                    })}`,
+                  },
+                  {
+                    state: {
+                      status: 3,
+                      projectDetailsTabIndex: 2,
+                      //isEdited: true,
+                    },
+                  }
+                )
+              }}
+              sx={{
+                minWidth: 0,
+                height: 40,
+                width: 200,
+                color: 'white',
+                background: Colors.darkPrimary1,
+                borderRadius: 10,
+                '&:hover': {
+                  background: 'white',
+                  border: '1px solid black',
+                  color: 'black',
+                },
+              }}
+            >
+              Finalise Verifier
+            </CCButton>
+          ) : (
+            '-'
+          ),
           <Box key="1">
             <ChevronRightIcon
               sx={{ cursor: 'pointer' }}
