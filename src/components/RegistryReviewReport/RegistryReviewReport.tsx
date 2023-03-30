@@ -31,6 +31,8 @@ import PdfPage from '../../pages/PdfPage/PdfPage'
 import CloseIcon from '@mui/icons-material/Close'
 import CCDropAndUpload from '../../atoms/CCDropAndUpload/CCDropAndUpload'
 import { deleteIndexInArray } from '../../utils/commonFunctions'
+import { useRegistry } from '../../hooks/useRegistry'
+import { createSearchParams } from 'react-router-dom'
 declare let window: any
 
 const pdfLoading = false
@@ -78,7 +80,15 @@ const RegistryReviewReport = () => {
 
   const closeModal = () => setOpenModal(false)
 
+  const { updateRegistryProjectStatus } = useRegistry()
+
   useEffect(() => {
+    if (location.state.projectReportDetails.project_status === 6) {
+      updateRegistryProjectStatus(
+        location.state?.projectReportDetails?._id,
+        location.state.projectReportDetails.verifier_details_id?.project_id
+      )
+    }
     setReportData(location?.state?.projectReportDetails)
     setLifetimeVCOT(
       location?.state?.projectReportDetails?.report?.lifetime_carbon_tokens
@@ -181,11 +191,19 @@ const RegistryReviewReport = () => {
           <Box
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                state: {
-                  projectDetails: location?.state?.projectReportDetails,
+              navigate(
+                {
+                  pathname: pathNames.PROJECT_DETAILS_REGISTRY_ACC,
+                  search: `?${createSearchParams({
+                    projectId: location?.state?.projectReportDetails?.uuid,
+                  })}`,
                 },
-              })
+                {
+                  state: {
+                    projectDetails: location?.state?.projectReportDetails,
+                  },
+                }
+              )
             }}
           >
             Project Details
@@ -273,12 +291,13 @@ const RegistryReviewReport = () => {
               >
                 <BackHeader
                   title="Project Issuance Report V1.1 (PDF)"
-                  onClick={() =>
-                    navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
-                      state: {
-                        projectDetails: location?.state?.projectReportDetails,
-                      },
-                    })
+                  onClick={
+                    () => navigate(-1)
+                    //navigate(pathNames.PROJECT_DETAILS_REGISTRY_ACC, {
+                    //  state: {
+                    //    projectDetails: location?.state?.projectReportDetails,
+                    //  },
+                    //})
                   }
                   titleSx={{
                     fontSize: 28,
