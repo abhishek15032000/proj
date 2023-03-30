@@ -72,7 +72,11 @@ const ProfileDetailsIssuanceInfo: FC = () => {
 
   const calculatePercentage = (projectData: any) => {
     if (location?.state?.status !== 0) {
-      setTabIndex(1)
+      if (location.state.projectDetailsTabIndex) {
+        setTabIndex(location.state.projectDetailsTabIndex)
+      } else {
+        setTabIndex(1)
+      }
     }
 
     const modifiedRows = addSectionPercentages(projectData)

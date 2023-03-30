@@ -25,6 +25,8 @@ import {
 import NoData from '../../atoms/NoData/NoData'
 import TabSelector from '../../atoms/TabSelector/TabSelector'
 import { getTextAccordingToStatus } from '../../utils/commonFunctions'
+import { getLocalItem } from '../../utils/Storage'
+import { registryCalls } from '../../api/registry.api'
 
 let index = 0
 const headings: any = [
@@ -34,6 +36,7 @@ const headings: any = [
   <LimitedText key={index++} text="Project name" widthLimit="200px" />,
   <LimitedText key={index++} text="Project Status" widthLimit="250px" />,
   <LimitedText key={index++} text="Action" />,
+  <LimitedText key={index++} text="" />,
 ]
 const headingsReviewed: any = [
   <LimitedText key={index++} text="Created on" />,
@@ -128,26 +131,35 @@ const ProjectTable: FC<ProjectTableProps> = ({ loading }) => {
               widthLimit="250px"
             />
           </Box>,
-          project?.project_status === 8 ? (
-            <ChevronRightIcon onClick={() => onClickStartHandler(project)} />
-          ) : (
-            <CCButton
-              key={index}
-              sx={{
-                background: '#006B5E',
-                color: '#FFFFFF',
-                borderRadius: '32px',
-                fontSize: 14,
-                px: 3,
-                py: 1,
-                minWidth: 0,
-                whiteSpace: 'nowrap',
-              }}
-              onClick={() => onClickStartHandler(project)}
-            >
-              Start review
-            </CCButton>
-          ),
+          //project?.project_status === 8 ? (
+          //  <ChevronRightIcon onClick={() => onClickStartHandler(project)} />
+          //) : (
+          <CCButton
+            key={index}
+            sx={{
+              background: '#006B5E',
+              color: '#FFFFFF',
+              borderRadius: '32px',
+              fontSize: 14,
+              px: 3,
+              py: 1,
+              minWidth: 0,
+              whiteSpace: 'nowrap',
+            }}
+            onClick={async () => {
+              console.log('onclick: ', project)
+              dispatch(setRegistryProjectDetails(project))
+              navigate(pathNames.REGISTRY_REVIEW_REPORT, {
+                state: { projectReportDetails: project },
+              })
+            }}
+          >
+            Start review
+          </CCButton>,
+          <ChevronRightIcon
+            key={index}
+            onClick={() => onClickStartHandler(project)}
+          />,
         ])
       })
 
