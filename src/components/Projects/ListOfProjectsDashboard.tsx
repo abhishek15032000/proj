@@ -218,11 +218,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               }
               sx={{
                 minWidth: 0,
-                height: 40,
-                width: 200,
                 color: 'white',
                 background: Colors.darkPrimary1,
-                borderRadius: 10,
+                borderRadius: '32px',
+                whiteSpace: 'nowrap',
+                fontSize: 14,
                 '&:hover': {
                   background: 'white',
                   border: '1px solid black',
@@ -317,11 +317,11 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
               }}
               sx={{
                 minWidth: 0,
-                height: 40,
-                width: 200,
                 color: 'white',
                 background: Colors.darkPrimary1,
-                borderRadius: 10,
+                borderRadius: '32px',
+                whiteSpace: 'nowrap',
+                fontSize: 14,
                 '&:hover': {
                   background: 'white',
                   border: '1px solid black',

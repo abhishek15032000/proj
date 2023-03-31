@@ -27,23 +27,36 @@ import { shallowEqual } from 'react-redux'
 // Local Imports
 import CCButton from '../../atoms/CCButton/CCButton'
 import { department } from '../../api/department.api'
-import { PROJECT_ALL_STATUS, ROLES } from '../../config/constants.config'
+import {
+  BLOCKCHAIN_STATUS,
+  PROJECT_ALL_STATUS,
+  ROLES,
+} from '../../config/constants.config'
 import { Colors, Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 // import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
 import SelectVerifierSkeleton from './SelectVerifierSkeleton'
 import { useProject } from '../../hooks/useProject'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setRetryFunction,
+  setSecondaryText,
+  setSuccessFunction,
+} from '../../redux/Slices/blockchainStatusModalSlice'
 
 const SelectVerifier = () => {
   const { getProjectDetails } = useProject()
   const navigate = useNavigate()
   const location: any = useLocation()
+  const dispatch = useAppDispatch()
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -63,10 +76,6 @@ const SelectVerifier = () => {
   const [verifiers, setVerifiers] = useState<any[]>([])
   const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
   const [loading, setLoading] = useState<boolean>(true)
-
-  const handleClick = () => {
-    setOpen(true)
-  }
 
   useEffect(() => {
     getAllVerifiers()
@@ -99,9 +108,22 @@ const SelectVerifier = () => {
     }
   }
 
+  const handleClick = () => {
+    setOpen(true)
+  }
+
+  const handleCreateVerifierBtn = () => {
+    dispatch(setRetryFunction(createVerifier))
+    createVerifier()
+  }
+
   const createVerifier = async () => {
     setLoading(true)
     setOpen(false)
+    dispatch(setOpenBlockchainStatusModal(true))
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(setSecondaryText('Selecting Verifiers In Progress.'))
     const payload: any = selectedVerifiers.map((verifierDetials: any) => {
       return {
         project_id: currentProjectDetails?._id
@@ -115,21 +137,40 @@ const SelectVerifier = () => {
         organization: verifierDetials?.organisationName,
       }
     })
-
     try {
       const res = await verifierCalls.createVerifier(payload)
       if (res?.data?.success) {
-        setModalData(true)
-        setOpen(true)
-        getProjectDetails(currentProjectDetailsUUID)
-        navigate({
-          pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
-          search: `?${createSearchParams({
-            projectId: currentProjectDetails?.uuid,
-          })}`,
-        })
+        //setModalData(true)
+        //setOpen(true)
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
+        dispatch(
+          setSecondaryText(
+            `${
+              selectedVerifiers.length > 1 ? 'Verifiers' : 'Verifier'
+            } selected SuccessFully`
+          )
+        )
+        dispatch(
+          setSuccessFunction(() => {
+            getProjectDetails(currentProjectDetailsUUID)
+            navigate({
+              pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+              search: `?${createSearchParams({
+                projectId: currentProjectDetails?.uuid,
+              })}`,
+            })
+          })
+        )
+      } else {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
       }
     } catch (err) {
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText('Something went wrong. Please try again.'))
       console.log(err)
     } finally {
       setLoading(false)
@@ -428,9 +469,7 @@ const SelectVerifier = () => {
                   </CCButtonOutlined>
                   <CCButton
                     sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
-                    onClick={() => {
-                      createVerifier()
-                    }}
+                    onClick={handleCreateVerifierBtn}
                   >
                     Yes
                   </CCButton>

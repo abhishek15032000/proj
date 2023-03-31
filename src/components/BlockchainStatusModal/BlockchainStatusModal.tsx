@@ -1,6 +1,7 @@
 import { Modal, Paper } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useEffect } from 'react'
+import CloseIcon from '@mui/icons-material/Close'
+import React, { useEffect, useState } from 'react'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../atoms/CCButton'
 import { BLOCKCHAIN_STATUS } from '../../config/constants.config'
@@ -15,9 +16,14 @@ import {
 import { Images } from '../../theme'
 import InProgressAnimation from './InProgressAnimation'
 import './style.css'
+import { useLocation } from 'react-router-dom'
+import { pathNames } from '../../routes/pathNames'
 
 const BlockchainStatusModal = () => {
   const dispatch = useAppDispatch()
+  const location = useLocation()
+
+  const apiCallLocations = [pathNames.SELECT_VERIFIER]
 
   const openBlockchainStatusModal = useAppSelector(
     ({ blockchainStatusModal }) =>
@@ -49,7 +55,12 @@ const BlockchainStatusModal = () => {
     shallowEqual
   )
 
+  const [showCloseIcon, setShowCloseIcon] = useState<boolean>(false)
+
   useEffect(() => {
+    apiCallLocations.includes(location.pathname)
+      ? setShowCloseIcon(true)
+      : setShowCloseIcon(false)
     return () => {
       dispatch(resetblockchainStatusModalReducer())
     }
@@ -150,30 +161,44 @@ const BlockchainStatusModal = () => {
         background: 'rgba(56, 142, 129, 0.4)',
       }}
     >
-      <Paper
-        sx={{
-          py: 4,
-          px: 5,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          minWidth: '600px',
-          maxWidth: '750px',
-          borderRadius: '16px',
-          textAlign: 'center',
-        }}
-      >
-        {renderIcon(blockchainCallStatus)}
-        {primaryText ? (
-          <Box sx={{ color: '#2B2B2B', fontSize: 20, fontWeight: 500, mt: 3 }}>
-            {primaryText}
-          </Box>
-        ) : null}
-        {secondaryText ? (
-          <Box sx={{ color: '#325743', mt: 2 }}>{secondaryText}</Box>
-        ) : null}
-        <Box sx={{ mt: 3 }}>{renderButton(blockchainCallStatus)}</Box>
-      </Paper>
+      <>
+        <Paper
+          sx={{
+            py: 4,
+            px: 5,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            minWidth: '600px',
+            maxWidth: '750px',
+            borderRadius: '16px',
+            textAlign: 'center',
+          }}
+        >
+          {showCloseIcon && (
+            <CloseIcon
+              sx={{
+                position: 'relative',
+                left: 270,
+                top: '-20px',
+                fontSize: 24,
+              }}
+            />
+          )}
+          {renderIcon(blockchainCallStatus)}
+          {primaryText ? (
+            <Box
+              sx={{ color: '#2B2B2B', fontSize: 20, fontWeight: 500, mt: 3 }}
+            >
+              {primaryText}
+            </Box>
+          ) : null}
+          {secondaryText ? (
+            <Box sx={{ color: '#325743', mt: 2 }}>{secondaryText}</Box>
+          ) : null}
+          <Box sx={{ mt: 3 }}>{renderButton(blockchainCallStatus)}</Box>
+        </Paper>
+      </>
     </Modal>
   )
 }
