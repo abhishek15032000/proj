@@ -80,6 +80,7 @@ export const URL_PATH = {
   registry: {
     getRegistryReports: ENDPOINTS.carbonServiceURL + '/registry/report/submit',
     registryUpdate: ENDPOINTS.carbonServiceURL + '/registry/update',
+    selectRegistry: ENDPOINTS.carbonServiceURL + '/registry/create',
     getRegistryDashboardStats:
       ENDPOINTS.carbonServiceURL + '/registry/getRegistryProjectDashboardStats',
   },
