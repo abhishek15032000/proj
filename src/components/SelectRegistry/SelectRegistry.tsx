@@ -1,7 +1,4 @@
-// React Imports
 import React, { useEffect, useState } from 'react'
-
-// MUI Imports
 import {
   Checkbox,
   Grid,
@@ -11,52 +8,32 @@ import {
   Modal,
   Paper,
   Divider,
-  Skeleton,
 } from '@mui/material'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import LanguageIcon from '@mui/icons-material/Language'
 import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
-import { KeyboardArrowLeft } from '@mui/icons-material'
-
-// Functional Imports
-import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
-
-// Local Imports
 import CCButton from '../../atoms/CCButton/CCButton'
 import { department } from '../../api/department.api'
-import {
-  BLOCKCHAIN_STATUS,
-  PROJECT_ALL_STATUS,
-  ROLES,
-} from '../../config/constants.config'
-import { Colors, Images } from '../../theme'
+import { ROLES } from '../../config/constants.config'
+import { Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+import { useAppSelector } from '../../hooks/reduxHooks'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
-// import { getProjectDetails } from '../../utils/issuanceDataCollection.utils'
-import SelectVerifierSkeleton from './SelectVerifierSkeleton'
+// import SelectVerifierSkeleton from '../'
 import { useProject } from '../../hooks/useProject'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
-import {
-  setBlockchainCallStatus,
-  setOpenBlockchainStatusModal,
-  setPrimaryText,
-  setRetryFunction,
-  setSecondaryText,
-  setSuccessFunction,
-} from '../../redux/Slices/blockchainStatusModalSlice'
+import SelectVerifierSkeleton from '../SelectVerifier/SelectVerifierSkeleton'
 
-const SelectVerifier = () => {
+const SelectRegistry = () => {
   const { getProjectDetails } = useProject()
   const navigate = useNavigate()
-  const location: any = useLocation()
-  const dispatch = useAppDispatch()
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -73,33 +50,36 @@ const SelectVerifier = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [modalData, setModalData] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
-  const [verifiers, setVerifiers] = useState<any[]>([])
-  const [selectedVerifiers, setSelectedVerifiers] = useState<any>([])
+  const [registries, setRegistries] = useState<any[]>([])
+  const [selectedRegistry, setSelectedRegistry] = useState<any>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
+  const handleClick = () => {
+    setOpen(true)
+  }
+
   useEffect(() => {
-    getAllVerifiers()
+    getAllRegistries()
   }, [])
 
   useEffect(() => {
-    // functionality for save button enabling and disabling
-    if (selectedVerifiers.length === 0) {
-      setButtonDisabled(true)
-    } else {
+    if (selectedRegistry) {
       setButtonDisabled(false)
+    } else {
+      setButtonDisabled(true)
     }
-  }, [selectedVerifiers])
+  }, [selectedRegistry])
 
-  const getAllVerifiers = async () => {
+  const getAllRegistries = async () => {
     setLoading(true)
     try {
-      const res = await department.getUsersByOrgType(ROLES?.VERIFIER)
+      const res = await department.getUsersByOrgType(ROLES?.REGISTRY)
       if (res?.data && res?.data.length) {
         const allVerifers = res?.data
         const verifiersWithAllDetailsFilled = allVerifers.filter(
           (verifier: any) => verifier.organisationName && verifier.address
         )
-        setVerifiers(verifiersWithAllDetailsFilled)
+        setRegistries(verifiersWithAllDetailsFilled)
       }
     } catch (err) {
       console.log('Error in department.getUsersByOrgType ~ ', err)
@@ -108,104 +88,82 @@ const SelectVerifier = () => {
     }
   }
 
-  const handleClick = () => {
-    setOpen(true)
-  }
-
-  const handleCreateVerifierBtn = () => {
-    dispatch(setRetryFunction(createVerifier))
-    createVerifier()
-  }
-
-  const createVerifier = async () => {
+  const createRegistry = async () => {
     setLoading(true)
     setOpen(false)
-    dispatch(setOpenBlockchainStatusModal(true))
-    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
-    dispatch(setPrimaryText('In Progress'))
-    dispatch(setSecondaryText('Selecting Verifiers In Progress.'))
-    const payload: any = selectedVerifiers.map((verifierDetials: any) => {
-      return {
-        project_id: currentProjectDetails?._id
-          ? currentProjectDetails?._id
-          : location.state._id,
-        project_status: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
-        verifier_id: verifierDetials?._id,
-        verifier_name: verifierDetials?.fullName,
-        verifier_address: verifierDetials?.address,
-        verifier_number: verifierDetials?.phone.toString(),
-        organization: verifierDetials?.organisationName,
-      }
-    })
-    try {
-      const res = await verifierCalls.createVerifier(payload)
-      if (res?.data?.success) {
-        navigate(pathNames.SELECT_REGISTRY)
-      }
+    // const payload: any = selectedRegistries.map((verifierDetials: any) => {
+    //   return {
+    //     project_id: currentProjectDetails?._id
+    //       ? currentProjectDetails?._id
+    //       : location.state._id,
+    //     project_status: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
+    //     verifier_id: verifierDetials?._id,
+    //     verifier_name: verifierDetials?.fullName,
+    //     verifier_address: verifierDetials?.address,
+    //     verifier_number: verifierDetials?.phone.toString(),
+    //     organization: verifierDetials?.organisationName,
+    //   }
+    // })
 
-      //  //setModalData(true)
-      //  //setOpen(true)
-      //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
-      //  dispatch(setPrimaryText('Completed'))
-      //  dispatch(
-      //    setSecondaryText(
-      //      `${
-      //        selectedVerifiers.length > 1 ? 'Verifiers' : 'Verifier'
-      //      } selected SuccessFully`
-      //    )
-      //  )
-      //  dispatch(
-      //    setSuccessFunction(() => {
-      //      getProjectDetails(currentProjectDetailsUUID)
-      //      navigate({
-      //        pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
-      //        search: `?${createSearchParams({
-      //          projectId: currentProjectDetails?.uuid,
-      //        })}`,
-      //      })
-      //    })
-      //  )
-      //} else {
-      //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
-      //  dispatch(setPrimaryText('Failed'))
-      //  dispatch(setSecondaryText('Something went wrong. Please try again.'))
-      //}
-    } catch (err) {
-      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
-      dispatch(setPrimaryText('Failed'))
-      dispatch(setSecondaryText('Something went wrong. Please try again.'))
-      console.log(err)
-    } finally {
-      setLoading(false)
-    }
+    const payload = {}
+
+    // try {
+    //   const res = await verifierCalls.createVerifier(payload)
+    //------------
+    // if (res?.data?.success) {
+    //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+    //  dispatch(setPrimaryText('Completed'))
+    //  dispatch(
+    //    setSecondaryText(
+    //      `${
+    //        selectedVerifiers.length > 1 ? 'Verifiers' : 'Verifier'
+    //      } selected SuccessFully`
+    //    )
+    //  )
+    //  dispatch(
+    //    setSuccessFunction(() => {
+    //      getProjectDetails(currentProjectDetailsUUID)
+    //      navigate({
+    //        pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+    //        search: `?${createSearchParams({
+    //          projectId: currentProjectDetails?.uuid,
+    //        })}`,
+    //      })
+    //    })
+    //  )
+    //} else {
+    //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+    //  dispatch(setPrimaryText('Failed'))
+    //  dispatch(setSecondaryText('Something went wrong. Please try again.'))
+    //}
+    //--------
+    //     setModalData(true)
+    //     setOpen(true)
+    //     getProjectDetails(currentProjectDetailsUUID)
+    //     navigate({
+    //       pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+    //       search: `?${createSearchParams({
+    //         projectId: currentProjectDetails?.uuid,
+    //       })}`,
+    //     })
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    // } finally {
+    //   setLoading(false)
+    // }
   }
 
-  const selectVerifiers = (verifier: any) => {
-    const selectedVerifierIds = selectedVerifiers.map(
-      (verifier: any) => verifier._id
-    )
-    if (
-      selectedVerifiers.length &&
-      selectedVerifierIds.includes(verifier?._id)
-    ) {
-      const newVerifierList = selectedVerifiers.filter(
-        (v: any) => v?._id !== verifier?._id
-      )
-      setSelectedVerifiers(newVerifierList)
+  const selectRegistries = (registry: any, checked = false) => {
+    if (selectedRegistry?._id !== registry?._id) {
+      setSelectedRegistry(registry)
     } else {
-      setSelectedVerifiers([...selectedVerifiers, verifier])
+      setSelectedRegistry(null)
     }
   }
 
-  const isThisVerifierSelected = (id: string) => {
-    if (selectedVerifiers.length) {
-      const selectedVerifierIds = selectedVerifiers.map(
-        (verifier: any) => verifier._id
-      )
-      if (selectedVerifierIds.includes(id)) return true
-      else return false
-    }
-    return false
+  const isThisRegistrySelected = (id: string) => {
+    return selectedRegistry?._id === id
   }
 
   const renderSkeleton = () => {
@@ -232,13 +190,13 @@ const SelectVerifier = () => {
       >
         <Grid item xs={6}>
           <BackHeader
-            title="Select Verifier"
+            title="Select Registry"
             onClick={() => {
               navigate(-1)
             }}
           />
           <Typography sx={{ mt: 2, fontSize: 16, fontWeight: 500 }}>
-            Select potential verifiers for your project issuance
+            Select Registry for your project issuance
           </Typography>
         </Grid>
         <Grid item>
@@ -248,7 +206,7 @@ const SelectVerifier = () => {
             onClick={handleClick}
             disabled={buttonDisabled}
           >
-            Send for verification
+            Select Registry
           </CCButton>
         </Grid>
       </Grid>
@@ -256,8 +214,8 @@ const SelectVerifier = () => {
         renderSkeleton()
       ) : (
         <Grid container sx={{ mt: 2 }} spacing={3} xs={12}>
-          {verifiers && verifiers.length ? (
-            verifiers?.map((verifier: any, index: number) => (
+          {registries && registries.length ? (
+            registries?.map((registry: any, index: number) => (
               <Grid key={index} item container xs={12} lg={6}>
                 <Paper
                   elevation={4}
@@ -265,7 +223,7 @@ const SelectVerifier = () => {
                     width: '100%',
                     display: 'flex',
                     borderRadius: 2,
-                    borderTop: isThisVerifierSelected(verifier?._id)
+                    borderTop: isThisRegistrySelected(registry?._id)
                       ? '6px solid #006B5E'
                       : '6px solid transparent',
                     boxShadow: '0px 5px 25px rgba(0, 0, 0, 0.12)',
@@ -285,7 +243,7 @@ const SelectVerifier = () => {
                           alignItems: 'center',
                           cursor: 'pointer',
                         }}
-                        onClick={() => selectVerifiers(verifier)}
+                        onClick={() => selectRegistries(registry)}
                       >
                         <Checkbox
                           sx={{
@@ -296,12 +254,12 @@ const SelectVerifier = () => {
                               color: '#006B5E',
                             },
                           }}
-                          checked={isThisVerifierSelected(verifier?._id)}
+                          checked={isThisRegistrySelected(registry?._id)}
                         />
                         <Typography
                           sx={{ fontSize: 18, textTransform: 'uppercase' }}
                         >
-                          {verifier?.organisationName || '-'}
+                          {registry?.organisationName || '-'}
                         </Typography>
                       </Box>
                     </Box>
@@ -310,7 +268,7 @@ const SelectVerifier = () => {
                         sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                       />
                       <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.address || '-'}
+                        {registry?.address || '-'}
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', mt: 1 }}>
@@ -318,25 +276,16 @@ const SelectVerifier = () => {
                         sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                       />
                       <Typography sx={{ fontSize: 14 }}>
-                        {/* <a
-                        style={{
-                          color: '#25BBD2',
-                          textDecoration: 'underline',
-                        }}
-                        href={verifier?.website}
-                      >
-                        {verifier?.website || '-'}
-                      </a> */}
                         <a
                           style={{
                             color: '#25BBD2',
                             textDecoration: 'underline',
                           }}
-                          href={verifier?.website}
+                          href={registry?.website}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {verifier?.website || '-'}
+                          {registry?.website || '-'}
                         </a>
                       </Typography>
                     </Box>
@@ -347,8 +296,8 @@ const SelectVerifier = () => {
                       />
                       <Box>
                         <Typography sx={{ fontSize: 14 }}>
-                          {verifier?.fullName || '-'},{' '}
-                          {verifier?.designation || '-'}
+                          {registry?.fullName || '-'},{' '}
+                          {registry?.designation || '-'}
                         </Typography>
                       </Box>
                     </Box>
@@ -357,7 +306,7 @@ const SelectVerifier = () => {
                         sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                       />
                       <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.phone || '-'}
+                        {registry?.phone || '-'}
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', mt: 1 }}>
@@ -365,7 +314,7 @@ const SelectVerifier = () => {
                         sx={{ color: '#006B5E', fontSize: 18, mr: 1 }}
                       />
                       <Typography sx={{ fontSize: 14 }}>
-                        {verifier?.email || '-'}
+                        {registry?.email || '-'}
                       </Typography>
                     </Box>
                   </Grid>
@@ -425,7 +374,7 @@ const SelectVerifier = () => {
           {modalData ? (
             <Box display={'flex'} alignItems="center" flexDirection="column">
               <Typography sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}>
-                Verifier selected successfully
+                Registry selected successfully
               </Typography>
               <CCButton
                 sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
@@ -449,7 +398,7 @@ const SelectVerifier = () => {
                 textAlign="center"
                 sx={{ fontSize: 20, fontWeight: 500, pb: 2 }}
               >
-                Confirm selected Verifiers?
+                Confirm selected Registry?
               </Typography>
               <Box>
                 <Stack
@@ -472,7 +421,9 @@ const SelectVerifier = () => {
                   </CCButtonOutlined>
                   <CCButton
                     sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
-                    onClick={handleCreateVerifierBtn}
+                    onClick={() => {
+                      createRegistry()
+                    }}
                   >
                     Yes
                   </CCButton>
@@ -487,4 +438,4 @@ const SelectVerifier = () => {
   )
 }
 
-export default SelectVerifier
+export default SelectRegistry
