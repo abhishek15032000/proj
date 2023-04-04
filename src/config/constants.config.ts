@@ -763,6 +763,7 @@ export const TRACEABILITY_TAB_NAMES = {
     type: 'registry_uploads_report',
     tabName: 'Registry Uploads Report',
   },
+  REGISTRY_SELECTED: { type: 'registryAssign', tabName: 'Registry Selected' },
 }
 
 export const IMAGE_SIZE_PREFIXES = {

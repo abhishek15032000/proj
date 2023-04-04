@@ -106,4 +106,11 @@ export const verifierCalls = {
       return response?.data
     })
   },
+  selectRegistry: (payload: any) => {
+    return AxiosHelper(URL_PATH.verifier.selectRegistry, 'POST', payload).then(
+      (response: any) => {
+        return response?.data
+      }
+    )
+  },
 }

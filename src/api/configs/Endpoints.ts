@@ -76,11 +76,11 @@ export const URL_PATH = {
     getVerifierById: ENDPOINTS.carbonServiceURL + '/verifier/getVerifierById',
     verifierUpdate: ENDPOINTS.carbonServiceURL + '/verifier/verifier-update',
     verifierUpdateByPD: ENDPOINTS.carbonServiceURL + '/verifier/pd-update',
+    selectRegistry: ENDPOINTS.carbonServiceURL + '/verifier/registry-update',
   },
   registry: {
     getRegistryReports: ENDPOINTS.carbonServiceURL + '/registry/report/submit',
     registryUpdate: ENDPOINTS.carbonServiceURL + '/registry/update',
-    selectRegistry: ENDPOINTS.carbonServiceURL + '/registry/create',
     getRegistryDashboardStats:
       ENDPOINTS.carbonServiceURL + '/registry/getRegistryProjectDashboardStats',
   },

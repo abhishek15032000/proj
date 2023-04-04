@@ -74,6 +74,10 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
         text = 'Registry verifies Report'
         break
       }
+      case TRACEABILITY_TAB_NAMES.REGISTRY_SELECTED.type: {
+        text = 'Registry Selected'
+        break
+      }
     }
     const greenStatuses = [
       TRACEABILITY_TAB_NAMES.CREATE_PROJECT.type,
@@ -83,6 +87,7 @@ const TraceDetails: FC<TraceDetailsProps> = (props) => {
       TRACEABILITY_TAB_NAMES.DEPLOY_TOKEN.type,
       TRACEABILITY_TAB_NAMES.PROJECT_MINTED.type,
       TRACEABILITY_TAB_NAMES.REGISTRY_UPLOADS_REPORT.type,
+      TRACEABILITY_TAB_NAMES.REGISTRY_SELECTED.type,
     ]
     const yellowStatuses = [
       TRACEABILITY_TAB_NAMES.VERIFIER_REQUEST.type,

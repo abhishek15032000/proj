@@ -331,6 +331,31 @@ const ListOfProjectsDashboard: FC<ListOfProjectsDashboardProps> = (props) => {
             >
               Finalise Verifier
             </CCButton>
+          ) : item?.project_status ===
+              PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED &&
+            !item?.registry_details_id ? (
+            <CCButton
+              onClick={() =>
+                navigate(pathNames.SELECT_REGISTRY, {
+                  state: { _id: item?._id, projectUUID: item?.uuid },
+                })
+              }
+              sx={{
+                minWidth: 0,
+                color: 'white',
+                background: Colors.darkPrimary1,
+                borderRadius: '32px',
+                whiteSpace: 'nowrap',
+                fontSize: 14,
+                '&:hover': {
+                  background: 'white',
+                  border: '1px solid black',
+                  color: 'black',
+                },
+              }}
+            >
+              Select Registry
+            </CCButton>
           ) : (
             '-'
           ),

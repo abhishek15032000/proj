@@ -14,26 +14,36 @@ import LanguageIcon from '@mui/icons-material/Language'
 import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
-import { createSearchParams, useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
 import CCButton from '../../atoms/CCButton/CCButton'
 import { department } from '../../api/department.api'
-import { ROLES } from '../../config/constants.config'
+import { BLOCKCHAIN_STATUS, ROLES } from '../../config/constants.config'
 import { Images } from '../../theme'
 import './index.css'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import { verifierCalls } from '../../api/verifierCalls.api'
 import { pathNames } from '../../routes/pathNames'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import BackHeader from '../../atoms/BackHeader/BackHeader'
 // import SelectVerifierSkeleton from '../'
 import { useProject } from '../../hooks/useProject'
 import EmptyComponent from '../../atoms/EmptyComponent/EmptyComponent'
 import SelectVerifierSkeleton from '../SelectVerifier/SelectVerifierSkeleton'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setSecondaryText,
+  setSuccessFunction,
+} from '../../redux/Slices/blockchainStatusModalSlice'
 
 const SelectRegistry = () => {
-  const { getProjectDetails } = useProject()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const location: any = useLocation()
+
+  const { getProjectDetails } = useProject()
 
   const currentProjectDetails = useAppSelector(
     ({ issuanceDataCollection }) =>
@@ -89,69 +99,52 @@ const SelectRegistry = () => {
   }
 
   const createRegistry = async () => {
-    setLoading(true)
-    setOpen(false)
-    // const payload: any = selectedRegistries.map((verifierDetials: any) => {
-    //   return {
-    //     project_id: currentProjectDetails?._id
-    //       ? currentProjectDetails?._id
-    //       : location.state._id,
-    //     project_status: PROJECT_ALL_STATUS.POTENTIAL_VERIFIER_SELECTED,
-    //     verifier_id: verifierDetials?._id,
-    //     verifier_name: verifierDetials?.fullName,
-    //     verifier_address: verifierDetials?.address,
-    //     verifier_number: verifierDetials?.phone.toString(),
-    //     organization: verifierDetials?.organisationName,
-    //   }
-    // })
+    dispatch(setOpenBlockchainStatusModal(true))
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(setSecondaryText('Selecting Registry In Progress.'))
 
-    const payload = {}
+    const payload = {
+      project_id: currentProjectDetails?._id
+        ? currentProjectDetails?._id
+        : location.state._id,
+      registry_id: selectedRegistry?._id,
+      registry_name: selectedRegistry?.fullName,
+      registry_address: selectedRegistry?.address,
+      registry_number: selectedRegistry?.phone.toString(),
+    }
 
-    // try {
-    //   const res = await verifierCalls.createVerifier(payload)
-    //------------
-    // if (res?.data?.success) {
-    //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
-    //  dispatch(setPrimaryText('Completed'))
-    //  dispatch(
-    //    setSecondaryText(
-    //      `${
-    //        selectedVerifiers.length > 1 ? 'Verifiers' : 'Verifier'
-    //      } selected SuccessFully`
-    //    )
-    //  )
-    //  dispatch(
-    //    setSuccessFunction(() => {
-    //      getProjectDetails(currentProjectDetailsUUID)
-    //      navigate({
-    //        pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
-    //        search: `?${createSearchParams({
-    //          projectId: currentProjectDetails?.uuid,
-    //        })}`,
-    //      })
-    //    })
-    //  )
-    //} else {
-    //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
-    //  dispatch(setPrimaryText('Failed'))
-    //  dispatch(setSecondaryText('Something went wrong. Please try again.'))
-    //}
-    //--------
-    //     setModalData(true)
-    //     setOpen(true)
-    //     getProjectDetails(currentProjectDetailsUUID)
-    //     navigate({
-    //       pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
-    //       search: `?${createSearchParams({
-    //         projectId: currentProjectDetails?.uuid,
-    //       })}`,
-    //     })
-    //   }
-    // } catch (err) {
-    //   console.log(err)
-    // } finally {
-    //   setLoading(false)
-    // }
+    try {
+      const res = await verifierCalls.selectRegistry(payload)
+      if (res?.success) {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
+        dispatch(setSecondaryText(`Registry selected Successfully`))
+        dispatch(
+          setSuccessFunction(() => {
+            getProjectDetails(currentProjectDetailsUUID)
+            navigate({
+              pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
+              search: `?${createSearchParams({
+                projectId: location?.state?.projectUUID,
+              })}`,
+            })
+          })
+        )
+      } else {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
+      }
+    } catch (err: any) {
+      console.log('Error in verifierCalls.selectRegistry api ~ ', err)
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText(err?.message))
+    } finally {
+      setLoading(false)
+    }
   }
 
   const selectRegistries = (registry: any, checked = false) => {
