@@ -117,16 +117,21 @@ const SelectRegistry = () => {
     try {
       const res = await verifierCalls.selectRegistry(payload)
       if (res?.success) {
+        //conditional setting UUID based on user navigating to select registry screen from dashboard or select verifier screen
+        const UUID = currentProjectDetailsUUID
+          ? currentProjectDetailsUUID
+          : location?.state?.projectUUID
         dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
         dispatch(setPrimaryText('Completed'))
         dispatch(setSecondaryText(`Registry selected Successfully`))
         dispatch(
           setSuccessFunction(() => {
-            getProjectDetails(currentProjectDetailsUUID)
+            getProjectDetails(UUID)
             navigate({
               pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
               search: `?${createSearchParams({
-                projectId: location?.state?.projectUUID,
+                projectId: UUID,
+                //projectId: location?.state.currentProjectDetailsUUID,
               })}`,
             })
           })

@@ -190,6 +190,7 @@ const BlockchainStatusModal = () => {
                 left: 270,
                 top: '-20px',
                 fontSize: 24,
+                cursor: 'pointer',
               }}
               onClick={() => dispatch(setOpenBlockchainStatusModal(false))}
             />
