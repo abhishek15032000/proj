@@ -24,7 +24,7 @@ import Spinner from '../../atoms/Spinner'
 import TextButton from '../../atoms/TextButton/TextButton'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import LoaderOverlay from '../../components/LoderOverlay'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import { Colors } from '../../theme'
 import {
@@ -36,6 +36,15 @@ import { VerifierVerifyReportProps } from './VerifierVerifyReport.interface'
 import CCButton from '../../atoms/CCButton'
 import { ArrowOutward } from '@mui/icons-material'
 import PdfPage from '../../pages/PdfPage/PdfPage'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setRetryFunction,
+  setSecondaryText,
+  setSuccessFunction,
+} from '../../redux/Slices/blockchainStatusModalSlice'
+import { BLOCKCHAIN_STATUS } from '../../config/constants.config'
 
 declare let window: any
 
@@ -45,6 +54,7 @@ const provider =
     : ethers.getDefaultProvider()
 
 const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const location: any = useLocation()
 
@@ -215,8 +225,25 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
   //   }
   // }
 
+  const handleVerifyBtn = () => {
+    //Open BlockchainStatusModal
+    dispatch(setRetryFunction(verifyPDF))
+    dispatch(
+      setSuccessFunction(() => navigate(pathNames.DASHBOARD, { replace: true }))
+    )
+
+    verifyPDF()
+  }
+
   const verifyPDF = async () => {
-    setLoading(true)
+    // setLoading(true)
+
+    dispatch(setOpenBlockchainStatusModal(true))
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(
+      setSecondaryText('Blockchain call initiated. Waiting for confirmation.')
+    )
     const {
       state: { project },
     } = location
@@ -236,6 +263,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
       // file_attach: stringExtractor(relevantDocs, 'fileName'),
       file_attach: relevantDocs,
       // nonce: pseudoNonce,
+      retry: false,
     }
     try {
       const verifyPDFAndMintTokenRes =
@@ -243,17 +271,35 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
       if (verifyPDFAndMintTokenRes?.data?.success) {
         if (verifyPDFAndMintTokenRes?.data?.success) {
-          setShowActionSuccessModal(true)
+          // setShowActionSuccessModal(true)
+
+          dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+          dispatch(setPrimaryText('Completed'))
+          dispatch(
+            setSecondaryText(
+              'Transaction added to Blockchain successfully and PDF Verified and sent to Registry!'
+            )
+          )
         } else {
-          alert(verifyPDFAndMintTokenRes?.data?.error)
+          // alert(verifyPDFAndMintTokenRes?.data?.error)
+
+          dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+          dispatch(setPrimaryText('Failed'))
+          dispatch(setSecondaryText(verifyPDFAndMintTokenRes?.data?.error))
         }
       }
-    } catch (err) {
-      alert(`Something went wrong : ${err}`)
+    } catch (err: any) {
+      // alert(`Something went wrong : ${err}`)
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText(err?.message))
+
       console.log('Error in verifierCalls.getPDFHash api :', err)
-    } finally {
-      setLoading(false)
     }
+    // finally {
+    //   setLoading(false)
+    // }
   }
 
   return (
@@ -319,7 +365,7 @@ const VerifierVerifyReport = (props: VerifierVerifyReportProps) => {
 
         <Box>
           <CCButton
-            onClick={() => verifyPDF()}
+            onClick={handleVerifyBtn}
             buttonBackgroundColor={Colors.darkPrimary1}
             buttonColor="white"
             sx={{

@@ -1,5 +1,6 @@
 import loadable from '@loadable/component'
 import { ROLES } from '../config/constants.config'
+import SelectRegistry from '../pages/SelectRegistry/SelectRegistry'
 // import BankDetails from '../pages/BankDetails'
 // import BuyerOnboarding from '../pages/BuyerOnboarding'
 // import CompleteProfile from '../pages/CompleteProfile/CompleteProfile'
@@ -377,5 +378,10 @@ export const privateRouteComponents = [
     component: AllProjects,
     sidebarName: linkLabels.All_Projects,
     roles: [ROLES.ISSUER, ROLES.VERIFIER, ROLES.BUYER, ROLES.REGISTRY],
+  },
+  {
+    path: pathNames.SELECT_REGISTRY,
+    component: SelectRegistry,
+    roles: [ROLES.ISSUER],
   },
 ]

@@ -20,7 +20,7 @@ import CCMultilineTextArea from '../../atoms/CCMultilineTextArea'
 import Spinner from '../../atoms/Spinner'
 import BlockchainCalls from '../../blockchain/Blockchain'
 import { TOKEN_CONTRACT_ADDRESS } from '../../config/token.config'
-import { useAppSelector } from '../../hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { pathNames } from '../../routes/pathNames'
 import { Colors, Images } from '../../theme'
 import { RetireTokensProps } from './RetireTokens.interface'
@@ -38,6 +38,14 @@ import { useTokenRetire } from '../../hooks/useTokenRetire'
 import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
 import { getLocalItem } from '../../utils/Storage'
 import LoderOverlay from '../LoderOverlay'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setRetryFunction,
+  setSecondaryText,
+} from '../../redux/Slices/blockchainStatusModalSlice'
+import { BLOCKCHAIN_STATUS } from '../../config/constants.config'
 
 // declare let window: any
 
@@ -49,6 +57,7 @@ import LoderOverlay from '../LoderOverlay'
 const RetireTokens = (props: RetireTokensProps) => {
   const navigate = useNavigate()
   const location: any = useLocation()
+  const dispatch = useAppDispatch()
 
   const userName = getLocalItem('userDetails2')?.fullName || ''
   const userID = getLocalItem('userDetails')?.user_id || ''
@@ -186,13 +195,26 @@ const RetireTokens = (props: RetireTokensProps) => {
   //   }
   // }
 
-  const retireTokens = async () => {
-    if (balanceToRetire < Number(retiring)) {
+  const retireTokensCall = async () => {
+    if (Number(balanceToRetire) < Number(retiring)) {
       setRetiring('')
+      setExplain('')
       setSnackbarErrorMsg('Not enough tokens to retire')
       setOpenSnackbar(true)
       return
     }
+
+    dispatch(setRetryFunction(retireTokens))
+
+    retireTokens()
+  }
+
+  const retireTokens = async () => {
+    //setting blockchain modal values
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(setSecondaryText('Retring Tokens, Waiting For Confirmation'))
+    dispatch(setOpenBlockchainStatusModal(true))
     const payload = {
       reason: explain,
       asset: tokenAddress,
@@ -203,24 +225,41 @@ const RetireTokens = (props: RetireTokensProps) => {
     }
 
     try {
-      setLoading(true)
+      //setLoading(true)
       const res: any = await buyerCalls.retireToken(payload)
       console.log('res', res)
       if (res?.data?.success) {
-        setShowModal(true)
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
+        dispatch(setSecondaryText('Tokens Retired Successfully.'))
+        //setShowModal(true)
       } else {
         if (res?.data?.error) {
-          setSnackbarErrorMsg('Something went wrong in retiring the tokens.')
-          setOpenSnackbar(true)
+          //setSnackbarErrorMsg('Something went wrong in retiring the tokens.')
+          //setOpenSnackbar(true)
           //alert(res?.data?.error)
+          dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+          dispatch(setPrimaryText('Failed'))
+          dispatch(
+            setSecondaryText(
+              `${
+                res?.data?.error
+                  ? res?.data?.error
+                  : 'Something went wrong in retiring the tokens.'
+              }`
+            )
+          )
         }
       }
     } catch (e) {
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText('Something went wrong in retiring the tokens.'))
       console.log('Error in buyerCalls.retireToken api ~ ', e)
     } finally {
       setRetiring('')
       setExplain('')
-      setLoading(false)
+      //setLoading(false)
     }
   }
 
@@ -291,12 +330,7 @@ const RetireTokens = (props: RetireTokensProps) => {
                     }}
                     onClick={() => {
                       console.log({ retiring, explain })
-                      if (!retiring || !explain) {
-                        alert('Fill all the Fields!')
-                        return
-                      }
-                      // setShowModal(true)
-                      retireTokens()
+                      retireTokensCall()
                     }}
                     disabled={isDisabled()}
                     variant="contained"

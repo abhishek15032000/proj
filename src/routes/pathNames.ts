@@ -49,6 +49,7 @@ export const pathNames = {
   RISK_DASHBOARD: '/RiskDashboard',
   PDF: '/pdf',
   ALL_PROJECTS: '/all-projects',
+  SELECT_REGISTRY: '/select-registry',
 }
 
 export const linkLabels = {

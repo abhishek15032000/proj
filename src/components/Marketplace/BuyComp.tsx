@@ -23,6 +23,7 @@ import { Colors } from '../../theme'
 // import { createBuyOrder } from '../../utils/newMarketplace.utils'
 import BuyTokenPriceDetails from './BuyTokenPriceDetails'
 import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
+import { setRetryFunction } from '../../redux/Slices/blockchainStatusModalSlice'
 
 const BuyComp = () => {
   const dispatch = useAppDispatch()
@@ -133,6 +134,11 @@ const BuyComp = () => {
     }
   }
 
+  const createBuyOrderCall = () => {
+    dispatch(setRetryFunction(createBuyOrder))
+    createBuyOrder()
+  }
+
   return (
     <Grid item sm={12} md={10}>
       <CardRow
@@ -198,7 +204,7 @@ const BuyComp = () => {
             fontSize: 14,
             minWidth: 0,
           }}
-          onClick={createBuyOrder}
+          onClick={createBuyOrderCall}
           disabled={isDisabled()}
           variant="contained"
         >
