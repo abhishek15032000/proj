@@ -23,6 +23,7 @@ import AddMetaMaskAccountModal from './components/AddMetaMaskAccountModal/AddMet
 import { drawerExemptList } from './routes/config'
 import { useBlockchain } from './hooks/useBlockchain'
 import { useError } from './context/ErrorController'
+import BlockchainStatusModal from './components/BlockchainStatusModal/BlockchainStatusModal'
 
 declare let window: any
 const { ethereum } = window
@@ -167,6 +168,7 @@ const App: FC<AppProps> = () => {
           {/* {userData && <LoadWallet />} */}
           {/* {userData && <AddMetaMaskAccountModal />} */}
           <RouteController />
+          <BlockchainStatusModal />
         </AppDrawer>
 
         {/* {userData && !showDrawer && (

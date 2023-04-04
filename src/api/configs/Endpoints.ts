@@ -74,6 +74,9 @@ export const URL_PATH = {
       ENDPOINTS.carbonServiceURL + '/verifier/report/submit',
     verifierAllReport: ENDPOINTS.carbonServiceURL + '/verifier/report/all',
     getVerifierById: ENDPOINTS.carbonServiceURL + '/verifier/getVerifierById',
+    verifierUpdate: ENDPOINTS.carbonServiceURL + '/verifier/verifier-update',
+    verifierUpdateByPD: ENDPOINTS.carbonServiceURL + '/verifier/pd-update',
+    selectRegistry: ENDPOINTS.carbonServiceURL + '/verifier/registry-update',
   },
   registry: {
     getRegistryReports: ENDPOINTS.carbonServiceURL + '/registry/report/submit',

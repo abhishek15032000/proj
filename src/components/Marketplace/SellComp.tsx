@@ -15,6 +15,7 @@ import {
   convertToInternationalCurrencySystem,
   formatNumberMinify,
 } from '../../utils/commonFunctions'
+import { setRetryFunction } from '../../redux/Slices/blockchainStatusModalSlice'
 // import { createSellOrder } from '../../utils/newMarketplace.utils'
 
 const SellComp = () => {
@@ -83,6 +84,11 @@ const SellComp = () => {
   //   convertToInternationalCurrencySystem(123123123123),
   //   formatNumberMinify(123123123123)
   // )
+
+  const createSellOrderCall = () => {
+    dispatch(setRetryFunction(createSellOrder))
+    createSellOrder()
+  }
 
   return (
     <Grid item xs={12} md={10}>
@@ -179,7 +185,7 @@ const SellComp = () => {
               fontSize: 14,
               minWidth: 0,
             }}
-            onClick={createSellOrder}
+            onClick={createSellOrderCall}
             disabled={!sellQuantity || !sellWantAmount}
             variant="contained"
           >

@@ -72,11 +72,7 @@ const ProfileDetailsIssuanceInfo: FC = () => {
 
   const calculatePercentage = (projectData: any) => {
     if (location?.state?.status !== 0) {
-      if (location.state.projectDetailsTabIndex) {
-        setTabIndex(location.state.projectDetailsTabIndex)
-      } else {
-        setTabIndex(1)
-      }
+      setTabIndex(1)
     }
 
     const modifiedRows = addSectionPercentages(projectData)
@@ -138,9 +134,13 @@ const ProfileDetailsIssuanceInfo: FC = () => {
       if (location?.state?.isEdited) {
         redirectOnSection()
       }
+      if (location?.state?.projectDetailsTabIndex) {
+        console.log('issuanceInfo: ', issuanceInfo, projectStatus)
+        setTabIndex(location?.state?.projectDetailsTabIndex)
+      }
     }
   }
-
+  console.log('location:', location)
   const redirectOnSection = () => {
     dispatch(setSectionIndex(1))
     navigate(pathNames.ISSUANCE_DATA_COLLECTION)

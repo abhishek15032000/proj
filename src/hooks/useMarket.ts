@@ -2,7 +2,7 @@ import { eventsCalls } from '../api/eventsCalls.api'
 import { marketplaceCalls } from '../api/marketplaceCalls.api'
 import { transactionCalls } from '../api/transactionCalls.api'
 import { useAppDispatch, useAppSelector } from './reduxHooks'
-import { TOKEN_TYPES } from '../config/constants.config'
+import { BLOCKCHAIN_STATUS, TOKEN_TYPES } from '../config/constants.config'
 import {
   setMessageModalText,
   setShowMessageModal,
@@ -38,6 +38,14 @@ import {
   setWithdrawLoading,
 } from '../redux/Slices/newMarketplaceSlice'
 import { useWallet } from './useWallet'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setRetryFunction,
+  setSecondaryText,
+  setSuccessFunction,
+} from '../redux/Slices/blockchainStatusModalSlice'
 
 export function useMarket() {
   const dispatch = useAppDispatch()
@@ -199,6 +207,13 @@ export function useMarket() {
     }
 
     try {
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+      dispatch(setPrimaryText('In Progress'))
+      dispatch(
+        setSecondaryText('Creating Sell Order, Waiting For Confirmation')
+      )
+      dispatch(setOpenBlockchainStatusModal(true))
+
       dispatch(setCreateSellOrderLoading(true))
       const payload = {
         _offerAsset: carbonTokenAddress,
@@ -214,26 +229,58 @@ export function useMarket() {
 
       const createOrderRes = await marketplaceCalls.createOrder(payload)
       if (createOrderRes?.success) {
-        getSellOrdersListData(carbonTokenAddress)
-        getOpenOrders()
-        getProjectsTokenDetails(currentProjectUUID)
-        dispatch(setSellQuantity(0))
-        dispatch(setSellWantAmount(0))
-
-        //resetting token addresses
-        dispatch(setCarbonTokenSymbol(''))
-        dispatch(setCarbonTokenAddress(''))
-        dispatch(setINRTokenAddress(''))
-
-        dispatch(setShowMessageModal(true))
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
         dispatch(
-          setMessageModalText(
+          setSecondaryText(
             'Sell Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
           )
         )
+        dispatch(
+          setSuccessFunction(() => {
+            getSellOrdersListData(carbonTokenAddress)
+            getOpenOrders()
+            getProjectsTokenDetails(currentProjectUUID)
+            dispatch(setSellQuantity(0))
+            dispatch(setSellWantAmount(0))
+
+            //resetting token addresses
+            dispatch(setCarbonTokenSymbol(''))
+            dispatch(setCarbonTokenAddress(''))
+            dispatch(setINRTokenAddress(''))
+          })
+        )
+        //getSellOrdersListData(carbonTokenAddress)
+        //getOpenOrders()
+        //getProjectsTokenDetails(currentProjectUUID)
+        //dispatch(setSellQuantity(0))
+        //dispatch(setSellWantAmount(0))
+
+        ////resetting token addresses
+        //dispatch(setCarbonTokenSymbol(''))
+        //dispatch(setCarbonTokenAddress(''))
+        //dispatch(setINRTokenAddress(''))
+
+        //dispatch(setShowMessageModal(true))
+        //dispatch(
+        //  setMessageModalText(
+        //    'Sell Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
+        //  )
+        //)
+      } else {
+        console.log('withdraw else block: failed block')
+
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.createOrder api ~ ', err)
+      console.log('withdraw else block: failed block')
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText('Something went wrong. Please try again.'))
     } finally {
       dispatch(setCreateSellOrderLoading(false))
     }
@@ -260,12 +307,7 @@ export function useMarket() {
     const pseudoNonce = new Date().getTime()
 
     const balToCheck = parseInt(inrTokenBalances?.totalBalances)
-    console.log('balToCheck: ', balToCheck)
-    console.log('totalAmountForBuying: ', totalAmountForBuying)
-    console.log(
-      'totalAmountForBuying > balToCheck: ',
-      totalAmountForBuying > balToCheck
-    )
+
     if (Number(totalAmountForBuying) > balToCheck) {
       dispatch(setOpenSnackbar(true))
       dispatch(setSnackbarErrorMsg('Not enough balance to Buy'))
@@ -275,6 +317,10 @@ export function useMarket() {
 
       return
     }
+    dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+    dispatch(setPrimaryText('In Progress'))
+    dispatch(setSecondaryText('Creating Buy Order, Waiting For Confirmation'))
+    dispatch(setOpenBlockchainStatusModal(true))
 
     const payload = {
       uuid: buyOrderPayloadUUID,
@@ -291,31 +337,69 @@ export function useMarket() {
 
       const createOrderRes = await marketplaceCalls.fillOrder(payload)
       if (createOrderRes?.success) {
-        dispatch(setBuyUnitPrice(0))
-        dispatch(setTotalAmountForBuying(0))
-        dispatch(setBuyOrderPayloadUUID(null))
-        dispatch(setBuyOrderPayloadOfferHashes(null))
-        dispatch(setBuyOrderPayloadAmountsToTake(null))
-        dispatch(setBuyQuantity(0))
-
-        getSellOrdersListData(carbonTokenAddress)
-        getBuyOrders()
-        getProjectsTokenDetails(currentProjectUUID)
-
-        //resetting token addresses
-        dispatch(setCarbonTokenSymbol(''))
-        dispatch(setCarbonTokenAddress(''))
-        dispatch(setINRTokenAddress(''))
-
-        dispatch(setShowMessageModal(true))
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
         dispatch(
-          setMessageModalText(
+          setSecondaryText(
             'Buy Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
           )
         )
+        dispatch(
+          setSuccessFunction(() => {
+            dispatch(setBuyUnitPrice(0))
+            dispatch(setTotalAmountForBuying(0))
+            dispatch(setBuyOrderPayloadUUID(null))
+            dispatch(setBuyOrderPayloadOfferHashes(null))
+            dispatch(setBuyOrderPayloadAmountsToTake(null))
+            dispatch(setBuyQuantity(0))
+
+            getSellOrdersListData(carbonTokenAddress)
+            getBuyOrders()
+            getProjectsTokenDetails(currentProjectUUID)
+
+            //resetting token addresses
+            dispatch(setCarbonTokenSymbol(''))
+            dispatch(setCarbonTokenAddress(''))
+            dispatch(setINRTokenAddress(''))
+          })
+        )
+
+        //dispatch(setBuyUnitPrice(0))
+        //dispatch(setTotalAmountForBuying(0))
+        //dispatch(setBuyOrderPayloadUUID(null))
+        //dispatch(setBuyOrderPayloadOfferHashes(null))
+        //dispatch(setBuyOrderPayloadAmountsToTake(null))
+        //dispatch(setBuyQuantity(0))
+
+        //getSellOrdersListData(carbonTokenAddress)
+        //getBuyOrders()
+        //getProjectsTokenDetails(currentProjectUUID)
+
+        ////resetting token addresses
+        //dispatch(setCarbonTokenSymbol(''))
+        //dispatch(setCarbonTokenAddress(''))
+        //dispatch(setINRTokenAddress(''))
+
+        //dispatch(setShowMessageModal(true))
+        //dispatch(
+        //  setMessageModalText(
+        //    'Buy Order created successfully. You can check the status of blockchain transaction from the orders table!!!'
+        //  )
+        //)
+      } else {
+        console.log('buyOrder else block: failed block')
+
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.fillOrder api ~ ', err)
+      console.log('withdraw else block: failed block')
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText('Something went wrong. Please try again.'))
     } finally {
       dispatch(setCreateBuyOrderLoading(false))
     }
@@ -360,28 +444,56 @@ export function useMarket() {
     //   getState()?.newMarketplaceReducer?.currentProjectUUID
 
     try {
+      dispatch(setOpenBlockchainStatusModal(true))
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+      dispatch(setPrimaryText('In Progress'))
+      dispatch(setSecondaryText('Canceling order, Waiting For Confirmation'))
       dispatch(setCancelOrderLoading(true))
       const cancelOrderRes = await marketplaceCalls.cancelOrder(payload)
       if (cancelOrderRes.success) {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
+        dispatch(setSecondaryText('Order Canceled Successfully.'))
         dispatch(
-          setMessageModalText(
-            'Sell order Cancelled. Cancelled Token Amount will reflect in "Balance on Exchange" amount.'
-          )
+          setSuccessFunction(() => {
+            dispatch(setOpenOrders([]))
+
+            getOpenOrders()
+            getProjectsTokenDetails(currentProjectUUID)
+
+            //resetting token addresses
+            dispatch(setCarbonTokenSymbol(''))
+            dispatch(setCarbonTokenAddress(''))
+            dispatch(setINRTokenAddress(''))
+          })
         )
-        dispatch(setShowMessageModal(true))
+        //dispatch(
+        //  setMessageModalText(
+        //    'Sell order Cancelled. Cancelled Token Amount will reflect in "Balance on Exchange" amount.'
+        //  )
+        //)
+        //dispatch(setShowMessageModal(true))
 
-        dispatch(setOpenOrders([]))
+        //dispatch(setOpenOrders([]))
 
-        getOpenOrders()
-        getProjectsTokenDetails(currentProjectUUID)
+        //getOpenOrders()
+        //getProjectsTokenDetails(currentProjectUUID)
 
-        //resetting token addresses
-        dispatch(setCarbonTokenSymbol(''))
-        dispatch(setCarbonTokenAddress(''))
-        dispatch(setINRTokenAddress(''))
+        ////resetting token addresses
+        //dispatch(setCarbonTokenSymbol(''))
+        //dispatch(setCarbonTokenAddress(''))
+        //dispatch(setINRTokenAddress(''))
+      } else {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
       }
     } catch (err) {
       console.log('Error in marketplaceCalls.cancelOrder api ~ ', err)
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText('Something went wrong. Please try again.'))
     } finally {
       dispatch(setCancelOrderLoading(false))
     }
@@ -425,27 +537,65 @@ export function useMarket() {
     }
 
     try {
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+      dispatch(setPrimaryText('In Progress'))
+      dispatch(setSecondaryText('Withdrawing Amount, Waiting For Confirmation'))
+      dispatch(setOpenBlockchainStatusModal(true))
+
       dispatch(setWithdrawLoading(true))
+
       const withdrawRes = await marketplaceCalls.withdraw(payload)
+      console.log('withdrawRes: ', withdrawRes)
       if (withdrawRes.success) {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
         dispatch(
-          setMessageModalText(
+          setSecondaryText(
             'Withdraw Successfull. Withdrawn Amount will reflect in your Wallet.'
           )
         )
-        dispatch(setShowMessageModal(true))
+        dispatch(
+          setSuccessFunction(() => {
+            getProjectsTokenDetails(currentProjectUUID)
+            //resetting token addresses
 
-        getProjectsTokenDetails(currentProjectUUID)
+            dispatch(setCarbonTokenSymbol(''))
+            dispatch(setCarbonTokenAddress(''))
+            dispatch(setINRTokenAddress(''))
+            //Update Project Token table - Wallet Page
+            updateWalletBalance()
+          })
+        )
 
-        //resetting token addresses
-        dispatch(setCarbonTokenSymbol(''))
-        dispatch(setCarbonTokenAddress(''))
-        dispatch(setINRTokenAddress(''))
+        //dispatch(
+        //  setMessageModalText(
+        //    'Withdraw Successfull. Withdrawn Amount will reflect in your Wallet.'
+        //  )
+        //)
+        //dispatch(setShowMessageModal(true))
+
+        //getProjectsTokenDetails(currentProjectUUID)
+
+        ////resetting token addresses
+        //dispatch(setCarbonTokenSymbol(''))
+        //dispatch(setCarbonTokenAddress(''))
+        //dispatch(setINRTokenAddress(''))
 
         //Update Project Token table - Wallet Page
-        updateWalletBalance()
+        //updateWalletBalance()
+      } else {
+        console.log('withdraw else block: failed block')
+
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
       }
     } catch (err) {
+      console.log('withdraw else block: catch block')
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText('Something went wrong. Please try again.'))
       console.log('Error in marketplaceCalls.withdraw api ~ ', err)
     } finally {
       dispatch(setOpenWithdrawModal(false))

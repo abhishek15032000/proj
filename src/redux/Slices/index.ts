@@ -41,6 +41,7 @@ import pdfPage from './pdfSlice'
 import marketplaceCaching from './marketPlaceCachingSlice'
 import allProjectsCaching from './allProjectsCachingSlice'
 import allProjectsFiltersSlice from './allProjectsFiltersSlice'
+import blockchainStatusModal from './blockchainStatusModalSlice'
 
 // TODO: rename names
 export default {
@@ -84,4 +85,5 @@ export default {
   marketplaceCaching,
   allProjectsCaching,
   allProjectsFiltersSlice,
+  blockchainStatusModal,
 }

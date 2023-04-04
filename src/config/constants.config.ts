@@ -154,18 +154,18 @@ export const PROJECT_STATUS_NAME = {
   VERIFYING_PROJECT: 'Verifying Project',
   VALIDATING_PROJECT: 'Validating Project',
 }
-//'Project Created',
-//'Submitted for Screening',
-//'Screening Successful',
-//'Verifier Selected',
-//'Project accepted by Verifier',
-//'Verifier Finalised',
-//'Project verified by Verifier',
-//'Project under review by Registry',
-//'Project Registered',
-//'Project Rejected by Issuer',
-//'Project Rejected by Verifier',
-//}
+
+export const VERIFIER_UPDATE = {
+  APPROVE_PROJECT: 1,
+  REJECT_PROJECT: 2,
+}
+
+export const BLOCKCHAIN_STATUS = {
+  NOT_YET_INITAITED: 0,
+  PENDING: 1,
+  COMPLETED: 2,
+  FAILED: 3,
+}
 
 export const filters = [
   {
@@ -763,6 +763,7 @@ export const TRACEABILITY_TAB_NAMES = {
     type: 'registry_uploads_report',
     tabName: 'Registry Uploads Report',
   },
+  REGISTRY_SELECTED: { type: 'registryAssign', tabName: 'Registry Selected' },
 }
 
 export const IMAGE_SIZE_PREFIXES = {
