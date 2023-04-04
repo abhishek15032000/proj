@@ -13,6 +13,7 @@ import { useMarket } from '../../hooks/useMarket'
 import { setOrdersTabIndex } from '../../redux/Slices/newMarketplaceSlice'
 import { Colors, Images } from '../../theme'
 import { convertToInternationalCurrencySystem } from '../../utils/commonFunctions'
+import { setRetryFunction } from '../../redux/Slices/blockchainStatusModalSlice'
 // import {
 //   cancelOrder,
 //   getBuyOrders,
@@ -190,7 +191,7 @@ const Orders = () => {
                 _feeAsset: carbonTokenAddress,
                 _feeAmount: 0,
               }
-              cancelOrder(payload)
+              cancelOrderCall(payload)
             }}
             disabled={!item?.unexecuted}
             variant="contained"
@@ -203,6 +204,12 @@ const Orders = () => {
       return row
     })
     setRows(tempRows)
+  }
+
+  const cancelOrderCall = (cancelOrderPayload: any) => {
+    const payload = cancelOrderPayload
+    dispatch(setRetryFunction(() => cancelOrder(payload)))
+    cancelOrder(payload)
   }
 
   return (

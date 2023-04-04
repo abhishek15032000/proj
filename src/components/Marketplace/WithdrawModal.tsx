@@ -4,7 +4,7 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import CCButton from '../../atoms/CCButton'
 import CCButtonOutlined from '../../atoms/CCButtonOutlined'
 import LabelInput from '../../atoms/LabelInput/LabelInput'
-import { TOKEN_TYPES } from '../../config/constants.config'
+import { BLOCKCHAIN_STATUS, TOKEN_TYPES } from '../../config/constants.config'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { useMarket } from '../../hooks/useMarket'
 import {
@@ -22,6 +22,13 @@ import {
   getTokenBalances,
 } from '../../utils/newMarketplace.utils'
 import { getLocalItem } from '../../utils/Storage'
+import {
+  setBlockchainCallStatus,
+  setOpenBlockchainStatusModal,
+  setPrimaryText,
+  setRetryFunction,
+  setSecondaryText,
+} from '../../redux/Slices/blockchainStatusModalSlice'
 
 interface WithdrawModalProps {
   fromWalletPage?: boolean
@@ -140,6 +147,12 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
     dispatch(setCurrentProjectUUID(''))
   }
 
+  const withdrawCall = () => {
+    //setOpenWithdrawModal(false)
+    dispatch(setRetryFunction(withdraw))
+
+    withdraw()
+  }
   return (
     <Modal
       open={openWithdrawModal}
@@ -344,7 +357,8 @@ const WithdrawModal: FC<WithdrawModalProps> = ({ fromWalletPage = false }) => {
               borderRadius: '24px',
               fontSize: 14,
             }}
-            onClick={withdraw}
+            onClick={withdrawCall}
+            //onClick={withdraw}
             disabled={!withdrawAmount || withdrawLoading}
           >
             Withdraw

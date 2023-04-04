@@ -55,6 +55,15 @@ const BlockchainStatusModal = () => {
     shallowEqual
   )
 
+  console.log('redux Values of blockchain status', {
+    openBlockchainStatusModal,
+    blockchainCallStatus,
+    primaryText,
+    secondaryText,
+    retryFunction,
+    retryCount,
+    successFunction,
+  })
   const [showCloseIcon, setShowCloseIcon] = useState<boolean>(false)
 
   useEffect(() => {

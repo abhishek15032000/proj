@@ -20,7 +20,7 @@ const initialState: BlockchainStatusModalReducerInterface = {
   retryFunction: null,
   successFunction: null,
 }
-
+console.log('initialState: ', initialState)
 const blockchainStatusModal = createSlice({
   name: 'blockchainStatusModal',
   initialState,
