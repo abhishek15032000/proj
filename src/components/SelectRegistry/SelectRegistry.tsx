@@ -106,13 +106,13 @@ const SelectRegistry = () => {
     dispatch(setSecondaryText('Selecting Registry In Progress.'))
 
     const payload = {
-      // project_id: currentProjectDetails?._id
-      //   ? currentProjectDetails?._id
-      //   : location.state._id,
-      // registry_id: selectedRegistry?._id,
-      // registry_name: selectedRegistry?.fullName,
-      // registry_address: selectedRegistry?.address,
-      // registry_number: selectedRegistry?.phone.toString(),
+      project_id: currentProjectDetails?._id
+        ? currentProjectDetails?._id
+        : location.state._id,
+      registry_id: selectedRegistry?._id,
+      registry_name: selectedRegistry?.fullName,
+      registry_address: selectedRegistry?.address,
+      registry_number: selectedRegistry?.phone.toString(),
     }
 
     try {
