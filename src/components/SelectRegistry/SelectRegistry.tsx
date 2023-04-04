@@ -34,6 +34,7 @@ import {
   setBlockchainCallStatus,
   setOpenBlockchainStatusModal,
   setPrimaryText,
+  setRetryFunction,
   setSecondaryText,
   setSuccessFunction,
 } from '../../redux/Slices/blockchainStatusModalSlice'
@@ -105,13 +106,13 @@ const SelectRegistry = () => {
     dispatch(setSecondaryText('Selecting Registry In Progress.'))
 
     const payload = {
-      project_id: currentProjectDetails?._id
-        ? currentProjectDetails?._id
-        : location.state._id,
-      registry_id: selectedRegistry?._id,
-      registry_name: selectedRegistry?.fullName,
-      registry_address: selectedRegistry?.address,
-      registry_number: selectedRegistry?.phone.toString(),
+      // project_id: currentProjectDetails?._id
+      //   ? currentProjectDetails?._id
+      //   : location.state._id,
+      // registry_id: selectedRegistry?._id,
+      // registry_name: selectedRegistry?.fullName,
+      // registry_address: selectedRegistry?.address,
+      // registry_number: selectedRegistry?.phone.toString(),
     }
 
     try {
@@ -415,6 +416,8 @@ const SelectRegistry = () => {
                   <CCButton
                     sx={{ minWidth: 0, padding: '6px 50px', borderRadius: 10 }}
                     onClick={() => {
+                      setOpen(false)
+                      dispatch(setRetryFunction(createRegistry))
                       createRegistry()
                     }}
                   >
