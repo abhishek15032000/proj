@@ -23,7 +23,10 @@ const BlockchainStatusModal = () => {
   const dispatch = useAppDispatch()
   const location = useLocation()
 
-  const apiCallLocations = [pathNames.SELECT_VERIFIER]
+  const apiCallLocations = [
+    pathNames.SELECT_VERIFIER,
+    pathNames.SELECT_REGISTRY,
+  ]
 
   const openBlockchainStatusModal = useAppSelector(
     ({ blockchainStatusModal }) =>
@@ -64,13 +67,6 @@ const BlockchainStatusModal = () => {
     retryCount,
     successFunction,
   })
-  const [showCloseIcon, setShowCloseIcon] = useState<boolean>(false)
-
-  useEffect(() => {
-    apiCallLocations.includes(location.pathname)
-      ? setShowCloseIcon(true)
-      : setShowCloseIcon(false)
-  }, [])
 
   useEffect(() => {
     if (!openBlockchainStatusModal) {
@@ -187,7 +183,7 @@ const BlockchainStatusModal = () => {
             textAlign: 'center',
           }}
         >
-          {showCloseIcon && (
+          {apiCallLocations.includes(location.pathname) ? (
             <CloseIcon
               sx={{
                 position: 'relative',
@@ -195,8 +191,9 @@ const BlockchainStatusModal = () => {
                 top: '-20px',
                 fontSize: 24,
               }}
+              onClick={() => dispatch(setOpenBlockchainStatusModal(false))}
             />
-          )}
+          ) : null}
           {renderIcon(blockchainCallStatus)}
           {primaryText ? (
             <Box
