@@ -140,36 +140,26 @@ const SelectVerifier = () => {
     try {
       const res = await verifierCalls.createVerifier(payload)
       if (res?.data?.success) {
-        navigate(pathNames.SELECT_REGISTRY)
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
+        dispatch(
+          setSecondaryText(
+            `${
+              selectedVerifiers.length > 1 ? 'Verifiers' : 'Verifier'
+            } selected Successfully`
+          )
+        )
+        dispatch(
+          setSuccessFunction(() => {
+            getProjectDetails(currentProjectDetailsUUID)
+            navigate(pathNames.SELECT_REGISTRY)
+          })
+        )
+      } else {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
       }
-
-      //  //setModalData(true)
-      //  //setOpen(true)
-      //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
-      //  dispatch(setPrimaryText('Completed'))
-      //  dispatch(
-      //    setSecondaryText(
-      //      `${
-      //        selectedVerifiers.length > 1 ? 'Verifiers' : 'Verifier'
-      //      } selected SuccessFully`
-      //    )
-      //  )
-      //  dispatch(
-      //    setSuccessFunction(() => {
-      //      getProjectDetails(currentProjectDetailsUUID)
-      //      navigate({
-      //        pathname: pathNames.PROFILE_DETAILS_ISSUANCE_INFO,
-      //        search: `?${createSearchParams({
-      //          projectId: currentProjectDetails?.uuid,
-      //        })}`,
-      //      })
-      //    })
-      //  )
-      //} else {
-      //  dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
-      //  dispatch(setPrimaryText('Failed'))
-      //  dispatch(setSecondaryText('Something went wrong. Please try again.'))
-      //}
     } catch (err) {
       dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
       dispatch(setPrimaryText('Failed'))

@@ -50,9 +50,7 @@ const blockchainStatusModal = createSlice({
     setSuccessFunction: (state, action: PayloadAction<any>) => {
       state.successFunction = action.payload
     },
-    resetblockchainStatusModalReducer: (state) => {
-      state = initialState
-    },
+    resetblockchainStatusModalReducer: () => initialState,
   },
 })
 

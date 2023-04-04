@@ -9,13 +9,6 @@ export const registryCalls = {
       }
     )
   },
-  selectRegistry: (payload: any) => {
-    return AxiosHelper(URL_PATH.registry.selectRegistry, 'POST', payload).then(
-      (res: any) => {
-        return res.data
-      }
-    )
-  },
   reportSumbit: (payload: any) => {
     return AxiosHelper(
       URL_PATH.registry.getRegistryReports,

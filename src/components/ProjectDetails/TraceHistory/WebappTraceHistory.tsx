@@ -16,10 +16,12 @@ import VerifierRequest from './AllTraceTabDetails/VerifierRequest'
 import VerifierVerified from './AllTraceTabDetails/VerifierVerified'
 import TraceDetails from './TraceDetails'
 import './TraceHistory.css'
+import RegistrySelected from './AllTraceTabDetails/RegistrySelected'
 
 const typeAndTabCompMatching: any = {
   createProject: CreateProject,
   verifierRequest: VerifierRequest,
+  registryAssign: RegistrySelected,
   verifierAccepted: VerifierAccept,
   verifierAssign: VerifierAssign,
   updateProjectGenerateFinalPdf: PDFGenerated,

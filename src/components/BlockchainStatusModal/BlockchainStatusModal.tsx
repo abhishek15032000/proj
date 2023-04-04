@@ -61,10 +61,13 @@ const BlockchainStatusModal = () => {
     apiCallLocations.includes(location.pathname)
       ? setShowCloseIcon(true)
       : setShowCloseIcon(false)
-    return () => {
+  }, [])
+
+  useEffect(() => {
+    if (!openBlockchainStatusModal) {
       dispatch(resetblockchainStatusModalReducer())
     }
-  }, [])
+  }, [openBlockchainStatusModal])
 
   const renderIcon = (status: number) => {
     switch (status) {
