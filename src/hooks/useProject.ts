@@ -25,6 +25,7 @@ import {
   setOpenBlockchainStatusModal,
   setPrimaryText,
   setSecondaryText,
+  setSuccessFunction,
 } from '../redux/Slices/blockchainStatusModalSlice'
 import { BLOCKCHAIN_STATUS } from '../config/constants.config'
 
@@ -1037,17 +1038,48 @@ export function useProject() {
       project_id: projectID,
     }
     try {
-      dispatch(setLoading(true))
+      // dispatch(setLoading(true))
+
+      //Open BlockchainStatusModal
+      dispatch(setOpenBlockchainStatusModal(true))
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.PENDING))
+      dispatch(setPrimaryText('In Progress'))
+      dispatch(
+        setSecondaryText('Blockchain call initiated. Waiting for confirmation.')
+      )
+
       const res = await projectDetailsCalls.resubmitPDF(payload)
       if (res?.success) {
-        getProjectDetails(currentProjectUUID)
-        dispatch(setShowResubmitPDFModal(true))
+        // getProjectDetails(currentProjectUUID)
+        // dispatch(setShowResubmitPDFModal(true))
+
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.COMPLETED))
+        dispatch(setPrimaryText('Completed'))
+        dispatch(
+          setSecondaryText(
+            'Successfully updated the PDF and Transaction added to Blockchain successfully!'
+          )
+        )
+        dispatch(
+          setSuccessFunction(() => {
+            getProjectDetails(currentProjectUUID)
+          })
+        )
+      } else {
+        dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+        dispatch(setPrimaryText('Failed'))
+        dispatch(setSecondaryText('Something went wrong. Please try again.'))
       }
     } catch (e) {
       console.log('Error in projectDetailsCalls.resubmitPDF api ~ ', e)
-    } finally {
-      dispatch(setLoading(false))
+
+      dispatch(setBlockchainCallStatus(BLOCKCHAIN_STATUS.FAILED))
+      dispatch(setPrimaryText('Failed'))
+      dispatch(setSecondaryText('Something went wrong. Please try again.'))
     }
+    // finally {
+    //   dispatch(setLoading(false))
+    // }
   }
 
   return { getProjectDetails, moveToNextSection, resubmitPDF }
