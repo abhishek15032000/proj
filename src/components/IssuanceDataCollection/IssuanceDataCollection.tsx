@@ -360,6 +360,10 @@ const IssuanceDataCollection = () => {
       PROJECT_ALL_STATUS.VERIFIER_APPROVES_THE_PROJECT_AND_SENDS_IT_TO_REGISTRY
     ) {
       if (currentProjectDetails?._id) {
+        dispatch(
+          setRetryFunction(() => resubmitPDF(currentProjectDetails?._id))
+        )
+
         resubmitPDF(currentProjectDetails?._id)
       }
     }
